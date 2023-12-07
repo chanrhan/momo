@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class HomeController {
 	@GetMapping("/")
 	public String home(){
-		return "layout/index";
+		return "home/main";
 	}
 }
