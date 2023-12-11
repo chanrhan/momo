@@ -9,6 +9,7 @@ public class PhoneManagementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhoneManagementApplication.class, args);
+
 	}
 
 }

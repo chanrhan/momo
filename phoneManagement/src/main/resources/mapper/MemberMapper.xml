@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phoneManagement.mapper.MemberMapper">
+<!--  Customer  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <select id="findCustomerById">
+        select * from customer where id=#{id}
+    </select>
+
+    <select id="findAllCustomer">
+        select * from customer;
+    </select>
+
+    <insert id="addCustomer" parameterType="com.phoneManagement.dto.MemberQueryDTO">
+        insert into customer
+        (id, password, store_id, name, email, birth_date, gender, phone_number, staff_id)
+        values
+            (#{id},#{password},#{store_id},#{name},#{email},#{birth_date},#{gender},#{phone_number},#{staff_id})
+    </insert>
+
+<!--  Staff  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+    <select id="findStaffById">
+        select * from staff where id=#{id}
+    </select>
+
+    <select id="findAllStaff">
+        select * from staff;
+    </select>
+
+    <insert id="addStaff" parameterType="com.phoneManagement.dto.MemberQueryDTO">
+        insert into staff
+            (id, password, store_id, role, name, email, birth_date, gender, phone_number)
+        values
+            (#{id},#{password},#{store_id},#{role},#{name},#{email},#{birth_date},#{gender},#{phone_number})
+    </insert>
+
+
+
+</mapper>
