@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PhoneManagementApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void contextLoads() throws IllegalAccessException {
+
 	}
 
 }

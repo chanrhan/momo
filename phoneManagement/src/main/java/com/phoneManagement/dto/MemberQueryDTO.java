@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MemberQueryDTO {
 	private String        store_id; // 매장 코드
-	private StaffRole     staff_role; // 역할
+	private StaffRole     role; // 역할
 	private String        id; // 아이디
 	private String        password; // 비밀번호
 	private String        confirm_password; // 확인용 비밀번호

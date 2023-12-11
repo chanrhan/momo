@@ -30,9 +30,9 @@
 
     <insert id="addStaff" parameterType="com.phoneManagement.dto.MemberQueryDTO">
         insert into staff
-            (id, password, store_id, staff_role, name, email, birth_date, gender, phone_number)
+            (id, password, store_id, role, name, email, birth_date, gender, phone_number)
         values
-            (#{id},#{password},#{store_id},#{staff_role},#{name},#{email},#{birth_date},#{gender},#{phone_number})
+            (#{id},#{password},#{store_id},#{role},#{name},#{email},#{birth_date},#{gender},#{phone_number})
     </insert>
 
 
