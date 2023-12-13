@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phoneManagement.mapper.ShopMapper">
+
+    <insert id="addShop" parameterType="com.phoneManagement.dto.ShopDTO">
+        insert into
+            shop_tb
+        (id, name, addr, contact_number, business_registration_number)
+        values
+            (#{id},#{name},#{addr},#{contact_number},#{business_registration_number})
+    </insert>
+
+    <update id="updateShop" parameterType="com.phoneManagement.dto.ShopDTO">
+        update
+            shop_tb
+        set
+            name=#{name},addr=#{addr},contact_number=#{contact_number},business_registration_number=#{business_registration_number}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteShop" parameterType="com.phoneManagement.dto.ShopDTO">
+        delete from
+                   shop_tb
+               where
+                   id=#{id}
+    </delete>
+
+    <select id="findShopById">
+        select
+            *
+        from
+            shop_tb
+        where
+            id=#{id}
+    </select>
+
+    <select id="findAllShop">
+        select
+            *
+        from
+            shop_tb;
+    </select>
+
+</mapper>

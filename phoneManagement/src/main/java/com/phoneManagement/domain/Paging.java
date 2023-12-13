@@ -1,4 +1,4 @@
-package com.phoneManagement.domain.page;
+package com.phoneManagement.domain;
 
 import lombok.Data;
 

@@ -7,23 +7,23 @@
   <!--/*@thymesVar id="signupForm" type="com.phoneManagement.form.SignupForm"*/-->
   <form th:object="${signupForm}" method="post">
     <div th:replace="~{/error/form_error :: form_error}"></div>
-    아이디 : <input type="text" th:field="*{id}" placeholder="아이디를 입력하세요."> <br>
-    비밀번호 : <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요."> <br>
-    비밀번호 확인 : <input type="password" th:field="*{confirm_password}" placeholder="비밀번호를 한 번 더 입력하세요."> <br>
-    역할 :
-    <select th:field="*{staff_role}">
-      <option th:each="type : ${T(com.phoneManagement.enums.StaffRole).values()}"
-              th:value="${type}" th:text="${type}"></option>
-    </select><br>
-    이름 : <input type="text" th:field="*{name}" placeholder="이름을 입력하세요."> <br>
-    성별 :
-    <select th:field="*{gender}">
-      <option th:each="type : ${T(com.phoneManagement.enums.Gender).values()}"
-              th:value="${type}" th:text="${type}"></option>
-    </select><br>
-    이메일 : <input type="text" th:field="*{email}" placeholder="이메일을 입력하세요."> <br>
-    생년월일 : <input type="text" th:field="*{birth_date}" placeholder="생년월일을 입력하세요."> <br>
-    핸드폰 번호 : <input type="text" th:field="*{phone_number}" placeholder="핸드폰 번호를 입력하세요."> <br>
+    아이디 : <input type="text" class="form-control" th:field="*{id}" placeholder="enter"> <br>
+    비밀번호 : <input type="password" class="form-control" th:field="*{password}" placeholder="enter"> <br>
+    비밀번호 확인 : <input type="password" class="form-control" th:field="*{confirm_password}" placeholder="enter"> <br>
+    역할 : <select class="form-select" th:field="*{role}">
+    <option th:each="type : ${T(com.phoneManagement.enums.UserRole).values()}"
+            th:value="${type}" th:text="${type}"></option>
+  </select><br>
+    이름 : <input type="text" class="form-control" th:field="*{name}" placeholder="enter"> <br>
+    이메일 : <input type="text" class="form-control" th:field="*{email}" placeholder="enter"> <br>
+    핸드폰 번호 : <input type="text" class="form-control" th:field="*{phone_number}" placeholder="enter"> <br>
+
+    사업자등록번호 : <input type="text" class="form-control" th:field="*{business_registration_number}" placeholder="enter"> <br>
+    사업자명 : <input type="text" class="form-control" th:field="*{businessman_name}" placeholder="enter"> <br>
+
+    매장이름 : <input type="text" class="form-control" th:field="*{shop_name}" placeholder="enter"> <br>
+    매장주소 : <input type="text" class="form-control" th:field="*{shop_addr}" placeholder="enter"> <br>
+    매장 연락처 : <input type="text" class="form-control" th:field="*{shop_contact_number}" placeholder="enter"> <br>
 
     <button type="submit" class="btn btn-primary">SIGN UP</button>
   </form>

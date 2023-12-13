@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phoneManagement.mapper.AdminMapper">
+    <select id="search" parameterType="com.phoneManagement.dto.AdminDTO">
+        select
+            *
+        from
+            tb_admin
+        where
+        <if test='admin_id != null and !admin_id.equals("")'>
+            admin_id=#{admin_id} and
+        </if>
+        <if test='admin_pwd != null and !admin_pwd.equals("")'>
+            admin_pwd=#{admin_pwd} and
+        </if>
+        <if test='admin_email != null and !admin_email.equals("")'>
+            admin_email=#{admin_email} and
+        </if>
+        <if test='admin_nm != null and !admin_nm.equals("")'>
+            admin_nm=#{admin_nm} and
+        </if>
+        <if test='admin_ph_no != null and !admin_ph_no.equals("")'>
+            admin_ph_no=#{admin_ph_no} and
+        </if>
+            1 = 1
+        <if test='search_column != null and !search_column.equals("")'>
+            and ${search_column} like '%${search_keyword}%'
+        </if>
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="select">
+        select
+            *
+        from
+            tb_admin
+        where
+            admin_id=#{admin_id}
+    </select>
+
+    <select id="selectAll">
+        select
+            *
+        from
+            tb_admin;
+    </select>
+
+    <insert id="insert" parameterType="com.phoneManagement.dto.AdminDTO">
+        insert into
+            tb_admin
+        (admin_id,
+         admin_pwd,
+         admin_nm,
+         admin_email,
+         admin_ph_no)
+        values
+            (#{admin_id},#{admin_pwd},#{admin_nm},#{admin_email},#{admin_ph_no})
+    </insert>
+
+    <update id="update" parameterType="com.phoneManagement.dto.AdminDTO">
+        update
+            tb_admin
+        set
+            admin_pwd=#{admin_pwd},
+            admin_email=#{admin_email},
+            admin_nm=#{admin_nm},
+            admin_ph_no=#{admin_ph_no}
+        where
+            admin_id=#{admin_id}
+    </update>
+
+    <delete id="delete" parameterType="com.phoneManagement.dto.AdminDTO">
+        delete from
+                   tb_admin
+               where
+                   admin_id=#{admin_id}
+    </delete>
+
+</mapper>
