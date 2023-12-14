@@ -18,7 +18,6 @@ public class EnumPatternValidator implements ConstraintValidator<ValidEnum, Enum
 	@Override
 	public boolean isValid(Enum value, ConstraintValidatorContext constraintValidatorContext) {
 		Enum<?>[] enumValues = this.annotation.enumClass().getEnumConstants();
-		System.out.println("isValid");
 		if(enumValues != null){
 			for(Enum<?> enumValue : enumValues){
 				if(value == enumValue){

@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerService implements UserDetailsService, DefaultCRUDService<Customer, CustomerDTO> {
 	private final CustomerMapper customerMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String cust_id) throws UsernameNotFoundException {
@@ -34,26 +36,27 @@ public class CustomerService implements UserDetailsService, DefaultCRUDService<C
 	}
 
 	@Override
-	public int insert(CustomerDTO employeeDTO){
-		return customerMapper.insert(employeeDTO);
+	public int insert(CustomerDTO customerDTO){
+		customerDTO.setPwd(passwordEncoder.encode(customerDTO.getPwd()));
+		return customerMapper.insert(customerDTO);
 	}
 
 	@Override
-	public int update(CustomerDTO employeeDTO){
+	public int update(CustomerDTO customerDTO){
 		int result=0;
-		String pwd = customerMapper.select(employeeDTO.getCust_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(employeeDTO.getCust_pwd())){
-			result = customerMapper.update(employeeDTO);
+		String pwd = customerMapper.select(customerDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(customerDTO.getPwd())){
+			result = customerMapper.update(customerDTO);
 		}
 		return result;
 	}
 
 	@Override
-	public int delete(CustomerDTO employeeDTO){
+	public int delete(CustomerDTO customerDTO){
 		int result=0;
-		String pwd = customerMapper.select(employeeDTO.getCust_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(employeeDTO.getCust_pwd())){
-			result = customerMapper.delete(employeeDTO);
+		String pwd = customerMapper.select(customerDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(customerDTO.getPwd())){
+			result = customerMapper.delete(customerDTO);
 		}
 		return result;
 	}
@@ -61,6 +64,7 @@ public class CustomerService implements UserDetailsService, DefaultCRUDService<C
 	public Customer select(String id){
 		return customerMapper.select(id);
 	}
+
 
 	@Override
 	public List<Customer> selectAll() {

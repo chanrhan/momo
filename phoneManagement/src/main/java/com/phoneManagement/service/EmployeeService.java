@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService implements UserDetailsService, DefaultCRUDService<Employee, EmployeeDTO> {
 	private final EmployeeMapper employeeMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String emp_id) throws UsernameNotFoundException {
@@ -39,14 +41,15 @@ public class EmployeeService implements UserDetailsService, DefaultCRUDService<E
 
 	@Override
 	public int insert(EmployeeDTO employeeDTO){
+		employeeDTO.setPwd(passwordEncoder.encode(employeeDTO.getPwd()));
 		return employeeMapper.insert(employeeDTO);
 	}
 
 	@Override
 	public int update(EmployeeDTO employeeDTO){
 		int result=0;
-		String pwd = employeeMapper.select(employeeDTO.getEmp_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(employeeDTO.getEmp_pwd())){
+		String pwd = employeeMapper.select(employeeDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(employeeDTO.getPwd())){
 			result = employeeMapper.update(employeeDTO);
 		}
 		return result;
@@ -55,8 +58,8 @@ public class EmployeeService implements UserDetailsService, DefaultCRUDService<E
 	@Override
 	public int delete(EmployeeDTO employeeDTO){
 		int result=0;
-		String pwd = employeeMapper.select(employeeDTO.getEmp_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(employeeDTO.getEmp_pwd())){
+		String pwd = employeeMapper.select(employeeDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(employeeDTO.getPwd())){
 			result = employeeMapper.delete(employeeDTO);
 		}
 		return result;

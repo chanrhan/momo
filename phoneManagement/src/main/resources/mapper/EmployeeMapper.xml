@@ -2,27 +2,27 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.AdminMapper">
-    <select id="search" parameterType="com.phoneManagement.dto.AdminDTO">
+<mapper namespace="com.phoneManagement.mapper.EmployeeMapper">
+    <select id="search" parameterType="com.phoneManagement.dto.EmployeeDTO">
         select
             *
         from
-            tb_admin
+            tb_employee
         where
         <if test='id != null and !id.equals("")'>
-            admin_id=#{id} and
+            emp_id=#{id} and
         </if>
         <if test='pwd != null and !pwd.equals("")'>
-            admin_pwd=#{pwd} and
+            emp_pwd=#{pwd} and
         </if>
         <if test='email != null and !email.equals("")'>
-            admin_email=#{email} and
+            emp_email=#{email} and
         </if>
         <if test='name != null and !name.equals("")'>
-            admin_nm=#{name} and
+            emp_nm=#{name} and
         </if>
         <if test='phNo != null and !phNo.equals("")'>
-            admin_ph_no=#{phoneNo} and
+            emp_ph_no=#{phoneNo} and
         </if>
             1 = 1
         <if test='targetColumn != null and !targetColumn.equals("")'>
@@ -42,47 +42,49 @@
         select
             *
         from
-            tb_admin
+            tb_employee
         where
-            admin_id=#{id}
+            emp_id=#{id}
     </select>
 
     <select id="selectAll">
         select
             *
         from
-            tb_admin;
+            tb_employee;
     </select>
 
-    <insert id="insert" parameterType="com.phoneManagement.dto.AdminDTO">
-        insert into
-            tb_admin
-            (admin_id,
-             admin_pwd,
-             admin_nm,
-             admin_email,
-             admin_ph_no)
-        values
-            (#{id},#{pwd},#{name},#{email},#{phoneNo})
+    <insert id="insert" parameterType="com.phoneManagement.dto.EmployeeDTO">
+        insert into tb_employee
+        (emp_id,
+         emp_pwd,
+         emp_email,
+         emp_nm,
+         emp_ph_no,
+         role,
+         shop_cd)
+        values (#{id}, #{pwd}, #{email}, #{name},#{phoneNo},#{role},#{shopCode})
     </insert>
 
-    <update id="update" parameterType="com.phoneManagement.dto.AdminDTO">
+    <update id="update" parameterType="com.phoneManagement.dto.EmployeeDTO">
         update
-            tb_admin
+            tb_employee
         set
-            admin_pwd=#{pwd},
-            admin_nm=#{name},
-            admin_email=#{email},
-            admin_ph_no=#{phoneNo}
+            emp_pwd=#{pwd},
+            emp_email=#{email},
+            emp_nm=#{name},
+            emp_ph_no=#{phoneNo},
+            role=#{role},
+            shop_cd=#{shopCode}
         where
-            admin_id=#{id}
+            emp_id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.phoneManagement.dto.AdminDTO">
+    <delete id="delete" parameterType="com.phoneManagement.dto.EmployeeDTO">
         delete from
-                   tb_admin
+            tb_employee
                where
-                   admin_id=#{id}
+                   emp_id=#{id}
     </delete>
 
 </mapper>

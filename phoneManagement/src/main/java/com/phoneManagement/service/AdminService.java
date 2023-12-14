@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminService implements UserDetailsService, DefaultCRUDService<Admin, AdminDTO> {
 	private final AdminMapper adminMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	public List<Admin> search(AdminDTO adminDTO){
 		return adminMapper.search(adminDTO);
@@ -39,14 +41,15 @@ public class AdminService implements UserDetailsService, DefaultCRUDService<Admi
 
 	@Override
 	public int insert(AdminDTO adminDTO){
+		adminDTO.setPwd(passwordEncoder.encode(adminDTO.getPwd()));
 		return adminMapper.insert(adminDTO);
 	}
 
 	@Override
 	public int update(AdminDTO adminDTO){
 		int result=0;
-		String pwd = adminMapper.select(adminDTO.getAdmin_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(adminDTO.getAdmin_pwd())){
+		String pwd = adminMapper.select(adminDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(adminDTO.getPwd())){
 			result = adminMapper.update(adminDTO);
 		}
 		return result;
@@ -55,16 +58,19 @@ public class AdminService implements UserDetailsService, DefaultCRUDService<Admi
 	@Override
 	public int delete(AdminDTO adminDTO){
 		int result=0;
-		String pwd = adminMapper.select(adminDTO.getAdmin_id()).getPassword();
-		if(!pwd.equals("") && pwd.equals(adminDTO.getAdmin_pwd())){
+		String pwd = adminMapper.select(adminDTO.getId()).getPassword();
+		if(!pwd.equals("") && pwd.equals(adminDTO.getPwd())){
 			result = adminMapper.delete(adminDTO);
 		}
 		return result;
 	}
 
-
 	public Admin select(AdminDTO adminDTO){
-		return adminMapper.select(adminDTO.getAdmin_id());
+		return adminMapper.select(adminDTO.getId());
+	}
+
+	public Admin select(String id){
+		return adminMapper.select(id);
 	}
 
 	@Override

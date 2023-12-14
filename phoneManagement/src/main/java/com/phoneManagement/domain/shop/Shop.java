@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Shop {
-	private String shop_cd;
-	private String shop_nm;
-	private String shop_addr;
-	private String shop_ph_no;
-	private String bisregi_no;
+	private String code;
+	private String name;
+	private String addr;
+	private String phNo;
+	private String bisregiNo;
 }

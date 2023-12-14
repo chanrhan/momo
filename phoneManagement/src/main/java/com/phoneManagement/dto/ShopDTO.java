@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ShopDTO extends AbstractQueryDTO{
-	public String shop_cd;
-	public String shop_nm;
-	public String shop_addr;
-	public String shop_ph_no;
-	public String bisregi_no;
+	public String code;
+	public String name;
+	public String addr;
+	public String phNo;
+	public String bisregiNo;
 
 }

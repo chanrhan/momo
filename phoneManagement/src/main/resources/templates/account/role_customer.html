@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<!--/*@thymesVar id="formData" type="com.phoneManagement.form.SignupForm"*/-->
+<div layout:fragment="content" >
+    <form th:action="@{/account/role/submit}" method="post">
+        <input type="hidden" th:field="${formData.id}">
+        <input type="hidden" th:field="${formData.pwd}">
+        <input type="hidden" th:field="${formData.name}">
+        <input type="hidden" th:field="${formData.email}">
+        <input type="hidden" th:field="${formData.phNo}">
+        <input type="hidden" th:field="${formData.role}">
+        <div class="form-label">
+            매장이름 : <input type="text" class="form-control" th:field="${formData.shopName}"> <br>
+            매장주소 : <input type="text" class="form-control" th:field="${formData.shopAddr}"> <br>
+            매장 연락처 : <input type="text" class="form-control" th:field="${formData.shopPhNo}"> <br>
+        </div>
+        <button type="submit" class="btn-primary">완료</button>
+    </form>
+
+
+</div>
+</html>

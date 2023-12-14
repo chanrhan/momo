@@ -11,18 +11,18 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Employee extends AbstractUserDomain {
-	private String shop_cd; // 매장 코드
+	private String shopCode; // 매장 코드
 
-	private String emp_id; // 아이디
-	private String emp_pwd; // 비밀번호
+	private String id; // 아이디
+	private String pwd; // 비밀번호
 
-	private String emp_nm; // 실명
-	private String emp_email; // 이메일
-	private String emp_ph_no; // 전화번호
+	private String name; // 실명
+	private String email; // 이메일
+	private String phNo; // 전화번호
 
-	public Employee(String emp_id, String emp_pwd, List<GrantedAuthority> authorities) {
-		this.emp_id      = emp_id;
-		this.emp_pwd     = emp_pwd;
+	public Employee(String id, String pwd, List<GrantedAuthority> authorities) {
+		this.id          = id;
+		this.pwd         = pwd;
 		this.authorities = authorities;
 	}
 
@@ -33,12 +33,12 @@ public class Employee extends AbstractUserDomain {
 
 	@Override
 	public String getPassword() {
-		return emp_pwd;
+		return pwd;
 	}
 
 	@Override
 	public String getUsername() {
-		return emp_id;
+		return id;
 	}
 
 	@Override

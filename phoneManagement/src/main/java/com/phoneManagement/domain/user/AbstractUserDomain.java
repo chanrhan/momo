@@ -10,8 +10,8 @@ import java.util.List;
 
 @Data
 public abstract class AbstractUserDomain implements UserDetails {
-	protected UserRole role; // 역할
-	protected LocalDateTime signup_dt; // 가입일자
+	protected UserRole      role; // 역할
+	protected LocalDateTime signupDate; // 가입일자
 
 	protected List<GrantedAuthority> authorities;
 }

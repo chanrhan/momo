@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class Term {
-	private String term_cd;
-	private String term_content;
-	private LocalDateTime regi_date;
+	private String code;
+	private String content;
+	private LocalDateTime regiDate;
 }

@@ -2,27 +2,27 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.AdminMapper">
-    <select id="search" parameterType="com.phoneManagement.dto.AdminDTO">
+<mapper namespace="com.phoneManagement.mapper.CustomerMapper">
+    <select id="search" parameterType="com.phoneManagement.dto.CustomerDTO">
         select
             *
         from
-            tb_admin
+            tb_customer
         where
         <if test='id != null and !id.equals("")'>
-            admin_id=#{id} and
+            cust_id=#{id} and
         </if>
         <if test='pwd != null and !pwd.equals("")'>
-            admin_pwd=#{pwd} and
+            cust_pwd=#{pwd} and
         </if>
         <if test='email != null and !email.equals("")'>
-            admin_email=#{email} and
+            cust_email=#{email} and
         </if>
         <if test='name != null and !name.equals("")'>
-            admin_nm=#{name} and
+            cust_nm=#{name} and
         </if>
         <if test='phNo != null and !phNo.equals("")'>
-            admin_ph_no=#{phoneNo} and
+            cust_ph_no=#{phoneNo} and
         </if>
             1 = 1
         <if test='targetColumn != null and !targetColumn.equals("")'>
@@ -42,47 +42,47 @@
         select
             *
         from
-            tb_admin
+            tb_customer
         where
-            admin_id=#{id}
+            cust_id=#{id}
     </select>
 
     <select id="selectAll">
         select
             *
         from
-            tb_admin;
+            tb_customer;
     </select>
 
-    <insert id="insert" parameterType="com.phoneManagement.dto.AdminDTO">
+    <insert id="insert" parameterType="com.phoneManagement.dto.CustomerDTO">
         insert into
-            tb_admin
-            (admin_id,
-             admin_pwd,
-             admin_nm,
-             admin_email,
-             admin_ph_no)
+            tb_customer
+        (cust_id,
+         cust_pwd,
+         cust_nm,
+         cust_email,
+         cust_ph_no)
         values
             (#{id},#{pwd},#{name},#{email},#{phoneNo})
     </insert>
 
-    <update id="update" parameterType="com.phoneManagement.dto.AdminDTO">
+    <update id="update" parameterType="com.phoneManagement.dto.CustomerDTO">
         update
-            tb_admin
+            tb_customer
         set
-            admin_pwd=#{pwd},
-            admin_nm=#{name},
-            admin_email=#{email},
-            admin_ph_no=#{phoneNo}
+            cust_pwd=#{pwd},
+            cust_nm=#{name},
+            cust_email=#{email},
+            cust_ph_no=#{phoneNo}
         where
-            admin_id=#{id}
+            cust_id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.phoneManagement.dto.AdminDTO">
+    <delete id="delete" parameterType="com.phoneManagement.dto.CustomerDTO">
         delete from
-                   tb_admin
+            tb_customer
                where
-                   admin_id=#{id}
+                   cust_id=#{id}
     </delete>
 
 </mapper>

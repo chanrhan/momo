@@ -6,10 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <title>Phone Management</title>
 </head>
 <header th:replace="~{/layout/header :: header}"></header>
 <body>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <!--    <nav layout:replace="~{/layout/nav :: navbar}"></nav>-->
     <th:block layout:fragment="content"></th:block>
 </body>

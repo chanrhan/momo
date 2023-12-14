@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class TermDTO extends AbstractQueryDTO{
-	public String        term_cd;
-	public String        term_content;
-	public LocalDateTime regi_date;
+	public String        code;
+	public String        content;
+	public LocalDateTime regiDate;
 }

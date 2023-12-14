@@ -10,14 +10,22 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class EmployeeDTO extends AbstractQueryDTO{
-	public String        shop_cd; // 매장 코드
+public class EmployeeDTO extends AbstractQueryDTO {
+	public String        shopCode; // 매장 코드
 	public UserRole      role; // 역할
-	public String        emp_id; // 아이디
-	public String        emp_pwd; // 비밀번호
-	public String        emp_cfrm_pwd; // 확인용 비밀번호
-	public String        emp_nm; // 실명
-	public String        emp_email; // 이메일
-	public String        emp_ph_no; // 전화번호
-	public LocalDateTime regi_dt; // 가입일자
+	public String        id; // 아이디
+	public String        pwd; // 비밀번호
+	public String        name; // 실명
+	public String        email; // 이메일
+	public String        phNo; // 전화번호
+	public LocalDateTime regiDate; // 가입일자
+
+	public EmployeeDTO(UserRole role, String id, String pwd, String name, String email, String phNo) {
+		this.role  = role;
+		this.id    = id;
+		this.pwd   = pwd;
+		this.name  = name;
+		this.email = email;
+		this.phNo  = phNo;
+	}
 }
