@@ -2,45 +2,83 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.ShopMapper">
+<mapper namespace="com.momo.mapper.ShopMapper">
+    <select id="search" parameterType="com.momo.dto.ShopDTO">
+        select
+            *
+        from
+            tb_shop
+        where
+        <if test='code != null and !code.equals("")'>
+            shop_cd=#{code} and
+        </if>
+        <if test='name != null and !name.equals("")'>
+            shop_nm=#{name} and
+        </if>
+        <if test='addr != null and !addr.equals("")'>
+            shop_addr=#{addr} and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            shop_tel=#{phNo} and
+        </if>
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no=#{bNo} and
+        </if>
+            1 = 1
+        <if test='targetColumn != null and !targetColumn.equals("")'>
+            and ${targetColumn} like '%${keyword}%'
+        </if>
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
 
-    <insert id="addShop" parameterType="com.phoneManagement.dto.ShopDTO">
+    <select id="select">
+        select
+            *
+        from
+            tb_shop
+        where
+            shop_cd=#{code}
+    </select>
+
+    <select id="selectAll">
+        select
+            *
+        from
+            tb_shop;
+    </select>
+
+    <insert id="insert" parameterType="com.momo.dto.ShopDTO">
         insert into
-            shop_tb
-        (id, name, addr, contact_number, business_registration_number)
+            tb_shop
+            (shop_cd, shop_nm, shop_addr, shop_tel, b_no)
         values
-            (#{id},#{name},#{addr},#{contact_number},#{business_registration_number})
+            (#{code},#{name},#{addr},#{tel},#{bNo})
     </insert>
 
-    <update id="updateShop" parameterType="com.phoneManagement.dto.ShopDTO">
+    <update id="update" parameterType="com.momo.dto.ShopDTO">
         update
-            shop_tb
+            tb_shop
         set
-            name=#{name},addr=#{addr},contact_number=#{contact_number},business_registration_number=#{business_registration_number}
-        where id=#{id}
+            shop_nm=#{name},
+            shop_tel=#{tel},
+            shop_addr=#{addr},
+            b_no=#{bNo}
+        where
+            shop_cd=#{id}
     </update>
 
-    <delete id="deleteShop" parameterType="com.phoneManagement.dto.ShopDTO">
+    <delete id="delete" parameterType="com.momo.dto.ShopDTO">
         delete from
-                   shop_tb
+            tb_shop
                where
-                   id=#{id}
+                   shop_cd=#{code}
     </delete>
-
-    <select id="findShopById">
-        select
-            *
-        from
-            shop_tb
-        where
-            id=#{id}
-    </select>
-
-    <select id="findAllShop">
-        select
-            *
-        from
-            shop_tb;
-    </select>
 
 </mapper>

@@ -9,13 +9,14 @@
             <div class="navbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/account/login}">Login</a>
-<!--                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">Login</a>-->
-<!--                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Logout</a>-->
+                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/account/login}">로그인</a>
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
                     </li>
-<!--                    <li>-->
-<!--                        <p class="label" sec:authorize="isAuthenticated()" th:text="${#authentication.getPrincipal().getUsername()}"></p>-->
-<!--                    </li>-->
+                    <li>
+                        <a class="nav-link" sec:authorize="isAuthenticated()"
+                           th:text="${#authentication.getPrincipal().getUsername()}"
+                            th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}"></a>
+                    </li>
                 </ul>
             </div>
         </div>

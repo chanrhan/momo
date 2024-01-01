@@ -1,5 +1,11 @@
+import * as userapi from "./api/userapi.js";
+
 let header = $("meta[name='_csrf_header']").attr('content');
 let token = $("meta[name='_csrf']").attr('content');
+
+function foo(){
+    console.log("test success");
+}
 
 function test_ajax_get(){
     $.ajax({

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.CustomerMapper">
-    <select id="search" parameterType="com.phoneManagement.dto.CustomerDTO">
+<mapper namespace="com.momo.mapper.CustomerMapper">
+    <select id="search" parameterType="com.momo.dto.CustomerDTO">
         select
             *
         from
@@ -21,8 +21,8 @@
         <if test='name != null and !name.equals("")'>
             cust_nm=#{name} and
         </if>
-        <if test='phNo != null and !phNo.equals("")'>
-            cust_ph_no=#{phoneNo} and
+        <if test='tel != null and !tel.equals("")'>
+            cust_tel=#{tel} and
         </if>
             1 = 1
         <if test='targetColumn != null and !targetColumn.equals("")'>
@@ -38,7 +38,7 @@
         </if>
     </select>
 
-    <select id="select">
+    <select id="selectById">
         select
             *
         from
@@ -54,31 +54,40 @@
             tb_customer;
     </select>
 
-    <insert id="insert" parameterType="com.phoneManagement.dto.CustomerDTO">
+    <insert id="insert" parameterType="com.momo.dto.CustomerDTO">
         insert into
             tb_customer
         (cust_id,
          cust_pwd,
          cust_nm,
          cust_email,
-         cust_ph_no)
+         cust_tel)
         values
-            (#{id},#{pwd},#{name},#{email},#{phoneNo})
+            (#{id},#{pwd},#{name},#{email},#{tel})
     </insert>
 
-    <update id="update" parameterType="com.phoneManagement.dto.CustomerDTO">
+    <update id="update" parameterType="com.momo.dto.CustomerDTO">
         update
             tb_customer
         set
-            cust_pwd=#{pwd},
             cust_nm=#{name},
             cust_email=#{email},
-            cust_ph_no=#{phoneNo}
+            cust_tel=#{tel}
         where
             cust_id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.phoneManagement.dto.CustomerDTO">
+    <update id="updatePassword" parameterType="com.momo.dto.CustomerDTO">
+        update
+            tb_customer
+        set
+            cust_pwd=#{updatePwd}
+        where
+            cust_id=#{id} and
+            cust_tel=#{pwd}
+    </update>
+
+    <delete id="delete" parameterType="com.momo.dto.CustomerDTO">
         delete from
             tb_customer
                where

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>phoneManagement</artifactId>
+	<artifactId>Momo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>phoneManagement</name>
-	<description>Demo project for Phone Management</description>
+	<name>Momo</name>
+	<description>Demo project for Momo</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -89,6 +89,23 @@
 			<scope>test</scope>
 		</dependency>
 
+<!--		jaxb-->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.activation</groupId>
+			<artifactId>jakarta.activation-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+
 		<!--		jquery-->
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -117,10 +134,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+        </dependency>
 
 
-
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

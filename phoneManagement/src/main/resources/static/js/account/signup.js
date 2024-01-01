@@ -1,42 +1,185 @@
+// import * as openapi from "../api/openapi.js";
+// import * as userapi from "../api/userapi.js";
 
-let checkId = false; // 아이디 중복체크 여부
-let checkEmail = true; // 이메일 중복체크 여부
+let isIdChecked = false; // 아이디 중복체크 여부
+let isPasswordChecked = false;
+let isPasswordMatched = false; // 비밀번호 일치 여부
+let isEmailChecked = false; // 이메일 형식 및 중복체크 여부
+let isNameChecked = false; // 이름 형식 일치 여부
+let isPhoneNumberChecked = false; // 전화번호 형식 일치 여부
+let isPhoneAuthChecked =false; // 휴대폰 본인인증 여부
 
-let idElement = document.getElementById("id");
+let authNo = 0;
 
-// ID 입력칸이 수정되면 아이디 중복체크 여부를 무조건 false로 변경 
-// document.getElementById("id").oninput = function (){
-//     checkId = false;
-// }
+// 아이디 형식 검사
+function validateId(){
+    var id = $('#id').val();
+    $('#error_id').text("");
+    isIdChecked = false;
 
-function validId(){
+    if(id.length < 5 || id.length > 33){
+        $('#error_id').text("아이디는 5~32자리 사이여야 합니다.");
+        $('#btn_checkDupId').prop('disabled',true);
+        return;
+    }
 
+    if(!scRegex.test(id) || !koreanRegex.test(id)){
+        $('#error_id').text("아이디에 특수문자,한글은 포함될 수 없습니다.");
+        $('#btn_checkDupId').prop('disabled',true);
+        return;
+    }
+
+    $('#btn_checkDupId').prop('disabled',false);
+}
+
+// 비밀번호 형식 검사
+function validatePassword(){
+    var pwd = $('#pwd').val();
+    $('#confirm_pwd').val("");
+    $('#error_pwd').text("");
+    $('#error_confirm_pwd').val("");
+    isPasswordMatched = false;
+    isPasswordChecked = false;
+
+    if(pwd.length < 8 || pwd.length > 33){
+        $('#error_pwd').text("비밀번호는 8~32자리 사이여야 합니다.");
+        return;
+    }
+
+    if(!scRegex.test(pwd)){
+        $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
+        return;
+    }
+
+    $('#error_pwd').text("");
+    isPasswordChecked = true;
+}
+
+// 비밀번호와 재확인 비밀번호가 일치하는지 검사
+function checkPasswordsMatched(){
+    var pwd = $('#pwd').val();
+    var comfirm_pwd = $('#confirm_pwd').val();
+
+    if(pwd !== "" && comfirm_pwd !== "" && pwd === comfirm_pwd){
+        $('#error_confirm_pwd').text("비밀번호가 일치합니다.");
+        isPasswordMatched = true;
+    }else {
+        $('#error_confirm_pwd').text("비밀번호가 일치하지 않습니다.");
+        isPasswordMatched = false;
+    }
 }
 
 // 아이디 중복체크
 function checkDupId(){
-    $.ajax({
-        url: "/account/dup/id?id="+$('#id').val(),
-        type: "get",
-        success: function (result){
-            if(result){
-                checkId = true;
-                alert("사용 가능한 아이디입니다");
-            }else{
-                checkId = false;
-                alert("이미 존재하는 아이디입니다");
-            }
-        }
-    })
+    var result = checkIdDuplication($('#id').val());
+    console.log(result);
+    if(result){
+        isIdChecked = true;
+        alert("사용 가능한 아이디입니다");
+    }else{
+        isIdChecked = false;
+        alert("이미 존재하는 아이디입니다");
+    }
 }
 
-// 회원가입을 위한 전처리가 모두 완료되었는지 검사
-function valid(){
+// 이름 형식 검사
+function validateName(){
+    var name = $('#name').val();
+    isNameChecked = false;
+
+    if(!scRegex.test(name)){
+        $('#error_name').text("이름에 특수문자는 포함될 수 없습니다");
+        return;
+    }
+
+    $('#error_name').text("");
+    isNameChecked = true;
+}
+
+// 이메일 형식 검사
+function validateEmail(){
+    var email = $('#email').val();
+    isEmailChecked = false;
+
+    if(!emailRegex.test(email)){
+        $('#error_email').text("올바른 이메일 형식이어야 합니다.");
+        return;
+    }
+    $('#error_email').text("");
+    isEmailChecked = true;
+}
+
+// 전화번호 형식 검사
+function validateTel(){
+    var phNo = $('#tel').val();
+    var btn_sendAuth = $('#btn_sendAuth');
+    isPhoneNumberChecked = false;
+
+    if(!telRegex.test(phNo)){
+        btn_sendAuth.prop('disabled',true);
+        $('#error_tel').text("올바른 전화번호 형식이어야 합니다. ('-' 제외)");
+        return;
+    }
+
+    btn_sendAuth.prop('disabled',false);
+    $('#error_tel').text("");
+    isPhoneNumberChecked = true;
+}
+
+// 인증번호 전송
+function sendAuthenticationNumber(){
+    authNo = 123;
+    $('#area_auth').removeClass("d-none");
+    // 곧 대체
+    // $.ajax({
+    //     url: '/sms/auth?tel='+$('#phNo').val(),
+    //     type: 'get',
+    //     dataType: 'json',
+    //     contentType: 'application/json',
+    //     beforeSend: function (xhr){
+    //         xhr.setRequestHeader(header, token);
+    //     },
+    //     success: function (result){
+    //         if(result > 0){
+    //             console.log(result);
+    //             authNo = result;
+    //             $('#area_auth').removeClass("d-none");
+    //         }
+    //     }
+    // })
+}
+
+// 인증번호 검사
+function checkAuthenticationNumber(){
+    var input_authNo = $('#authNo').val();
+
+    console.log(parseInt(input_authNo));
+    console.log(authNo);
+
+    if(authNo === 0 || parseInt(input_authNo) !== authNo){
+        isPhoneNumberChecked = false;
+        alert("인증번호가 일치하지 않습니다");
+        return;
+    }
+
+    alert("인증되었습니다.");
+    isPhoneNumberChecked = true;
+}
+
+// 회원가입을 위한 기본정보 입력이 모두 완료되었는지 검사
+function signupStep1(){
     // 아이디, 이메일 중복체크 여부 검사
-    if(checkId && checkEmail){
+    if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isPhoneNumberChecked){
+        sessionStorage.setItem("id",$('#id').val());
+        sessionStorage.setItem("pwd",$('#pwd').val());
+        sessionStorage.setItem("name",$('#name').val());
+        sessionStorage.setItem("email",$('#email').val());
+        sessionStorage.setItem("phNo",$('#phNo').val());
         return true;
     }else{
-        alert("아이디와 이메일 중복 체크를 해야 합니다!");
+        alert("올바르지 않은 입력 형식이 있습니다!");
         return false;
     }
 }
+
+

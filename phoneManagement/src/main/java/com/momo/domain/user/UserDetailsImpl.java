@@ -1,0 +1,50 @@
+package com.momo.domain.user;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Delegate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+public class UserDetailsImpl implements UserDetails {
+	private String username; // 아이디
+	private String password; // 비밀번호
+
+	@Delegate
+	private List<GrantedAuthority> authorities = new ArrayList<>();
+
+	@Builder
+	public UserDetailsImpl(String username, String password, String role){
+		this.username=username;
+		this.password=password;
+		System.out.println("role"+role);
+		this.authorities.add(new SimpleGrantedAuthority(role));
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+}

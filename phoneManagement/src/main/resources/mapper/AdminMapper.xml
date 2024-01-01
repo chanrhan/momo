@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.AdminMapper">
-    <select id="search" parameterType="com.phoneManagement.dto.AdminDTO">
+<mapper namespace="com.momo.mapper.AdminMapper">
+    <select id="search" parameterType="com.momo.dto.AdminDTO">
         select
             *
         from
@@ -21,8 +21,8 @@
         <if test='name != null and !name.equals("")'>
             admin_nm=#{name} and
         </if>
-        <if test='phNo != null and !phNo.equals("")'>
-            admin_ph_no=#{phoneNo} and
+        <if test='tel != null and !tel.equals("")'>
+            admin_tel=#{tel} and
         </if>
             1 = 1
         <if test='targetColumn != null and !targetColumn.equals("")'>
@@ -38,7 +38,7 @@
         </if>
     </select>
 
-    <select id="select">
+    <select id="selectById" resultType="com.momo.vo.AdminVO">
         select
             *
         from
@@ -54,31 +54,40 @@
             tb_admin;
     </select>
 
-    <insert id="insert" parameterType="com.phoneManagement.dto.AdminDTO">
+    <insert id="insert" parameterType="com.momo.dto.AdminDTO">
         insert into
             tb_admin
             (admin_id,
              admin_pwd,
              admin_nm,
              admin_email,
-             admin_ph_no)
+             admin_tel)
         values
-            (#{id},#{pwd},#{name},#{email},#{phoneNo})
+            (#{id},#{pwd},#{name},#{email},#{tel})
     </insert>
 
-    <update id="update" parameterType="com.phoneManagement.dto.AdminDTO">
+    <update id="update" parameterType="com.momo.dto.AdminDTO">
         update
             tb_admin
         set
-            admin_pwd=#{pwd},
             admin_nm=#{name},
             admin_email=#{email},
-            admin_ph_no=#{phoneNo}
+            admin_tel=#{tel}
         where
             admin_id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.phoneManagement.dto.AdminDTO">
+    <update id="updatePassword" parameterType="com.momo.dto.AdminDTO">
+        update
+        tb_admin
+        set
+            admin_pwd=#{updatePwd}
+        where
+            admin_id=#{id} and
+            admin_pwd=#{pwd}
+    </update>
+
+    <delete id="delete" parameterType="com.momo.dto.AdminDTO">
         delete from
                    tb_admin
                where

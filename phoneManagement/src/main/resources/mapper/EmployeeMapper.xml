@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.phoneManagement.mapper.EmployeeMapper">
-    <select id="search" parameterType="com.phoneManagement.dto.EmployeeDTO">
+<mapper namespace="com.momo.mapper.EmployeeMapper">
+    <select id="search" parameterType="com.momo.dto.EmployeeDTO">
         select
             *
         from
@@ -21,8 +21,8 @@
         <if test='name != null and !name.equals("")'>
             emp_nm=#{name} and
         </if>
-        <if test='phNo != null and !phNo.equals("")'>
-            emp_ph_no=#{phoneNo} and
+        <if test='tel != null and !tel.equals("")'>
+            emp_tel=#{tel} and
         </if>
             1 = 1
         <if test='targetColumn != null and !targetColumn.equals("")'>
@@ -38,7 +38,7 @@
         </if>
     </select>
 
-    <select id="select">
+    <select id="selectById">
         select
             *
         from
@@ -54,33 +54,42 @@
             tb_employee;
     </select>
 
-    <insert id="insert" parameterType="com.phoneManagement.dto.EmployeeDTO">
+    <insert id="insert" parameterType="com.momo.dto.EmployeeDTO">
         insert into tb_employee
         (emp_id,
          emp_pwd,
          emp_email,
          emp_nm,
-         emp_ph_no,
+         emp_tel,
          role,
          shop_cd)
-        values (#{id}, #{pwd}, #{email}, #{name},#{phoneNo},#{role},#{shopCode})
+        values (#{id}, #{pwd}, #{email}, #{name},#{tel},#{role},#{shopCode})
     </insert>
 
-    <update id="update" parameterType="com.phoneManagement.dto.EmployeeDTO">
+    <update id="update" parameterType="com.momo.dto.EmployeeDTO">
         update
             tb_employee
         set
-            emp_pwd=#{pwd},
             emp_email=#{email},
             emp_nm=#{name},
-            emp_ph_no=#{phoneNo},
+            emp_tel=#{tel},
             role=#{role},
             shop_cd=#{shopCode}
         where
             emp_id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.phoneManagement.dto.EmployeeDTO">
+    <update id="updatePassword" parameterType="com.momo.dto.EmployeeDTO">
+        update
+            tb_employee
+        set
+            emp_pwd=#{updatePwd}
+        where
+            emp_id=#{id} and
+            emp_pwd=#{pwd}
+    </update>
+
+    <delete id="delete" parameterType="com.momo.dto.EmployeeDTO">
         delete from
             tb_employee
                where

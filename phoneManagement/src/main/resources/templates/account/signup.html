@@ -4,36 +4,47 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
-    <script src="/js/account/signup.js" th:inline="javascript"></script>
-    <!--/*@thymesVar id="signupForm" type="com.phoneManagement.form.SignupForm"*/-->
-  <form th:action="@{/account/signup}" th:object="${signupForm}" onsubmit="return valid()" method="post">
-<!--    <div th:replace="~{/error/form_error :: form_error}"></div>-->
-    <div class="form-label">
-      아이디 : <input type="text" class="form-control"
-                   th:classappend="${#fields.hasErrors('id')} ? 'fieldError'"
-                   th:field="*{id}">
-      <button type="button" class="btn-primary" id="btn_checkDupId" onclick="checkDupId()">아이디 중복체크</button>
-      <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
+
+  <form th:action="@{/account/role}" onsubmit="return signupStep1()" method="get">
+    <div class="form-label " id="area_id">
+      아이디 : <input type="text" class="form-control" oninput="validateId()" id="id">
+      <button type="button" class="btn-primary" id="btn_checkDupId" onclick="checkDupId()" disabled>아이디 중복체크</button><br>
+      <p class="fieldError" id="error_id"></p>
     </div>
-    <div class="form-label">
-      비밀번호 : <input type="password" class="form-control" th:field="*{pwd}">
-        <p th:if="${#fields.hasErrors('pwd')}" th:errors="*{pwd}"></p>
-      비밀번호 확인 : <input type="password" class="form-control" id="confirm_pwd"> <br>
+    <div class="form-label " id="area_pwd">
+      비밀번호 : <input type="password" class="form-control" oninput="validatePassword()" id="pwd">
+      <p class="fieldError" id="error_pwd"></p>
+      비밀번호 확인 : <input type="password" class="form-control" oninput="checkPasswordsMatched()" id="confirm_pwd">
+      <p class="fieldError" id="error_confirm_pwd"></p><br>
     </div>
-    <div class="form-label">
-      이름 : <input type="text" class="form-control" th:field="*{name}">
-        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    <div class="form-label " id="area_name">
+      이름 : <input type="text" class="form-control" oninput="validateName()" id="name">
+      <p class="fieldError" id="error_name"></p>
     </div>
-    <div class="form-label">
-      이메일 : <input type="text" class="form-control" th:field="*{email}">
-        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    <div class="form-label " id="area_email">
+      이메일 : <input type="text" class="form-control" oninput="validateEmail()" id="email">
+      <p class="fieldError" id="error_email"></p>
     </div>
-    <div class="form-label">
-      핸드폰 번호 : <input type="text" class="form-control" th:field="*{phNo}">
-        <p th:if="${#fields.hasErrors('phNo')}" th:errors="*{phNo}"></p>
+    <div class="form-label " id="area_tel">
+      핸드폰 번호 : <input type="text" class="form-control" oninput="validateTel()" id="tel">
+      <button class="btn btn-primary" type="button" id="btn_sendAuth" onclick="sendAuthenticationNumber()" disabled>인증번호 전송</button>
+      <button class="btn btn-primary" type="button" id="btn_resendAuth" onclick="sendAuthenticationNumber()" disabled>재전송</button>
+      <p class="fieldError" id="error_tel"></p>
+      <div class="form-label d-none" id="area_auth">
+        인증번호 입력 <input type="text" id="authNo" placeholder="인증번호를 입력해주세요.">
+        <button class="btn btn-primary" type="button" id="btn_confirm_auth" onclick="checkAuthenticationNumber()">확인</button>
+      </div>
+    </div>
+    <div class="form-label " id="area_term">
+      이용약관
+
     </div>
 
     <button type="submit" class="btn btn-primary">다음</button>
   </form>
+  <script src="/js/common/common.js"></script>
+  <script src="/js/api/openapi.js"></script>
+  <script src="/js/api/userapi.js"></script>
+  <script src="/js/account/signup.js"></script>
 </div>
 </html>
