@@ -11,6 +11,8 @@ let isPhoneAuthChecked =false; // 휴대폰 본인인증 여부
 
 let authNo = 0;
 
+
+
 // 아이디 형식 검사
 function validateId(){
     var id = $('#id').val();

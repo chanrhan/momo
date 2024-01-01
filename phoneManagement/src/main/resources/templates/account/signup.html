@@ -4,7 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
-
+  <script src="/js/api/openapi.js"></script>
+  <script src="/js/api/userapi.js"></script>
+  <script src="/js/account/signup.js"></script>
   <form th:action="@{/account/role}" onsubmit="return signupStep1()" method="get">
     <div class="form-label " id="area_id">
       아이디 : <input type="text" class="form-control" oninput="validateId()" id="id">
@@ -12,10 +14,17 @@
       <p class="fieldError" id="error_id"></p>
     </div>
     <div class="form-label " id="area_pwd">
-      비밀번호 : <input type="password" class="form-control" oninput="validatePassword()" id="pwd">
-      <p class="fieldError" id="error_pwd"></p>
-      비밀번호 확인 : <input type="password" class="form-control" oninput="checkPasswordsMatched()" id="confirm_pwd">
-      <p class="fieldError" id="error_confirm_pwd"></p><br>
+      <div class="pwd-toggle">
+        비밀번호 : <input type="password" class="form-control" oninput="validatePassword()" id="pwd">
+        <i class="fa fa-eye fa-lg">icon</i><br>
+        <p class="fieldError" id="error_pwd"></p>
+      </div>
+      <div class="pwd-toggle">
+        비밀번호 확인 : <input type="password" class="form-control" oninput="checkPasswordsMatched()" id="confirm_pwd">
+        <i class="fa fa-eye fa-lg">icon2</i><br>
+        <p class="fieldError" id="error_confirm_pwd"></p><br>
+      </div>
+
     </div>
     <div class="form-label " id="area_name">
       이름 : <input type="text" class="form-control" oninput="validateName()" id="name">
@@ -42,9 +51,5 @@
 
     <button type="submit" class="btn btn-primary">다음</button>
   </form>
-  <script src="/js/common/common.js"></script>
-  <script src="/js/api/openapi.js"></script>
-  <script src="/js/api/userapi.js"></script>
-  <script src="/js/account/signup.js"></script>
 </div>
 </html>

@@ -7,16 +7,24 @@ const koreanRegex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
 const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
-$(document).ready(function(){
-    $('.main i').on('click',function(){
-        $('input').toggleClass('active');
-        if($('input').hasClass('active')){
-            $(this).attr('class',"fa fa-eye-slash fa-lg")
-                .prev('input').attr('type',"text");
-        }else{
-            $(this).attr('class',"fa fa-eye fa-lg")
-                .prev('input').attr('type','password');
-        }
-    });
-});
+$(document).ready(function (){
+    var div_pwd_toggle = $('.pwd-toggle');
+    if(div_pwd_toggle === null){
+        return;
+    }
+    div_pwd_toggle.each(function (idx, div){
+        var eye = $(div).find('i');
+        var pwd = eye.prev('input');
+        eye.on('click',function (){
+            pwd.toggleClass('active');
+            if(pwd.hasClass('active')){
+                $(this).attr('class','fa fa-eye-slash fa-lg')
+                    .prev('input').attr('type','text');
+            }else{
+                $(this).attr('class','fa fa-eye fa-lg')
+                    .prev('input').attr('type','password');
+            }
+        });
+    })
 
+});
