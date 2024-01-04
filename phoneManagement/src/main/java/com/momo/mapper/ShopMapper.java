@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ShopMapper extends DefaultCRUDMapper<Shop, ShopDTO> {
 	public Shop select(String cd);
+	public Integer getMaxCode();
 }

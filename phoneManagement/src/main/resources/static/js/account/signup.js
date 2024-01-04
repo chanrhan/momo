@@ -11,7 +11,16 @@ let isPhoneAuthChecked =false; // 휴대폰 본인인증 여부
 
 let authNo = 0;
 
+let termString = "";
 
+$(document).ready(function (){
+    sessionStorage.removeItem("id");
+    sessionStorage.removeItem("pwd");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("tel");
+    sessionStorage.removeItem("termStr");
+})
 
 // 아이디 형식 검사
 function validateId(){
@@ -48,7 +57,7 @@ function validatePassword(){
         return;
     }
 
-    if(!scRegex.test(pwd)){
+    if(!pwdRegex.test(pwd)){
         $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
         return;
     }
@@ -168,15 +177,51 @@ function checkAuthenticationNumber(){
     isPhoneNumberChecked = true;
 }
 
+// 이용약관 체크
+function checkTerm(field){
+    $(field).toggleClass('checked');
+}
+
+function checkAllTerm(){
+    document.getElementsByName('icon_check').forEach(function (value, key, parent){
+       if(!$(value).hasClass('checked')){
+           $(value).addClass('checked');
+       }
+    });
+}
+
+// 이용약관 동의 체크 여부 확인
+function isRequiredTermChecked(){
+    var rst = true;
+    termString = "";
+    document.getElementsByName('term_field').forEach(function (value, index, array){
+        var icon = $(value).children('i');
+        var require = icon.attr('require');
+        var st = icon.hasClass('checked');
+
+        termString += (st) ? '1':'0';
+        if(require && !st){
+            rst = false;
+        }
+    })
+    return rst;
+}
+
 // 회원가입을 위한 기본정보 입력이 모두 완료되었는지 검사
 function signupStep1(){
+    if(!isRequiredTermChecked()){
+        alert("'필수' 이용약관에 모두 동의해야 합니다!");
+        return false;
+    }
     // 아이디, 이메일 중복체크 여부 검사
     if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isPhoneNumberChecked){
+        console.log(termString);
         sessionStorage.setItem("id",$('#id').val());
         sessionStorage.setItem("pwd",$('#pwd').val());
         sessionStorage.setItem("name",$('#name').val());
         sessionStorage.setItem("email",$('#email').val());
-        sessionStorage.setItem("phNo",$('#phNo').val());
+        sessionStorage.setItem("tel",$('#tel').val());
+        sessionStorage.setItem("termStr",termString);
         return true;
     }else{
         alert("올바르지 않은 입력 형식이 있습니다!");

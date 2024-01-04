@@ -9,7 +9,7 @@
         from
             tb_shop
         where
-        <if test='code != null and !code.equals("")'>
+        <if test='code gt 0'>
             shop_cd=#{code} and
         </if>
         <if test='name != null and !name.equals("")'>
@@ -80,5 +80,12 @@
                where
                    shop_cd=#{code}
     </delete>
+
+    <select id="getMaxCode">
+        select
+            max(shop_cd)
+        from
+            tb_shop
+    </select>
 
 </mapper>

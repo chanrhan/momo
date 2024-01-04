@@ -59,7 +59,9 @@ function submitSignupData(data){
                 sessionStorage.removeItem('pwd');
                 sessionStorage.removeItem('name');
                 sessionStorage.removeItem('email');
-                sessionStorage.removeItem('phNo');
+                sessionStorage.removeItem('tel');
+                sessionStorage.removeItem('role');
+                sessionStorage.removeItem('termStr');
             }
             return result;
         }

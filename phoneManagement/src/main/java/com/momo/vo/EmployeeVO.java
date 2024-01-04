@@ -16,7 +16,7 @@ public class EmployeeVO {
 	private String empEmail;
 	private String empTel;
 	private String role;
-	private String shopCd;
+	private int shopCd;
 	private LocalDateTime regiDt;
 
 	public UserDetailsImpl getUserDetailsImpl(){

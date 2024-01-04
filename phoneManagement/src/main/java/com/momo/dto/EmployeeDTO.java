@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class EmployeeDTO extends AbstractQueryDTO {
-	public String        shopCode; // 매장 코드
+	public int        shopCode; // 매장 코드
 	public UserRole      role; // 역할
 	public String        id; // 아이디
 	public String        pwd; // 비밀번호
@@ -23,7 +23,7 @@ public class EmployeeDTO extends AbstractQueryDTO {
 	public LocalDateTime regiDate; // 가입일자
 
 	@Builder
-	public EmployeeDTO(String shopCode, UserRole role, String id, String pwd, String updatePwd, String name, String email, String tel, LocalDateTime regiDate) {
+	public EmployeeDTO(int shopCode, UserRole role, String id, String pwd, String updatePwd, String name, String email, String tel, LocalDateTime regiDate) {
 		this.shopCode  = shopCode;
 		this.role      = role;
 		this.id        = id;

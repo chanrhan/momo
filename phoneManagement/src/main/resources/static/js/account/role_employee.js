@@ -1,5 +1,4 @@
 
-
 // 사업자등록번호 조회 API
 function checkBusinessmanNo(){
     var data = {
@@ -40,21 +39,50 @@ function showZipCodeUI(){
     );
 }
 
+// 사업자번호 유효성 검사
+function validateBNo(_this){
+    var st = true;
+    var b_no = $(_this).val();
+
+    if(b_no.length !== 10){
+        $(_this).next('.fieldError').text("사업자번호는 10자리로 입력하여야 합니다");
+        st = false;
+    }
+
+    $(_this).attr('valid',st);
+    $('#btn_validBNo').prop('disabled', !st);
+}
+
+function validateOpenDate(_this){
+    var st = true;
+    var b_no = $(_this).val();
+
+    if(b_no.length !== 10){
+        $(_this).nextUntil('.fieldError').text("사업자번호는 10자리로 입력하여야 합니다");
+        st = false;
+    }
+
+    $(_this).attr('valid',st);
+}
+
+
 
 // 최종 회원가입 정보들 서버로 전송
 function signupSubmit(){
+    var addr = $('#shopAddr').val() + " " + $('#shopAddr_detail').val();
     var data = {
         id: sessionStorage.getItem('id'),
         pwd: sessionStorage.getItem('pwd'),
         name: sessionStorage.getItem('name'),
         email: sessionStorage.getItem('email'),
-        phNo: sessionStorage.getItem('phNo'),
+        tel: sessionStorage.getItem('tel'),
         role: sessionStorage.getItem('role'),
-        bisName: $('#bisName').val(),
-        bisregiNo: $('#bisregiNo').val(),
+        termString: sessionStorage.getItem('termStr'),
+        businessNo: $('#b_no').val(),
+        businessName: $('#p_nm').val(),
         shopName: $('#shopName').val(),
-        shopAddr: $('#shopAddr').val(),
-        shopPhNo: $('#shopPhNo').val()
+        shopAddr: addr,
+        shopTel: $('#shopTel').val()
     }
 
     var result = submitSignupData(data);

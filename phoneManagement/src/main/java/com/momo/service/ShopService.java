@@ -43,8 +43,11 @@ public class ShopService implements DefaultCRUDMapper<Shop, ShopDTO> {
 		return shopMapper.selectAll();
 	}
 
-	public String hashToShopCode(String shopName, String shopAddr){
-
-		return null;
+	public int getMaxCode(){
+		Integer code = shopMapper.getMaxCode();
+		if(code == null){
+			return 0;
+		}
+		return code;
 	}
 }

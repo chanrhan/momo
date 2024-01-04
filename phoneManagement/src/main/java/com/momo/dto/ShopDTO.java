@@ -7,14 +7,14 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 public class ShopDTO extends AbstractQueryDTO{
-	public String code;
+	public int code;
 	public String name;
 	public String addr;
 	public String tel;
 	public String bNo;
 
 	@Builder
-	public ShopDTO(String code, String name, String addr, String tel, String bNo) {
+	public ShopDTO(int code, String name, String addr, String tel, String bNo) {
 		this.code = code;
 		this.name = name;
 		this.addr = addr;

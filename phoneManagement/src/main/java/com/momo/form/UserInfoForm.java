@@ -22,32 +22,34 @@ public class UserInfoForm {
 	private String name; // 실명
 	private String email; // 이메일
 	private String tel; // 전화번호
-
-	private String bNo; //사업자등록번호
-	private String pName;   //사업자명
-
-	private String shopCode; // 매장 코드
+	private String businessNo; //사업자등록번호
+	private String businessName;   //사업자명
+	private int    shopCode; // 매장 코드
 	private String shopName; // 매장 이름
 	private String shopAddr; // 매장 주소
-	private String shopTel; // 매장 연락처
+	private String shopTel; // 매장 연락
+
+	private String termString; // 약관동의 여부들
 
 	private LocalDateTime regiDt;
 
+
 	@Builder
-	public UserInfoForm(String role, String id, String pwd, String name, String email, String tel, String bNo, String pName, String shopCode, String shopName, String shopAddr, String shopTel, LocalDateTime regiDt) {
-		this.role     = role;
-		this.id       = id;
-		this.pwd      = pwd;
-		this.name     = name;
-		this.email    = email;
-		this.tel      = tel;
-		this.bNo      = bNo;
-		this.pName    = pName;
-		this.shopCode = shopCode;
-		this.shopName = shopName;
-		this.shopAddr = shopAddr;
-		this.shopTel  = shopTel;
-		this.regiDt   = regiDt;
+	public UserInfoForm(String role, String id, String pwd, String name, String email, String tel, String termString, String businessNo, String businessName, int shopCode, String shopName, String shopAddr, String shopTel, LocalDateTime regiDt) {
+		this.role         = role;
+		this.id           = id;
+		this.pwd          = pwd;
+		this.name         = name;
+		this.email        = email;
+		this.tel          = tel;
+		this.termString   = termString;
+		this.businessNo   = businessNo;
+		this.businessName = businessName;
+		this.shopCode     = shopCode;
+		this.shopName   = shopName;
+		this.shopAddr   = shopAddr;
+		this.shopTel    = shopTel;
+		this.regiDt     = regiDt;
 	}
 
 	public AdminDTO getAdminDTO() {
@@ -63,7 +65,7 @@ public class UserInfoForm {
 	}
 
 	public ShopDTO getShopDTO() {
-		return ShopDTO.builder().code(shopCode).addr(shopAddr).name(shopName).tel(shopTel).bNo(bNo).build();
+		return ShopDTO.builder().code(shopCode).addr(shopAddr).name(shopName).tel(shopTel).bNo(businessNo).build();
 	}
 
 	public UserDetailsImpl getUserDetailsImpl() {

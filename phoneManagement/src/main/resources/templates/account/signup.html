@@ -44,10 +44,14 @@
         <button class="btn btn-primary" type="button" id="btn_confirm_auth" onclick="checkAuthenticationNumber()">확인</button>
       </div>
     </div>
-    <div class="form-label " id="area_term">
-      이용약관
-
+    이용약관
+    <div class="form-label " name="term_field" th:each="term : ${terms}">
+      <i class="icon-check" name="icon_check" th:require="${term.termRqSt}" onclick="checkTerm($(this))" >icon</i>
+      <p th:text="${term.termNm}"></p>
+      <p th:if="${term.termRqSt == true}">[필수]</p>
+      <p th:if="${term.termRqSt == false}">[선택]</p>
     </div>
+    <button type="button" onclick="checkAllTerm()">전체동의</button>
 
     <button type="submit" class="btn btn-primary">다음</button>
   </form>
