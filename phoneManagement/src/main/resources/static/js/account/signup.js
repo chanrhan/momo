@@ -6,8 +6,8 @@ let isPasswordChecked = false;
 let isPasswordMatched = false; // 비밀번호 일치 여부
 let isEmailChecked = false; // 이메일 형식 및 중복체크 여부
 let isNameChecked = false; // 이름 형식 일치 여부
-let isPhoneNumberChecked = false; // 전화번호 형식 일치 여부
-let isPhoneAuthChecked =false; // 휴대폰 본인인증 여부
+let isTelChecked = false; // 전화번호 형식 일치 여부
+let isTelAuthChecked =false; // 휴대폰 본인인증 여부
 
 let authNo = 0;
 
@@ -18,6 +18,7 @@ $(document).ready(function (){
     sessionStorage.removeItem("pwd");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
+    sessionStorage.removeItem("role");
     sessionStorage.removeItem("tel");
     sessionStorage.removeItem("termStr");
 })
@@ -67,7 +68,7 @@ function validatePassword(){
 }
 
 // 비밀번호와 재확인 비밀번호가 일치하는지 검사
-function checkPasswordsMatched(){
+function matchPassword(){
     var pwd = $('#pwd').val();
     var comfirm_pwd = $('#confirm_pwd').val();
 
@@ -124,7 +125,7 @@ function validateEmail(){
 function validateTel(){
     var phNo = $('#tel').val();
     var btn_sendAuth = $('#btn_sendAuth');
-    isPhoneNumberChecked = false;
+    isTelAuthChecked = false;
 
     if(!telRegex.test(phNo)){
         btn_sendAuth.prop('disabled',true);
@@ -134,7 +135,6 @@ function validateTel(){
 
     btn_sendAuth.prop('disabled',false);
     $('#error_tel').text("");
-    isPhoneNumberChecked = true;
 }
 
 // 인증번호 전송
@@ -164,17 +164,17 @@ function sendAuthenticationNumber(){
 function checkAuthenticationNumber(){
     var input_authNo = $('#authNo').val();
 
-    console.log(parseInt(input_authNo));
-    console.log(authNo);
+    // console.log(parseInt(input_authNo));
+    // console.log(authNo);
 
     if(authNo === 0 || parseInt(input_authNo) !== authNo){
-        isPhoneNumberChecked = false;
+        isTelAuthChecked = false;
         alert("인증번호가 일치하지 않습니다");
         return;
     }
 
     alert("인증되었습니다.");
-    isPhoneNumberChecked = true;
+    isTelAuthChecked = true;
 }
 
 // 이용약관 체크
@@ -200,7 +200,9 @@ function isRequiredTermChecked(){
         var st = icon.hasClass('checked');
 
         termString += (st) ? '1':'0';
-        if(require && !st){
+        console.log(require);
+        console.log(st);
+        if(require === 'true' && st === false){
             rst = false;
         }
     })
@@ -214,7 +216,7 @@ function signupStep1(){
         return false;
     }
     // 아이디, 이메일 중복체크 여부 검사
-    if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isPhoneNumberChecked){
+    if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isTelAuthChecked){
         console.log(termString);
         sessionStorage.setItem("id",$('#id').val());
         sessionStorage.setItem("pwd",$('#pwd').val());

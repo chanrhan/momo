@@ -28,8 +28,17 @@
             비밀번호 재설정
             <div class="form-label disabled">
                 현재 비밀번호 <input type="password" class="form-control" id="pwd"><br>
-                변경할 비밀번호 <input type="password" class="form-control" id="update_pwd"><br>
-                변경할 비밀번호 확인 <input type="password" class="form-control" id="confirm_update_pwd"><br>
+                <div class="pwd-toggle">
+                    변경할 비밀번호 <input type="password" class="form-control" id="update_pwd" oninput="validatePassword()">
+                    <i class="fa fa-eye fa-lg">icon</i><br>
+                    <p class="fieldError" id="error_pwd"></p><br>
+                </div>
+                <div class="pwd-toggle">
+                    변경할 비밀번호 확인 <input type="password" class="form-control" id="confirm_update_pwd" oninput="matchPassword()">
+                    <i class="fa fa-eye fa-lg">icon2</i><br>
+                    <p class="fieldError" id="error_confirm_pwd"></p><br>
+                </div>
+
             </div>
             <button type="button" onclick="updatePassword()">비밀번호 수정</button><br>
         </div>

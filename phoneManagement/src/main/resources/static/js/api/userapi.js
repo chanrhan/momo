@@ -44,16 +44,19 @@ function updateProfile(data){
 
 // 회원가입 정보 서버로 제출
 function submitSignupData(data){
+    var rst = false;
     $.ajax({
         url: '/account/submit',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json',
+        async: false,
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
+            console.log("submit rst: "+result);
             if(result){
                 sessionStorage.removeItem('id');
                 sessionStorage.removeItem('pwd');
@@ -63,8 +66,9 @@ function submitSignupData(data){
                 sessionStorage.removeItem('role');
                 sessionStorage.removeItem('termStr');
             }
-            return result;
+            rst = result;
         }
     });
-    return null;
+    console.log("submit: "+rst);
+    return rst;
 }

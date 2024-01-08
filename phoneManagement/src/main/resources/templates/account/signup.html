@@ -9,7 +9,7 @@
   <script src="/js/account/signup.js"></script>
   <form th:action="@{/account/role}" onsubmit="return signupStep1()" method="get">
     <div class="form-label " id="area_id">
-      아이디 : <input type="text" class="form-control" oninput="validateId()" id="id">
+      아이디 : <input type="text" class="form-control" th:valid="false" oninput="validateId()" id="id">
       <button type="button" class="btn-primary" id="btn_checkDupId" onclick="checkDupId()" disabled>아이디 중복체크</button><br>
       <p class="fieldError" id="error_id"></p>
     </div>
@@ -20,7 +20,7 @@
         <p class="fieldError" id="error_pwd"></p>
       </div>
       <div class="pwd-toggle">
-        비밀번호 확인 : <input type="password" class="form-control" oninput="checkPasswordsMatched()" id="confirm_pwd">
+        비밀번호 확인 : <input type="password" class="form-control" oninput="matchPassword()" id="confirm_pwd">
         <i class="fa fa-eye fa-lg">icon2</i><br>
         <p class="fieldError" id="error_confirm_pwd"></p><br>
       </div>

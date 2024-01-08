@@ -62,8 +62,8 @@ public class AccountController {
 	@PostMapping("/submit")
 	@ResponseBody
 	public boolean roleSubmit(@RequestBody UserInfoForm userInfoForm) {
-		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
 		System.out.println(userInfoForm);
+		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
 		if (role == UserRole.REPS) {
 			ShopDTO shopDTO  = userInfoForm.getShopDTO();
 			shopDTO.setCode( shopService.getMaxCode()+1);

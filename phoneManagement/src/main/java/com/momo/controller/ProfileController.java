@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/profile")
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class ProfileController {
 	private final AccountService accountService;
 
-	@PreAuthorize("isAuthenticated()")
+//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{id}")
 	public String profileInfo(Model model, @PathVariable String id){
 		UserInfoForm userInfoForm = accountService.getUserById(id);
@@ -24,12 +25,9 @@ public class ProfileController {
 
 	@PostMapping("/update")
 	@ResponseBody
-	public String updateProfile(@RequestBody UserInfoForm userInfoForm){
+	public boolean updateProfile(@RequestBody UserInfoForm userInfoForm){
 		int result = accountService.update(userInfoForm);
-		if(result == 0){
-			return "수정에 실패하였습니다";
-		}
-		return "프로필이 수정되었습니다";
+		return result != 0;
 	}
 
 	@PostMapping("/update/password")

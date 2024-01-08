@@ -1,4 +1,22 @@
 
+// url 보안
+$(document).ready(function (){
+    var id = sessionStorage.getItem('id');
+    var pwd = sessionStorage.getItem('pwd');
+    var name = sessionStorage.getItem('name');
+    var email = sessionStorage.getItem('email');
+    var tel = sessionStorage.getItem('tel');
+    var role = sessionStorage.getItem('role');
+    var termString = sessionStorage.getItem('termStr');
+
+    if(id=== null || pwd===null||name===null||email===null||tel===null||termString===null||role===null){
+        alert("잘못된 접근입니다!");
+        window.location.href = "/";
+    }
+});
+
+let isBNoChecked = false;
+
 // 사업자등록번호 조회 API
 function checkBusinessmanNo(){
     var data = {
@@ -22,11 +40,14 @@ function checkBusinessmanNo(){
         console.log(result);
         if(result.data[0].valid === "01"){
             alert("인증이 완료되었습니다");
+            isBNoChecked = true;
         }else{
             alert("등록되지 않은 사업자입니다");
+            isBNoChecked = false;
         }
     }else{
         alert("오류가 발생했습니다");
+        isBNoChecked = false;
     }
 }
 
@@ -41,12 +62,15 @@ function showZipCodeUI(){
 
 // 사업자번호 유효성 검사
 function validateBNo(_this){
+    isBNoChecked = false;
     var st = true;
     var b_no = $(_this).val();
 
     if(b_no.length !== 10){
         $(_this).next('.fieldError').text("사업자번호는 10자리로 입력하여야 합니다");
         st = false;
+    }else{
+        $(_this).next('.fieldError').text("");
     }
 
     $(_this).attr('valid',st);
@@ -69,7 +93,41 @@ function validateOpenDate(_this){
 
 // 최종 회원가입 정보들 서버로 전송
 function signupSubmit(){
-    var addr = $('#shopAddr').val() + " " + $('#shopAddr_detail').val();
+    if(!isBNoChecked){
+        alert("사업자번호 인증은 필수입니다!");
+        return;
+    }
+
+    var shopName = $('#shopName').val();
+    var shopAddr = $('#shopAddr').val();
+    var shopTel = $('#shopTel').val();
+
+    if(shopAddr === "" || shopName === "" || shopTel === ""){
+        if(shopAddr === ""){
+            $('#error_shopAddr').text("매장 주소 입력은 필수입니다");
+        }else{
+            $('#error_shopAddr').text("");
+        }
+
+        if(shopName === ""){
+            $('#error_shopName').text("매장 이름 입력은 필수입니다");
+        }
+        else{
+            $('#error_shopName').text("");
+        }
+
+        if(shopTel === ""){
+            $('#error_shopTel').text("매장 이름 입력은 필수입니다");
+        }
+        else {
+            $('#error_shopTel').text("");
+        }
+
+        return;
+    }
+
+
+    var addr = shopAddr + " " + $('#shopAddr_detail').val();
     var data = {
         id: sessionStorage.getItem('id'),
         pwd: sessionStorage.getItem('pwd'),
@@ -80,13 +138,16 @@ function signupSubmit(){
         termString: sessionStorage.getItem('termStr'),
         businessNo: $('#b_no').val(),
         businessName: $('#p_nm').val(),
-        shopName: $('#shopName').val(),
+        shopName: shopName,
         shopAddr: addr,
-        shopTel: $('#shopTel').val()
+        shopTel: shopTel
     }
 
     var result = submitSignupData(data);
+    console.log(result);
     if(result){
+        console.log("success: "+result);
+
         window.location.href = "/";
     }
 

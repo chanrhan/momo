@@ -1,5 +1,7 @@
 package com.momo.config;
 
+import com.momo.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,9 +18,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+	@Autowired
+	private AccountService accountService;
+
 	@Bean
-	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-		httpSecurity
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+		http
+				.rememberMe(rememberMe -> rememberMe
+									.key("key")
+									.rememberMeParameter("rememberMe")
+									.tokenValiditySeconds(3600*24*30)
+									.userDetailsService(accountService)
+						   )
 				.authorizeRequests((authorizeHttpRequests)->authorizeHttpRequests
 						// 모든 인증되지 않은 요청들을 허락한다는 의미
 						.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
@@ -38,7 +49,8 @@ public class SecurityConfig {
 						.logoutSuccessUrl("/")
 						.invalidateHttpSession(true)
 					   );
-		return httpSecurity.build();
+
+		return http.build();
 	}
 
 	// AuthenticationManager는 Spring Security의 인증을 담당
@@ -48,8 +60,5 @@ public class SecurityConfig {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+
 }

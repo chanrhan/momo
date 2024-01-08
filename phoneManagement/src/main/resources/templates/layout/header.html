@@ -5,19 +5,19 @@
 <header th:fragment="header">
     <nav>
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Phone Management</a>
+            <a class="navbar-brand" href="/" style="font-size: 30px">MOMO (모바일의 모든것)</a>
             <div class="navbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                <div class="navbar-nav me-auto mb-2 mb-lg-0" style="display: flex;">
+                    <div class="nav-item">
                         <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/account/login}">로그인</a>
                         <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
-                    </li>
-                    <li>
+                    </div>
+                    <div class="nav-item">
                         <a class="nav-link" sec:authorize="isAuthenticated()"
                            th:text="${#authentication.getPrincipal().getUsername()}"
                             th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}"></a>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

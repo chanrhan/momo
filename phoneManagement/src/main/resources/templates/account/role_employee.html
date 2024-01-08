@@ -19,14 +19,16 @@
     </div>
     <div class="form-label">
         매장 이름 : <input type="text" class="form-control" id="shopName"> <br>
+        <p class="fieldError" id="error_shopName"></p>
         <div th:if="${role == 'REPS'}">
             매장주소 :
             <br>
             우편번호 <input type="text" class="form-control" id="zipcode" disabled>
             <button type="button" id="btn_searchZipCode" class="btn btn-primary" onclick="showZipCodeUI()">우편번호 찾기</button><br>
-            주소 <input type="text" class="form-control" id="shopAddr" disabled> <br>
+            주소 <input type="text" class="form-control" id="shopAddr" disabled>
+            <p class="fieldError" id="error_shopAddr"></p>
             상세 주소 <input type="text" class="form-control" id="shopAddr_detail"> <br>
-            매장 연락처 : <input type="text" class="form-control" id="shopTel"> <br>
+            매장 연락처 : <input type="text" class="form-control" th:valid="false" id="shopTel"> <br>
             <p class="fieldError" id="error_shopTel"></p>
         </div>
     </div>

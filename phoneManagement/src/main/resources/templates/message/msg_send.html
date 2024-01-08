@@ -2,13 +2,9 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
-  <p>Home</p>
-  <a th:href="@{/}">매장관리</a>
-  <a th:href="@{/sales}">판매일보</a>
-  <a th:href="@{/msg}">문자발송</a>
-  <a th:href="@{/}">견적서 보기</a>
-  <a th:href="@{/test}">테스트</a>
+  Message Send
 </div>
 </html>
