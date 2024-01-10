@@ -7,6 +7,7 @@
     <script src="/js/account/role_employee.js" th:inline="javascript"></script>
     <script src="/js/api/openapi.js" th:inline="javascript"></script>
     <script src="/js/api/userapi.js" th:inline="javascript"></script>
+    <input type="hidden" id="role" th:value="${role}">
     <div class="form-label" th:if="${role == 'REPS'}" >
         사업자등록번호 : <input type="text" th:valid="false" class="form-control" id="b_no" oninput="validateBNo($(this))">
         <p class="fieldError" id="error_b_no"></p>

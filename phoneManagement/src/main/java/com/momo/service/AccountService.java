@@ -2,7 +2,6 @@ package com.momo.service;
 
 import com.momo.mapper.AccountMapper;
 import com.momo.mapper.DefaultCRUDMapper;
-import com.momo.vo.AccountVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,11 +43,12 @@ public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>,
 	}
 
 	public int insert(UserInfoVO userInfoVO){
+		userInfoVO.setPwd(passwordEncoder.encode(userInfoVO.getPwd()));
 		return accountMapper.insert(userInfoVO);
 	}
 
-	public int setRole(UserInfoVO userInfoVO){
-		return accountMapper.setRole(userInfoVO);
+	public int updateRole(UserInfoVO userInfoVO){
+		return accountMapper.updateRole(userInfoVO);
 	}
 
 	public UserInfoVO getAccountById(String id){

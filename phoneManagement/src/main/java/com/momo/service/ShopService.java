@@ -19,10 +19,6 @@ public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
 		return shopMapper.insert(key);
 	}
 
-	public ShopVO select(String cd){
-		return shopMapper.select(cd);
-	}
-
 	@Override
 	public int update(ShopVO key) {
 		return shopMapper.update(key);

@@ -1,17 +1,10 @@
 
 // url 보안
 $(document).ready(function (){
-    var id = sessionStorage.getItem('id');
-    var pwd = sessionStorage.getItem('pwd');
-    var name = sessionStorage.getItem('name');
-    var email = sessionStorage.getItem('email');
-    var tel = sessionStorage.getItem('tel');
-    var role = sessionStorage.getItem('role');
-    var termString = sessionStorage.getItem('termStr');
-
-    if(id=== null || pwd===null||name===null||email===null||tel===null||termString===null||role===null){
+    var role = $('#user_role').val();
+    if(role !== "" || role !== null){
         alert("잘못된 접근입니다!");
-        window.location.href = "/";
+        window.location.href = "/home";
     }
 });
 
@@ -61,34 +54,21 @@ function showZipCodeUI(){
 }
 
 // 사업자번호 유효성 검사
-function validateBNo(_this){
+function validateBNo(_this) {
     isBNoChecked = false;
     var st = true;
     var b_no = $(_this).val();
 
-    if(b_no.length !== 10){
+    if (b_no.length !== 10) {
         $(_this).next('.fieldError').text("사업자번호는 10자리로 입력하여야 합니다");
         st = false;
-    }else{
+    } else {
         $(_this).next('.fieldError').text("");
     }
 
-    $(_this).attr('valid',st);
+    $(_this).attr('valid', st);
     $('#btn_validBNo').prop('disabled', !st);
 }
-
-function validateOpenDate(_this){
-    var st = true;
-    var b_no = $(_this).val();
-
-    if(b_no.length !== 10){
-        $(_this).nextUntil('.fieldError').text("사업자번호는 10자리로 입력하여야 합니다");
-        st = false;
-    }
-
-    $(_this).attr('valid',st);
-}
-
 
 
 // 최종 회원가입 정보들 서버로 전송
@@ -126,11 +106,10 @@ function submitEmployeeInfo(){
         return;
     }
 
-
     var addr = shopAddr + " " + $('#shopAddr_detail').val();
     var data = {
         id: $('#user_id').val(),
-        role: sessionStorage.getItem('role'),
+        role: $('#role').val(),
         businessNo: $('#b_no').val(),
         businessName: $('#p_nm').val(),
         shopName: shopName,

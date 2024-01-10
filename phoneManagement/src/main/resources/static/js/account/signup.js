@@ -218,14 +218,13 @@ function submitSignup(){
     // 아이디, 이메일 중복체크 여부 검사
     if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isTelAuthChecked){
         var data = {
-            id: sessionStorage.getItem('id'),
-            pwd: sessionStorage.getItem('pwd'),
-            name: sessionStorage.getItem('name'),
-            email: sessionStorage.getItem('email'),
-            tel: sessionStorage.getItem('tel'),
-            termString: sessionStorage.getItem('termStr'),
+            id: $('#id').val(),
+            pwd: $('#pwd').val(),
+            name: $('#name').val(),
+            email: $('#email').val(),
+            tel: $('#tel').val(),
+            termStr: termString,
         };
-
         return submitDefaultSignup(data);
     }else{
         alert("올바르지 않은 입력 형식이 있습니다!");

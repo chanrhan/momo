@@ -42,6 +42,7 @@ function updateProfile(data){
     return false;
 }
 
+// 기본 회원가입 정보들(아이디, 비번, 이름, 이메일, 전화번호, 약관동의여부) 제출
 function submitDefaultSignup(data){
     var rst = false;
     $.ajax({
@@ -55,23 +56,13 @@ function submitDefaultSignup(data){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-            console.log("submit rst: "+result);
-            if(result){
-                sessionStorage.removeItem('id');
-                sessionStorage.removeItem('pwd');
-                sessionStorage.removeItem('name');
-                sessionStorage.removeItem('email');
-                sessionStorage.removeItem('tel');
-                sessionStorage.removeItem('role');
-                sessionStorage.removeItem('termStr');
-            }
             rst = result;
         }
     });
     return rst;
 }
 
-// 회원가입 정보 서버로 제출
+// 역할 등록
 function submitRole(data){
     var rst = false;
     $.ajax({

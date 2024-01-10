@@ -12,12 +12,13 @@ public class TermVO {
 	private String        userId;
 	private String        role;
 	private boolean       checked;
-	private LocalDateTime regiDt;
+	private LocalDateTime argmDt;
 
 	private int           termCd;
 	private String        termNm;
 	private String        content;
 	private boolean       termRqSt;
+	private LocalDateTime regiDt;
 
 	@Builder
 	public TermVO(String userId, String role, boolean checked, LocalDateTime regiDt, int termCd, String termNm, String content, boolean termRqSt) {

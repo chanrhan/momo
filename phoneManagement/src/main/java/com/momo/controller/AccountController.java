@@ -7,6 +7,7 @@ import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,23 +36,27 @@ public class AccountController {
 		return "account/signup";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role")
 	public String roleSelect() {
 		return "account/role_select";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/reps")
 	public String roleReps(Model model) {
 		model.addAttribute("role", "REPS");
 		return "account/role_employee";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
 	public String roleManager(Model model) {
 		model.addAttribute("role", "MANAGER");
 		return "account/role_employee";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/customer")
 	public String roleCustomer() {
 		return "account/role_customer";
@@ -60,23 +65,32 @@ public class AccountController {
 	@PostMapping("/submit")
 	@ResponseBody
 	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
-		int result = termService.enrollTermStatement(userInfoVO.getId(), userInfoVO.getRole(), userInfoVO.getTermStr());
-		if(result == 0){
-			return false;
-		}
+		System.out.println(userInfoVO);
+//		int result = termService.enrollTermStatement(userInfoVO.getId(), userInfoVO.getRole(), userInfoVO.getTermStr());
+//		if(result == 0){
+//			return false;
+//		}
 		return accountService.insert(userInfoVO) != 0;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
 	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO){
-		accountService.setRole(userInfoVO);
+		System.out.println(userInfoVO);
+		int result = 0;
+		result = accountService.updateRole(userInfoVO);
+		if(result == 0){
+			return false;
+		}
 
 		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
 			ShopVO shopVO = userInfoVO.getShopVO();
-			shopVO.setShopCd( shopService.getMaxCode()+1);
-			shopService.insert(shopVO);
+			shopVO.setShopCd(shopService.getMaxCode()+1);
+			result = shopService.insert(shopVO);
+			if(result == 0){
+				return false;
+			}
 		}
 
 		return roleDetailUserService.insert(userInfoVO) != 0;
