@@ -2,11 +2,11 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layout.html}">
+      layout:decorate="~{/layout/preview_layout.html}">
 <div layout:fragment="content">
   <script src="/js/account/role_select.js"></script>
   <script src="/js/api/userapi.js"></script>
-  <form id="role_select_form" onsubmit="signupStep2()" method="get">
+  <form id="role_select_form" onsubmit="selectRole()" method="get">
     <input type="hidden" id="role">
     <button type="submit" class="btn-primary" onclick="sessionStorage.setItem('role','ADMIN')">관리자</button>
     <button type="submit" class="btn-primary" onclick="sessionStorage.setItem('role','REPS')">대표</button>

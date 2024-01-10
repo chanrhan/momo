@@ -2,12 +2,12 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layout.html}">
+      layout:decorate="~{/layout/preview_layout.html}">
 <div layout:fragment="content">
   <script src="/js/api/openapi.js"></script>
   <script src="/js/api/userapi.js"></script>
   <script src="/js/account/signup.js"></script>
-  <form th:action="@{/account/role}" onsubmit="return signupStep1()" method="get">
+  <form th:action="@{/account/role}" onsubmit="return submitSignup()" method="get">
     <div class="form-label " id="area_id">
       아이디 : <input type="text" class="form-control" th:valid="false" oninput="validateId()" id="id">
       <button type="button" class="btn-primary" id="btn_checkDupId" onclick="checkDupId()" disabled>아이디 중복체크</button><br>

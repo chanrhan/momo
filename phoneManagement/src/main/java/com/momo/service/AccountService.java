@@ -1,13 +1,9 @@
 package com.momo.service;
 
-import com.momo.dto.AdminDTO;
-import com.momo.dto.CustomerDTO;
-import com.momo.dto.EmployeeDTO;
-import com.momo.form.UserInfoForm;
-import com.momo.role.UserRole;
-import com.momo.vo.AdminVO;
-import com.momo.vo.CustomerVO;
-import com.momo.vo.EmployeeVO;
+import com.momo.mapper.AccountMapper;
+import com.momo.mapper.DefaultCRUDMapper;
+import com.momo.vo.AccountVO;
+import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,91 +15,62 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements UserDetailsService{
+public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>, UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
+	private final AccountMapper accountMapper;
 
-	private final AdminService adminService;
-	private final CustomerService customerService;
-	private final EmployeeService employeeService;
-
-	public int update(UserInfoForm userInfoForm){
-		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
-		switch (role){
-			case ADMIN:
-				return adminService.update(userInfoForm.getAdminDTO());
-			case CUSTOMER:
-				return customerService.update(userInfoForm.getCustomerDTO());
-			default:
-				return employeeService.update(userInfoForm.getEmployeeDTO());
-		}
+	public int update(UserInfoVO userInfoVO){
+		return accountMapper.update(userInfoVO);
 	}
 
-	public int updatePassword(UserInfoForm userInfoForm){
-		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
-		switch (role){
-			case ADMIN:
-				return adminService.updatePassword(userInfoForm.getAdminDTO());
-			case CUSTOMER:
-				return customerService.updatePassword(userInfoForm.getCustomerDTO());
-			default:
-				return employeeService.updatePassword(userInfoForm.getEmployeeDTO());
-		}
+	@Override
+	public int delete(UserInfoVO key) {
+		return accountMapper.delete(key);
 	}
 
-	public int signup(UserInfoForm userInfoForm){
-		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
-		switch (role){
-			case ADMIN:
-				return adminService.insert(userInfoForm.getAdminDTO());
-			case CUSTOMER:
-				return customerService.insert(userInfoForm.getCustomerDTO());
-			default:
-				return employeeService.insert(userInfoForm.getEmployeeDTO());
-		}
+	@Override
+	public List<UserInfoVO> search(UserInfoVO key) {
+		return accountMapper.search(key);
 	}
 
-	public UserInfoForm getUserById(String id){
-		List<AdminVO> adminVO = adminService.search(AdminDTO.builder().id(id).build());
+	@Override
+	public List<UserInfoVO> selectAll() {
+		return accountMapper.selectAll();
+	}
+
+	public int updatePassword(UserInfoVO userInfoVO){
+		userInfoVO.setUpdatePwd(passwordEncoder.encode(userInfoVO.getUpdatePwd()));
+		return accountMapper.updatePassword(userInfoVO);
+	}
+
+	public int insert(UserInfoVO userInfoVO){
+		return accountMapper.insert(userInfoVO);
+	}
+
+	public int setRole(UserInfoVO userInfoVO){
+		return accountMapper.setRole(userInfoVO);
+	}
+
+	public UserInfoVO getAccountById(String id){
+		List<UserInfoVO> adminVO = accountMapper.search(UserInfoVO.builder().id(id).build());
 		if(adminVO != null && !adminVO.isEmpty()){
-			return adminVO.get(0).getUserInfoForm();
+			return adminVO.get(0);
 		}
-
-		List<CustomerVO> customerVO = customerService.search(CustomerDTO.builder().id(id).build());
-		if(customerVO != null && !customerVO.isEmpty()){
-			return customerVO.get(0).getUserInfoForm();
-		}
-
-		List<EmployeeVO> employeeVO = employeeService.search(EmployeeDTO.builder().id(id).build());
-		if(employeeVO != null && !employeeVO.isEmpty()){
-			return employeeVO.get(0).getUserInfoForm();
-		}
-
 		return null;
 	}
 
-	public UserInfoForm getUserByEmail(String email){
-		List<AdminVO> adminVO = adminService.search(AdminDTO.builder().email(email).build());
+	public UserInfoVO getAccountByEmail(String email){
+		List<UserInfoVO> adminVO = accountMapper.search(UserInfoVO.builder().email(email).build());
 		if(adminVO != null && !adminVO.isEmpty()){
-			return adminVO.get(0).getUserInfoForm();
+			return adminVO.get(0);
 		}
-
-		List<CustomerVO> customerVO = customerService.search(CustomerDTO.builder().email(email).build());
-		if(customerVO != null && !customerVO.isEmpty()){
-			return customerVO.get(0).getUserInfoForm();
-		}
-
-		List<EmployeeVO> employeeVO = employeeService.search(EmployeeDTO.builder().email(email).build());
-		if(employeeVO != null && !employeeVO.isEmpty()){
-			return employeeVO.get(0).getUserInfoForm();
-		}
-
 		return null;
 	}
 
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserInfoForm user = getUserById(username);
+		UserInfoVO user = getAccountById(username);
 		if(user == null){
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}

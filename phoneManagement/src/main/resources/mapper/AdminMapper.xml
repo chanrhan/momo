@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.AdminMapper">
-    <select id="search" parameterType="com.momo.dto.AdminDTO">
+    <select id="search" parameterType="com.momo.dto.AccountDTO">
         select
             *
         from
@@ -54,7 +54,7 @@
             tb_admin;
     </select>
 
-    <insert id="insert" parameterType="com.momo.dto.AdminDTO">
+    <insert id="insert" parameterType="com.momo.dto.AccountDTO">
         insert into
             tb_admin
             (admin_id,
@@ -66,7 +66,7 @@
             (#{id},#{pwd},#{name},#{email},#{tel})
     </insert>
 
-    <update id="update" parameterType="com.momo.dto.AdminDTO">
+    <update id="update" parameterType="com.momo.dto.AccountDTO">
         update
             tb_admin
         set
@@ -77,7 +77,7 @@
             admin_id=#{id}
     </update>
 
-    <update id="updatePassword" parameterType="com.momo.dto.AdminDTO">
+    <update id="updatePassword" parameterType="com.momo.dto.AccountDTO">
         update
         tb_admin
         set
@@ -87,7 +87,7 @@
             admin_pwd=#{pwd}
     </update>
 
-    <delete id="delete" parameterType="com.momo.dto.AdminDTO">
+    <delete id="delete" parameterType="com.momo.dto.AccountDTO">
         delete from
                    tb_admin
                where

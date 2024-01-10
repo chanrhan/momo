@@ -42,7 +42,7 @@ public class SecurityConfig {
 				// 로그인 URL 설정
 				.formLogin((formLogin)->formLogin
 						.loginPage("/account/login")
-						.defaultSuccessUrl("/"))
+						.defaultSuccessUrl("/home"))
 				// 로그아웃 URL 설정
 				.logout((logout)-> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))

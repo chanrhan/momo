@@ -9,6 +9,11 @@ const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
 $(document).ready(function (){
+    setPasswordToggle();
+});
+
+// 비밀번호 표시/숨기기 기능 세팅
+function setPasswordToggle(){
     var div_pwd_toggle = $('.pwd-toggle');
     if(div_pwd_toggle === null){
         return;
@@ -27,5 +32,4 @@ $(document).ready(function (){
             }
         });
     })
-
-});
+}

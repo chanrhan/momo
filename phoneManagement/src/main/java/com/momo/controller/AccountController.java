@@ -1,15 +1,12 @@
 package com.momo.controller;
 
-import com.momo.dto.ShopDTO;
-import com.momo.form.UserInfoForm;
-import com.momo.role.UserRole;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.vo.ShopVO;
 import com.momo.vo.TermVO;
+import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +18,9 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
 	private final AccountService  accountService;
-	private final TermService termService;
+	private final RoleDetailUserService roleDetailUserService;
 
+	private final TermService termService;
 	private final ShopService shopService;
 
 	@GetMapping("/login")
@@ -61,17 +59,27 @@ public class AccountController {
 
 	@PostMapping("/submit")
 	@ResponseBody
-	public boolean roleSubmit(@RequestBody UserInfoForm userInfoForm) {
-		System.out.println(userInfoForm);
-		UserRole role = Enum.valueOf(UserRole.class, userInfoForm.getRole());
-		if (role == UserRole.REPS) {
-			ShopDTO shopDTO  = userInfoForm.getShopDTO();
-			shopDTO.setCode( shopService.getMaxCode()+1);
-			shopService.insert(shopDTO);
+	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
+		int result = termService.enrollTermStatement(userInfoVO.getId(), userInfoVO.getRole(), userInfoVO.getTermStr());
+		if(result == 0){
+			return false;
 		}
-		termService.enrollTermStatement(userInfoForm.getId(), role, userInfoForm.getTermString());
-		accountService.signup(userInfoForm);
-		return true;
+		return accountService.insert(userInfoVO) != 0;
+	}
+
+	@PostMapping("/submit/role")
+	@ResponseBody
+	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO){
+		accountService.setRole(userInfoVO);
+
+		String role = userInfoVO.getRole();
+		if (role.equals("REPS")) {
+			ShopVO shopVO = userInfoVO.getShopVO();
+			shopVO.setShopCd( shopService.getMaxCode()+1);
+			shopService.insert(shopVO);
+		}
+
+		return roleDetailUserService.insert(userInfoVO) != 0;
 	}
 
 	// 아이디 중복체크 API
@@ -82,9 +90,9 @@ public class AccountController {
 		System.out.println(value);
 		switch (target) {
 			case "id":
-				return accountService.getUserById(value) == null;
+				return accountService.getAccountById(value) == null;
 			case "email":
-				return accountService.getUserByEmail(value) == null;
+				return accountService.getAccountByEmail(value) == null;
 		}
 		return false;
 	}

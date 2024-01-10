@@ -1,6 +1,5 @@
 package com.momo.service;
 
-import com.momo.dto.TermStatementDTO;
 import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.mapper.TermMapper;
 import com.momo.role.UserRole;
@@ -12,26 +11,26 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TermService implements DefaultCRUDMapper<TermVO, TermStatementDTO> {
+public class TermService implements DefaultCRUDMapper<TermVO, TermVO> {
 	private final TermMapper termMapper;
 
 	@Override
-	public int insert(TermStatementDTO key) {
+	public int insert(TermVO key) {
 		return termMapper.insert(key);
 	}
 
 	@Override
-	public int update(TermStatementDTO key) {
+	public int update(TermVO key) {
 		return 0;
 	}
 
 	@Override
-	public int delete(TermStatementDTO key) {
+	public int delete(TermVO key) {
 		return 0;
 	}
 
 	@Override
-	public List<TermVO> search(TermStatementDTO key) {
+	public List<TermVO> search(TermVO key) {
 		return null;
 	}
 
@@ -39,11 +38,16 @@ public class TermService implements DefaultCRUDMapper<TermVO, TermStatementDTO> 
 		return termMapper.selectAll();
 	}
 
-	public void enrollTermStatement(String id, UserRole role, String termSt){
+	public int enrollTermStatement(String id, String role, String termSt){
+		int result = 0;
 		char[] terms = termSt.toCharArray();
 		for(int i=0;i<terms.length;++i){
-			insert(new TermStatementDTO(id, role.toString(), i, (terms[i] == '1')));
+			result = insert(TermVO.builder().userId(id).role(role).checked((terms[i] == '1')).build());
+			if(result == 0){
+				return 0;
+			}
 		}
+		return result;
 	}
 
 

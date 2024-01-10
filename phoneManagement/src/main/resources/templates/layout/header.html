@@ -9,7 +9,6 @@
             <div class="navbar">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0" style="display: flex;">
                     <div class="nav-item">
-                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/account/login}">로그인</a>
                         <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
                     </div>
                     <div class="nav-item">

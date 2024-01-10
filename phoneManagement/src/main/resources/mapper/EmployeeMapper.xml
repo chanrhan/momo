@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.EmployeeMapper">
-    <select id="search" parameterType="com.momo.dto.EmployeeDTO">
+    <select id="search" parameterType="com.momo.dto.UserDTO">
         select
             *
         from
@@ -54,7 +54,7 @@
             tb_employee;
     </select>
 
-    <insert id="insert" parameterType="com.momo.dto.EmployeeDTO">
+    <insert id="insert" parameterType="com.momo.dto.UserDTO">
         insert into tb_employee
         (emp_id,
          emp_pwd,
@@ -66,7 +66,7 @@
         values (#{id}, #{pwd}, #{email}, #{name},#{tel},#{role},#{shopCode})
     </insert>
 
-    <update id="update" parameterType="com.momo.dto.EmployeeDTO">
+    <update id="update" parameterType="com.momo.dto.UserDTO">
         update
             tb_employee
         set
@@ -79,7 +79,7 @@
             emp_id=#{id}
     </update>
 
-    <update id="updatePassword" parameterType="com.momo.dto.EmployeeDTO">
+    <update id="updatePassword" parameterType="com.momo.dto.UserDTO">
         update
             tb_employee
         set
@@ -89,7 +89,7 @@
             emp_pwd=#{pwd}
     </update>
 
-    <delete id="delete" parameterType="com.momo.dto.EmployeeDTO">
+    <delete id="delete" parameterType="com.momo.dto.UserDTO">
         delete from
             tb_employee
                where

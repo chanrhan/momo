@@ -1,7 +1,6 @@
 package com.momo.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.momo.dto.AddressAreaApiResponse;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -13,6 +12,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +26,10 @@ public class AddressAreaApiUtil extends PublicDataOpenApiUtil{
 	public static Map<String, AddressAreaApiResponse> getAddressArea(String srchwrd, String countPerPage, String currentPage) {
 		StringBuilder urlBuilder = new StringBuilder(serviceUrl);
 		try {
-			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
-			urlBuilder.append("&" + URLEncoder.encode("srchwrd", "UTF-8") + "=" + URLEncoder.encode(srchwrd, "utf-8"));
-			urlBuilder.append("&" + URLEncoder.encode("countPerPage", "UTF-8") + "=" + URLEncoder.encode(countPerPage, "utf-8"));
-			urlBuilder.append("&" + URLEncoder.encode("currentPage", "UTF-8") + "=" + URLEncoder.encode(currentPage, "utf-8"));
+			urlBuilder.append("?" + URLEncoder.encode("serviceKey", UTF_8) + "=" + serviceKey);
+			urlBuilder.append("&" + URLEncoder.encode("srchwrd", UTF_8) + "=" + URLEncoder.encode(srchwrd, UTF_8));
+			urlBuilder.append("&" + URLEncoder.encode("countPerPage", UTF_8) + "=" + URLEncoder.encode(countPerPage, UTF_8));
+			urlBuilder.append("&" + URLEncoder.encode("currentPage", UTF_8) + "=" + URLEncoder.encode(currentPage, UTF_8));
 
 			URL url = new URL(urlBuilder.toString());
 

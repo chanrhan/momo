@@ -16,21 +16,16 @@ $(document).ready(function (){
 
 
 // 역할 선택 후 페이지 이동
-function signupStep2(){
+function selectRole(){
     var form = $('#role_select_form');
     var role = sessionStorage.getItem('role');
     if(role === 'ADMIN'){
-        form.attr('action','/');
+        form.attr('action','/home');
         var data = {
-            id: sessionStorage.getItem('id'),
-            pwd: sessionStorage.getItem('pwd'),
-            name: sessionStorage.getItem('name'),
-            email: sessionStorage.getItem('email'),
-            tel: sessionStorage.getItem('tel'),
-            role: sessionStorage.getItem('role'),
-            termString: sessionStorage.getItem('termStr')
+            id: $('#user_id').val(),
+            role: role
         }
-        return submitSignupData(data);
+        return submitRole(data);
     }else{
         form.attr('action','/account/role/'+role.toLowerCase());
     }

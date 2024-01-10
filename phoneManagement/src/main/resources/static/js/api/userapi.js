@@ -42,8 +42,7 @@ function updateProfile(data){
     return false;
 }
 
-// 회원가입 정보 서버로 제출
-function submitSignupData(data){
+function submitDefaultSignup(data){
     var rst = false;
     $.ajax({
         url: '/account/submit',
@@ -69,6 +68,25 @@ function submitSignupData(data){
             rst = result;
         }
     });
-    console.log("submit: "+rst);
+    return rst;
+}
+
+// 회원가입 정보 서버로 제출
+function submitRole(data){
+    var rst = false;
+    $.ajax({
+        url: '/account/submit/role',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+        }
+    });
     return rst;
 }

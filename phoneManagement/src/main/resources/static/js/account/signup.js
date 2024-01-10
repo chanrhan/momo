@@ -210,21 +210,23 @@ function isRequiredTermChecked(){
 }
 
 // 회원가입을 위한 기본정보 입력이 모두 완료되었는지 검사
-function signupStep1(){
+function submitSignup(){
     if(!isRequiredTermChecked()){
         alert("'필수' 이용약관에 모두 동의해야 합니다!");
         return false;
     }
     // 아이디, 이메일 중복체크 여부 검사
     if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isTelAuthChecked){
-        console.log(termString);
-        sessionStorage.setItem("id",$('#id').val());
-        sessionStorage.setItem("pwd",$('#pwd').val());
-        sessionStorage.setItem("name",$('#name').val());
-        sessionStorage.setItem("email",$('#email').val());
-        sessionStorage.setItem("tel",$('#tel').val());
-        sessionStorage.setItem("termStr",termString);
-        return true;
+        var data = {
+            id: sessionStorage.getItem('id'),
+            pwd: sessionStorage.getItem('pwd'),
+            name: sessionStorage.getItem('name'),
+            email: sessionStorage.getItem('email'),
+            tel: sessionStorage.getItem('tel'),
+            termString: sessionStorage.getItem('termStr'),
+        };
+
+        return submitDefaultSignup(data);
     }else{
         alert("올바르지 않은 입력 형식이 있습니다!");
         return false;

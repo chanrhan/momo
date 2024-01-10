@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopVO {
-	private String shopCd;
+	private int shopCd;
 	private String shopNm;
+	private String shopTel;
+	private String shopAddr;
 	private String bNo;
 }

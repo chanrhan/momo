@@ -1,9 +1,9 @@
 package com.momo.service;
 
 import com.momo.domain.shop.Shop;
-import com.momo.dto.ShopDTO;
 import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.mapper.ShopMapper;
+import com.momo.vo.ShopVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,35 +11,35 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService implements DefaultCRUDMapper<Shop, ShopDTO> {
+public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
 	private final ShopMapper shopMapper;
 
 	@Override
-	public int insert(ShopDTO key) {
+	public int insert(ShopVO key) {
 		return shopMapper.insert(key);
 	}
 
-	public Shop select(String cd){
+	public ShopVO select(String cd){
 		return shopMapper.select(cd);
 	}
 
 	@Override
-	public int update(ShopDTO key) {
+	public int update(ShopVO key) {
 		return shopMapper.update(key);
 	}
 
 	@Override
-	public int delete(ShopDTO key) {
+	public int delete(ShopVO key) {
 		return shopMapper.delete(key);
 	}
 
 	@Override
-	public List<Shop> search(ShopDTO key) {
+	public List<ShopVO> search(ShopVO key) {
 		return shopMapper.search(key);
 	}
 
 	@Override
-	public List<Shop> selectAll() {
+	public List<ShopVO> selectAll() {
 		return shopMapper.selectAll();
 	}
 

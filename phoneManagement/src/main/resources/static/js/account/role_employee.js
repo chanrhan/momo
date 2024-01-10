@@ -92,7 +92,7 @@ function validateOpenDate(_this){
 
 
 // 최종 회원가입 정보들 서버로 전송
-function signupSubmit(){
+function submitEmployeeInfo(){
     if(!isBNoChecked){
         alert("사업자번호 인증은 필수입니다!");
         return;
@@ -129,13 +129,8 @@ function signupSubmit(){
 
     var addr = shopAddr + " " + $('#shopAddr_detail').val();
     var data = {
-        id: sessionStorage.getItem('id'),
-        pwd: sessionStorage.getItem('pwd'),
-        name: sessionStorage.getItem('name'),
-        email: sessionStorage.getItem('email'),
-        tel: sessionStorage.getItem('tel'),
+        id: $('#user_id').val(),
         role: sessionStorage.getItem('role'),
-        termString: sessionStorage.getItem('termStr'),
         businessNo: $('#b_no').val(),
         businessName: $('#p_nm').val(),
         shopName: shopName,
@@ -143,12 +138,11 @@ function signupSubmit(){
         shopTel: shopTel
     }
 
-    var result = submitSignupData(data);
+    var result = submitRole(data);
     console.log(result);
     if(result){
         console.log("success: "+result);
-
-        window.location.href = "/";
+        window.location.href = "/home";
     }
 
 }

@@ -1,6 +1,6 @@
 package com.momo.controller;
 
-import com.momo.dto.AddressAreaApiResponse;
+import com.momo.util.AddressAreaApiResponse;
 import com.momo.util.AddressAreaApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
