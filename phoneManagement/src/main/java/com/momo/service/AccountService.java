@@ -4,12 +4,22 @@ import com.momo.mapper.AccountMapper;
 import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
+import java.sql.Struct;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,8 +61,26 @@ public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>,
 		return accountMapper.updateRole(userInfoVO);
 	}
 
+	public void replaceAuthority(String role){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
+
+		updateAuthorities.add(new SimpleGrantedAuthority(role));
+
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
+
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+	}
+
+	public void loginWithSignup(String username){
+		this.loadUserByUsername(username);
+	}
+
 	public UserInfoVO getAccountById(String id){
-		List<UserInfoVO> adminVO = accountMapper.search(UserInfoVO.builder().id(id).build());
+		UserInfoVO test = UserInfoVO.builder().id(id).build();
+		System.out.println(test);
+		List<UserInfoVO> adminVO = accountMapper.search(test);
+		System.out.println(adminVO);
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
 		}

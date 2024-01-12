@@ -15,15 +15,16 @@ function checkIdDuplication(id){
 
 // 이메일 중복 여부 검사
 function checkEmailDuplication(email){
+    var rst = false;
     $.ajax({
         url: "/account/validate/dup/email?value="+email,
         type: "get",
         async: false,
         success: function (result){
-            return result;
+            rst = result;
         }
     });
-    return false;
+    return rst;
 }
 
 // 프로필 수정

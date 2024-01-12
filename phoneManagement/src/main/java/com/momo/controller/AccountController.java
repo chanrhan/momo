@@ -1,7 +1,9 @@
 package com.momo.controller;
 
+import com.momo.domain.Paging;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.vo.RegionVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
@@ -22,13 +24,15 @@ public class AccountController {
 	private final RoleDetailUserService roleDetailUserService;
 
 	private final TermService termService;
-	private final ShopService shopService;
+	private final ShopService   shopService;
+	private final RegionService regionService;
 
 	@GetMapping("/login")
 	public String login() {
 		return "account/login";
 	}
 
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		List<TermVO> termList = termService.selectAll();
@@ -45,63 +49,82 @@ public class AccountController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/reps")
 	public String roleReps(Model model) {
-		model.addAttribute("role", "REPS");
-		return "account/role_employee";
+		model.addAttribute("list_state", regionService.selectAllState());
+
+		return "account/role_reps";
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
-	public String roleManager(Model model) {
-		model.addAttribute("role", "MANAGER");
-		return "account/role_employee";
+	public String roleManager(Model model,
+							  @RequestParam String state,
+							  @RequestParam String city,
+							  @RequestParam String q,
+							  @RequestParam(defaultValue = "1") int page){
+		String keyword = state + " " + city + " " + q;
+		Paging<ShopVO> paging = shopService.selectPage(page,"shopAddr", keyword);
+
+		model.addAttribute("list_state", regionService.selectAllState());
+		model.addAttribute("state",state);
+		model.addAttribute("city",city);
+		model.addAttribute("q",q);
+		model.addAttribute("paging", paging);
+
+		return "account/role_manager";
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/customer")
-	public String roleCustomer() {
+	public String roleCustomer(Model model) {
+
 		return "account/role_customer";
 	}
 
 	@PostMapping("/submit")
 	@ResponseBody
 	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
-		System.out.println(userInfoVO);
-//		int result = termService.enrollTermStatement(userInfoVO.getId(), userInfoVO.getRole(), userInfoVO.getTermStr());
-//		if(result == 0){
-//			return false;
-//		}
-		return accountService.insert(userInfoVO) != 0;
+//		System.out.println(userInfoVO);
+		int result = accountService.insert(userInfoVO);
+		if(result == 0 ) return false;
+
+		accountService.loginWithSignup(userInfoVO.getId());
+		return true;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
 	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO){
-		System.out.println(userInfoVO);
+//		System.out.println(userInfoVO);
 		int result = 0;
 		result = accountService.updateRole(userInfoVO);
 		if(result == 0){
 			return false;
 		}
+		accountService.replaceAuthority(userInfoVO.getRole());
 
 		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
+			userInfoVO.setShopCd(shopService.getMaxCode()+1);
 			ShopVO shopVO = userInfoVO.getShopVO();
-			shopVO.setShopCd(shopService.getMaxCode()+1);
 			result = shopService.insert(shopVO);
 			if(result == 0){
 				return false;
 			}
 		}
 
-		return roleDetailUserService.insert(userInfoVO) != 0;
+		if(!role.equals("ADMIN")){
+			result = roleDetailUserService.insert(userInfoVO);
+		}
+
+		return result != 0;
 	}
 
 	// 아이디 중복체크 API
 	@GetMapping("/validate/dup/{target}")
 	@ResponseBody
 	public boolean checkDupId(@PathVariable String target, @RequestParam("value") String value) {
-		System.out.println(target);
-		System.out.println(value);
+//		System.out.println(target);
+//		System.out.println(value);
 		switch (target) {
 			case "id":
 				return accountService.getAccountById(value) == null;
@@ -116,4 +139,20 @@ public class AccountController {
 	public JSONObject validateBusinessNumber(@RequestBody JSONObject data) {
 		return BusinessmanApiUtil.validate(JSONObject.toJSONString(data));
 	}
+
+	@GetMapping("/city")
+	@ResponseBody
+	public String[] getCity(@RequestParam String state){
+		String cities = regionService.selectByState(state);
+		return cities.split(",");
+	}
+
+	@PostMapping("/search/shop")
+	@ResponseBody
+	public List<ShopVO> searchShopByAddress(@RequestBody RegionVO regionVO){
+//		System.out.println(regionVO);
+		return shopService.searchByRegion(regionVO);
+	}
+
+
 }

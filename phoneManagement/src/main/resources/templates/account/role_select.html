@@ -6,12 +6,11 @@
 <div layout:fragment="content">
   <script src="/js/account/role_select.js"></script>
   <script src="/js/api/userapi.js"></script>
-<!--  <form id="role_select_form" onsubmit="selectRole()" method="get">-->
-<!--    <input type="hidden" id="role">-->
-<!--  </form>-->
-  <button type="button" class="btn-primary" onclick="selectRole('ADMIN')">관리자</button>
-  <button type="button" class="btn-primary" onclick="selectRole('REPS')">대표</button>
-  <button type="button" class="btn-primary" onclick="selectRole('MANAGER')">직원</button>
-  <button type="button" class="btn-primary" onclick="selectRole('CUSTOMER')" disabled>고객</button>
+  <div>
+    <button type="button" class="btn-primary" onclick="selectRole('ADMIN')">관리자</button>
+    <button type="button" class="btn-primary" onclick="selectRole('REPS')">대표</button>
+    <button type="button" class="btn-primary" onclick="selectRole('MANAGER')">직원</button>
+    <button type="button" class="btn-primary" onclick="selectRole('CUSTOMER')" disabled>고객</button>
+  </div>
 </div>
 </html>

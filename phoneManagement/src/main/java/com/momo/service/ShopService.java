@@ -1,9 +1,10 @@
 package com.momo.service;
 
-import com.momo.domain.shop.Shop;
+import com.momo.domain.Paging;
 import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.mapper.ShopMapper;
 import com.momo.vo.ShopVO;
+import com.momo.vo.RegionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,24 @@ public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
 			return 0;
 		}
 		return code;
+	}
+
+	public List<ShopVO> searchByRegion(RegionVO regionVO){
+		return shopMapper.searchByRegion(regionVO);
+	}
+
+	public Paging<ShopVO> selectPage(int pageNum, String targetColumn, String keyword){
+		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
+		ShopVO vo = ShopVO.builder()
+				.targetColumn(targetColumn)
+				.keyword(keyword)
+				.offset(paging.getOffset())
+				.limit(paging.getSize())
+				.build();
+
+		paging.setRecords(shopMapper.search(vo));
+		paging.setTotalRecordCount(shopMapper.getTotalRecordCount(vo));
+
+		return paging;
 	}
 }

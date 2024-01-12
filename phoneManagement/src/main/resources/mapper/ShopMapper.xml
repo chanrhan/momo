@@ -37,6 +37,52 @@
             ${offset},${limit}
         </if>
     </select>
+    
+    <select id="getTotalRecordCount" parameterType="com.momo.vo.ShopVO">
+        select
+        count(*)
+        from
+        tb_shop
+        where
+        <if test='shopCd gt 0'>
+            shop_cd=#{shopCd} and
+        </if>
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm=#{shopNm} and
+        </if>
+        <if test='shopAddr != null and !shopAddr.equals("")'>
+            shop_addr=#{shopAddr} and
+        </if>
+        <if test='shopTel != null and !shopTel.equals("")'>
+            shop_tel=#{shopTel} and
+        </if>
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no=#{bNo} and
+        </if>
+        1 = 1
+        <if test='targetColumn != null and !targetColumn.equals("")'>
+            and ${targetColumn} like '%${keyword}%'
+        </if>
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="searchByRegion" parameterType="com.momo.vo.RegionVO">
+        select
+            *
+        from
+            tb_shop
+        where
+            shop_addr like '%${state}%' and
+            shop_addr like '%${city}%' and
+            shop_addr like '%${detail}%'
+    </select>
 
     <select id="selectAll">
         select
@@ -48,9 +94,9 @@
     <insert id="insert" parameterType="com.momo.vo.ShopVO">
         insert into
             tb_shop
-            (shop_cd, shop_nm, shop_addr, shop_tel, b_no)
+            (shop_cd, reps_id, shop_nm, shop_addr, shop_tel, b_no)
         values
-            (#{shopCd},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
+            (#{shopCd},#{repsId},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
     </insert>
 
     <update id="update" parameterType="com.momo.vo.ShopVO">
@@ -65,7 +111,7 @@
             shop_cd=#{shopCd}
     </update>
 
-    <delete id="delete" parameterType="com.momo.dto.ShopDTO">
+    <delete id="delete" parameterType="com.momo.vo.ShopVO">
         delete from
             tb_shop
                where

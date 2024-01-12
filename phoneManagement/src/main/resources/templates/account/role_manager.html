@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/preview_layout.html}">
+<div layout:fragment="content" >
+    <script src="/js/account/region.js" th:inline="javascript"></script>
+    <script src="/js/account/role_manager.js" th:inline="javascript"></script>
+    <div class="form-label">
+        <h3>매장 찾기</h3>
+        <div>
+            주소<br>
+            시/도
+            <select id="list_state" class="form-control" onchange="changeState()" th:value="${state}">
+                <option selected value disabled>시/도 선택</option>
+                <option th:each="state : ${list_state}" th:value="${state}" th:text="${state}"></option>
+            </select>
+            시/군/구
+            <select id="list_city" class="form-control" onchange="searchShop()" th:value="${city}">
+                <option selected value disabled>시/군/구 선택</option>
+<!--                <option th:each="city : ${city}" th:value="${city}" th:text="${city}"></option>-->
+            </select>
+            상세 주소
+            <input type="text" id="input_detailAddr" th:value="${q}">
+            <button type="button" onclick="searchShop()">검색</button>
+        </div>
+        <div>
+            <div id="list_shop">
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+</html>

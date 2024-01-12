@@ -17,12 +17,12 @@
         <div class="form-label">
             전화번호 <input type="text" class="form-control" id="tel" th:value="${userInfo.tel}">
         </div>
-        <div sec:authorize="hasAuthority('REPS') or hasAuthority('MANAGER')" class="form-label" th:value="${userInfo.shopName}">
-            매장 이름 <input type="text" class="form-control" id="shopName">
-        </div>
-        <div sec:authorize="hasAuthority('REPS')" class="form-label">
-            사업자등록번호 <input type="text" class="form-control" id="bNo" th:value="${userInfo.bNo}">
-        </div>
+<!--        <div sec:authorize="hasAuthority('REPS') or hasAuthority('MANAGER')" class="form-label" >-->
+<!--            매장 이름 <input type="text" class="form-control" id="shopName" th:value="${userInfo.shopNm}">-->
+<!--        </div>-->
+<!--        <div sec:authorize="hasAuthority('REPS')" class="form-label">-->
+<!--            사업자등록번호 <input type="text" class="form-control" id="bNo" th:value="${userInfo.biNo}">-->
+<!--        </div>-->
         <button type="button" onclick="updateProfile()">수정</button><br>
         <div>
             비밀번호 재설정

@@ -5,7 +5,8 @@
 <header th:fragment="header">
     <nav>
         <div class="container-fluid">
-            <a class="navbar-brand" href="/" style="font-size: 30px">MOMO (모바일의 모든것)</a>
+            <a class="navbar-brand" sec:authorize="isAuthenticated()" href="/home" style="font-size: 30px">MOMO (모바일의 모든것)</a>
+            <a class="navbar-brand" sec:authorize="isAnonymous()" href="/" style="font-size: 30px">MOMO (모바일의 모든것)</a>
             <div class="navbar">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0" style="display: flex;">
                     <div class="nav-item">

@@ -2,7 +2,7 @@
 // url 보안
 $(document).ready(function (){
     var role = $('#user_role').val();
-    if(role !== "" || role !== null){
+    if(role !== "NONE"){
         alert("잘못된 접근입니다!");
         window.location.href = "/home";
     }
@@ -72,18 +72,22 @@ function validateBNo(_this) {
 
 
 // 최종 회원가입 정보들 서버로 전송
-function submitEmployeeInfo(){
+function submitREPS(){
     if(!isBNoChecked){
         alert("사업자번호 인증은 필수입니다!");
         return;
     }
 
     var shopName = $('#shopName').val();
-    var shopAddr = $('#shopAddr').val();
+    var state = $('#list_state').val();
+    var city = $('#list_city').val();
+    var detail = $('#input_detailAddr').val();
+    var shopAddr = state + " " + city + " " + detail;
+
     var shopTel = $('#shopTel').val();
 
-    if(shopAddr === "" || shopName === "" || shopTel === ""){
-        if(shopAddr === ""){
+    if(state === null || city === null || shopName === "" || shopTel === ""){
+        if(state === null || city === null){
             $('#error_shopAddr').text("매장 주소 입력은 필수입니다");
         }else{
             $('#error_shopAddr').text("");
@@ -97,7 +101,7 @@ function submitEmployeeInfo(){
         }
 
         if(shopTel === ""){
-            $('#error_shopTel').text("매장 이름 입력은 필수입니다");
+            $('#error_shopTel').text("매장 전화번호 입력은 필수입니다");
         }
         else {
             $('#error_shopTel').text("");
@@ -106,14 +110,12 @@ function submitEmployeeInfo(){
         return;
     }
 
-    var addr = shopAddr + " " + $('#shopAddr_detail').val();
     var data = {
         id: $('#user_id').val(),
-        role: $('#role').val(),
-        businessNo: $('#b_no').val(),
-        businessName: $('#p_nm').val(),
-        shopName: shopName,
-        shopAddr: addr,
+        role: 'REPS',
+        biNo: $('#b_no').val(),
+        shopNm: shopName,
+        shopAddr: shopAddr,
         shopTel: shopTel
     }
 

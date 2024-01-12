@@ -14,13 +14,11 @@ let authNo = 0;
 let termString = "";
 
 $(document).ready(function (){
-    sessionStorage.removeItem("id");
-    sessionStorage.removeItem("pwd");
-    sessionStorage.removeItem("name");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("role");
-    sessionStorage.removeItem("tel");
-    sessionStorage.removeItem("termStr");
+    // var user_id = $('#user_id').val();
+    // if(user_id !== "" ||     user_id !== null){
+    //     alert("이미 로그인되어 있습니다. 회원가입을 원하시면 로그아웃 해주십시오");
+    //     window.location.href = "/home";
+    // }
 })
 
 // 아이디 형식 검사
@@ -217,11 +215,16 @@ function submitSignup(){
     }
     // 아이디, 이메일 중복체크 여부 검사
     if(isIdChecked && isPasswordMatched && isNameChecked && isEmailChecked && isTelAuthChecked){
+        var email = $('#email').val();
+        if(!checkEmailDuplication(email)){
+            alert("이미 가입된 이메일입니다");
+            return false;
+        }
         var data = {
             id: $('#id').val(),
             pwd: $('#pwd').val(),
             name: $('#name').val(),
-            email: $('#email').val(),
+            email: email,
             tel: $('#tel').val(),
             termStr: termString,
         };

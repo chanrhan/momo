@@ -1,8 +1,13 @@
 package com.momo.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
 public abstract class AbstractQueryVO {
 	protected String targetColumn;
 	protected String keyword;

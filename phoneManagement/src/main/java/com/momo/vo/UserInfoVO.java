@@ -1,16 +1,15 @@
 package com.momo.vo;
 
 import com.momo.domain.user.UserDetailsImpl;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
+
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
+@SuperBuilder
 public class UserInfoVO extends AbstractQueryVO {
 	private String        id;
 	private String        pwd;
@@ -24,38 +23,21 @@ public class UserInfoVO extends AbstractQueryVO {
 	private String        shopNm;
 	private String        shopAddr;
 	private String        shopTel;
-	private String        bNo; // Business Number
-	private String        bNm; // Business Name
+	private String        biNo; // Business Number
 	private String        pNm;
 	private String        pNm2;
 	private LocalDateTime regiDt;
-
-	@Builder
-	public UserInfoVO(String id, String pwd, String updatePwd, String name, String email, String tel, String termStr, String role, int shopCd, String shopNm, String shopAddr, String shopTel, String bNo, String bNm, String pNm, String pNm2, LocalDateTime regiDt) {
-		this.id        = id;
-		this.pwd       = pwd;
-		this.updatePwd = updatePwd;
-		this.name      = name;
-		this.email     = email;
-		this.tel       = tel;
-		this.termStr   = termStr;
-		this.role      = role;
-		this.shopCd    = shopCd;
-		this.shopNm    = shopNm;
-		this.shopAddr  = shopAddr;
-		this.shopTel   = shopTel;
-		this.bNo       = bNo;
-		this.bNm       = bNm;
-		this.pNm       = pNm;
-		this.pNm2      = pNm2;
-		this.regiDt    = regiDt;
-	}
-
-	public UserDetailsImpl getUserDetailsImpl(){
+	public UserDetailsImpl getUserDetailsImpl() {
 		return new UserDetailsImpl(id, pwd, role);
 	}
 
-	public ShopVO getShopVO(){
-		return new ShopVO(shopCd, shopNm, shopTel, shopAddr, bNo);
+	public ShopVO getShopVO() {
+		return ShopVO.builder()
+				.shopCd(shopCd)
+				.repsId(id)
+				.shopNm(shopNm)
+				.shopAddr(shopAddr)
+				.shopTel(shopTel)
+				.build();
 	}
 }

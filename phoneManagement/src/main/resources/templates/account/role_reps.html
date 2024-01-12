@@ -4,11 +4,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/preview_layout.html}">
 <div layout:fragment="content" >
-    <script src="/js/account/role_employee.js" th:inline="javascript"></script>
+    <script src="/js/account/role_reps.js" th:inline="javascript"></script>
+    <script src="/js/account/region.js" th:inline="javascript"></script>
     <script src="/js/api/openapi.js" th:inline="javascript"></script>
     <script src="/js/api/userapi.js" th:inline="javascript"></script>
-    <input type="hidden" id="role" th:value="${role}">
-    <div class="form-label" th:if="${role == 'REPS'}" >
+    <div class="form-label">
         사업자등록번호 : <input type="text" th:valid="false" class="form-control" id="b_no" oninput="validateBNo($(this))">
         <p class="fieldError" id="error_b_no"></p>
         사업자명(외국인 사업자인 경우 영어로 기입) : <input type="text" th:valid="false" class="form-control" id="p_nm"> <br>
@@ -17,23 +17,31 @@
         <p class="fieldError" id="error_p_nm2"></p>
         개업일자 : <input type="text" class="form-control" th:valid="false" id="start_dt"> <br>
         <button type="button" class="btn btn-primary" id="btn_validBNo" onclick="checkBusinessmanNo()" disabled>조회</button><br>
-    </div>
-    <div class="form-label">
-        매장 이름 : <input type="text" class="form-control" id="shopName"> <br>
-        <p class="fieldError" id="error_shopName"></p>
-        <div th:if="${role == 'REPS'}">
+        <div class="form-label">
             매장주소 :
             <br>
-            우편번호 <input type="text" class="form-control" id="zipcode" disabled>
-            <button type="button" id="btn_searchZipCode" class="btn btn-primary" onclick="showZipCodeUI()">우편번호 찾기</button><br>
-            주소 <input type="text" class="form-control" id="shopAddr" disabled>
-            <p class="fieldError" id="error_shopAddr"></p>
-            상세 주소 <input type="text" class="form-control" id="shopAddr_detail"> <br>
+            매장 이름 : <input type="text" class="form-control" id="shopName"> <br>
+            <p class="fieldError" id="error_shopName"></p>
+            <div>
+                시/도
+                <select id="list_state" class="form-control" onchange="changeState()">
+                    <option th:each="state : ${list_state}" th:value="${state}" th:text="${state}"></option>
+                </select>
+                시/군/구
+                <select id="list_city" class="form-control">
+                    <option th:each="city : ${city}" th:value="${city}" th:text="${city}"></option>
+                </select>
+                <p class="fieldError" id="error_shopAddr"></p>
+                상세 주소
+                <input type="text" id="input_detailAddr">
+            </div>
+<!--            <button type="button" id="btn_searchZipCode" class="btn btn-primary" onclick="showZipCodeUI()">주소 찾기</button><br>-->
+
             매장 연락처 : <input type="text" class="form-control" th:valid="false" id="shopTel"> <br>
             <p class="fieldError" id="error_shopTel"></p>
         </div>
+        <button type="button" class="btn-primary" onclick="submitREPS()">완료</button>
     </div>
-    <button type="button" class="btn-primary" onclick="submitEmployeeInfo()">완료</button>
 
 </div>
 </html>
