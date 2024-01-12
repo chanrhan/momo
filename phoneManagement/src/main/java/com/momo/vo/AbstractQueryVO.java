@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public abstract class AbstractQueryVO {
 	protected String targetColumn;
 	protected String keyword;

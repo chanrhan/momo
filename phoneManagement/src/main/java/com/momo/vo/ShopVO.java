@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class ShopVO extends AbstractQueryVO{
 	private int    shopCd;
 	private String repsId;

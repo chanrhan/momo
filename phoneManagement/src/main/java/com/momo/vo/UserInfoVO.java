@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class UserInfoVO extends AbstractQueryVO {
 	private String        id;
 	private String        pwd;

@@ -57,18 +57,20 @@ public class AccountController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
 	public String roleManager(Model model,
-							  @RequestParam String state,
-							  @RequestParam String city,
-							  @RequestParam String q,
+							  @RequestParam(defaultValue = "") String state,
+							  @RequestParam(defaultValue = "") String city,
+							  @RequestParam(defaultValue = "") String q,
 							  @RequestParam(defaultValue = "1") int page){
-		String keyword = state + " " + city + " " + q;
-		Paging<ShopVO> paging = shopService.selectPage(page,"shopAddr", keyword);
+		if(!state.equals("") && !city.equals("")){
+			String keyword = state + " " + city + " " + q;
+			Paging<ShopVO> paging = shopService.selectPage(page,"shopAddr", keyword);
+			model.addAttribute("paging", paging);
+		}
 
 		model.addAttribute("list_state", regionService.selectAllState());
 		model.addAttribute("state",state);
 		model.addAttribute("city",city);
 		model.addAttribute("q",q);
-		model.addAttribute("paging", paging);
 
 		return "account/role_manager";
 	}
