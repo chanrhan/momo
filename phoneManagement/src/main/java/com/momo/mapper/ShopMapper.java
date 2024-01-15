@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface ShopMapper extends DefaultCRUDMapper<ShopVO, ShopVO> {
+	public List<ShopVO> searchBranch(ShopVO shopVO);
+	public int countBranch(ShopVO shopVO);
 	public Integer getMaxCode();
 	public List<ShopVO> searchByRegion(RegionVO regionVO);
 	public int getTotalRecordCount(ShopVO shopVO);

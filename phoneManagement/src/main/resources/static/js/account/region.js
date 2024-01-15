@@ -1,7 +1,7 @@
 
 function changeState(){
-    var state = $('#list_state').val();
-    var list_city = document.getElementById('list_city');
+    var state = $('#state').val();
+    var list_city = document.getElementById('city');
 
     var cities = getCity(state);
     if(cities.length > 0){

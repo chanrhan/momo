@@ -3,6 +3,32 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.RoleDetailUserMapper">
+    <select id="selct" parameterType="com.momo.vo.UserInfoVO">
+        select
+        *
+        from
+        tb_user
+        where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='shopCd != null and !shopCd.equals("")'>
+            shop_cd=#{shopCd} and
+        </if>
+        1 = 1
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
     <select id="search" parameterType="com.momo.vo.UserInfoVO">
         select
             *
@@ -10,12 +36,15 @@
             tb_user
         where
         <if test='id != null and !id.equals("")'>
-            id=#{id} and
+            id like '%${id}%' and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role like '%${role}%' and
+        </if>
+        <if test='shopCd != null and !shopCd.equals("")'>
+            shop_cd like '%${shopCd}%' and
         </if>
             1 = 1
-        <if test='targetColumn != null and !targetColumn.equals("")'>
-            and ${targetColumn} like '%${keyword}%'
-        </if>
         <if test='orderby != null and !orderby.equals("")'>
             order by
             ${orderby}

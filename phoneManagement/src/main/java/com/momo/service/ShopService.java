@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
+public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 	private final ShopMapper shopMapper;
 
 	@Override
@@ -31,6 +31,10 @@ public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
 	}
 
 	@Override
+	public List<ShopVO> select(ShopVO key) {
+		return shopMapper.select(key);
+	}
+
 	public List<ShopVO> search(ShopVO key) {
 		return shopMapper.search(key);
 	}
@@ -52,11 +56,23 @@ public class ShopService implements DefaultCRUDMapper<ShopVO, ShopVO> {
 		return shopMapper.searchByRegion(regionVO);
 	}
 
+	public Paging<ShopVO> searchBranch(int pageNum, String keyword){
+		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
+		ShopVO vo = ShopVO.builder()
+				.keyword(keyword)
+				.offset(paging.getOffset())
+				.limit(paging.getSize())
+				.build();
+
+		paging.setRecords(shopMapper.searchBranch(vo));
+		paging.setTotalRecordCount(shopMapper.countBranch(vo));
+
+		return paging;
+	}
+
 	public Paging<ShopVO> selectPage(int pageNum, String targetColumn, String keyword){
 		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
 		ShopVO vo = ShopVO.builder()
-				.targetColumn(targetColumn)
-				.keyword(keyword)
 				.offset(paging.getOffset())
 				.limit(paging.getSize())
 				.build();

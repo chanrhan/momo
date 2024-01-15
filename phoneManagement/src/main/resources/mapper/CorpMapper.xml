@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.CorpMapper">
+    <select id="select" parameterType="com.momo.vo.ShopVO">
+        select
+            *
+        from
+            tb_corp
+        where
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no=#{bNo} and
+        </if>
+        <if test='pKoNm != null and !pKoNm.equals("")'>
+            p_ko_nm=#{pKoNm} and
+        </if>
+        <if test='pEnNm != null and !pEnNm.equals("")'>
+            p_en_nm=#{pEnNm} and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm} and
+        </if>
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel=#{corpTel} and
+        </if>
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt=#{startDt} and
+        </if>
+            1 = 1
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="search" parameterType="com.momo.vo.ShopVO">
+        select
+        *
+        from
+            tb_corp
+        where
+        <if test='shopNm != null and !shopNm.equals("")'>
+            b_no like '%${shopNm}%' and
+        </if>
+        <if test='pKoNm != null and !pKoNm.equals("")'>
+            p_ko_nm like '%${pKoNm}%' and
+        </if>
+        <if test='pEnNm != null and !pEnNm.equals("")'>
+            p_en_nm like '%${pEnNm}%' and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm like '%${corpNm}%' and
+        </if>
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel like '%${corpTel}%' and
+        </if>
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt like '%${startDt}%' and
+        </if>
+        1 = 1
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="getTotalRecordCount" parameterType="com.momo.vo.ShopVO">
+        select
+        count(*)
+        from
+        tb_corp
+        where
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no=#{bNo} and
+        </if>
+        <if test='pKoNm != null and !pKoNm.equals("")'>
+            p_ko_nm=#{pKoNm} and
+        </if>
+        <if test='pEnNm != null and !pEnNm.equals("")'>
+            p_en_nm=#{pEnNm} and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm} and
+        </if>
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel=#{corpTel} and
+        </if>
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt=#{startDt} and
+        </if>
+        1 = 1
+    </select>
+
+    <select id="selectAll">
+        select
+            *
+        from
+            tb_corp;
+    </select>
+
+    <insert id="insert" parameterType="com.momo.vo.ShopVO">
+        insert into
+            tb_corp
+            (b_no, p_ko_nm, p_en_nm, corp_nm, corp_tel, start_dt)
+        values
+            (#{bNo},#{pKoNm},#{pEnNm},#{corpNm},#{corpTel},#{startDt})
+    </insert>
+
+    <update id="update" parameterType="com.momo.vo.ShopVO">
+        update
+            tb_corp
+        set
+            p_ko_nm=#{pKoNm},
+            p_en_nm=#{pEnNm},
+            corp_nm=#{corpNm},
+            corp_tel=#{corpTel},
+            start_dt=#{startDt}
+        where
+            b_no=#{bNo}
+    </update>
+
+    <delete id="delete" parameterType="com.momo.vo.ShopVO">
+        delete from
+            tb_corp
+               where
+                   b_no=#{bNo}
+    </delete>
+
+
+</mapper>

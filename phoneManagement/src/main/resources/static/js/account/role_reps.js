@@ -114,6 +114,11 @@ function submitREPS(){
         id: $('#user_id').val(),
         role: 'REPS',
         biNo: $('#b_no').val(),
+        pNm: $('#p_nm').val(),
+        pNm2: $('#p_nm2').val(),
+        corpNm: $('#corpName').val(),
+        corpTel: $('#corpTel').val(),
+        startDt: $('#start_dt').val(),
         shopNm: shopName,
         shopAddr: shopAddr,
         shopTel: shopTel

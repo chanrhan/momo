@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TermService implements DefaultCRUDMapper<TermVO, TermVO> {
+public class TermService implements DefaultCRUDService<TermVO, TermVO> {
 	private final TermMapper termMapper;
 
 	@Override
@@ -30,6 +30,10 @@ public class TermService implements DefaultCRUDMapper<TermVO, TermVO> {
 	}
 
 	@Override
+	public List<TermVO> select(TermVO key) {
+		return termMapper.select(key);
+	}
+
 	public List<TermVO> search(TermVO key) {
 		return null;
 	}

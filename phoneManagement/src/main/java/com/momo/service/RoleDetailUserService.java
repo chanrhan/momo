@@ -19,6 +19,11 @@ public class RoleDetailUserService implements DefaultCRUDService<UserInfoVO, Use
 	}
 
 	@Override
+	public List<UserInfoVO> select(UserInfoVO key) {
+		return roleDetailUserMapper.select(key);
+	}
+
+	@Override
 	public int update(UserInfoVO key) {
 		return roleDetailUserMapper.update(key);
 	}

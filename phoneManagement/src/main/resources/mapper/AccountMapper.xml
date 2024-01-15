@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.AccountMapper">
-    <select id="search" parameterType="com.momo.vo.UserInfoVO">
+    <select id="select" parameterType="com.momo.vo.UserInfoVO">
         select
         *
         from
@@ -25,9 +25,38 @@
             tel=#{tel} and
         </if>
         1 = 1
-        <if test='targetColumn != null and !targetColumn.equals("")'>
-            and ${targetColumn} like '%${keyword}%'
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
         </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="search" parameterType="com.momo.vo.UserInfoVO">
+        select
+        *
+        from
+        tb_account
+        where
+        <if test='id != null and !id.equals("")'>
+            id like '%${id}%' and
+        </if>
+        <if test='pwd != null and !pwd.equals("")'>
+            pwd like '%${id}%' and
+        </if>
+        <if test='name != null and !name.equals("")'>
+            name like '%${id}%' and
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email like '%${id}%' and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel like '%${id}%' and
+        </if>
+        1 = 1
         <if test='orderby != null and !orderby.equals("")'>
             order by
             ${orderby}

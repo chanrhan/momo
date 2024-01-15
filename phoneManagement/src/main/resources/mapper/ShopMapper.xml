@@ -3,7 +3,61 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopMapper">
-    <select id="search" parameterType="com.momo.vo.ShopVO">
+    <select id="searchBranch" parameterType="com.momo.vo.ShopVO">
+        with branch as(
+            select
+                c.corp_nm as corp_nm,
+                c.b_no as b_no,
+                s.shop_nm as shop_nm,
+                s.shop_addr as shop_addr,
+                s.shop_tel as shop_tel
+            from
+                tb_corp as c
+            left outer join tb_shop s on c.b_no = s.b_no
+            )
+
+        select
+            *
+        from
+            branch
+        where
+            b_no like '%${keyword}%' or
+            corp_nm like '%${keyword}%' or
+            shop_nm like '%${keyword}%'
+        order by
+            #{startDt}
+        limit
+            #{offset},#{limit}
+
+    </select>
+
+    <select id="countBranch" parameterType="com.momo.vo.ShopVO">
+        with branch as(
+            select
+                c.corp_nm as corp_nm,
+                c.b_no as b_no,
+                s.shop_nm as shop_nm,
+                s.shop_addr as shop_addr,
+                s.shop_tel as shop_tel
+            from
+                tb_corp as c
+                    left outer join tb_shop s on c.b_no = s.b_no
+        )
+
+        select
+            count(*)
+        from
+            branch
+        where
+            b_no like '%${keyword}%' or
+            corp_nm like '%${keyword}%' or
+            shop_nm like '%${keyword}%'
+
+    </select>
+
+
+    
+    <select id="select" parameterType="com.momo.vo.ShopVO">
         select
             *
         from
@@ -25,9 +79,38 @@
             b_no=#{bNo} and
         </if>
             1 = 1
-        <if test='targetColumn != null and !targetColumn.equals("")'>
-            and ${targetColumn} like '%${keyword}%'
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
         </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="search" parameterType="com.momo.vo.ShopVO">
+        select
+        *
+        from
+        tb_shop
+        where
+        <if test='shopCd gt 0'>
+            shop_cd like '%${shopCd}%' and
+        </if>
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm like '%${shopNm}%' and
+        </if>
+        <if test='shopAddr != null and !shopAddr.equals("")'>
+            shop_addr like '%${shopAddr}%' and
+        </if>
+        <if test='shopTel != null and !shopTel.equals("")'>
+            shop_tel like '%${shopTel}%' and
+        </if>
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no like '%${bNo}%' and
+        </if>
+        1 = 1
         <if test='orderby != null and !orderby.equals("")'>
             order by
             ${orderby}
@@ -60,28 +143,6 @@
             b_no=#{bNo} and
         </if>
         1 = 1
-        <if test='targetColumn != null and !targetColumn.equals("")'>
-            and ${targetColumn} like '%${keyword}%'
-        </if>
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
-    </select>
-
-    <select id="searchByRegion" parameterType="com.momo.vo.RegionVO">
-        select
-            *
-        from
-            tb_shop
-        where
-            shop_addr like '%${state}%' and
-            shop_addr like '%${city}%' and
-            shop_addr like '%${detail}%'
     </select>
 
     <select id="selectAll">

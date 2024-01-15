@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class AbstractQueryVO {
-	protected String targetColumn;
+//	protected String targetColumn;
 	protected String keyword;
 
 	protected String orderby; // 정렬

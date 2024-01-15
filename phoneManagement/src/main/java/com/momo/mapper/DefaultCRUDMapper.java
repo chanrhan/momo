@@ -7,6 +7,7 @@ public interface DefaultCRUDMapper<T, K> {
 //	public T select(K key);
 	public int update(K key);
 	public int delete(K key);
+	public List<T> select(K key);
 	public List<T> search(K key);
 	public List<T> selectAll();
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>, UserDetailsService{
+public class AccountService implements DefaultCRUDService<UserInfoVO,UserInfoVO>, UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
 	private final AccountMapper accountMapper;
 
@@ -38,6 +38,10 @@ public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>,
 	}
 
 	@Override
+	public List<UserInfoVO> select(UserInfoVO key) {
+		return accountMapper.select(key);
+	}
+
 	public List<UserInfoVO> search(UserInfoVO key) {
 		return accountMapper.search(key);
 	}
@@ -77,10 +81,8 @@ public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>,
 	}
 
 	public UserInfoVO getAccountById(String id){
-		UserInfoVO test = UserInfoVO.builder().id(id).build();
-		System.out.println(test);
-		List<UserInfoVO> adminVO = accountMapper.search(test);
-		System.out.println(adminVO);
+		List<UserInfoVO> adminVO = select(UserInfoVO.builder().id(id).build());
+//		System.out.println(adminVO);
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
 		}
@@ -88,7 +90,7 @@ public class AccountService implements DefaultCRUDMapper<UserInfoVO,UserInfoVO>,
 	}
 
 	public UserInfoVO getAccountByEmail(String email){
-		List<UserInfoVO> adminVO = accountMapper.search(UserInfoVO.builder().email(email).build());
+		List<UserInfoVO> adminVO = select(UserInfoVO.builder().email(email).build());
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
 		}
