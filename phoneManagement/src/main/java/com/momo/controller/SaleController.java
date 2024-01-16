@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/sales")
-public class SalesController {
+@RequestMapping("/sale")
+public class SaleController {
 	@GetMapping("")
-	public String salesHome(){
-		return "sales/sales_home";
+	public String saleHome(){
+		return "sale/home";
 	}
 }
