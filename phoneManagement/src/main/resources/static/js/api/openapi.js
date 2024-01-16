@@ -17,10 +17,11 @@
 //     ]
 // };
 function validateBusinessman(data){
+    console.log("hi");
     var rst = null;
     $.ajax({
         url: "/account/validate/bno",
-        type: "POST",
+        type: "post",
         contentType: "application/json",
         data: JSON.stringify(data),
         async: false,
@@ -29,11 +30,13 @@ function validateBusinessman(data){
         },
         success: function(result) {
             rst = result;
+            console.log("result: "+rst);
         },
         error: function(result) {
             console.log(result.responseText); //responseText의 에러메세지 확인
         }
     });
+    console.log("ee");
     return rst;
 }
 

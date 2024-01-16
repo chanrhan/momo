@@ -28,6 +28,12 @@ public class RoleDetailUserService implements DefaultCRUDService<UserInfoVO, Use
 		return roleDetailUserMapper.update(key);
 	}
 
+	public int updateShop(UserInfoVO userInfoVO){
+		UserInfoVO user = roleDetailUserMapper.selectById(userInfoVO.getId());
+		user.setShopCd(userInfoVO.getShopCd());
+		return roleDetailUserMapper.updateShop(user);
+	}
+
 	@Override
 	public int delete(UserInfoVO key) {
 		return roleDetailUserMapper.delete(key);

@@ -3,6 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.RoleDetailUserMapper">
+    <select id="selectById">
+        select
+            *
+        from
+            tb_user
+        where
+            id=#{id}
+    </select>
+
     <select id="selct" parameterType="com.momo.vo.UserInfoVO">
         select
         *

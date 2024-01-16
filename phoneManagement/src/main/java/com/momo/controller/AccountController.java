@@ -9,6 +9,7 @@ import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
+import org.apache.ibatis.reflection.invoker.Invoker;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ public class AccountController {
 		return "account/login";
 	}
 
-	@PreAuthorize("isAnonymous()")
+//	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		List<TermVO> termList = termService.selectAll();
@@ -76,7 +77,6 @@ public class AccountController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/customer")
 	public String roleCustomer(Model model) {
-
 		return "account/role_customer";
 	}
 
@@ -101,20 +101,15 @@ public class AccountController {
 		if (result == 0) {
 			return false;
 		}
+
 		accountService.replaceAuthority(userInfoVO.getRole());
 
 		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
-
-			userInfoVO.setShopCd(shopService.getMaxCode() + 1);
 			ShopVO shopVO = userInfoVO.getShopVO();
+
 			result = corpService.insert(shopVO);
 			if(result == 0){
-				return false;
-			}
-
-			result = shopService.insert(shopVO);
-			if (result == 0) {
 				return false;
 			}
 		}
@@ -144,7 +139,9 @@ public class AccountController {
 	@PostMapping("/validate/bno")
 	@ResponseBody
 	public JSONObject validateBusinessNumber(@RequestBody JSONObject data) {
-		return BusinessmanApiUtil.validate(JSONObject.toJSONString(data));
+		JSONObject j = BusinessmanApiUtil.validate(JSONObject.toJSONString(data));
+		System.out.println(j);
+		return j;
 	}
 
 	@GetMapping("/city")

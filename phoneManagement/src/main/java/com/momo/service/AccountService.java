@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.mapper.AccountMapper;
 import com.momo.mapper.DefaultCRUDMapper;
+import com.momo.vo.ShopVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.ProviderManager;
@@ -64,6 +65,8 @@ public class AccountService implements DefaultCRUDService<UserInfoVO,UserInfoVO>
 	public int updateRole(UserInfoVO userInfoVO){
 		return accountMapper.updateRole(userInfoVO);
 	}
+
+
 
 	public void replaceAuthority(String role){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

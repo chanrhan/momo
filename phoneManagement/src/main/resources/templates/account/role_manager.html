@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/preview_layout.html}">
 <div layout:fragment="content" >
+    <script src="/js/api/userapi.js" th:inline="javascript"></script>
     <script src="/js/account/region.js" th:inline="javascript"></script>
     <script src="/js/account/role_manager.js" th:inline="javascript"></script>
     <div class="form-label">
@@ -11,31 +12,10 @@
         <div>
             <p>사업자번호 또는 회사명으로 검색하세요.</p>
             <input type="text" class="form-control" id="input_search_corp">
-            <button type="button" class="btn btn-primary" onclick=""></button>
+            <button type="button" class="btn btn-primary" onclick="searchCorp()">검색</button>
         </div>
-<!--        <form type="get" id="form_srch_shop">-->
-<!--            <br>-->
-<!--            <h4>주소</h4>-->
-<!--            <h5>시/도</h5>-->
-<!--            <select id="state" name="state" class="form-control" onchange="changeState()" th:value="${state}">-->
-<!--&lt;!&ndash;                <option selected value disabled>시/도 선택</option>&ndash;&gt;-->
-<!--                <option th:each="item_state : ${list_state}" th:value="${item_state}" th:text="${item_state}"></option>-->
-<!--            </select>-->
-<!--            <h5>시/군/구</h5>-->
-<!--            <select id="city" name="city" class="form-control" onchange="$(this).submit()" th:value="${city}">-->
-<!--&lt;!&ndash;                <option selected value disabled>시/군/구 선택</option>&ndash;&gt;-->
-<!--                <option th:each="item_city : ${list_city}" th:value="${item_city}" th:text="${item_city}"></option>-->
-<!--            </select>-->
-<!--            <h5>상세 정보</h5>-->
-<!--            <input type="text" id="q" name="q" th:value="${q}">-->
-<!--            <button type="submit">검색</button>-->
-<!--        </form>-->
-        <div th:if="${paging != null}">
-            <div id="list_shop" th:each="shop : ${paging.getRecords()}">
-                <p th:text="${shop.shopNm}"></p>
-                <p th:text="${shop.shopAddr}"></p>
-                <p th:text="${shop.shopTel}"></p>
-            </div>
+        <div id="list_shop">
+
         </div>
 
     </div>

@@ -8,7 +8,9 @@ function searchCorp(){
         success: function (result){
             var list_shop = document.getElementById('list_shop');
             list_shop.innerHTML = "";
-            result.forEach(function (value, index, array){
+
+            var list = result.getRecords();
+            list.forEach(function (value, index, array){
                 list_shop.innerHTML += "<div>" +
                     "<div>" +
                     "<p>" +
@@ -29,17 +31,18 @@ function searchCorp(){
                     value.shopTel +
                     "</p>" +
                     "</div>" +
-                    "<button class='btn btn-primary' name='btn_selectShop' value='" +
+                    "<button class='btn btn-primary' name='btn_select_shop' value='" +
                     value.shopCd +
                     "'>" +
                     "선택" +
                     "</button>" +
                     "</div>";
             });
-            document.getElementsByName('btn_selectShop')
+            document.getElementsByName('btn_select_shop')
                 .forEach(function (value, key, parent) {
                     $(value).on('click',function (){
                         console.log("click: "+$(value).val());
+                        submitMANAGER($(value).val());
                     });
                 }
             );
@@ -47,66 +50,17 @@ function searchCorp(){
     });
 }
 
-function searchShop(){
-    var form_srch_shop = $('#form_srch_shop');
-
-    var state = $('#list_state').val();
-    var city = $('#list_city').val();
-    if(state === "" || city === ""){
-        return false;
-    }
-
-    form_srch_shop.attr('action','/account')
-
-    var detail = $('#input_detailAddr').val();
+function submitMANAGER(shopCode){
     var data = {
-        state: state,
-        city: city,
-        detail: detail
+        id: $('#user_id').val(),
+        role: 'MANAGER',
+        shopCd: shopCode
     };
 
-
-
-    // $.ajax({
-    //     url: '/account/search/shop',
-    //     type: 'post',
-    //     data: JSON.stringify(data),
-    //     contentType: 'application/json',
-    //     beforeSend: function (xhr){
-    //         xhr.setRequestHeader(header, token);
-    //     },
-    //     success: function (result){
-    //         var list_shop = document.getElementById('list_shop');
-    //         list_shop.innerHTML = "";
-    //         result.forEach(function (value, index, array){
-    //             list_shop.innerHTML += "<div>" +
-    //                 "<div>" +
-    //                 value.shopNm +
-    //                 "</div>" +
-    //                 "<div>" +
-    //                 "<p>" +
-    //                 value.shopAddr +
-    //                 "</p>" +
-    //                 "<p>" +
-    //                 value.shopTel +
-    //                 "</p>" +
-    //                 "</div>" +
-    //                 "<button class='btn btn-primary' name='btn_selectShop' value='" +
-    //                 value.shopCd +
-    //                 "'>" +
-    //                 "선택" +
-    //                 "</button>" +
-    //                 "</div>";
-    //         });
-    //         document.getElementsByName('btn_selectShop')
-    //             .forEach(function (value, key, parent) {
-    //                 $(value).on('click',function (){
-    //                     console.log("click: "+$(value).val());
-    //                 });
-    //             }
-    //         );
-    //     }
-    //
-    // });
-
+    var result = submitRole(data);
+    console.log(result);
+    if(result){
+        console.log("success: "+result);
+        window.location.href = "/home";
+    }
 }

@@ -17,8 +17,8 @@ function checkBusinessmanNo(){
             {
                 "b_no": $('#b_no').val(),
                 "start_dt": $('#start_dt').val(),
-                "p_nm": $('#p_nm').val(),
-                "p_nm2": $('#p_nm2').val(),
+                "p_nm": $('#p_en_nm').val(),
+                "p_nm2": $('#p_ko_nm').val(),
                 "b_nm": "",
                 "corp_no": "",
                 "b_sector": "",
@@ -29,6 +29,7 @@ function checkBusinessmanNo(){
     };
 
     var result = validateBusinessman(data);
+    console.log(result);
     if(result !== null && result.status_code === "OK"){
         console.log(result);
         if(result.data[0].valid === "01"){
@@ -78,35 +79,13 @@ function submitREPS(){
         return;
     }
 
-    var shopName = $('#shopName').val();
-    var state = $('#list_state').val();
-    var city = $('#list_city').val();
-    var detail = $('#input_detailAddr').val();
-    var shopAddr = state + " " + city + " " + detail;
+    var pKoNm = $('#p_ko_nm').val();
+    var pEnNm = $('#p_en_nm').val();
+    var corpNm = $('#corpName').val();
+    var corpTel = $('#corpTel').val();
+    var startDt = $('#start_dt').val();
 
-    var shopTel = $('#shopTel').val();
-
-    if(state === null || city === null || shopName === "" || shopTel === ""){
-        if(state === null || city === null){
-            $('#error_shopAddr').text("매장 주소 입력은 필수입니다");
-        }else{
-            $('#error_shopAddr').text("");
-        }
-
-        if(shopName === ""){
-            $('#error_shopName').text("매장 이름 입력은 필수입니다");
-        }
-        else{
-            $('#error_shopName').text("");
-        }
-
-        if(shopTel === ""){
-            $('#error_shopTel').text("매장 전화번호 입력은 필수입니다");
-        }
-        else {
-            $('#error_shopTel').text("");
-        }
-
+    if(pKoNm == null || pEnNm == null || corpNm == null || corpTel == null || startDt == null){
         return;
     }
 
@@ -114,15 +93,12 @@ function submitREPS(){
         id: $('#user_id').val(),
         role: 'REPS',
         biNo: $('#b_no').val(),
-        pNm: $('#p_nm').val(),
-        pNm2: $('#p_nm2').val(),
-        corpNm: $('#corpName').val(),
-        corpTel: $('#corpTel').val(),
-        startDt: $('#start_dt').val(),
-        shopNm: shopName,
-        shopAddr: shopAddr,
-        shopTel: shopTel
-    }
+        pKoNm: pKoNm,
+        pEnNm: pEnNm,
+        corpNm: corpNm,
+        corpTel: corpTel,
+        startDt: startDt
+    };
 
     var result = submitRole(data);
     console.log(result);

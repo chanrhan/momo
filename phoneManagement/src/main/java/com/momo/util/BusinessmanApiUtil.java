@@ -8,6 +8,8 @@ import java.net.*;
 
 // 국세청_사업자등록정보 진위확인 및 상태조회 서비스
 // https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15081808
+// 대표님 사업자번호
+// -> 5218702490
 
 public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 	private static final String serviceUrl = "https://api.odcloud.kr/api/nts-businessman/v1/validate";
