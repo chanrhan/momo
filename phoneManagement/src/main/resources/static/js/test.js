@@ -9,7 +9,7 @@ function foo(){
 
 function test_ajax_get(){
     $.ajax({
-        url: "/test/ajax",
+        url: "/test/post",
         type: "get",
         success: function (data){
             console.log(data);
@@ -24,7 +24,7 @@ function test_ajax_post(){
     }
 
     $.ajax({
-        url: "/test/ajax",
+        url: "/test/post",
         data: JSON.stringify(vo),
         type: "post",
         dataType: "json",

@@ -3,8 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>Test Home</title>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+<script>
+    const header = $("meta[name='_csrf_header']").attr('content');
+    const token = $("meta[name='_csrf']").attr('content');
+
+    function post(){
+        var data = {
+            name: 'Chan'
+        };
+        var rst = "";
+
+        $.ajax({
+            url: '/test/post',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            async: false,
+            beforeSend: function (xhr){
+                xhr.setRequestHeader(header, token);
+                console.log("before: "+rst);
+            },
+            success: function (result){
+                rst = result;
+                console.log("success: "+rst);
+            },
+            error: function (error){
+                console.log(error);
+            },
+            complete: function (ret){
+                console.log("complete: "+rst);
+            }
+        });
+       console.log("final: "+rst);
+    }
+
+    function get(){
+        var rst = "";
+
+        $.ajax({
+            url: '/test/get?name=Chan',
+            type: 'get',
+            async: false,
+            success: function (result){
+                rst = result;
+                console.log("success: "+rst);
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+        console.log("final: "+rst);
+    }
+
+    function test(){
+        var sendVo =  new Object();
+        var url;
+        url = "/insertTBM_ROUTE_COMMON_INFO";
+        //sendVo.filterType 	= '휴가종류';
+        //sendVo.filterText   = offTypeString;
+        sendVo.routeNm      = 'ALL';
+        sendVo.key      = '휴가종류';
+        // sendVo.memo      = offTypeString;
+
+        var jsonString = JSON.stringify (sendVo);
+
+        $.ajax({
+            url: '/test/post',
+            "data" : {strData : jsonString},
+            async : false,
+            // global : true,
+            // success: function(data) {
+            //     console.log("success: "+data);
+            //     // swal("정상처리되었습니다.[C]");
+            // },
+            // error : function(request, status, error) {
+            //     console.log("e: "+request);
+            //     // swal("처리오류 : " + request + '/' + status + '/' +error);
+            // }
+        }).done(function (result){
+            console.log("done: "+result);
+        });
+        console.log("final: ");
+    }
+</script>
 <a th:href="@{/test/search}">검색 테스트</a>
+<button type="button" class="btn btn-primary" onclick="post()">POST</button>
+<button type="button" class="btn btn-primary" onclick="get()">GET</button>
 </body>
 </html>
