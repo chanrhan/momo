@@ -6,25 +6,27 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+<!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <script>
     const header = $("meta[name='_csrf_header']").attr('content');
     const token = $("meta[name='_csrf']").attr('content');
 
-    function post(){
+    function post(side){
         var data = {
             name: 'Hee Chan'
         };
         var rst = "";
 
         $.ajax({
+            async: false,
             url: '/test/post',
             type: 'post',
             contentType: 'application/json',
             data: JSON.stringify(data),
-            async: false,
             beforeSend: function (xhr){
                 xhr.setRequestHeader(header, token);
                 console.log("before: "+rst);
@@ -43,13 +45,13 @@
        console.log("final: "+rst);
     }
 
-    function get(){
+    function get(side){
         var rst = "";
 
-        var jqXHR = $.ajax({
+        $.ajax({
+            async: (side === 'true'),
             url: '/test/get?name=Chan',
             type: 'get',
-            async: false,
             success: function (result){
                 rst = result;
                 console.log("success: "+rst);
@@ -59,11 +61,16 @@
             }
         });
         console.log("final: "+rst);
-        console.log("jqXHR: "+jqXHR.success());
     }
 </script>
-<a th:href="@{/test/search}">검색 테스트</a>
-<button type="button" class="btn btn-primary" onclick="post()">POST</button>
-<button type="button" class="btn btn-primary" onclick="get()">GET</button>
+<!--<a th:href="@{/test/search}">검색 테스트</a>-->
+async:
+<select id="async" class="form-select">
+    <option th:value="false">false</option>
+    <option th:value="true">true</option>
+</select>
+<br>
+<button type="button" class="btn btn-primary" onclick="post($('#async').val())">POST</button>
+<button type="button" class="btn btn-primary" onclick="get($('#async').val())">GET</button>
 </body>
 </html>

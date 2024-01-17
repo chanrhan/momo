@@ -10,7 +10,6 @@
             tb_sale
         where
             shop_cd=#{shopCd}
-
     </select>
 
     <insert id="insert" parameterType="com.momo.vo.SaleVO">

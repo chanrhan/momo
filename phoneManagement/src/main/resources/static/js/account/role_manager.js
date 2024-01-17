@@ -33,6 +33,8 @@ function searchCorp(){
                     "</div>" +
                     "<button class='btn btn-primary' name='btn_select_shop' value='" +
                     value.shopCd +
+                    "' th:reps_id='" +
+                    value.repsId +
                     "'>" +
                     "선택" +
                     "</button>" +
@@ -42,7 +44,9 @@ function searchCorp(){
                 .forEach(function (value, key, parent) {
                     $(value).on('click',function (){
                         console.log("click: "+$(value).val());
-                        submitMANAGER($(value).val());
+                        var shopCode = $(value).val();
+                        var repsId = $(value).attr('reps_id');
+                        submitMANAGER(shopCode, repsId);
                     });
                 }
             );
@@ -50,7 +54,7 @@ function searchCorp(){
     });
 }
 
-function submitMANAGER(shopCode){
+function submitMANAGER(shopCode, repsId){
     var data = {
         id: $('#user_id').val(),
         role: 'MANAGER',
@@ -60,6 +64,13 @@ function submitMANAGER(shopCode){
     var result = submitRole(data);
     console.log(result);
     if(result){
+        data = {
+            alarmTp: 'approval',
+            sender: $('#user_id').val(),
+            receiver: repsId
+        };
+
+        ws.send(JSON.stringify(data));
         console.log("success: "+result);
         window.location.href = "/home";
     }

@@ -107,6 +107,7 @@ public class AccountController {
 		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
 			ShopVO shopVO = userInfoVO.getShopVO();
+			shopVO.setRepsId(userInfoVO.getId());
 
 			result = corpService.insert(shopVO);
 			if(result == 0){

@@ -8,24 +8,13 @@ const koreanRegex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
 const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
+
+
 $(document).ready(function (){
     setPasswordToggle();
 });
 
-$(document).ajaxError(function(event, request, settings) {
-    // $('html').css("cursor", "auto");
-    // $.unblockUI();
-    console.log(settings);
-    console.log(request);
-    // if (request.status == 401) {
-    //     window.location = "/login2";
-    // } else
-    //     swal(request.responseText);
-    //var jsonData = JSON.parse(request.responseText);
-    //swal('error : ' + jsonData.message);
 
-    //window.location = "/loginError.html";
-});
 
 // 비밀번호 표시/숨기기 기능 세팅
 function setPasswordToggle(){
