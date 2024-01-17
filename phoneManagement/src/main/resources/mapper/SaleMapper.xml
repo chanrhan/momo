@@ -3,6 +3,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="getDetailByShopCode" parameterType="com.momo.vo.SaleVO">
+        select
+            *
+        from
+            tb_sale
+        where
+            shop_cd=#{shopCd}
 
+    </select>
+
+    <insert id="insert" parameterType="com.momo.vo.SaleVO">
+        insert into
+            tb_sale
+        (sale_no, shop_cd, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
+         move_plan, ct_cms, green_md, green_ret, sec_md, sec_cms, wt_tp, wt_div, wt_cms, net_actv_plan, net_dec_plan, tv_actv_plan,
+         tv_dec_plan, add_item, add_pay, add_dt, sup_div1, sup_pay1, sup_div2, sup_pay2, sup_div3, sup_pay3, sup_div4, sup_pay4, sup_div5,
+         sup_pay5, friend, sub_sv, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
+         spec, wt_expr_dt, non_disc, actv_time, etc)
+        values
+            (#{saleNo},#{shopCd},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
+             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{newActvPlan},#{netDecPlan},#{tvActvPlan},
+             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{subPay1},#{supDiv2},#{subPay2},#{supDiv3},#{subPay3},#{supDiv4},#{subPay4},
+             #{supDiv5},#{subPay5},#{friend},#{subSv},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
+             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{actvTime},#{etc})
+
+    </insert>
+
+    <update id="update" parameterType="com.momo.vo.SaleVO">
+        update
+        tb_sale
+        set
+            cust_nm=#{custNm},cust_tel=#{custTel},cust_cd=#{custCd},cust_gd=#{custGd},provider=#{provider},actv_dt=#{actvDt},ph_md=#{phMd},
+            ph_stor=#{phStor},istm=#{istm},actv_div=#{actvDiv},actv_tp=#{actvTp},actv_plan=#{actvPlan},
+            move_plan=#{movePlan},ct_cms=#{ctCms},green_md=#{greenMd},green_ret=#{greenRet},sec_md=#{secMd},sec_cms=#{secCms},wt_tp=#{wtTp},
+            wt_div=#{wtDiv},wt_cms=#{wtCms},net_actv_plan=#{newActvPlan},net_dec_plan=#{netDecPlan},tv_actv_plan=#{tvActvPlan},
+            tv_dec_plan=#{tvDecPlan},add_item=#{addItem},add_pay=#{addPay},add_dt=#{addDt},sup_div1=#{supDiv1},sup_pay1=#{subPay1},
+            sup_div2=#{supDiv2},sup_pay2=#{subPay2},sup_div3=#{supDiv3},sup_pay3=#{subPay3},sup_div4=#{supDiv4},sup_pay4=#{subPay4},
+            sup_div5=#{supDiv5},sup_pay5=#{subPay5},friend=#{friend},sub_sv=#{subSv},comb_move=#{combMove},card=#{card},card_div=#{cardDiv},
+            tot_add_pay=#{totAddPay},tot_rb=#{totRb},tot_sup=#{totSup},def_pc=#{defPc},seller_cms=#{sellerCms},ct_pt=#{ctPt},
+            wt_pt=#{wtPt},tot_pt=#{totPt},seller_id=#{sellerId},spec=#{spec},wt_expr_dt=#{wtExprDt},non_disc=#{nonDisc},actv_time=#{actvTime},etc=#{etc}
+        where
+            sale_no=#{saleNo} and
+            shop_cd=#{shopCd}
+
+    </update>
 
 </mapper>

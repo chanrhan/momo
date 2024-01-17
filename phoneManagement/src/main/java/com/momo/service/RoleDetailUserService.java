@@ -23,6 +23,15 @@ public class RoleDetailUserService implements DefaultCRUDService<UserInfoVO, Use
 		return roleDetailUserMapper.select(key);
 	}
 
+	public UserInfoVO selectById(String id){
+		return roleDetailUserMapper.selectById(id);
+	}
+
+	@Override
+	public UserInfoVO selectOne(UserInfoVO key) {
+		return select(key).get(0);
+	}
+
 	@Override
 	public int update(UserInfoVO key) {
 		return roleDetailUserMapper.update(key);

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>New Sale</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="/js/sale/sale_create.js" th:inline="javascript"></script>
+    <script src="/js/api/openapi.js"></script>
+</head>
+<body>
+    <h3>판매일보 추가</h3>
+    <form th:action="@{/sale/create}" type="post">
+        <h4>고객 정보</h4>
+        이름<input type="text" class="form-control" name="custNm">
+        성별<input type="text" class="form-control" name="custGd">
+        전화번호<input type="text" class="form-control" name="custTel">
+        식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="custCd">
+        <br>
+        <h4>개통 정보</h4>
+        통신사<input type="text" class="form-control" name="provider">
+        <br>
+        <h4>그린폰</h4>
+        <br>
+        <h4>세컨</h4>
+        <br>
+        <h4>유선</h4>
+        <br>
+        <h4>추가</h4>
+        <br>
+        <h4>지원</h4>
+        <br>
+        <h4>체크박스</h4>
+        <br>
+        <h4>토탈</h4>
+        <br>
+        <h4>기타 관리</h4>
+        <br>
+    </form>
+    <button type="button" class="btn-primary">다음</button>
+</body>
+</html>

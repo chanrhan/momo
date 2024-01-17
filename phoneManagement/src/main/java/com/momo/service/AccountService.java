@@ -43,6 +43,11 @@ public class AccountService implements DefaultCRUDService<UserInfoVO,UserInfoVO>
 		return accountMapper.select(key);
 	}
 
+	@Override
+	public UserInfoVO selectOne(UserInfoVO key) {
+		return select(key).get(0);
+	}
+
 	public List<UserInfoVO> search(UserInfoVO key) {
 		return accountMapper.search(key);
 	}

@@ -35,6 +35,11 @@ public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 		return shopMapper.select(key);
 	}
 
+	@Override
+	public ShopVO selectOne(ShopVO key) {
+		return select(key).get(0);
+	}
+
 	public List<ShopVO> search(ShopVO key) {
 		return shopMapper.search(key);
 	}

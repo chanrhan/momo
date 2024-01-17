@@ -33,6 +33,11 @@ public class CorpService implements DefaultCRUDService<ShopVO, ShopVO> {
 		return corpMapper.select(key);
 	}
 
+	@Override
+	public ShopVO selectOne(ShopVO key) {
+		return select(key).get(0);
+	}
+
 	public List<ShopVO> search(ShopVO key) {
 		return corpMapper.search(key);
 	}

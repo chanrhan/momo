@@ -15,7 +15,7 @@
 
     function post(){
         var data = {
-            name: 'Chan'
+            name: 'Hee Chan'
         };
         var rst = "";
 
@@ -46,7 +46,7 @@
     function get(){
         var rst = "";
 
-        $.ajax({
+        var jqXHR = $.ajax({
             url: '/test/get?name=Chan',
             type: 'get',
             async: false,
@@ -59,37 +59,7 @@
             }
         });
         console.log("final: "+rst);
-    }
-
-    function test(){
-        var sendVo =  new Object();
-        var url;
-        url = "/insertTBM_ROUTE_COMMON_INFO";
-        //sendVo.filterType 	= '휴가종류';
-        //sendVo.filterText   = offTypeString;
-        sendVo.routeNm      = 'ALL';
-        sendVo.key      = '휴가종류';
-        // sendVo.memo      = offTypeString;
-
-        var jsonString = JSON.stringify (sendVo);
-
-        $.ajax({
-            url: '/test/post',
-            "data" : {strData : jsonString},
-            async : false,
-            // global : true,
-            // success: function(data) {
-            //     console.log("success: "+data);
-            //     // swal("정상처리되었습니다.[C]");
-            // },
-            // error : function(request, status, error) {
-            //     console.log("e: "+request);
-            //     // swal("처리오류 : " + request + '/' + status + '/' +error);
-            // }
-        }).done(function (result){
-            console.log("done: "+result);
-        });
-        console.log("final: ");
+        console.log("jqXHR: "+jqXHR.success());
     }
 </script>
 <a th:href="@{/test/search}">검색 테스트</a>

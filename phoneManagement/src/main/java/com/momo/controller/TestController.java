@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Controller
 @RequestMapping("/test")
 @RequiredArgsConstructor
@@ -18,14 +16,14 @@ public class TestController {
 
 	@Data
 	static class Test{
-		private String strData;
+		private String name;
 	}
 
 	@RequestMapping("/post")
 	@ResponseBody
-	public String testPost(String str){
-		System.out.println("server: "+str);
-		return "Hello, "+str;
+	public String testPost(@RequestBody Test test){
+		System.out.println("server: "+test.getName());
+		return "Hello, "+test.name;
 	}
 	@GetMapping("/get")
 	@ResponseBody

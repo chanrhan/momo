@@ -34,6 +34,11 @@ public class TermService implements DefaultCRUDService<TermVO, TermVO> {
 		return termMapper.select(key);
 	}
 
+	@Override
+	public TermVO selectOne(TermVO key) {
+		return select(key).get(0);
+	}
+
 	public List<TermVO> search(TermVO key) {
 		return null;
 	}
