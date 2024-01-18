@@ -76,6 +76,13 @@
         1 = 1
     </select>
 
+    <select id="getMaxSaleNo">
+        select
+            max(sale_no)
+        from
+            tb_sale
+    </select>
+
     <insert id="insert" parameterType="com.momo.vo.SaleVO">
         insert into
             tb_sale
@@ -86,9 +93,9 @@
          spec, wt_expr_dt, non_disc, actv_time, etc)
         values
             (#{saleNo},#{shopCd},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
-             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{newActvPlan},#{netDecPlan},#{tvActvPlan},
-             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{subPay1},#{supDiv2},#{subPay2},#{supDiv3},#{subPay3},#{supDiv4},#{subPay4},
-             #{supDiv5},#{subPay5},#{friend},#{subSv},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
+             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
+             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{supPay1},#{supDiv2},#{supPay2},#{supDiv3},#{supPay3},#{supDiv4},#{supPay4},
+             #{supDiv5},#{supPay5},#{friend},#{subSv},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
              #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{actvTime},#{etc})
 
     </insert>

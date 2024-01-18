@@ -15,6 +15,8 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 
 	@Override
 	public int insert(SaleVO key) {
+		key.setSaleNo(getMaxSaleNo()+1);
+
 		return saleMapper.insert(key);
 	}
 
@@ -41,6 +43,14 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 	@Override
 	public List<SaleVO> selectAll() {
 		return saleMapper.selectAll();
+	}
+
+	public int getMaxSaleNo(){
+		Integer result = saleMapper.getMaxSaleNo();
+		if(result == null){
+			return 0;
+		}
+		return result;
 	}
 
 	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){

@@ -2,8 +2,9 @@
 let pageNum = 1;
 
 function showCreateSaleForm(){
+    var shopCode = $('#filter_shop').val();
     window.open(
-        "/sale/create",
+        "/sale/create?shopCd="+shopCode,
         "판매일보 추가",
         "width=500, height=500, location=no"
     );

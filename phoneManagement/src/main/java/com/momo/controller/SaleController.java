@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/sale")
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class SaleController {
 	private final EmployeeService employeeService;
 	private final ShopService     shopService;
@@ -42,7 +42,7 @@ public class SaleController {
 		}
 
 		model.addAttribute("list_shop", shopService.select(ShopVO.builder().bNo(shop.getBNo()).build()));
-		model.addAttribute("selected_shop", shop.getShopNm());
+		model.addAttribute("selected_shop", shop);
 
 		// 이거 나중에 Paging 으로 바꿀 것
 		model.addAttribute("list_sale", saleService.selectPage(1, SaleVO.builder().shopCd(shop.getShopCd()).build()));
@@ -57,15 +57,16 @@ public class SaleController {
 	}
 
 	@GetMapping("/create")
-	public String saleCreateGET(Model model){
+	public String saleCreateGET(Model model, @RequestParam int shopCd){
 		String username = SecurityContextUtil.getUsername();
-
+		model.addAttribute("shopCode",shopCd);
 
 		return "sale/sale_create";
 	}
 
 	@PostMapping("/create")
-	public String saleCreatePOST(@RequestBody SaleVO saleVO){
+	public String saleCreatePOST(@ModelAttribute SaleVO saleVO){
+		System.out.println(saleVO);
 		int result = saleService.insert(saleVO);
 		if(result == 0){
 			return "redirect:/sale/create";

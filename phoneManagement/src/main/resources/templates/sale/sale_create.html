@@ -13,7 +13,8 @@
 </head>
 <body>
     <h3>판매일보 추가</h3>
-    <form th:action="@{/sale/create}" type="post">
+    <form th:action="@{/sale/create}" method="post">
+        <input type="hidden" name="shopCd" th:value="${shopCode}">
         <h4>고객 정보</h4>
         이름<input type="text" class="form-control" name="custNm">
         성별<input type="text" class="form-control" name="custGd">
@@ -39,7 +40,7 @@
         <br>
         <h4>기타 관리</h4>
         <br>
+        <button type="submit" class="btn-primary">다음</button>
     </form>
-    <button type="button" class="btn-primary">다음</button>
 </body>
 </html>

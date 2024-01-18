@@ -12,4 +12,5 @@ public interface SaleMapper extends DefaultCRUDService<SaleVO, SaleVO> {
 	public int countSelect(SaleVO saleVO);
 	public List<SaleVO> search(SaleVO saleVO);
 	public int countSearch(SaleVO saleVO);
+	public Integer getMaxSaleNo();
 }

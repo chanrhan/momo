@@ -9,8 +9,8 @@
     <h2>판매 일보</h2>
     <a th:href="@{/sale/graph}">판매 지표</a>
     <a th:href="@{/sale/msg_form}">문자 양식 관리</a>
-    <select id="filter_shop" th:value="${selected_shop}">
-        <option th:each="shop : ${list_shop}"  th:value="${shop.shopNm}" th:text="${shop.shopNm}"></option>
+    <select id="filter_shop" th:value="${selected_shop.shopCd}">
+        <option th:each="shop : ${list_shop}" th:value="${shop.shopCd}" th:text="${shop.shopNm}"></option>
     </select>
     <br>
     <button type="button" class="btn btn-primary" onclick="showCreateSaleForm()">추가</button>
