@@ -45,15 +45,6 @@ function checkBusinessmanNo(){
     }
 }
 
-// 우편번호 조회 UI 띄워주기
-function showZipCodeUI(){
-    window.open(
-        "/zipcode/window/open",
-        "check Zip Code",
-        "width=500, height=500, location=no"
-    );
-}
-
 // 사업자번호 유효성 검사
 function validateBNo(_this) {
     isBNoChecked = false;
@@ -92,7 +83,7 @@ function submitREPS(){
     var data = {
         id: $('#user_id').val(),
         role: 'REPS',
-        biNo: $('#b_no').val(),
+        bNo: $('#b_no').val(),
         pKoNm: pKoNm,
         pEnNm: pEnNm,
         corpNm: corpNm,

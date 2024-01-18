@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 public class AlarmVO {
-	private String sender;
-	private String receiver;
-	private String alarmTp;
-	private String content;
-	private boolean read;
+	private String        sender;
+	private String        receiver;
+	private String        alarmTp;
+	private String        content;
+	private boolean       readSt;
 	private LocalDateTime sendDt;
 }

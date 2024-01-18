@@ -1,30 +1,29 @@
 package com.momo.service;
 
-import com.momo.mapper.RoleDetailUserMapper;
+import com.momo.mapper.EmployeeMapper;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RoleDetailUserService implements DefaultCRUDService<UserInfoVO, UserInfoVO> {
-	private final RoleDetailUserMapper roleDetailUserMapper;
+public class EmployeeService implements DefaultCRUDService<UserInfoVO, UserInfoVO> {
+	private final EmployeeMapper employeeMapper;
 
 	@Override
 	public int insert(UserInfoVO key) {
-		return roleDetailUserMapper.insert(key);
+		return employeeMapper.insert(key);
 	}
 
 	@Override
 	public List<UserInfoVO> select(UserInfoVO key) {
-		return roleDetailUserMapper.select(key);
+		return employeeMapper.select(key);
 	}
 
 	public UserInfoVO selectById(String id){
-		return roleDetailUserMapper.selectById(id);
+		return employeeMapper.selectById(id);
 	}
 
 	@Override
@@ -34,22 +33,22 @@ public class RoleDetailUserService implements DefaultCRUDService<UserInfoVO, Use
 
 	@Override
 	public int update(UserInfoVO key) {
-		return roleDetailUserMapper.update(key);
+		return employeeMapper.update(key);
 	}
 
 	public int updateShop(UserInfoVO userInfoVO){
-		UserInfoVO user = roleDetailUserMapper.selectById(userInfoVO.getId());
+		UserInfoVO user = employeeMapper.selectById(userInfoVO.getId());
 		user.setShopCd(userInfoVO.getShopCd());
-		return roleDetailUserMapper.updateShop(user);
+		return employeeMapper.updateShop(user);
 	}
 
 	@Override
 	public int delete(UserInfoVO key) {
-		return roleDetailUserMapper.delete(key);
+		return employeeMapper.delete(key);
 	}
 
 	@Override
 	public List<UserInfoVO> selectAll() {
-		return roleDetailUserMapper.selectAll();
+		return employeeMapper.selectAll();
 	}
 }

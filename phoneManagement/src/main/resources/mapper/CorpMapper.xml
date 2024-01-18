@@ -9,6 +9,9 @@
         from
             tb_corp
         where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
         <if test='bNo != null and !bNo.equals("")'>
             b_no=#{bNo} and
         </if>
@@ -44,6 +47,9 @@
         from
             tb_corp
         where
+        <if test='id != null and !id.equals("")'>
+            id like '%${id}%' and
+        </if>
         <if test='shopNm != null and !shopNm.equals("")'>
             b_no like '%${shopNm}%' and
         </if>
@@ -79,6 +85,9 @@
         from
         tb_corp
         where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
         <if test='bNo != null and !bNo.equals("")'>
             b_no=#{bNo} and
         </if>
@@ -110,9 +119,9 @@
     <insert id="insert" parameterType="com.momo.vo.ShopVO">
         insert into
             tb_corp
-            (b_no, p_ko_nm, p_en_nm, corp_nm, corp_tel, start_dt)
+            (id, b_no, p_ko_nm, p_en_nm, corp_nm, corp_tel, start_dt)
         values
-            (#{bNo},#{pKoNm},#{pEnNm},#{corpNm},#{corpTel},#{startDt})
+            (#{id},#{bNo},#{pKoNm},#{pEnNm},#{corpNm},#{corpTel},#{startDt})
     </insert>
 
     <update id="update" parameterType="com.momo.vo.ShopVO">
@@ -125,14 +134,14 @@
             corp_tel=#{corpTel},
             start_dt=#{startDt}
         where
-            b_no=#{bNo}
+            id=#{id}
     </update>
 
     <delete id="delete" parameterType="com.momo.vo.ShopVO">
         delete from
             tb_corp
                where
-                   b_no=#{bNo}
+                   id=#{id}
     </delete>
 
 

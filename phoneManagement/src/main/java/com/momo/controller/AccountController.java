@@ -3,13 +3,11 @@ package com.momo.controller;
 import com.momo.domain.Paging;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.vo.RegionVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
-import org.apache.ibatis.reflection.invoker.Invoker;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-	private final AccountService        accountService;
-	private final RoleDetailUserService roleDetailUserService;
+	private final AccountService accountService;
+
+	private final EmployeeService employeeService;
 
 	private final TermService   termService;
 	private final ShopService   shopService;
@@ -88,14 +87,14 @@ public class AccountController {
 		if (result == 0)
 			return false;
 
-		accountService.loginWithSignup(userInfoVO.getId());
+//		accountService.loginWithSignup(userInfoVO.getId());
 		return true;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
 	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO) {
-		//		System.out.println(userInfoVO);
+		System.out.println(userInfoVO);
 		int result = 0;
 		result = accountService.updateRole(userInfoVO);
 		if (result == 0) {
@@ -106,17 +105,14 @@ public class AccountController {
 
 		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
-			ShopVO shopVO = userInfoVO.getShopVO();
-			shopVO.setRepsId(userInfoVO.getId());
-
-			result = corpService.insert(shopVO);
+			result = corpService.insert(userInfoVO.getShopVO());
 			if(result == 0){
 				return false;
 			}
 		}
 
-		if (!role.equals("ADMIN")) {
-			result = roleDetailUserService.insert(userInfoVO);
+		if (role.equals("REPS") || role.equals("MANAGER")) {
+			result = employeeService.insert(userInfoVO);
 		}
 
 		return result != 0;

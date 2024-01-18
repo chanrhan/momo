@@ -3,13 +3,77 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="getDetailByShopCode" parameterType="com.momo.vo.SaleVO">
+    <select id="search" parameterType="com.momo.vo.SaleVO">
+        select
+        *
+        from
+        tb_sale
+        where
+            cust_nm like '%${keyword}%' or
+            cust_tel like '%${keyword}%' or
+            cust_cd like '%${keyword}%'
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="countSearch" parameterType="com.momo.vo.SaleVO">
+        select
+        count(*)
+        from
+        tb_sale
+        where
+        cust_nm like '%${keyword}%' or
+        cust_tel like '%${keyword}%' or
+        cust_cd like '%${keyword}%'
+    </select>
+
+
+
+    <select id="select" parameterType="com.momo.vo.SaleVO">
         select
             *
         from
             tb_sale
         where
-            shop_cd=#{shopCd}
+        <if test='saleNo != null and !saleNo.equals("")'>
+            sale_no=#{saleNo} and
+        </if>
+        <if test='shopCd != null and shopCd gt 0'>
+            shop_cd=#{shopCd} and
+        </if>
+        <if test='provider != null and !provider.equals("")'>
+            provider=#{provider} and
+        </if>
+        1 = 1
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
+    <select id="countSelect" parameterType="com.momo.vo.SaleVO">
+        select
+        count(*)
+        from
+        tb_sale
+        where
+        <if test='shopCd != null and shopCd gt 0'>
+            shop_cd=#{shopCd} and
+        </if>
+        <if test='provider != null and !provider.equals("")'>
+            provider=#{provider} and
+        </if>
+        1 = 1
     </select>
 
     <insert id="insert" parameterType="com.momo.vo.SaleVO">

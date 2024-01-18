@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.momo.mapper.RoleDetailUserMapper">
+<mapper namespace="com.momo.mapper.EmployeeMapper">
     <select id="selectById">
         select
             *
         from
-            tb_user
+            tb_emp
         where
             id=#{id}
     </select>
@@ -16,13 +16,16 @@
         select
         *
         from
-        tb_user
+        tb_emp
         where
         <if test='id != null and !id.equals("")'>
             id=#{id} and
         </if>
         <if test='role != null and !role.equals("")'>
             role=#{role} and
+        </if>
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no=#{bNo} and
         </if>
         <if test='shopCd != null and !shopCd.equals("")'>
             shop_cd=#{shopCd} and
@@ -42,13 +45,16 @@
         select
             *
         from
-            tb_user
+        tb_emp
         where
         <if test='id != null and !id.equals("")'>
             id like '%${id}%' and
         </if>
         <if test='role != null and !role.equals("")'>
             role like '%${role}%' and
+        </if>
+        <if test='bNo != null and !bNo.equals("")'>
+            b_no like '%${bNo}%' and
         </if>
         <if test='shopCd != null and !shopCd.equals("")'>
             shop_cd like '%${shopCd}%' and
@@ -69,30 +75,29 @@
         select
             *
         from
-            tb_user
+            tb_emp
     </select>
 
     <insert id="insert" parameterType="com.momo.vo.UserInfoVO">
         insert into
-            tb_user
-            (id, role, shop_cd)
+            tb_emp
+            (id, role, b_no, shop_cd)
         VALUES
-            (#{id},#{role},#{shopCd})
+            (#{id},#{role},#{bNo},#{shopCd})
     </insert>
 
     <update id="update" parameterType="com.momo.vo.UserInfoVO">
         update
-            tb_user
+            tb_emp
         set
             shop_cd=#{shopCd}
         where
-            id=#{id} and
-            role=#{role}
+            id=#{id}
     </update>
 
     <delete id="delete" parameterType="com.momo.vo.UserInfoVO">
         delete from
-            tb_user
+            tb_emp
         where
             id=#{id}
     </delete>

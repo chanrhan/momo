@@ -1,8 +1,7 @@
 package com.momo.controller;
 
-import com.momo.domain.user.UserDetailsImpl;
-import com.momo.mapper.RoleDetailUserMapper;
-import com.momo.service.RoleDetailUserService;
+import com.momo.domain.Paging;
+import com.momo.service.EmployeeService;
 import com.momo.service.SaleService;
 import com.momo.service.ShopService;
 import com.momo.util.SecurityContextUtil;
@@ -11,10 +10,6 @@ import com.momo.vo.ShopVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/sale")
-@PreAuthorize("hasAuthority('REPS') || hasAuthority('MANAGER')")
+@PreAuthorize("isAuthenticated()")
 public class SaleController {
-	private final RoleDetailUserService roleDetailUserService;
-	private final ShopService shopService;
+	private final EmployeeService employeeService;
+	private final ShopService     shopService;
 	private final SaleService saleService;
 
 	@GetMapping("")
@@ -38,16 +33,19 @@ public class SaleController {
 		String username = SecurityContextUtil.getUsername();
 //		System.out.println("username: "+username);
 
-		int shopCode = roleDetailUserService.selectById(username).getShopCd();
-//		System.out.println("shopCode: "+shopCode);
-		ShopVO shop = shopService.selectOne(ShopVO.builder().shopCd(shopCode).build());
-//		System.out.println("shop: "+shop);
+		UserInfoVO emp = employeeService.selectById(username);
+		ShopVO shop;
+		if(emp.getRole().equals("REPS")){
+			shop = shopService.selectOne(ShopVO.builder().bNo(emp.getBNo()).build());
+		}else{
+			shop = shopService.selectOne(ShopVO.builder().shopCd(emp.getShopCd()).build());
+		}
 
 		model.addAttribute("list_shop", shopService.select(ShopVO.builder().bNo(shop.getBNo()).build()));
 		model.addAttribute("selected_shop", shop.getShopNm());
 
 		// 이거 나중에 Paging 으로 바꿀 것
-		model.addAttribute("list_sale", saleService.getDetailByShopCode(SaleVO.builder().shopCd(shopCode).build()));
+		model.addAttribute("list_sale", saleService.selectPage(1, SaleVO.builder().shopCd(shop.getShopCd()).build()));
 
 		return "sale/home";
 	}
@@ -89,5 +87,19 @@ public class SaleController {
 	@GetMapping("/msg_form")
 	public String msgForm(){
 		return "sale/msg_form";
+	}
+
+	@GetMapping("/list/filter")
+	@ResponseBody
+	public Paging<SaleVO> filterProvider(@RequestParam int page,
+									  	 @RequestParam String provider){
+		return saleService.selectPage(page, SaleVO.builder().provider(provider).build());
+	}
+
+	@GetMapping("/list/srch")
+	@ResponseBody
+	public Paging<SaleVO> searchSale(@RequestParam int page,
+									 @RequestParam String keyword){
+		return saleService.searchPage(page, SaleVO.builder().keyword(keyword).build());
 	}
 }

@@ -1,16 +1,18 @@
 package com.momo.vo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class SaleVO {
+public class SaleVO extends AbstractQueryVO{
 	private int saleNo; // 판매일보 번호
 	private int shopCd; // 매장 코드
 

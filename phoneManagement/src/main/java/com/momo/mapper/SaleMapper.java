@@ -8,5 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface SaleMapper extends DefaultCRUDService<SaleVO, SaleVO> {
-	public List<SaleVO> getDetailByShopCode(SaleVO saleVO);
+	public List<SaleVO> select(SaleVO saleVO);
+	public int countSelect(SaleVO saleVO);
+	public List<SaleVO> search(SaleVO saleVO);
+	public int countSearch(SaleVO saleVO);
 }

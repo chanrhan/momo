@@ -6,11 +6,13 @@
     <select id="searchBranch" parameterType="com.momo.vo.ShopVO">
         with branch as(
             select
+                c.id as id,
                 c.corp_nm as corp_nm,
                 c.b_no as b_no,
                 s.shop_nm as shop_nm,
                 s.shop_addr as shop_addr,
-                s.shop_tel as shop_tel
+                s.shop_tel as shop_tel,
+                s.shop_cd as shop_cd
             from
                 tb_corp as c
             left outer join tb_shop s on c.b_no = s.b_no
@@ -155,9 +157,9 @@
     <insert id="insert" parameterType="com.momo.vo.ShopVO">
         insert into
             tb_shop
-            (shop_cd, reps_id, shop_nm, shop_addr, shop_tel, b_no)
+            (shop_cd, shop_nm, shop_addr, shop_tel, b_no)
         values
-            (#{shopCd},#{repsId},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
+            (#{shopCd},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
     </insert>
 
     <update id="update" parameterType="com.momo.vo.ShopVO">

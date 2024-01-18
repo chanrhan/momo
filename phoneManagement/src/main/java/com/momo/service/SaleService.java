@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.domain.Paging;
 import com.momo.mapper.SaleMapper;
 import com.momo.vo.SaleVO;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 	private final SaleMapper saleMapper;
-
-	public List<SaleVO> getDetailByShopCode(SaleVO saleVO){
-		return saleMapper.getDetailByShopCode(saleVO);
-	}
 
 	@Override
 	public int insert(SaleVO key) {
@@ -44,5 +41,27 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 	@Override
 	public List<SaleVO> selectAll() {
 		return saleMapper.selectAll();
+	}
+
+	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){
+		Paging<SaleVO> paging = new Paging<>(page, 10);
+		saleVO.setOffset(paging.getOffset());
+		saleVO.setLimit(paging.getSize());
+
+		paging.setRecords(saleMapper.select(saleVO));
+		paging.setTotalRecordCount(saleMapper.countSelect(saleVO));
+
+		return paging;
+	}
+
+	public Paging<SaleVO> searchPage(int page, SaleVO saleVO){
+		Paging<SaleVO> paging = new Paging<>(page, 10);
+		saleVO.setOffset(paging.getOffset());
+		saleVO.setLimit(paging.getSize());
+
+		paging.setRecords(saleMapper.search(saleVO));
+		paging.setTotalRecordCount(saleMapper.countSearch(saleVO));
+
+		return paging;
 	}
 }

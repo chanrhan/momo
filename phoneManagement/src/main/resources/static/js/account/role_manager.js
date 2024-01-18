@@ -9,8 +9,10 @@ function searchCorp(){
             var list_shop = document.getElementById('list_shop');
             list_shop.innerHTML = "";
 
-            var list = result.getRecords();
+            var list = result.records;
             list.forEach(function (value, index, array){
+                console.log(value.shopCd);
+                console.log(value.id);
                 list_shop.innerHTML += "<div>" +
                     "<div>" +
                     "<p>" +
@@ -33,8 +35,8 @@ function searchCorp(){
                     "</div>" +
                     "<button class='btn btn-primary' name='btn_select_shop' value='" +
                     value.shopCd +
-                    "' th:reps_id='" +
-                    value.repsId +
+                    "' reps_id='" +
+                    value.id +
                     "'>" +
                     "선택" +
                     "</button>" +
@@ -43,9 +45,9 @@ function searchCorp(){
             document.getElementsByName('btn_select_shop')
                 .forEach(function (value, key, parent) {
                     $(value).on('click',function (){
-                        console.log("click: "+$(value).val());
                         var shopCode = $(value).val();
                         var repsId = $(value).attr('reps_id');
+                        console.log("click: "+shopCode +" / " + repsId);
                         submitMANAGER(shopCode, repsId);
                     });
                 }

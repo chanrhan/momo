@@ -12,4 +12,13 @@
             receiver=#{receiver}
     </select>
 
+    <insert id="insert" parameterType="com.momo.vo.AlarmVO">
+        insert into
+            tb_alarm
+        (sender, receiver, alarm_tp, content)
+        values
+            (#{sender},#{receiver},#{alarmTp},#{content})
+
+    </insert>
+
 </mapper>
