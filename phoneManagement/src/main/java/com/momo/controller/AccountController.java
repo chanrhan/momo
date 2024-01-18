@@ -1,0 +1,166 @@
+package com.momo.controller;
+
+import com.momo.domain.Paging;
+import com.momo.service.*;
+import com.momo.util.BusinessmanApiUtil;
+import com.momo.vo.ShopVO;
+import com.momo.vo.TermVO;
+import com.momo.vo.UserInfoVO;
+import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/account")
+public class AccountController {
+	private final AccountService accountService;
+
+	private final EmployeeService employeeService;
+
+	private final TermService   termService;
+	private final ShopService   shopService;
+	private final CorpService   corpService;
+	private final RegionService regionService;
+
+	@GetMapping("/login")
+	public String login() {
+		return "account/login";
+	}
+
+//	@PreAuthorize("isAnonymous()")
+	@GetMapping("/signup")
+	public String signup(Model model) {
+		List<TermVO> termList = termService.selectAll();
+		model.addAttribute("terms", termList);
+		return "account/signup";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/role")
+	public String roleSelect() {
+		return "account/role_select";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/role/reps")
+	public String roleReps(Model model) {
+		model.addAttribute("list_state", regionService.selectAllState());
+
+		return "account/role_reps";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/role/manager")
+	public String roleManager(Model model, @RequestParam(defaultValue = "") String state, @RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "") String q, @RequestParam(defaultValue = "1") int page) {
+		if (!state.equals("") && !city.equals("")) {
+			String         keyword = state + " " + city;
+			Paging<ShopVO> paging  = shopService.selectPage(page, "shop_addr", keyword);
+			model.addAttribute("paging", paging);
+			model.addAttribute("list_city", regionService.selectByState(state).split(","));
+		}
+
+		model.addAttribute("list_state", regionService.selectAllState());
+		model.addAttribute("state", state);
+		model.addAttribute("city", city);
+		model.addAttribute("q", q);
+
+		return "account/role_manager";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/role/customer")
+	public String roleCustomer(Model model) {
+		return "account/role_customer";
+	}
+
+	@PostMapping("/submit")
+	@ResponseBody
+	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
+		//		System.out.println(userInfoVO);
+		int result = accountService.insert(userInfoVO);
+		if (result == 0)
+			return false;
+
+//		accountService.loginWithSignup(userInfoVO.getId());
+		return true;
+	}
+
+	@PostMapping("/submit/role")
+	@ResponseBody
+	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO) {
+		System.out.println(userInfoVO);
+		int result = 0;
+		result = accountService.updateRole(userInfoVO);
+		if (result == 0) {
+			return false;
+		}
+
+		accountService.replaceAuthority(userInfoVO.getRole());
+
+		String role = userInfoVO.getRole();
+		if (role.equals("REPS")) {
+			result = corpService.insert(userInfoVO.getShopVO());
+			if(result == 0){
+				return false;
+			}
+		}
+
+		if (role.equals("REPS") || role.equals("MANAGER")) {
+			result = employeeService.insert(userInfoVO);
+		}
+
+		return result != 0;
+	}
+
+	// 아이디 중복체크 API
+	@GetMapping("/validate/dup/{target}")
+	@ResponseBody
+	public boolean checkDupId(@PathVariable String target, @RequestParam("value") String value) {
+		//		System.out.println(target);
+		//		System.out.println(value);
+		switch (target) {
+			case "id":
+				return accountService.getAccountById(value) == null;
+			case "email":
+				return accountService.getAccountByEmail(value) == null;
+		}
+		return false;
+	}
+
+	@PostMapping("/validate/bno")
+	@ResponseBody
+	public JSONObject validateBusinessNumber(@RequestBody JSONObject data) {
+		JSONObject j = BusinessmanApiUtil.validate(JSONObject.toJSONString(data));
+		System.out.println(j);
+		return j;
+	}
+
+	@GetMapping("/city")
+	@ResponseBody
+	public String[] getCity(@RequestParam String state) {
+		String cities = regionService.selectByState(state);
+		return cities.split(",");
+	}
+
+	@GetMapping("/search/corp")
+	@ResponseBody
+	public Paging<ShopVO> searchCorp(@RequestParam(defaultValue = "1") int page,
+								  @RequestParam(defaultValue = "") String keyword){
+		return shopService.searchBranch(page, keyword);
+	}
+
+	//	@PostMapping("/search/shop")
+	//	@ResponseBody
+	//	public List<ShopVO> searchShopByAddress(@RequestBody RegionVO regionVO){
+	////		System.out.println(regionVO);
+	//		return shopService.searchByRegion(regionVO);
+	//	}
+
+
+}

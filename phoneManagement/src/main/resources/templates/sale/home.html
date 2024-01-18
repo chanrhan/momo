@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/home.js" th:inline="javascript"></script>
+    <h2>판매 일보</h2>
+    <a th:href="@{/sale/graph}">판매 지표</a>
+    <a th:href="@{/sale/msg_form}">문자 양식 관리</a>
+    <select id="filter_shop" th:value="${selected_shop}">
+        <option th:each="shop : ${list_shop}"  th:value="${shop.shopNm}" th:text="${shop.shopNm}"></option>
+    </select>
+    <br>
+    <button type="button" class="btn btn-primary" onclick="showCreateSaleForm()">추가</button>
+    <br>
+    <div id="list_sale">
+        <select class="form-select" id="filter_provider" onchange="filterProvider()">
+            <option selected value disabled>통신사 선택</option>
+            <option value="SKT">SKT</option>
+            <option value="KT">KT</option>
+            <option value="LG">LG</option>
+<!--            <option value="알뜰폰">알뜰폰</option>-->
+        </select>
+        <input type="text" class="form-control" id="srch_sale">
+        <button type="button" class="btn btn-primary" onclick="searchSale()">검색</button>
+        <br>
+<!--        <button type="button" class="btn btn-primary" onclick="searchSale()">이름 정렬</button>-->
+        <div th:each="sale : ${list_sale.getRecords()}" th:object="${sale}">
+            <p th:text="*{custNm}"></p>
+            <p th:text="*{custTel}"></p>
+            <p th:text="*{custCd}"></p>
+            <p th:text="*{provider}"></p>
+        </div>
+
+    </div>
+
+</div>
+</html>

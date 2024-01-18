@@ -3,20 +3,26 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <header th:fragment="header">
+    <script src="/js/layout/header.js"></script>
     <nav>
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Phone Management</a>
+            <a class="navbar-brand" sec:authorize="isAuthenticated()" href="/home" style="font-size: 30px">MOMO (모바일의 모든것)</a>
+            <a class="navbar-brand" sec:authorize="isAnonymous()" href="/" style="font-size: 30px">MOMO (모바일의 모든것)</a>
             <div class="navbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/account/login}">Login</a>
-<!--                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">Login</a>-->
-<!--                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Logout</a>-->
-                    </li>
-<!--                    <li>-->
-<!--                        <p class="label" sec:authorize="isAuthenticated()" th:text="${#authentication.getPrincipal().getUsername()}"></p>-->
-<!--                    </li>-->
-                </ul>
+                <div class="navbar-nav me-auto mb-2 mb-lg-0" style="display: flex;">
+                    <div class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" sec:authorize="isAuthenticated()"
+                           th:text="${#authentication.getPrincipal().getUsername()}"
+                            th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}"></a>
+                    </div>
+                    <div>
+                        <p>알람</p>
+                        <p id="alarm_count"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

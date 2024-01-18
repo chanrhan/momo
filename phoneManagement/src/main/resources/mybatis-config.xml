@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+<!--        언더바 형식의 필드명을 CamelCase로 변환-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+<!--        쿼리 결과 필드가 null인 경우, 누락이 되서 나오게 되는데, 이를 방지하여 누락이 안되게 하는 설정-->
+        <setting name="callSettersOnNulls" value="true"/>
+<!--        쿼리에 보내는 파라미터가 null인 경우, 오류 발생 방지-->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+</configuration>

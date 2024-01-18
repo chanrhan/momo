@@ -13,8 +13,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 
-<!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-    <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="/js/common/common.js"></script>
     <script src="/js/layout/header.js"></script>
     <title>MOMO</title>
@@ -23,7 +22,6 @@
 <input type="hidden" id="user_id" sec:authorize="isAuthenticated()"  th:value="${#authentication.getPrincipal().getUsername()}"/>
 <input type="hidden" id="user_role" sec:authorize="isAuthenticated()" th:value="${#authentication.getAuthorities().iterator().next().getAuthority()}"/>
 
-<header th:replace="~{/layout/header :: header}"></header>
 <body>
 <!--    <nav layout:replace="~{/layout/nav :: navbar}"></nav>-->
     <th:block layout:fragment="content"></th:block>
