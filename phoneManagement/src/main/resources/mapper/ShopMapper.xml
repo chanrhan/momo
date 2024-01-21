@@ -23,11 +23,9 @@
         from
             branch
         where
-            b_no like '%${keyword}%' or
-            corp_nm like '%${keyword}%' or
-            shop_nm like '%${keyword}%'
+            ${orSearch}
         order by
-            #{startDt}
+            #{orderby}
         limit
             #{offset},#{limit}
 
@@ -51,9 +49,7 @@
         from
             branch
         where
-            b_no like '%${keyword}%' or
-            corp_nm like '%${keyword}%' or
-            shop_nm like '%${keyword}%'
+            ${orSearch}
 
     </select>
 

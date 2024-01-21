@@ -67,6 +67,21 @@ public class SaleController {
 		return "sale/sale_create";
 	}
 
+	@PostMapping("/update")
+	@ResponseBody
+	public boolean saleUpdate(@RequestBody SaleVO saleVO){
+		System.out.println(saleVO);
+		int result = saleService.update(saleVO);
+
+		return result != 0;
+	}
+
+	@GetMapping("/delete/{saleNo}")
+	@ResponseBody
+	public boolean saleDelete(@PathVariable int saleNo){
+		return saleService.delete(SaleVO.builder().saleNo(saleNo).build()) != 0;
+	}
+
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean saleCreatePOST(@RequestBody SaleVO saleVO){

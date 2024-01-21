@@ -67,6 +67,9 @@
         from
         tb_sale
         where
+        <if test='saleNo != null and saleNo gt 0'>
+            sale_no=#{saleNo} and
+        </if>
         <if test='shopCd != null and shopCd gt 0'>
             shop_cd=#{shopCd} and
         </if>
@@ -107,16 +110,22 @@
             cust_nm=#{custNm},cust_tel=#{custTel},cust_cd=#{custCd},cust_gd=#{custGd},provider=#{provider},actv_dt=#{actvDt},ph_md=#{phMd},
             ph_stor=#{phStor},istm=#{istm},actv_div=#{actvDiv},actv_tp=#{actvTp},actv_plan=#{actvPlan},
             move_plan=#{movePlan},ct_cms=#{ctCms},green_md=#{greenMd},green_ret=#{greenRet},sec_md=#{secMd},sec_cms=#{secCms},wt_tp=#{wtTp},
-            wt_div=#{wtDiv},wt_cms=#{wtCms},net_actv_plan=#{newActvPlan},net_dec_plan=#{netDecPlan},tv_actv_plan=#{tvActvPlan},
-            tv_dec_plan=#{tvDecPlan},add_item=#{addItem},add_pay=#{addPay},add_dt=#{addDt},sup_div1=#{supDiv1},sup_pay1=#{subPay1},
-            sup_div2=#{supDiv2},sup_pay2=#{subPay2},sup_div3=#{supDiv3},sup_pay3=#{subPay3},sup_div4=#{supDiv4},sup_pay4=#{subPay4},
-            sup_div5=#{supDiv5},sup_pay5=#{subPay5},friend=#{friend},sub_sv=#{subSv},comb_move=#{combMove},card=#{card},card_div=#{cardDiv},
+            wt_div=#{wtDiv},wt_cms=#{wtCms},net_actv_plan=#{netActvPlan},net_dec_plan=#{netDecPlan},tv_actv_plan=#{tvActvPlan},
+            tv_dec_plan=#{tvDecPlan},add_item=#{addItem},add_pay=#{addPay},add_dt=#{addDt},sup_div1=#{supDiv1},sup_pay1=#{supPay1},
+            sup_div2=#{supDiv2},sup_pay2=#{supPay2},sup_div3=#{supDiv3},sup_pay3=#{supPay3},sup_div4=#{supDiv4},sup_pay4=#{supPay4},
+            sup_div5=#{supDiv5},sup_pay5=#{supPay5},friend=#{friend},sub_sv=#{subSv},comb_move=#{combMove},card=#{card},card_div=#{cardDiv},
             tot_add_pay=#{totAddPay},tot_rb=#{totRb},tot_sup=#{totSup},def_pc=#{defPc},seller_cms=#{sellerCms},ct_pt=#{ctPt},
             wt_pt=#{wtPt},tot_pt=#{totPt},seller_id=#{sellerId},spec=#{spec},wt_expr_dt=#{wtExprDt},non_disc=#{nonDisc},actv_time=#{actvTime},etc=#{etc}
         where
-            sale_no=#{saleNo} and
-            shop_cd=#{shopCd}
+            sale_no=#{saleNo}
 
     </update>
+
+    <delete id="delete" parameterType="com.momo.vo.SaleVO">
+        delete from
+            tb_sale
+        where
+            sale_no=#{saleNo}
+    </delete>
 
 </mapper>

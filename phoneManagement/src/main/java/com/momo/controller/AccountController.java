@@ -3,6 +3,7 @@ package com.momo.controller;
 import com.momo.domain.Paging;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.vo.SaleVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
@@ -148,11 +149,10 @@ public class AccountController {
 		return cities.split(",");
 	}
 
-	@GetMapping("/search/corp")
+	@PostMapping("/search/corp")
 	@ResponseBody
-	public Paging<ShopVO> searchCorp(@RequestParam(defaultValue = "1") int page,
-								  @RequestParam(defaultValue = "") String keyword){
-		return shopService.searchBranch(page, keyword);
+	public Paging<ShopVO> searchCorp(@RequestBody ShopVO shopVO){
+		return shopService.searchBranch(shopVO);
 	}
 
 	//	@PostMapping("/search/shop")

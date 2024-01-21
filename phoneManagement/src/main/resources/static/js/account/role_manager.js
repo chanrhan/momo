@@ -2,9 +2,25 @@
 let pageNo = 1;
 
 function searchCorp(){
+    var keyword = $('#input_search_corp').val();
+    var body = {
+        page: pageNo,
+        searchMap: {
+            b_no: keyword,
+            shop_nm: keyword,
+            shop_addr: keyword,
+        },
+        orderby: "regi_dt"
+    }
+
     $.ajax({
-        url: '/account/search/corp?page='+pageNo+'&keyword='+$('#input_search_corp').val(),
-        type: 'get',
+        url: '/account/search/corp',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
         success: function (result){
             var list_shop = document.getElementById('list_shop');
             list_shop.innerHTML = "";

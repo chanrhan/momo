@@ -12,12 +12,24 @@ let selected_columns = [
     "seller_id"
 ];
 
+
+function showSaleDetail(saleNo){
+    window.open(
+        "/sale/detail/"+saleNo,
+        "판매일보 추가",
+        "width=800, height=800, location=no"
+    );
+}
+
 function updateSaleList(result){
     var list_sale = document.getElementById('list_sale');
     list_sale.innerHTML = "";
     var records = result.records;
     records.forEach(function (value, index, array) {
-        list_sale.innerHTML += "<tr><td>" +
+        list_sale.innerHTML += "<tr onclick='showSaleDetail(" +
+            value.saleNo +
+            ")" +
+            "'><td>" +
             value.custNm +
             "</td>" +
             "<td>" +
