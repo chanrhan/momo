@@ -16,7 +16,7 @@
     <br>
     <button type="button" class="btn btn-primary" onclick="showCreateSaleForm()">추가</button>
     <br>
-    <select class="form-select" id="filter_provider" onchange="searchWithKeyword()">
+    <select class="form-select" id="filter_provider" onchange="searchSale()">
         <option selected value disabled>통신사 선택</option>
         <option value="SKT">SKT</option>
         <option value="KT">KT</option>
@@ -25,19 +25,19 @@
     </select>
     <br>
     <input type="text" class="form-control" id="srch_sale">
-    <button type="button" class="btn btn-primary" onclick="searchWithKeyword()">검색</button>
+    <button type="button" class="btn btn-primary" onclick="searchSale()">검색</button>
     <br>
     <table class="table">
         <thead>
         <tr>
-            <th>고객 이름</th>
-            <th>고객 전화번호</th>
-            <th>고객 식별번호</th>
-            <th>모델명</th>
-            <th>개통 날짜</th>
-            <th>통신사</th>
-            <th>판매자 수수료</th>
-            <th>판매자 아이디</th>
+            <th th:value="cust_nm" onclick="orderSale($(this))">고객 이름</th>
+            <th th:value="cust_tel" onclick="orderSale($(this))">고객 전화번호</th>
+            <th th:value="cust_cd" onclick="orderSale($(this))">고객 식별번호</th>
+            <th th:value="ph_md"  onclick="orderSale($(this))">모델명</th>
+            <th th:value="actv_dt" onclick="orderSale($(this))">개통 날짜</th>
+            <th th:value="provider" onclick="orderSale($(this))">통신사</th>
+            <th th:value="seller_cms" onclick="orderSale($(this))">판매자 수수료</th>
+            <th th:value="seller_id" onclick="orderSale($(this))">판매자 아이디</th>
         </tr>
         </thead>
         <tbody id="list_sale" >

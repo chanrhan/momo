@@ -12,7 +12,7 @@ function updateSale(){
         },
         success: function (result){
             if(result){
-                window.opener.parent.searchWithKeyword();
+                window.opener.parent.searchSale();
                 window.close();
             }
         }
@@ -25,7 +25,7 @@ function deleteSale(){
         type: 'get',
         success: function (result){
             if(result){
-                window.opener.parent.searchWithKeyword();
+                window.opener.parent.searchSale();
                 window.close();
             }
         }

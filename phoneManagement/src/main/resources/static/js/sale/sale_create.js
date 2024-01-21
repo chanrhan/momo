@@ -22,7 +22,7 @@ function createSale(){
         },
         success: function (result){
             if(result){
-                window.opener.parent.searchWithKeyword();
+                window.opener.parent.searchSale();
                 window.close();
             }
         }

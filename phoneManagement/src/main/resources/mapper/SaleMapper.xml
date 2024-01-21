@@ -14,7 +14,7 @@
             ${orSearch}
         <if test='orderby != null and !orderby.equals("")'>
             order by
-            ${orderby}
+            ${orderby} ${side}
         </if>
         <if test='limit != null and limit gt 0'>
             limit
