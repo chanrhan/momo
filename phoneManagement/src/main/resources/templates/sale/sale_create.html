@@ -5,24 +5,31 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <title>New Sale</title>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="/js/common/common.js"></script>
     <script src="/js/sale/sale_create.js" th:inline="javascript"></script>
     <script src="/js/api/openapi.js"></script>
 </head>
 <body>
     <h3>판매일보 추가</h3>
-    <form th:action="@{/sale/create}" method="post">
+    <form id="create_form" >
         <input type="hidden" name="shopCd" th:value="${shopCode}">
         <h4>고객 정보</h4>
         이름<input type="text" class="form-control" name="custNm">
-        성별<input type="text" class="form-control" name="custGd">
+        성별<input type="text" class="form-control" name="custGd" value="male">
         전화번호<input type="text" class="form-control" name="custTel">
         식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="custCd">
         <br>
         <h4>개통 정보</h4>
-        통신사<input type="text" class="form-control" name="provider">
+        통신사<input type="text" class="form-control" name="provider" value="skt">
+        모델명<input type="text" class="form-control" name="phMd">
+        개통 날짜<input type="text" class="form-control" name="actvDt" value="20240120">
+        판매자 수수료<input type="text" class="form-control" name="sellerCms">
+        판매자 아이디<input type="text" class="form-control" name="sellerId">
         <br>
         <h4>그린폰</h4>
         <br>
@@ -40,7 +47,7 @@
         <br>
         <h4>기타 관리</h4>
         <br>
-        <button type="submit" class="btn-primary">다음</button>
     </form>
+    <button type="button" class="btn-primary" onclick="createSale()">완료</button>
 </body>
 </html>

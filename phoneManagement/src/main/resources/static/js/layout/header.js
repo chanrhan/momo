@@ -1,7 +1,4 @@
 
-const ws = new WebSocket("ws://192.168.35.241:8080/ws");
-
-let alarm_count = 0;
 
 // 웹소켓 처리
 ws.onopen = ()=>{

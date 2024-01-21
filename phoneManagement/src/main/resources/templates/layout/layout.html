@@ -14,7 +14,14 @@
     <meta name="_csrf" th:content="${_csrf.token}">
 
 <!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <script>
+        const ws = new WebSocket("ws://192.168.35.241:8080/ws");
+        let alarm_count = 0;
+    </script>
+
     <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+<!--    날짜 라이브러리-->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
     <script src="/js/common/common.js"></script>
     <script src="/js/layout/header.js"></script>
     <title>MOMO</title>
@@ -25,7 +32,7 @@
 
 <header th:replace="~{/layout/header :: header}"></header>
 <body>
-<!--    <nav layout:replace="~{/layout/nav :: navbar}"></nav>-->
+
     <th:block layout:fragment="content"></th:block>
 </body>
 <footer th:replace="~{/layout/footer :: footer}"></footer>

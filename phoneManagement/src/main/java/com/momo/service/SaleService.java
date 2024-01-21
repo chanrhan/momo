@@ -64,8 +64,8 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 		return paging;
 	}
 
-	public Paging<SaleVO> searchPage(int page, SaleVO saleVO){
-		Paging<SaleVO> paging = new Paging<>(page, 10);
+	public Paging<SaleVO> searchPage(SaleVO saleVO){
+		Paging<SaleVO> paging = new Paging<>(saleVO.getPage(), 10);
 		saleVO.setOffset(paging.getOffset());
 		saleVO.setLimit(paging.getSize());
 

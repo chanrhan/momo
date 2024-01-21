@@ -37,3 +37,23 @@ function setPasswordToggle(){
         });
     })
 }
+
+function createMapWithSingleKeyword(keyword){
+    var map= {};
+    if(keyword !== ""){
+        selected_columns.forEach(function (value, index, array) {
+            // map.set(value, keyword);
+            map[value] = keyword;
+        });
+    }
+
+    return map;
+}
+
+function convertFormDataToObject(formData){
+    var ob = {};
+    for(const pair of formData.entries()){
+        ob[pair[0]] = pair[1];
+    }
+    return ob;
+}

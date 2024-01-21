@@ -43,7 +43,7 @@ public class UserInfoVO extends AbstractQueryVO {
 	}
 
 	public void setStartDt(String startDt) {
-		System.out.println("start Date: " + startDt);
+//		System.out.println("start Date: " + startDt);
 		Date date = new Date();
 		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}

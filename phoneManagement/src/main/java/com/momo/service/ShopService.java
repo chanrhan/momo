@@ -1,7 +1,6 @@
 package com.momo.service;
 
 import com.momo.domain.Paging;
-import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.mapper.ShopMapper;
 import com.momo.vo.ShopVO;
 import com.momo.vo.RegionVO;
@@ -61,16 +60,18 @@ public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 		return shopMapper.searchByRegion(regionVO);
 	}
 
-	public Paging<ShopVO> searchBranch(int pageNum, String keyword){
-		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
-		ShopVO vo = ShopVO.builder()
-				.keyword(keyword)
-				.offset(paging.getOffset())
-				.limit(paging.getSize())
-				.build();
+	public Paging<ShopVO> searchBranch(ShopVO shopVO){
+		Paging<ShopVO> paging = new Paging<>(shopVO.getPage(), 10);
+		shopVO.setOffset(paging.getOffset());
+		shopVO.setLimit(paging.getSize());
+//		ShopVO vo = ShopVO.builder()
+////				.keywordMap(keyword)
+//				.offset(paging.getOffset())
+//				.limit(paging.getSize())
+//				.build();
 
-		paging.setRecords(shopMapper.searchBranch(vo));
-		paging.setTotalRecordCount(shopMapper.countBranch(vo));
+		paging.setRecords(shopMapper.searchBranch(shopVO));
+		paging.setTotalRecordCount(shopMapper.countBranch(shopVO));
 
 		return paging;
 	}

@@ -9,9 +9,9 @@
         from
         tb_sale
         where
-            cust_nm like '%${keyword}%' or
-            cust_tel like '%${keyword}%' or
-            cust_cd like '%${keyword}%'
+            ${andSelect}
+                and
+            ${orSearch}
         <if test='orderby != null and !orderby.equals("")'>
             order by
             ${orderby}
@@ -28,9 +28,9 @@
         from
         tb_sale
         where
-        cust_nm like '%${keyword}%' or
-        cust_tel like '%${keyword}%' or
-        cust_cd like '%${keyword}%'
+            ${andSelect}
+          and
+            ${orSearch}
     </select>
 
 
@@ -41,7 +41,7 @@
         from
             tb_sale
         where
-        <if test='saleNo != null and !saleNo.equals("")'>
+        <if test='saleNo != null and saleNo gt 0'>
             sale_no=#{saleNo} and
         </if>
         <if test='shopCd != null and shopCd gt 0'>

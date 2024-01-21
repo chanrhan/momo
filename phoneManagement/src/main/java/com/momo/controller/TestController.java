@@ -1,9 +1,13 @@
 package com.momo.controller;
 
+import com.momo.util.MessageAPIUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/test")
@@ -29,5 +33,17 @@ public class TestController {
 	@ResponseBody
 	public String testGet(@RequestParam String name){
 		return "Hello, "+name;
+	}
+
+	@GetMapping("/msg")
+	public String msg(){
+		return "test/msg";
+	}
+
+	@PostMapping("/msg")
+	@ResponseBody
+	public JSONObject testMessage(@RequestBody Map<String,Object> body){
+		System.out.println(body);
+		return MessageAPIUtil.send(body);
 	}
 }

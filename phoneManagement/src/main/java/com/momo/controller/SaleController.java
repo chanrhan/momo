@@ -9,10 +9,11 @@ import com.momo.vo.SaleVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,14 +35,16 @@ public class SaleController {
 //		System.out.println("username: "+username);
 
 		UserInfoVO emp = employeeService.selectById(username);
-		ShopVO shop;
+		ShopVO shopVo;
 		if(emp.getRole().equals("REPS")){
-			shop = shopService.selectOne(ShopVO.builder().bNo(emp.getBNo()).build());
+			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
 		}else{
-			shop = shopService.selectOne(ShopVO.builder().shopCd(emp.getShopCd()).build());
+			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
 		}
+		ShopVO shop = shopService.selectOne(shopVo);
+		List<ShopVO> shopList = shopService.select(shopVo);
 
-		model.addAttribute("list_shop", shopService.select(ShopVO.builder().bNo(shop.getBNo()).build()));
+		model.addAttribute("list_shop", shopList);
 		model.addAttribute("selected_shop", shop);
 
 		// 이거 나중에 Paging 으로 바꿀 것
@@ -56,7 +59,7 @@ public class SaleController {
 		return "sale/sale_detail";
 	}
 
-	@GetMapping("/create")
+	@GetMapping("/create/form")
 	public String saleCreateGET(Model model, @RequestParam int shopCd){
 		String username = SecurityContextUtil.getUsername();
 		model.addAttribute("shopCode",shopCd);
@@ -65,14 +68,12 @@ public class SaleController {
 	}
 
 	@PostMapping("/create")
-	public String saleCreatePOST(@ModelAttribute SaleVO saleVO){
+	@ResponseBody
+	public boolean saleCreatePOST(@RequestBody SaleVO saleVO){
 		System.out.println(saleVO);
 		int result = saleService.insert(saleVO);
-		if(result == 0){
-			return "redirect:/sale/create";
-		}
 
-		return "sale/home";
+		return result != 0;
 	}
 
 	@GetMapping("/msg_rsv")
@@ -97,10 +98,18 @@ public class SaleController {
 		return saleService.selectPage(page, SaleVO.builder().provider(provider).build());
 	}
 
-	@GetMapping("/list/srch")
+	@PostMapping("/list/srch")
 	@ResponseBody
-	public Paging<SaleVO> searchSale(@RequestParam int page,
-									 @RequestParam String keyword){
-		return saleService.searchPage(page, SaleVO.builder().keyword(keyword).build());
+	public Paging<SaleVO> searchSale(@RequestBody SaleVO saleVO){
+		System.out.println(saleVO.toStringSuper());
+		Paging<SaleVO> s = saleService.searchPage(saleVO);
+		System.out.println(s);
+		return s;
+	}
+
+	@GetMapping("/list")
+	@ResponseBody
+	public Paging<SaleVO> getSaleListByShopCode(@RequestParam int shopCode){
+		return saleService.selectPage(1, SaleVO.builder().shopCd(shopCode).build());
 	}
 }

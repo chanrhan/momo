@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,7 +21,7 @@ public class SaleVO extends AbstractQueryVO {
 	// 고객 정보
 	private String custNm; // 고객 이름
 	private String custGd; // 고객 성별 (Gender)
-	private int    custTel; // 고객 전화번호
+	private String custTel; // 고객 전화번호
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 
 	// 개통 정보
@@ -92,4 +94,14 @@ public class SaleVO extends AbstractQueryVO {
 	private boolean       nonDisc; // 결합중 요금할인 빠짐 (None Discount)
 	private LocalTime     actvTime; // 개통 시간
 	private String        etc; // 비고
+
+	public void setActvDt(String actvDt) {
+		//		System.out.println("start Date: " + startDt);
+		Date date = new Date();
+		this.actvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+
+	public String toStringSuper() {
+		return super.toString() + toString();
+	}
 }
