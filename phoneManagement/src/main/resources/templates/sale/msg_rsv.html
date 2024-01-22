@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ZipCode</title>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="/js/api/openapi.js"></script>
-    <script src="/js/sale/msg_rsv.js" th:inline="javascript"></script>
-</head>
-<body>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/sale/saleForm_layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/msg_rsv.js"></script>
     <h3>판매일보 문자예약</h3>
-    <div id="list_date">
+    수신인 이름<input type="text" class="form-control" id="custNm"><br>
+    수신인 전화번호<input type="text" class="form-control" id="custTel">
+    <div th:each="form : ${default_form}" th:object="${form}" name="msg_form">
+        <input type="hidden" name="form_id" th:value="*{formId}">
+        <h4 th:text="*{formNm}"></h4>
+        <div th:if="${form.selectBtnNm != null}">
+            양식 선택<input type="text" class="form-control" name="type">
+            <br>
+            <button type="button" class="btn-primary"
+                    th:text="*{selectBtnNm}"
+                    th:onclick="|clickSelectButton(*{formId})|"></button>
+        </div>
+        <div th:if="${form.selectBtnNm == null}">
+            선택<input type="checkbox" name="type" value="1">
+        </div>
+        <br>
+        예약 날짜 <input type="date" class="form-control" name="rsv_dt">
+        <br>
+        <button type="button" class="btn-primary">미리보기</button>
+    </div>
+    <h5>기타</h5>
+    <div id="list_msg_form">
 
     </div>
-    <button type="button" class="btn-primary">완료</button>
-</body>
+    <button type="button" class="btn-primary" onclick="createSale()">완료</button>
+</div>
 </html>

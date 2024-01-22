@@ -27,8 +27,6 @@ function searchCorp(){
 
             var list = result.records;
             list.forEach(function (value, index, array){
-                console.log(value.shopCd);
-                console.log(value.id);
                 list_shop.innerHTML += "<div>" +
                     "<div>" +
                     "<p>" +
@@ -63,7 +61,6 @@ function searchCorp(){
                     $(value).on('click',function (){
                         var shopCode = $(value).val();
                         var repsId = $(value).attr('reps_id');
-                        console.log("click: "+shopCode +" / " + repsId);
                         submitMANAGER(shopCode, repsId);
                     });
                 }
@@ -80,7 +77,6 @@ function submitMANAGER(shopCode, repsId){
     };
 
     var result = submitRole(data);
-    console.log(result);
     if(result){
         data = {
             alarmTp: 'approval',
@@ -89,7 +85,6 @@ function submitMANAGER(shopCode, repsId){
         };
 
         ws.send(JSON.stringify(data));
-        console.log("success: "+result);
         window.location.href = "/home";
     }
 }

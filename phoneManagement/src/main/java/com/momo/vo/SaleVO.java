@@ -5,10 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,7 +29,7 @@ public class SaleVO extends AbstractQueryVO {
 
 	// 개통 정보
 	private String        provider; // 통신사
-	private LocalDateTime actvDt; // 개통일자 (Activate)
+	private LocalDate actvDt; // 개통일자 (Activate)
 	private String        phMd; // 핸드폰 모델명 (Model)
 	private String        phStor; // 핸드폰 용량 (Storage)
 	private String        istm; // 할부 (Installment)
@@ -56,7 +59,7 @@ public class SaleVO extends AbstractQueryVO {
 	// 추가
 	private String        addItem; // 추가 항목
 	private String        addPay; // 추가 금액
-	private LocalDateTime addDt; // 추가 날짜
+	private LocalDate addDt; // 추가 날짜
 
 	// 지원
 	private String supDiv1; // 지원구분 1
@@ -72,7 +75,7 @@ public class SaleVO extends AbstractQueryVO {
 
 	// 체크박스
 	private boolean friend; // 지인
-	private boolean subSv; // 부가 서비스
+	private boolean exSvc; // 부가 서비스
 	private boolean combMove; // 결합 변경 예정 (Change)
 	private boolean card; // 카드 예정
 	private boolean cardDiv; // 카드 구분
@@ -89,17 +92,31 @@ public class SaleVO extends AbstractQueryVO {
 	private String sellerId; // 담당 매니저(판매자) 아이디
 
 	// 기타 관리
-	private String        spec; // 견적서
-	private LocalDateTime wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
-	private boolean       nonDisc; // 결합중 요금할인 빠짐 (None Discount)
+	private String    spec; // 견적서
+	private LocalDate wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
+	private boolean   nonDisc; // 결합중 요금할인 빠짐 (None Discount)
 	private LocalTime     actvTime; // 개통 시간
 	private String        etc; // 비고
 
-	public void setActvDt(String actvDt) {
-		//		System.out.println("start Date: " + startDt);
-		Date date = new Date();
-		this.actvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	// 예약 발송
+	private List<MessageVO> msgRsvList;
+
+	public MessageVO getMessageVO(){
+		return MessageVO.builder()
+				.shopCd(shopCd)
+				.custNm(custNm)
+				.custTel(custTel)
+				.sellerId(sellerId)
+				.build();
 	}
+
+//	public void setActvDt(String actvDt) {
+////		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+////		this.actvDt = LocalDateTime.parse(actvDt, formatter);
+//		//		System.out.println("start Date: " + startDt);
+//		Date date = new Date();
+//		this.actvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//	}
 
 	public String toStringSuper() {
 		return super.toString() + toString();

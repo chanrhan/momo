@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.MsgReserveMapper">
+    <select id="getMaxMsgId">
+        select
+            count(*)
+        from
+            tb_msg_rsv
+        where
+            shop_cd=#{shopCd}
+    </select>
+
+    <insert id="insert" parameterType="com.momo.vo.MessageVO">
+        insert into
+        tb_msg_rsv
+        (msg_id, shop_cd, send_tp, cust_nm, cust_tel, content, seller_id, rsv_dt)
+        values
+            (#{msgId},#{shopCd},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
+    </insert>
+
+</mapper>

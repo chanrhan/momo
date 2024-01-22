@@ -29,9 +29,7 @@ function checkBusinessmanNo(){
     };
 
     var result = validateBusinessman(data);
-    console.log(result);
     if(result !== null && result.status_code === "OK"){
-        console.log(result);
         if(result.data[0].valid === "01"){
             alert("인증이 완료되었습니다");
             isBNoChecked = true;
@@ -92,9 +90,7 @@ function submitREPS(){
     };
 
     var result = submitRole(data);
-    console.log(result);
     if(result){
-        console.log("success: "+result);
         window.location.href = "/home";
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.MsgRegexMapper">
+    <select id="getRegex">
+        select
+            *
+        from
+            tb_msg_regex
+        where
+            form_id=#{formId} and
+            regex_id=#{regexId}
+    </select>
+
+    <insert id="insert" parameterType="com.momo.vo.MsgRegexVO">
+        insert into
+            tb_msg_regex
+        (form_id, regex_id, shop_cd, key_1, value_1, key_2, value_2, key_3, value_3, key_4, value_4, key_5, value_5, key_6, value_6, key_7, value_7, key_8, value_8, key_9, value_9, key_10, value_10, key_11, value_11, key_12, value_12, key_13, value_13, key_14, value_14, key_15, value_15)
+        values
+        (form_id=#{formId},regex_id=#{regexId}, shop_cd=#{shopCd},#{insertString})
+    </insert>
+
+
+</mapper>

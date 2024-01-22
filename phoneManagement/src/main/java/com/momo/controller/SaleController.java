@@ -2,9 +2,11 @@ package com.momo.controller;
 
 import com.momo.domain.Paging;
 import com.momo.service.EmployeeService;
+import com.momo.service.MessageService;
 import com.momo.service.SaleService;
 import com.momo.service.ShopService;
 import com.momo.util.SecurityContextUtil;
+import com.momo.vo.MessageVO;
 import com.momo.vo.SaleVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.UserInfoVO;
@@ -23,6 +25,9 @@ public class SaleController {
 	private final EmployeeService employeeService;
 	private final ShopService     shopService;
 	private final SaleService saleService;
+
+	private final MessageService messageService;
+
 
 	@GetMapping("")
 	public String saleHome(Model model){
@@ -70,7 +75,7 @@ public class SaleController {
 	@PostMapping("/update")
 	@ResponseBody
 	public boolean saleUpdate(@RequestBody SaleVO saleVO){
-		System.out.println(saleVO);
+//		System.out.println(saleVO);
 		int result = saleService.update(saleVO);
 
 		return result != 0;
@@ -87,12 +92,22 @@ public class SaleController {
 	public boolean saleCreatePOST(@RequestBody SaleVO saleVO){
 		System.out.println(saleVO);
 		int result = saleService.insert(saleVO);
+		if(result == 0){
+			return false;
+		}
+
+		List<MessageVO> list = saleVO.getMsgRsvList();
+		if(list != null && !list.isEmpty()){
+		    result = messageService.reserveMessage(list, saleVO.getMessageVO());
+		}
 
 		return result != 0;
 	}
 
-	@GetMapping("/msg_rsv")
-	public String msgReservation(){
+	@GetMapping("/msg/rsv")
+	public String msgReservation(Model model){
+		List<MessageVO> defaultForm = messageService.getAllDefaultForm();
+		model.addAttribute("default_form", defaultForm);
 		return "sale/msg_rsv";
 	}
 
@@ -116,10 +131,8 @@ public class SaleController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public Paging<SaleVO> searchSale(@RequestBody SaleVO saleVO){
-		System.out.println(saleVO.toStringSuper());
-		Paging<SaleVO> s = saleService.searchPage(saleVO);
-		System.out.println(s);
-		return s;
+//		System.out.println(saleVO.toStringSuper());
+		return saleService.searchPage(saleVO);
 	}
 
 	@GetMapping("/list")

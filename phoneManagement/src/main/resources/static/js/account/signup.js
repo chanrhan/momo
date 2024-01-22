@@ -82,7 +82,6 @@ function matchPassword(){
 // 아이디 중복체크
 function checkDupId(){
     var result = checkIdDuplication($('#id').val());
-    console.log(result);
     if(result){
         isIdChecked = true;
         alert("사용 가능한 아이디입니다");
@@ -198,8 +197,6 @@ function isRequiredTermChecked(){
         var st = icon.hasClass('checked');
 
         termString += (st) ? '1':'0';
-        console.log(require);
-        console.log(st);
         if(require === 'true' && st === false){
             rst = false;
         }

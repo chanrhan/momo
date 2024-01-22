@@ -2,26 +2,21 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
-    <title>New Sale</title>
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="/js/common/common.js"></script>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+layout:decorate="~{/sale/saleForm_layout.html}">
+<div layout:fragment="content">
     <script src="/js/sale/sale_create.js" th:inline="javascript"></script>
-    <script src="/js/api/openapi.js"></script>
-</head>
-<body>
     <h3>판매일보 추가</h3>
     <form id="create_form" >
         <input type="hidden" name="shopCd" th:value="${shopCode}">
         <h4>고객 정보</h4>
         이름<input type="text" class="form-control" name="custNm">
         <br>
-        성별<input type="text" class="form-control" name="custGd" value="male">
+        성별<select name="custGd">
+            <option selected value="law">법인</option>
+            <option value="male">남</option>
+            <option value="female">여</option>
+        </select>
         <br>
         전화번호<input type="text" class="form-control" name="custTel">
         <br>
@@ -32,7 +27,7 @@
         <br>
         모델명<input type="text" class="form-control" name="phMd">
         <br>
-        개통 날짜<input type="text" class="form-control" name="actvDt" value="20240120">
+        개통 날짜<input type="date" class="form-control" name="actvDt">
         <br>
         판매자 수수료<input type="text" class="form-control" name="sellerCms">
         <br>
@@ -55,6 +50,6 @@
         <h4>기타 관리</h4>
         <br>
     </form>
-    <button type="button" class="btn-primary" onclick="createSale()">완료</button>
-</body>
+    <button type="button" class="btn-primary" onclick="stepToNext()">다음</button>
+</div>
 </html>

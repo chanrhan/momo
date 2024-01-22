@@ -2,7 +2,7 @@
 let pageNum = 1;
 let filter_provider = "";
 let order = "actv_dt";
-let side = 0;
+let side = false;
 
 let selected_columns = [
     "cust_nm",
@@ -39,6 +39,7 @@ function changeShop(){
     $('#srch_sale').val("");
     $('#filter_provider').val("");
 
+    side = false;
     searchSale();
 }
 
