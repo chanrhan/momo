@@ -11,12 +11,12 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String homePreview(){
-		return "home/preview";
+		return "main/preview";
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/home")
 	public String home(){
-		return "/home/home";
+		return "main/home";
 	}
 }

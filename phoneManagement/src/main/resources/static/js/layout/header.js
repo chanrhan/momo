@@ -14,7 +14,7 @@ function updateAlarm(){
     var id = $('#user_id').val();
 
     $.ajax({
-        url: '/alarm/count?receiver='+id,
+        url: '/alarm/count?receiver='+id+'&readSt='+false,
         type: 'get',
         success: function (result){
             alarm_count = result;

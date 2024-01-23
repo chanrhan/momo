@@ -28,16 +28,16 @@ public class SaleVO extends AbstractQueryVO {
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 
 	// 개통 정보
-	private String        provider; // 통신사
+	private String    provider; // 통신사
 	private LocalDate actvDt; // 개통일자 (Activate)
-	private String        phMd; // 핸드폰 모델명 (Model)
-	private String        phStor; // 핸드폰 용량 (Storage)
-	private String        istm; // 할부 (Installment)
-	private String        actvDiv; // 개통 구분 (Division)
-	private String        actvTp; // 개통 유형 (Type)
-	private String        actvPlan; // 개통 요금제
-	private String        movePlan; // 변경 요금제
-	private int           ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
+	private String    phMd; // 핸드폰 모델명 (Model)
+	private String    phStor; // 핸드폰 용량 (Storage)
+	private String    istm; // 할부 (Installment)
+	private String    actvDiv; // 개통 구분 (Division)
+	private String    actvTp; // 개통 유형 (Type)
+	private String    actvPlan; // 개통 요금제
+	private String    movePlan; // 변경 요금제
+	private int       ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
 
 	// 그린폰
 	private String  greenMd; // 그린폰 모델명
@@ -57,8 +57,8 @@ public class SaleVO extends AbstractQueryVO {
 	private String tvDecPlan; // TV 하향 요금제
 
 	// 추가
-	private String        addItem; // 추가 항목
-	private String        addPay; // 추가 금액
+	private String    addItem; // 추가 항목
+	private String    addPay; // 추가 금액
 	private LocalDate addDt; // 추가 날짜
 
 	// 지원
@@ -95,28 +95,24 @@ public class SaleVO extends AbstractQueryVO {
 	private String    spec; // 견적서
 	private LocalDate wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
 	private boolean   nonDisc; // 결합중 요금할인 빠짐 (None Discount)
-	private LocalTime     actvTime; // 개통 시간
-	private String        etc; // 비고
+	private boolean   sendSt; // 문자 발송 여부
+	private LocalTime actvTime; // 개통 시간
+	private String    etc; // 비고
 
 	// 예약 발송
 	private List<MessageVO> msgRsvList;
 
-	public MessageVO getMessageVO(){
-		return MessageVO.builder()
-				.shopCd(shopCd)
-				.custNm(custNm)
-				.custTel(custTel)
-				.sellerId(sellerId)
-				.build();
+	public MessageVO getMessageVO() {
+		return MessageVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).build();
 	}
 
-//	public void setActvDt(String actvDt) {
-////		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-////		this.actvDt = LocalDateTime.parse(actvDt, formatter);
-//		//		System.out.println("start Date: " + startDt);
-//		Date date = new Date();
-//		this.actvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-//	}
+	//	public void setActvDt(String actvDt) {
+	////		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+	////		this.actvDt = LocalDateTime.parse(actvDt, formatter);
+	//		//		System.out.println("start Date: " + startDt);
+	//		Date date = new Date();
+	//		this.actvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	//	}
 
 	public String toStringSuper() {
 		return super.toString() + toString();

@@ -15,6 +15,7 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 
 	@Override
 	public int insert(AlarmVO key) {
+		key.setAlarmId(getMaxId()+1);
 		return alarmMapper.insert(key);
 	}
 
@@ -28,8 +29,8 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 		return select(key).get(0);
 	}
 
-	public List<AlarmVO> selectByReceiver(String receiver){
-		return alarmMapper.selectByReceiver(receiver);
+	public List<AlarmVO> selectByReceiver(AlarmVO alarmVO){
+		return alarmMapper.selectByReceiver(alarmVO);
 	}
 
 	@Override
@@ -42,8 +43,24 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 		return alarmMapper.delete(key);
 	}
 
+	public int getMaxId(){
+		Integer result = alarmMapper.getMaxId();
+		if(result == null){
+			return 0;
+		}
+		return result;
+	}
+
 	@Override
 	public List<AlarmVO> selectAll() {
 		return alarmMapper.selectAll();
+	}
+
+	public int approve(int alarmId){
+		return alarmMapper.approve(alarmId);
+	}
+
+	public int read(int alarmId){
+		return alarmMapper.read(alarmId);
 	}
 }

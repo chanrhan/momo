@@ -13,9 +13,10 @@
         <input type="hidden" name="form_id" th:value="*{formId}">
         <h4 th:text="*{formNm}"></h4>
         <div th:if="${form.selectBtnNm != null}">
-            양식 선택<input type="text" class="form-control" name="type">
+            양식 선택<input type="text" class="form-control" th:type_id="*{typeId}" name="type">
             <br>
-            <button type="button" class="btn-primary"
+            <button th:if="*{formId <=0}"
+                    type="button" class="btn-primary"
                     th:text="*{selectBtnNm}"
                     th:onclick="|clickSelectButton(*{formId})|"></button>
         </div>

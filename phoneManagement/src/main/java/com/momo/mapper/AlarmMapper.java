@@ -7,5 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface AlarmMapper extends DefaultCRUDMapper<AlarmVO, AlarmVO> {
-	public List<AlarmVO> selectByReceiver(String receiver);
+	public List<AlarmVO> selectByReceiver(AlarmVO alarmVO);
+	public int read(int alarmId);
+	public int approve(int alarmId);
+	public int getMaxId();
 }

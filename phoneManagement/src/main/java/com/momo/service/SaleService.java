@@ -53,25 +53,31 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 		return result;
 	}
 
-	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){
-		Paging<SaleVO> paging = new Paging<>(page, 10);
-		saleVO.setOffset(paging.getOffset());
-		saleVO.setLimit(paging.getSize());
-
-		paging.setRecords(saleMapper.select(saleVO));
-		paging.setTotalRecordCount(saleMapper.countSelect(saleVO));
-
-		return paging;
+	public List<SaleVO> search(SaleVO saleVO){
+		return saleMapper.search(saleVO);
 	}
 
-	public Paging<SaleVO> searchPage(SaleVO saleVO){
-		Paging<SaleVO> paging = new Paging<>(saleVO.getPage(), 10);
-		saleVO.setOffset(paging.getOffset());
-		saleVO.setLimit(paging.getSize());
+//	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){
+//		Paging<SaleVO> paging = new Paging<>(page, 10);
+//		saleVO.setOffset(paging.getOffset());
+//		saleVO.setLimit(paging.getSize());
+//
+//		paging.setRecords(saleMapper.select(saleVO));
+//		paging.setTotalRecordCount(saleMapper.countSelect(saleVO));
+//
+//		return paging;
+//	}
 
-		paging.setRecords(saleMapper.search(saleVO));
-		paging.setTotalRecordCount(saleMapper.countSearch(saleVO));
 
-		return paging;
-	}
+
+//	public Paging<SaleVO> searchPage(SaleVO saleVO){
+//		Paging<SaleVO> paging = new Paging<>(saleVO.getPage(), 10);
+//		saleVO.setOffset(paging.getOffset());
+//		saleVO.setLimit(paging.getSize());
+//
+//		paging.setRecords(search(saleVO));
+//		paging.setTotalRecordCount(saleMapper.countSearch(saleVO));
+//
+//		return paging;
+//	}
 }

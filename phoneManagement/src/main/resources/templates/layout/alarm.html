@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout.html}">
+<div layout:fragment="content">
+    <script src="/js/profile/alarm.js" th:inline="javascript"></script>
+    <div id="list_alarm" class="form-control" th:each="alarm : ${list_alarm}" th:object="${alarm}">
+        <h5 th:text="|보낸 사람: *{senderNm}|"></h5>
+        <div th:if="*{alarmTp == 'approval'}">
+            <p th:text="|*{shopNm} 매장 가입 승인 요청입니다.|"></p>
+            <button type="button" class="btn-primary"
+                    th:disabled="*{content == '1'} ? 'disabled'"
+                    th:text="*{content == '1'} ? '승인 완료' : '승인'"
+                    th:user_id="*{senderId}"
+                    th:alarm_id="*{alarmId}"
+                    onclick="approve(this)"
+            ></button>
+
+        <div th:if="*{alarmTp == 'message'}">
+            <p th:text="*{content}"></p>
+        </div>
+        <br>
+        <p th:text="|보낸 날짜: ${#temporals.format(alarm.sendDt, 'yyyy-MM-dd HH:mm')}|"></p>
+    </div>
+</div>
+</html>

@@ -12,7 +12,7 @@
             id=#{id}
     </select>
 
-    <select id="selct" parameterType="com.momo.vo.UserInfoVO">
+    <select id="select" parameterType="com.momo.vo.UserInfoVO">
         select
         *
         from
@@ -27,7 +27,7 @@
         <if test='bNo != null and !bNo.equals("")'>
             b_no=#{bNo} and
         </if>
-        <if test='shopCd != null and !shopCd.equals("")'>
+        <if test='shopCd != null and shopCd gt 0'>
             shop_cd=#{shopCd} and
         </if>
         1 = 1
@@ -87,6 +87,16 @@
     </insert>
 
     <update id="update" parameterType="com.momo.vo.UserInfoVO">
+        update
+            tb_emp
+        set
+            shop_cd=#{shopCd},
+            approval_st=#{approvalSt}
+        where
+            id=#{id}
+    </update>
+
+    <update id="updateShop" parameterType="com.momo.vo.UserInfoVO">
         update
             tb_emp
         set

@@ -3,6 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ExtraServiceMapper">
+    <select id="search" parameterType="com.momo.vo.ExtraServiceVO">
+        select
+            *
+        from
+            tb_extra_service
+        where
+            ${orSearch}
+    </select>
+
     <select id="getByMap" resultType="java.util.Map">
         select
             *
@@ -11,5 +20,12 @@
         where
             ex_svc_id=#{exSvcId}
 
+    </select>
+
+    <select id="selectAll">
+        select
+            *
+        from
+            tb_extra_service
     </select>
 </mapper>

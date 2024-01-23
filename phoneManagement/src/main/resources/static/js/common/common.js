@@ -38,6 +38,7 @@ function setPasswordToggle(){
     })
 }
 
+
 function createMapWithSingleKeyword(keyword){
     var map= {};
     if(keyword !== ""){

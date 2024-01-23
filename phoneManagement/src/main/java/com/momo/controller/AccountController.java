@@ -1,9 +1,7 @@
 package com.momo.controller;
 
-import com.momo.domain.Paging;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.vo.SaleVO;
 import com.momo.vo.ShopVO;
 import com.momo.vo.TermVO;
 import com.momo.vo.UserInfoVO;
@@ -28,6 +26,8 @@ public class AccountController {
 	private final ShopService   shopService;
 	private final CorpService   corpService;
 	private final RegionService regionService;
+
+	private final AlarmService alarmService;
 
 	@GetMapping("/login")
 	public String login() {
@@ -58,18 +58,18 @@ public class AccountController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
-	public String roleManager(Model model, @RequestParam(defaultValue = "") String state, @RequestParam(defaultValue = "") String city, @RequestParam(defaultValue = "") String q, @RequestParam(defaultValue = "1") int page) {
-		if (!state.equals("") && !city.equals("")) {
-			String         keyword = state + " " + city;
-			Paging<ShopVO> paging  = shopService.selectPage(page, "shop_addr", keyword);
-			model.addAttribute("paging", paging);
-			model.addAttribute("list_city", regionService.selectByState(state).split(","));
-		}
-
-		model.addAttribute("list_state", regionService.selectAllState());
-		model.addAttribute("state", state);
-		model.addAttribute("city", city);
-		model.addAttribute("q", q);
+	public String roleManager() {
+//		if (!state.equals("") && !city.equals("")) {
+//			String         keyword = state + " " + city;
+//			Paging<ShopVO> paging  = shopService.selectPage(page, "shop_addr", keyword);
+//			model.addAttribute("paging", paging);
+//			model.addAttribute("list_city", regionService.selectByState(state).split(","));
+//		}
+//
+//		model.addAttribute("list_state", regionService.selectAllState());
+//		model.addAttribute("state", state);
+//		model.addAttribute("city", city);
+//		model.addAttribute("q", q);
 
 		return "account/role_manager";
 	}
@@ -151,8 +151,21 @@ public class AccountController {
 
 	@PostMapping("/search/corp")
 	@ResponseBody
-	public Paging<ShopVO> searchCorp(@RequestBody ShopVO shopVO){
-		return shopService.searchBranch(shopVO);
+	public List<ShopVO> searchCorp(@RequestBody ShopVO shopVO){
+		return shopService.search(shopVO);
+	}
+
+	@GetMapping("/approve")
+	@ResponseBody
+	public boolean approve(@RequestParam String user_id, @RequestParam int alarm_id){
+		UserInfoVO user = employeeService.selectOne(UserInfoVO.builder().id(user_id).build());
+		user.setApprovalSt(true);
+		int result = employeeService.update(user);
+		if(result == 0){
+			return false;
+		}
+
+		return alarmService.approve(alarm_id) != 0;
 	}
 
 	//	@PostMapping("/search/shop")

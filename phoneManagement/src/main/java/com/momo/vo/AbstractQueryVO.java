@@ -20,12 +20,6 @@ public abstract class AbstractQueryVO {
 	protected int offset;
 	protected int limit;
 
-	@Data
-	public static class KeywordMap{
-		private String name;
-		private String tel;
-	}
-
 	public String getSide(){
 		return (side) ? "desc" : "asc";
 	}

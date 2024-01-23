@@ -11,9 +11,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -38,8 +36,9 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 		String payload = message.getPayload();
 
 		AlarmVO alarmVO = objectMapper.readValue(payload, AlarmVO.class);
+		System.out.println(alarmVO);
 
-		if(alarmVO.getSender() == null || alarmVO.getReceiver() == null){
+		if(alarmVO.getSenderId() == null || alarmVO.getReceiverId() == null){
 			return;
 		}
 

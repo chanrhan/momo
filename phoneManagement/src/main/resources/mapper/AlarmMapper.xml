@@ -3,22 +3,87 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.AlarmMapper">
-    <select id="selectByReceiver">
+    <select id="selectByReceiver" parameterType="com.momo.vo.AlarmVO">
         select
             *
         from
             tb_alarm
         where
-            receiver=#{receiver}
+            receiver_id=#{receiverId} and
+            read_st=#{readSt}
     </select>
 
     <insert id="insert" parameterType="com.momo.vo.AlarmVO">
         insert into
             tb_alarm
-        (sender, receiver, alarm_tp, content)
+        (alarm_id, sender_id, receiver_id, alarm_tp, content)
         values
-            (#{sender},#{receiver},#{alarmTp},#{content})
+            (#{alarmId},#{senderId},#{receiverId},#{alarmTp},#{content})
 
     </insert>
+
+    <update id="update" parameterType="com.momo.vo.AlarmVO">
+        update
+            tb_alarm
+        set
+            read_st=#{readSt},
+            content=#{content}
+        where
+            alarm_id=#{alarmId}
+    </update>
+
+    <update id="read" >
+        update
+        tb_alarm
+        set
+            read_st=true
+        where
+            alarm_id=#{alarmId}
+    </update>
+
+    <update id="approve">
+        update
+            tb_alarm
+        set
+            content='1'
+        where
+            alarm_id=#{alarmId}
+    </update>
+
+    <select id="selectAll" parameterType="com.momo.vo.AlarmVO">
+        with alarm as (
+            select
+                al.alarm_id as alarm_id,
+                al.alarm_tp as alarm_tp,
+                ac.id as sender_id,
+                ac.name as sender_nm,
+                s.shop_nm as shop_nm,
+                al.content as content,
+                al.read_st as read_st,
+                al.send_dt as send_dt
+            from
+                tb_alarm as al
+            left outer join tb_account ac on ac.id=al.sender_id
+            left outer join tb_emp e on e.id=al.sender_id
+            left outer join tb_shop s on s.shop_cd=e.shop_cd
+        )
+
+        select
+            *
+        from
+            alarm
+        order by
+            send_dt desc
+
+
+    </select>
+
+    <select id="getMaxId">
+        select
+            max(alarm_id)
+        from
+            tb_alarm
+
+    </select>
 
 </mapper>

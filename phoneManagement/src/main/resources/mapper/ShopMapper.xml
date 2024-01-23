@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopMapper">
-    <select id="searchBranch" parameterType="com.momo.vo.ShopVO">
+    <select id="search" parameterType="com.momo.vo.ShopVO">
         with branch as(
             select
                 c.id as id,
@@ -24,11 +24,14 @@
             branch
         where
             ${orSearch}
-        order by
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
             #{orderby}
-        limit
-            #{offset},#{limit}
-
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
     </select>
 
     <select id="countBranch" parameterType="com.momo.vo.ShopVO">
@@ -87,37 +90,37 @@
         </if>
     </select>
 
-    <select id="search" parameterType="com.momo.vo.ShopVO">
-        select
-        *
-        from
-        tb_shop
-        where
-        <if test='shopCd gt 0'>
-            shop_cd like '%${shopCd}%' and
-        </if>
-        <if test='shopNm != null and !shopNm.equals("")'>
-            shop_nm like '%${shopNm}%' and
-        </if>
-        <if test='shopAddr != null and !shopAddr.equals("")'>
-            shop_addr like '%${shopAddr}%' and
-        </if>
-        <if test='shopTel != null and !shopTel.equals("")'>
-            shop_tel like '%${shopTel}%' and
-        </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no like '%${bNo}%' and
-        </if>
-        1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
-    </select>
+<!--    <select id="search" parameterType="com.momo.vo.ShopVO">-->
+<!--        select-->
+<!--        *-->
+<!--        from-->
+<!--        tb_shop-->
+<!--        where-->
+<!--        <if test='shopCd gt 0'>-->
+<!--            shop_cd like '%${shopCd}%' and-->
+<!--        </if>-->
+<!--        <if test='shopNm != null and !shopNm.equals("")'>-->
+<!--            shop_nm like '%${shopNm}%' and-->
+<!--        </if>-->
+<!--        <if test='shopAddr != null and !shopAddr.equals("")'>-->
+<!--            shop_addr like '%${shopAddr}%' and-->
+<!--        </if>-->
+<!--        <if test='shopTel != null and !shopTel.equals("")'>-->
+<!--            shop_tel like '%${shopTel}%' and-->
+<!--        </if>-->
+<!--        <if test='bNo != null and !bNo.equals("")'>-->
+<!--            b_no like '%${bNo}%' and-->
+<!--        </if>-->
+<!--        1 = 1-->
+<!--        <if test='orderby != null and !orderby.equals("")'>-->
+<!--            order by-->
+<!--            ${orderby}-->
+<!--        </if>-->
+<!--        <if test='limit != null and limit gt 0'>-->
+<!--            limit-->
+<!--            ${offset},${limit}-->
+<!--        </if>-->
+<!--    </select>-->
     
     <select id="getTotalRecordCount" parameterType="com.momo.vo.ShopVO">
         select

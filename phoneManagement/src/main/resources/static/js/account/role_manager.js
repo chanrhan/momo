@@ -4,11 +4,11 @@ let pageNo = 1;
 function searchCorp(){
     var keyword = $('#input_search_corp').val();
     var body = {
-        page: pageNo,
         searchMap: {
             b_no: keyword,
             shop_nm: keyword,
             shop_addr: keyword,
+            corp_nm: keyword
         },
         orderby: "regi_dt"
     }
@@ -25,8 +25,7 @@ function searchCorp(){
             var list_shop = document.getElementById('list_shop');
             list_shop.innerHTML = "";
 
-            var list = result.records;
-            list.forEach(function (value, index, array){
+            result.forEach(function (value, index, array){
                 list_shop.innerHTML += "<div>" +
                     "<div>" +
                     "<p>" +
@@ -80,8 +79,8 @@ function submitMANAGER(shopCode, repsId){
     if(result){
         data = {
             alarmTp: 'approval',
-            sender: $('#user_id').val(),
-            receiver: repsId
+            senderId: $('#user_id').val(),
+            receiverId: repsId
         };
 
         ws.send(JSON.stringify(data));

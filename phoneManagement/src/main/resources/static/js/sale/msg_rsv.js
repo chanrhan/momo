@@ -1,4 +1,6 @@
 
+let child_window = null;
+
 $(document).ready(function (){
     var formData = sessionStorage.getItem("formData");
     if(formData === null || formData === "") {
@@ -12,7 +14,19 @@ $(document).ready(function (){
 })
 
 function clickSelectButton(formId){
-
+    $.ajax({
+        url: '/sale/msg/form/func?formId='+formId,
+        type: 'get',
+        success: function (url){
+            if(url !== null){
+                child_window = window.open(
+                    url,
+                    "양식 선택",
+                    "width=500, height=500, location=no"
+                )
+            }
+        }
+    })
 }
 
 function createSale(){
@@ -29,8 +43,9 @@ function createSale(){
         if($(typeField).attr('type') === 'checkbox'){
             type = (typeField.checked) ? 1 : -1;
         }else{
-            type = typeField.value;
+            type = $(typeField).attr('type_id');
         }
+
         if(type !== null && type !== "" && type !== -1){
             var b = {};
             var form_id = value.querySelector('input[name="form_id"]').value;

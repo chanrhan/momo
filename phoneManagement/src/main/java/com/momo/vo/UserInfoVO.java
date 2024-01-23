@@ -15,14 +15,17 @@ import java.util.Date;
 @SuperBuilder
 @NoArgsConstructor
 public class UserInfoVO extends AbstractQueryVO {
-	private String        id;
-	private String        pwd;
-	private String        updatePwd; // 변경할 비밀번호
-	private String        name;
-	private String        email;
-	private String        tel;
-	private String        termStr;
-	private String        role;
+	private String id;
+	private String pwd;
+	private String updatePwd; // 변경할 비밀번호
+	private String name;
+	private String email;
+	private String tel;
+	private String termStr;
+
+	private String  role;
+	private boolean approvalSt; // 승인 여부
+
 	private int           shopCd;
 	private String        shopNm;
 	private String        shopAddr;
@@ -43,7 +46,7 @@ public class UserInfoVO extends AbstractQueryVO {
 	}
 
 	public void setStartDt(String startDt) {
-//		System.out.println("start Date: " + startDt);
+		//		System.out.println("start Date: " + startDt);
 		Date date = new Date();
 		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}

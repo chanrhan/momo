@@ -1,4 +1,6 @@
-
+$(document).ready(function (){
+    sessionStorage.removeItem("formData");
+})
 
 function stepToNext(){
     var formData = new FormData(document.getElementById('create_form'));

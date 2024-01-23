@@ -60,32 +60,32 @@ public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 		return shopMapper.searchByRegion(regionVO);
 	}
 
-	public Paging<ShopVO> searchBranch(ShopVO shopVO){
-		Paging<ShopVO> paging = new Paging<>(shopVO.getPage(), 10);
-		shopVO.setOffset(paging.getOffset());
-		shopVO.setLimit(paging.getSize());
+//	public Paging<ShopVO> searchBranch(ShopVO shopVO){
+//		Paging<ShopVO> paging = new Paging<>(shopVO.getPage(), 10);
+//		shopVO.setOffset(paging.getOffset());
+//		shopVO.setLimit(paging.getSize());
+////		ShopVO vo = ShopVO.builder()
+//////				.keywordMap(keyword)
+////				.offset(paging.getOffset())
+////				.limit(paging.getSize())
+////				.build();
+//
+//		paging.setRecords(shopMapper.searchBranch(shopVO));
+//		paging.setTotalRecordCount(shopMapper.countBranch(shopVO));
+//
+//		return paging;
+//	}
+
+//	public Paging<ShopVO> selectPage(int pageNum, String targetColumn, String keyword){
+//		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
 //		ShopVO vo = ShopVO.builder()
-////				.keywordMap(keyword)
 //				.offset(paging.getOffset())
 //				.limit(paging.getSize())
 //				.build();
-
-		paging.setRecords(shopMapper.searchBranch(shopVO));
-		paging.setTotalRecordCount(shopMapper.countBranch(shopVO));
-
-		return paging;
-	}
-
-	public Paging<ShopVO> selectPage(int pageNum, String targetColumn, String keyword){
-		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
-		ShopVO vo = ShopVO.builder()
-				.offset(paging.getOffset())
-				.limit(paging.getSize())
-				.build();
-
-		paging.setRecords(shopMapper.search(vo));
-		paging.setTotalRecordCount(shopMapper.getTotalRecordCount(vo));
-
-		return paging;
-	}
+//
+//		paging.setRecords(shopMapper.search(vo));
+//		paging.setTotalRecordCount(shopMapper.getTotalRecordCount(vo));
+//
+//		return paging;
+//	}
 }

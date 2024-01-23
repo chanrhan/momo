@@ -19,7 +19,7 @@
                             th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}"></a>
                     </div>
                     <div>
-                        <p>알람</p>
+                        <a th:href="@{/alarm}">알람</a>
                         <p id="alarm_count"></p>
                     </div>
                 </div>

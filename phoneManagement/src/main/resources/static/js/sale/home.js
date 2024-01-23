@@ -66,7 +66,6 @@ function searchSale(){
     }
 
     var body = {
-        page: pageNum,
         selectMap: selectMap,
         searchMap: searchMap,
         orderby: order,
@@ -94,8 +93,7 @@ function searchSale(){
 function updateSaleList(result){
     var list_sale = document.getElementById('list_sale');
     list_sale.innerHTML = "";
-    var records = result.records;
-    records.forEach(function (value, index, array) {
+    result.forEach(function (value, index, array) {
         list_sale.innerHTML += "<tr onclick='showSaleDetail(" +
             value.saleNo +
             ")" +

@@ -41,7 +41,7 @@
         </tr>
         </thead>
         <tbody id="list_sale" >
-        <tr th:each="sale : ${list_sale.getRecords()}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.saleNo})|">
+        <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.saleNo})|">
             <td th:text="*{custNm}"></td>
             <td th:text="*{custTel}"></td>
             <td th:text="*{custCd}"></td>

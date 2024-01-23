@@ -25,6 +25,7 @@ public class MessageVO extends AbstractQueryVO {
 
 	private int    msgId;
 	private int    shopCd;
+	private int    saleNo;
 	private String sendTp;
 	private String custNm;
 	private String custTel;
@@ -33,8 +34,8 @@ public class MessageVO extends AbstractQueryVO {
 	private LocalDate     rsvDt;
 	private LocalDateTime regiDt;
 
-//	public void setRsvDt(String rsvDt) {
-//		Date date = new Date();
-//		this.rsvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-//	}
+	//	public void setRsvDt(String rsvDt) {
+	//		Date date = new Date();
+	//		this.rsvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	//	}
 }
