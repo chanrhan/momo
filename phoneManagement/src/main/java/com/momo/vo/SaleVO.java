@@ -8,9 +8,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -28,9 +25,9 @@ public class SaleVO extends AbstractQueryVO {
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 
 	// 개통 정보
-	private String    provider; // 통신사
-	private LocalDate actvDt; // 개통일자 (Activate)
-	private String    phMd; // 핸드폰 모델명 (Model)
+	private String        provider; // 통신사
+	private LocalDateTime actvDt; // 개통일자 (Activate)
+	private String        phMd; // 핸드폰 모델명 (Model)
 	private String    phStor; // 핸드폰 용량 (Storage)
 	private String    istm; // 할부 (Installment)
 	private String    actvDiv; // 개통 구분 (Division)
@@ -95,7 +92,7 @@ public class SaleVO extends AbstractQueryVO {
 	private String    spec; // 견적서
 	private LocalDate wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
 	private boolean   nonDisc; // 결합중 요금할인 빠짐 (None Discount)
-	private boolean   sendSt; // 문자 발송 여부
+	private boolean   rsvSt; // 문자 발송 여부
 	private LocalTime actvTime; // 개통 시간
 	private String    etc; // 비고
 
@@ -103,7 +100,7 @@ public class SaleVO extends AbstractQueryVO {
 	private List<MessageVO> msgRsvList;
 
 	public MessageVO getMessageVO() {
-		return MessageVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).build();
+		return MessageVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
 	}
 
 	//	public void setActvDt(String actvDt) {

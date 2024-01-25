@@ -17,7 +17,7 @@ function changeShop(){
     searchMessage();
 }
 
-function orderSale(th){
+function orderMessage(th){
     order = $(th).attr('value');
     side = $(th).hasClass('desc');
     $(th).toggleClass('desc');
@@ -58,7 +58,7 @@ function searchMessage(){
 }
 
 function updateMessageList(list){
-    console.log(list);
+    // console.log(list);
     var list_msg = document.getElementById('list_msg');
     list_msg.innerHTML = "";
     list.forEach(function (value, index, array) {

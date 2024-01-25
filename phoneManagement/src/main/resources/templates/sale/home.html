@@ -41,7 +41,8 @@
         </tr>
         </thead>
         <tbody id="list_sale" >
-        <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.saleNo})|">
+        <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.saleNo})|"
+            th:classappend="${sale.isRsvSt == false} ? 'msg-send'">
             <td th:text="*{custNm}"></td>
             <td th:text="*{custTel}"></td>
             <td th:text="*{custCd}"></td>

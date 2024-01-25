@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -36,6 +37,8 @@ public class MessageVO extends AbstractQueryVO {
 
 	private LocalDate     rsvDt;
 	private LocalDateTime regiDt;
+
+	private List<MessageVO> msgRsvList;
 
 	//	public void setRsvDt(String rsvDt) {
 	//		Date date = new Date();

@@ -1,4 +1,13 @@
 
+function stepToMessageReserve(){
+    var formData = new FormData(document.getElementById('detail_form'));
+    var body = convertFormDataToObject(formData);
+
+    sessionStorage.setItem("formData", JSON.stringify(body));
+    sessionStorage.setItem("from", "update");
+    window.location.href = '/sale/msg/rsv';
+}
+
 function updateSale(){
     var formData = new FormData(document.getElementById('detail_form'));
 

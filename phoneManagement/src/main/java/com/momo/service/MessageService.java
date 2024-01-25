@@ -48,13 +48,16 @@ public class MessageService {
 		return result;
 	}
 
-	public int reserveMessage(List<MessageVO> list, MessageVO messageVO){
+	public int reserveMessage(MessageVO messageVO){
+		List<MessageVO> list = messageVO.getMsgRsvList();
 		int maxMsgId = getMaxMsgReserveId(messageVO.getShopCd());
 		int result = 0;
+
 		String content = "";
 		for(int i=0; i<list.size(); ++i){
 			int formId = list.get(i).getFormId();
 			int typeId = list.get(i).getTypeId();
+			if(typeId == 0) continue;
 			content = createContent(formId, typeId, messageVO);
 			System.out.println(content);
 			result = reserve(MessageVO.builder()
@@ -75,7 +78,7 @@ public class MessageService {
 
 	private String createContent(int formId, int typeId, MessageVO messageVO){
 		String content = "";
-		if(formId <= 0){
+		if(formId <= -1){
 			content = formMapper.selectDefaultForm(formId).getContent();
 		}else{
 			content = formMapper.selectForm(formId).getContent();
@@ -89,12 +92,12 @@ public class MessageService {
 		Map<String, String> map;
 
 		switch (formId){
-			case -1: // 요금제
+			case -2: // 요금제
 				map = planMapper.getByMap(typeId);
 				content = content.replace("%[plan_nm]%", map.get("plan_nm"))
 						.replace("%[description]%", map.get("description"));
 				break;
-			case -2: // 부가서비스
+			case -3: // 부가서비스
 				map = extraServiceMapper.getByMap(typeId);
 				content = content.replace("%[ex_svc_nm]%", map.get("ex_svc_nm"))
 						.replace("%[description]%", map.get("description"));

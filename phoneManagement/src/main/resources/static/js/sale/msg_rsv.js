@@ -29,10 +29,44 @@ function clickSelectButton(formId){
     })
 }
 
+function submitReservation(){
+    var from = sessionStorage.getItem("from");
+    if(from === "create"){
+        createSale();
+    }else{
+        reserveMessage();
+    }
+}
+
 function createSale(){
-    var body = JSON.parse(sessionStorage.getItem("formData"));
-    body["custNm"] = $('#custNm').val();
-    body["custTel"] = $('#custTel').val();
+    var sale_body = JSON.parse(sessionStorage.getItem("formData"));
+    var custNm = $('#custNm').val();
+    var custTel = $('#custTel').val();
+    sale_body["custNm"] = custNm;
+    sale_body["custTel"] = custTel;
+
+    var rst = false;
+    $.ajax({
+        url: '/sale/create',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(sale_body),
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+        }
+    });
+    if(rst){
+        reserveMessage();
+    }
+}
+
+function reserveMessage(){
+    var custNm = $('#custNm').val();
+    var custTel = $('#custTel').val();
 
     var msgRsv = [];
 
@@ -56,20 +90,24 @@ function createSale(){
             msgRsv.push(b);
         }
     });
-    console.log(msgRsv);
-    body["msgRsvList"] = msgRsv;
+    // console.log(msgRsv);
+    var msg_body = JSON.parse(sessionStorage.getItem("formData"));
+    msg_body["custNm"] = custNm;
+    msg_body["custTel"] = custTel;
+    msg_body["msgRsvList"] = msgRsv;
 
     $.ajax({
-        url: '/sale/create',
+        url: '/msg/reserve',
         type: 'post',
         contentType: 'application/json',
-        data: JSON.stringify(body),
+        data: JSON.stringify(msg_body),
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
-        success: function (result){
-            if(result){
+        success: function (result2){
+            if(result2){
                 sessionStorage.removeItem("formData");
+                sessionStorage.removeItem("from");
                 window.opener.parent.searchSale();
                 window.close();
             }

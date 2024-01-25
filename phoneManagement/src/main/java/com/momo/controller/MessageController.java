@@ -30,25 +30,31 @@ public class MessageController {
 	}
 
 	@GetMapping("/reserve")
-	public String reserveMsg(Model model){
+	public String reserveMsgForm(Model model){
 		String username = SecurityContextUtil.getUsername();
 		UserInfoVO emp = employeeService.selectOne(UserInfoVO.builder().id(username).build());
 
-		List<MessageVO> list_msg;
-		if(emp.getRole().equals("REPS")){
-			list_msg = messageService.getReservedMessageByBno(emp.getBNo());
-		}else{
-			list_msg = messageService.getReservedMessage(MessageVO.builder().shopCd(emp.getShopCd()).build());
-		}
+//		List<MessageVO> list_msg;
+//		if(emp.getRole().equals("REPS")){
+//			list_msg = messageService.getReservedMessageByBno(emp.getBNo());
+//		}else{
+//			list_msg = messageService.getReservedMessage(MessageVO.builder().shopCd(emp.getShopCd()).build());
+//		}
 
-		model.addAttribute("list_msg", list_msg);
 
 		List<ShopVO> list_shop = shopService.getShopByUser(emp);
 		ShopVO shop = list_shop.get(0);
 
+		model.addAttribute("list_msg", messageService.getReservedMessage(MessageVO.builder().shopCd(shop.getShopCd()).build()));
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
 		return "message/msg_reserve";
+	}
+
+	@PostMapping("/reserve")
+	@ResponseBody
+	public boolean reserveMsgPOST(@RequestBody MessageVO messageVO){
+		return messageService.reserveMessage(messageVO) != 0;
 	}
 
 	@GetMapping("/send")

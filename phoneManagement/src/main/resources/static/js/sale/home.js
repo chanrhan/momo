@@ -39,7 +39,8 @@ function changeShop(){
     $('#srch_sale').val("");
     $('#filter_provider').val("");
 
-    side = false;
+    order = 'actv_dt';
+    side = true;
     searchSale();
 }
 
@@ -97,6 +98,8 @@ function updateSaleList(result){
         list_sale.innerHTML += "<tr onclick='showSaleDetail(" +
             value.saleNo +
             ")" +
+            "' class='" +
+            ((value.rsvSt == false) ? 'msg-send' : '') +
             "'><td>" +
             value.custNm +
             "</td>" +

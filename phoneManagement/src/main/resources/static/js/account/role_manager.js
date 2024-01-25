@@ -26,60 +26,60 @@ function searchCorp(){
             list_shop.innerHTML = "";
 
             result.forEach(function (value, index, array){
-                list_shop.innerHTML += "<div>" +
-                    "<div>" +
-                    "<p>" +
-                    value.corpNm +
-                    "</p>" +
-                    "<p>" +
-                    value.bNo +
-                    "</p>" +
-                    "</div>" +
-                    "<div>" +
-                    "<p>" +
-                    value.shopNm +
-                    "</p>" +
-                    "<p>" +
-                    value.shopAddr +
-                    "</p>" +
-                    "<p>" +
-                    value.shopTel +
-                    "</p>" +
-                    "</div>" +
-                    "<button class='btn btn-primary' name='btn_select_shop' value='" +
+                list_shop.innerHTML += "<tr th:shop_cd='" +
                     value.shopCd +
-                    "' reps_id='" +
+                    "' th:reps_id='" +
                     value.id +
-                    "'>" +
-                    "선택" +
-                    "</button>" +
-                    "</div>";
+                    "' onclick='submitMANAGER(this)" +
+                    "'><td>" +
+                    "<td>" +
+                    value.corpNm +
+                    "</td>" +
+                    "<td>" +
+                    value.bNo +
+                    "</td>" +
+                    "<td>" +
+                    value.shopNm +
+                    "</td>" +
+                    "<td>" +
+                    value.shopAddr +
+                    "</td>" +
+                    "<td>" +
+                    value.shopTel +
+                    "</td>" +
+                    "</tr>";
             });
-            document.getElementsByName('btn_select_shop')
-                .forEach(function (value, key, parent) {
-                    $(value).on('click',function (){
-                        var shopCode = $(value).val();
-                        var repsId = $(value).attr('reps_id');
-                        submitMANAGER(shopCode, repsId);
-                    });
-                }
-            );
+            // document.getElementsByName('btn_select_shop')
+            //     .forEach(function (value, key, parent) {
+            //         $(value).on('click',function (){
+            //             var shopCode = $(value).val();
+            //             var repsId = $(value).attr('reps_id');
+            //             submitMANAGER(shopCode, repsId);
+            //         });
+            //     }
+            // );
         }
     });
 }
 
-function submitMANAGER(shopCode, repsId){
+function submitMANAGER(_this){
+    var userId = $('#user_id').val();
+    var shopCode = $(_this).attr('shop_cd');
+    var repsId = $(_this).attr('reps_id');
+
     var data = {
-        id: $('#user_id').val(),
+        id: userId,
         role: 'MANAGER',
         shopCd: shopCode
     };
+    console.log(data);
+    return;
 
     var result = submitRole(data);
     if(result){
         data = {
             alarmTp: 'approval',
-            senderId: $('#user_id').val(),
+            senderId: userId,
             receiverId: repsId
         };
 

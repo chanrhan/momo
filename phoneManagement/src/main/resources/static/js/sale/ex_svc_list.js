@@ -46,7 +46,7 @@ function selectExsvc(_this){
     parent.getElementsByName('msg_form').forEach(function (value, key, parent){
         var formId = value.querySelector('input[name="form_id"]').value;
         console.log(formId);
-        if(formId === "-2"){
+        if(formId === "-3"){
             var inputField = value.querySelector('input[name="type"]');
             console.log(inputField);
             $(inputField).attr('type_id',exsvcId);

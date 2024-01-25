@@ -29,6 +29,9 @@ public abstract class AbstractQueryVO {
 		StringBuilder sb = new StringBuilder();
 		if(selectMap != null && !selectMap.isEmpty()){
 			selectMap.forEach((key, value)->{
+				if(value == null || value.equals("")){
+					return;
+				}
 				sb.append(key).append("=").append("'")
 						.append(value).append("'").append(" and ");
 			});
@@ -43,6 +46,9 @@ public abstract class AbstractQueryVO {
 		if(selectMap != null && !selectMap.isEmpty()){
 			final int[] size = {0};
 			selectMap.forEach((key, value)->{
+				if(value == null || value.equals("")){
+					return;
+				}
 				sb.append(key).append("=").append("'")
 						.append(value).append("'");
 				size[0]++;

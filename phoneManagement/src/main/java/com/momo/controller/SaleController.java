@@ -1,6 +1,5 @@
 package com.momo.controller;
 
-import com.momo.domain.Paging;
 import com.momo.service.*;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
@@ -49,11 +48,10 @@ public class SaleController {
 		model.addAttribute("list_shop", shopList);
 		model.addAttribute("selected_shop", shop);
 
-		// 이거 나중에 Paging 으로 바꿀 것
 		model.addAttribute("list_sale", saleService.select(SaleVO.builder()
 				.shopCd(shop.getShopCd())
-						.orderby("actv_dt")
-						.side(true)
+				.orderby("actv_dt")
+				.side(true)
 				.build()));
 
 		return "sale/home";
@@ -76,7 +74,7 @@ public class SaleController {
 	@PostMapping("/update")
 	@ResponseBody
 	public boolean saleUpdate(@RequestBody SaleVO saleVO){
-//		System.out.println(saleVO);
+		System.out.println(saleVO);
 		int result = saleService.update(saleVO);
 
 		return result != 0;
@@ -91,20 +89,12 @@ public class SaleController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean saleCreatePOST(@RequestBody SaleVO saleVO){
-		System.out.println(saleVO);
-		List<MessageVO> list = saleVO.getMsgRsvList();
-		saleVO.setSendSt(!(list == null || list.isEmpty()));
+//		System.out.println(saleVO);
+		int result = 0;
+//		List<MessageVO> list = saleVO.getMsgRsvList();
+//		saleVO.setRsvSt(!(list == null || list.isEmpty()));
 
-		int result = saleService.insert(saleVO);
-		if(result == 0){
-			return false;
-		}
-
-		if(list != null && !list.isEmpty()){
-		    result = messageService.reserveMessage(list, saleVO.getMessageVO());
-		}
-
-		return result != 0;
+		return saleService.insert(saleVO) != 0;
 	}
 
 	@GetMapping("/msg/rsv")
@@ -158,9 +148,9 @@ public class SaleController {
 	@ResponseBody
 	public String msgFormFunction(@RequestParam int formId){
 		switch (formId){
-			case -1:
-				return "/sale/plan/list";
 			case -2:
+				return "/sale/plan/list";
+			case -3:
 				return "/sale/exsvc/list";
 			default:
 				return null;

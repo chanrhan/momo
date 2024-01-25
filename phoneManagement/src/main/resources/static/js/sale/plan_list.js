@@ -19,6 +19,7 @@ function searchPlan(){
         success: function (result){
             var list_plan = document.getElementById('list_plan');
             list_plan.innerHTML = "";
+
             result.forEach(function (value, index, array) {
                 list_plan.innerHTML += "<tr th:plan_id='" +
                     value.planId +
@@ -46,7 +47,7 @@ function selectPlan(_this){
     parent.getElementsByName('msg_form').forEach(function (value, key, parent){
         var formId = value.querySelector('input[name="form_id"]').value;
         console.log(formId);
-        if(formId === "-1"){
+        if(formId === "-2"){
             var inputField = value.querySelector('input[name="type"]');
             console.log(inputField);
             $(inputField).attr('type_id',planId);

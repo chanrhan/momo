@@ -8,6 +8,7 @@
   <script src="/js/msg/msg_reserve.js" th:inline="javascript"></script>
   <h3>문자 예약 관리</h3>
   <select id="filter_shop" th:value="${selected_shop.shopCd}" onchange="changeShop()">
+    <option th:if="${list_shop.size() > 1}" selected value="">전체</option>
     <option th:each="shop : ${list_shop}" th:value="${shop.shopCd}" th:text="${shop.shopNm}"></option>
   </select>
   <input type="text" class="form-control" id="keyword">
@@ -15,14 +16,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th>지점명</th>
-      <th>문자 유형</th>
-      <th>받는 사람</th>
-      <th>전화번호</th>
-      <th>판매자</th>
-      <th>상태</th>
-      <th>예약 날짜</th>
-      <th>등록 날짜</th>
+      <th th:value="shop_nm" onclick="orderMessage(this)">지점명</th>
+      <th th:value="send_tp" onclick="orderMessage(this)">문자 유형</th>
+      <th th:value="cust_nm" onclick="orderMessage(this)">받는 사람</th>
+      <th th:value="cust_tel" onclick="orderMessage(this)">전화번호</th>
+      <th th:value="seller_nm" onclick="orderMessage(this)">판매자</th>
+      <th th:value="send_st" onclick="orderMessage(this)">상태</th>
+      <th th:value="rsv_dt" onclick="orderMessage(this)">예약 날짜</th>
+      <th th:value="regi_dt" onclick="orderMessage(this)">등록 날짜</th>
     </tr>
     </thead>
     <tbody id="list_msg" >

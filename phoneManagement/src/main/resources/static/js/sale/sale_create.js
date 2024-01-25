@@ -7,5 +7,6 @@ function stepToNext(){
     var body = convertFormDataToObject(formData);
 
     sessionStorage.setItem("formData", JSON.stringify(body));
+    sessionStorage.setItem("from", "create");
     window.location.href = '/sale/msg/rsv';
 }
