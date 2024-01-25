@@ -39,11 +39,10 @@ function setPasswordToggle(){
 }
 
 
-function createMapWithSingleKeyword(keyword){
+function createMapWithSingleKeyword(keyword, selected_columns){
     var map= {};
     if(keyword !== ""){
         selected_columns.forEach(function (value, index, array) {
-            // map.set(value, keyword);
             map[value] = keyword;
         });
     }

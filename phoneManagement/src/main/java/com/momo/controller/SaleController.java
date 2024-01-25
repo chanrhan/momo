@@ -36,14 +36,15 @@ public class SaleController {
 		String username = SecurityContextUtil.getUsername();
 
 		UserInfoVO emp = employeeService.selectById(username);
-		ShopVO shopVo;
-		if(emp.getRole().equals("REPS")){
-			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
-		}else{
-			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
-		}
-		ShopVO shop = shopService.selectOne(shopVo);
-		List<ShopVO> shopList = shopService.select(shopVo);
+//		ShopVO shopVo;
+//		if(emp.getRole().equals("REPS")){
+//			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
+//		}else{
+//			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
+//		}
+		List<ShopVO> shopList = shopService.getShopByUser(emp);
+		ShopVO shop = shopList.get(0);
+
 
 		model.addAttribute("list_shop", shopList);
 		model.addAttribute("selected_shop", shop);

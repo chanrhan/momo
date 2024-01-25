@@ -62,7 +62,7 @@ function searchSale(){
     }
     var keyword = $('#srch_sale').val();
     if(keyword !== ""){
-        searchMap = createMapWithSingleKeyword(keyword);
+        searchMap = createMapWithSingleKeyword(keyword, selected_columns);
     }
 
     var body = {

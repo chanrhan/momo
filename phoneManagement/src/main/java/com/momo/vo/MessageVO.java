@@ -25,11 +25,14 @@ public class MessageVO extends AbstractQueryVO {
 
 	private int    msgId;
 	private int    shopCd;
+	private String shopNm;
 	private int    saleNo;
 	private String sendTp;
+	private boolean sendSt;
 	private String custNm;
 	private String custTel;
 	private String sellerId;
+	private String sellerNm;
 
 	private LocalDate     rsvDt;
 	private LocalDateTime regiDt;

@@ -4,6 +4,7 @@ import com.momo.domain.Paging;
 import com.momo.mapper.ShopMapper;
 import com.momo.vo.ShopVO;
 import com.momo.vo.RegionVO;
+import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,16 @@ public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 
 	public List<ShopVO> searchByRegion(RegionVO regionVO){
 		return shopMapper.searchByRegion(regionVO);
+	}
+
+	public List<ShopVO> getShopByUser(UserInfoVO emp){
+		ShopVO shopVo;
+		if(emp.getRole().equals("REPS")){
+			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
+		}else{
+			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
+		}
+		return select(shopVo);
 	}
 
 //	public Paging<ShopVO> searchBranch(ShopVO shopVO){

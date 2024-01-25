@@ -2,6 +2,7 @@ package com.momo.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Delegate;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Map;

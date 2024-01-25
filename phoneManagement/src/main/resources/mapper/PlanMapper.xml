@@ -10,6 +10,14 @@
             tb_plan
         where
             ${orSearch}
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby} ${side}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
     </select>
 
     <select id="getByMap" resultType="java.util.Map">

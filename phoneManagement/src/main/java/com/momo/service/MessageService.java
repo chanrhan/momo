@@ -20,6 +20,18 @@ public class MessageService {
 	private final AccountService accountService;
 	private final ShopService shopService;
 
+	public List<MessageVO> getReservedMessage(MessageVO messageVO){
+		return reserveMapper.search(messageVO);
+	}
+
+	public List<MessageVO> getReservedMessageByBno(String bNo){
+		return reserveMapper.getReservedMessageByBno(bNo);
+	}
+
+	public List<MessageVO> search(MessageVO messageVO){
+		return reserveMapper.search(messageVO);
+	}
+
 	public List<MessageVO> getAllDefaultForm(){
 		return formMapper.getAllDefaultForm();
 	}
