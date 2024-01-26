@@ -19,7 +19,7 @@ function showSaleDetail(saleNo){
     window.open(
         "/sale/detail/"+saleNo,
         "판매일보 추가",
-        "width=800, height=800, location=no"
+        "width=800, height=1400, location=no"
     );
 }
 

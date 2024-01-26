@@ -159,6 +159,8 @@ public class AccountController {
 	@ResponseBody
 	public boolean approve(@RequestParam String user_id, @RequestParam int alarm_id){
 		UserInfoVO user = employeeService.selectOne(UserInfoVO.builder().id(user_id).build());
+
+
 		user.setApprovalSt(true);
 		int result = employeeService.update(user);
 		if(result == 0){

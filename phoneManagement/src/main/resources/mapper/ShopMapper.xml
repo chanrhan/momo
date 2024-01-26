@@ -6,7 +6,9 @@
     <select id="search" parameterType="com.momo.vo.ShopVO">
         with branch as(
             select
-                c.id as id,
+                c.id as repsId,
+                c.p_ko_nm as p_ko_nm,
+                c.p_en_nm as p_en_nm,
                 c.corp_nm as corp_nm,
                 c.b_no as b_no,
                 s.shop_nm as shop_nm,

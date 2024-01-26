@@ -52,8 +52,8 @@ public class UserInfoVO extends AbstractQueryVO {
 	}
 
 	public ShopVO getShopVO() {
-		return ShopVO.builder().id(id).bNo(bNo).pKoNm(pKoNm).pEnNm(pEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt)
+		return ShopVO.builder().repsId(id).bNo(bNo).pKoNm(pKoNm).pEnNm(pEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt)
 
-				.shopCd(shopCd).id(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
+				.shopCd(shopCd).repsId(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
 	}
 }

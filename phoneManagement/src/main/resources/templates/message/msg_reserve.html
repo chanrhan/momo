@@ -11,7 +11,7 @@
     <option th:if="${list_shop.size() > 1}" selected value="">전체</option>
     <option th:each="shop : ${list_shop}" th:value="${shop.shopCd}" th:text="${shop.shopNm}"></option>
   </select>
-  <input type="text" class="form-control" id="keyword">
+  <input type="search" class="form-control" id="keyword">
   <button type="button" class="btn btn-primary" onclick="searchMessage()">검색</button>
   <table class="table">
     <thead>

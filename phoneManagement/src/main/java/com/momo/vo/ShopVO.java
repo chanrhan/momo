@@ -22,7 +22,8 @@ public class ShopVO extends AbstractQueryVO {
 	private LocalDateTime startDt;
 
 	private int    shopCd;
-	private String id;
+	private String repsId;
+	private String repsNm;
 	private String shopNm;
 	private String shopTel;
 	private String shopAddr;

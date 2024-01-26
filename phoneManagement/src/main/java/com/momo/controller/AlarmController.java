@@ -5,10 +5,7 @@ import com.momo.vo.AlarmVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,11 @@ public class AlarmController {
 	@ResponseBody
 	public int countAlarm(@RequestParam String receiver, @RequestParam boolean readSt){
 		return alarmService.selectByReceiver(AlarmVO.builder().receiverId(receiver).readSt(readSt).build()).size();
+	}
+
+	@PostMapping("/read/all")
+	@ResponseBody
+	public boolean readAlarmList(@RequestBody List<Integer> alarmList){
+		return alarmService.readAll(alarmList) == alarmList.size();
 	}
 }

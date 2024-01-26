@@ -6,6 +6,8 @@ function searchCorp(){
     var body = {
         searchMap: {
             b_no: keyword,
+            p_ko_nm: keyword,
+            p_en_nm: keyword,
             shop_nm: keyword,
             shop_addr: keyword,
             corp_nm: keyword
@@ -26,14 +28,17 @@ function searchCorp(){
             list_shop.innerHTML = "";
 
             result.forEach(function (value, index, array){
-                list_shop.innerHTML += "<tr th:shop_cd='" +
+                list_shop.innerHTML += "<tr shop_cd='" +
                     value.shopCd +
-                    "' th:reps_id='" +
-                    value.id +
+                    "' reps_id='" +
+                    value.repsId +
                     "' onclick='submitMANAGER(this)" +
-                    "'><td>" +
+                    "'>" +
                     "<td>" +
                     value.corpNm +
+                    "</td>" +
+                    "<td>" +
+                    value.pKoNm +
                     "</td>" +
                     "<td>" +
                     value.bNo +
@@ -66,14 +71,13 @@ function submitMANAGER(_this){
     var userId = $('#user_id').val();
     var shopCode = $(_this).attr('shop_cd');
     var repsId = $(_this).attr('reps_id');
+    console.log(shopCode + ", "+ repsId);
 
     var data = {
         id: userId,
         role: 'MANAGER',
         shopCd: shopCode
     };
-    console.log(data);
-    return;
 
     var result = submitRole(data);
     if(result){

@@ -82,4 +82,43 @@
             (#{msgId},#{shopCd},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
     </insert>
 
+    <select id="select" parameterType="com.momo.vo.MessageVO">
+        select
+        s.shop_cd as shop_cd,
+        s.shop_nm as shop_nm,
+        mr.sale_no as sale_no,
+        mr.send_tp as send_tp,
+        mr.send_st as send_st,
+        mr.cust_nm as cust_nm,
+        mr.cust_tel as cust_tel,
+        mr.content as content,
+        mr.seller_id as seller_id,
+        a.name as seller_nm,
+        mr.rsv_dt as rsv_dt,
+        mr.regi_dt as regi_dt
+        from
+            tb_msg_rsv mr
+        left outer join tb_shop s on mr.shop_cd=s.shop_cd
+        left outer join tb_account a on mr.seller_id=a.id
+        where
+        <if test='shopCd != null and shopCd gt 0'>
+            mr.shop_cd=#{shopCd} and
+        </if>
+        <if test='msgId != null and msgId gt 0'>
+            msg_id=#{msgId} and
+        </if>
+        <if test='saleNo != null and saleNo gt 0'>
+            sale_no=#{saleNo} and
+        </if>
+        1 = 1
+        <if test='orderby != null and !orderby.equals("")'>
+            order by
+            ${orderby}
+        </if>
+        <if test='limit != null and limit gt 0'>
+            limit
+            ${offset},${limit}
+        </if>
+    </select>
+
 </mapper>

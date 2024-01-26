@@ -34,8 +34,10 @@
 
 <header th:replace="~{/layout/header :: header}"></header>
 <body>
-
-    <th:block layout:fragment="content"></th:block>
+    <div sec:authorize="!hasAuthority('ADMIN') and !hasAuthority('APPROVE')">
+        <h3>아직 승인이 허락되지 않은 사용자입니다.</h3>
+    </div>
+    <th:block sec:authorize="hasAuthority('ADMIN') || hasAuthority('APPROVE')" layout:fragment="content"></th:block>
 </body>
 <footer th:replace="~{/layout/footer :: footer}"></footer>
 </html>

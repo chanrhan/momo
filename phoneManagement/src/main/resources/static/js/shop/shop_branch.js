@@ -33,7 +33,7 @@ function addBranchShop(){
     var shop_addr = state + " " + city + " " + detail;
 
     var data = {
-        id: $('#user_id').val(),
+        repsId: $('#user_id').val(),
         shopNm: shop_nm,
         shopTel: shop_tel,
         shopAddr: shop_addr

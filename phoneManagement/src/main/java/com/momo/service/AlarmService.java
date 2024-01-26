@@ -60,6 +60,14 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 		return alarmMapper.approve(alarmId);
 	}
 
+	public int readAll(List<Integer> alarmList){
+		int result = 0;
+		for(int alarmId : alarmList){
+			result += read(alarmId);
+		}
+		return result;
+	}
+
 	public int read(int alarmId){
 		return alarmMapper.read(alarmId);
 	}

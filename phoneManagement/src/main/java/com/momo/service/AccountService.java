@@ -1,7 +1,9 @@
 package com.momo.service;
 
+import com.momo.domain.user.UserDetailsImpl;
 import com.momo.mapper.AccountMapper;
 import com.momo.mapper.DefaultCRUDMapper;
+import com.momo.mapper.EmployeeMapper;
 import com.momo.vo.ShopVO;
 import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -28,6 +31,8 @@ import java.util.List;
 public class AccountService implements DefaultCRUDService<UserInfoVO,UserInfoVO>, UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
 	private final AccountMapper accountMapper;
+
+	private final EmployeeMapper employeeMapper;
 
 	public int update(UserInfoVO userInfoVO){
 		return accountMapper.update(userInfoVO);
@@ -113,6 +118,20 @@ public class AccountService implements DefaultCRUDService<UserInfoVO,UserInfoVO>
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}
 
-		return user.getUserDetailsImpl();
+		UserDetailsImpl userDetails = user.getUserDetailsImpl();
+
+		String role = user.getRole();
+		if(role.equals("NONE")){
+			return userDetails;
+		}
+
+		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
+			UserInfoVO emp = employeeMapper.selectById(user.getId());
+			if(emp.isApprovalSt()){
+				userDetails.add(new SimpleGrantedAuthority("APPROVE"));
+			}
+		}
+
+		return userDetails;
 	}
 }

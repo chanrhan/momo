@@ -10,4 +10,5 @@ import java.util.List;
 public interface MsgReserveMapper extends DefaultCRUDMapper<MessageVO, MessageVO> {
 	public int getMaxMsgId(int shopCd);
 	public List<MessageVO> getReservedMessageByBno(String bNo);
+	public List<MessageVO> selectByShopCode(String shopCd);
 }

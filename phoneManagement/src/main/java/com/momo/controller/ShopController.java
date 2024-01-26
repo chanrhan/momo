@@ -35,7 +35,7 @@ public class ShopController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean shopCreate(@RequestBody ShopVO shopVO){
-		UserInfoVO reps = employeeService.selectById(shopVO.getId());
+		UserInfoVO reps = employeeService.selectById(shopVO.getRepsId());
 		shopVO.setBNo(reps.getBNo());
 		shopVO.setShopCd(shopService.getMaxCode()+1);
 

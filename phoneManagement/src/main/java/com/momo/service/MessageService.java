@@ -21,7 +21,7 @@ public class MessageService {
 	private final ShopService shopService;
 
 	public List<MessageVO> getReservedMessage(MessageVO messageVO){
-		return reserveMapper.search(messageVO);
+		return reserveMapper.select(messageVO);
 	}
 
 	public List<MessageVO> getReservedMessageByBno(String bNo){

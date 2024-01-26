@@ -11,29 +11,31 @@
         <h3>회사 찾기</h3>
         <div>
             <p>사업자번호 또는 회사명으로 검색하세요.</p>
-            <input type="text" class="form-control" id="input_search_corp">
+            <input type="search" class="form-control" id="input_search_corp">
             <button type="button" class="btn btn-primary" onclick="searchCorp()">검색</button>
         </div>
-        <div class="form-control" >
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>회사명</th>
-                    <th>사업자번호</th>
-                    <th>매장명</th>
-                    <th>주소</th>
-                    <th>전화번호</th>
-                </tr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>회사명</th>
+                <th>사업자명</th>
+                <th>사업자번호</th>
+                <th>매장명</th>
+                <th>주소</th>
+                <th>전화번호</th>
+            </tr>
 
-                </thead>
-                <tbody id="list_shop">
+            </thead>
+            <tbody id="list_shop">
 
-                </tbody>
-            </table>
-        </div>
-        <div class="form-control" id="detail_info">
+            </tbody>
+        </table>
+<!--        <div class="form-control" >-->
 
-        </div>
+<!--        </div>-->
+<!--        <div class="form-control" id="detail_info">-->
+
+<!--        </div>-->
 
     </div>
 

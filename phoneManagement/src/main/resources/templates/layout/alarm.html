@@ -16,12 +16,15 @@
                     th:alarm_id="*{alarmId}"
                     onclick="approve(this)"
             ></button>
+        </div>
 
         <div th:if="*{alarmTp == 'message'}">
             <p th:text="*{content}"></p>
         </div>
         <br>
         <p th:text="|보낸 날짜: ${#temporals.format(alarm.sendDt, 'yyyy-MM-dd HH:mm')}|"></p>
+        <p th:if="*{readSt}" name="read">읽음</p>
+        <p th:if="*{!readSt}" th:alarm_id="*{alarmId}" name="unread">안읽음</p>
+        </div>
     </div>
-</div>
 </html>

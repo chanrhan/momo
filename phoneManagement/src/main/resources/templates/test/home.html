@@ -12,6 +12,14 @@
     <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
 </head>
 <body>
+<input type="search" list="list_search">
+<datalist id="list_search">
+    <option value="오늘의날씨"></option>
+    <option value="박희찬"></option>
+    <option value="날"></option>
+    <option value="날조"></option>
+    <option value="오늘의뉴스"></option>
+</datalist>
 <script>
     const header = $("meta[name='_csrf_header']").attr('content');
     const token = $("meta[name='_csrf']").attr('content');
