@@ -21,7 +21,7 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 
 	@Override
 	public List<AlarmVO> select(AlarmVO key) {
-		return select(key);
+		return alarmMapper.select(key);
 	}
 
 	@Override

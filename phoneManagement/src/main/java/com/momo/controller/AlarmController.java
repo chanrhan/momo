@@ -1,6 +1,7 @@
 package com.momo.controller;
 
 import com.momo.service.AlarmService;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,8 @@ public class AlarmController {
 
 	@GetMapping("")
 	public String homeAlarm(Model model){
-		model.addAttribute("list_alarm", alarmService.selectAll());
+		String username = SecurityContextUtil.getUsername();
+		model.addAttribute("list_alarm", alarmService.select(AlarmVO.builder().receiverId(username).build()));
 		return "layout/alarm";
 	}
 

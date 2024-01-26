@@ -1,7 +1,7 @@
 
 $(document).ready(function (){
     var list_unread = document.getElementsByName('unread');
-    if(list_unread != null){
+    if(list_unread != null && list_unread.length > 0){
         var list_msg = [];
         list_unread.forEach(function (value, key, parent) {
             var alarmId = $(value).attr('alarm_id');

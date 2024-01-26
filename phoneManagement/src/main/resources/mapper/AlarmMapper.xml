@@ -50,6 +50,46 @@
             alarm_id=#{alarmId}
     </update>
 
+    <select id="select" parameterType="com.momo.vo.AlarmVO">
+        with alarm as (
+            select
+                al.alarm_id as alarm_id,
+                al.alarm_tp as alarm_tp,
+                al.receiver_id as receiver_id,
+                ac.id as sender_id,
+                ac.name as sender_nm,
+                s.shop_nm as shop_nm,
+                al.content as content,
+                al.read_st as read_st,
+                al.send_dt as send_dt
+            from
+                tb_alarm as al
+                    left outer join tb_account ac on ac.id=al.sender_id
+                    left outer join tb_emp e on e.id=al.sender_id
+                    left outer join tb_shop s on s.shop_cd=e.shop_cd
+        )
+
+        select
+            *
+        from
+            alarm
+        where
+        <if test='receiverId != null and !receiverId.equals("")'>
+            receiver_id=#{receiverId} and
+        </if>
+        <if test='senderId != null and !senderId.equals("")'>
+            sender_id=#{senderId} and
+        </if>
+        <if test='alarmTp != null and !alarmTp.equals("")'>
+            alarm_tp=#{alarmTp} and
+        </if>
+            1 = 1
+        order by
+            send_dt desc
+
+
+    </select>
+
     <select id="selectAll" parameterType="com.momo.vo.AlarmVO">
         with alarm as (
             select
