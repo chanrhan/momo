@@ -11,11 +11,19 @@ ws.onmessage = function (data){
 };
 
 function updateAlarm(){
-    var id = $('#user_id').val();
+    var body = {
+        receiver_id: $('#user_id').val(),
+        read_st: 0
+    }
 
     $.ajax({
-        url: '/alarm/count?receiver='+id+'&readSt='+false,
-        type: 'get',
+        url: '/alarm/count',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        beforeSend: function (xhr){
+          xhr.setRequestHeader(header, token);
+        },
         success: function (result){
             alarm_count = result;
             $('#alarm_count').text(alarm_count);

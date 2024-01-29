@@ -3,8 +3,8 @@ function searchExsvc(){
     var keyword = $('#srch').val();
 
     var body = {
-        searchMap: {
-            "ex_svc_nm": keyword
+        search: {
+            ex_svc_nm: keyword
         }
     };
 
@@ -20,9 +20,9 @@ function searchExsvc(){
             var list_exsvc = document.getElementById('list_exsvc');
             list_exsvc.innerHTML = "";
             result.forEach(function (value, index, array) {
-                list_exsvc.innerHTML += "<tr th:exsvc_id='" +
+                list_exsvc.innerHTML += "<tr exsvc_id='" +
                     value.exSvcId +
-                    "' th:exsvc_nm='" +
+                    "' exsvc_nm='" +
                     value.exSvcNm +
                     "' onclick='selectExsvc(this)" +
                     "'><td>" +

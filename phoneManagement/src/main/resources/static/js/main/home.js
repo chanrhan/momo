@@ -11,11 +11,4 @@ $(document).ready(function (){
             window.location.href = "/";
             break;
     }
-
-    // var approved = $('#approved').val();
-    // console.log(approved);
-    // if(approved === null || approved === "undefined"){
-    //     console.log("null aaa");
-    //
-    // }
 });

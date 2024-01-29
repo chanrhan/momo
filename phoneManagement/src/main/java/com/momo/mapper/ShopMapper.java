@@ -1,16 +1,13 @@
 package com.momo.mapper;
 
-import com.momo.vo.RegionVO;
 import com.momo.vo.ShopVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
-public interface ShopMapper extends DefaultCRUDMapper<ShopVO, ShopVO> {
-	public List<ShopVO> searchBranch(ShopVO shopVO);
-	public int countBranch(ShopVO shopVO);
+public interface ShopMapper extends ICommonMapper {
 	public Integer getMaxCode();
-	public List<ShopVO> searchByRegion(RegionVO regionVO);
-	public int getTotalRecordCount(ShopVO shopVO);
+	public List<Map<String,Object>> searchByRegion(Map<String,Object> map);
 }

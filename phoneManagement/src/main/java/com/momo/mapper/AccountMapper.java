@@ -1,11 +1,12 @@
 package com.momo.mapper;
 
-import com.momo.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface AccountMapper extends DefaultCRUDMapper<UserInfoVO, UserInfoVO> {
-	public int updateRole(UserInfoVO userInfoVO);
+import java.util.Map;
 
-	public int updatePassword(UserInfoVO userInfoVO);
+@Mapper
+public interface AccountMapper extends ICommonMapper {
+	public int updateRole(Map<String,Object> map);
+
+	public int updatePassword(Map<String,Object> map);
 }

@@ -3,21 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.PlanMapper">
-    <select id="search" parameterType="com.momo.vo.PlanVO">
+    <select id="select" >
         select
             *
         from
             tb_plan
         where
+            ${qs}
+    </select>
+
+    <select id="search" parameterType="com.momo.vo.CommonVO">
+        select
+            *
+        from
+            tb_plan
+        where
+            ${andSelect} and
             ${orSearch}
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby} ${side}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+        ${prop}
     </select>
 
     <select id="getByMap" resultType="java.util.Map">

@@ -12,6 +12,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -35,14 +36,14 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String payload = message.getPayload();
 
-		AlarmVO alarmVO = objectMapper.readValue(payload, AlarmVO.class);
-		System.out.println(alarmVO);
+		Map<String,Object> alarmMap = objectMapper.readValue(payload, Map.class);
+		System.out.println(alarmMap);
 
-		if(alarmVO.getSenderId() == null || alarmVO.getReceiverId() == null){
+		if(alarmMap.get("sender_id") == null || alarmMap.get("receiver_id") == null){
 			return;
 		}
 
-		int result = alarmService.insert(alarmVO);
+		int result = alarmService.insert(alarmMap);
 		if(result == 0){
 			return;
 		}

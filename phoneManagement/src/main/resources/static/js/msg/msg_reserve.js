@@ -1,6 +1,6 @@
 
 let order = "rsv_dt";
-let side = false;
+let side = "asc";
 
 let selected_columns = [
     "shop_nm",
@@ -19,7 +19,7 @@ function changeShop(){
 
 function orderMessage(th){
     order = $(th).attr('value');
-    side = $(th).hasClass('desc');
+    side = $(th).hasClass('desc') ? 'desc' : 'asc';
     $(th).toggleClass('desc');
 
     searchMessage();
@@ -36,9 +36,9 @@ function searchMessage(){
     }
 
     var body = {
-        selectMap: selectMap,
-        searchMap: searchMap,
-        orderby: order,
+        select: selectMap,
+        search: searchMap,
+        order: order,
         side: side
     };
 
@@ -64,28 +64,28 @@ function updateMessageList(list){
     list.forEach(function (value, index, array) {
         list_msg.innerHTML += "<tr>" +
             "<td>" +
-            value.shopNm +
+            value.shop_nm +
             "</td>" +
             "<td>" +
-            value.sendTp +
+            value.send_tp +
             "</td>" +
             "<td>" +
-            value.custNm +
+            value.cust_nm +
             "</td>" +
             "<td>" +
-            value.custTel +
+            value.cust_tel +
             "</td>" +
             "<td>" +
-            value.sellerNm +
+            value.seller_nm +
             "</td>" +
             "<td>" +
-            ((value.sendSt) ? '발송 완료' : '발송 대기') +
+            ((value.send_st) ? '발송 완료' : '발송 대기') +
             "</td>" +
             "<td>" +
-            value.rsvDt +
+            value.rsv_dt +
             "</td>" +
             "<td>" +
-            value.regiDt +
+            value.regi_dt +
             "</td>" +
             "</tr>";
     })

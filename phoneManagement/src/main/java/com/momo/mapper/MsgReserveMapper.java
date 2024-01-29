@@ -1,14 +1,13 @@
 package com.momo.mapper;
 
-import com.momo.service.DefaultCRUDService;
-import com.momo.vo.MessageVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
-public interface MsgReserveMapper extends DefaultCRUDMapper<MessageVO, MessageVO> {
+public interface MsgReserveMapper extends ICommonMapper {
 	public int getMaxMsgId(int shopCd);
-	public List<MessageVO> getReservedMessageByBno(String bNo);
-	public List<MessageVO> selectByShopCode(String shopCd);
+	public List<Map<String,Object>> selectByBNo(String bNo);
+	public List<Map<String,Object>> selectByShopCode(String shopCd);
 }

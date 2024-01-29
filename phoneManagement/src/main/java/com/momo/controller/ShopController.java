@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/shop")
@@ -34,12 +36,12 @@ public class ShopController {
 
 	@PostMapping("/create")
 	@ResponseBody
-	public boolean shopCreate(@RequestBody ShopVO shopVO){
-		UserInfoVO reps = employeeService.selectById(shopVO.getRepsId());
-		shopVO.setBNo(reps.getBNo());
-		shopVO.setShopCd(shopService.getMaxCode()+1);
+	public boolean shopCreate(@RequestBody Map<String,Object> map){
+		Map<String,Object> repsMap = employeeService.selectById(map.get("reps_id").toString());
+		map.put("b_no", repsMap.get("b_no"));
+		map.put("shop_cd",shopService.getMaxCode()+1);
 
-		return shopService.insert(shopVO) != 0;
+		return shopService.insert(map) != 0;
 	}
 
 	@GetMapping("/city")

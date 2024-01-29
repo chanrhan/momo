@@ -18,9 +18,9 @@
         </thead>
         <tbody id="list_plan">
         <tr th:each="plan : ${list_plan}" th:object="${plan}"
-            th:plan_id="*{planId}" th:plan_nm="*{planNm}"
+            th:plan_id="*{plan_id}" th:plan_nm="*{plan_nm}"
             onclick="selectPlan(this)">
-            <td th:text="*{planNm}"></td>
+            <td th:text="*{plan_nm}"></td>
             <td th:text="*{description}"></td>
         </tr>
         </tbody>

@@ -12,62 +12,24 @@
             id=#{id}
     </select>
 
-    <select id="select" parameterType="com.momo.vo.UserInfoVO">
+    <select id="select">
         select
         *
         from
         tb_emp
         where
-        <if test='id != null and !id.equals("")'>
-            id=#{id} and
-        </if>
-        <if test='role != null and !role.equals("")'>
-            role=#{role} and
-        </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no=#{bNo} and
-        </if>
-        <if test='shopCd != null and shopCd gt 0'>
-            shop_cd=#{shopCd} and
-        </if>
-        1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+            ${qs}
     </select>
 
-    <select id="search" parameterType="com.momo.vo.UserInfoVO">
+    <select id="search" parameterType="com.momo.vo.CommonVO">
         select
             *
         from
         tb_emp
         where
-        <if test='id != null and !id.equals("")'>
-            id like '%${id}%' and
-        </if>
-        <if test='role != null and !role.equals("")'>
-            role like '%${role}%' and
-        </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no like '%${bNo}%' and
-        </if>
-        <if test='shopCd != null and !shopCd.equals("")'>
-            shop_cd like '%${shopCd}%' and
-        </if>
-            1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+            ${andSelect} and
+            ${orSearch}
+        ${prop}
     </select>
 
 
@@ -78,34 +40,34 @@
             tb_emp
     </select>
 
-    <insert id="insert" parameterType="com.momo.vo.UserInfoVO">
+    <insert id="insert" parameterMap="java.util.Map">
         insert into
             tb_emp
             (id, role, b_no, shop_cd)
         VALUES
-            (#{id},#{role},#{bNo},#{shopCd})
+            (#{id},#{role},#{b_no},#{shop_cd})
     </insert>
 
-    <update id="update" parameterType="com.momo.vo.UserInfoVO">
+    <update id="update" parameterMap="java.util.Map">
         update
             tb_emp
         set
-            shop_cd=#{shopCd},
-            approval_st=#{approvalSt}
+            shop_cd=#{shop_cd},
+            approval_st=#{approval_st}
         where
             id=#{id}
     </update>
 
-    <update id="updateShop" parameterType="com.momo.vo.UserInfoVO">
+    <update id="updateShop" parameterMap="java.util.Map">
         update
             tb_emp
         set
-            shop_cd=#{shopCd}
+            shop_cd=#{shop_cd}
         where
             id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.momo.vo.UserInfoVO">
+    <delete id="delete" parameterMap="java.util.Map">
         delete from
             tb_emp
         where

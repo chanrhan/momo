@@ -2,7 +2,7 @@
 let pageNum = 1;
 let filter_provider = "";
 let order = "actv_dt";
-let side = false;
+let side = 'asc';
 
 let selected_columns = [
     "cust_nm",
@@ -24,8 +24,6 @@ function showSaleDetail(saleNo){
 }
 
 
-
-
 function showCreateSaleForm(){
     var shopCode = $('#filter_shop').val();
     window.open(
@@ -40,13 +38,13 @@ function changeShop(){
     $('#filter_provider').val("");
 
     order = 'actv_dt';
-    side = true;
+    side = 'desc';
     searchSale();
 }
 
 function orderSale(th){
     order = $(th).attr('value');
-    side = $(th).hasClass('desc');
+    side = $(th).hasClass('desc') ? 'desc' : 'asc';
     $(th).toggleClass('desc');
 
     searchSale();
@@ -67,13 +65,11 @@ function searchSale(){
     }
 
     var body = {
-        selectMap: selectMap,
-        searchMap: searchMap,
-        orderby: order,
+        select: selectMap,
+        search: searchMap,
+        order: order,
         side: side
     };
-    // console.log(body);
-    // console.log(JSON.stringify(body));
 
     $.ajax({
         url: '/sale/list/srch',

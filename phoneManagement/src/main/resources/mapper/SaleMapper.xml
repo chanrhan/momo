@@ -3,80 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="search" parameterType="com.momo.vo.SaleVO">
+    <select id="search" parameterType="com.momo.vo.CommonVO">
         select
         *
         from
         tb_sale
         where
-            ${andSelect}
-                and
+            ${andSelect} and
             ${orSearch}
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby} ${side}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+        ${prop}
     </select>
 
-    <select id="countSearch" parameterType="com.momo.vo.SaleVO">
-        select
-        count(*)
-        from
-        tb_sale
-        where
-            ${andSelect}
-          and
-            ${orSearch}
-    </select>
-
-
-
-    <select id="select" parameterType="com.momo.vo.SaleVO">
+    <select id="select" >
         select
             *
         from
             tb_sale
         where
-        <if test='saleNo != null and saleNo gt 0'>
-            sale_no=#{saleNo} and
-        </if>
-        <if test='shopCd != null and shopCd gt 0'>
-            shop_cd=#{shopCd} and
-        </if>
-        <if test='provider != null and !provider.equals("")'>
-            provider=#{provider} and
-        </if>
-        1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby} ${side}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
-    </select>
-
-    <select id="countSelect" parameterType="com.momo.vo.SaleVO">
-        select
-        count(*)
-        from
-        tb_sale
-        where
-        <if test='saleNo != null and saleNo gt 0'>
-            sale_no=#{saleNo} and
-        </if>
-        <if test='shopCd != null and shopCd gt 0'>
-            shop_cd=#{shopCd} and
-        </if>
-        <if test='provider != null and !provider.equals("")'>
-            provider=#{provider} and
-        </if>
-        1 = 1
+            ${qs}
     </select>
 
     <select id="getMaxSaleNo">
@@ -86,7 +30,7 @@
             tb_sale
     </select>
 
-    <insert id="insert" parameterType="com.momo.vo.SaleVO">
+    <insert id="insert" parameterMap="java.util.Map">
         insert into
             tb_sale
         (sale_no, shop_cd, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
@@ -95,37 +39,37 @@
          sup_pay5, friend, ex_svc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
          spec, wt_expr_dt, non_disc, rsv_st, actv_time, etc)
         values
-            (#{saleNo},#{shopCd},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
-             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
-             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{supPay1},#{supDiv2},#{supPay2},#{supDiv3},#{supPay3},#{supDiv4},#{supPay4},
-             #{supDiv5},#{supPay5},#{friend},#{exSvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
-             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{rsvSt},#{actvTime},#{etc})
-
+            (#{sale_no},#{shop_cd},#{cust_nm},#{cust_tel},#{cust_cd},#{cust_gd},#{provider},#{actv_dt},#{phMd},#{ph_md},#{istm},#{actv_div},#{actv_tp},#{actv_plan},
+             #{move_plan},#{ct_cms},#{green_md},#{green_ret},#{sec_md},#{sec_cms},#{wt_tp},#{wt_div},#{wt_cms},#{net_actv_plan},#{net_dec_plan},#{tv_actv_plan},
+             #{tv_dec_plan},#{add_item},#{add_pay},#{add_dt},#{sup_div1},#{sup_pay1},#{sup_div2},#{sup_pay2},#{sup_div3},#{sup_pay3},#{sup_div4},#{sup_pay4},
+             #{sup_div5},#{sup_pay5},#{friend},#{ex_svc},#{comb_move},#{card},#{card_div},#{tot_add_pay},#{tot_rb},#{tot_sup},#{def_pc},#{seller_cms},#{ct_pt},
+             #{wt_pt},#{tot_pt},#{seller_id},#{spec},#{wt_expr_dt},#{non_disc},#{rsv_st},#{actv_time},#{etc})
     </insert>
 
-    <update id="update" parameterType="com.momo.vo.SaleVO">
+    <update id="update" parameterMap="java.util.Map">
         update
         tb_sale
         set
-            cust_nm=#{custNm},cust_tel=#{custTel},cust_cd=#{custCd},cust_gd=#{custGd},provider=#{provider},actv_dt=#{actvDt},ph_md=#{phMd},
-            ph_stor=#{phStor},istm=#{istm},actv_div=#{actvDiv},actv_tp=#{actvTp},actv_plan=#{actvPlan},
-            move_plan=#{movePlan},ct_cms=#{ctCms},green_md=#{greenMd},green_ret=#{greenRet},sec_md=#{secMd},sec_cms=#{secCms},wt_tp=#{wtTp},
-            wt_div=#{wtDiv},wt_cms=#{wtCms},net_actv_plan=#{netActvPlan},net_dec_plan=#{netDecPlan},tv_actv_plan=#{tvActvPlan},
-            tv_dec_plan=#{tvDecPlan},add_item=#{addItem},add_pay=#{addPay},add_dt=#{addDt},sup_div1=#{supDiv1},sup_pay1=#{supPay1},
-            sup_div2=#{supDiv2},sup_pay2=#{supPay2},sup_div3=#{supDiv3},sup_pay3=#{supPay3},sup_div4=#{supDiv4},sup_pay4=#{supPay4},
-            sup_div5=#{supDiv5},sup_pay5=#{supPay5},friend=#{friend},ex_svc=#{exSvc},comb_move=#{combMove},card=#{card},card_div=#{cardDiv},
-            tot_add_pay=#{totAddPay},tot_rb=#{totRb},tot_sup=#{totSup},def_pc=#{defPc},seller_cms=#{sellerCms},ct_pt=#{ctPt},
-            wt_pt=#{wtPt},tot_pt=#{totPt},seller_id=#{sellerId},spec=#{spec},wt_expr_dt=#{wtExprDt},non_disc=#{nonDisc},rsv_st=#{rsvSt},actv_time=#{actvTime},etc=#{etc}
+            cust_nm=#{cust_nm},cust_tel=#{cust_tel},cust_cd=#{cust_cd},cust_gd=#{cust_gd},provider=#{provider},actv_dt=#{actv_dt},ph_md=#{ph_md},
+            ph_stor=#{ph_stor},istm=#{istm},actv_div=#{actv_div},actv_tp=#{actv_tp},actv_plan=#{actv_plan},
+            move_plan=#{move_plan},ct_cms=#{ct_cms},green_md=#{green_md},green_ret=#{green_ret},sec_md=#{sec_md},sec_cms=#{sec_cms},wt_tp=#{wt_tp},
+            wt_div=#{wt_div},wt_cms=#{wt_cms},net_actv_plan=#{net_actv_plan},net_dec_plan=#{net_dec_plan},tv_actv_plan=#{tv_actv_plan},
+            tv_dec_plan=#{tv_dec_plan},add_item=#{add_item},add_pay=#{add_pay},add_dt=#{add_dt},sup_div1=#{sup_div1},sup_pay1=#{sup_pay1},
+            sup_div2=#{sup_div2},sup_pay2=#{sup_pay2},sup_div3=#{sup_div3},sup_pay3=#{sup_pay3},sup_div4=#{sup_div4},sup_pay4=#{sup_pay4},
+            sup_div5=#{sup_div5},sup_pay5=#{sup_pay5},friend=#{friend},ex_svc=#{ex_svc},comb_move=#{comb_move},card=#{card},card_div=#{card_div},
+            tot_add_pay=#{tot_add_pay},tot_rb=#{tot_rb},tot_sup=#{tot_sup},def_pc=#{def_pc},seller_cms=#{seller_cms},ct_pt=#{ct_pt},
+            wt_pt=#{wt_pt},tot_pt=#{tot_pt},seller_id=#{seller_id},spec=#{spec},wt_expr_dt=#{wt_expr_dt},non_disc=#{non_disc},
+            rsv_st=#{rsv_st},actv_time=#{actv_time},etc=#{etc}
         where
-            sale_no=#{saleNo}
+            sale_no=#{sale_no}
 
     </update>
 
-    <delete id="delete" parameterType="com.momo.vo.SaleVO">
+    <delete id="delete" parameterMap="java.util.Map">
         delete from
             tb_sale
         where
-            sale_no=#{saleNo}
+            sale_no=#{sale_no}
     </delete>
 
 </mapper>

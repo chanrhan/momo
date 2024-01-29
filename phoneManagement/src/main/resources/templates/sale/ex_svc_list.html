@@ -18,9 +18,9 @@
         </thead>
         <tbody id="list_exsvc">
         <tr th:each="exsvc : ${list_exsvc}" th:object="${exsvc}"
-            th:exsvc_id="*{exSvcId}" th:exsvc_nm="*{exSvcNm}"
+            th:exsvc_id="*{ex_svc_Id}" th:exsvc_nm="*{ex_svc_nm}"
             onclick="selectExsvc(this)">
-            <td th:text="*{exSvcNm}"></td>
+            <td th:text="*{ex_svc_nm}"></td>
             <td th:text="*{description}"></td>
         </tr>
         </tbody>

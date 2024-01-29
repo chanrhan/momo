@@ -7,9 +7,9 @@
 <div layout:fragment="content">
   <script src="/js/msg/msg_reserve.js" th:inline="javascript"></script>
   <h3>문자 예약 관리</h3>
-  <select id="filter_shop" th:value="${selected_shop.shopCd}" onchange="changeShop()">
+  <select id="filter_shop" th:value="${selected_shop.shop_cd}" onchange="changeShop()">
     <option th:if="${list_shop.size() > 1}" selected value="">전체</option>
-    <option th:each="shop : ${list_shop}" th:value="${shop.shopCd}" th:text="${shop.shopNm}"></option>
+    <option th:each="shop : ${list_shop}" th:value="${shop.shop_cd}" th:text="${shop.shop_nm}"></option>
   </select>
   <input type="search" class="form-control" id="keyword">
   <button type="button" class="btn btn-primary" onclick="searchMessage()">검색</button>
@@ -28,14 +28,14 @@
     </thead>
     <tbody id="list_msg" >
     <tr th:each="msg : ${list_msg}" th:object="${msg}">
-      <td th:text="*{shopNm}"></td>
-      <td th:text="*{sendTp}"></td>
-      <td th:text="*{custNm}"></td>
-      <td th:text="*{custTel}"></td>
-      <td th:text="*{sellerNm}"></td>
-      <td th:text="${(msg.sendSt) ? '발송 완료' : '발송 대기'}"></td>
-      <td th:text="*{#temporals.format(rsvDt,'yyyy-MM-dd HH:mm')}"></td>
-      <td th:text="*{#temporals.format(regiDt,'yyyy-MM-dd HH:mm')}"></td>
+      <td th:text="*{shop_nm}"></td>
+      <td th:text="*{send_tp}"></td>
+      <td th:text="*{cust_nm}"></td>
+      <td th:text="*{cust_tel}"></td>
+      <td th:text="*{seller_nm}"></td>
+      <td th:text="${(msg.send_st) ? '발송 완료' : '발송 대기'}"></td>
+      <td th:text="*{#temporals.format(rsv_dt,'yyyy-MM-dd HH:mm')}"></td>
+      <td th:text="*{#temporals.format(regi_dt,'yyyy-MM-dd HH:mm')}"></td>
     </tr>
     </tbody>
   </table>

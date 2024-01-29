@@ -1,54 +1,60 @@
 package com.momo.service;
 
 import com.momo.mapper.EmployeeMapper;
-import com.momo.vo.UserInfoVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeService implements DefaultCRUDService<UserInfoVO, UserInfoVO> {
+public class EmployeeService extends CommonService {
 	private final EmployeeMapper employeeMapper;
 
 	@Override
-	public int insert(UserInfoVO key) {
-		return employeeMapper.insert(key);
+	public int insert(Map<String,Object> map) {
+		return employeeMapper.insert(map);
 	}
 
 	@Override
-	public List<UserInfoVO> select(UserInfoVO key) {
-		return employeeMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return employeeMapper.select(getSelectQueryString(map));
 	}
 
-	public UserInfoVO selectById(String id){
+	@Override
+	public List<Map<String, Object>> search(CommonVO commonVO) {
+		return employeeMapper.search(commonVO);
+	}
+
+	public Map<String,Object> selectById(String id){
 		return employeeMapper.selectById(id);
 	}
 
 	@Override
-	public UserInfoVO selectOne(UserInfoVO key) {
+	public Map<String,Object> selectOne(Map<String,Object> key) {
 		return select(key).get(0);
 	}
 
 	@Override
-	public int update(UserInfoVO key) {
+	public int update(Map<String,Object> key) {
 		return employeeMapper.update(key);
 	}
 
-	public int updateShop(UserInfoVO userInfoVO){
-		UserInfoVO user = employeeMapper.selectById(userInfoVO.getId());
-		user.setShopCd(userInfoVO.getShopCd());
-		return employeeMapper.updateShop(user);
+	public int updateShop(Map<String,Object> map){
+		Map<String,Object> empMap = employeeMapper.selectById(map.get("id").toString());
+		empMap.put("shop_cd", map.get("shop_cd"));
+		return employeeMapper.updateShop(empMap);
 	}
 
 	@Override
-	public int delete(UserInfoVO key) {
+	public int delete(Map<String,Object> key) {
 		return employeeMapper.delete(key);
 	}
 
 	@Override
-	public List<UserInfoVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return employeeMapper.selectAll();
 	}
 }

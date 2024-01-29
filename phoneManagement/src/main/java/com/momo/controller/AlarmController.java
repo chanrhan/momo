@@ -2,13 +2,14 @@ package com.momo.controller;
 
 import com.momo.service.AlarmService;
 import com.momo.util.SecurityContextUtil;
-import com.momo.vo.AlarmVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,20 +20,22 @@ public class AlarmController {
 	@GetMapping("")
 	public String homeAlarm(Model model){
 		String username = SecurityContextUtil.getUsername();
-		model.addAttribute("list_alarm", alarmService.select(AlarmVO.builder().receiverId(username).build()));
+		Map<String,Object> selectMap = new HashMap<>();
+		selectMap.put("receiver_id", username);
+		model.addAttribute("list_alarm", alarmService.select(selectMap));
 		return "layout/alarm";
 	}
 
-	@GetMapping("/get")
+	@PostMapping("/get")
 	@ResponseBody
-	public List<AlarmVO> getAlarm(@RequestParam String receiver){
-		return alarmService.selectByReceiver(AlarmVO.builder().receiverId(receiver).build());
+	public List<Map<String,Object>> getAlarm(@RequestBody Map<String,Object> map){
+		return alarmService.select(map);
 	}
 
-	@GetMapping("/count")
+	@PostMapping("/count")
 	@ResponseBody
-	public int countAlarm(@RequestParam String receiver, @RequestParam boolean readSt){
-		return alarmService.selectByReceiver(AlarmVO.builder().receiverId(receiver).readSt(readSt).build()).size();
+	public int countAlarm(@RequestBody Map<String,Object> map){
+		return alarmService.select(map).size();
 	}
 
 	@PostMapping("/read/all")

@@ -1,52 +1,43 @@
 package com.momo.service;
 
 import com.momo.mapper.ExtraServiceMapper;
-import com.momo.vo.ExtraServiceVO;
-import com.momo.vo.PlanVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ExtraSvcService implements DefaultCRUDService<ExtraServiceVO, ExtraServiceVO> {
+public class ExtraSvcService extends CommonService {
 	private final ExtraServiceMapper extraServiceMapper;
 
-
 	@Override
-	public int insert(ExtraServiceVO key) {
+	public int insert(Map<String,Object> key) {
 		return extraServiceMapper.insert(key);
 	}
-
 	@Override
-	public List<ExtraServiceVO> select(ExtraServiceVO key) {
-		return extraServiceMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return extraServiceMapper.select(getSelectQueryString(map));
 	}
-
 	@Override
-	public ExtraServiceVO selectOne(ExtraServiceVO key) {
+	public Map<String,Object> selectOne(Map<String,Object> key) {
 		return select(key).get(0);
 	}
-
-	public List<ExtraServiceVO> search(ExtraServiceVO key){
-		return extraServiceMapper.search(key);
+	public List<Map<String,Object>> search(CommonVO commonVO){
+		return extraServiceMapper.search(commonVO);
 	}
-
 	@Override
-	public int update(ExtraServiceVO key) {
+	public int update(Map<String,Object> key) {
 		return extraServiceMapper.update(key);
 	}
-
-
-
 	@Override
-	public int delete(ExtraServiceVO key) {
+	public int delete(Map<String,Object> key) {
 		return extraServiceMapper.delete(key);
 	}
-
 	@Override
-	public List<ExtraServiceVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return extraServiceMapper.selectAll();
 	}
 }

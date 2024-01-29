@@ -81,12 +81,12 @@ function submitREPS(){
     var data = {
         id: $('#user_id').val(),
         role: 'REPS',
-        bNo: $('#b_no').val(),
-        pKoNm: pKoNm,
-        pEnNm: pEnNm,
-        corpNm: corpNm,
-        corpTel: corpTel,
-        startDt: startDt
+        b_no: $('#b_no').val(),
+        p_ko_nm: pKoNm,
+        p_en_nm: pEnNm,
+        corp_nm: corpNm,
+        corp_tel: corpTel,
+        start_dt: startDt
     };
 
     var result = submitRole(data);

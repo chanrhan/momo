@@ -12,7 +12,7 @@ function searchCorp(){
             shop_addr: keyword,
             corp_nm: keyword
         },
-        orderby: "regi_dt"
+        order: "regi_dt"
     }
 
     $.ajax({
@@ -29,40 +29,31 @@ function searchCorp(){
 
             result.forEach(function (value, index, array){
                 list_shop.innerHTML += "<tr shop_cd='" +
-                    value.shopCd +
+                    value.shop_cd +
                     "' reps_id='" +
-                    value.repsId +
+                    value.reps_id +
                     "' onclick='submitMANAGER(this)" +
                     "'>" +
                     "<td>" +
-                    value.corpNm +
+                    value.corp_nm +
                     "</td>" +
                     "<td>" +
-                    value.pKoNm +
+                    value.p_ko_nm +
                     "</td>" +
                     "<td>" +
-                    value.bNo +
+                    value.b_no +
                     "</td>" +
                     "<td>" +
-                    value.shopNm +
+                    value.shop_nm +
                     "</td>" +
                     "<td>" +
-                    value.shopAddr +
+                    value.shop_addr +
                     "</td>" +
                     "<td>" +
-                    value.shopTel +
+                    value.shop_tel +
                     "</td>" +
                     "</tr>";
             });
-            // document.getElementsByName('btn_select_shop')
-            //     .forEach(function (value, key, parent) {
-            //         $(value).on('click',function (){
-            //             var shopCode = $(value).val();
-            //             var repsId = $(value).attr('reps_id');
-            //             submitMANAGER(shopCode, repsId);
-            //         });
-            //     }
-            // );
         }
     });
 }
@@ -76,15 +67,15 @@ function submitMANAGER(_this){
     var data = {
         id: userId,
         role: 'MANAGER',
-        shopCd: shopCode
+        shop_cd: shopCode
     };
 
     var result = submitRole(data);
     if(result){
         data = {
-            alarmTp: 'approval',
-            senderId: userId,
-            receiverId: repsId
+            alarm_tp: 'approval',
+            sende_id: userId,
+            receiver_id: repsId
         };
 
         ws.send(JSON.stringify(data));

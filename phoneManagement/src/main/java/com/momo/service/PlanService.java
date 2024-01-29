@@ -1,49 +1,50 @@
 package com.momo.service;
 
 import com.momo.mapper.PlanMapper;
-import com.momo.vo.PlanVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class PlanService implements DefaultCRUDService<PlanVO, PlanVO> {
+public class PlanService extends CommonService {
 	private final PlanMapper planMapper;
 
 
 	@Override
-	public int insert(PlanVO key) {
+	public int insert(Map<String,Object> key) {
 		return planMapper.insert(key);
 	}
 
 	@Override
-	public List<PlanVO> select(PlanVO key) {
-		return planMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return planMapper.select(getSelectQueryString(map));
 	}
 
 	@Override
-	public PlanVO selectOne(PlanVO key) {
+	public Map<String,Object> selectOne(Map<String,Object> key) {
 		return select(key).get(0);
 	}
 
 	@Override
-	public int update(PlanVO key) {
+	public int update(Map<String,Object> key) {
 		return planMapper.update(key);
 	}
 
 	@Override
-	public int delete(PlanVO key) {
+	public int delete(Map<String,Object> key) {
 		return planMapper.delete(key);
 	}
 
-	public List<PlanVO> search(PlanVO key){
-		return planMapper.search(key);
+	public List<Map<String,Object>> search(CommonVO commonVO){
+		return planMapper.search(commonVO);
 	}
 
 	@Override
-	public List<PlanVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return planMapper.selectAll();
 	}
 }

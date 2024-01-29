@@ -10,17 +10,17 @@
     수신인 이름<input type="text" class="form-control" id="custNm"><br>
     수신인 전화번호<input type="text" class="form-control" id="custTel">
     <div th:each="form : ${default_form}" th:object="${form}" name="msg_form">
-        <input type="hidden" name="form_id" th:value="*{formId}">
-        <h4 th:text="*{formNm}"></h4>
-        <div th:if="${form.selectBtnNm != null}">
-            양식 선택<input type="text" class="form-control" th:type_id="*{typeId}" name="type">
+        <input type="hidden" name="form_id" th:value="*{form_id}">
+        <h4 th:text="*{form_nm}"></h4>
+        <div th:if="${form.select_btn_nm != null}">
+            양식 선택<input type="text" class="form-control" th:type_id="*{type_id}" name="type">
             <br>
-            <button th:if="*{formId <=0}"
+            <button th:if="*{form_id <=0}"
                     type="button" class="btn-primary"
-                    th:text="*{selectBtnNm}"
-                    th:onclick="|clickSelectButton(*{formId})|"></button>
+                    th:text="*{select_btn_nm}"
+                    th:onclick="|clickSelectButton(*{form_id})|"></button>
         </div>
-        <div th:if="${form.selectBtnNm == null}">
+        <div th:if="${form.select_btn_nm == null}">
             선택<input type="checkbox" name="type" value="1">
         </div>
         <br>

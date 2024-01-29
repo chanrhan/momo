@@ -21,9 +21,9 @@ function searchPlan(){
             list_plan.innerHTML = "";
 
             result.forEach(function (value, index, array) {
-                list_plan.innerHTML += "<tr th:plan_id='" +
+                list_plan.innerHTML += "<tr plan_id='" +
                     value.planId +
-                    "' th:plan_nm='" +
+                    "' plan_nm='" +
                     value.planNm +
                     "' onclick='selectPlan(this)" +
                     "'><td>" +

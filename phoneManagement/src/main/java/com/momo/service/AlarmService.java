@@ -1,46 +1,46 @@
 package com.momo.service;
 
 import com.momo.mapper.AlarmMapper;
-import com.momo.vo.AlarmVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
+public class AlarmService extends CommonService {
 	private final AlarmMapper alarmMapper;
 
-
 	@Override
-	public int insert(AlarmVO key) {
-		key.setAlarmId(getMaxId()+1);
-		return alarmMapper.insert(key);
+	public int insert(Map<String ,Object> map) {
+		map.put("alarm_id", getMaxId()+1);
+		return alarmMapper.insert(map);
 	}
 
 	@Override
-	public List<AlarmVO> select(AlarmVO key) {
-		return alarmMapper.select(key);
+	public List<Map<String, Object>> search(CommonVO commonVO) {
+		return alarmMapper.search(commonVO);
 	}
 
 	@Override
-	public AlarmVO selectOne(AlarmVO key) {
-		return select(key).get(0);
+	public List<Map<String, Object>> select(Map<String, Object> map) {
+		return alarmMapper.select(getSelectQueryString(map));
 	}
-
-	public List<AlarmVO> selectByReceiver(AlarmVO alarmVO){
-		return alarmMapper.selectByReceiver(alarmVO);
+	@Override
+	public Map<String, Object> selectOne(Map<String, Object> map) {
+		return select(map).get(0);
 	}
 
 	@Override
-	public int update(AlarmVO key) {
-		return alarmMapper.update(key);
+	public int update(Map<String,Object> map) {
+		return alarmMapper.update(map);
 	}
 
 	@Override
-	public int delete(AlarmVO key) {
-		return alarmMapper.delete(key);
+	public int delete(Map<String,Object> map) {
+		return alarmMapper.delete(map);
 	}
 
 	public int getMaxId(){
@@ -52,7 +52,7 @@ public class AlarmService implements DefaultCRUDService<AlarmVO,AlarmVO> {
 	}
 
 	@Override
-	public List<AlarmVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return alarmMapper.selectAll();
 	}
 

@@ -46,10 +46,10 @@
     </div>
     이용약관
     <div class="form-label " name="term_field" th:each="term : ${terms}">
-      <i class="icon-check" name="icon_check" th:require="${term.termRqSt}" onclick="checkTerm($(this))" >icon</i>
-      <p th:text="${term.termNm}"></p>
-      <p th:if="${term.termRqSt == true}">[필수]</p>
-      <p th:if="${term.termRqSt == false}">[선택]</p>
+      <i class="icon-check" name="icon_check" th:require="${term.term_rq_st}" onclick="checkTerm($(this))" >icon</i>
+      <p th:text="${term.term_nm}"></p>
+      <p th:if="${term.term_rq_st == true}">[필수]</p>
+      <p th:if="${term.term_rq_st == false}">[선택]</p>
     </div>
     <button type="button" onclick="checkAllTerm()">전체동의</button>
 

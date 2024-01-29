@@ -2,9 +2,7 @@ package com.momo.controller;
 
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.vo.ShopVO;
-import com.momo.vo.TermVO;
-import com.momo.vo.UserInfoVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,8 +36,8 @@ public class AccountController {
 //	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signup(Model model) {
-		List<TermVO> termList = termService.selectAll();
-		model.addAttribute("terms", termList);
+		List<Map<String,Object>> list_term = termService.selectAll();
+		model.addAttribute("terms", list_term);
 		return "account/signup";
 	}
 
@@ -82,38 +81,31 @@ public class AccountController {
 
 	@PostMapping("/submit")
 	@ResponseBody
-	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
-		//		System.out.println(userInfoVO);
-		int result = accountService.insert(userInfoVO);
-		if (result == 0)
-			return false;
-
-//		accountService.loginWithSignup(userInfoVO.getId());
-		return true;
+	public boolean signupSubmit(@RequestBody Map<String ,Object> map) {
+		return accountService.insert(map) != 0;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
-	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO) {
-		System.out.println(userInfoVO);
-		int result = 0;
-		result = accountService.updateRole(userInfoVO);
+	public boolean roleSubmit(@RequestBody Map<String,Object> map) {
+		System.out.println(map);
+		int result = accountService.updateRole(map);
 		if (result == 0) {
 			return false;
 		}
+		String role = map.get("role").toString();
 
-		accountService.replaceAuthority(userInfoVO.getRole());
+		accountService.replaceAuthority(role);
 
-		String role = userInfoVO.getRole();
 		if (role.equals("REPS")) {
-			result = corpService.insert(userInfoVO.getShopVO());
+			result = corpService.insert(map);
 			if(result == 0){
 				return false;
 			}
 		}
 
 		if (role.equals("REPS") || role.equals("MANAGER")) {
-			result = employeeService.insert(userInfoVO);
+			result = employeeService.insert(map);
 		}
 
 		return result != 0;
@@ -151,23 +143,22 @@ public class AccountController {
 
 	@PostMapping("/search/corp")
 	@ResponseBody
-	public List<ShopVO> searchCorp(@RequestBody ShopVO shopVO){
-		return shopService.search(shopVO);
+	public List<Map<String,Object>> searchCorp(@RequestBody CommonVO commonVO){
+		return shopService.search(commonVO);
 	}
 
-	@GetMapping("/approve")
+	@PostMapping("/approve")
 	@ResponseBody
-	public boolean approve(@RequestParam String user_id, @RequestParam int alarm_id){
-		UserInfoVO user = employeeService.selectOne(UserInfoVO.builder().id(user_id).build());
+	public boolean approve(@RequestBody Map<String, Object> map){
+		Map<String, Object> userMap = employeeService.selectOne(map);
 
-
-		user.setApprovalSt(true);
-		int result = employeeService.update(user);
+		userMap.put("approve_st", true);
+		int result = employeeService.update(userMap);
 		if(result == 0){
 			return false;
 		}
 
-		return alarmService.approve(alarm_id) != 0;
+		return alarmService.approve(Integer.parseInt(map.get("alarm_id").toString())) != 0;
 	}
 
 	//	@PostMapping("/search/shop")

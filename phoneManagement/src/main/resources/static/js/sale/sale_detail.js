@@ -29,9 +29,18 @@ function updateSale(){
 }
 
 function deleteSale(){
+    var body = {
+        sale_no: $('#saleNo').val()
+    };
+
     $.ajax({
-        url: '/sale/delete/'+$('#saleNo').val(),
-        type: 'get',
+        url: '/sale/delete',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
         success: function (result){
             if(result){
                 window.opener.parent.searchSale();

@@ -6,25 +6,25 @@
 <div layout:fragment="content">
     <script src="/js/profile/alarm.js" th:inline="javascript"></script>
     <div id="list_alarm" class="form-control" th:each="alarm : ${list_alarm}" th:object="${alarm}">
-        <h5 th:text="|보낸 사람: *{senderNm}|"></h5>
-        <div th:if="*{alarmTp == 'approval'}">
-            <p th:text="|*{shopNm} 매장 가입 승인 요청입니다.|"></p>
+        <h5 th:text="|보낸 사람: *{sender_nm}|"></h5>
+        <div th:if="*{alarm_tp == 'approval'}">
+            <p th:text="|*{shop_nm} 매장 가입 승인 요청입니다.|"></p>
             <button type="button" class="btn-primary"
                     th:disabled="*{content == '1'} ? 'disabled'"
                     th:text="*{content == '1'} ? '승인 완료' : '승인'"
-                    th:user_id="*{senderId}"
-                    th:alarm_id="*{alarmId}"
+                    th:user_id="*{sender_id}"
+                    th:alarm_id="*{alarm_id}"
                     onclick="approve(this)"
             ></button>
         </div>
 
-        <div th:if="*{alarmTp == 'message'}">
+        <div th:if="*{alarm_tp == 'message'}">
             <p th:text="*{content}"></p>
         </div>
         <br>
-        <p th:text="|보낸 날짜: ${#temporals.format(alarm.sendDt, 'yyyy-MM-dd HH:mm')}|"></p>
-        <p th:if="*{readSt}" name="read">읽음</p>
-        <p th:if="*{!readSt}" th:alarm_id="*{alarmId}" name="unread">안읽음</p>
+        <p th:text="|보낸 날짜: ${#temporals.format(alarm.send_dt, 'yyyy-MM-dd HH:mm')}|"></p>
+        <p th:if="*{read_st}" name="read">읽음</p>
+        <p th:if="*{!read_st}" th:alarm_id="*{alarm_id}" name="unread">안읽음</p>
         </div>
     </div>
 </html>

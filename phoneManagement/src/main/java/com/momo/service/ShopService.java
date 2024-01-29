@@ -1,51 +1,50 @@
 package com.momo.service;
 
-import com.momo.domain.Paging;
 import com.momo.mapper.ShopMapper;
-import com.momo.vo.ShopVO;
-import com.momo.vo.RegionVO;
-import com.momo.vo.UserInfoVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
+public class ShopService extends CommonService {
 	private final ShopMapper shopMapper;
 
 	@Override
-	public int insert(ShopVO key) {
-		return shopMapper.insert(key);
+	public int insert(Map<String,Object> map) {
+		return shopMapper.insert(map);
 	}
 
 	@Override
-	public int update(ShopVO key) {
-		return shopMapper.update(key);
+	public int update(Map<String,Object> map) {
+		return shopMapper.update(map);
 	}
 
 	@Override
-	public int delete(ShopVO key) {
-		return shopMapper.delete(key);
+	public int delete(Map<String,Object> map) {
+		return shopMapper.delete(map);
 	}
 
 	@Override
-	public List<ShopVO> select(ShopVO key) {
-		return shopMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return shopMapper.select(getSelectQueryString(map));
 	}
 
 	@Override
-	public ShopVO selectOne(ShopVO key) {
-		return select(key).get(0);
+	public Map<String,Object> selectOne(Map<String,Object> map) {
+		return select(map).get(0);
 	}
 
-	public List<ShopVO> search(ShopVO key) {
-		return shopMapper.search(key);
+	public List<Map<String,Object>> search(CommonVO commonVO) {
+		return shopMapper.search(commonVO);
 	}
 
 	@Override
-	public List<ShopVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return shopMapper.selectAll();
 	}
 
@@ -57,18 +56,18 @@ public class ShopService implements DefaultCRUDService<ShopVO, ShopVO> {
 		return code;
 	}
 
-	public List<ShopVO> searchByRegion(RegionVO regionVO){
-		return shopMapper.searchByRegion(regionVO);
+	public List<Map<String,Object>> searchByRegion(Map<String,Object> map){
+		return shopMapper.searchByRegion(map);
 	}
 
-	public List<ShopVO> getShopByUser(UserInfoVO emp){
-		ShopVO shopVo;
-		if(emp.getRole().equals("REPS")){
-			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
+	public List<Map<String,Object>> selectByUser(Map<String,Object> map){
+		Map<String,Object> selectMap = new HashMap<>();
+		if(map.get("role").equals("REPS")){
+			selectMap.put("b_no", map.get("b_no"));
 		}else{
-			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
+			selectMap.put("shop_cd", map.get("shop_cd"));
 		}
-		return select(shopVo);
+		return select(selectMap);
 	}
 
 //	public Paging<ShopVO> searchBranch(ShopVO shopVO){

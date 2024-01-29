@@ -3,68 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.AccountMapper">
-    <select id="select" parameterType="com.momo.vo.UserInfoVO">
+    <select id="select">
         select
         *
         from
         tb_account
         where
-        <if test='id != null and !id.equals("")'>
-            id=#{id} and
-        </if>
-        <if test='pwd != null and !pwd.equals("")'>
-            pwd=#{pwd} and
-        </if>
-        <if test='name != null and !name.equals("")'>
-            name=#{name} and
-        </if>
-        <if test='email != null and !email.equals("")'>
-            email=#{email} and
-        </if>
-        <if test='tel != null and !tel.equals("")'>
-            tel=#{tel} and
-        </if>
-        1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+        ${qs}
     </select>
 
-    <select id="search" parameterType="com.momo.vo.UserInfoVO">
+    <select id="search" parameterType="com.momo.vo.CommonVO">
         select
         *
         from
         tb_account
         where
-        <if test='id != null and !id.equals("")'>
-            id like '%${id}%' and
-        </if>
-        <if test='pwd != null and !pwd.equals("")'>
-            pwd like '%${id}%' and
-        </if>
-        <if test='name != null and !name.equals("")'>
-            name like '%${id}%' and
-        </if>
-        <if test='email != null and !email.equals("")'>
-            email like '%${id}%' and
-        </if>
-        <if test='tel != null and !tel.equals("")'>
-            tel like '%${id}%' and
-        </if>
-        1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
-            order by
-            ${orderby}
-        </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
-        </if>
+            ${andSelect} and
+            ${orSearch}
+        ${prop}
     </select>
 
     <select id="selectAll">
@@ -74,36 +30,37 @@
             tb_account
     </select>
 
-    <insert id="insert" parameterType="com.momo.vo.UserInfoVO">
+    <insert id="insert" parameterMap="java.util.Map">
         insert into
             tb_account
-            (id, pwd, name, email, tel, termStr)
+            (id, pwd, name, email, tel, terms)
         VALUES
-            (#{id},#{pwd},#{name},#{email},#{tel},#{termStr})
+            (#{id},#{pwd},#{name},#{email},#{tel},#{terms})
     </insert>
 
-    <update id="update" parameterType="com.momo.vo.UserInfoVO">
+    <update id="update" parameterMap="java.util.Map">
         update
             tb_account
         set
             name=#{name},
             email=#{email},
-            tel=#{tel}
+            tel=#{tel},
+            terms=#{terms}
         where
             id=#{id}
     </update>
 
-    <update id="updatePassword" parameterType="com.momo.vo.UserInfoVO">
+    <update id="updatePassword" parameterMap="java.util.Map">
         update
             tb_account
         set
-            pwd=#{updatePwd}
+            pwd=#{update_pwd}
         where
             id=#{id} and
             pwd=#{pwd}
     </update>
 
-    <update id="updateRole" parameterType="com.momo.vo.UserInfoVO">
+    <update id="updateRole" parameterMap="java.util.Map">
         update
         tb_account
         set
@@ -112,7 +69,7 @@
             id=#{id}
     </update>
 
-    <delete id="delete" parameterType="com.momo.vo.UserInfoVO">
+    <delete id="delete" parameterMap="java.util.Map">
         delete from
             tb_account
         where

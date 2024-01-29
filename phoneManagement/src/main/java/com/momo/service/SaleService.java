@@ -1,47 +1,50 @@
 package com.momo.service;
 
-import com.momo.domain.Paging;
 import com.momo.mapper.SaleMapper;
-import com.momo.vo.SaleVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
+public class SaleService extends CommonService {
 	private final SaleMapper saleMapper;
 
 	@Override
-	public int insert(SaleVO key) {
-		key.setSaleNo(getMaxSaleNo()+1);
-
-		return saleMapper.insert(key);
+	public int insert(Map<String,Object> map) {
+		map.put("sale_no", getMaxSaleNo()+1);
+		return saleMapper.insert(map);
 	}
 
 	@Override
-	public List<SaleVO> select(SaleVO key) {
-		return saleMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return saleMapper.select(getSelectQueryString(map));
 	}
 
 	@Override
-	public SaleVO selectOne(SaleVO key) {
-		return select(key).get(0);
+	public Map<String,Object> selectOne(Map<String,Object> map) {
+		return select(map).get(0);
+	}
+
+	public Map<String,Object> selectById(int id){
+		return saleMapper.selectById(id);
 	}
 
 	@Override
-	public int update(SaleVO key) {
+	public int update(Map<String,Object> key) {
 		return saleMapper.update(key);
 	}
 
 	@Override
-	public int delete(SaleVO key) {
+	public int delete(Map<String,Object> key) {
 		return saleMapper.delete(key);
 	}
 
 	@Override
-	public List<SaleVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return saleMapper.selectAll();
 	}
 
@@ -53,8 +56,8 @@ public class SaleService implements DefaultCRUDService<SaleVO, SaleVO> {
 		return result;
 	}
 
-	public List<SaleVO> search(SaleVO saleVO){
-		return saleMapper.search(saleVO);
+	public List<Map<String,Object>> search(CommonVO commonVO){
+		return saleMapper.search(commonVO);
 	}
 
 //	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){

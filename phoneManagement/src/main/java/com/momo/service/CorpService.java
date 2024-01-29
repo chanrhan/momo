@@ -1,49 +1,49 @@
 package com.momo.service;
 
 import com.momo.mapper.CorpMapper;
-import com.momo.vo.CorpVO;
-import com.momo.vo.ShopVO;
+import com.momo.vo.CommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CorpService implements DefaultCRUDService<ShopVO, ShopVO> {
+public class CorpService extends CommonService {
 	private final CorpMapper corpMapper;
 
 	@Override
-	public int insert(ShopVO key) {
-		return corpMapper.insert(key);
+	public int insert(Map<String,Object> map) {
+		return corpMapper.insert(map);
 	}
 
 	@Override
-	public int update(ShopVO key) {
-		return corpMapper.update(key);
+	public int update(Map<String,Object> map) {
+		return corpMapper.update(map);
 	}
 
 	@Override
-	public int delete(ShopVO key) {
-		return corpMapper.delete(key);
+	public int delete(Map<String,Object> map) {
+		return corpMapper.delete(map);
 	}
 
 	@Override
-	public List<ShopVO> select(ShopVO key) {
-		return corpMapper.select(key);
+	public List<Map<String,Object>> select(Map<String,Object> map) {
+		return corpMapper.select(getSelectQueryString(map));
 	}
 
 	@Override
-	public ShopVO selectOne(ShopVO key) {
-		return select(key).get(0);
+	public Map<String,Object> selectOne(Map<String,Object> map) {
+		return select(map).get(0);
 	}
 
-	public List<ShopVO> search(ShopVO key) {
-		return corpMapper.search(key);
+	public List<Map<String,Object>> search(CommonVO commonVO) {
+		return corpMapper.search(commonVO);
 	}
 
 	@Override
-	public List<ShopVO> selectAll() {
+	public List<Map<String,Object>> selectAll() {
 		return corpMapper.selectAll();
 	}
 

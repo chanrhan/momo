@@ -223,7 +223,7 @@ function submitSignup(){
             name: $('#name').val(),
             email: email,
             tel: $('#tel').val(),
-            termStr: termString,
+            terms: termString,
         };
         return submitDefaultSignup(data);
     }else{

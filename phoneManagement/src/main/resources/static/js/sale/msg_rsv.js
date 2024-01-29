@@ -42,8 +42,8 @@ function createSale(){
     var sale_body = JSON.parse(sessionStorage.getItem("formData"));
     var custNm = $('#custNm').val();
     var custTel = $('#custTel').val();
-    sale_body["custNm"] = custNm;
-    sale_body["custTel"] = custTel;
+    sale_body["cust_nm"] = custNm;
+    sale_body["cust_tel"] = custTel;
 
     var rst = false;
     $.ajax({
@@ -83,18 +83,18 @@ function reserveMessage(){
         if(type !== null && type !== "" && type !== -1){
             var b = {};
             var form_id = value.querySelector('input[name="form_id"]').value;
-            b["formId"] = form_id;
+            b["form_id"] = form_id;
             var rsv_dt = value.querySelector('input[name="rsv_dt"]').value;
-            b["rsvDt"] = rsv_dt;
-            b["typeId"] = type;
+            b["rsv_dt"] = rsv_dt;
+            b["type_id"] = type;
             msgRsv.push(b);
         }
     });
     // console.log(msgRsv);
     var msg_body = JSON.parse(sessionStorage.getItem("formData"));
-    msg_body["custNm"] = custNm;
-    msg_body["custTel"] = custTel;
-    msg_body["msgRsvList"] = msgRsv;
+    msg_body["cust_nm"] = custNm;
+    msg_body["cust_tel"] = custTel;
+    msg_body["rsv_list"] = msgRsv;
 
     $.ajax({
         url: '/msg/reserve',

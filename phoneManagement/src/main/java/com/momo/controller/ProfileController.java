@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/profile")
 @RequiredArgsConstructor
@@ -17,22 +19,20 @@ public class ProfileController {
 
 	@GetMapping("/{id}")
 	public String profileInfo(Model model, @PathVariable String id){
-		UserInfoVO userInfoVO = accountService.getAccountById(id);
-		model.addAttribute("userInfo", userInfoVO);
+		Map<String,Object> userMap = accountService.getAccountById(id);
+		model.addAttribute("userInfo", userMap);
 		return "profile/profile_info";
 	}
 
 	@PostMapping("/update")
 	@ResponseBody
-	public boolean updateProfile(@RequestBody UserInfoVO userInfoVO){
-		int result = accountService.update(userInfoVO);
-		return result != 0;
+	public boolean updateProfile(@RequestBody Map<String,Object> map){
+		return accountService.update(map) != 0;
 	}
 
 	@PostMapping("/update/password")
 	@ResponseBody
-	public boolean updatePassword(@RequestBody UserInfoVO userInfoVO){
-		int result = accountService.updatePassword(userInfoVO);
-		return result != 0;
+	public boolean updatePassword(@RequestBody Map<String ,Object> map){
+		return accountService.updatePassword(map) != 0;
 	}
 }
