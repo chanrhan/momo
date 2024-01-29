@@ -24,34 +24,34 @@ public class MsgFormService {
 	private final AccountService accountService;
 	private final ShopService shopService;
 
-	public List<Map<String,Object>> getAllDefaultForm(){
+	public List<MessageVO> getAllDefaultForm(){
 		return formMapper.getAllDefaultForm();
 	}
 
-	public String createContent(int formId, int typeId, Map<String,Object> map){
+	public String createContent(int formId, int typeId, MessageVO messageVO){
 		String content = "";
 		if(formId <= -1){
-			content = formMapper.selectDefaultForm(formId).get("content").toString();
+			content = formMapper.selectDefaultForm(formId).getContent();
 		}else{
-			content = formMapper.selectForm(formId).get("content").toString();
+			content = formMapper.selectForm(formId).getContent();
 		}
 
-		Map<String,Object> userMap = accountService.selectOne(map);
-		Map<String,Object> shop = shopService.selectOne(map);
+		Map<String,Object> userMap = accountService.selectOne(messageVO);
+		Map<String,Object> shop = shopService.selectOne(messageVO);
 		content = content.replace("%[seller_nm]%", userMap.get("name").toString())
 				.replace("%[shop_nm]%]", shop.get("shop_nm").toString());
 
 
 		switch (formId){
 			case -2: // 요금제
-				map = planMapper.getByMap(typeId);
-				content = content.replace("%[plan_nm]%", map.get("plan_nm").toString())
-						.replace("%[description]%", map.get("description").toString());
+				messageVO = planMapper.getByMap(typeId);
+				content = content.replace("%[plan_nm]%", messageVO.get("plan_nm").toString())
+						.replace("%[description]%", messageVO.get("description").toString());
 				break;
 			case -3: // 부가서비스
-				map = extraServiceMapper.getByMap(typeId);
-				content = content.replace("%[ex_svc_nm]%", map.get("ex_svc_nm").toString())
-						.replace("%[description]%", map.get("description").toString());
+				messageVO = extraServiceMapper.getByMap(typeId);
+				content = content.replace("%[ex_svc_nm]%", messageVO.get("ex_svc_nm").toString())
+						.replace("%[description]%", messageVO.get("description").toString());
 				break;
 			default:
 				break;

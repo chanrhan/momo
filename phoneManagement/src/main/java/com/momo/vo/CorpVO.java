@@ -18,5 +18,4 @@ public class CorpVO extends AbstractQueryVO{
 	private String corpNm;
 	private String corpTel;
 	private LocalDateTime startDt;
-
 }

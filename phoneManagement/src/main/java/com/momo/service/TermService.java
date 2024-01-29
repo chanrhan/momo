@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.mapper.TermMapper;
 import com.momo.vo.CommonVO;
+import com.momo.vo.TermVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,39 +11,39 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TermService extends CommonService {
+public class TermService extends CommonService<TermVO,TermVO> {
 	private final TermMapper termMapper;
 
 	@Override
-	public int insert(Map<String,Object> key) {
+	public int insert(TermVO key) {
 		return termMapper.insert(key);
 	}
 
 	@Override
-	public int update(Map<String,Object> key) {
+	public int update(TermVO key) {
 		return 0;
 	}
 
 	@Override
-	public int delete(Map<String,Object> key) {
+	public int delete(TermVO key) {
 		return 0;
 	}
 
 	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
+	public List<TermVO> select(TermVO map) {
 		return termMapper.select(getSelectQueryString(map));
 	}
 
 	@Override
-	public Map<String,Object> selectOne(Map<String,Object> key) {
+	public TermVO selectOne(TermVO key) {
 		return select(key).get(0);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO) {
+	public List<TermVO> search(CommonVO commonVO) {
 		return termMapper.search(commonVO);
 	}
 
-	public List<Map<String,Object>> selectAll(){
+	public List<TermVO> selectAll(){
 		return termMapper.selectAll();
 	}
 

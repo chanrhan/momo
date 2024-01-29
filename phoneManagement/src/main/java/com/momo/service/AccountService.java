@@ -4,6 +4,7 @@ import com.momo.domain.user.UserDetailsImpl;
 import com.momo.mapper.AccountMapper;
 import com.momo.mapper.EmployeeMapper;
 import com.momo.vo.CommonVO;
+import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,54 +21,53 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService extends CommonService implements UserDetailsService{
+public class AccountService extends CommonService<UserInfoVO,UserInfoVO> implements UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
 	private final AccountMapper accountMapper;
 
 	private final EmployeeMapper employeeMapper;
 
 	@Override
-	public int update(Map<String,Object> map){
+	public int update(UserInfoVO map){
 		return accountMapper.update(map);
 	}
 
 	@Override
-	public int delete(Map<String,Object> map) {
+	public int delete(UserInfoVO map) {
 		return accountMapper.delete(map);
 	}
 
 	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
-		return accountMapper.select(getSelectQueryString(map));
+	public List<UserInfoVO> select(UserInfoVO userInfoVO) {
+		return accountMapper.select(getSelectQueryString(userInfoVO));
 	}
 
 	@Override
-	public Map<String,Object> selectOne(Map<String,Object> map) {
+	public UserInfoVO selectOne(UserInfoVO map) {
 		return select(map).get(0);
 	}
 
 	@Override
-	public List<Map<String,Object>> search(CommonVO key) {
+	public List<UserInfoVO> search(CommonVO key) {
 		return accountMapper.search(key);
 	}
 
 	@Override
-	public List<Map<String,Object>> selectAll() {
+	public List<UserInfoVO> selectAll() {
 		return accountMapper.selectAll();
 	}
 
-	public int updatePassword(Map<String,Object> map){
-		map.put("update_pwd", passwordEncoder.encode(map.get("update_pwd").toString()));
-		return accountMapper.updatePassword(map);
+	public int updatePassword(UserInfoVO userInfoVO){
+		userInfoVO.setUpdatePwd(passwordEncoder.encode(userInfoVO.getUpdatePwd()));
+		return accountMapper.updatePassword(userInfoVO);
 	}
 
-	public int insert(Map<String,Object> map){
-		map.put("pwd",passwordEncoder.encode(map.get("pwd").toString()));
-		return accountMapper.insert(map);
+	public int insert(UserInfoVO userInfoVO){
+		return accountMapper.insert(userInfoVO);
 	}
 
-	public int updateRole(Map<String,Object> map){
-		return accountMapper.updateRole(map);
+	public int updateRole(UserInfoVO userInfoVO){
+		return accountMapper.updateRole(userInfoVO);
 	}
 
 	public void replaceAuthority(String role){
@@ -82,10 +82,8 @@ public class AccountService extends CommonService implements UserDetailsService{
 	}
 
 
-	public Map<String,Object> getAccountById(String id){
-		Map<String,Object> map = new HashMap<>();
-		map.put("id",id);
-		List<Map<String,Object>> adminVO = select(map);
+	public UserInfoVO getAccountById(String id){
+		List<UserInfoVO> adminVO = select(UserInfoVO.builder().id(id).build());
 		System.out.println(adminVO);
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
@@ -93,10 +91,8 @@ public class AccountService extends CommonService implements UserDetailsService{
 		return null;
 	}
 
-	public Map<String,Object> getAccountByEmail(String email){
-		Map<String,Object> map = new HashMap<>();
-		map.put("email",email);
-		List<Map<String,Object>> adminVO = select(map);
+	public UserInfoVO getAccountByEmail(String email){
+		List<UserInfoVO> adminVO = select(UserInfoVO.builder().email(email).build());
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
 		}
@@ -106,14 +102,14 @@ public class AccountService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,Object> map = getAccountById(username);
-		if(map == null){
+		UserInfoVO userInfoVO = getAccountById(username);
+		if(userInfoVO == null){
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}
 
-		String id = map.get("id").toString();
-		String pwd = map.get("pwd").toString();
-		String role = map.get("role").toString();
+		String id = userInfoVO.getId();
+		String pwd = userInfoVO.getPwd();
+		String role = userInfoVO.getRole();
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, role);
 
@@ -122,8 +118,8 @@ public class AccountService extends CommonService implements UserDetailsService{
 		}
 
 		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
-			Map<String,Object> emp = employeeMapper.selectById(id);
-			if(emp.get("approve_st").equals("1")){
+			UserInfoVO emp = employeeMapper.selectById(id);
+			if(emp.isApprovalSt()){
 				userDetails.add(new SimpleGrantedAuthority("APPROVE"));
 			}
 		}

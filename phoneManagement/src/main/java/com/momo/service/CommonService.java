@@ -1,9 +1,20 @@
 package com.momo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Map;
 
-public abstract class CommonService implements ICRUDService {
-	protected String getSelectQueryString(Map<String,Object> map){
+public abstract class CommonService<T,K> implements ICRUDService<T,K> {
+	protected final ObjectMapper objectMapper = new ObjectMapper();
+	protected String getSelectQueryString(Object ob) {
+		Map<String,Object> map = null;
+		try {
+			map = objectMapper.readValue(ob.toString(), Map.class);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+
 		StringBuilder sb = new StringBuilder(" ");
 		if(map == null || map.isEmpty()){
 			return "1 = 1";

@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.mapper.ExtraServiceMapper;
 import com.momo.vo.CommonVO;
+import com.momo.vo.ExtraServiceVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,34 +11,34 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ExtraSvcService extends CommonService {
+public class ExtraSvcService extends CommonService<ExtraServiceVO,ExtraServiceVO> {
 	private final ExtraServiceMapper extraServiceMapper;
 
 	@Override
-	public int insert(Map<String,Object> key) {
+	public int insert(ExtraServiceVO key) {
 		return extraServiceMapper.insert(key);
 	}
 	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
+	public List<ExtraServiceVO> select(ExtraServiceVO map) {
 		return extraServiceMapper.select(getSelectQueryString(map));
 	}
 	@Override
-	public Map<String,Object> selectOne(Map<String,Object> key) {
+	public ExtraServiceVO selectOne(ExtraServiceVO key) {
 		return select(key).get(0);
 	}
-	public List<Map<String,Object>> search(CommonVO commonVO){
+	public List<ExtraServiceVO> search(CommonVO commonVO){
 		return extraServiceMapper.search(commonVO);
 	}
 	@Override
-	public int update(Map<String,Object> key) {
+	public int update(ExtraServiceVO key) {
 		return extraServiceMapper.update(key);
 	}
 	@Override
-	public int delete(Map<String,Object> key) {
+	public int delete(ExtraServiceVO key) {
 		return extraServiceMapper.delete(key);
 	}
 	@Override
-	public List<Map<String,Object>> selectAll() {
+	public List<ExtraServiceVO> selectAll() {
 		return extraServiceMapper.selectAll();
 	}
 }

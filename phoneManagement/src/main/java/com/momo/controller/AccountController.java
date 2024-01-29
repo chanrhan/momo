@@ -3,6 +3,8 @@ package com.momo.controller;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
 import com.momo.vo.CommonVO;
+import com.momo.vo.TermVO;
+import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +38,7 @@ public class AccountController {
 //	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signup(Model model) {
-		List<Map<String,Object>> list_term = termService.selectAll();
+		List<TermVO> list_term = termService.selectAll();
 		model.addAttribute("terms", list_term);
 		return "account/signup";
 	}
@@ -58,18 +60,6 @@ public class AccountController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
 	public String roleManager() {
-//		if (!state.equals("") && !city.equals("")) {
-//			String         keyword = state + " " + city;
-//			Paging<ShopVO> paging  = shopService.selectPage(page, "shop_addr", keyword);
-//			model.addAttribute("paging", paging);
-//			model.addAttribute("list_city", regionService.selectByState(state).split(","));
-//		}
-//
-//		model.addAttribute("list_state", regionService.selectAllState());
-//		model.addAttribute("state", state);
-//		model.addAttribute("city", city);
-//		model.addAttribute("q", q);
-
 		return "account/role_manager";
 	}
 
@@ -81,31 +71,31 @@ public class AccountController {
 
 	@PostMapping("/submit")
 	@ResponseBody
-	public boolean signupSubmit(@RequestBody Map<String ,Object> map) {
-		return accountService.insert(map) != 0;
+	public boolean signupSubmit(@RequestBody UserInfoVO userInfoVO) {
+		return accountService.insert(userInfoVO) != 0;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
-	public boolean roleSubmit(@RequestBody Map<String,Object> map) {
-		System.out.println(map);
-		int result = accountService.updateRole(map);
+	public boolean roleSubmit(@RequestBody UserInfoVO userInfoVO) {
+		System.out.println(userInfoVO);
+		int result = accountService.updateRole(userInfoVO);
 		if (result == 0) {
 			return false;
 		}
-		String role = map.get("role").toString();
+		String role = userInfoVO.getRole();
 
 		accountService.replaceAuthority(role);
 
 		if (role.equals("REPS")) {
-			result = corpService.insert(map);
+			result = corpService.insert(userInfoVO.getShopVO());
 			if(result == 0){
 				return false;
 			}
 		}
 
 		if (role.equals("REPS") || role.equals("MANAGER")) {
-			result = employeeService.insert(map);
+			result = employeeService.insert(userInfoVO);
 		}
 
 		return result != 0;

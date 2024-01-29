@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ShopMapper extends ICommonMapper {
+public interface ShopMapper extends ICommonMapper<ShopVO,ShopVO> {
 	public Integer getMaxCode();
-	public List<Map<String,Object>> searchByRegion(Map<String,Object> map);
+	public List<ShopVO> searchByRegion(ShopVO shopVO);
 }

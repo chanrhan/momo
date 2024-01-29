@@ -19,8 +19,8 @@ public class ProfileController {
 
 	@GetMapping("/{id}")
 	public String profileInfo(Model model, @PathVariable String id){
-		Map<String,Object> userMap = accountService.getAccountById(id);
-		model.addAttribute("userInfo", userMap);
+		UserInfoVO userInfoVO = accountService.getAccountById(id);
+		model.addAttribute("userInfo", userInfoVO);
 		return "profile/profile_info";
 	}
 
@@ -32,7 +32,7 @@ public class ProfileController {
 
 	@PostMapping("/update/password")
 	@ResponseBody
-	public boolean updatePassword(@RequestBody Map<String ,Object> map){
-		return accountService.updatePassword(map) != 0;
+	public boolean updatePassword(@RequestBody UserInfoVO userInfoVO){
+		return accountService.updatePassword(userInfoVO) != 0;
 	}
 }
