@@ -1,7 +1,6 @@
 package com.momo.controller;
 
-import com.momo.service.AccountService;
-import com.momo.vo.UserInfoVO;
+import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class ProfileController {
-	private final AccountService accountService;
+	private final UserService userService;
 
 	@GetMapping("/{id}")
 	public String profileInfo(Model model, @PathVariable String id){
-		Map<String,Object> userMap = accountService.getAccountById(id);
+		Map<String,Object> userMap = userService.getAccountById(id);
 		model.addAttribute("userInfo", userMap);
 		return "profile/profile_info";
 	}
@@ -27,12 +26,12 @@ public class ProfileController {
 	@PostMapping("/update")
 	@ResponseBody
 	public boolean updateProfile(@RequestBody Map<String,Object> map){
-		return accountService.update(map) != 0;
+		return userService.update(map) != 0;
 	}
 
 	@PostMapping("/update/password")
 	@ResponseBody
 	public boolean updatePassword(@RequestBody Map<String ,Object> map){
-		return accountService.updatePassword(map) != 0;
+		return userService.updatePassword(map) != 0;
 	}
 }

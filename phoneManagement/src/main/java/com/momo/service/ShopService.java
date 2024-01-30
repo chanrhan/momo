@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.ShopMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +39,8 @@ public class ShopService extends CommonService {
 		return select(map).get(0);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO) {
-		return shopMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO) {
+		return shopMapper.search(searchVO);
 	}
 
 	@Override

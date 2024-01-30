@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopMapper">
-    <select id="search" parameterType="com.momo.vo.CommonVO">
+    <select id="search" parameterType="SearchVO">
         with branch as(
             select
-                c.id as repsId,
+                c.reps_id as repsId,
                 c.p_ko_nm as p_ko_nm,
                 c.p_en_nm as p_en_nm,
                 c.corp_nm as corp_nm,
@@ -39,19 +39,12 @@
             ${qs}
     </select>
 
-    <select id="selectAll">
-        select
-            *
-        from
-            tb_shop;
-    </select>
-
-    <insert id="insert" parameterMap="java.util.Map">
+    <insert id="insert" parameterMap="ShopCommonVO">
         insert into
             tb_shop
             (shop_cd, shop_nm, shop_addr, shop_tel, b_no)
         values
-            (#{shop_cd},#{shop_nm},#{shop_addr},#{shop_tel},#{b_no})
+            (#{shopCd},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
     </insert>
 
     <update id="update" parameterMap="java.util.Map">

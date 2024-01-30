@@ -30,8 +30,8 @@ public class MsgReserveService extends CommonService {
 		return reserveMapper.selectByShopCode(shopCd);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO){
-		return reserveMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO){
+		return reserveMapper.search(searchVO);
 	}
 
 	@Override

@@ -1,74 +1,19 @@
 package com.momo.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class CommonVO {
-	// tb_account
-	String        id;
-	String        pwd;
-	String        name;
-	String        email;
-	String        tel;
-	String        role;
-	String        terms;
-	LocalDateTime regiDt;
-
-	// tb_alarm
-	String alarmId;
-	String senderId;
-	String receiverId;
-	String alarmTp;
-	String content;
-	String readSt;
-	String sendDt;
-
-	// tb_corp
-	String repsId;
-	@JsonProperty(value = "bNo")
-	String bNo;
-	@JsonProperty(value = "pEnNm")
-	String pEnNm; // 사업자명 영문
-	@JsonProperty(value = "pKoNm")
-	String pKoNm; // 사업자명 영문
-	String corpNm;
-	String corpTel;
-	String startDt;
-
-	// tb_default_msg_form
-	String formId;
-	String formNm;
-
-	// tb_emp
-
-	// tb_extra_service
-
-	// tb_msg_form
-
-	// tb_msg_rsv
-
-	// tb_plan
-
-	// tb_region
-
-	// tb_sale
-
-	// tb_shop
-
-	// tb_term
-
+public class SearchVO {
 	// Query String Generataion
 	private int                 page;
-	private Map<String, Object> search;
 	private Map<String, Object> select;
+	private Map<String, Object> search;
 
 	private String  order; // 정렬
 	private boolean asc = true; // false: asc(오름차순), true: desc(내림차순)

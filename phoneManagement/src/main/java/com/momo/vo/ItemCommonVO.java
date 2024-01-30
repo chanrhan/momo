@@ -9,8 +9,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class PlanVO extends AbstractQueryVO {
+public class ItemCommonVO extends AbstractQueryVO {
 	private int planId;
 	private String planNm;
+
+	private int exSvcId;
+	private String exSvcNm;
+
 	private String description;
 }

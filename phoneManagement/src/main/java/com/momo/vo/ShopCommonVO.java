@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class ShopVO extends AbstractQueryVO {
+public class ShopCommonVO extends AbstractQueryVO {
 	@JsonProperty(value = "bNo")
 	private String        bNo;
 	@JsonProperty(value = "pEnNm")

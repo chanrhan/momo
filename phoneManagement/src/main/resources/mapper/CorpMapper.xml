@@ -12,7 +12,7 @@
             ${qs}
     </select>
 
-    <select id="search" parameterType="com.momo.vo.CommonVO">
+    <select id="search" parameterType="com.momo.vo.SearchVO">
         select
         *
         from

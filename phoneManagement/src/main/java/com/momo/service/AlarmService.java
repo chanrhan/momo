@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.AlarmMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ public class AlarmService extends CommonService {
 	}
 
 	@Override
-	public List<Map<String, Object>> search(CommonVO commonVO) {
-		return alarmMapper.search(commonVO);
+	public List<Map<String, Object>> search(SearchVO searchVO) {
+		return alarmMapper.search(searchVO);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.CorpMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +38,8 @@ public class CorpService extends CommonService {
 		return select(map).get(0);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO) {
-		return corpMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO) {
+		return corpMapper.search(searchVO);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.ExtraServiceMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,8 @@ public class ExtraSvcService extends CommonService {
 	public Map<String,Object> selectOne(Map<String,Object> key) {
 		return select(key).get(0);
 	}
-	public List<Map<String,Object>> search(CommonVO commonVO){
-		return extraServiceMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO){
+		return extraServiceMapper.search(searchVO);
 	}
 	@Override
 	public int update(Map<String,Object> key) {

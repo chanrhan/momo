@@ -26,7 +26,7 @@
             s.b_no=#{bNo}
     </select>
     
-    <select id="search" parameterType="com.momo.vo.CommonVO">
+    <select id="search" parameterType="com.momo.vo.SearchVO">
         with tb as (
             select
             s.shop_cd as shop_cd,

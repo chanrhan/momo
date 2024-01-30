@@ -97,10 +97,10 @@ public class SaleVO extends AbstractQueryVO {
 	private String    etc; // 비고
 
 	// 예약 발송
-	private List<MessageVO> msgRsvList;
+	private List<MsgCommonVO> msgRsvList;
 
-	public MessageVO getMessageVO() {
-		return MessageVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
+	public MsgCommonVO getMessageVO() {
+		return MsgCommonVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
 	}
 
 	//	public void setActvDt(String actvDt) {

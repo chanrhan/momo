@@ -53,7 +53,7 @@ public class SaleController {
 		selectMap.put("shop_cd", shop.get("shop_cd"));
 		selectMap.put("order", "actv_dt");
 
-		List<Map<String,Object>> list_sale = saleService.search(CommonVO.builder().search(selectMap).build());
+		List<Map<String,Object>> list_sale = saleService.search(SearchVO.builder().search(selectMap).build());
 		model.addAttribute("list_sale", list_sale);
 
 		return "sale/home";
@@ -123,8 +123,8 @@ public class SaleController {
 
 	@PostMapping("/plan/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchPlan(@RequestBody CommonVO commonVO) {
-		return planService.search(commonVO);
+	public List<Map<String,Object>> searchPlan(@RequestBody SearchVO searchVO) {
+		return planService.search(searchVO);
 	}
 
 	@GetMapping("/exsvc/list")
@@ -135,14 +135,14 @@ public class SaleController {
 
 	@PostMapping("/exsvc/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchExtraService(@RequestBody CommonVO commonVO) {
-		return extraSvcService.search(commonVO);
+	public List<Map<String,Object>> searchExtraService(@RequestBody SearchVO searchVO) {
+		return extraSvcService.search(searchVO);
 	}
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchSale(@RequestBody CommonVO commonVO) {
-		return saleService.search(commonVO);
+	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO) {
+		return saleService.search(searchVO);
 	}
 
 	@GetMapping("/msg/form/func")

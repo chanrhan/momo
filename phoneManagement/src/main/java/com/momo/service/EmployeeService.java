@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.EmployeeMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,8 @@ public class EmployeeService extends CommonService {
 	}
 
 	@Override
-	public List<Map<String, Object>> search(CommonVO commonVO) {
-		return employeeMapper.search(commonVO);
+	public List<Map<String, Object>> search(SearchVO searchVO) {
+		return employeeMapper.search(searchVO);
 	}
 
 	public Map<String,Object> selectById(String id){

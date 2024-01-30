@@ -2,11 +2,7 @@ package com.momo.service;
 
 import com.momo.mapper.ExtraServiceMapper;
 import com.momo.mapper.MsgFormMapper;
-import com.momo.mapper.MsgReserveMapper;
 import com.momo.mapper.PlanMapper;
-import com.momo.vo.MessageVO;
-import com.momo.vo.ShopVO;
-import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +17,7 @@ public class MsgFormService {
 	private final PlanMapper planMapper;
 	private final ExtraServiceMapper extraServiceMapper;
 
-	private final AccountService accountService;
+	private final UserService userService;
 	private final ShopService shopService;
 
 	public List<Map<String,Object>> getAllDefaultForm(){
@@ -36,7 +32,7 @@ public class MsgFormService {
 			content = formMapper.selectForm(formId).get("content").toString();
 		}
 
-		Map<String,Object> userMap = accountService.selectOne(map);
+		Map<String,Object> userMap = userService.selectOne(map);
 		Map<String,Object> shop = shopService.selectOne(map);
 		content = content.replace("%[seller_nm]%", userMap.get("name").toString())
 				.replace("%[shop_nm]%]", shop.get("shop_nm").toString());

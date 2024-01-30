@@ -3,8 +3,6 @@ package com.momo.controller;
 import com.momo.service.EmployeeService;
 import com.momo.service.RegionService;
 import com.momo.service.ShopService;
-import com.momo.vo.ShopVO;
-import com.momo.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

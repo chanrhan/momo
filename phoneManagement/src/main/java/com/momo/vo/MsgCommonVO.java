@@ -7,22 +7,19 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class MessageVO extends AbstractQueryVO {
+public class MsgCommonVO extends AbstractQueryVO {
 	private int    formId;
 	private String formNm;
 	private int    typeId;
 	private String content;
 	private String selectBtnNm;
-	private int    defaultRsvDt;
+	private int    rsvDDay;
 
 	private int    msgId;
 	private int    shopCd;
@@ -38,7 +35,7 @@ public class MessageVO extends AbstractQueryVO {
 	private LocalDate     rsvDt;
 	private LocalDateTime regiDt;
 
-	private List<MessageVO> msgRsvList;
+	private List<MsgCommonVO> msgRsvList;
 
 	//	public void setRsvDt(String rsvDt) {
 	//		Date date = new Date();

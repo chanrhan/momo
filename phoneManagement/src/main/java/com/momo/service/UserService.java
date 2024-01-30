@@ -1,9 +1,10 @@
 package com.momo.service;
 
 import com.momo.domain.user.UserDetailsImpl;
-import com.momo.mapper.AccountMapper;
+import com.momo.mapper.UserMapper;
 import com.momo.mapper.EmployeeMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
+import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,54 +21,50 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService extends CommonService implements UserDetailsService{
+public class UserService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
-	private final AccountMapper accountMapper;
+	private final UserMapper      userMapper;
 
 	private final EmployeeMapper employeeMapper;
 
-	@Override
-	public int update(Map<String,Object> map){
-		return accountMapper.update(map);
+	// User Account
+	public int insertUser(UserCommonVO vo){
+		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+		return userMapper.insertUser(vo);
+	}
+	public int updateUser(UserCommonVO vo){
+		return userMapper.updateUser(vo);
 	}
 
-	@Override
-	public int delete(Map<String,Object> map) {
-		return accountMapper.delete(map);
+	public int deleteUser(String id) {
+		return userMapper.deleteUser(id);
 	}
 
-	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
-		return accountMapper.select(getSelectQueryString(map));
+	public List<Map<String,String>> selectUser(UserCommonVO vo) {
+		return userMapper.selectUser(getSelectQueryString(vo));
 	}
 
-	@Override
-	public Map<String,Object> selectOne(Map<String,Object> map) {
-		return select(map).get(0);
+//	public Map<String,Object> selectOne(Map<String,Object> map) {
+//		return select(map).get(0);
+//	}
+
+	public List<Map<String,String>> search(SearchVO vo) {
+		return userMapper.searchUser(vo);
 	}
 
-	@Override
-	public List<Map<String,Object>> search(CommonVO key) {
-		return accountMapper.search(key);
-	}
-
-	@Override
-	public List<Map<String,Object>> selectAll() {
-		return accountMapper.selectAll();
-	}
+//	public List<Map<String,Object>> selectAll() {
+//		return userMapper.selectAll();
+//	}
 
 	public int updatePassword(Map<String,Object> map){
 		map.put("update_pwd", passwordEncoder.encode(map.get("update_pwd").toString()));
-		return accountMapper.updatePassword(map);
+		return userMapper.updatePassword(map);
 	}
 
-	public int insert(Map<String,Object> map){
-		map.put("pwd",passwordEncoder.encode(map.get("pwd").toString()));
-		return accountMapper.insert(map);
-	}
+
 
 	public int updateRole(Map<String,Object> map){
-		return accountMapper.updateRole(map);
+		return userMapper.updateRole(map);
 	}
 
 	public void replaceAuthority(String role){

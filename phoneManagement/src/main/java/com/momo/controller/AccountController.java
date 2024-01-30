@@ -2,7 +2,7 @@ package com.momo.controller;
 
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-	private final AccountService accountService;
+	private final UserService userService;
 
 	private final EmployeeService employeeService;
 
@@ -82,20 +82,20 @@ public class AccountController {
 	@PostMapping("/submit")
 	@ResponseBody
 	public boolean signupSubmit(@RequestBody Map<String ,Object> map) {
-		return accountService.insert(map) != 0;
+		return userService.insert(map) != 0;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
 	public boolean roleSubmit(@RequestBody Map<String,Object> map) {
 		System.out.println(map);
-		int result = accountService.updateRole(map);
+		int result = userService.updateRole(map);
 		if (result == 0) {
 			return false;
 		}
 		String role = map.get("role").toString();
 
-		accountService.replaceAuthority(role);
+		userService.replaceAuthority(role);
 
 		if (role.equals("REPS")) {
 			result = corpService.insert(map);
@@ -119,9 +119,9 @@ public class AccountController {
 		//		System.out.println(value);
 		switch (target) {
 			case "id":
-				return accountService.getAccountById(value) == null;
+				return userService.getAccountById(value) == null;
 			case "email":
-				return accountService.getAccountByEmail(value) == null;
+				return userService.getAccountByEmail(value) == null;
 		}
 		return false;
 	}
@@ -143,8 +143,8 @@ public class AccountController {
 
 	@PostMapping("/search/corp")
 	@ResponseBody
-	public List<Map<String,Object>> searchCorp(@RequestBody CommonVO commonVO){
-		return shopService.search(commonVO);
+	public List<Map<String,Object>> searchCorp(@RequestBody SearchVO searchVO){
+		return shopService.search(searchVO);
 	}
 
 	@PostMapping("/approve")

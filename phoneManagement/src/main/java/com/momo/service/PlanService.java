@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.PlanMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +39,8 @@ public class PlanService extends CommonService {
 		return planMapper.delete(key);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO){
-		return planMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO){
+		return planMapper.search(searchVO);
 	}
 
 	@Override

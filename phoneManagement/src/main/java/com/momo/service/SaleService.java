@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.SaleMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,8 +56,8 @@ public class SaleService extends CommonService {
 		return result;
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO){
-		return saleMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO){
+		return saleMapper.search(searchVO);
 	}
 
 //	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){

@@ -1,6 +1,5 @@
 package com.momo.mapper;
 
-import com.momo.service.ICRUDService;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

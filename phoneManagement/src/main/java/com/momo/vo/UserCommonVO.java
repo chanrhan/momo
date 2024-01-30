@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class UserInfoVO extends AbstractQueryVO {
+public class UserCommonVO extends AbstractQueryVO {
 	private String id;
 	private String pwd;
 	private String updatePwd; // 변경할 비밀번호
@@ -51,9 +51,8 @@ public class UserInfoVO extends AbstractQueryVO {
 		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 
-	public ShopVO getShopVO() {
-		return ShopVO.builder().repsId(id).bNo(bNo).pKoNm(pKoNm).pEnNm(pEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt)
-
+	public ShopCommonVO getShopVO() {
+		return ShopCommonVO.builder().repsId(id).bNo(bNo).pKoNm(pKoNm).pEnNm(pEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt)
 				.shopCd(shopCd).repsId(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
 	}
 }

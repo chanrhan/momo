@@ -2,7 +2,10 @@ package com.momo.service;
 
 import java.util.Map;
 
-public abstract class CommonService implements ICRUDService {
+public abstract class CommonService {
+	protected String getUpdateQueryString(){
+		return null;
+	}
 	protected String getSelectQueryString(Map<String,Object> map){
 		StringBuilder sb = new StringBuilder(" ");
 		if(map == null || map.isEmpty()){

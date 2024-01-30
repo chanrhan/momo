@@ -1,7 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.TermMapper;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +38,8 @@ public class TermService extends CommonService {
 		return select(key).get(0);
 	}
 
-	public List<Map<String,Object>> search(CommonVO commonVO) {
-		return termMapper.search(commonVO);
+	public List<Map<String,Object>> search(SearchVO searchVO) {
+		return termMapper.search(searchVO);
 	}
 
 	public List<Map<String,Object>> selectAll(){

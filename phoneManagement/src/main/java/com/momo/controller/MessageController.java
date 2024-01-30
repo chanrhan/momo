@@ -5,7 +5,7 @@ import com.momo.service.MsgFormService;
 import com.momo.service.MsgReserveService;
 import com.momo.service.ShopService;
 import com.momo.util.SecurityContextUtil;
-import com.momo.vo.CommonVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,9 +66,9 @@ public class MessageController {
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchMessage(@RequestBody CommonVO commonVO) {
+	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
 
-		return msgReserveService.search(commonVO);
+		return msgReserveService.search(searchVO);
 	}
 
 	@PostMapping("/delete/{id}")

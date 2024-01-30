@@ -40,7 +40,7 @@
             alarm_id=#{alarmId}
     </update>
 
-    <select id="search" parameterType="com.momo.vo.CommonVO">
+    <select id="search" parameterType="com.momo.vo.SearchVO">
         with alarm as (
             select
                 al.alarm_id as alarm_id,

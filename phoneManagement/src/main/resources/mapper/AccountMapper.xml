@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.momo.mapper.AccountMapper">
+<mapper namespace="com.momo.mapper.UserMapper">
     <select id="select">
         select
         *
@@ -12,7 +12,7 @@
         ${qs}
     </select>
 
-    <select id="search" parameterType="com.momo.vo.CommonVO">
+    <select id="search" parameterType="com.momo.vo.SearchVO">
         select
         *
         from
