@@ -27,7 +27,7 @@ function showSaleDetail(saleNo){
 function showCreateSaleForm(){
     var shopCode = $('#filter_shop').val();
     window.open(
-        "/sale/create/form?shopCd="+shopCode,
+        "/sale/create/form?shopId="+shopCode,
         "판매일보 추가",
         "width=500, height=500, location=no"
     );

@@ -2,13 +2,15 @@ package com.momo.vo;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class TermVO {
+public class TermVO extends CommonQueryVO{
 	private String        userId;
 	private String        role;
 	private boolean       checked;

@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class UserCommonVO extends AbstractQueryVO {
+public class UserCommonVO extends CommonQueryVO {
 	private String id;
 	private String pwd;
 	private String updatePwd; // 변경할 비밀번호
@@ -26,8 +26,8 @@ public class UserCommonVO extends AbstractQueryVO {
 	private String  role;
 	private boolean approvalSt; // 승인 여부
 
-	private int           shopCd;
-	private String        shopNm;
+	private int    shopId;
+	private String shopNm;
 	private String        shopAddr;
 	private String        shopTel;
 	@JsonProperty(value = "bNo")
@@ -51,8 +51,8 @@ public class UserCommonVO extends AbstractQueryVO {
 		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 
-	public ShopCommonVO getShopVO() {
+	public ShopCommonVO getShopCommonVO() {
 		return ShopCommonVO.builder().repsId(id).bNo(bNo).pKoNm(pKoNm).pEnNm(pEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt)
-				.shopCd(shopCd).repsId(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
+				.shopId(shopId).repsId(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
 	}
 }

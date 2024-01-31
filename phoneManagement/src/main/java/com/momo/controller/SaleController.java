@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +17,12 @@ import java.util.Map;
 @RequestMapping("/sale")
 @PreAuthorize("isAuthenticated()")
 public class SaleController {
-	private final EmployeeService employeeService;
-	private final ShopService     shopService;
-	private final SaleService     saleService;
+	private final UserCommonService userCommonService;
+	private final ShopCommonService shopCommonService;
+	private final SaleService       saleService;
 
-	private final MsgFormService  msgFormService;
-	private final PlanService     planService;
-	private final ExtraSvcService extraSvcService;
+	private final MsgCommonService msgCommonService;
+	private final ItemCommonService itemCommonService;
 
 	@GetMapping("")
 	public String saleHome(Model model) {
@@ -34,73 +32,53 @@ public class SaleController {
 		// 4. 해당 매장의 모든 판매일보들을 'list_sale'에 할당
 
 		String username = SecurityContextUtil.getUsername();
-
-		Map<String,Object> empMap = employeeService.selectById(username);
-		//		ShopVO shopVo;
-		//		if(emp.getRole().equals("REPS")){
-		//			shopVo = ShopVO.builder().bNo(emp.getBNo()).build();
-		//		}else{
-		//			shopVo = ShopVO.builder().shopCd(emp.getShopCd()).build();
-		//		}
-		List<Map<String,Object>> list_shop = shopService.selectByUser(empMap);
-		Map<String,Object>       shop     = list_shop.get(0);
-
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser(username);
+		Map<String,Object> shop = list_shop.get(0);
+		List<Map<String,Object>> list_sale = saleService.selectSaleByShopId(shop.get("shop_id"));
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-
-		Map<String,Object> selectMap = new HashMap<>();
-		selectMap.put("shop_cd", shop.get("shop_cd"));
-		selectMap.put("order", "actv_dt");
-
-		List<Map<String,Object>> list_sale = saleService.search(SearchVO.builder().search(selectMap).build());
 		model.addAttribute("list_sale", list_sale);
 
 		return "sale/home";
 	}
 
-	@GetMapping("/detail/{no}")
-	public String saleDetail(Model model, @PathVariable int no) {
-		model.addAttribute("sale", saleService.selectById(no));
+	@GetMapping("/detail/{id}")
+	public String saleDetail(Model model, @PathVariable int id) {
+		model.addAttribute("sale", saleService.selectSaleById(id));
 		return "sale/sale_detail";
 	}
 
 	@GetMapping("/create/form")
-	public String saleCreateGET(Model model, @RequestParam int shopCd) {
+	public String saleCreateGET(Model model, @RequestParam int shopId) {
 		String username = SecurityContextUtil.getUsername();
-		model.addAttribute("shopCode", shopCd);
+		model.addAttribute("shop_id", shopId);
 
 		return "sale/sale_create";
 	}
 
 	@PostMapping("/update")
 	@ResponseBody
-	public boolean saleUpdate(@RequestBody Map<String,Object> map) {
-		System.out.println(map);
-		int result = saleService.update(map);
-
-		return result != 0;
+	public boolean saleUpdate(@RequestBody SaleVO vo) {
+		System.out.println(vo);
+		return saleService.updateSale(vo) != 0;
 	}
 
-	@PostMapping("/delete")
+	@GetMapping("/delete/{id}")
 	@ResponseBody
-	public boolean saleDelete(@RequestBody Map<String,Object> map) {
-		return saleService.delete(map) != 0;
+	public boolean saleDelete(@PathVariable int id) {
+		return saleService.deleteSale(id) != 0;
 	}
 
 	@PostMapping("/create")
 	@ResponseBody
-	public boolean saleCreatePOST(@RequestBody Map<String,Object> saleVO) {
-		//		System.out.println(saleVO);
-		//		List<MessageVO> list = saleVO.getMsgRsvList();
-		//		saleVO.setRsvSt(!(list == null || list.isEmpty()));
-
-		return saleService.insert(saleVO) != 0;
+	public boolean saleCreatePOST(@RequestBody SaleVO vo) {
+		return saleService.insertSale(vo) != 0;
 	}
 
 	@GetMapping("/msg/rsv")
 	public String msgReservation(Model model) {
-		List<Map<String,Object>> defaultForm = msgFormService.getAllDefaultForm();
+		List<Map<String,Object>> defaultForm = msgCommonService.getAllDefaultForm();
 		model.addAttribute("default_form", defaultForm);
 		return "sale/msg_rsv";
 	}
@@ -117,32 +95,32 @@ public class SaleController {
 
 	@GetMapping("/plan/list")
 	public String planList(Model model) {
-		model.addAttribute("list_plan", planService.selectAll());
+		model.addAttribute("list_plan", itemCommonService.searchPlan(null));
 		return "sale/plan_list";
 	}
 
 	@PostMapping("/plan/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchPlan(@RequestBody SearchVO searchVO) {
-		return planService.search(searchVO);
+		return itemCommonService.searchPlan(searchVO);
 	}
 
 	@GetMapping("/exsvc/list")
 	public String extraServiceList(Model model) {
-		model.addAttribute("list_exsvc", extraSvcService.selectAll());
+		model.addAttribute("list_exsvc", itemCommonService.selectExsvc(null));
 		return "sale/ex_svc_list";
 	}
 
 	@PostMapping("/exsvc/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchExtraService(@RequestBody SearchVO searchVO) {
-		return extraSvcService.search(searchVO);
+	public List<Map<String,Object>> searchExsvc(@RequestBody SearchVO searchVO) {
+		return itemCommonService.searchExsvc(searchVO);
 	}
 
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO) {
-		return saleService.search(searchVO);
+		return saleService.searchSale(searchVO);
 	}
 
 	@GetMapping("/msg/form/func")

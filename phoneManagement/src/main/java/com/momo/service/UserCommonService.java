@@ -20,11 +20,9 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends CommonService implements UserDetailsService{
+public class UserCommonService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserCommonMapper userCommonMapper;
-
-	private final EmployeeMapper employeeMapper;
 
 	// User Account
 	public int insertUser(UserCommonVO vo){
@@ -39,26 +37,61 @@ public class UserService extends CommonService implements UserDetailsService{
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
 		return userCommonMapper.updateUser(getUpdateQueryString(vo));
 	}
+	public int updateApproveState(String id, boolean state){
+		UserCommonVO vo = UserCommonVO.builder().id(id).approvalSt(state).build();
+		return updateEmp(vo);
+	}
 
 	public int deleteUser(String id) {
 		return userCommonMapper.deleteUser(id);
 	}
 
-	public List<Map<String,String>> selectUser(UserCommonVO vo) {
+	public List<Map<String,Object>> selectUser(UserCommonVO vo) {
 		return userCommonMapper.selectUser(getSelectQueryString(vo));
 	}
+	public Map<String,Object> selectUserById(String id){
+		UserCommonVO vo = UserCommonVO.builder().id(id).build();
+		return selectUser(vo).get(0);
+	}
 
-//	public Map<String,Object> selectOne(Map<String,Object> map) {
-//		return select(map).get(0);
-//	}
+	public Map<String,Object> selectUserByEmail(String email){
+		UserCommonVO vo = UserCommonVO.builder().email(email).build();
+		return selectUser(vo).get(0);
+	}
 
-	public List<Map<String,String>> search(SearchVO vo) {
+	public List<Map<String,Object>> searchUser(SearchVO vo) {
 		return userCommonMapper.searchUser(vo);
 	}
 
-//	public List<Map<String,Object>> selectAll() {
-//		return userMapper.selectAll();
-//	}
+	public int updateRole(String id, String role){
+		UserCommonVO vo = UserCommonVO.builder().id(id).role(role).build();
+		return userCommonMapper.updateUser(getUpdateQueryString(vo));
+	}
+
+
+	// Employee
+	public int insertEmp(UserCommonVO vo){
+		return userCommonMapper.insertEmp(vo);
+	}
+	public int updateEmp(UserCommonVO vo){
+		return userCommonMapper.updateEmp(getUpdateQueryString(vo));
+	}
+
+	public int deleteEmp(String id) {
+		return userCommonMapper.deleteEmp(id);
+	}
+
+	public List<Map<String,Object>> selectEmp(UserCommonVO vo) {
+		return userCommonMapper.selectEmp(getSelectQueryString(vo));
+	}
+	public Map<String,Object> selectEmpById(String id){
+		UserCommonVO vo = UserCommonVO.builder().id(id).build();
+		return selectEmp(vo).get(0);
+	}
+
+	public List<Map<String,Object>> searchEmp(SearchVO vo) {
+		return userCommonMapper.searchEmp(vo);
+	}
 
 	public void replaceAuthority(String role){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -72,34 +105,18 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 
-	public Map<String,String> getAccountById(String id){
-		List<Map<String,String>> adminVO = selectUser(UserCommonVO.builder().id(id).build());
-		System.out.println(adminVO);
-		if(adminVO != null && !adminVO.isEmpty()){
-			return adminVO.get(0);
-		}
-		return null;
-	}
-
-	public Map<String,String> getAccountByEmail(String email){
-		List<Map<String,String>> adminVO = selectUser(UserCommonVO.builder().email(email).build());
-		if(adminVO != null && !adminVO.isEmpty()){
-			return adminVO.get(0);
-		}
-		return null;
-	}
 
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,String> map = getAccountById(username);
+		Map<String,Object> map = selectEmpById(username);
 		if(map == null){
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}
 
-		String id = map.get("id");
-		String pwd = map.get("pwd");
-		String role = map.get("role");
+		String id = map.get("id").toString();
+		String pwd = map.get("pwd").toString();
+		String role = map.get("role").toString();
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, role);
 
@@ -108,7 +125,7 @@ public class UserService extends CommonService implements UserDetailsService{
 		}
 
 		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
-			Map<String,Object> emp = employeeMapper.selectById(id);
+			Map<String,Object> emp = selectEmp(UserCommonVO.builder().id(id).build()).get(0);
 			if(emp.get("approve_st").equals("1")){
 				userDetails.add(new SimpleGrantedAuthority("APPROVE"));
 			}

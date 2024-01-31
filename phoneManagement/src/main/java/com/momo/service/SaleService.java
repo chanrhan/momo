@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.SaleMapper;
+import com.momo.vo.SaleVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,39 +14,31 @@ import java.util.Map;
 public class SaleService extends CommonService {
 	private final SaleMapper saleMapper;
 
-	@Override
-	public int insert(Map<String,Object> map) {
-		map.put("sale_no", getMaxSaleNo()+1);
-		return saleMapper.insert(map);
+	public int insertSale(SaleVO vo) {
+		vo.setSaleId(getMaxSaleNo()+1);
+		return saleMapper.insertSale(vo);
+	}
+	public int updateSale(SaleVO vo) {
+		return saleMapper.updateSale(getUpdateQueryString(vo));
+	}
+	public int deleteSale(int id) {
+		return saleMapper.deleteSale(id);
 	}
 
-	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
-		return saleMapper.select(getSelectQueryString(map));
+	public List<Map<String,Object>> selectSale(SaleVO vo) {
+		vo.setOrder("actv_dt");
+		vo.setAsc("desc");
+		return saleMapper.selectSale(getSelectQueryString(vo));
 	}
 
-	@Override
-	public Map<String,Object> selectOne(Map<String,Object> map) {
-		return select(map).get(0);
+	public List<Map<String,Object>> selectSaleByShopId(Object id) {
+		SaleVO vo = SaleVO.builder().shopId(Integer.parseInt(id.toString())).build();
+		return selectSale(vo);
 	}
 
-	public Map<String,Object> selectById(int id){
-		return saleMapper.selectById(id);
-	}
-
-	@Override
-	public int update(Map<String,Object> key) {
-		return saleMapper.update(key);
-	}
-
-	@Override
-	public int delete(Map<String,Object> key) {
-		return saleMapper.delete(key);
-	}
-
-	@Override
-	public List<Map<String,Object>> selectAll() {
-		return saleMapper.selectAll();
+	public Map<String,Object> selectSaleById(int id){
+		SaleVO vo = SaleVO.builder().saleId(id).build();
+		return selectSale(vo).get(0);
 	}
 
 	public int getMaxSaleNo(){
@@ -56,8 +49,8 @@ public class SaleService extends CommonService {
 		return result;
 	}
 
-	public List<Map<String,Object>> search(SearchVO searchVO){
-		return saleMapper.search(searchVO);
+	public List<Map<String,Object>> searchSale(SearchVO searchVO){
+		return saleMapper.searchSale(searchVO);
 	}
 
 //	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){

@@ -1,11 +1,13 @@
 package com.momo.controller;
 
-import com.momo.service.EmployeeService;
-import com.momo.service.MsgFormService;
-import com.momo.service.MsgReserveService;
-import com.momo.service.ShopService;
+import com.momo.service.MsgCommonService;
+import com.momo.service.ShopCommonService;
+import com.momo.service.UserCommonService;
 import com.momo.util.SecurityContextUtil;
+import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
+import com.momo.vo.ShopCommonVO;
+import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +20,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/msg")
 public class MessageController {
-	private final EmployeeService   employeeService;
-	private final MsgReserveService msgReserveService;
-	private final MsgFormService    msgFormService;
-
-	private final ShopService shopService;
+	private final UserCommonService userCommonService;
+	private final MsgCommonService  msgCommonService;
+	private final ShopCommonService shopCommonService;
 
 	@GetMapping("")
 	public String msgHome() {
@@ -32,31 +32,20 @@ public class MessageController {
 	@GetMapping("/reserve")
 	public String reserveMsgForm(Model model) {
 		String              username = SecurityContextUtil.getUsername();
-		Map<String, Object> empMap   = employeeService.selectById(username);
 
+		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser(username);
+		List<Map<String,Object>> list_msg = msgCommonService.selectMsgReserveByUser(username);
 
-		List<Map<String, Object>> list_shop = shopService.selectByUser(empMap);
-		Map<String, Object> shop = list_shop.get(0);
-
-		List<Map<String,Object>> list_msg;
-		if (empMap.get("role").equals("REPS")) {
-			list_msg = msgReserveService.selectByBNo(empMap.get("b_no").toString());
-		}
-		else {
-			list_msg = msgReserveService.selectByShopCode(empMap.get("shop_cd").toString());
-		}
-
-		//		model.addAttribute("list_msg", messageService.getReservedMessage(MessageVO.builder().shopCd(shop.getShopCd()).build()));
 		model.addAttribute("list_msg", list_msg);
 		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", shop);
+		model.addAttribute("selected_shop", list_shop.get(0));
 		return "message/msg_reserve";
 	}
 
 	@PostMapping("/reserve")
 	@ResponseBody
-	public boolean reserveMsgPOST(@RequestBody Map<String,Object> map) {
-		return msgReserveService.reserve(map) != 0;
+	public boolean reserveMsgPOST(@RequestBody MsgCommonVO vo) {
+		return msgCommonService.reserve(vo) != 0;
 	}
 
 	@GetMapping("/send")
@@ -67,19 +56,18 @@ public class MessageController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
-
-		return msgReserveService.search(searchVO);
+		return msgCommonService.searchMsgReserve(searchVO);
 	}
 
 	@PostMapping("/delete/{id}")
 	@ResponseBody
-	public boolean deleteMessage(@RequestBody Map<String,Object> map) {
-		return msgReserveService.delete(map) != 0;
+	public boolean deleteMessage(@PathVariable int id) {
+		return msgCommonService.deleteMsgReserve(id) != 0;
 	}
 
-	@PostMapping("/update/{id}")
+	@PostMapping("/update")
 	@ResponseBody
-	public boolean updateMessage(@RequestBody Map<String,Object> map) {
-		return msgReserveService.update(map) != 0;
+	public boolean updateMessage(@RequestBody MsgCommonVO vo) {
+		return msgCommonService.updateMsgReserve(vo) != 0;
 	}
 }

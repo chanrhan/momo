@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.ItemCommonMapper;
+import com.momo.vo.ItemCommonVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,34 +11,41 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ExtraSvcService extends CommonService {
+public class ItemCommonService extends CommonService {
 	private final ItemCommonMapper itemCommonMapper;
 
-	@Override
-	public int insert(Map<String,Object> key) {
-		return itemCommonMapper.insert(key);
+	// Plan
+	public int insertPlan(ItemCommonVO vo) {
+		return itemCommonMapper.insertPlan(vo);
 	}
-	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
-		return itemCommonMapper.select(getSelectQueryString(map));
+	public int updatePlan(ItemCommonVO vo) {
+		return itemCommonMapper.updatePlan(getUpdateQueryString(vo));
 	}
-	@Override
-	public Map<String,Object> selectOne(Map<String,Object> key) {
-		return select(key).get(0);
+	public int deletePlan(int id) {
+		return itemCommonMapper.deletePlan(id);
 	}
-	public List<Map<String,Object>> search(SearchVO searchVO){
-		return itemCommonMapper.search(searchVO);
+	public List<Map<String,Object>> selectPlan(ItemCommonVO vo) {
+		return itemCommonMapper.selectPlan(getSelectQueryString(vo));
 	}
-	@Override
-	public int update(Map<String,Object> key) {
-		return itemCommonMapper.update(key);
+	public List<Map<String,Object>> searchPlan(SearchVO searchVO){
+		return itemCommonMapper.searchPlan(searchVO);
 	}
-	@Override
-	public int delete(Map<String,Object> key) {
-		return itemCommonMapper.delete(key);
+
+	// Plan
+	public int insertExsvc(ItemCommonVO vo) {
+		return itemCommonMapper.insertExsvc(vo);
 	}
-	@Override
-	public List<Map<String,Object>> selectAll() {
-		return itemCommonMapper.selectAll();
+	public int updateExsvc(ItemCommonVO vo) {
+		return itemCommonMapper.updateExsvc(getUpdateQueryString(vo));
 	}
+	public int deleteExsvc(int id) {
+		return itemCommonMapper.deletePlan(id);
+	}
+	public List<Map<String,Object>> selectExsvc(ItemCommonVO vo) {
+		return itemCommonMapper.selectExsvc(getSelectQueryString(vo));
+	}
+	public List<Map<String,Object>> searchExsvc(SearchVO searchVO){
+		return itemCommonMapper.searchExsvc(searchVO);
+	}
+
 }

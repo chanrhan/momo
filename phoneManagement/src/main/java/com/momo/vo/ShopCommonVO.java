@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class ShopCommonVO extends AbstractQueryVO {
+public class ShopCommonVO extends CommonQueryVO {
 	@JsonProperty(value = "bNo")
 	private String        bNo;
 	@JsonProperty(value = "pEnNm")
@@ -21,7 +21,7 @@ public class ShopCommonVO extends AbstractQueryVO {
 	private String        corpTel;
 	private LocalDateTime startDt;
 
-	private int    shopCd;
+	private int    shopId;
 	private String repsId;
 	private String repsNm;
 	private String shopNm;

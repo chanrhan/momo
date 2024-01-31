@@ -36,14 +36,14 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String payload = message.getPayload();
 
-		Map<String,Object> alarmMap = objectMapper.readValue(payload, Map.class);
-		System.out.println(alarmMap);
+		AlarmVO alarm = objectMapper.readValue(payload, AlarmVO.class);
+		System.out.println(alarm);
 
-		if(alarmMap.get("sender_id") == null || alarmMap.get("receiver_id") == null){
+		if(alarm.getSenderId() == null || alarm.getReceiverId() == null){
 			return;
 		}
 
-		int result = alarmService.insert(alarmMap);
+		int result = alarmService.insertAlarm(alarm);
 		if(result == 0){
 			return;
 		}
@@ -53,17 +53,4 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
 	}
-
-
-//	private void sendMessageToChatRoom(ChatMessageDTO chatMessageDTO, Set<WebSocketSession> chatRoomSesion){
-//		chatRoomSesion.parallelStream().forEach(session -> sendMessage(session, chatMessageDTO));
-//	}
-//
-//	private <T> void sendMessage(WebSocketSession session, T message){
-//		try{
-//			session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
-//		}catch (IOException e){
-//			log.error(e.getMessage());
-//		}
-//	}
 }

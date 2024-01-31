@@ -1,8 +1,8 @@
 package com.momo.controller;
 
-import com.momo.service.EmployeeService;
 import com.momo.service.RegionService;
-import com.momo.service.ShopService;
+import com.momo.service.ShopCommonService;
+import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,10 +16,8 @@ import java.util.Map;
 @RequestMapping("/shop")
 @PreAuthorize("isAuthenticated()")
 public class ShopController {
-	private final ShopService shopService;
-	private final RegionService regionService;
-
-	private final EmployeeService employeeService;
+	private final ShopCommonService shopCommonService;
+	private final RegionService     regionService;
 
 	@GetMapping("")
 	public String shopHome(){
@@ -34,12 +32,13 @@ public class ShopController {
 
 	@PostMapping("/create")
 	@ResponseBody
-	public boolean shopCreate(@RequestBody Map<String,Object> map){
-		Map<String,Object> repsMap = employeeService.selectById(map.get("reps_id").toString());
-		map.put("b_no", repsMap.get("b_no"));
-		map.put("shop_cd",shopService.getMaxCode()+1);
+	public boolean createShop(@RequestBody ShopCommonVO vo){
+		Map<String,Object> reps = shopCommonService.selectShopByUser(vo.getRepsId()).get(0);
 
-		return shopService.insert(map) != 0;
+		vo.setBNo(reps.get("b_no").toString());
+		vo.setShopId(shopCommonService.getMaxShopId()+1);
+
+		return shopCommonService.insertShop(vo) != 0;
 	}
 
 	@GetMapping("/city")

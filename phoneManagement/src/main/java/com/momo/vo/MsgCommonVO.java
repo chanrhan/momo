@@ -1,5 +1,6 @@
 package com.momo.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class MsgCommonVO extends AbstractQueryVO {
+public class MsgCommonVO extends CommonQueryVO {
 	private int    formId;
 	private String formNm;
 	private int    typeId;
@@ -21,8 +22,11 @@ public class MsgCommonVO extends AbstractQueryVO {
 	private String selectBtnNm;
 	private int    rsvDDay;
 
+	@JsonProperty(value = "bNo")
+	private String bNo;
+
 	private int    msgId;
-	private int    shopCd;
+	private int    shopId;
 	private String shopNm;
 	private int    saleNo;
 	private String sendTp;

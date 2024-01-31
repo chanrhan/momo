@@ -12,9 +12,11 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService extends CommonService {
+public class ShopCommonService extends CommonService {
+	private final UserCommonService userCommonService;
 	private final ShopCommonMapper shopCommonMapper;
 
+	// Shop
 	public int insertShop(ShopCommonVO vo) {
 		return shopCommonMapper.insertShop(vo);
 	}
@@ -27,62 +29,51 @@ public class ShopService extends CommonService {
 		return shopCommonMapper.deleteShop(id);
 	}
 
-	public List<Map<String,String>> selectShop(ShopCommonVO vo) {
+	public List<Map<String,Object>> selectShop(ShopCommonVO vo) {
 		return shopCommonMapper.selectShop(getSelectQueryString(vo));
 	}
-
-//	public Map<String,Object> selectOne(Map<String,Object> map) {
-//		return select(map).get(0);
-//	}
-
-	public List<Map<String,String>> searchShop(SearchVO vo) {
+	public List<Map<String,Object>> searchShop(SearchVO vo) {
 		return shopCommonMapper.searchShop(vo);
 	}
 
-	public int getMaxCode(){
-		Integer code = shopCommonMapper.maxShopId();
+	public int getMaxShopId(){
+		Integer code = shopCommonMapper.getMaxShopId();
 		if(code == null){
 			return 0;
 		}
 		return code;
 	}
 
-	public List<Map<String,String>> selectShopByUser(UserCommonVO vo){
+	public List<Map<String,Object>> selectShopByUser(String id){
+		Map<String,Object> emp = userCommonService.selectEmp(UserCommonVO.builder().id(id).build()).get(0);
 		ShopCommonVO shopCommonVO = new ShopCommonVO();
-		if(vo.getRole().equals("REPS")){
-			shopCommonVO.setBNo(vo.getBNo());
+		if(emp.get("role").equals("REPS")){
+			shopCommonVO.setBNo(emp.get("b_no").toString());
 		}else{
-			shopCommonVO.setShopId(vo.getShopId());
+			shopCommonVO.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
 		}
 		return selectShop(shopCommonVO);
 	}
 
-//	public Paging<ShopVO> searchBranch(ShopVO shopVO){
-//		Paging<ShopVO> paging = new Paging<>(shopVO.getPage(), 10);
-//		shopVO.setOffset(paging.getOffset());
-//		shopVO.setLimit(paging.getSize());
-////		ShopVO vo = ShopVO.builder()
-//////				.keywordMap(keyword)
-////				.offset(paging.getOffset())
-////				.limit(paging.getSize())
-////				.build();
-//
-//		paging.setRecords(shopMapper.searchBranch(shopVO));
-//		paging.setTotalRecordCount(shopMapper.countBranch(shopVO));
-//
-//		return paging;
-//	}
+	// Corperation
+	public int insertCorp(ShopCommonVO vo) {
+		return shopCommonMapper.insertCorp(vo);
+	}
 
-//	public Paging<ShopVO> selectPage(int pageNum, String targetColumn, String keyword){
-//		Paging<ShopVO> paging = new Paging<>(pageNum, 10);
-//		ShopVO vo = ShopVO.builder()
-//				.offset(paging.getOffset())
-//				.limit(paging.getSize())
-//				.build();
-//
-//		paging.setRecords(shopMapper.search(vo));
-//		paging.setTotalRecordCount(shopMapper.getTotalRecordCount(vo));
-//
-//		return paging;
-//	}
+	public int updateCorp(ShopCommonVO vo) {
+		return shopCommonMapper.updateCorp(getUpdateQueryString(vo));
+	}
+
+	public int deleteCorp(String bNo) {
+		return shopCommonMapper.deleteCorp(bNo);
+	}
+
+	public List<Map<String,Object>> selectCorp(ShopCommonVO vo) {
+		return shopCommonMapper.selectCorp(getSelectQueryString(vo));
+	}
+
+	public List<Map<String,Object>> searchCorp(SearchVO vo) {
+		return shopCommonMapper.searchCorp(vo);
+	}
+
 }

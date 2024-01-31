@@ -2,7 +2,9 @@ package com.momo.controller;
 
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
+import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,13 +19,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-	private final UserService userService;
+	private final UserCommonService userCommonService;
 
-	private final EmployeeService employeeService;
-
-	private final TermService   termService;
-	private final ShopService   shopService;
-	private final CorpService   corpService;
+	private final TermService       termService;
+	private final ShopCommonService shopCommonService;
 	private final RegionService regionService;
 
 	private final AlarmService alarmService;
@@ -36,7 +35,7 @@ public class AccountController {
 //	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
 	public String signup(Model model) {
-		List<Map<String,Object>> list_term = termService.selectAll();
+		List<Map<String,Object>> list_term = termService.selectTerm(null);
 		model.addAttribute("terms", list_term);
 		return "account/signup";
 	}
@@ -58,18 +57,6 @@ public class AccountController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/manager")
 	public String roleManager() {
-//		if (!state.equals("") && !city.equals("")) {
-//			String         keyword = state + " " + city;
-//			Paging<ShopVO> paging  = shopService.selectPage(page, "shop_addr", keyword);
-//			model.addAttribute("paging", paging);
-//			model.addAttribute("list_city", regionService.selectByState(state).split(","));
-//		}
-//
-//		model.addAttribute("list_state", regionService.selectAllState());
-//		model.addAttribute("state", state);
-//		model.addAttribute("city", city);
-//		model.addAttribute("q", q);
-
 		return "account/role_manager";
 	}
 
@@ -81,31 +68,31 @@ public class AccountController {
 
 	@PostMapping("/submit")
 	@ResponseBody
-	public boolean signupSubmit(@RequestBody Map<String ,Object> map) {
-		return userService.insert(map) != 0;
+	public boolean signupSubmit(@RequestBody UserCommonVO vo) {
+		return userCommonService.insertUser(vo) != 0;
 	}
 
 	@PostMapping("/submit/role")
 	@ResponseBody
-	public boolean roleSubmit(@RequestBody Map<String,Object> map) {
-		System.out.println(map);
-		int result = userService.updateRole(map);
+	public boolean roleSubmit(@RequestBody UserCommonVO vo) {
+		System.out.println(vo);
+		String role = vo.getRole();
+		int result = userCommonService.updateRole(vo.getId(), role);
 		if (result == 0) {
 			return false;
 		}
-		String role = map.get("role").toString();
 
-		userService.replaceAuthority(role);
+		userCommonService.replaceAuthority(role);
 
 		if (role.equals("REPS")) {
-			result = corpService.insert(map);
+			result = shopCommonService.insertCorp(vo.getShopCommonVO());
 			if(result == 0){
 				return false;
 			}
 		}
 
 		if (role.equals("REPS") || role.equals("MANAGER")) {
-			result = employeeService.insert(map);
+			result = userCommonService.insertEmp(vo);
 		}
 
 		return result != 0;
@@ -119,9 +106,9 @@ public class AccountController {
 		//		System.out.println(value);
 		switch (target) {
 			case "id":
-				return userService.getAccountById(value) == null;
+				return userCommonService.selectUserById(value) == null;
 			case "email":
-				return userService.getAccountByEmail(value) == null;
+				return userCommonService.selectUserByEmail(value) == null;
 		}
 		return false;
 	}
@@ -143,22 +130,19 @@ public class AccountController {
 
 	@PostMapping("/search/corp")
 	@ResponseBody
-	public List<Map<String,Object>> searchCorp(@RequestBody SearchVO searchVO){
-		return shopService.search(searchVO);
+	public List<Map<String,Object>> searchCorp(@RequestBody SearchVO vo){
+		return shopCommonService.searchCorp(vo);
 	}
 
 	@PostMapping("/approve")
 	@ResponseBody
-	public boolean approve(@RequestBody Map<String, Object> map){
-		Map<String, Object> userMap = employeeService.selectOne(map);
-
-		userMap.put("approve_st", true);
-		int result = employeeService.update(userMap);
+	public boolean approve(@RequestBody AlarmVO vo){
+		int result = userCommonService.updateApproveState(vo.getSenderId(), true);
 		if(result == 0){
 			return false;
 		}
 
-		return alarmService.approve(Integer.parseInt(map.get("alarm_id").toString())) != 0;
+		return alarmService.approve(vo.getAlarmId()) != 0;
 	}
 
 	//	@PostMapping("/search/shop")

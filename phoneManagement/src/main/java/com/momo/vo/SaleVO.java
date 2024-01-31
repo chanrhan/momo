@@ -14,9 +14,9 @@ import java.util.List;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class SaleVO extends AbstractQueryVO {
-	private int saleNo; // 판매일보 번호
-	private int shopCd; // 매장 코드
+public class SaleVO extends CommonQueryVO {
+	private int saleId; // 판매일보 번호
+	private int shopId; // 매장 코드
 
 	// 고객 정보
 	private String custNm; // 고객 이름
@@ -100,7 +100,7 @@ public class SaleVO extends AbstractQueryVO {
 	private List<MsgCommonVO> msgRsvList;
 
 	public MsgCommonVO getMessageVO() {
-		return MsgCommonVO.builder().shopCd(shopCd).saleNo(saleNo).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
+		return MsgCommonVO.builder().shopId(shopId).saleNo(saleId).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
 	}
 
 	//	public void setActvDt(String actvDt) {
