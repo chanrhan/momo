@@ -1,73 +1,60 @@
 package com.momo.service;
 
-import com.momo.mapper.ShopMapper;
+import com.momo.mapper.ShopCommonMapper;
 import com.momo.vo.SearchVO;
+import com.momo.vo.ShopCommonVO;
+import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ShopService extends CommonService {
-	private final ShopMapper shopMapper;
+	private final ShopCommonMapper shopCommonMapper;
 
-	@Override
-	public int insert(Map<String,Object> map) {
-		return shopMapper.insert(map);
+	public int insertShop(ShopCommonVO vo) {
+		return shopCommonMapper.insertShop(vo);
 	}
 
-	@Override
-	public int update(Map<String,Object> map) {
-		return shopMapper.update(map);
+	public int updateShop(ShopCommonVO vo) {
+		return shopCommonMapper.updateShop(getUpdateQueryString(vo));
 	}
 
-	@Override
-	public int delete(Map<String,Object> map) {
-		return shopMapper.delete(map);
+	public int deleteShop(int id) {
+		return shopCommonMapper.deleteShop(id);
 	}
 
-	@Override
-	public List<Map<String,Object>> select(Map<String,Object> map) {
-		return shopMapper.select(getSelectQueryString(map));
+	public List<Map<String,String>> selectShop(ShopCommonVO vo) {
+		return shopCommonMapper.selectShop(getSelectQueryString(vo));
 	}
 
-	@Override
-	public Map<String,Object> selectOne(Map<String,Object> map) {
-		return select(map).get(0);
-	}
+//	public Map<String,Object> selectOne(Map<String,Object> map) {
+//		return select(map).get(0);
+//	}
 
-	public List<Map<String,Object>> search(SearchVO searchVO) {
-		return shopMapper.search(searchVO);
-	}
-
-	@Override
-	public List<Map<String,Object>> selectAll() {
-		return shopMapper.selectAll();
+	public List<Map<String,String>> searchShop(SearchVO vo) {
+		return shopCommonMapper.searchShop(vo);
 	}
 
 	public int getMaxCode(){
-		Integer code = shopMapper.getMaxCode();
+		Integer code = shopCommonMapper.maxShopId();
 		if(code == null){
 			return 0;
 		}
 		return code;
 	}
 
-	public List<Map<String,Object>> searchByRegion(Map<String,Object> map){
-		return shopMapper.searchByRegion(map);
-	}
-
-	public List<Map<String,Object>> selectByUser(Map<String,Object> map){
-		Map<String,Object> selectMap = new HashMap<>();
-		if(map.get("role").equals("REPS")){
-			selectMap.put("b_no", map.get("b_no"));
+	public List<Map<String,String>> selectShopByUser(UserCommonVO vo){
+		ShopCommonVO shopCommonVO = new ShopCommonVO();
+		if(vo.getRole().equals("REPS")){
+			shopCommonVO.setBNo(vo.getBNo());
 		}else{
-			selectMap.put("shop_cd", map.get("shop_cd"));
+			shopCommonVO.setShopId(vo.getShopId());
 		}
-		return select(selectMap);
+		return selectShop(shopCommonVO);
 	}
 
 //	public Paging<ShopVO> searchBranch(ShopVO shopVO){

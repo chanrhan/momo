@@ -11,16 +11,16 @@ import java.util.Map;
 public interface UserMapper {
 	// User Account
 	public int insertUser(UserCommonVO vo);
-	public int updateUser(UserCommonVO vo);
+	public int updateUser(String qs);
 	public int deleteUser(String id);
-	public List<Map<String,String>> selectUser(UserCommonVO vo);
+	public List<Map<String,String>> selectUser(String qs);
 	public List<Map<String,String>> searchUser(SearchVO vo);
 
 	// Employee
 	public int insertEmp(UserCommonVO vo);
-	public int updateEmp(UserCommonVO vo);
+	public int updateEmp(String qs);
 	public int deleteEmp(String id);
-	public List<Map<String,String>> selectEmp(UserCommonVO vo);
+	public List<Map<String,String>> selectEmp(String qs);
 //	public int updateRole(Map<String,Object> map);
 //	public int updatePassword(Map<String,Object> map);
 }

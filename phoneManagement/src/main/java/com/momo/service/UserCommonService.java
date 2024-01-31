@@ -1,8 +1,7 @@
 package com.momo.service;
 
 import com.momo.domain.user.UserDetailsImpl;
-import com.momo.mapper.UserMapper;
-import com.momo.mapper.EmployeeMapper;
+import com.momo.mapper.UserCommonMapper;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
@@ -22,26 +21,31 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class UserService extends CommonService implements UserDetailsService{
-	private final PasswordEncoder passwordEncoder;
-	private final UserMapper      userMapper;
+	private final PasswordEncoder  passwordEncoder;
+	private final UserCommonMapper userCommonMapper;
 
 	private final EmployeeMapper employeeMapper;
 
 	// User Account
 	public int insertUser(UserCommonVO vo){
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
-		return userMapper.insertUser(vo);
+		return userCommonMapper.insertUser(vo);
 	}
 	public int updateUser(UserCommonVO vo){
-		return userMapper.updateUser(vo);
+		return userCommonMapper.updateUser(getUpdateQueryString(vo));
+	}
+
+	public int updatePassword(UserCommonVO vo){
+		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
+		return userCommonMapper.updateUser(getUpdateQueryString(vo));
 	}
 
 	public int deleteUser(String id) {
-		return userMapper.deleteUser(id);
+		return userCommonMapper.deleteUser(id);
 	}
 
 	public List<Map<String,String>> selectUser(UserCommonVO vo) {
-		return userMapper.selectUser(getSelectQueryString(vo));
+		return userCommonMapper.selectUser(getSelectQueryString(vo));
 	}
 
 //	public Map<String,Object> selectOne(Map<String,Object> map) {
@@ -49,23 +53,12 @@ public class UserService extends CommonService implements UserDetailsService{
 //	}
 
 	public List<Map<String,String>> search(SearchVO vo) {
-		return userMapper.searchUser(vo);
+		return userCommonMapper.searchUser(vo);
 	}
 
 //	public List<Map<String,Object>> selectAll() {
 //		return userMapper.selectAll();
 //	}
-
-	public int updatePassword(Map<String,Object> map){
-		map.put("update_pwd", passwordEncoder.encode(map.get("update_pwd").toString()));
-		return userMapper.updatePassword(map);
-	}
-
-
-
-	public int updateRole(Map<String,Object> map){
-		return userMapper.updateRole(map);
-	}
 
 	public void replaceAuthority(String role){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -79,10 +72,8 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 
-	public Map<String,Object> getAccountById(String id){
-		Map<String,Object> map = new HashMap<>();
-		map.put("id",id);
-		List<Map<String,Object>> adminVO = select(map);
+	public Map<String,String> getAccountById(String id){
+		List<Map<String,String>> adminVO = selectUser(UserCommonVO.builder().id(id).build());
 		System.out.println(adminVO);
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
@@ -90,10 +81,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		return null;
 	}
 
-	public Map<String,Object> getAccountByEmail(String email){
-		Map<String,Object> map = new HashMap<>();
-		map.put("email",email);
-		List<Map<String,Object>> adminVO = select(map);
+	public Map<String,String> getAccountByEmail(String email){
+		List<Map<String,String>> adminVO = selectUser(UserCommonVO.builder().email(email).build());
 		if(adminVO != null && !adminVO.isEmpty()){
 			return adminVO.get(0);
 		}
@@ -103,14 +92,14 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,Object> map = getAccountById(username);
+		Map<String,String> map = getAccountById(username);
 		if(map == null){
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}
 
-		String id = map.get("id").toString();
-		String pwd = map.get("pwd").toString();
-		String role = map.get("role").toString();
+		String id = map.get("id");
+		String pwd = map.get("pwd");
+		String role = map.get("role");
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, role);
 
