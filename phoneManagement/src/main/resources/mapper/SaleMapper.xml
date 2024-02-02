@@ -3,6 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="selectSaleByType">
+        select
+        sl.*,
+        sh.shop_nm as shop_nm
+        from
+            tb_sale sl
+        left outer join tb_shop sh on sl.shop_id = sh.shop_id
+        where
+        <if test='target != null and !target.equals("")'>
+            ${target} is not null and
+            ${target} != '0' and
+        </if>
+        1=1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+
     <update id="updateSale" parameterType="com.momo.vo.SaleVO">
         update
         tb_sale
@@ -216,21 +239,43 @@
     </update>
 
     <select id="searchSale" parameterType="com.momo.vo.SearchVO">
+        with tb as (
+            select
+                sl.*,
+                sh.shop_nm as shop_nm
+            from
+                tb_sale sl
+                    left join tb_shop sh on sl.shop_id = sh.shop_id
+        )
+
         select
-        *
+            *
         from
-        tb_sale
+            tb
         where
+        <if test='target != null and !target.equals("")'>
+            ${target} is not null and
+            ${target} != '0' and
+        </if>
             ${andSelect} and
             ${orSearch}
         ${prop}
     </select>
 
     <select id="selectSale" parameterType="com.momo.vo.SaleVO">
+        with tb as (
+        select
+        sl.*,
+        sh.shop_nm as shop_nm
+        from
+        tb_sale sl
+        left outer join tb_shop sh on sl.shop_id = sh.shop_id
+        )
+
         select
             *
         from
-            tb_sale
+            tb
         where
         <if test='custNm != null and !custNm.equals("")'>
             cust_nm=#{custNm} and
@@ -467,13 +512,6 @@
         from
             tb_sale
     </select>
-
-<!--    <update id="updateSale">-->
-<!--        update-->
-<!--            tb_sale-->
-<!--        set-->
-<!--           ${qs}-->
-<!--    </update>-->
 
     <insert id="insertSale" parameterType="com.momo.vo.SaleVO">
         insert into

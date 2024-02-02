@@ -137,25 +137,38 @@ public class SaleController {
 				return null;
 		}
 	}
+	
+	// 매장 관리
 
 	@GetMapping("/green")
-	public String saleGreenPhone(){
-		return "";
+	public String saleGreenPhone(Model model){
+		model.addAttribute("list",saleService.selectSaleByType("green_md"));
+		return "sale/green_phone";
 	}
 	@GetMapping("/card")
-	public String saleCard(){
-		return "";
+	public String saleCard(Model model){
+		model.addAttribute("list",saleService.selectSaleByType("card"));
+		return "sale/card";
 	}
 	@GetMapping("/comb")
-	public String saleComb(){
-		return "";
+	public String saleComb(Model model){
+		model.addAttribute("list",saleService.selectSaleByType("comb_move"));
+		return "sale/comb";
 	}
 	@GetMapping("/support")
-	public String saleSupport(){
-		return "";
+	public String saleSupport(Model model){
+		model.addAttribute("list",saleService.selectSaleByType("sup_div1"));
+		return "sale/support";
 	}
 	@GetMapping("/second")
-	public String saleSecondPhone(){
-		return "";
+	public String saleSecondPhone(Model model){
+		model.addAttribute("list",saleService.selectSaleByType("sec_md"));
+		return "sale/second";
+	}
+
+	@PostMapping("/list/srch/{type}")
+	@ResponseBody
+	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SaleVO vo){
+		return saleService.selectSaleByType(type, vo);
 	}
 }

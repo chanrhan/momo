@@ -10,7 +10,14 @@
     <h2>판매 일보</h2>
     <a th:href="@{/sale/graph}">판매 지표</a>
     <a th:href="@{/sale/msg_form}">문자 양식 관리</a>
+    <br>
+    <a th:href="@{/sale/green}">중고폰</a>
+    <a th:href="@{/sale/card}">카드</a>
+    <a th:href="@{/sale/comb}">결합</a>
+    <a th:href="@{/sale/second}">세컨</a>
+    <a th:href="@{/sale/support}">지원</a>
     <select id="filter_shop" th:value="${selected_shop.shop_id}" onchange="changeShop()">
+        <option th:if="${list_shop.size() > 1}" selected value="">전체</option>
         <option th:each="shop : ${list_shop}" th:value="${shop.shop_id}" th:text="${shop.shop_nm}"></option>
     </select>
     <br>
@@ -30,6 +37,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th th:value="shop_nm" onclick="orderSale($(this))">지점명</th>
             <th th:value="cust_nm" onclick="orderSale($(this))">고객 이름</th>
             <th th:value="cust_tel" onclick="orderSale($(this))">고객 전화번호</th>
             <th th:value="cust_cd" onclick="orderSale($(this))">고객 식별번호</th>
@@ -43,6 +51,7 @@
         <tbody id="list_sale" >
         <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.sale_id})|"
             th:classappend="${sale.rsv_st == false} ? 'msg-send'">
+            <td th:text="*{shop_nm}"></td>
             <td th:text="*{cust_nm}"></td>
             <td th:text="*{cust_tel}"></td>
             <td th:text="*{cust_cd}"></td>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/home.js" th:inline="javascript"></script>
+    <script src="/js/sale/green.js" th:inline="javascript"></script>
+    <table class="table">
+        <thead>
+        <tr>
+            <th th:value="cust_nm" onclick="orderSale($(this))">고객 이름</th>
+            <th th:value="cust_tel" onclick="orderSale($(this))">고객 전화번호</th>
+            <th th:value="cust_cd" onclick="orderSale($(this))">고객 식별번호</th>
+            <th th:value="green_md"  onclick="orderSale($(this))">중고폰 모델명</th>
+            <th th:value="green_ret"  onclick="orderSale($(this))">반납 여부</th>
+            <th th:value="actv_dt" onclick="orderSale($(this))">개통 날짜</th>
+            <th th:value="provider" onclick="orderSale($(this))">통신사</th>
+            <th th:value="seller_cms" onclick="orderSale($(this))">판매자 수수료</th>
+            <th th:value="seller_id" onclick="orderSale($(this))">판매자 아이디</th>
+        </tr>
+        </thead>
+        <tbody id="list_sale" >
+        <tr th:each="sale : ${list}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.sale_id})|">
+            <td th:text="*{cust_nm}"></td>
+            <td th:text="*{cust_tel}"></td>
+            <td th:text="*{cust_cd}"></td>
+            <td th:text="*{green_md}"></td>
+            <td th:text="${(sale.green_ret) ? '반납':'미납'}"></td>
+            <td th:text="*{actv_dt}"></td>
+            <td th:text="*{provider}"></td>
+            <td th:text="*{seller_cms}"></td>
+            <td th:text="*{seller_id}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

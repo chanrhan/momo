@@ -42,6 +42,19 @@ public class SaleService extends CommonService {
 		return selectSale(vo).get(0);
 	}
 
+	public List<Map<String,Object>> selectSaleByType(String type){
+		SaleVO vo = SaleVO.builder()
+				.target(type)
+				.order("actv_dt")
+				.asc("desc").build();
+		return saleMapper.selectSaleByType(vo);
+	}
+
+	public List<Map<String,Object>> selectSaleByType(String type, SaleVO vo){
+		vo.setTarget(type);
+		return saleMapper.selectSaleByType(vo);
+	}
+
 	public int getMaxSaleNo(){
 		Integer result = saleMapper.getMaxId();
 		if(result == null){
