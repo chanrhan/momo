@@ -1,36 +1,29 @@
 package com.momo.vo;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@SuperBuilder
 @NoArgsConstructor
-public class TermVO extends CommonQueryVO{
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class TermVO extends CommonQueryVO {
 	private String        userId;
 	private String        role;
-	private boolean       checked;
+	private Boolean       checked;
 	private LocalDateTime argmDt;
 
-	private int           termCd;
+	private Integer       termId;
 	private String        termNm;
 	private String        content;
-	private boolean       termRqSt;
+	private Boolean       termRqSt;
 	private LocalDateTime regiDt;
-
-	@Builder
-	public TermVO(String userId, String role, boolean checked, LocalDateTime regiDt, int termCd, String termNm, String content, boolean termRqSt) {
-		this.userId   = userId;
-		this.role     = role;
-		this.checked  = checked;
-		this.regiDt   = regiDt;
-		this.termCd   = termCd;
-		this.termNm   = termNm;
-		this.content  = content;
-		this.termRqSt = termRqSt;
-	}
 }

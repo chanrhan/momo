@@ -19,7 +19,8 @@ public class SaleService extends CommonService {
 		return saleMapper.insertSale(vo);
 	}
 	public int updateSale(SaleVO vo) {
-		return saleMapper.updateSale(getUpdateQueryString(vo));
+		vo.setTarget("sale_id");
+		return saleMapper.updateSale(vo);
 	}
 	public int deleteSale(int id) {
 		return saleMapper.deleteSale(id);
@@ -28,7 +29,7 @@ public class SaleService extends CommonService {
 	public List<Map<String,Object>> selectSale(SaleVO vo) {
 		vo.setOrder("actv_dt");
 		vo.setAsc("desc");
-		return saleMapper.selectSale(getSelectQueryString(vo));
+		return saleMapper.selectSale(vo);
 	}
 
 	public List<Map<String,Object>> selectSaleByShopId(Object id) {
@@ -42,7 +43,7 @@ public class SaleService extends CommonService {
 	}
 
 	public int getMaxSaleNo(){
-		Integer result = saleMapper.getMaxSaleNo();
+		Integer result = saleMapper.getMaxId();
 		if(result == null){
 			return 0;
 		}

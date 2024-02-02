@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.MsgCommonMapper">
+<!--    Message Form-->
+    <select id="getAllDefaultForm">
+        select
+            *
+        from
+            tb_msg_form
+        where
+            form_id &lt; 0
+        order by
+            form_id desc
+    </select>
+
+    <select id="selectForm" parameterType="com.momo.vo.MsgCommonVO">
+        select
+            *
+        from
+            tb_msg_form
+        where
+        <if test='formId != null and !formId.equals("")'>
+            form_id=#{formId} and
+        </if>
+        <if test='formNm != null and !formNm.equals("")'>
+            form_nm=#{formNm} and
+        </if>
+        <if test='shopId != null'>
+            shop_id=#{shopId} and
+        </if>
+            1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+<!--    Message Reserve-->
+
+
+    <select id="getMaxMsgId">
+        select
+            count(*)
+        from
+            tb_msg_rsv
+    </select>
+
+    <insert id="insertMsg" parameterType="com.momo.vo.MsgCommonVO">
+        insert into
+            tb_msg_rsv
+        (msg_id, shop_id, send_tp, cust_nm, cust_tel, content, seller_id, rsv_dt)
+        values
+            (#{msgId},#{shopId},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
+    </insert>
+
+    <update id="updateMsg" parameterType="com.momo.vo.MsgCommonVO">
+        update
+            tb_msg_rsv
+        set
+            <if test='custNm != null and !custNm.equals("")'>
+                cust_nm=#{custNm},
+            </if>
+
+        <if test='custTel != null and !custTel.equals("")'>
+            cust_tel=#{custTel},
+        </if>
+
+        <if test='content != null and !content.equals("")'>
+            content=#{content},
+        </if>
+
+        <if test='rsvDt != null and !rsvDt.equals("")'>
+            rsv_dt=#{rsvDt},
+        </if>
+        msg_id=#{msgId}
+        where
+            msg_id=#{msgId}
+    </update>
+
+    <delete id="deleteMsg">
+        delete from
+            tb_msg_rsv
+        where
+            msg_id=#{id}
+    </delete>
+
+    <select id="selectMsg" parameterType="com.momo.vo.MsgCommonVO">
+        select
+            s.shop_id as shop_id,
+            s.shop_nm as shop_nm,
+            mr.sale_id as sale_id,
+            mr.send_tp as send_tp,
+            mr.send_st as send_st,
+            mr.cust_nm as cust_nm,
+            mr.cust_tel as cust_tel,
+            mr.content as content,
+            mr.seller_id as seller_id,
+            a.name as seller_nm,
+            mr.rsv_dt as rsv_dt,
+            mr.regi_dt as regi_dt
+        from
+            tb_msg_rsv mr
+                left outer join tb_shop s on mr.shop_id=s.shop_id
+                left outer join tb_account a on mr.seller_id=a.id
+        where
+        <if test='msgId != null'>
+            msg_id=#{msgId} and
+        </if>
+        <if test='shopId != null'>
+            mr.shop_id=#{shopId} and
+        </if>
+        <if test='saleId != null'>
+            sale_id=#{saleId} and
+        </if>
+        <if test='custNm != null and !custNm.equals("")'>
+            cust_nm=#{custNm} and
+        </if>
+        <if test='custTel != null and !custTel.equals("")'>
+            cust_tel=#{custTel} and
+        </if>
+        <if test='sellerId != null and !sellerId.equals("")'>
+            seller_id=#{sellerId} and
+        </if>
+        <if test='rsvDt != null and !rsvDt.equals("")'>
+            rsv_dt=#{rsvDt} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchMsg" parameterType="com.momo.vo.SearchVO">
+        with tb as (
+            select
+                s.shop_id as shop_id,
+                s.shop_nm as shop_nm,
+                mr.sale_id as sale_id,
+                mr.send_tp as send_tp,
+                mr.send_st as send_st,
+                mr.cust_nm as cust_nm,
+                mr.cust_tel as cust_tel,
+                mr.content as content,
+                mr.seller_id as seller_id,
+                a.name as seller_nm,
+                mr.rsv_dt as rsv_dt,
+                mr.regi_dt as regi_dt
+            from
+                tb_msg_rsv mr
+                    left outer join tb_shop s on mr.shop_id=s.shop_id
+                    left outer join tb_account a on mr.seller_id=a.id
+        )
+
+        select
+            *
+        from
+            tb
+        where
+            ${orSearch} and
+            ${andSelect}
+                ${prop}
+
+    </select>
+</mapper>

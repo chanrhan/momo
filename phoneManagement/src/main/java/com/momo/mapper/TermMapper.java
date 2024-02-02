@@ -12,8 +12,8 @@ import java.util.Map;
 public interface TermMapper {
 	// Term
 	public int insertTerm(TermVO vo);
-	public int updateTerm(String qs);
+	public int updateTerm(TermVO vo);
 	public int deleteTerm(int id);
-	public List<Map<String,Object>> selectTerm(String qs);
+	public List<Map<String,Object>> selectTerm(TermVO vo);
 	public List<Map<String,Object>> searchTerm(SearchVO vo);
 }

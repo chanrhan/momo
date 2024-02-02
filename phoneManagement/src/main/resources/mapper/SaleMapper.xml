@@ -3,7 +3,219 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="search" parameterType="com.momo.vo.SearchVO">
+    <update id="updateSale" parameterType="com.momo.vo.SaleVO">
+        update
+        tb_sale
+        set
+        <if test='custNm != null and !custNm.equals("")'>
+            cust_nm=#{custNm},
+        </if>
+
+        <if test='custTel != null and !custTel.equals("")'>
+            cust_tel=#{custTel},
+        </if>
+
+        <if test='custCd != null and !custCd.equals("")'>
+            cust_cd=#{custCd},
+        </if>
+
+        <if test='custGd != null and !custGd.equals("")'>
+            cust_gd=#{custGd},
+        </if>
+        <if test='provider != null and !provider.equals("")'>
+            provider=#{provider},
+        </if>
+
+        <if test='actvDt != null and !actvDt.equals("")'>
+            actv_dt=#{actvDt},
+        </if>
+
+        <if test='phMd != null and !phMd.equals("")'>
+            ph_md=#{phMd},
+        </if>
+
+        <if test='phStor != null and !phStor.equals("")'>
+            ph_stor=#{phStor},
+        </if>
+
+        <if test='istm != null and !istm.equals("")'>
+            istm=#{istm},
+        </if>
+
+        <if test='actvDiv != null and !actvDiv.equals("")'>
+            actv_div=#{actvDiv},
+        </if>
+
+        <if test='actvTp != null and !actvTp.equals("")'>
+            actv_tp=#{actvTp},
+        </if>
+
+        <if test='actvPlan != null and !actvPlan.equals("")'>
+            actv_plan=#{actvPlan},
+        </if>
+        <if test='movePlan != null and !movePlan.equals("")'>
+            move_plan=#{movePlan},
+        </if>
+
+        <if test='ctCms != null'>
+            ct_cms=#{ctCms},
+        </if>
+        <if test='greenMd != null and !greenMd.equals("")'>
+            green_md=#{greenMd},
+        </if>
+        green_ret=#{greenRet},
+        <if test='secMd != null and !secMd.equals("")'>
+            sec_md=#{secMd},
+        </if>
+
+        <if test='custNm != null'>
+            sec_cms=#{secCms},
+        </if>
+
+        <if test='wtTp != null and !wtTp.equals("")'>
+            wt_tp=#{wtTp},
+        </if>
+
+        <if test='wtDiv != null and !wtDiv.equals("")'>
+            wt_div=#{wtDiv},
+        </if>
+
+        <if test='wtCms != null'>
+            wt_cms=#{wtCms},
+        </if>
+
+        <if test='netActvPlan != null and !netActvPlan.equals("")'>
+            net_actv_plan=#{netActvPlan},
+        </if>
+
+        <if test='netDecPlan != null and !netDecPlan.equals("")'>
+            net_dec_plan=#{netDecPlan},
+        </if>
+
+        <if test='tvActvPlan != null and !tvActvPlan.equals("")'>
+            tv_actv_plan=#{tvActvPlan},
+        </if>
+
+        <if test='tvDecPlan != null and !tvDecPlan.equals("")'>
+            tv_dec_plan=#{tvDecPlan},
+        </if>
+
+        <if test='addItem != null and !addItem.equals("")'>
+            add_item=#{addItem},
+        </if>
+
+        <if test='addPay != null and !addPay.equals("")'>
+            add_pay=#{addPay},
+        </if>
+
+        <if test='addDt != null and !addDt.equals("")'>
+            add_dt=#{addDt},
+        </if>
+
+        <if test='supDiv1 != null and !supDiv1.equals("")'>
+            sup_div1=#{supDiv1},
+        </if>
+
+        <if test='supPay1 != null'>
+            sup_pay1=#{supPay1},
+        </if>
+
+        <if test='supDiv2 != null and !supDiv2.equals("")'>
+            sup_div2=#{supDiv2},
+        </if>
+
+        <if test='supPay2 != null'>
+            sup_pay2=#{supPay2},
+        </if>
+
+        <if test='supDiv3 != null and !supDiv3.equals("")'>
+            sup_div3=#{supDiv3},
+        </if>
+
+        <if test='supPay3 != null'>
+            sup_pay3=#{supPay3},
+        </if>
+
+        <if test='supDiv4 != null and !supDiv4.equals("")'>
+            sup_div4=#{supDiv4},
+        </if>
+
+        <if test='supPay4 != null'>
+            sup_pay4=#{supPay4},
+        </if>
+
+        <if test='supDiv5 != null and !supDiv5.equals("")'>
+            sup_div5=#{supDiv5},
+        </if>
+
+        <if test='supPay5 != null'>
+            sup_pay5=#{supPay5},
+        </if>
+        friend=#{friend},
+        exsvc=#{exsvc},
+        comb_move=#{combMove},
+        card=#{card},
+        card_div=#{cardDiv},
+        <if test='totAddPay != null'>
+            tot_add_pay=#{totAddPay},
+        </if>
+
+        <if test='totRb != null'>
+            tot_rb=#{totRb},
+        </if>
+
+        <if test='totSup != null and !totSup.equals("")'>
+            tot_sup=#{totSup},
+        </if>
+
+        <if test='defPc != null'>
+            def_pc=#{defPc},
+        </if>
+
+        <if test='sellerCms != null'>
+            seller_cms=#{sellerCms},
+        </if>
+
+        <if test='ctPt != null'>
+            ct_pt=#{ctPt},
+        </if>
+
+        <if test='wtPt != null'>
+            wt_pt=#{wtPt},
+        </if>
+
+        <if test='totPt != null'>
+            tot_pt=#{totPt},
+        </if>
+
+        <if test='sellerId != null and !sellerId.equals("")'>
+            seller_id=#{sellerId},
+        </if>
+
+        <if test='spec != null and !spec.equals("")'>
+            spec=#{spec},
+        </if>
+
+        <if test='wtExprDt != null and !wtExprDt.equals("")'>
+            wt_expr_dt=#{wtExprDt},
+        </if>
+        non_disc=#{nonDisc},
+        rsv_st=#{rsvSt},
+        <if test='actvTime != null and !actvTime.equals("")'>
+            actv_time=#{actvTime},
+        </if>
+
+        <if test='etc != null and !etc.equals("")'>
+            etc=#{etc},
+        </if>
+
+        sale_id=#{saleId}
+        where
+        sale_id=#{saleId}
+
+    </update>
+
+    <select id="searchSale" parameterType="com.momo.vo.SearchVO">
         select
         *
         from
@@ -14,62 +226,276 @@
         ${prop}
     </select>
 
-    <select id="select" >
+    <select id="selectSale" parameterType="com.momo.vo.SaleVO">
         select
             *
         from
             tb_sale
         where
-            ${qs}
+        <if test='custNm != null and !custNm.equals("")'>
+            cust_nm=#{custNm} and
+        </if>
+
+        <if test='custTel != null and !custTel.equals("")'>
+            cust_tel=#{custTel} and
+        </if>
+
+        <if test='custCd != null and !custCd.equals("")'>
+            cust_cd=#{custCd} and
+        </if>
+
+        <if test='custGd != null and !custGd.equals("")'>
+            cust_gd=#{custGd} and
+        </if>
+        <if test='provider != null and !provider.equals("")'>
+            provider=#{provider} and
+        </if>
+
+        <if test='actvDt != null and !actvDt.equals("")'>
+            actv_dt=#{actvDt} and
+        </if>
+
+        <if test='phMd != null and !phMd.equals("")'>
+            ph_md=#{phMd} and
+        </if>
+
+        <if test='phStor != null and !phStor.equals("")'>
+            ph_stor=#{phStor} and
+        </if>
+
+        <if test='istm != null and !istm.equals("")'>
+            istm=#{istm} and
+        </if>
+
+        <if test='actvDiv != null and !actvDiv.equals("")'>
+            actv_div=#{actvDiv} and
+        </if>
+
+        <if test='actvTp != null and !actvTp.equals("")'>
+            actv_tp=#{actvTp} and
+        </if>
+
+        <if test='actvPlan != null and !actvPlan.equals("")'>
+            actv_plan=#{actvPlan} and
+        </if>
+        <if test='movePlan != null and !movePlan.equals("")'>
+            move_plan=#{movePlan} and
+        </if>
+
+        <if test='ctCms != null'>
+            ct_cms=#{ctCms} and
+        </if>
+        <if test='greenMd != null and !greenMd.equals("")'>
+            green_md=#{greenMd} and
+        </if>
+        <if test='greenRet != null'>
+            green_ret=#{greenRet} and
+        </if>
+
+        <if test='secMd != null and !secMd.equals("")'>
+            sec_md=#{secMd} and
+        </if>
+
+        <if test='custNm != null'>
+            sec_cms=#{secCms} and
+        </if>
+
+        <if test='wtTp != null and !wtTp.equals("")'>
+            wt_tp=#{wtTp} and
+        </if>
+
+        <if test='wtDiv != null and !wtDiv.equals("")'>
+            wt_div=#{wtDiv} and
+        </if>
+
+        <if test='wtCms != null'>
+            wt_cms=#{wtCms} and
+        </if>
+
+        <if test='netActvPlan != null and !netActvPlan.equals("")'>
+            net_actv_plan=#{netActvPlan} and
+        </if>
+
+        <if test='netDecPlan != null and !netDecPlan.equals("")'>
+            net_dec_plan=#{netDecPlan} and
+        </if>
+
+        <if test='tvActvPlan != null and !tvActvPlan.equals("")'>
+            tv_actv_plan=#{tvActvPlan} and
+        </if>
+
+        <if test='tvDecPlan != null and !tvDecPlan.equals("")'>
+            tv_dec_plan=#{tvDecPlan} and
+        </if>
+
+        <if test='addItem != null and !addItem.equals("")'>
+            add_item=#{addItem} and
+        </if>
+
+        <if test='addPay != null and !addPay.equals("")'>
+            add_pay=#{addPay} and
+        </if>
+
+        <if test='addDt != null and !addDt.equals("")'>
+            add_dt=#{addDt} and
+        </if>
+
+        <if test='supDiv1 != null and !supDiv1.equals("")'>
+            sup_div1=#{supDiv1} and
+        </if>
+
+        <if test='supPay1 != null'>
+            sup_pay1=#{supPay1} and
+        </if>
+
+        <if test='supDiv2 != null and !supDiv2.equals("")'>
+            sup_div2=#{supDiv2} and
+        </if>
+
+        <if test='supPay2 != null'>
+            sup_pay2=#{supPay2} and
+        </if>
+
+        <if test='supDiv3 != null and !supDiv3.equals("")'>
+            sup_div3=#{supDiv3} and
+        </if>
+
+        <if test='supPay3 != null'>
+            sup_pay3=#{supPay3} and
+        </if>
+
+        <if test='supDiv4 != null and !supDiv4.equals("")'>
+            sup_div4=#{supDiv4} and
+        </if>
+
+        <if test='supPay4 != null'>
+            sup_pay4=#{supPay4} and
+        </if>
+
+        <if test='supDiv5 != null and !supDiv5.equals("")'>
+            sup_div5=#{supDiv5} and
+        </if>
+
+        <if test='supPay5 != null'>
+            sup_pay5=#{supPay5} and
+        </if>
+        <if test='friend != null'>
+            friend=#{friend} and
+        </if>
+        <if test='exsvc != null'>
+            exsvc=#{exsvc} and
+        </if>
+        <if test='combMove != null'>
+            comb_move=#{combMove} and
+        </if>
+        <if test='card != null'>
+            card=#{card} and
+        </if>
+        <if test='cardDiv != null'>
+            card_div=#{cardDiv} and
+        </if>
+        <if test='totAddPay != null'>
+            tot_add_pay=#{totAddPay} and
+        </if>
+
+        <if test='totRb != null'>
+            tot_rb=#{totRb} and
+        </if>
+
+        <if test='totSup != null and !totSup.equals("")'>
+            tot_sup=#{totSup} and
+        </if>
+
+        <if test='defPc != null'>
+            def_pc=#{defPc} and
+        </if>
+
+        <if test='sellerCms != null'>
+            seller_cms=#{sellerCms} and
+        </if>
+
+        <if test='ctPt != null'>
+            ct_pt=#{ctPt} and
+        </if>
+
+        <if test='wtPt != null'>
+            wt_pt=#{wtPt} and
+        </if>
+
+        <if test='totPt != null'>
+            tot_pt=#{totPt} and
+        </if>
+
+        <if test='sellerId != null and !sellerId.equals("")'>
+            seller_id=#{sellerId} and
+        </if>
+
+        <if test='spec != null and !spec.equals("")'>
+            spec=#{spec} and
+        </if>
+
+        <if test='wtExprDt != null and !wtExprDt.equals("")'>
+            wt_expr_dt=#{wtExprDt} and
+        </if>
+        <if test='nonDisc != null'>
+            non_disc=#{nonDisc} and
+        </if>
+        <if test='rsvSt != null'>
+            rsv_st=#{rsvSt} and
+        </if>
+
+        <if test='actvTime != null and !actvTime.equals("")'>
+            actv_time=#{actvTime} and
+        </if>
+
+        <if test='etc != null and !etc.equals("")'>
+            etc=#{etc} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
     </select>
 
-    <select id="getMaxSaleNo">
+    <select id="getMaxId">
         select
-            max(sale_no)
+            max(sale_id)
         from
             tb_sale
     </select>
 
-    <insert id="insert" parameterMap="java.util.Map">
+<!--    <update id="updateSale">-->
+<!--        update-->
+<!--            tb_sale-->
+<!--        set-->
+<!--           ${qs}-->
+<!--    </update>-->
+
+    <insert id="insertSale" parameterType="com.momo.vo.SaleVO">
         insert into
             tb_sale
-        (sale_no, shop_cd, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
+        (sale_id, shop_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
          move_plan, ct_cms, green_md, green_ret, sec_md, sec_cms, wt_tp, wt_div, wt_cms, net_actv_plan, net_dec_plan, tv_actv_plan,
          tv_dec_plan, add_item, add_pay, add_dt, sup_div1, sup_pay1, sup_div2, sup_pay2, sup_div3, sup_pay3, sup_div4, sup_pay4, sup_div5,
-         sup_pay5, friend, ex_svc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
+         sup_pay5, friend, exsvc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
          spec, wt_expr_dt, non_disc, rsv_st, actv_time, etc)
         values
-            (#{sale_no},#{shop_cd},#{cust_nm},#{cust_tel},#{cust_cd},#{cust_gd},#{provider},#{actv_dt},#{phMd},#{ph_md},#{istm},#{actv_div},#{actv_tp},#{actv_plan},
-             #{move_plan},#{ct_cms},#{green_md},#{green_ret},#{sec_md},#{sec_cms},#{wt_tp},#{wt_div},#{wt_cms},#{net_actv_plan},#{net_dec_plan},#{tv_actv_plan},
-             #{tv_dec_plan},#{add_item},#{add_pay},#{add_dt},#{sup_div1},#{sup_pay1},#{sup_div2},#{sup_pay2},#{sup_div3},#{sup_pay3},#{sup_div4},#{sup_pay4},
-             #{sup_div5},#{sup_pay5},#{friend},#{ex_svc},#{comb_move},#{card},#{card_div},#{tot_add_pay},#{tot_rb},#{tot_sup},#{def_pc},#{seller_cms},#{ct_pt},
-             #{wt_pt},#{tot_pt},#{seller_id},#{spec},#{wt_expr_dt},#{non_disc},#{rsv_st},#{actv_time},#{etc})
+            (#{saleId},#{shopId},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
+             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
+             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{supPay1},#{supDiv2},#{supPay2},#{supDiv3},#{supPay3},#{supDiv4},#{supPay4},
+             #{supDiv5},#{supPay5},#{friend},#{exsvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
+             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{rsvSt},#{actvTime},#{etc})
     </insert>
 
-    <update id="update" parameterMap="java.util.Map">
-        update
-        tb_sale
-        set
-            cust_nm=#{cust_nm},cust_tel=#{cust_tel},cust_cd=#{cust_cd},cust_gd=#{cust_gd},provider=#{provider},actv_dt=#{actv_dt},ph_md=#{ph_md},
-            ph_stor=#{ph_stor},istm=#{istm},actv_div=#{actv_div},actv_tp=#{actv_tp},actv_plan=#{actv_plan},
-            move_plan=#{move_plan},ct_cms=#{ct_cms},green_md=#{green_md},green_ret=#{green_ret},sec_md=#{sec_md},sec_cms=#{sec_cms},wt_tp=#{wt_tp},
-            wt_div=#{wt_div},wt_cms=#{wt_cms},net_actv_plan=#{net_actv_plan},net_dec_plan=#{net_dec_plan},tv_actv_plan=#{tv_actv_plan},
-            tv_dec_plan=#{tv_dec_plan},add_item=#{add_item},add_pay=#{add_pay},add_dt=#{add_dt},sup_div1=#{sup_div1},sup_pay1=#{sup_pay1},
-            sup_div2=#{sup_div2},sup_pay2=#{sup_pay2},sup_div3=#{sup_div3},sup_pay3=#{sup_pay3},sup_div4=#{sup_div4},sup_pay4=#{sup_pay4},
-            sup_div5=#{sup_div5},sup_pay5=#{sup_pay5},friend=#{friend},ex_svc=#{ex_svc},comb_move=#{comb_move},card=#{card},card_div=#{card_div},
-            tot_add_pay=#{tot_add_pay},tot_rb=#{tot_rb},tot_sup=#{tot_sup},def_pc=#{def_pc},seller_cms=#{seller_cms},ct_pt=#{ct_pt},
-            wt_pt=#{wt_pt},tot_pt=#{tot_pt},seller_id=#{seller_id},spec=#{spec},wt_expr_dt=#{wt_expr_dt},non_disc=#{non_disc},
-            rsv_st=#{rsv_st},actv_time=#{actv_time},etc=#{etc}
-        where
-            sale_no=#{sale_no}
-
-    </update>
-
-    <delete id="delete" parameterMap="java.util.Map">
+    <delete id="deleteSale">
         delete from
             tb_sale
         where
-            sale_no=#{sale_no}
+            sale_id=#{id}
     </delete>
 
 </mapper>

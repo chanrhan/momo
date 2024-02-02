@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.UserCommonMapper">
+<!--    User-->
+    <select id="selectUser" parameterType="com.momo.vo.UserCommonVO">
+        select
+        *
+        from
+        tb_account
+        where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
+        <if test='pwd != null and !pwd.equals("")'>
+            pwd=#{pwd} and
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email} and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='regiDt != null and !regiDt.equals("")'>
+            regi_dt=#{regiDt} and
+        </if>
+            1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchUser" parameterType="com.momo.vo.SearchVO">
+        select
+        *
+        from
+        tb_account
+        where
+            ${andSelect} and
+            ${orSearch}
+        ${prop}
+    </select>
+
+    <insert id="insertUser" parameterType="com.momo.vo.UserCommonVO">
+        insert into
+            tb_account
+            (id, pwd, name, email, tel, terms)
+        VALUES
+            (#{id},#{pwd},#{name},#{email},#{tel},#{terms})
+    </insert>
+
+    <update id="updateUser" parameterType="com.momo.vo.UserCommonVO">
+        update
+            tb_account
+        set
+        <if test='name != null and !name.equals("")'>
+            name=#{name},
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email},
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel},
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role},
+        </if>
+        <if test='terms != null and !terms.equals("")'>
+            terms=#{terms},
+        </if>
+        id=#{id}
+        where
+            id=#{id}
+    </update>
+
+    <delete id="deleteUser">
+        delete from
+            tb_account
+        where
+            id=#{id}
+    </delete>
+
+<!--    Employee-->
+
+    <insert id="insertEmp" parameterType="com.momo.vo.UserCommonVO">
+        insert into
+            tb_emp
+            (emp_id, role, bp_no, shop_id)
+        VALUES
+            (#{empId},#{role},#{bpNo},#{shopId})
+    </insert>
+
+    <update id="updateEmp" parameterType="com.momo.vo.UserCommonVO">
+        update
+            tb_emp
+        set
+        <if test='shopId != null'>
+            shop_id=#{shopId},
+        </if>
+            approval_st=#{approvalSt}
+        where
+            emp_id=#{empId}
+    </update>
+
+    <delete id="deleteEmp">
+        delete from
+            tb_emp
+        where
+            emp_id=#{id}
+    </delete>
+
+    <select id="selectEmp" parameterType="com.momo.vo.UserCommonVO">
+        select
+            *
+        from
+            tb_emp
+        where
+        <if test='empId != null and !empId.equals("")'>
+            emp_id=#{empId} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            bp_no=#{bpNo} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='shopId != null'>
+            shop_id=#{shopId} and
+        </if>
+        <if test='approvalSt != null'>
+            approval_st=#{approvalSt} and
+        </if>
+            1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchEmp" parameterType="com.momo.vo.SearchVO">
+        select
+            *
+        from
+            tb_emp
+        where
+            ${andSelect} and
+            ${orSearch}
+                ${prop}
+    </select>
+
+
+</mapper>

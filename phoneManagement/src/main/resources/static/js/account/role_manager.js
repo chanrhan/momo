@@ -4,10 +4,10 @@ let pageNo = 1;
 function searchCorp(){
     var keyword = $('#input_search_corp').val();
     var body = {
-        searchMap: {
-            b_no: keyword,
-            p_ko_nm: keyword,
-            p_en_nm: keyword,
+        search: {
+            bp_no: keyword,
+            bp_ko_nm: keyword,
+            bp_en_nm: keyword,
             shop_nm: keyword,
             shop_addr: keyword,
             corp_nm: keyword
@@ -16,7 +16,7 @@ function searchCorp(){
     }
 
     $.ajax({
-        url: '/account/search/corp',
+        url: '/account/search/shop',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),
@@ -28,8 +28,8 @@ function searchCorp(){
             list_shop.innerHTML = "";
 
             result.forEach(function (value, index, array){
-                list_shop.innerHTML += "<tr shop_cd='" +
-                    value.shop_cd +
+                list_shop.innerHTML += "<tr shop_id='" +
+                    value.shop_id +
                     "' reps_id='" +
                     value.reps_id +
                     "' onclick='submitMANAGER(this)" +
@@ -38,10 +38,10 @@ function searchCorp(){
                     value.corp_nm +
                     "</td>" +
                     "<td>" +
-                    value.p_ko_nm +
+                    value.bp_ko_nm +
                     "</td>" +
                     "<td>" +
-                    value.b_no +
+                    value.bp_no +
                     "</td>" +
                     "<td>" +
                     value.shop_nm +
@@ -60,21 +60,21 @@ function searchCorp(){
 
 function submitMANAGER(_this){
     var userId = $('#user_id').val();
-    var shopCode = $(_this).attr('shop_cd');
+    var shopId = $(_this).attr('shop_id');
     var repsId = $(_this).attr('reps_id');
-    console.log(shopCode + ", "+ repsId);
+    // console.log(shopId + ", "+ repsId);
 
     var data = {
-        id: userId,
+        emp_id: userId,
         role: 'MANAGER',
-        shop_cd: shopCode
+        shop_id: shopId
     };
 
     var result = submitRole(data);
     if(result){
         data = {
             alarm_tp: 'approval',
-            sende_id: userId,
+            sender_id: userId,
             receiver_id: repsId
         };
 

@@ -79,11 +79,11 @@ function submitREPS(){
     }
 
     var data = {
-        id: $('#user_id').val(),
+        emp_id: $('#user_id').val(),
         role: 'REPS',
-        b_no: $('#b_no').val(),
-        p_ko_nm: pKoNm,
-        p_en_nm: pEnNm,
+        bp_no: $('#b_no').val(),
+        bp_ko_nm: pKoNm,
+        bp_en_nm: pEnNm,
         corp_nm: corpNm,
         corp_tel: corpTel,
         start_dt: startDt

@@ -11,21 +11,21 @@ import java.util.Map;
 @NoArgsConstructor
 public class SearchVO {
 	// Query String Generataion
-	private int                 page;
+	private Integer             page;
 	private Map<String, Object> select;
 	private Map<String, Object> search;
 
 	private String  order; // 정렬
-	private boolean asc = true; // false: asc(오름차순), true: desc(내림차순)
-	private int     offset;
-	private int     limit;
+	private String  asc = "asc"; // false: asc(오름차순), true: desc(내림차순)
+	private Integer offset;
+	private Integer limit;
 
 	public String getProp() {
 		StringBuilder sb = new StringBuilder();
 		if (order != null && !order.equals("")) {
-			sb.append("order by ").append(order).append(" ").append((asc) ? "asc" : "desc");
+			sb.append("order by ").append(order).append(" ").append(asc);
 		}
-		if (offset > 0 && limit > 0) {
+		if (offset != null && limit != null) {
 			sb.append("limit ").append(offset).append(" ").append(limit);
 		}
 		return sb.toString();
@@ -49,7 +49,7 @@ public class SearchVO {
 	public String getOrSelect() {
 		StringBuilder sb = new StringBuilder();
 		if (select != null && !select.isEmpty()) {
-			final int[] size = {0};
+			int[] size = {0};
 			select.forEach((key, value) -> {
 				if (value == null || value.equals("")) {
 					return;

@@ -21,6 +21,8 @@ public class AlarmController {
 	@GetMapping("")
 	public String homeAlarm(Model model){
 		String username = SecurityContextUtil.getUsername();
+
+		System.out.println("username: "+username);
 		model.addAttribute("list_alarm", alarmService.selectAlarmByReceiver(username));
 		return "layout/alarm";
 	}

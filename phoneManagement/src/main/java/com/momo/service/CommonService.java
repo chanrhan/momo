@@ -2,68 +2,84 @@ package com.momo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import org.apache.ibatis.ognl.BooleanExpression;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 public abstract class CommonService {
-	protected final ObjectMapper objectMapper = new ObjectMapper();
+	protected final ObjectMapper objectMapper = new ObjectMapper()
+			.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 
-	protected String getUpdateQueryString(Object ob, String targetColumn){
+	@Deprecated
+	protected String getUpdateQueryString(Object ob){
 		StringBuilder sb = new StringBuilder(" ");
-		Map<String,String> map = null;
-		try {
-			map = objectMapper.readValue(ob.toString(), Map.class);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
+		Map<String,String> map = objectMapper.convertValue(ob, Map.class);
 		if(map == null || map.isEmpty()){
 			return "1 = 1";
 		}
 
+		Object target = map.get("target");
+		if(target == null){
+			return "1 = 1";
+		}
+
+		int[] index = {0};
+
 		map.forEach((key,value)->{
-			sb.append(key).append("=").append("'").append(value).append("' ").append(", ");
+//			System.out.println("key: "+key+", value: "+value);
+//			System.out.println(map.size()+" / "+index[0]);
+			if(value == null || value.equals("")) return;
+			if(key.equals("target") || key.equals("order") || key.equals("asc") || key.equals("offset") || key.equals("limit")){
+				return;
+			}
+			if(index[0] > 0){
+				sb.append(",");
+			}else{
+				++index[0];
+			}
+			sb.append(key).append("=").append("'").append(value).append("'");
 		});
-		sb.append("1 = 1 ");
-		sb.append("where ").append(targetColumn).append("=").append(map.get(targetColumn));
+		sb.append(" where ").append(target).append("='").append(map.get(target)).append("'");
+		System.out.println(sb);
 		return sb.toString();
 	}
+	@Deprecated
 	protected String getSelectQueryString(Object ob){
+		System.out.println("qs ob: "+ob);
 		if(ob == null){
 			return "1 = 1";
 		}
 		StringBuilder sb = new StringBuilder(" ");
-		Map<String,String> map = null;
-		try {
-			map = objectMapper.readValue(ob.toString(), Map.class);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
+		Map<String,Object> map = objectMapper.convertValue(ob, Map.class);
+//		System.out.println(map);
 
 		if(map == null || map.isEmpty()){
 			return "1 = 1";
 		}
-		Object order = map.get("order");
-		Object side = map.get("side");
-		Object offset = map.get("offset");
-		Object limit = map.get("limit");
+		Object order = map.getOrDefault("order", null);
+		Object asc = map.getOrDefault("asc", null);
+		Object offset = map.getOrDefault("offset", null);
+		Object limit = map.getOrDefault("limit", null);
 
 		map.forEach((key,value)->{
-			if(key.equals("order") || key.equals("side") || key.equals("offset") || key.equals("limit")){
+			if(value == null || value.equals("0")) return;
+			if(key.equals("order") || key.equals("asc") || key.equals("offset") || key.equals("limit")){
 				return;
 			}
 			sb.append(key).append("=").append("'").append(value).append("' ").append("and ");
 		});
-		sb.append("1 = 1");
+		sb.append("1 = 1 ");
 		if(order != null){
 			sb.append("order by ").append(order);
-			if(side != null){
-				sb.append(" ").append(side).append(" ");
+			if(asc != null){
+				sb.append(" ").append(asc).append(" ");
 			}
 		}
 		if(offset != null && limit != null){
 			sb.append("limit ").append(offset).append(" ").append(limit);
 		}
-		System.out.println(sb);
 		return sb.toString();
 	}
 }

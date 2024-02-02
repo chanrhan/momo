@@ -1,6 +1,6 @@
 
 let order = "rsv_dt";
-let side = "asc";
+let asc = "asc";
 
 let selected_columns = [
     "shop_nm",
@@ -13,13 +13,13 @@ let selected_columns = [
 function changeShop(){
     $('#keyword').val("");
 
-    side = false;
+    asc = false;
     searchMessage();
 }
 
 function orderMessage(th){
     order = $(th).attr('value');
-    side = $(th).hasClass('desc') ? 'desc' : 'asc';
+    asc = $(th).hasClass('desc') ? 'desc' : 'asc';
     $(th).toggleClass('desc');
 
     searchMessage();
@@ -29,7 +29,7 @@ function searchMessage(){
     var searchMap = {};
     var selectMap = {};
 
-    selectMap["shop_cd"] = $('#filter_shop').val();
+    selectMap["shop_id"] = $('#filter_shop').val();
     var keyword = $('#keyword').val();
     if(keyword !== ""){
         searchMap = createMapWithSingleKeyword(keyword, selected_columns);
@@ -39,7 +39,7 @@ function searchMessage(){
         select: selectMap,
         search: searchMap,
         order: order,
-        side: side
+        asc: asc
     };
 
     $.ajax({

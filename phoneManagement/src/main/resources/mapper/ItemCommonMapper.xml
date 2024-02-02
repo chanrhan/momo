@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.ItemCommonMapper">
+<!--    Plan-->
+    <select id="selectPlan" parameterType="com.momo.vo.ItemCommonVO">
+        select
+            *
+        from
+            tb_plan
+        where
+        <if test='planId != null and !planId.equals("")'>
+            plan_id=#{planId} and
+        </if>
+        <if test='planNm != null and !planNm.equals("")'>
+            plan_nm=#{planNm} and
+        </if>
+            1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+                ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchPlan" parameterType="com.momo.vo.SearchVO">
+        select
+            *
+        from
+            tb_plan
+        where
+            ${andSelect} and
+            ${orSearch}
+        ${prop}
+    </select>
+
+<!--    Extra Service-->
+    <select id="selectExsvc" parameterType="com.momo.vo.ItemCommonVO">
+        select
+            *
+        from
+            tb_extra_service
+        where
+        <if test='exsvcId != null and !exsvcId.equals("")'>
+            exsvc_id=#{exsvcId} and
+        </if>
+        <if test='exsvcNm != null and !exsvcNm.equals("")'>
+            exsvc_nm=#{exsvcNm} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchExsvc" parameterType="com.momo.vo.SearchVO">
+        select
+            *
+        from
+            tb_extra_service
+        where
+            ${andSelect} and
+            ${orSearch}
+                ${prop}
+    </select>
+</mapper>

@@ -7,6 +7,7 @@ import lombok.experimental.Delegate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,9 @@ public class UserDetailsImpl implements UserDetails {
 	public UserDetailsImpl(String username, String password, String role){
 		this.username=username;
 		this.password=password;
-		System.out.println("role"+role);
+		if(role == null || role.equals("")){
+			return;
+		}
 		this.authorities.add(new SimpleGrantedAuthority(role));
 	}
 

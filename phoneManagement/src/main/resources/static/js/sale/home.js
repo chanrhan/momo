@@ -2,7 +2,7 @@
 let pageNum = 1;
 let filter_provider = "";
 let order = "actv_dt";
-let side = 'asc';
+let asc = 'asc';
 
 let selected_columns = [
     "cust_nm",
@@ -25,9 +25,9 @@ function showSaleDetail(saleNo){
 
 
 function showCreateSaleForm(){
-    var shopCode = $('#filter_shop').val();
+    var shopId = $('#filter_shop').val();
     window.open(
-        "/sale/create/form?shopId="+shopCode,
+        "/sale/create/form?shopId="+shopId,
         "판매일보 추가",
         "width=500, height=500, location=no"
     );
@@ -38,13 +38,13 @@ function changeShop(){
     $('#filter_provider').val("");
 
     order = 'actv_dt';
-    side = 'desc';
+    asc = 'desc';
     searchSale();
 }
 
 function orderSale(th){
     order = $(th).attr('value');
-    side = $(th).hasClass('desc') ? 'desc' : 'asc';
+    asc = $(th).hasClass('desc') ? 'desc' : 'asc';
     $(th).toggleClass('desc');
 
     searchSale();
@@ -54,7 +54,7 @@ function searchSale(){
     var searchMap = {};
     var selectMap = {};
 
-    selectMap["shop_cd"] = $('#filter_shop').val();
+    selectMap["shop_id"] = $('#filter_shop').val();
     var provider = $('#filter_provider').val();
     if(provider !== ""){
         selectMap["provider"] = provider;
@@ -68,7 +68,7 @@ function searchSale(){
         select: selectMap,
         search: searchMap,
         order: order,
-        side: side
+        asc: asc
     };
 
     $.ajax({
@@ -92,33 +92,33 @@ function updateSaleList(result){
     list_sale.innerHTML = "";
     result.forEach(function (value, index, array) {
         list_sale.innerHTML += "<tr onclick='showSaleDetail(" +
-            value.saleNo +
+            value.sale_id +
             ")" +
             "' class='" +
-            ((value.rsvSt == false) ? 'msg-send' : '') +
+            ((value.rsv_st == false) ? 'msg-send' : '') +
             "'><td>" +
-            value.custNm +
+            value.cust_nm +
             "</td>" +
             "<td>" +
-            value.custTel +
+            value.cust_tel +
             "</td>" +
             "<td>" +
-            value.custCd +
+            value.cust_cd +
             "</td>" +
             "<td>" +
-            value.phMd +
+            value.ph_md +
             "</td>" +
             "<td>" +
-            value.actvDt +
+            value.actv_dt +
             "</td>" +
             "<td>" +
             value.provider +
             "</td>" +
             "<td>" +
-            value.sellerCms +
+            value.seller_cms +
             "</td>" +
             "<td>" +
-            value.sellerId +
+            value.seller_id +
             "</td></tr>";
     })
 }

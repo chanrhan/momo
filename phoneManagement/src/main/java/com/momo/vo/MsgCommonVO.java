@@ -1,45 +1,44 @@
 package com.momo.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MsgCommonVO extends CommonQueryVO {
-	private int    formId;
-	private String formNm;
-	private int    typeId;
-	private String content;
+	private Integer formId;
+	private String  formNm;
+	private Integer typeId;
+	private String  content;
 	private String selectBtnNm;
-	private int    rsvDDay;
+	private Integer    rsvDay;
 
-	@JsonProperty(value = "bNo")
-	private String bNo;
+	private String bpNo;
 
-	private int    msgId;
-	private int    shopId;
-	private String shopNm;
-	private int    saleNo;
-	private String sendTp;
+	private Integer msgId;
+	private Integer shopId;
+	private String  shopNm;
+	private Integer saleId;
+	private String  sendTp;
 	private boolean sendSt;
-	private String custNm;
-	private String custTel;
-	private String sellerId;
-	private String sellerNm;
+	private String  custNm;
+	private String  custTel;
+	private String  sellerId;
+	private String  sellerNm;
 
-	private LocalDate     rsvDt;
-	private LocalDateTime regiDt;
+	private String rsvDt;
+	private String regiDt;
 
-	private List<MsgCommonVO> msgRsvList;
+	private List<MsgCommonVO> msgList;
 
 	//	public void setRsvDt(String rsvDt) {
 	//		Date date = new Date();

@@ -9,8 +9,8 @@ $(document).ready(function (){
     }
     var formObject = JSON.parse(formData);
     // console.log(formObject);
-    $('#custNm').val(formObject.custNm);
-    $('#custTel').val(formObject.custTel);
+    $('#custNm').val(formObject.cust_nm);
+    $('#custTel').val(formObject.cust_tel);
 })
 
 function clickSelectButton(formId){
@@ -94,7 +94,7 @@ function reserveMessage(){
     var msg_body = JSON.parse(sessionStorage.getItem("formData"));
     msg_body["cust_nm"] = custNm;
     msg_body["cust_tel"] = custTel;
-    msg_body["rsv_list"] = msgRsv;
+    msg_body["msg_list"] = msgRsv;
 
     $.ajax({
         url: '/msg/reserve',

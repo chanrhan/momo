@@ -10,8 +10,9 @@ import java.util.Map;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class CommonQueryVO {
+	protected String target;
 	protected String order; // 정렬
 	protected String asc = "asc"; // false: asc(오름차순), true: desc(내림차순)
-	protected int offset;
-	protected int limit;
+	protected Integer offset;
+	protected Integer limit;
 }

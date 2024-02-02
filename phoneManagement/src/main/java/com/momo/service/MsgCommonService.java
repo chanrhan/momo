@@ -20,20 +20,20 @@ public class MsgCommonService extends CommonService {
 	private final ShopCommonService shopCommonService;
 
 	// Message Form
-	public int insertMsgForm(MsgCommonVO vo) {
-		return msgCommonMapper.insertMsgForm(vo);
+	public int insertForm(MsgCommonVO vo) {
+		return msgCommonMapper.insertForm(vo);
 	}
 	public int updateMsgForm(MsgCommonVO vo) {
-		return msgCommonMapper.updateMsgForm(getUpdateQueryString(vo));
+		return msgCommonMapper.updateForm(vo);
 	}
-	public int deleteMsgForm(int id) {
-		return msgCommonMapper.deleteMsgForm(id);
+	public int deleteForm(int id) {
+		return msgCommonMapper.deleteForm(id);
 	}
-	public List<Map<String, Object>> selectMsgForm(MsgCommonVO vo) {
-		return msgCommonMapper.selectMsgForm(getSelectQueryString(vo));
+	public List<Map<String, Object>> selectForm(MsgCommonVO vo) {
+		return msgCommonMapper.selectForm(vo);
 	}
-	public List<Map<String, Object>> searchMsgForm(SearchVO vo) {
-		return msgCommonMapper.searchMsgForm(vo);
+	public List<Map<String, Object>> searchForm(SearchVO vo) {
+		return msgCommonMapper.searchForm(vo);
 	}
 
 	public List<Map<String,Object>> getAllDefaultForm(){
@@ -41,35 +41,35 @@ public class MsgCommonService extends CommonService {
 	}
 
 	// Message Reserve
-	public int insertMsgReserve(MsgCommonVO vo) {
-		return msgCommonMapper.insertMsgReserve(vo);
+	public int insertMsg(MsgCommonVO vo) {
+		return msgCommonMapper.insertMsg(vo);
 	}
-	public int updateMsgReserve(MsgCommonVO vo) {
-		return msgCommonMapper.updateMsgReserve(getUpdateQueryString(vo));
+	public int updateMsg(MsgCommonVO vo) {
+		return msgCommonMapper.updateMsg(vo);
 	}
 	public int deleteMsgReserve(int id) {
-		return msgCommonMapper.deleteMsgReserve(id);
+		return msgCommonMapper.deleteMsg(id);
 	}
-	public List<Map<String, Object>> selectMsgReserve(MsgCommonVO vo) {
-		return msgCommonMapper.selectMsgReserve(getSelectQueryString(vo));
+	public List<Map<String, Object>> selectMsg(MsgCommonVO vo) {
+		return msgCommonMapper.selectMsg(vo);
 	}
-	public List<Map<String, Object>> selectMsgReserveByUser(String id) {
+	public List<Map<String, Object>> selectMsgByUser(String id) {
 		Map<String,Object> emp = userCommonService.selectEmpById(id);
 
 		MsgCommonVO vo;
 		if(emp.get("role").equals("REPS")){
-			vo = MsgCommonVO.builder().bNo(emp.get("bNo").toString()).build();
+			vo = MsgCommonVO.builder().bpNo(emp.get("bp_no").toString()).build();
 		}else{
 			vo = MsgCommonVO.builder().shopId(Integer.parseInt(emp.get("shop_id").toString())).build();
 		}
-		return selectMsgReserve(vo);
+		return selectMsg(vo);
 	}
-	public List<Map<String, Object>> searchMsgReserve(SearchVO vo) {
-		return msgCommonMapper.searchMsgReserve(vo);
+	public List<Map<String, Object>> searchMsg(SearchVO vo) {
+		return msgCommonMapper.searchMsg(vo);
 	}
 
-	public int getMaxMsgReserveId(){
-		Integer result = msgCommonMapper.getMaxMsgReserveId();
+	public int getMaxMsgId(){
+		Integer result = msgCommonMapper.getMaxMsgId();
 		if(result == null){
 			return 0;
 		}
@@ -77,8 +77,8 @@ public class MsgCommonService extends CommonService {
 	}
 
 	public int reserve(MsgCommonVO vo){
-		List<MsgCommonVO> list = vo.getMsgRsvList();
-		int maxMsgId = getMaxMsgReserveId();
+		List<MsgCommonVO> list = vo.getMsgList();
+		int maxMsgId = getMaxMsgId();
 		int result = 0;
 
 		String content = "";
@@ -94,7 +94,7 @@ public class MsgCommonService extends CommonService {
 			vo.setContent(content);
 			vo.setRsvDt(list.get(i).getRsvDt());
 
-			result = insertMsgReserve(vo);
+			result = insertMsg(vo);
 			if(result == 0){
 				return 0;
 			}
@@ -105,7 +105,7 @@ public class MsgCommonService extends CommonService {
 	public String createContent(MsgCommonVO vo){
 		int formId = vo.getFormId();
 		int typeId = vo.getTypeId();
-		String content = selectMsgForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
+		String content = selectForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
 
 		Map<String,Object > user = userCommonService.selectUser(UserCommonVO.builder().id(vo.getSellerId()).build()).get(0);
 		Map<String,Object> shop = shopCommonService.selectShop(ShopCommonVO.builder().shopId(vo.getShopId()).build()).get(0);

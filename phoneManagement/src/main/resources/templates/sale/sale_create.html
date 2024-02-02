@@ -8,19 +8,19 @@ layout:decorate="~{/sale/saleForm_layout.html}">
     <script src="/js/sale/sale_create.js" th:inline="javascript"></script>
     <h3>판매일보 추가</h3>
     <form id="create_form" >
-        <input type="hidden" name="shop_cd" th:value="${shopCode}">
+        <input type="hidden" name="shop_cd" th:value="${shop_id}">
         <h4>고객 정보</h4>
-        이름<input type="text" class="form-control" name="custNm">
+        이름<input type="text" class="form-control" name="cust_nm">
         <br>
-        성별<select name="custGd">
+        성별<select name="cust_gd">
             <option selected value="law">법인</option>
             <option value="male">남</option>
             <option value="female">여</option>
         </select>
         <br>
-        전화번호<input type="text" class="form-control" name="custTel">
+        전화번호<input type="text" class="form-control" name="cust_tel">
         <br>
-        식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="custCd">
+        식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="cust_cd">
         <br>
         <h4>개통 정보</h4>
         통신사<select name="provider">
@@ -29,85 +29,85 @@ layout:decorate="~{/sale/saleForm_layout.html}">
             <option value="lg">LG</option>
         </select>
         <br>
-        모델명<input type="text" class="form-control" name="phMd">
+        모델명<input type="text" class="form-control" name="ph_md">
         <br>
-        개통 날짜<input type="date" class="form-control" name="actvDt">
+        개통 날짜<input type="date" class="form-control" name="actv_dt">
         <br>
-        판매자 수수료<input type="text" class="form-control" name="sellerCms">
+        판매자 수수료<input type="text" class="form-control" name="seller_cms">
         <br>
         <h4>그린폰</h4>
-        모델명<input type="text" class="form-control" name="greenMd">
+        모델명<input type="text" class="form-control" name="green_md">
         <br>
-        반납 여부<input type="checkbox" class="form-control" value="1" name="greenRet">
+        반납 여부<input type="checkbox" class="form-control" value="1" name="green_ret">
         <br>
         <h4>세컨</h4>
-        모델명<input type="text" class="form-control" name="secMd">
+        모델명<input type="text" class="form-control" name="sec_md">
         <br>
-        판매 수수료<input type="number" class="form-control" name="secCms">
+        판매 수수료<input type="number" class="form-control" name="sec_cms">
         <br>
         <h4>유선</h4>
-        유형<input type="text" class="form-control" name="wtTp">
+        유형<input type="text" class="form-control" name="wt_tp">
         <br>
-        구분<input type="text" class="form-control" name="wtDiv">
+        구분<input type="text" class="form-control" name="wt_div">
         <br>
-        판매 수수료<input type="text" class="form-control" name="wtCms">
+        판매 수수료<input type="text" class="form-control" name="wt_cms">
         <br>
-        인터넷 개통 요금제<input type="text" class="form-control" name="netActvPlan">
+        인터넷 개통 요금제<input type="text" class="form-control" name="net_actv_plan">
         <br>
-        인터넷 하향 요금제<input type="text" class="form-control" name="netDecPlan">
+        인터넷 하향 요금제<input type="text" class="form-control" name="net_dec_plan">
         <br>
-        TV 개통 요금제<input type="text" class="form-control" name="tvActvPlan">
+        TV 개통 요금제<input type="text" class="form-control" name="tv_actv_plan">
         <br>
-        TV 하향 요금제<input type="text" class="form-control" name="tvDecPlan">
+        TV 하향 요금제<input type="text" class="form-control" name="tv_dec_plan">
         <br>
         <h4>추가</h4>
-        항목<input type="text" class="form-control" name="addItem">
+        항목<input type="text" class="form-control" name="add_item">
         <br>
-        금액<input type="text" class="form-control" name="addPay">
+        금액<input type="text" class="form-control" name="add_pay">
         <br>
-        날짜<input type="date" class="form-control" name="addDt">
+        날짜<input type="date" class="form-control" name="add_dt">
         <br>
         <h4>지원</h4>
-        지원<input type="text" class="form-control" name="supDiv1">
+        지원<input type="text" class="form-control" name="sup_div1">
         <br>
         <h4>체크박스</h4>
         지인<input type="checkbox" class="form-control" value="1" name="friend">
         <br>
-        부가서비스<input type="checkbox" class="form-control" value="1" name="exSvc">
+        부가서비스<input type="checkbox" class="form-control" value="1" name="exsvc">
         <br>
-        결합 변경 예정<input type="checkbox" class="form-control" value="1" name="combMove">
+        결합 변경 예정<input type="checkbox" class="form-control" value="1" name="comb_move">
         <br>
         카드 예정<input type="checkbox" class="form-control" value="1" name="card">
         <br>
-        카드 구분<input type="text" class="form-control" name="cardDiv">
+        카드 구분<input type="text" class="form-control" name="card_div">
         <br>
         <h4>토탈</h4>
-        총 추가 금액<input type="text" class="form-control" name="totAddPay">
+        총 추가 금액<input type="text" class="form-control" name="tot_add_pay">
         <br>
-        총 할인<input type="text" class="form-control" name="totRb">
+        총 할인<input type="text" class="form-control" name="tot_rb">
         <br>
-        총 지원<input type="text" class="form-control" name="totSup">
+        총 지원<input type="text" class="form-control" name="tot_sup">
         <br>
-        디펜스율<input type="text" class="form-control" name="defPc">
+        디펜스율<input type="text" class="form-control" name="def_pc">
         <br>
-        판매자 수수료<input type="text" class="form-control" name="sellerCms">
+        판매자 수수료<input type="text" class="form-control" name="seller_cms">
         <br>
-        무선 포인트<input type="text" class="form-control" name="ctPt">
+        무선 포인트<input type="text" class="form-control" name="ct_pt">
         <br>
-        유선 포인트<input type="text" class="form-control" name="wtPt">
+        유선 포인트<input type="text" class="form-control" name="wt_pt">
         <br>
-        총 포인트<input type="text" class="form-control" name="totPt">
+        총 포인트<input type="text" class="form-control" name="tot_pt">
         <br>
-        판매자 <input type="text" class="form-control" name="sellerId">
+        판매자 <input type="text" class="form-control" name="seller_id">
         <br>
         <h4>기타 관리</h4>
         견적서 <input type="text" class="form-control" name="spec" disabled>
         <br>
-        유선 만료 일자 <input type="date" class="form-control" name="wtExprDt">
+        유선 만료 일자 <input type="date" class="form-control" name="wt_expr_dt">
         <br>
-        결합 중 요금할인 빠짐 <input type="checkbox" class="form-control" value="1" name="nonDisc">
+        결합 중 요금할인 빠짐 <input type="checkbox" class="form-control" value="1" name="non_disc">
         <br>
-        개통 시간 <input type="time" class="form-control" name="actvTime">
+        개통 시간 <input type="time" class="form-control" name="actv_time">
         <br>
         비고 <input type="text" class="form-control" name="etc">
         <br>

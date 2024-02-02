@@ -12,8 +12,8 @@ ws.onmessage = function (data){
 
 function updateAlarm(){
     var body = {
-        receiverId: $('#user_id').val(),
-        readSt: 0
+        receiver_id: $('#user_id').val(),
+        read_st: 0
     }
 
     $.ajax({

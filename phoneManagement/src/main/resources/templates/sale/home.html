@@ -10,8 +10,8 @@
     <h2>판매 일보</h2>
     <a th:href="@{/sale/graph}">판매 지표</a>
     <a th:href="@{/sale/msg_form}">문자 양식 관리</a>
-    <select id="filter_shop" th:value="${selected_shop.shop_cd}" onchange="changeShop()">
-        <option th:each="shop : ${list_shop}" th:value="${shop.shop_cd}" th:text="${shop.shop_nm}"></option>
+    <select id="filter_shop" th:value="${selected_shop.shop_id}" onchange="changeShop()">
+        <option th:each="shop : ${list_shop}" th:value="${shop.shop_id}" th:text="${shop.shop_nm}"></option>
     </select>
     <br>
     <button type="button" class="btn btn-primary" onclick="showCreateSaleForm()">추가</button>
@@ -41,7 +41,7 @@
         </tr>
         </thead>
         <tbody id="list_sale" >
-        <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.sale_no})|"
+        <tr th:each="sale : ${list_sale}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.sale_id})|"
             th:classappend="${sale.rsv_st == false} ? 'msg-send'">
             <td th:text="*{cust_nm}"></td>
             <td th:text="*{cust_tel}"></td>

@@ -1,6 +1,7 @@
 package com.momo.config;
 
 import com.momo.service.UserCommonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
-	@Autowired
-	private UserCommonService userCommonService;
+	private final UserCommonService userCommonService;
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{

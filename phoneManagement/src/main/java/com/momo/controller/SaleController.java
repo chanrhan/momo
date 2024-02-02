@@ -24,7 +24,7 @@ public class SaleController {
 	private final MsgCommonService msgCommonService;
 	private final ItemCommonService itemCommonService;
 
-	@GetMapping("")
+	@GetMapping("/home")
 	public String saleHome(Model model) {
 		// 1. 현재 로그인된 유저의 아이디를 가져옴
 		// 2. 유저가 속한 매장을 찾아 'selected_shop'에 할당
@@ -45,7 +45,9 @@ public class SaleController {
 
 	@GetMapping("/detail/{id}")
 	public String saleDetail(Model model, @PathVariable int id) {
-		model.addAttribute("sale", saleService.selectSaleById(id));
+		Map<String,Object> map = saleService.selectSaleById(id);
+		System.out.println(map);
+		model.addAttribute("sale", map);
 		return "sale/sale_detail";
 	}
 
@@ -95,7 +97,7 @@ public class SaleController {
 
 	@GetMapping("/plan/list")
 	public String planList(Model model) {
-		model.addAttribute("list_plan", itemCommonService.searchPlan(null));
+		model.addAttribute("list_plan", itemCommonService.selectPlan(null));
 		return "sale/plan_list";
 	}
 
@@ -136,16 +138,24 @@ public class SaleController {
 		}
 	}
 
-
-	//	@GetMapping("/list/filter")
-	//	@ResponseBody
-	//	public List<SaleVO> filterProvider(@RequestParam String provider){
-	//		return saleService.select(SaleVO.builder().provider(provider).build());
-	//	}
-
-	//	@GetMapping("/list")
-	//	@ResponseBody
-	//	public Paging<SaleVO> getSaleListByShopCode(@RequestParam int shopCode){
-	//		return saleService.selectPage(1, SaleVO.builder().shopCd(shopCode).build());
-	//	}
+	@GetMapping("/green")
+	public String saleGreenPhone(){
+		return "";
+	}
+	@GetMapping("/card")
+	public String saleCard(){
+		return "";
+	}
+	@GetMapping("/comb")
+	public String saleComb(){
+		return "";
+	}
+	@GetMapping("/support")
+	public String saleSupport(){
+		return "";
+	}
+	@GetMapping("/second")
+	public String saleSecondPhone(){
+		return "";
+	}
 }

@@ -1,22 +1,24 @@
 package com.momo.vo;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleVO extends CommonQueryVO {
-	private int saleId; // 판매일보 번호
-	private int shopId; // 매장 코드
+	private Integer saleId; // 판매일보 번호
+	private Integer shopId; // 매장 코드
 
 	// 고객 정보
 	private String custNm; // 고객 이름
@@ -26,7 +28,7 @@ public class SaleVO extends CommonQueryVO {
 
 	// 개통 정보
 	private String        provider; // 통신사
-	private LocalDateTime actvDt; // 개통일자 (Activate)
+	private String actvDt; // 개통일자 (Activate)
 	private String        phMd; // 핸드폰 모델명 (Model)
 	private String    phStor; // 핸드폰 용량 (Storage)
 	private String    istm; // 할부 (Installment)
@@ -34,20 +36,20 @@ public class SaleVO extends CommonQueryVO {
 	private String    actvTp; // 개통 유형 (Type)
 	private String    actvPlan; // 개통 요금제
 	private String    movePlan; // 변경 요금제
-	private int       ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
+	private Integer       ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
 
 	// 그린폰
 	private String  greenMd; // 그린폰 모델명
-	private boolean greenRet; // 그린폰 반납 여부 (Return)
+	private Boolean greenRet; // 그린폰 반납 여부 (Return)
 
 	// 세컨
 	private String secMd; // 세컨 모델명
-	private int    secCms; // 세컨 판매 수수료
+	private Integer    secCms; // 세컨 판매 수수료
 
 	// 유선
 	private String wtTp; // 유선 유형 (Wire Telephone)
 	private String wtDiv; // 유선 구분
-	private int    wtCms; // 유선 판매 수수료
+	private Integer    wtCms; // 유선 판매 수수료
 	private String netActvPlan; // 인터넷 개통 요금제 (Internet)
 	private String netDecPlan; // 인터넷 하향 요금제 (Decrement)
 	private String tvActvPlan; // TV 개통 요금제
@@ -56,51 +58,51 @@ public class SaleVO extends CommonQueryVO {
 	// 추가
 	private String    addItem; // 추가 항목
 	private String    addPay; // 추가 금액
-	private LocalDate addDt; // 추가 날짜
+	private String addDt; // 추가 날짜
 
 	// 지원
 	private String supDiv1; // 지원구분 1
-	private int    supPay1; // 지원금액 1
+	private Integer    supPay1; // 지원금액 1
 	private String supDiv2;
-	private int    supPay2;
+	private Integer    supPay2;
 	private String supDiv3;
-	private int    supPay3;
+	private Integer    supPay3;
 	private String supDiv4;
-	private int    supPay4;
+	private Integer    supPay4;
 	private String supDiv5;
-	private int    supPay5;
+	private Integer    supPay5;
 
 	// 체크박스
 	private boolean friend; // 지인
-	private boolean exSvc; // 부가 서비스
+	private boolean exsvc; // 부가 서비스
 	private boolean combMove; // 결합 변경 예정 (Change)
 	private boolean card; // 카드 예정
 	private boolean cardDiv; // 카드 구분
 
 	// 토탈
-	private int    totAddPay; // 총 추가 금액
-	private int    totRb; // 총 할인 (Rebate)
+	private Integer    totAddPay; // 총 추가 금액
+	private Integer    totRb; // 총 할인 (Rebate)
 	private String totSup; // 총 지원 (Supportion)
-	private int    defPc; // 디펜스율 (Defense Percent)
-	private int    sellerCms; // 판매자 수수료
-	private int    ctPt; // 무선 포인트 (Point)
-	private int    wtPt; // 유선 포인트
-	private int    totPt; // 총 포인트
+	private Integer    defPc; // 디펜스율 (Defense Percent)
+	private Integer    sellerCms; // 판매자 수수료
+	private Integer    ctPt; // 무선 포인트 (Point)
+	private Integer    wtPt; // 유선 포인트
+	private Integer    totPt; // 총 포인트
 	private String sellerId; // 담당 매니저(판매자) 아이디
 
 	// 기타 관리
 	private String    spec; // 견적서
-	private LocalDate wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
+	private String wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
 	private boolean   nonDisc; // 결합중 요금할인 빠짐 (None Discount)
 	private boolean   rsvSt; // 문자 발송 여부
-	private LocalTime actvTime; // 개통 시간
+	private String actvTime; // 개통 시간
 	private String    etc; // 비고
 
 	// 예약 발송
 	private List<MsgCommonVO> msgRsvList;
 
-	public MsgCommonVO getMessageVO() {
-		return MsgCommonVO.builder().shopId(shopId).saleNo(saleId).custNm(custNm).custTel(custTel).sellerId(sellerId).msgRsvList(msgRsvList).build();
+	public MsgCommonVO toMessageVO() {
+		return MsgCommonVO.builder().shopId(shopId).saleId(saleId).custNm(custNm).custTel(custTel).sellerId(sellerId).msgList(msgRsvList).build();
 	}
 
 	//	public void setActvDt(String actvDt) {

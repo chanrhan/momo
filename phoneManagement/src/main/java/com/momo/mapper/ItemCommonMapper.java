@@ -14,16 +14,16 @@ public interface ItemCommonMapper {
 
 	// Extra Service
 	public int insertExsvc(ItemCommonVO vo);
-	public int updateExsvc(String qs);
+	public int updateExsvc(ItemCommonVO vo);
 	public int deleteExsvc(int id);
-	public List<Map<String,Object>> selectExsvc(String qs);
+	public List<Map<String,Object>> selectExsvc(ItemCommonVO vo);
 	public List<Map<String,Object>> searchExsvc(SearchVO vo);
 
 
 	// Plan
 	public int insertPlan(ItemCommonVO vo);
-	public int updatePlan(String qs);
+	public int updatePlan(ItemCommonVO vo);
 	public int deletePlan(int id);
-	public List<Map<String,Object>> selectPlan(String qs);
+	public List<Map<String,Object>> selectPlan(ItemCommonVO vo);
 	public List<Map<String,Object>> searchPlan(SearchVO vo);
 }

@@ -3,7 +3,6 @@ package com.momo.service;
 import com.momo.mapper.ShopCommonMapper;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class ShopCommonService extends CommonService {
 	}
 
 	public int updateShop(ShopCommonVO vo) {
-		return shopCommonMapper.updateShop(getUpdateQueryString(vo));
+		return shopCommonMapper.updateShop(vo);
 	}
 
 	public int deleteShop(int id) {
@@ -30,7 +29,7 @@ public class ShopCommonService extends CommonService {
 	}
 
 	public List<Map<String,Object>> selectShop(ShopCommonVO vo) {
-		return shopCommonMapper.selectShop(getSelectQueryString(vo));
+		return shopCommonMapper.selectShop(vo);
 	}
 	public List<Map<String,Object>> searchShop(SearchVO vo) {
 		return shopCommonMapper.searchShop(vo);
@@ -45,10 +44,10 @@ public class ShopCommonService extends CommonService {
 	}
 
 	public List<Map<String,Object>> selectShopByUser(String id){
-		Map<String,Object> emp = userCommonService.selectEmp(UserCommonVO.builder().id(id).build()).get(0);
+		Map<String,Object> emp = userCommonService.selectEmpById(id);
 		ShopCommonVO shopCommonVO = new ShopCommonVO();
 		if(emp.get("role").equals("REPS")){
-			shopCommonVO.setBNo(emp.get("b_no").toString());
+			shopCommonVO.setBpNo(emp.get("bp_no").toString());
 		}else{
 			shopCommonVO.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
 		}
@@ -61,7 +60,7 @@ public class ShopCommonService extends CommonService {
 	}
 
 	public int updateCorp(ShopCommonVO vo) {
-		return shopCommonMapper.updateCorp(getUpdateQueryString(vo));
+		return shopCommonMapper.updateCorp(vo);
 	}
 
 	public int deleteCorp(String bNo) {
@@ -69,7 +68,7 @@ public class ShopCommonService extends CommonService {
 	}
 
 	public List<Map<String,Object>> selectCorp(ShopCommonVO vo) {
-		return shopCommonMapper.selectCorp(getSelectQueryString(vo));
+		return shopCommonMapper.selectCorp(vo);
 	}
 
 	public List<Map<String,Object>> searchCorp(SearchVO vo) {

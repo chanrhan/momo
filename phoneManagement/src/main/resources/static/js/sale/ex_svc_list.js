@@ -4,7 +4,7 @@ function searchExsvc(){
 
     var body = {
         search: {
-            ex_svc_nm: keyword
+            exsvc_nm: keyword
         }
     };
 
@@ -21,12 +21,12 @@ function searchExsvc(){
             list_exsvc.innerHTML = "";
             result.forEach(function (value, index, array) {
                 list_exsvc.innerHTML += "<tr exsvc_id='" +
-                    value.exSvcId +
+                    value.exsvc_id +
                     "' exsvc_nm='" +
-                    value.exSvcNm +
+                    value.exsvc_nm +
                     "' onclick='selectExsvc(this)" +
                     "'><td>" +
-                    value.exSvcNm +
+                    value.exsvc_nm +
                     "</td>" +
                     "<td>" +
                     value.description +

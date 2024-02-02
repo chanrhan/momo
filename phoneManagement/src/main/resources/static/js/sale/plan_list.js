@@ -3,7 +3,7 @@ function searchPlan(){
     var keyword = $('#srch').val();
 
     var body = {
-        searchMap: {
+        search: {
             "plan_nm": keyword
         }
     };
@@ -22,12 +22,12 @@ function searchPlan(){
 
             result.forEach(function (value, index, array) {
                 list_plan.innerHTML += "<tr plan_id='" +
-                    value.planId +
+                    value.plan_id +
                     "' plan_nm='" +
-                    value.planNm +
+                    value.plan_nm +
                     "' onclick='selectPlan(this)" +
                     "'><td>" +
-                    value.planNm +
+                    value.plan_nm +
                     "</td>" +
                     "<td>" +
                     value.description +

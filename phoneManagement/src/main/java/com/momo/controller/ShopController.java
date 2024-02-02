@@ -19,7 +19,7 @@ public class ShopController {
 	private final ShopCommonService shopCommonService;
 	private final RegionService     regionService;
 
-	@GetMapping("")
+	@GetMapping("/home")
 	public String shopHome(){
 		return "shop/home";
 	}
@@ -35,7 +35,7 @@ public class ShopController {
 	public boolean createShop(@RequestBody ShopCommonVO vo){
 		Map<String,Object> reps = shopCommonService.selectShopByUser(vo.getRepsId()).get(0);
 
-		vo.setBNo(reps.get("b_no").toString());
+		vo.setBpNo(reps.get("b_no").toString());
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
 
 		return shopCommonService.insertShop(vo) != 0;

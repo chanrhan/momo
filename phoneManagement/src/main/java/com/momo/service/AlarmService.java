@@ -20,7 +20,7 @@ public class AlarmService extends CommonService {
 	}
 
 	public int updateAlarm(AlarmVO vo) {
-		return alarmMapper.updateAlarm(getUpdateQueryString(vo, "alarm_id"));
+		return alarmMapper.updateAlarm(vo);
 	}
 
 	public int deleteAlarm(int id) {
@@ -32,7 +32,7 @@ public class AlarmService extends CommonService {
 	}
 
 	public List<Map<String, Object>> selectAlarm(AlarmVO vo) {
-		return alarmMapper.selectAlarm(getSelectQueryString(vo));
+		return alarmMapper.selectAlarm(vo);
 	}
 	public List<Map<String, Object>> selectAlarmByReceiver(String id) {
 		AlarmVO vo = AlarmVO.builder().receiverId(id).build();

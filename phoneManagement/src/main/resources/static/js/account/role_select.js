@@ -17,7 +17,7 @@ function selectRole(role){
             id: $('#user_id').val(),
             role: role
         }
-        if(submitRole(data)){
+        if(submitAdmin(data)){
             dest = "/home";
         }
     }else{

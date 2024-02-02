@@ -11,19 +11,19 @@
 <button type="button" class="btn-primary" onclick="updateSale()">수정</button>
 <button type="button" class="btn-primary" onclick="stepToMessageReserve()">문자 예약</button>
 <form id="detail_form" th:object="${sale}">
-    <input type="hidden" id="saleNo" name="saleNo" th:value="*{saleNo}">
+    <input type="hidden" id="saleNo" name="sale_id" th:value="*{sale_id}">
     <h4>고객 정보</h4>
-    이름<input type="text" class="form-control" name="custNm" th:value="*{custNm}">
+    이름<input type="text" class="form-control" name="cust_nm" th:value="*{cust_nm}">
     <br>
-    성별<select name="custGd" th:value="*{custGd}">
+    성별<select name="cust_gd" th:value="*{cust_gd}">
         <option selected value="law">법인</option>
         <option value="male">남</option>
         <option value="female">여</option>
     </select>
     <br>
-    전화번호<input type="text" class="form-control" name="custTel" th:value="*{custTel}">
+    전화번호<input type="text" class="form-control" name="cust_tel" th:value="*{cust_tel}">
     <br>
-    식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="custCd" th:value="*{custCd}">
+    식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="cust_cd" th:value="*{cust_cd}">
     <br>
     <h4>개통 정보</h4>
     통신사<select name="provider" th:value="*{provider}">
@@ -32,87 +32,87 @@
         <option value="lg">LG</option>
     </select>
     <br>
-    모델명<input type="text" class="form-control" name="phMd" th:value="*{phMd}">
+    모델명<input type="text" class="form-control" name="ph_md" th:value="*{ph_md}">
     <br>
-    개통 날짜<input type="text" class="form-control" name="actvDt" th:value="*{actvDt}">
+    개통 날짜<input type="text" class="form-control" name="actv_dt" th:value="*{actv_dt}">
     <br>
-    판매자 수수료<input type="text" class="form-control" name="sellerCms" th:value="*{sellerCms}">
+    판매자 수수료<input type="text" class="form-control" name="seller_cms" th:value="*{seller_cms}">
     <br>
-    판매자 아이디<input type="text" class="form-control" name="sellerId" th:value="*{sellerId}">
+    판매자 아이디<input type="text" class="form-control" name="seller_id" th:value="*{seller_id}">
     <br>
     <h4>그린폰</h4>
-    모델명<input type="text" class="form-control" name="greenMd" th:value="*{greenMd}">
+    모델명<input type="text" class="form-control" name="green_md" th:value="*{green_md}">
     <br>
-    반납 여부<input type="checkbox" class="form-control" value="1" name="greenRet" th:value="*{greenRet}">
+    반납 여부<input type="checkbox" class="form-control" value="1" name="green_ret" th:value="*{green_ret}">
     <br>
     <h4>세컨</h4>
-    모델명<input type="text" class="form-control" name="secMd" th:value="*{secMd}">
+    모델명<input type="text" class="form-control" name="sec_md" th:value="*{sec_md}">
     <br>
-    판매 수수료<input type="number" class="form-control" name="secCms" th:value="*{secCms}">
+    판매 수수료<input type="number" class="form-control" name="sec_cms" th:value="*{sec_cms}">
     <br>
     <h4>유선</h4>
-    유형<input type="text" class="form-control" name="wtTp" th:value="*{wtTp}">
+    유형<input type="text" class="form-control" name="wt_tp" th:value="*{wt_tp}">
     <br>
-    구분<input type="text" class="form-control" name="wtDiv" th:value="*{wtDiv}">
+    구분<input type="text" class="form-control" name="wt_div" th:value="*{wt_div}">
     <br>
-    판매 수수료<input type="text" class="form-control" name="wtCms" th:value="*{wtCms}">
+    판매 수수료<input type="text" class="form-control" name="wt_cms" th:value="*{wt_cms}">
     <br>
-    인터넷 개통 요금제<input type="text" class="form-control" name="netActvPlan" th:value="*{netActvPlan}">
+    인터넷 개통 요금제<input type="text" class="form-control" name="net_actv_plan" th:value="*{net_actv_plan}">
     <br>
-    인터넷 하향 요금제<input type="text" class="form-control" name="netDecPlan" th:value="*{netDecPlan}">
+    인터넷 하향 요금제<input type="text" class="form-control" name="net_dec_plan" th:value="*{net_dec_plan}">
     <br>
-    TV 개통 요금제<input type="text" class="form-control" name="tvActvPlan" th:value="*{tvActvPlan}">
+    TV 개통 요금제<input type="text" class="form-control" name="tv_actv_plan" th:value="*{tv_actv_plan}">
     <br>
-    TV 하향 요금제<input type="text" class="form-control" name="tvDecPlan" th:value="*{tvDecPlan}">
+    TV 하향 요금제<input type="text" class="form-control" name="tv_dec_plan" th:value="*{tv_dec_plan}">
     <br>
     <h4>추가</h4>
-    항목<input type="text" class="form-control" name="addItem" th:value="*{addItem}">
+    항목<input type="text" class="form-control" name="add_item" th:value="*{add_item}">
     <br>
-    금액<input type="text" class="form-control" name="addPay" th:value="*{addPay}">
+    금액<input type="text" class="form-control" name="add_pay" th:value="*{add_pay}">
     <br>
-    날짜<input type="date" class="form-control" name="addDt" th:value="*{addDt}">
+    날짜<input type="date" class="form-control" name="add_dt" th:value="*{add_dt}">
     <br>
     <h4>지원</h4>
-    지원<input type="text" class="form-control" name="supDiv1" th:value="*{supDiv1}">
+    지원<input type="text" class="form-control" name="sup_div1" th:value="*{sup_div1}">
     <br>
     <h4>체크박스</h4>
     지인<input type="checkbox" class="form-control" value="1" name="friend" th:value="*{friend}">
     <br>
-    부가서비스<input type="checkbox" class="form-control" value="1" name="exSvc" th:value="*{exSvc}">
+    부가서비스<input type="checkbox" class="form-control" value="1" name="exsvc" th:value="*{exsvc}">
     <br>
-    결합 변경 예정<input type="checkbox" class="form-control" value="1" name="combMove" th:value="*{combMove}">
+    결합 변경 예정<input type="checkbox" class="form-control" value="1" name="comb_move" th:value="*{comb_move}">
     <br>
     카드 예정<input type="checkbox" class="form-control" value="1" name="card" th:value="*{card}">
     <br>
-    카드 구분<input type="text" class="form-control" name="cardDiv" th:value="*{cardDiv}">
+    카드 구분<input type="checkbox" class="form-control" value="1" name="card_div" th:value="*{card_div}">
     <br>
     <h4>토탈</h4>
-    총 추가 금액<input type="text" class="form-control" name="totAddPay" th:value="*{totAddPay}">
+    총 추가 금액<input type="text" class="form-control" name="tot_add_pay" th:value="*{tot_add_pay}">
     <br>
-    총 할인<input type="text" class="form-control" name="totRb" th:value="*{totRb}">
+    총 할인<input type="text" class="form-control" name="tot_rb" th:value="*{tot_rb}">
     <br>
-    총 지원<input type="text" class="form-control" name="totSup" th:value="*{totSup}">
+    총 지원<input type="text" class="form-control" name="tot_sup" th:value="*{tot_sup}">
     <br>
-    디펜스율<input type="text" class="form-control" name="defPc" th:value="*{defPc}">
+    디펜스율<input type="text" class="form-control" name="def_pc" th:value="*{def_pc}">
     <br>
-    판매자 수수료<input type="text" class="form-control" name="sellerCms" th:value="*{sellerCms}">
+    판매자 수수료<input type="text" class="form-control" name="seller_cms" th:value="*{seller_cms}">
     <br>
-    무선 포인트<input type="text" class="form-control" name="ctPt" th:value="*{ctPt}">
+    무선 포인트<input type="text" class="form-control" name="ct_pt" th:value="*{ct_pt}">
     <br>
-    유선 포인트<input type="text" class="form-control" name="wtPt" th:value="*{wtPt}">
+    유선 포인트<input type="text" class="form-control" name="wt_pt" th:value="*{wt_pt}">
     <br>
-    총 포인트<input type="text" class="form-control" name="totPt" th:value="*{totPt}">
+    총 포인트<input type="text" class="form-control" name="tot_pt" th:value="*{tot_pt}">
     <br>
-    판매자 <input type="text" class="form-control" name="sellerId" th:value="*{sellerId}">
+    판매자 <input type="text" class="form-control" name="seller_id" th:value="*{seller_id}">
     <br>
     <h4>기타 관리</h4>
     견적서 <input type="text" class="form-control" name="spec" disabled th:value="*{spec}">
     <br>
-    유선 만료 일자 <input type="date" class="form-control" name="wtExprDt" th:value="*{wtExprDt}">
+    유선 만료 일자 <input type="date" class="form-control" name="wt_expr_dt" th:value="*{wt_expr_dt}">
     <br>
-    결합 중 요금할인 빠짐 <input type="checkbox" class="form-control" value="1" name="nonDisc" th:value="*{nonDisc}">
+    결합 중 요금할인 빠짐 <input type="checkbox" class="form-control" value="1" name="non_disc" th:value="*{non_disc}">
     <br>
-    개통 시간 <input type="time" class="form-control" name="actvTime" th:value="*{actvTime}">
+    개통 시간 <input type="time" class="form-control" name="actv_time" th:value="*{actv_time}">
     <br>
     비고 <input type="text" class="form-control" name="etc" th:value="*{etc}">
     <br>

@@ -26,8 +26,8 @@ $(document).ready(function (){
 function approve(_this){
 
     var body = {
-        alarmId: $(_this).attr('alarm_id'),
-        senderId: $(_this).attr('user_id')
+        alarm_id: $(_this).attr('alarm_id'),
+        sender_id: $(_this).attr('user_id')
     }
 
     $.ajax({

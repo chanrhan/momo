@@ -6,8 +6,6 @@ import com.momo.service.UserCommonService;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +22,7 @@ public class MessageController {
 	private final MsgCommonService  msgCommonService;
 	private final ShopCommonService shopCommonService;
 
-	@GetMapping("")
+	@GetMapping("/home")
 	public String msgHome() {
 		return "message/msg_home";
 	}
@@ -34,7 +32,7 @@ public class MessageController {
 		String              username = SecurityContextUtil.getUsername();
 
 		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser(username);
-		List<Map<String,Object>> list_msg = msgCommonService.selectMsgReserveByUser(username);
+		List<Map<String,Object>> list_msg = msgCommonService.selectMsgByUser(username);
 
 		model.addAttribute("list_msg", list_msg);
 		model.addAttribute("list_shop", list_shop);
@@ -56,7 +54,7 @@ public class MessageController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
-		return msgCommonService.searchMsgReserve(searchVO);
+		return msgCommonService.searchMsg(searchVO);
 	}
 
 	@PostMapping("/delete/{id}")
@@ -65,9 +63,9 @@ public class MessageController {
 		return msgCommonService.deleteMsgReserve(id) != 0;
 	}
 
-	@PostMapping("/update")
-	@ResponseBody
-	public boolean updateMessage(@RequestBody MsgCommonVO vo) {
-		return msgCommonService.updateMsgReserve(vo) != 0;
-	}
+//	@PostMapping("/update")
+//	@ResponseBody
+//	public boolean updateMessage(@RequestBody MsgCommonVO vo) {
+//		return msgCommonService.updateMsg(vo) != 0;
+//	}
 }

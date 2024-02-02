@@ -72,12 +72,26 @@ public class AccountController {
 		return userCommonService.insertUser(vo) != 0;
 	}
 
-	@PostMapping("/submit/role")
+	@PostMapping("/submit/admin")
 	@ResponseBody
-	public boolean roleSubmit(@RequestBody UserCommonVO vo) {
+	public boolean submitAdmin(@RequestBody UserCommonVO vo) {
 		System.out.println(vo);
 		String role = vo.getRole();
 		int result = userCommonService.updateRole(vo.getId(), role);
+		if (result == 0) {
+			return false;
+		}
+		userCommonService.replaceAuthority(role);
+
+		return result != 0;
+	}
+
+	@PostMapping("/submit/role")
+	@ResponseBody
+	public boolean submitRole(@RequestBody UserCommonVO vo) {
+		System.out.println(vo);
+		String role = vo.getRole();
+		int result = userCommonService.updateRole(vo.getEmpId(), role);
 		if (result == 0) {
 			return false;
 		}
@@ -85,7 +99,7 @@ public class AccountController {
 		userCommonService.replaceAuthority(role);
 
 		if (role.equals("REPS")) {
-			result = shopCommonService.insertCorp(vo.getShopCommonVO());
+			result = shopCommonService.insertCorp(vo.toShopCommonVO());
 			if(result == 0){
 				return false;
 			}
@@ -128,10 +142,10 @@ public class AccountController {
 		return cities.split(",");
 	}
 
-	@PostMapping("/search/corp")
+	@PostMapping("/search/shop")
 	@ResponseBody
-	public List<Map<String,Object>> searchCorp(@RequestBody SearchVO vo){
-		return shopCommonService.searchCorp(vo);
+	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
+		return shopCommonService.searchShop(vo);
 	}
 
 	@PostMapping("/approve")
