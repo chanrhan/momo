@@ -73,7 +73,27 @@
     날짜<input type="date" class="form-control" name="add_dt" th:value="*{add_dt}">
     <br>
     <h4>지원</h4>
-    지원<input type="text" class="form-control" name="sup_div1" th:value="*{sup_div1}">
+    <div id="list_sup" th:each="sd : ${sup_div}" th:each="sp : ${sup_pay}">
+        <div>
+            지원 구분
+            <select name="sup_div" th:value="${sd}">
+                <option selected value="" disabled>선택 없음</option>
+                <option value="1">카드</option>
+                <option value="2">이체</option>
+                <option value="3">차액 예약</option>
+                <option value="4">일시납 개통(현금 개통)</option>
+                <option value="5">추가지원금(현금 개통)</option>
+                <option value="6">전산 수납(현급 수납)</option>
+                <option value="7">유심(현금 수납)</option>
+                <option value="8">상품권</option>
+                <option value="9">프리미엄 악세서리</option>
+                <option value="10">기타</option>
+            </select>
+            지원 금액<input type="number" class="form-control" name="sup_pay" th:value="${sp}">
+            <button type="button" class="btn-primary" onclick="subSupDiv($(this).parent())">-</button>
+        </div>
+    </div>
+    <button type="button" class="btn-primary" onclick="addSupDiv()">+</button>
     <br>
     <h4>체크박스</h4>
     지인<input type="checkbox" class="form-control" value="1" name="friend" th:value="*{friend}">

@@ -12,6 +12,7 @@ import java.util.Map;
 public class SearchVO {
 	// Query String Generataion
 	private Integer             page;
+	private String target;
 	private Map<String, Object> select;
 	private Map<String, Object> search;
 

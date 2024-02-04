@@ -12,23 +12,29 @@ let isBNoChecked = false;
 
 // 사업자등록번호 조회 API
 function checkBusinessmanNo(){
-    var data = {
-        "businesses": [
-            {
-                "b_no": $('#b_no').val(),
-                "start_dt": $('#start_dt').val(),
-                "p_nm": $('#p_en_nm').val(),
-                "p_nm2": $('#p_ko_nm').val(),
-                "b_nm": "",
-                "corp_no": "",
-                "b_sector": "",
-                "b_type": "",
-                "b_adr": ""
-            }
-        ]
-    };
+    // var data = {
+    //     "businesses": [
+    //         {
+    //             "b_no": $('#b_no').val(),
+    //             "start_dt": $('#start_dt').val(),
+    //             "p_nm": $('#p_en_nm').val(),
+    //             "p_nm2": $('#p_ko_nm').val(),
+    //             "b_nm": "",
+    //             "corp_no": "",
+    //             "b_sector": "",
+    //             "b_type": "",
+    //             "b_adr": ""
+    //         }
+    //     ]
+    // };
+    var body = {
+        b_no: $('#b_no').val(),
+        start_dt: $('#start_dt').val(),
+        p_nm: $('#p_en_nm').val(),
+        p_nm2: $('#p_ko_nm').val(),
+    }
 
-    var result = validateBusinessman(data);
+    var result = validateBusinessman(body);
     if(result !== null && result.status_code === "OK"){
         if(result.data[0].valid === "01"){
             alert("인증이 완료되었습니다");
@@ -63,10 +69,10 @@ function validateBNo(_this) {
 
 // 최종 회원가입 정보들 서버로 전송
 function submitREPS(){
-    if(!isBNoChecked){
-        alert("사업자번호 인증은 필수입니다!");
-        return;
-    }
+    // if(!isBNoChecked){
+    //     alert("사업자번호 인증은 필수입니다!");
+    //     return;
+    // }
 
     var pKoNm = $('#p_ko_nm').val();
     var pEnNm = $('#p_en_nm').val();

@@ -49,7 +49,12 @@ public class UserCommonVO extends CommonQueryVO {
 //	}
 
 	public ShopCommonVO toShopCommonVO() {
-		return ShopCommonVO.builder().repsId(id).bpNo(bpNo).bpKoNm(bpKoNm).bpEnNm(bpEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt).shopId(shopId).repsId(id).shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
+		return ShopCommonVO.builder()
+				.repsId(empId)
+				.bpNo(bpNo)
+				.bpKoNm(bpKoNm)
+				.bpEnNm(bpEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt).shopId(shopId)
+				.shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
 	}
 
 

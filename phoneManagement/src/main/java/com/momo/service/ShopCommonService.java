@@ -54,8 +54,14 @@ public class ShopCommonService extends CommonService {
 		return selectShop(shopCommonVO);
 	}
 
+	public Map<String,Object> selectShopById(int id){
+		ShopCommonVO vo = ShopCommonVO.builder().shopId(id).build();
+		return shopCommonMapper.selectShop(vo).get(0);
+	}
+
 	// Corperation
 	public int insertCorp(ShopCommonVO vo) {
+		System.out.println(vo);
 		return shopCommonMapper.insertCorp(vo);
 	}
 

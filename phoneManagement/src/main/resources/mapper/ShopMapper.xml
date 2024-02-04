@@ -116,7 +116,7 @@
             tb_corp
             (reps_id, bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
         values
-            (#{repsId},#{bpNo},#{bpKoNm},#{bpEnKm},#{corpNm},#{corpTel},#{startDt})
+            (#{repsId},#{bpNo},#{bpKoNm},#{bpEnNm},#{corpNm},#{corpTel},#{startDt})
     </insert>
 
     <update id="updateCorp" parameterType="com.momo.vo.ShopCommonVO">

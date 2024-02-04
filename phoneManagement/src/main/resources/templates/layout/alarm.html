@@ -22,7 +22,7 @@
             <p th:text="*{content}"></p>
         </div>
         <br>
-        <p th:text="|보낸 날짜: ${#temporals.format(alarm.send_dt, 'yyyy-MM-dd HH:mm')}|"></p>
+        <p th:text="|보낸 날짜: *{send_dt}|"></p>
         <p th:if="*{read_st}" name="read">읽음</p>
         <p th:if="*{!read_st}" th:alarm_id="*{alarm_id}" name="unread">안읽음</p>
         </div>

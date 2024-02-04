@@ -26,6 +26,9 @@ function showSaleDetail(saleNo){
 
 function showCreateSaleForm(){
     var shopId = $('#filter_shop').val();
+    if(shopId === null || shopId === ""){
+        shopId = document.getElementById('filter_shop').options[1].value;
+    }
     window.open(
         "/sale/create/form?shopId="+shopId,
         "판매일보 추가",
@@ -87,7 +90,7 @@ function searchSale(){
 }
 
 
-function updateSaleList(result){
+function    updateSaleList(result){
     var list_sale = document.getElementById('list_sale');
     list_sale.innerHTML = "";
     result.forEach(function (value, index, array) {
@@ -97,6 +100,9 @@ function updateSaleList(result){
             "' class='" +
             ((value.rsv_st == false) ? 'msg-send' : '') +
             "'><td>" +
+            value.shop_nm +
+            "</td>" +
+            "<td>" +
             value.cust_nm +
             "</td>" +
             "<td>" +
@@ -118,7 +124,7 @@ function updateSaleList(result){
             value.seller_cms +
             "</td>" +
             "<td>" +
-            value.seller_id +
+            value.seller_nm +
             "</td></tr>";
     })
 }

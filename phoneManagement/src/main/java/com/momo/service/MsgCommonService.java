@@ -84,7 +84,7 @@ public class MsgCommonService extends CommonService {
 		String content = "";
 		for(int i=0; i<list.size(); ++i){
 			vo.setFormId(list.get(i).getFormId());
-			if(vo.getTypeId() == 0) continue;
+			if(list.get(0).getTypeId() == null || list.get(0).getTypeId() == 0) continue;
 			vo.setTypeId(list.get(i).getTypeId());
 //			int formId = Integer.parseInt(list.get(i).get("form_id").toString());
 //			int typeId = Integer.parseInt(list.get(i).get("type_id").toString());

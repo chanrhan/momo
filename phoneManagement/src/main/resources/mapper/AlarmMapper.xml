@@ -88,7 +88,7 @@
                 s.shop_nm as shop_nm,
                 al.content as content,
                 al.read_st as read_st,
-                al.send_dt as send_dt
+                DATE_FORMAT(al.send_dt, '%Y-%m-%d %H:%i') as send_dt
             from
                 tb_alarm as al
                     left outer join tb_account ac on ac.id=al.sender_id
@@ -116,7 +116,7 @@
         <if test='content != null and !content.equals("")'>
             content=#{content} and
         </if>
-        <if test='readSt != null and !readSt.equals("")'>
+        <if test='readSt != null'>
             read_st=#{readSt} and
         </if>
         <if test='sendDt != null and !sendDt.equals("")'>

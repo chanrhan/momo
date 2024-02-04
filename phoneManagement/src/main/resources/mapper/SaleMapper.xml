@@ -6,10 +6,12 @@
     <select id="selectSaleByType">
         select
         sl.*,
-        sh.shop_nm as shop_nm
+        sh.shop_nm as shop_nm,
+        ac.name as seller_nm
         from
             tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
+        left outer join tb_account ac on ac.id = sl.seller_id
         where
         <if test='target != null and !target.equals("")'>
             ${target} is not null and
@@ -94,7 +96,7 @@
         <if test='custNm != null'>
             sec_cms=#{secCms},
         </if>
-
+        sec_st=#{secSt},
         <if test='wtTp != null and !wtTp.equals("")'>
             wt_tp=#{wtTp},
         </if>
@@ -135,49 +137,20 @@
             add_dt=#{addDt},
         </if>
 
-        <if test='supDiv1 != null and !supDiv1.equals("")'>
-            sup_div1=#{supDiv1},
+        <if test='supDiv != null and !supDiv.equals("")'>
+            sup_div=#{supDiv},
         </if>
 
-        <if test='supPay1 != null'>
-            sup_pay1=#{supPay1},
+        <if test='sup_pay != null and !sup_pay.equals("")'>
+            sup_pay=#{sup_pay},
         </if>
 
-        <if test='supDiv2 != null and !supDiv2.equals("")'>
-            sup_div2=#{supDiv2},
-        </if>
-
-        <if test='supPay2 != null'>
-            sup_pay2=#{supPay2},
-        </if>
-
-        <if test='supDiv3 != null and !supDiv3.equals("")'>
-            sup_div3=#{supDiv3},
-        </if>
-
-        <if test='supPay3 != null'>
-            sup_pay3=#{supPay3},
-        </if>
-
-        <if test='supDiv4 != null and !supDiv4.equals("")'>
-            sup_div4=#{supDiv4},
-        </if>
-
-        <if test='supPay4 != null'>
-            sup_pay4=#{supPay4},
-        </if>
-
-        <if test='supDiv5 != null and !supDiv5.equals("")'>
-            sup_div5=#{supDiv5},
-        </if>
-
-        <if test='supPay5 != null'>
-            sup_pay5=#{supPay5},
-        </if>
         friend=#{friend},
         exsvc=#{exsvc},
         comb_move=#{combMove},
+        comb_st=#{combSt},
         card=#{card},
+        card_st=#{cardSt},
         card_div=#{cardDiv},
         <if test='totAddPay != null'>
             tot_add_pay=#{totAddPay},
@@ -242,10 +215,12 @@
         with tb as (
             select
                 sl.*,
-                sh.shop_nm as shop_nm
+                sh.shop_nm as shop_nm,
+                ac.name as seller_nm
             from
                 tb_sale sl
                     left join tb_shop sh on sl.shop_id = sh.shop_id
+        left outer join tb_account ac on ac.id = sl.seller_id
         )
 
         select
@@ -266,10 +241,12 @@
         with tb as (
         select
         sl.*,
-        sh.shop_nm as shop_nm
+        sh.shop_nm as shop_nm,
+        ac.name as seller_nm
         from
         tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
+        left outer join tb_account ac on ac.id = sl.seller_id
         )
 
         select
@@ -277,6 +254,9 @@
         from
             tb
         where
+        <if test='saleId != null'>
+            sale_id=#{saleId} and
+        </if>
         <if test='custNm != null and !custNm.equals("")'>
             cust_nm=#{custNm} and
         </if>
@@ -341,8 +321,12 @@
             sec_md=#{secMd} and
         </if>
 
-        <if test='custNm != null'>
+        <if test='secCms != null'>
             sec_cms=#{secCms} and
+        </if>
+
+        <if test='secSt != secSt'>
+            sec_st=#{secSt} and
         </if>
 
         <if test='wtTp != null and !wtTp.equals("")'>
@@ -385,45 +369,14 @@
             add_dt=#{addDt} and
         </if>
 
-        <if test='supDiv1 != null and !supDiv1.equals("")'>
-            sup_div1=#{supDiv1} and
+        <if test='supDiv != null and !supDiv.equals("")'>
+            sup_div=#{supDiv} and
         </if>
 
-        <if test='supPay1 != null'>
-            sup_pay1=#{supPay1} and
+        <if test='supPay != null and !supPay.equals("")'>
+            sup_pay=#{supPay} and
         </if>
 
-        <if test='supDiv2 != null and !supDiv2.equals("")'>
-            sup_div2=#{supDiv2} and
-        </if>
-
-        <if test='supPay2 != null'>
-            sup_pay2=#{supPay2} and
-        </if>
-
-        <if test='supDiv3 != null and !supDiv3.equals("")'>
-            sup_div3=#{supDiv3} and
-        </if>
-
-        <if test='supPay3 != null'>
-            sup_pay3=#{supPay3} and
-        </if>
-
-        <if test='supDiv4 != null and !supDiv4.equals("")'>
-            sup_div4=#{supDiv4} and
-        </if>
-
-        <if test='supPay4 != null'>
-            sup_pay4=#{supPay4} and
-        </if>
-
-        <if test='supDiv5 != null and !supDiv5.equals("")'>
-            sup_div5=#{supDiv5} and
-        </if>
-
-        <if test='supPay5 != null'>
-            sup_pay5=#{supPay5} and
-        </if>
         <if test='friend != null'>
             friend=#{friend} and
         </if>
@@ -433,8 +386,14 @@
         <if test='combMove != null'>
             comb_move=#{combMove} and
         </if>
+        <if test='combSt != null'>
+            comb_st=#{combSt} and
+        </if>
         <if test='card != null'>
             card=#{card} and
+        </if>
+        <if test='cardSt != null'>
+            card_st=#{cardSt} and
         </if>
         <if test='cardDiv != null'>
             card_div=#{cardDiv} and
@@ -518,15 +477,13 @@
             tb_sale
         (sale_id, shop_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
          move_plan, ct_cms, green_md, green_ret, sec_md, sec_cms, wt_tp, wt_div, wt_cms, net_actv_plan, net_dec_plan, tv_actv_plan,
-         tv_dec_plan, add_item, add_pay, add_dt, sup_div1, sup_pay1, sup_div2, sup_pay2, sup_div3, sup_pay3, sup_div4, sup_pay4, sup_div5,
-         sup_pay5, friend, exsvc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
-         spec, wt_expr_dt, non_disc, rsv_st, actv_time, etc)
+         tv_dec_plan, add_item, add_pay, add_dt, sup_div, sup_pay, friend, exsvc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
+         spec, wt_expr_dt, non_disc, actv_time, etc)
         values
             (#{saleId},#{shopId},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
              #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
-             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv1},#{supPay1},#{supDiv2},#{supPay2},#{supDiv3},#{supPay3},#{supDiv4},#{supPay4},
-             #{supDiv5},#{supPay5},#{friend},#{exsvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
-             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{rsvSt},#{actvTime},#{etc})
+             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv},#{supPay},#{friend},#{exsvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
+             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{actvTime},#{etc})
     </insert>
 
     <delete id="deleteSale">

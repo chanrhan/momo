@@ -38,14 +38,14 @@
         <thead>
         <tr>
             <th th:value="shop_nm" onclick="orderSale($(this))">지점명</th>
-            <th th:value="cust_nm" onclick="orderSale($(this))">고객 이름</th>
-            <th th:value="cust_tel" onclick="orderSale($(this))">고객 전화번호</th>
-            <th th:value="cust_cd" onclick="orderSale($(this))">고객 식별번호</th>
+            <th th:value="cust_nm" onclick="orderSale($(this))">이름</th>
+            <th th:value="cust_tel" onclick="orderSale($(this))">전화번호</th>
+            <th th:value="cust_cd" onclick="orderSale($(this))">식별번호</th>
             <th th:value="ph_md"  onclick="orderSale($(this))">모델명</th>
             <th th:value="actv_dt" onclick="orderSale($(this))">개통 날짜</th>
             <th th:value="provider" onclick="orderSale($(this))">통신사</th>
             <th th:value="seller_cms" onclick="orderSale($(this))">판매자 수수료</th>
-            <th th:value="seller_id" onclick="orderSale($(this))">판매자 아이디</th>
+            <th th:value="seller_id" onclick="orderSale($(this))">판매자</th>
         </tr>
         </thead>
         <tbody id="list_sale" >
@@ -59,7 +59,7 @@
             <td th:text="${#temporals.format(sale.actv_dt,'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="*{provider}"></td>
             <td th:text="*{seller_cms}"></td>
-            <td th:text="*{seller_id}"></td>
+            <td th:text="*{seller_nm}"></td>
         </tr>
         </tbody>
     </table>

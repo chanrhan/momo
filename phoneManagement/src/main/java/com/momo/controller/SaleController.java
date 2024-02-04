@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +49,14 @@ public class SaleController {
 	public String saleDetail(Model model, @PathVariable int id) {
 		Map<String,Object> map = saleService.selectSaleById(id);
 		System.out.println(map);
+		Object sup_div = map.get("sup_div");
+		Object sup_pay = map.get("sup_pay");
+		if(sup_div != null && sup_pay != null){
+			String[] d = sup_div.toString().split(",");
+			String[] p = sup_pay.toString().split(",");
+			map.put("sup_div", d);
+			map.put("sup_pay", p);
+		}
 		model.addAttribute("sale", map);
 		return "sale/sale_detail";
 	}
@@ -54,7 +64,11 @@ public class SaleController {
 	@GetMapping("/create/form")
 	public String saleCreateGET(Model model, @RequestParam int shopId) {
 		String username = SecurityContextUtil.getUsername();
+		Map<String,Object> shopMap = shopCommonService.selectShopById(shopId);
+
+		model.addAttribute("shop_nm", shopMap.get("shop_nm").toString());
 		model.addAttribute("shop_id", shopId);
+
 
 		return "sale/sale_create";
 	}
@@ -75,6 +89,7 @@ public class SaleController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean saleCreatePOST(@RequestBody SaleVO vo) {
+		System.out.println(vo);
 		return saleService.insertSale(vo) != 0;
 	}
 

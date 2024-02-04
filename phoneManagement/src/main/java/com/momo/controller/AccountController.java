@@ -129,9 +129,12 @@ public class AccountController {
 
 	@PostMapping("/validate/bno")
 	@ResponseBody
-	public JSONObject validateBusinessNumber(@RequestBody JSONObject data) {
-		JSONObject j = BusinessmanApiUtil.validate(JSONObject.toJSONString(data));
-		System.out.println(j);
+	public Map<String,Object> validateBusinessNumber(@RequestBody Map<String,Object> map) {
+//		String startDt = map.get("businesses").toString().replace("-","");
+//		map.put("start_dt",startDt);
+		System.out.println("before: "+map);
+		Map<String,Object> j = BusinessmanApiUtil.validate(map);
+		System.out.println("after: "+j);
 		return j;
 	}
 

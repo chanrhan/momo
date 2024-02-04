@@ -42,6 +42,8 @@ public class SaleService extends CommonService {
 		return selectSale(vo).get(0);
 	}
 
+	// 추후 각 관리 파트(중고폰/결합/지원/세컨/카드) 에 맞는 컬럼만 DB에서 뽑아올 수 있도록 수정해야 함
+	// ex) 중고폰만 찾는 쿼리면 (개통날짜, 이름, 번호, 식별번호, 중고폰 모델명, 상태, 판매금액, 매니저 아이디) 만 select 하게
 	public List<Map<String,Object>> selectSaleByType(String type){
 		SaleVO vo = SaleVO.builder()
 				.target(type)

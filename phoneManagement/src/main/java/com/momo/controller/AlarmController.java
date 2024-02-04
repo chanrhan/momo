@@ -3,6 +3,7 @@ package com.momo.controller;
 import com.momo.service.AlarmService;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
+import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,12 @@ public class AlarmController {
 		System.out.println("username: "+username);
 		model.addAttribute("list_alarm", alarmService.selectAlarmByReceiver(username));
 		return "layout/alarm";
+	}
+
+	@GetMapping("/list/srch")
+	@ResponseBody
+	public List<Map<String,Object>> searchAlarm(@RequestBody SearchVO vo){
+		return alarmService.searchAlarm(vo);
 	}
 
 	@PostMapping("/count")
