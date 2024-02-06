@@ -8,6 +8,7 @@
     <script src="/js/sale/green.js" th:inline="javascript"></script>
     <script src="/js/sale/common_sale.js" th:inline="javascript"></script>
     <a th:href="@{/sale/home}">판매일보 홈</a>
+    <h2>중고폰</h2>
     <select id="filter_shop" th:value="${selected_shop != null} ? selected_shop.shop_id : 0" onchange="changeShop()">
         <option th:if="${list_shop.isEmpty()}" selected value="" disabled>매장 없음</option>
         <option th:if="${list_shop.size() > 0}" selected value="">전체</option>

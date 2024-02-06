@@ -6,11 +6,13 @@ import com.momo.service.UserCommonService;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
+import com.momo.vo.SupportVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +47,12 @@ public class MessageController {
 		return msgCommonService.reserve(vo) != 0;
 	}
 
+	@GetMapping("/detail/{id}")
+	public String msgDetail(Model model, @PathVariable int id) {
+		model.addAttribute("msg",msgCommonService.selectMsgById(id));
+		return "message/msg_detail";
+	}
+
 	@GetMapping("/send")
 	public String sendMsg() {
 		return "message/msg_send";
@@ -53,7 +61,7 @@ public class MessageController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
-		return msgCommonService.searchMsg(searchVO);
+		return msgCommonService.searchMsgByUser(searchVO);
 	}
 
 	@PostMapping("/delete/{id}")

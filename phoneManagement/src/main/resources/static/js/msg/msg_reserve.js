@@ -6,9 +6,16 @@ let selected_columns = [
     "shop_nm",
     "cust_nm",
     "cust_tel",
-    "send_st",
     "seller_nm"
 ];
+
+function showMsgDetail(id){
+    window.open(
+        "/msg/detail/"+id,
+        "메세지 정보",
+        "width=400, height=400, location=no"
+    );
+}
 
 function changeShop(){
     $('#keyword').val("");
@@ -62,7 +69,9 @@ function updateMessageList(list){
     var list_msg = document.getElementById('list_msg');
     list_msg.innerHTML = "";
     list.forEach(function (value, index, array) {
-        list_msg.innerHTML += "<tr>" +
+        list_msg.innerHTML += "<tr onclick='showMsgDetail(" +
+            value.msg_id +
+            ")'>" +
             "<td>" +
             value.shop_nm +
             "</td>" +

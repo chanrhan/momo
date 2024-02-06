@@ -21,7 +21,7 @@ function showCreateSaleForm(){
     window.open(
         "/sale/create/form?shopId="+shopId,
         "판매일보 추가",
-        "width=500, height=500, location=no"
+        "width=700, height=1000, location=no"
     );
 }
 

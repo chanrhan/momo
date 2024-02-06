@@ -16,7 +16,7 @@
     <a th:href="@{/sale/card}">카드</a>
     <a th:href="@{/sale/comb}">결합</a>
     <a th:href="@{/sale/second}">세컨</a>
-    <a th:href="@{/sale/support}">지원</a>
+<!--    <a th:href="@{/sale/support}">지원</a>-->
     <select id="filter_shop" th:value="${selected_shop != null} ? selected_shop.shop_id : 0" onchange="changeShop()">
         <option th:if="${list_shop.isEmpty()}" selected value="" disabled>매장 없음</option>
         <option th:if="${list_shop.size() > 0}" selected value="">전체</option>

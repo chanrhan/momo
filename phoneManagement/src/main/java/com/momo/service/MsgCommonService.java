@@ -54,19 +54,40 @@ public class MsgCommonService extends CommonService {
 	public List<Map<String, Object>> selectMsg(MsgCommonVO vo) {
 		return msgCommonMapper.selectMsg(vo);
 	}
-	public List<Map<String, Object>> selectMsgByUser() {
+	public Map<String,Object> selectMsgById(int id){
+		MsgCommonVO vo = MsgCommonVO.builder().msgId(id).build();
+		return selectMsgByUser(vo).get(0);
+	}
+
+	public List<Map<String, Object>> selectMsgByUser(MsgCommonVO vo) {
 		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
 
-		MsgCommonVO vo;
 		if(emp.get("role").equals("REPS")){
-			vo = MsgCommonVO.builder().bpNo(emp.get("bp_no").toString()).build();
+			vo.setBpNo(emp.get("bp_no").toString());
 		}else{
-			vo = MsgCommonVO.builder().shopId(Integer.parseInt(emp.get("shop_id").toString())).build();
+			vo.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
 		}
 		return selectMsg(vo);
 	}
+
+	public List<Map<String, Object>> selectMsgByUser() {
+		return selectMsgByUser(new MsgCommonVO());
+	}
 	public List<Map<String, Object>> searchMsg(SearchVO vo) {
+		vo.setOrder("regi_dt");
+		vo.setAsc("desc");
 		return msgCommonMapper.searchMsg(vo);
+	}
+
+	public List<Map<String, Object>> searchMsgByUser(SearchVO vo) {
+		String username = SecurityContextUtil.getUsername();
+		Map<String,Object> emp = userCommonService.selectEmpById(username);
+		if(emp.get("role").equals("REPS")){
+			vo.getSelect().put("bp_no",emp.get("bp_no").toString());
+		}else{
+			vo.getSelect().put("shop_id",emp.get("shop_id").toString());
+		}
+		return searchMsg(vo);
 	}
 
 	public int getMaxMsgId(){
@@ -122,8 +143,8 @@ public class MsgCommonService extends CommonService {
 						.replace("%[description]%", map.get("description").toString());
 				break;
 			case -3: // 부가서비스
-				map = itemCommonService.selectPlan(ItemCommonVO.builder().exsvcId(typeId).build()).get(0);
-				content = content.replace("%[ex_svc_nm]%", map.get("ex_svc_nm").toString())
+				map = itemCommonService.selectExsvc(ItemCommonVO.builder().exsvcId(typeId).build()).get(0);
+				content = content.replace("%[exsvc_nm]%", map.get("exsvc_nm").toString())
 						.replace("%[description]%", map.get("description").toString());
 				break;
 			default:
