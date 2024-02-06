@@ -13,7 +13,7 @@ let selected_columns = [
 function changeShop(){
     $('#keyword').val("");
 
-    asc = false;
+    asc = "asc";
     searchMessage();
 }
 
@@ -32,7 +32,7 @@ function searchMessage(){
     selectMap["shop_id"] = $('#filter_shop').val();
     var keyword = $('#keyword').val();
     if(keyword !== ""){
-        searchMap = createMapWithSingleKeyword(keyword, selected_columns);
+        searchMap = createMultiMap(keyword, selected_columns);
     }
 
     var body = {

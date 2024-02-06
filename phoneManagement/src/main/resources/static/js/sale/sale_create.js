@@ -17,6 +17,7 @@ function stepToNext(){
 
     body['sup_div'] = div_sb;
     body['sup_pay'] = pay_sb;
+    body['seller_id'] = $('#user_id').val();
 
     sessionStorage.setItem("formData", JSON.stringify(body));
     sessionStorage.setItem("from", "create");

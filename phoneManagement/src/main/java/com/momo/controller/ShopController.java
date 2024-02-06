@@ -33,9 +33,9 @@ public class ShopController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean createShop(@RequestBody ShopCommonVO vo){
-		Map<String,Object> reps = shopCommonService.selectShopByUser(vo.getRepsId()).get(0);
+		Map<String,Object> corp = shopCommonService.selectCorpByUser(vo.getRepsId());
 
-		vo.setBpNo(reps.get("b_no").toString());
+		vo.setBpNo(corp.get("bp_no").toString());
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
 
 		return shopCommonService.insertShop(vo) != 0;

@@ -23,6 +23,7 @@ import java.util.List;
 public class SaleVO extends CommonQueryVO {
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드
+	private String bpNo; // 사업자등록번호
 
 	// 고객 정보
 	private String custNm; // 고객 이름
@@ -69,7 +70,7 @@ public class SaleVO extends CommonQueryVO {
 
 	// 지원
 	private List<String> supDiv; // 지원구분 리스트
-	private List<Integer> supPay; // 지원금액 리스트
+	private List<String> supPay; // 지원금액 리스트
 
 	// 체크박스
 	private Boolean friend; // 지인

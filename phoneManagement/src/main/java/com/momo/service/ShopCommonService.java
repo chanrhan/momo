@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.ShopCommonMapper;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,8 @@ public class ShopCommonService extends CommonService {
 		return code;
 	}
 
-	public List<Map<String,Object>> selectShopByUser(String id){
-		Map<String,Object> emp = userCommonService.selectEmpById(id);
+	public List<Map<String,Object>> selectShopByUser(){
+		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
 		ShopCommonVO shopCommonVO = new ShopCommonVO();
 		if(emp.get("role").equals("REPS")){
 			shopCommonVO.setBpNo(emp.get("bp_no").toString());
@@ -75,6 +76,11 @@ public class ShopCommonService extends CommonService {
 
 	public List<Map<String,Object>> selectCorp(ShopCommonVO vo) {
 		return shopCommonMapper.selectCorp(vo);
+	}
+
+	public Map<String,Object> selectCorpByUser(String id) {
+		ShopCommonVO vo = ShopCommonVO.builder().repsId(id).build();
+		return shopCommonMapper.selectCorp(vo).get(0);
 	}
 
 	public List<Map<String,Object>> searchCorp(SearchVO vo) {

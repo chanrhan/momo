@@ -50,7 +50,7 @@ function addBranchShop(){
         },
         success: function (result){
             if(result){
-                window.location.href = '/shop';
+                window.location.href = '/shop/home';
             }
         }
     })

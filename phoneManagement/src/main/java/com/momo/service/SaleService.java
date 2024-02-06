@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.mapper.SaleMapper;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SaleVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SaleService extends CommonService {
 	private final SaleMapper saleMapper;
+
+	private final UserCommonService userCommonService;
 
 	public int insertSale(SaleVO vo) {
 		vo.setSaleId(getMaxSaleNo()+1);
@@ -32,29 +35,45 @@ public class SaleService extends CommonService {
 		return saleMapper.selectSale(vo);
 	}
 
+	public List<Map<String,Object>> selectSaleByUser() {
+		return selectSaleByUser(new SaleVO());
+	}
+
+	// SELECT by User Context
+	public List<Map<String,Object>> selectSaleByUser(SaleVO vo) {
+		String username = SecurityContextUtil.getUsername();
+		Map<String,Object> emp = userCommonService.selectEmpById(username);
+		if(emp.get("role").equals("REPS")){
+			vo.setBpNo(emp.get("bp_no").toString());
+		}else{
+			vo.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
+		}
+
+		return selectSale(vo);
+	}
+
+	// SELECT by shop_id
 	public List<Map<String,Object>> selectSaleByShopId(Object id) {
 		SaleVO vo = SaleVO.builder().shopId(Integer.parseInt(id.toString())).build();
 		return selectSale(vo);
 	}
 
+	// SELECT by sale_id
 	public Map<String,Object> selectSaleById(int id){
 		SaleVO vo = SaleVO.builder().saleId(id).build();
-		return selectSale(vo).get(0);
+		return saleMapper.selectSale(vo).get(0);
 	}
 
 	// 추후 각 관리 파트(중고폰/결합/지원/세컨/카드) 에 맞는 컬럼만 DB에서 뽑아올 수 있도록 수정해야 함
 	// ex) 중고폰만 찾는 쿼리면 (개통날짜, 이름, 번호, 식별번호, 중고폰 모델명, 상태, 판매금액, 매니저 아이디) 만 select 하게
 	public List<Map<String,Object>> selectSaleByType(String type){
-		SaleVO vo = SaleVO.builder()
-				.target(type)
-				.order("actv_dt")
-				.asc("desc").build();
-		return saleMapper.selectSaleByType(vo);
+		SaleVO vo = SaleVO.builder().target(type).build();
+		return selectSaleByUser(vo);
 	}
 
-	public List<Map<String,Object>> selectSaleByType(String type, SaleVO vo){
+	public List<Map<String,Object>> searchSaleByType(String type, SearchVO vo){
 		vo.setTarget(type);
-		return saleMapper.selectSaleByType(vo);
+		return searchSaleByUser(vo);
 	}
 
 	public int getMaxSaleNo(){
@@ -67,6 +86,17 @@ public class SaleService extends CommonService {
 
 	public List<Map<String,Object>> searchSale(SearchVO searchVO){
 		return saleMapper.searchSale(searchVO);
+	}
+
+	public List<Map<String,Object>> searchSaleByUser(SearchVO vo){
+		String username = SecurityContextUtil.getUsername();
+		Map<String,Object> emp = userCommonService.selectEmpById(username);
+		if(emp.get("role").equals("REPS")){
+			vo.getSelect().put("bp_no",emp.get("bp_no").toString());
+		}else{
+			vo.getSelect().put("shop_id",emp.get("shop_id").toString());
+		}
+		return saleMapper.searchSale(vo);
 	}
 
 //	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){

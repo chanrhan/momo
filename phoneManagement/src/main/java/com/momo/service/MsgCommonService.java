@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.mapper.ItemCommonMapper;
 import com.momo.mapper.MsgCommonMapper;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,8 +54,8 @@ public class MsgCommonService extends CommonService {
 	public List<Map<String, Object>> selectMsg(MsgCommonVO vo) {
 		return msgCommonMapper.selectMsg(vo);
 	}
-	public List<Map<String, Object>> selectMsgByUser(String id) {
-		Map<String,Object> emp = userCommonService.selectEmpById(id);
+	public List<Map<String, Object>> selectMsgByUser() {
+		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
 
 		MsgCommonVO vo;
 		if(emp.get("role").equals("REPS")){

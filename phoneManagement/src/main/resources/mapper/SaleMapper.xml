@@ -3,31 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="selectSaleByType">
-        select
-        sl.*,
-        sh.shop_nm as shop_nm,
-        ac.name as seller_nm
-        from
-            tb_sale sl
-        left outer join tb_shop sh on sl.shop_id = sh.shop_id
-        left outer join tb_account ac on ac.id = sl.seller_id
-        where
-        <if test='target != null and !target.equals("")'>
-            ${target} is not null and
-            ${target} != '0' and
-        </if>
-        1=1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
-    </select>
-
-
     <update id="updateSale" parameterType="com.momo.vo.SaleVO">
         update
         tb_sale
@@ -88,15 +63,19 @@
         <if test='greenMd != null and !greenMd.equals("")'>
             green_md=#{greenMd},
         </if>
-        green_ret=#{greenRet},
+        <if test='greenRet != null'>
+            green_ret=#{greenRet},
+        </if>
         <if test='secMd != null and !secMd.equals("")'>
             sec_md=#{secMd},
         </if>
 
-        <if test='custNm != null'>
+        <if test='secCms != null'>
             sec_cms=#{secCms},
         </if>
-        sec_st=#{secSt},
+        <if test='secSt != null'>
+            sec_st=#{secSt},
+        </if>
         <if test='wtTp != null and !wtTp.equals("")'>
             wt_tp=#{wtTp},
         </if>
@@ -141,17 +120,31 @@
             sup_div=#{supDiv},
         </if>
 
-        <if test='sup_pay != null and !sup_pay.equals("")'>
-            sup_pay=#{sup_pay},
+        <if test='supPay != null and !supPay.equals("")'>
+            sup_pay=#{supPay},
+        </if>
+        <if test='friend != null'>
+            friend=#{friend},
+        </if>
+        <if test='exsvc != null'>
+            exsvc=#{exsvc},
+        </if>
+        <if test='combMove != null'>
+            comb_move=#{combMove},
+        </if>
+        <if test='combSt != null'>
+            comb_st=#{combSt},
+        </if>
+        <if test='card != null'>
+            card=#{card},
+        </if>
+        <if test='cardSt != null'>
+            card_st=#{cardSt},
+        </if>
+        <if test='cardDiv != null'>
+            card_div=#{cardDiv},
         </if>
 
-        friend=#{friend},
-        exsvc=#{exsvc},
-        comb_move=#{combMove},
-        comb_st=#{combSt},
-        card=#{card},
-        card_st=#{cardSt},
-        card_div=#{cardDiv},
         <if test='totAddPay != null'>
             tot_add_pay=#{totAddPay},
         </if>
@@ -195,8 +188,14 @@
         <if test='wtExprDt != null and !wtExprDt.equals("")'>
             wt_expr_dt=#{wtExprDt},
         </if>
-        non_disc=#{nonDisc},
-        rsv_st=#{rsvSt},
+        <if test='nonDisc != null'>
+            non_disc=#{nonDisc},
+        </if>
+        <if test='rsvSt != null'>
+            rsv_st=#{rsvSt},
+        </if>
+
+
         <if test='actvTime != null and !actvTime.equals("")'>
             actv_time=#{actvTime},
         </if>
@@ -216,11 +215,13 @@
             select
                 sl.*,
                 sh.shop_nm as shop_nm,
-                ac.name as seller_nm
+                ac.name as seller_nm,
+                cp.bp_no as bp_no
             from
                 tb_sale sl
-                    left join tb_shop sh on sl.shop_id = sh.shop_id
+        left join tb_shop sh on sl.shop_id = sh.shop_id
         left outer join tb_account ac on ac.id = sl.seller_id
+        left outer join tb_corp cp on cp.reps_id = sh.reps_id
         )
 
         select
@@ -242,11 +243,13 @@
         select
         sl.*,
         sh.shop_nm as shop_nm,
-        ac.name as seller_nm
+        ac.name as seller_nm,
+        cp.bp_no as bp_no
         from
         tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
         left outer join tb_account ac on ac.id = sl.seller_id
+        left outer join tb_corp cp on cp.reps_id = sh.reps_id
         )
 
         select
@@ -256,6 +259,12 @@
         where
         <if test='saleId != null'>
             sale_id=#{saleId} and
+        </if>
+        <if test='shopId != null'>
+            shop_id=#{shopId} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            bp_no=#{bpNo} and
         </if>
         <if test='custNm != null and !custNm.equals("")'>
             cust_nm=#{custNm} and
@@ -275,7 +284,6 @@
         <if test='provider != null and !provider.equals("")'>
             provider=#{provider} and
         </if>
-
         <if test='actvDt != null and !actvDt.equals("")'>
             actv_dt=#{actvDt} and
         </if>
@@ -454,6 +462,11 @@
 
         <if test='etc != null and !etc.equals("")'>
             etc=#{etc} and
+        </if>
+        <if test='target != null and !target.equals("")'>
+            ${target} is not null and
+            ${target} != '' and
+            ${target} != '0' and
         </if>
         1 = 1
         <if test='order != null and !order.equals("")'>

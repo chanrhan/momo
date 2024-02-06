@@ -33,10 +33,12 @@ public class SaleController {
 		// 3. 해당 매장과 같은 회사의 매장들을 'list_shop'에 할당
 		// 4. 해당 매장의 모든 판매일보들을 'list_sale'에 할당
 
-		String username = SecurityContextUtil.getUsername();
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser(username);
-		Map<String,Object> shop = list_shop.get(0);
-		List<Map<String,Object>> list_sale = saleService.selectSaleByShopId(shop.get("shop_id"));
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+		List<Map<String,Object>> list_sale = saleService.selectSaleByUser();
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
@@ -49,15 +51,19 @@ public class SaleController {
 	public String saleDetail(Model model, @PathVariable int id) {
 		Map<String,Object> map = saleService.selectSaleById(id);
 		System.out.println(map);
+		model.addAttribute("sale", map);
 		Object sup_div = map.get("sup_div");
 		Object sup_pay = map.get("sup_pay");
+		List<SupportVO> list_sup = new ArrayList<>();
 		if(sup_div != null && sup_pay != null){
 			String[] d = sup_div.toString().split(",");
 			String[] p = sup_pay.toString().split(",");
-			map.put("sup_div", d);
-			map.put("sup_pay", p);
+			for(int i=0;i<d.length;++i){
+				list_sup.add(new SupportVO(d[i],p[i]));
+			}
+			System.out.println(list_sup);
 		}
-		model.addAttribute("sale", map);
+		model.addAttribute("list_sup", list_sup);
 		return "sale/sale_detail";
 	}
 
@@ -137,7 +143,7 @@ public class SaleController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO) {
-		return saleService.searchSale(searchVO);
+		return saleService.searchSaleByUser(searchVO);
 	}
 
 	@GetMapping("/msg/form/func")
@@ -157,33 +163,93 @@ public class SaleController {
 
 	@GetMapping("/green")
 	public String saleGreenPhone(Model model){
-		model.addAttribute("list",saleService.selectSaleByType("green_md"));
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+		model.addAttribute("list", saleService.selectSaleByType("green_md"));
 		return "sale/green_phone";
 	}
 	@GetMapping("/card")
 	public String saleCard(Model model){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
 		model.addAttribute("list",saleService.selectSaleByType("card"));
 		return "sale/card";
 	}
 	@GetMapping("/comb")
 	public String saleComb(Model model){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
 		model.addAttribute("list",saleService.selectSaleByType("comb_move"));
 		return "sale/comb";
 	}
 	@GetMapping("/support")
 	public String saleSupport(Model model){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
 		model.addAttribute("list",saleService.selectSaleByType("sup_div1"));
 		return "sale/support";
 	}
 	@GetMapping("/second")
 	public String saleSecondPhone(Model model){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
 		model.addAttribute("list",saleService.selectSaleByType("sec_md"));
 		return "sale/second";
 	}
 
 	@PostMapping("/list/srch/{type}")
 	@ResponseBody
-	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SaleVO vo){
-		return saleService.selectSaleByType(type, vo);
+	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SearchVO vo){
+		String column = "";
+		switch (type){
+			case "green":
+				column = "green_md";
+				break;
+			case "second":
+				column = "sec_md";
+				break;
+			case "support":
+				column = "sup_div1";
+				break;
+			case "comb":
+				column = "comb_move";
+				break;
+			case "card":
+				column = "card";
+				break;
+			default:
+				return null;
+		}
+		return saleService.searchSaleByType(column, vo);
 	}
 }

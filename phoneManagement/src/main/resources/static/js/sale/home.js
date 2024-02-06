@@ -1,8 +1,5 @@
 
-let pageNum = 1;
 let filter_provider = "";
-let order = "actv_dt";
-let asc = 'asc';
 
 let selected_columns = [
     "cust_nm",
@@ -14,14 +11,6 @@ let selected_columns = [
     "seller_id"
 ];
 
-
-function showSaleDetail(saleNo){
-    window.open(
-        "/sale/detail/"+saleNo,
-        "판매일보 추가",
-        "width=800, height=1400, location=no"
-    );
-}
 
 
 function showCreateSaleForm(){
@@ -36,23 +25,6 @@ function showCreateSaleForm(){
     );
 }
 
-function changeShop(){
-    $('#srch_sale').val("");
-    $('#filter_provider').val("");
-
-    order = 'actv_dt';
-    asc = 'desc';
-    searchSale();
-}
-
-function orderSale(th){
-    order = $(th).attr('value');
-    asc = $(th).hasClass('desc') ? 'desc' : 'asc';
-    $(th).toggleClass('desc');
-
-    searchSale();
-}
-
 function searchSale(){
     var searchMap = {};
     var selectMap = {};
@@ -64,7 +36,7 @@ function searchSale(){
     }
     var keyword = $('#srch_sale').val();
     if(keyword !== ""){
-        searchMap = createMapWithSingleKeyword(keyword, selected_columns);
+        searchMap = createMultiMap(keyword, selected_columns);
     }
 
     var body = {

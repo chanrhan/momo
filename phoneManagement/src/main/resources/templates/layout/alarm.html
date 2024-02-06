@@ -5,7 +5,8 @@
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
     <script src="/js/profile/alarm.js" th:inline="javascript"></script>
-    <div id="list_alarm" class="form-control" th:each="alarm : ${list_alarm}" th:object="${alarm}">
+    <div id="list_alarm" class="form-control" th:if="${list_alarm.size() > 0}"
+         th:each="alarm : ${list_alarm}" th:object="${alarm}">
         <h5 th:text="|보낸 사람: *{sender_nm}|"></h5>
         <div th:if="*{alarm_tp == 'approval'}">
             <p th:text="|*{shop_nm} 매장 가입 승인 요청입니다.|"></p>
@@ -25,6 +26,9 @@
         <p th:text="|보낸 날짜: *{send_dt}|"></p>
         <p th:if="*{read_st}" name="read">읽음</p>
         <p th:if="*{!read_st}" th:alarm_id="*{alarm_id}" name="unread">안읽음</p>
-        </div>
     </div>
+    <div th:if="${list_alarm.isEmpty()}">
+        <h4>수신된 알람이 없습니다.</h4>
+    </div>
+</div>
 </html>

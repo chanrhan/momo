@@ -39,7 +39,7 @@
             shop_id=#{id}
     </delete>
 
-    <select id="getMaxCode">
+    <select id="getMaxShopId">
         select
             max(shop_id)
         from
@@ -75,16 +75,29 @@
     </select>
 
     <select id="selectShop" parameterType="com.momo.vo.ShopCommonVO">
+        with tb as (
+            select
+                sh.*,
+                cp.bp_no as bp_no
+            from
+                tb_shop sh
+            left outer join
+                    tb_corp cp on cp.reps_id=sh.reps_id
+        )
+
         select
             *
         from
-            tb_shop
+            tb
         where
         <if test='repsId != null and !repsId.equals("")'>
             reps_id=#{repsId} and
         </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            bp_no=#{bpNo} and
         </if>
         <if test='shopNm != null and !shopNm.equals("")'>
             shop_nm=#{shopNm} and

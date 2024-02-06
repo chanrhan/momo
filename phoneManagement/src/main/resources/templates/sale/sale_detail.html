@@ -15,10 +15,10 @@
     <h4>고객 정보</h4>
     이름<input type="text" class="form-control" name="cust_nm" th:value="*{cust_nm}">
     <br>
-    성별<select name="cust_gd" th:value="*{cust_gd}">
-        <option selected value="law">법인</option>
-        <option value="male">남</option>
-        <option value="female">여</option>
+    성별<select name="cust_gd">
+        <option th:selected="${sale.cust_gd} == 'law'" value="law">법인</option>
+        <option th:selected="${sale.cust_gd} == 'male'" value="male">남</option>
+        <option th:selected="${sale.cust_gd} == 'female'" value="female">여</option>
     </select>
     <br>
     전화번호<input type="text" class="form-control" name="cust_tel" th:value="*{cust_tel}">
@@ -36,9 +36,7 @@
     <br>
     개통 날짜<input type="text" class="form-control" name="actv_dt" th:value="*{actv_dt}">
     <br>
-    판매자 수수료<input type="text" class="form-control" name="seller_cms" th:value="*{seller_cms}">
-    <br>
-    판매자 아이디<input type="text" class="form-control" name="seller_id" th:value="*{seller_id}">
+    판매자 수수료<input type="number" class="form-control" name="seller_cms" th:value="*{seller_cms}">
     <br>
     <h4>그린폰</h4>
     모델명<input type="text" class="form-control" name="green_md" th:value="*{green_md}">
@@ -73,23 +71,23 @@
     날짜<input type="date" class="form-control" name="add_dt" th:value="*{add_dt}">
     <br>
     <h4>지원</h4>
-    <div id="list_sup" th:each="sd : ${sup_div}" th:each="sp : ${sup_pay}">
-        <div>
+    <div id="list_sup" >
+        <div th:each="sup : ${list_sup}">
             지원 구분
-            <select name="sup_div" th:value="${sd}">
-                <option selected value="" disabled>선택 없음</option>
-                <option value="1">카드</option>
-                <option value="2">이체</option>
-                <option value="3">차액 예약</option>
-                <option value="4">일시납 개통(현금 개통)</option>
-                <option value="5">추가지원금(현금 개통)</option>
-                <option value="6">전산 수납(현급 수납)</option>
-                <option value="7">유심(현금 수납)</option>
-                <option value="8">상품권</option>
-                <option value="9">프리미엄 악세서리</option>
-                <option value="10">기타</option>
+            <select name="sup_div">
+                <option th:selected="${sup.supDivId} == ''" value="" disabled>선택 없음</option>
+                <option th:selected="${sup.supDivId} == 1" value="1">카드</option>
+                <option th:selected="${sup.supDivId} == 2" value="2">이체</option>
+                <option th:selected="${sup.supDivId} == 3" value="3">차액 예약</option>
+                <option th:selected="${sup.supDivId} == 4" value="4">일시납 개통(현금 개통)</option>
+                <option th:selected="${sup.supDivId} == 5" value="5">추가지원금(현금 개통)</option>
+                <option th:selected="${sup.supDivId} == 6" value="6">전산 수납(현급 수납)</option>
+                <option th:selected="${sup.supDivId} == 7" value="7">유심(현금 수납)</option>
+                <option th:selected="${sup.supDivId} == 8" value="8">상품권</option>
+                <option th:selected="${sup.supDivId} == 9" value="9">프리미엄 악세서리</option>
+                <option th:selected="${sup.supDivId} == 10" value="10">기타</option>
             </select>
-            지원 금액<input type="number" class="form-control" name="sup_pay" th:value="${sp}">
+            지원 금액<input type="number" class="form-control" name="sup_pay" th:value="${sup.supPay}">
             <button type="button" class="btn-primary" onclick="subSupDiv($(this).parent())">-</button>
         </div>
     </div>
@@ -114,8 +112,6 @@
     총 지원<input type="text" class="form-control" name="tot_sup" th:value="*{tot_sup}">
     <br>
     디펜스율<input type="text" class="form-control" name="def_pc" th:value="*{def_pc}">
-    <br>
-    판매자 수수료<input type="text" class="form-control" name="seller_cms" th:value="*{seller_cms}">
     <br>
     무선 포인트<input type="text" class="form-control" name="ct_pt" th:value="*{ct_pt}">
     <br>

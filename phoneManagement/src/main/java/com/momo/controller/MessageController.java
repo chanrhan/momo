@@ -29,10 +29,8 @@ public class MessageController {
 
 	@GetMapping("/reserve")
 	public String reserveMsgForm(Model model) {
-		String              username = SecurityContextUtil.getUsername();
-
-		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser(username);
-		List<Map<String,Object>> list_msg = msgCommonService.selectMsgByUser(username);
+		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_msg = msgCommonService.selectMsgByUser();
 
 		model.addAttribute("list_msg", list_msg);
 		model.addAttribute("list_shop", list_shop);
