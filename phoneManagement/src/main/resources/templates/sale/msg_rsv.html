@@ -13,7 +13,7 @@
         <input type="hidden" name="form_id" th:value="*{form_id}">
         <h4 th:text="*{form_nm}"></h4>
         <div th:if="${form.select_btn_nm != null}">
-            양식 선택<input type="text" class="form-control" th:type_id="-1" name="type">
+            양식 선택<input type="text" class="form-control" th:type_id="-1" name="type" disabled>
             <br>
             <button th:if="*{form_id <=0}"
                     type="button" class="btn-primary"

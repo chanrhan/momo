@@ -19,7 +19,7 @@
 <!--    <a th:href="@{/sale/support}">지원</a>-->
     <select id="filter_shop" th:value="${selected_shop != null} ? selected_shop.shop_id : 0" onchange="changeShop()">
         <option th:if="${list_shop.isEmpty()}" selected value="" disabled>매장 없음</option>
-        <option th:if="${list_shop.size() > 0}" selected value="">전체</option>
+        <option th:if="${list_shop.size() > 1}" selected value="">전체</option>
         <option th:each="shop : ${list_shop}" th:value="${shop.shop_id}" th:text="${shop.shop_nm}"></option>
     </select>
     <br>

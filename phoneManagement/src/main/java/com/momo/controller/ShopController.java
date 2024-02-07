@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -39,6 +40,26 @@ public class ShopController {
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
 
 		return shopCommonService.insertShop(vo) != 0;
+	}
+
+	@GetMapping("/detail")
+	public String shopDetail(Model model){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		Map<String,Object>       shop      = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+
+		return "shop/shop_detail";
+	}
+
+	@GetMapping("/list/{id}")
+	@ResponseBody
+	public Map<String,Object> selectShopById(@PathVariable int id){
+		return shopCommonService.selectShopById(id);
 	}
 
 	@GetMapping("/city")

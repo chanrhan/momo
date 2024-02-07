@@ -78,11 +78,12 @@
         with tb as (
             select
                 sh.*,
-                cp.bp_no as bp_no
+                cp.bp_no as bp_no,
+                ac.name as reps_nm
             from
                 tb_shop sh
-            left outer join
-                    tb_corp cp on cp.reps_id=sh.reps_id
+            left outer join tb_corp cp on cp.reps_id=sh.reps_id
+            left outer join tb_account ac on ac.id=sh.reps_id
         )
 
         select
