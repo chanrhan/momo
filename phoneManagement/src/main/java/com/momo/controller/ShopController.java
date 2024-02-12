@@ -2,6 +2,7 @@ package com.momo.controller;
 
 import com.momo.service.RegionService;
 import com.momo.service.ShopCommonService;
+import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,5 +67,11 @@ public class ShopController {
 	@ResponseBody
 	public String[] getCitiesByState(@RequestParam String state){
 		return regionService.selectByState(state).split(",");
+	}
+
+	@PostMapping("/search/shop")
+	@ResponseBody
+	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
+		return shopCommonService.searchShop(vo);
 	}
 }

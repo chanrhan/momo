@@ -29,7 +29,7 @@ public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 		businesses.add(map);
 		body.put("businesses",businesses);
 		String json = JSONObject.toJSONString(body);
-		System.out.println(json);
+//		System.out.println(json);
 
 		StringBuilder urlBuilder = new StringBuilder(serviceUrl);
 		try{

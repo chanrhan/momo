@@ -16,7 +16,7 @@ function searchCorp(){
     }
 
     $.ajax({
-        url: '/account/search/shop',
+        url: '/shop/search/shop',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),

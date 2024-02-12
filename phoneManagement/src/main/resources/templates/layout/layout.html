@@ -12,9 +12,10 @@
 
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
-
+`
 <!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
     <script>
+        // 웹소켓은 사용하는 IP 마다 바꿔줘야 한다..
         const ws = new WebSocket("ws://192.168.35.241:8080/ws");
         let alarm_count = 0;
     </script>

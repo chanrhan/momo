@@ -11,6 +11,7 @@
 <button type="button" class="btn-primary" onclick="updateSale()">수정</button>
 <button type="button" class="btn-primary" onclick="stepToMessageReserve()">문자 예약</button>
 <form id="detail_form" th:object="${sale}">
+    <input type="hidden" id="sale_id" name="sale_id" th:value="*{sale_id}">
     <input type="hidden" id="shop_id" name="shop_id" th:value="*{shop_id}">
     <h4>고객 정보</h4>
     이름<input type="text" class="form-control" name="cust_nm" th:value="*{cust_nm}">

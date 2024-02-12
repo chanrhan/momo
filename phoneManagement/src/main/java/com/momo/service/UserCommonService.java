@@ -4,12 +4,14 @@ import com.momo.domain.user.UserDetailsImpl;
 import com.momo.mapper.UserCommonMapper;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,6 +26,18 @@ import java.util.*;
 public class UserCommonService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserCommonMapper userCommonMapper;
+
+	public void loginWithoutForm(String username, HttpSession session){
+		UserDetails user = loadUserByUsername(username);
+		Authentication auth = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		context.setAuthentication(auth);
+		SecurityContextHolder.setContext(context);
+		// 수정된 context를 현재 session에 넣어줘야 로그인 상태가 유지된다. 
+		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+
+		System.out.println(SecurityContextHolder.getContext());
+	}
 
 	// User Account
 	public int insertUser(UserCommonVO vo){

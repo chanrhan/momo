@@ -44,7 +44,7 @@ function updateSale(){
 function deleteSale(){
 
     $.ajax({
-        url: '/sale/delete/'+$('#saleNo').val(),
+        url: '/sale/delete/'+$('#sale_id').val(),
         type: 'get',
         success: function (result){
             if(result){

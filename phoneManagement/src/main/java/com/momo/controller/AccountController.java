@@ -2,9 +2,11 @@ package com.momo.controller;
 
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,8 +70,14 @@ public class AccountController {
 
 	@PostMapping("/submit")
 	@ResponseBody
-	public boolean signupSubmit(@RequestBody UserCommonVO vo) {
-		return userCommonService.insertUser(vo) != 0;
+	public boolean signupSubmit(@RequestBody UserCommonVO vo, HttpSession session) {
+		int result = userCommonService.insertUser(vo);
+		if(result == 0){
+			return false;
+		}
+		userCommonService.loginWithoutForm(vo.getId(), session);
+
+		return result != 0;
 	}
 
 	@PostMapping("/submit/admin")
