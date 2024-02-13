@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Test Home</title>
@@ -10,6 +13,7 @@
 <!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+    <script src="/js/test/test.js" th:inline="javascript"></script>
 </head>
 <body>
 <input type="search" list="list_search">
@@ -20,88 +24,14 @@
     <option value="날조"></option>
     <option value="오늘의뉴스"></option>
 </datalist>
-<script>
-    const header = $("meta[name='_csrf_header']").attr('content');
-    const token = $("meta[name='_csrf']").attr('content');
-
-    function post(side){
-        var data = {
-            name: 'Hee Chan'
-        };
-        var rst = "";
-
-        $.ajax({
-            async: false,
-            url: '/test/post',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            beforeSend: function (xhr){
-                xhr.setRequestHeader(header, token);
-                console.log("before: "+rst);
-            },
-            success: function (result){
-                rst = result;
-                console.log("success: "+rst);
-            },
-            error: function (error){
-                console.log(error);
-            },
-            complete: function (ret){
-                console.log("complete: "+rst);
-            }
-        });
-       console.log("final: "+rst);
-    }
-
-    function get(side){
-        var rst = "";
-
-        $.ajax({
-            async: (side === 'true'),
-            url: '/test/get?name=Chan',
-            type: 'get',
-            success: function (result){
-                rst = result;
-                console.log("success: "+rst);
-            },
-            error: function (error){
-                console.log(error);
-            }
-        });
-        console.log("final: "+rst);
-    }
-
-    function getMAP(){
-        var body = {
-            sale_id: 4
-        }
-
-        $.ajax({
-            url: '/test/map',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(body),
-            beforeSend: function (xhr){
-                xhr.setRequestHeader(header, token);
-            },
-            success: function (result){
-                console.log(result);
-            }
-        });
-    }
-</script>
-<!--<a th:href="@{/test/search}">검색 테스트</a>-->
-async:
-<select id="async" class="form-select">
-    <option th:value="false">false</option>
-    <option th:value="true">true</option>
-</select>
 <br>
 <button type="button" class="btn btn-primary" onclick="post($('#async').val())">POST</button>
 <button type="button" class="btn btn-primary" onclick="get($('#async').val())">GET</button>
 
 <button type="button" class="btn btn-primary" onclick="getMAP()">쿼리 결과 반환</button>
+
+<br>
+<button type="button" class="btn btn-primary" onclick="trTest()">트랜잭션 테스트</button>
 
 </body>
 </html>

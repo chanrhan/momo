@@ -7,6 +7,7 @@ import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class ShopController {
 
 	@PostMapping("/create")
 	@ResponseBody
+//	@Transactional
 	public boolean createShop(@RequestBody ShopCommonVO vo){
 		Map<String,Object> corp = shopCommonService.selectCorpByUser(vo.getRepsId());
 

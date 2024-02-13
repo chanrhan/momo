@@ -6,10 +6,12 @@ import com.momo.service.UserCommonService;
 import com.momo.util.MessageAPIUtil;
 import com.momo.vo.SaleVO;
 import com.momo.vo.ShopCommonVO;
+import com.momo.vo.UserCommonVO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -63,5 +65,23 @@ public class TestController {
 		System.out.println(map);
 		System.out.println(map.get("green_md"));
 		return map;
+	}
+
+	@GetMapping("/tr")
+	@ResponseBody
+	@Transactional
+	public String transactionTest(){
+		UserCommonVO vo = UserCommonVO.builder()
+				.id("adminadmin")
+				.pwd("0000")
+				.name("chan_test")
+				.email("km1104rs@naver.com")
+				.tel("01045240636")
+				.terms("00010").build();
+		userCommonService.insertUser(vo);
+
+		vo.setRole("MANAGER");
+		userCommonService.insertEmp(vo);
+		return "Success";
 	}
 }

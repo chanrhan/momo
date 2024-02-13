@@ -33,10 +33,8 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
 		context.setAuthentication(auth);
 		SecurityContextHolder.setContext(context);
-		// 수정된 context를 현재 session에 넣어줘야 로그인 상태가 유지된다. 
+		// 수정된 context를 현재 session에 넣어줘야 로그인 상태가 유지된다.
 		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
-
-		System.out.println(SecurityContextHolder.getContext());
 	}
 
 	// User Account

@@ -43,7 +43,7 @@ public class MessageController {
 	@PostMapping("/reserve")
 	@ResponseBody
 	public boolean reserveMsgPOST(@RequestBody MsgCommonVO vo) {
-		System.out.println(vo);
+//		System.out.println(vo);
 		return msgCommonService.reserve(vo) != 0;
 	}
 

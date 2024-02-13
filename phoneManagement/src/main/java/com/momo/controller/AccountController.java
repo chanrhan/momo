@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,8 +83,9 @@ public class AccountController {
 
 	@PostMapping("/submit/admin")
 	@ResponseBody
+	@Transactional
 	public boolean submitAdmin(@RequestBody UserCommonVO vo) {
-		System.out.println(vo);
+//		System.out.println(vo);
 		String role = vo.getRole();
 		int result = userCommonService.updateRole(vo.getId(), role);
 		if (result == 0) {
@@ -96,8 +98,9 @@ public class AccountController {
 
 	@PostMapping("/submit/role")
 	@ResponseBody
+	@Transactional
 	public boolean submitRole(@RequestBody UserCommonVO vo) {
-		System.out.println(vo);
+//		System.out.println(vo);
 		String role = vo.getRole();
 		int result = userCommonService.updateRole(vo.getEmpId(), role);
 		if (result == 0) {
@@ -161,6 +164,7 @@ public class AccountController {
 
 	@PostMapping("/approve")
 	@ResponseBody
+	@Transactional
 	public boolean approve(@RequestBody AlarmVO vo){
 		int result = userCommonService.updateApproveState(vo.getSenderId(), true);
 		if(result == 0){

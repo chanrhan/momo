@@ -95,7 +95,7 @@ public class SaleController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean saleCreatePOST(@RequestBody SaleVO vo) {
-		System.out.println(vo);
+//		System.out.println(vo);
 		return saleService.insertSale(vo) != 0;
 	}
 
