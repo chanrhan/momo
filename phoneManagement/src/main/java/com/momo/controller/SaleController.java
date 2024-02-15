@@ -1,5 +1,7 @@
 package com.momo.controller;
 
+import com.momo.auth.Approval;
+import com.momo.auth.RoleAuth;
 import com.momo.service.*;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
@@ -27,6 +29,7 @@ public class SaleController {
 	private final ItemCommonService itemCommonService;
 
 	@GetMapping("/home")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleHome(Model model) {
 		// 1. 현재 로그인된 유저의 아이디를 가져옴
 		// 2. 유저가 속한 매장을 찾아 'selected_shop'에 할당
@@ -48,6 +51,7 @@ public class SaleController {
 	}
 
 	@GetMapping("/detail/{id}")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleDetail(Model model, @PathVariable int id) {
 		Map<String,Object> map = saleService.selectSaleById(id);
 		System.out.println(map);
@@ -68,6 +72,7 @@ public class SaleController {
 	}
 
 	@GetMapping("/create/form")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleCreateGET(Model model, @RequestParam int shopId) {
 		String username = SecurityContextUtil.getUsername();
 		Map<String,Object> shopMap = shopCommonService.selectShopById(shopId);
@@ -100,6 +105,7 @@ public class SaleController {
 	}
 
 	@GetMapping("/msg/rsv")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String msgReservation(Model model) {
 		List<Map<String,Object>> defaultForm = msgCommonService.getAllDefaultForm();
 		model.addAttribute("default_form", defaultForm);
@@ -107,16 +113,19 @@ public class SaleController {
 	}
 
 	@GetMapping("/graph")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleGraph() {
 		return "sale/graph";
 	}
 
 	@GetMapping("/msg_form")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String msgForm() {
 		return "sale/msg_form";
 	}
 
 	@GetMapping("/plan/list")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String planList(Model model) {
 		model.addAttribute("list_plan", itemCommonService.selectPlan(null));
 		return "sale/plan_list";
@@ -129,6 +138,7 @@ public class SaleController {
 	}
 
 	@GetMapping("/exsvc/list")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String extraServiceList(Model model) {
 		model.addAttribute("list_exsvc", itemCommonService.selectExsvc(null));
 		return "sale/ex_svc_list";
@@ -162,6 +172,7 @@ public class SaleController {
 	// 매장 관리
 
 	@GetMapping("/green")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleGreenPhone(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object> shop = null;
@@ -175,6 +186,7 @@ public class SaleController {
 		return "sale/green_phone";
 	}
 	@GetMapping("/card")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleCard(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object> shop = null;
@@ -188,6 +200,7 @@ public class SaleController {
 		return "sale/card";
 	}
 	@GetMapping("/comb")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleComb(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object> shop = null;
@@ -201,6 +214,7 @@ public class SaleController {
 		return "sale/comb";
 	}
 	@GetMapping("/support")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleSupport(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object> shop = null;
@@ -214,6 +228,7 @@ public class SaleController {
 		return "sale/support";
 	}
 	@GetMapping("/second")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleSecondPhone(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object> shop = null;

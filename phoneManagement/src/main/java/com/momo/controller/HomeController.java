@@ -1,5 +1,6 @@
 package com.momo.controller;
 
+import com.momo.auth.RoleAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,8 @@ public class HomeController {
 		return "main/preview";
 	}
 
-//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/home")
+	@PreAuthorize("isAuthenticated()")
 	public String home(){
 		return "main/home";
 	}

@@ -1,10 +1,12 @@
 package com.momo.controller;
 
+import com.momo.auth.RoleAuth;
 import com.momo.service.AlarmService;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
+@PreAuthorize("isAuthenticated()")
 public class AlarmController {
 	private final AlarmService alarmService;
 

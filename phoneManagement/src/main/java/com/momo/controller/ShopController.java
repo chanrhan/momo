@@ -1,5 +1,6 @@
 package com.momo.controller;
 
+import com.momo.auth.RoleAuth;
 import com.momo.service.RegionService;
 import com.momo.service.ShopCommonService;
 import com.momo.vo.SearchVO;
@@ -7,7 +8,6 @@ import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +23,13 @@ public class ShopController {
 	private final RegionService     regionService;
 
 	@GetMapping("/home")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String shopHome(){
 		return "shop/home";
 	}
 
 	@GetMapping("/branch")
+	@RoleAuth(role = RoleAuth.Role.REPS)
 	public String shopBranch(Model model){
 		model.addAttribute("list_state", regionService.selectAllState());
 		return "shop/shop_branch";
@@ -46,6 +48,7 @@ public class ShopController {
 	}
 
 	@GetMapping("/detail")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String shopDetail(Model model){
 		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
 		Map<String,Object>       shop      = null;

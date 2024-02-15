@@ -1,14 +1,13 @@
 package com.momo.controller;
 
+import com.momo.auth.RoleAuth;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,7 @@ public class AccountController {
 		return "account/login";
 	}
 
-//	@PreAuthorize("isAnonymous()")
+
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		List<Map<String,Object>> list_term = termService.selectTerm(null);
@@ -43,34 +42,39 @@ public class AccountController {
 		return "account/signup";
 	}
 
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/role")
-	public String roleSelect() {
-		return "account/role_select";
-	}
 
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/role/reps")
+	@RoleAuth(role = RoleAuth.Role.NONE)
 	public String roleReps(Model model) {
 		model.addAttribute("list_state", regionService.selectAllState());
 
 		return "account/role_reps";
 	}
 
-	@PreAuthorize("isAuthenticated()")
+
+	@GetMapping("/role")
+	@RoleAuth(role = RoleAuth.Role.NONE)
+	public String roleSelect(Model model) {
+		return "account/role_select";
+	}
+
+
 	@GetMapping("/role/manager")
+	@RoleAuth(role = RoleAuth.Role.NONE)
 	public String roleManager() {
 		return "account/role_manager";
 	}
 
-	@PreAuthorize("isAuthenticated()")
+
 	@GetMapping("/role/customer")
+	@RoleAuth(role = RoleAuth.Role.NONE)
 	public String roleCustomer(Model model) {
 		return "account/role_customer";
 	}
 
 	@PostMapping("/submit")
 	@ResponseBody
+	@Transactional
 	public boolean signupSubmit(@RequestBody UserCommonVO vo, HttpSession session) {
 		int result = userCommonService.insertUser(vo);
 		if(result == 0){

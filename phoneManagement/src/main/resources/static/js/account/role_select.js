@@ -1,12 +1,12 @@
 
 // url 보안
-$(document).ready(function (){
-    var role = $('#user_role').val();
-    if(role !== "NONE"){
-        alert("이미 역할이 등록된 사용자입니다");
-        window.location.href = "/home";
-    }
-});
+// $(document).ready(function (){
+//     var role = $('#user_role').val();
+//     if(role !== "NONE"){
+//         alert("이미 역할이 등록된 사용자입니다");
+//         window.location.href = "/home";
+//     }
+// });
 
 
 // 역할 선택 후 페이지 이동

@@ -29,6 +29,16 @@ public class TestController {
 		return "test/home";
 	}
 
+	@GetMapping("/error")
+	public String testError(){
+		return "test/error";
+	}
+
+	@GetMapping("/error/none")
+	public String testErrorNone(){
+		return "test/error_none";
+	}
+
 	@Data
 	static class Test{
 		private String name;

@@ -1,5 +1,7 @@
 package com.momo.controller;
 
+import com.momo.auth.Approval;
+import com.momo.auth.RoleAuth;
 import com.momo.service.MsgCommonService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserCommonService;
@@ -8,6 +10,7 @@ import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.SupportVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +22,20 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/msg")
+@PreAuthorize("isAuthenticated()")
 public class MessageController {
 	private final UserCommonService userCommonService;
 	private final MsgCommonService  msgCommonService;
 	private final ShopCommonService shopCommonService;
 
 	@GetMapping("/home")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String msgHome() {
 		return "message/msg_home";
 	}
 
 	@GetMapping("/reserve")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String reserveMsgForm(Model model) {
 		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser();
 		List<Map<String,Object>> list_msg = msgCommonService.selectMsgByUser();
@@ -48,12 +54,14 @@ public class MessageController {
 	}
 
 	@GetMapping("/detail/{id}")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String msgDetail(Model model, @PathVariable int id) {
 		model.addAttribute("msg",msgCommonService.selectMsgById(id));
 		return "message/msg_detail";
 	}
 
 	@GetMapping("/send")
+	@RoleAuth(role = RoleAuth.Role.REPS)
 	public String sendMsg() {
 		return "message/msg_send";
 	}
