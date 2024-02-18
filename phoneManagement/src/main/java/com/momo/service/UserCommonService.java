@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.domain.user.UserDetailsImpl;
 import com.momo.mapper.UserCommonMapper;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +29,18 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	private final PasswordEncoder  passwordEncoder;
 	private final UserCommonMapper userCommonMapper;
 
+	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo){
+		if(vo.getOrder() == null){
+			vo.setOrder("regi_dt");
+		}
+		return userCommonMapper.selectUserInfo(vo);
+	}
+
+	public List<Map<String,Object>> searchUserInfo(SearchVO vo){
+		return userCommonMapper.searchUserInfo(vo);
+	}
+
+	// Common
 	public void loginWithoutForm(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
 		Authentication auth = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
@@ -62,6 +76,12 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	public List<Map<String,Object>> selectUser(UserCommonVO vo) {
 		return userCommonMapper.selectUser(vo);
 	}
+
+	public Map<String,Object> selectUserByContext(){
+		String username = SecurityContextUtil.getUsername();
+		return selectUserById(username);
+	}
+
 	public Map<String,Object> selectUserById(String id){
 		UserCommonVO vo = UserCommonVO.builder().id(id).build();
 		List<Map<String,Object>> list = selectUser(vo);

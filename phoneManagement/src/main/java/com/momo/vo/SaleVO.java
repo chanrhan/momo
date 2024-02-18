@@ -21,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleVO extends CommonQueryVO {
+	private Integer dupTel; // 중복된 전화번호 개수
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드
 	private String bpNo; // 사업자등록번호
@@ -31,11 +32,15 @@ public class SaleVO extends CommonQueryVO {
 	private String custTel; // 고객 전화번호
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 
+	// 날씨
+	private int weather; // 날씨 코드
+
 	// 개통 정보
 	private String    provider; // 통신사
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
 	private LocalDate actvDt; // 개통일자 (Activate)
 	private String    phMd; // 핸드폰 모델명 (Model)
+	private String phColor; //
 	private String  phStor; // 핸드폰 용량 (Storage)
 	private String  istm; // 할부 (Installment)
 	private String  actvDiv; // 개통 구분 (Division)

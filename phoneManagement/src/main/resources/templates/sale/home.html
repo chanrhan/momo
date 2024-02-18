@@ -55,7 +55,7 @@
             th:classappend="${sale.rsv_st == false} ? 'msg-send'">
             <td th:text="*{shop_nm}"></td>
             <td th:text="*{cust_nm}"></td>
-            <td th:text="*{cust_tel}"></td>
+            <td th:text="|*{cust_tel} (*{dup_tel})|"></td>
             <td th:text="*{cust_cd}"></td>
             <td th:text="*{ph_md}"></td>
             <td th:text="${#temporals.format(sale.actv_dt,'yyyy-MM-dd HH:mm')}"></td>

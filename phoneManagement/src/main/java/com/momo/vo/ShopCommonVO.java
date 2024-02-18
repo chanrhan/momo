@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ShopCommonVO extends CommonQueryVO {
+	private Integer corpId;
 	private String        bpNo;
 	private String        bpKoNm; // 시압지명 한글
 	private String        bpEnNm; // 사업자명 영문
@@ -26,5 +27,6 @@ public class ShopCommonVO extends CommonQueryVO {
 	private String  repsNm;
 	private String  shopNm;
 	private String  shopTel;
+	private String  sendTel;
 	private String  shopAddr;
 }

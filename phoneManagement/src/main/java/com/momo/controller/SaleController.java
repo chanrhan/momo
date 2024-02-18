@@ -1,6 +1,5 @@
 package com.momo.controller;
 
-import com.momo.auth.Approval;
 import com.momo.auth.RoleAuth;
 import com.momo.service.*;
 import com.momo.util.SecurityContextUtil;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,16 +34,16 @@ public class SaleController {
 		// 3. 해당 매장과 같은 회사의 매장들을 'list_shop'에 할당
 		// 4. 해당 매장의 모든 판매일보들을 'list_sale'에 할당
 
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
-		if(!list_shop.isEmpty()){
+		if(list_shop != null && !list_shop.isEmpty()){
 			shop = list_shop.get(0);
+			List<Map<String,Object>> list_sale = saleService.selectSaleByContext();
+			model.addAttribute("list_sale", list_sale);
 		}
-		List<Map<String,Object>> list_sale = saleService.selectSaleByUser();
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list_sale", list_sale);
 
 		return "sale/home";
 	}
@@ -118,12 +116,6 @@ public class SaleController {
 		return "sale/graph";
 	}
 
-	@GetMapping("/msg_form")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String msgForm() {
-		return "sale/msg_form";
-	}
-
 	@GetMapping("/plan/list")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String planList(Model model) {
@@ -153,7 +145,7 @@ public class SaleController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO) {
-		return saleService.searchSaleByUser(searchVO);
+		return saleService.searchSaleByRole(searchVO);
 	}
 
 	@GetMapping("/msg/form/func")
@@ -174,7 +166,7 @@ public class SaleController {
 	@GetMapping("/green")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleGreenPhone(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -188,7 +180,7 @@ public class SaleController {
 	@GetMapping("/card")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleCard(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -202,7 +194,7 @@ public class SaleController {
 	@GetMapping("/comb")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleComb(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -216,7 +208,7 @@ public class SaleController {
 	@GetMapping("/support")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleSupport(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -230,7 +222,7 @@ public class SaleController {
 	@GetMapping("/second")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleSecondPhone(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -266,5 +258,28 @@ public class SaleController {
 				return null;
 		}
 		return saleService.searchSaleByType(column, vo);
+	}
+
+	@PostMapping("/count/tel")
+	@ResponseBody
+	public int countTel(@RequestBody SaleVO vo){
+		Integer shopId = vo.getShopId();
+		String custTel = vo.getCustTel();
+		System.out.println(shopId+", "+custTel);
+		if(shopId == null || custTel == null){
+			return 0;
+		}
+
+		return saleService.countTel(vo);
+	}
+
+	@PostMapping("/dup/tel")
+	@ResponseBody
+	public List<Map<String,Object>> checkDupTelOnDate(@RequestBody SaleVO vo){
+		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
+			return null;
+		}
+
+		return saleService.dupTelOnMonth(vo);
 	}
 }

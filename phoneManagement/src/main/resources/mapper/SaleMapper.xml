@@ -3,6 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="dupTelOnMonth">
+        select *
+        from tb_sale
+        where
+            shop_id = #{shopId} and
+            MONTH(actv_dt) = MONTH(#{actvDt}) and
+            YEAR(actv_dt) = YEAR(#{actvDt}) and
+            cust_tel=#{custTel}
+    </select>
+
+    <select id="countTel">
+        select
+            count(*)
+        from
+            tb_sale
+        where
+            shop_id=#{shopId} and
+            cust_tel=#{custTel}
+    </select>
+
     <update id="updateSale" parameterType="com.momo.vo.SaleVO">
         update
         tb_sale
@@ -213,21 +233,31 @@
     <select id="searchSale" parameterType="com.momo.vo.SearchVO">
         with tb as (
             select
+                count(cust_tel) as dup_tel,
+                cust_tel as tel
+            from
+                tb_sale
+            group by
+                cust_tel
+        )
+
+        select
+            tb2.*,
+            tb.dup_tel
+        from
+            (
+                select
                 sl.*,
                 sh.shop_nm as shop_nm,
                 ac.name as seller_nm,
                 cp.bp_no as bp_no
-            from
+                from
                 tb_sale sl
-        left join tb_shop sh on sl.shop_id = sh.shop_id
-        left outer join tb_account ac on ac.id = sl.seller_id
-        left outer join tb_corp cp on cp.reps_id = sh.reps_id
-        )
-
-        select
-            *
-        from
-            tb
+                left outer join tb_shop sh on sl.shop_id = sh.shop_id
+                left outer join tb_account ac on ac.id = sl.seller_id
+                left outer join tb_corp cp on cp.corp_id = sh.corp_id
+            ) tb2
+        left outer join tb on tb.tel=tb2.cust_tel
         where
         <if test='target != null and !target.equals("")'>
             ${target} is not null and
@@ -241,6 +271,20 @@
     <select id="selectSale" parameterType="com.momo.vo.SaleVO">
         with tb as (
         select
+        count(cust_tel) as dup_tel,
+        cust_tel as tel
+        from
+        tb_sale
+        group by
+        cust_tel
+        )
+
+        select
+        tb2.*,
+        tb.dup_tel
+        from
+        (
+        select
         sl.*,
         sh.shop_nm as shop_nm,
         ac.name as seller_nm,
@@ -249,14 +293,13 @@
         tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
         left outer join tb_account ac on ac.id = sl.seller_id
-        left outer join tb_corp cp on cp.reps_id = sh.reps_id
-        )
-
-        select
-            *
-        from
-            tb
+        left outer join tb_corp cp on cp.corp_id = sh.corp_id
+        ) tb2
+        left outer join tb on tb.tel=tb2.cust_tel
         where
+        <if test='dupTel != null'>
+            dup_tel=#{dupTel} and
+        </if>
         <if test='saleId != null'>
             sale_id=#{saleId} and
         </if>

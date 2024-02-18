@@ -27,9 +27,13 @@ public class UserCommonVO extends CommonQueryVO {
 	private String tel;
 	private String terms;
 
+	private int userSt = 1; // 유저 상태 (0: 탈퇴, 1: 정상, 2: 유령)
+
 	private String  role;
 	private Boolean approvalSt; // 승인 여부
 
+	private Integer corpId; // 회사 아이디
+	
 	private Integer       shopId;
 	private String        shopNm;
 	private String        shopAddr;

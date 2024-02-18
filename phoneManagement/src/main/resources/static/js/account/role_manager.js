@@ -30,8 +30,8 @@ function searchCorp(){
             result.forEach(function (value, index, array){
                 list_shop.innerHTML += "<tr shop_id='" +
                     value.shop_id +
-                    "' reps_id='" +
-                    value.reps_id +
+                    "' corp_id='" +
+                    value.corp_id +
                     "' onclick='submitMANAGER(this)" +
                     "'>" +
                     "<td>" +
@@ -61,7 +61,7 @@ function searchCorp(){
 function submitMANAGER(_this){
     var userId = $('#user_id').val();
     var shopId = $(_this).attr('shop_id');
-    var repsId = $(_this).attr('reps_id');
+    var corpId = $(_this).attr('corp_id');
     // console.log(shopId + ", "+ repsId);
 
     var data = {
@@ -75,7 +75,7 @@ function submitMANAGER(_this){
         data = {
             alarm_tp: 'approval',
             sender_id: userId,
-            receiver_id: repsId
+            receiver_id: corpId
         };
 
         ws.send(JSON.stringify(data));

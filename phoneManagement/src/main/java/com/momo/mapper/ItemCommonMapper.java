@@ -10,7 +10,10 @@ import java.util.Map;
 
 @Mapper
 public interface ItemCommonMapper {
-	public Map<String,String> getByMap(int id);
+	// Phone Model
+	public List<Map<String,Object>> selectPhoneModel(ItemCommonVO vo);
+	public String getColorById(String id);
+	public String getStorageById(String id);
 
 	// Extra Service
 	public int insertExsvc(ItemCommonVO vo);

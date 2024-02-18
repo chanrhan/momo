@@ -3,13 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopCommonMapper">
+    <select id="getBpNoByShopId">
+        select
+            cp.bp_no
+        from
+            tb_shop sh
+        left outer join tb_corp cp on sh.corp_id=cp.corp_id
+        where
+            shop_id=#{id}
+    </select>
+
 <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.vo.UserCommonVO">
         insert into
             tb_shop
-            (shop_id, reps_id, shop_nm, shop_addr, shop_tel)
+            (shop_id, corp_id, shop_nm, shop_addr, shop_tel)
         values
-            (#{shopId},#{repsId},#{shopNm},#{shopAddr},#{shopTel})
+            (#{shopId},#{corpId},#{shopNm},#{shopAddr},#{shopTel})
     </insert>
 
     <update id="updateShop" parameterType="com.momo.vo.UserCommonVO">
@@ -23,7 +33,9 @@
         <if test='shopTel != null and !shopTel.equals("")'>
             shop_tel=#{shopTel},
         </if>
-
+        <if test='sendTel != null and !sendTel.equals("")'>
+            send_tel=#{sendTel},
+        </if>
         <if test='shopAddr != null and !shopAddr.equals("")'>
             shop_addr=#{shopAddr},
         </if>
@@ -61,7 +73,7 @@
                 s.regi_dt as regi_dt
             from
                 tb_corp as c
-            left outer join tb_shop s on c.reps_id = s.reps_id
+            left outer join tb_shop s on c.corp_id = s.corp_id
             )
 
         select
@@ -82,8 +94,8 @@
                 ac.name as reps_nm
             from
                 tb_shop sh
-            left outer join tb_corp cp on cp.reps_id=sh.reps_id
-            left outer join tb_account ac on ac.id=sh.reps_id
+            left outer join tb_corp cp on cp.corp_id=sh.corp_id
+            left outer join tb_account ac on ac.id=cp.reps_id
         )
 
         select
@@ -91,8 +103,8 @@
         from
             tb
         where
-        <if test='repsId != null and !repsId.equals("")'>
-            reps_id=#{repsId} and
+        <if test='corpId != null and !corpId.equals("")'>
+            corp_id=#{corpId} and
         </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
@@ -128,9 +140,9 @@
     <insert id="insertCorp" parameterType="com.momo.vo.ShopCommonVO">
         insert into
             tb_corp
-            (reps_id, bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
+            (corp_id,reps_id, bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
         values
-            (#{repsId},#{bpNo},#{bpKoNm},#{bpEnNm},#{corpNm},#{corpTel},#{startDt})
+            (#{corpId},#{repsId},#{bpNo},#{bpKoNm},#{bpEnNm},#{corpNm},#{corpTel},#{startDt})
     </insert>
 
     <update id="updateCorp" parameterType="com.momo.vo.ShopCommonVO">
@@ -158,15 +170,22 @@
         </if>
         reps_id=#{repsId}
         where
-            reps_id=#{repsId}
+            corp_id=#{corpId}
     </update>
 
     <delete id="deleteCorp">
         delete from
             tb_corp
         where
-            reps_id=#{id}
+            corp_id=#{id}
     </delete>
+
+    <select id="getMaxCorpId">
+        select
+            max(corp_id)
+        from
+            tb_corp
+    </select>
 
     <select id="selectCorp" parameterType="com.momo.vo.ShopCommonVO">
         select
@@ -174,6 +193,9 @@
         from
             tb_corp
         where
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
+        </if>
         <if test='repsId != null and !repsId.equals("")'>
             reps_id=#{repsId} and
         </if>

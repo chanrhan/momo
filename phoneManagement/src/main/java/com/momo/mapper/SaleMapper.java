@@ -1,6 +1,5 @@
 package com.momo.mapper;
 
-import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SaleVO;
 import com.momo.vo.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,4 +16,6 @@ public interface SaleMapper{
 	public List<Map<String,Object>> selectSale(SaleVO vo);
 	public List<Map<String,Object>> searchSale(SearchVO vo);
 	public Integer getMaxId();
+	public Integer countTel(SaleVO vo);
+	public List<Map<String,Object>> dupTelOnMonth(SaleVO vo);
 }

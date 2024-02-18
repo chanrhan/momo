@@ -16,7 +16,7 @@
                     <div class="nav-item">
                         <a class="nav-link" sec:authorize="isAuthenticated()"
                            th:text="${#authentication.getPrincipal().getUsername()}"
-                            th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}"></a>
+                            th:href="@{/profile/home}"></a>
                     </div>
                     <div sec:authorize="hasAuthority('APPROVE') or hasAuthority('ADMIN')">
                         <p sec:authorize="hasAuthority('ADMIN')">관리자</p>

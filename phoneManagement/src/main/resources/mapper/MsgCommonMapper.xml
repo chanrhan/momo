@@ -100,7 +100,7 @@
             tb_msg_rsv mr
             left outer join tb_shop sh on mr.shop_id=sh.shop_id
             left outer join tb_account a on mr.seller_id=a.id
-            left outer join tb_corp cp on cp.reps_id=sh.reps_id
+            left outer join tb_corp cp on cp.corp_id=sh.corp_id
         )
 
         select
@@ -153,7 +153,7 @@
                 tb_msg_rsv mr
                     left outer join tb_shop sh on mr.shop_id=sh.shop_id
                     left outer join tb_account a on mr.seller_id=a.id
-                    left outer join tb_corp cp on cp.reps_id=sh.reps_id
+                    left outer join tb_corp cp on cp.corp_id=sh.corp_id
         )
 
         select

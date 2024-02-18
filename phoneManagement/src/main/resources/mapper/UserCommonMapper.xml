@@ -3,6 +3,86 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserCommonMapper">
+    <select id="searchUserInfo" parameterType="com.momo.vo.SearchVO">
+        with tb as (
+            select
+                ac.*,
+                cp.bp_no as bp_no,
+                cp.corp_id as corp_id,
+                sh.shop_nm as shop_nm
+            from
+                tb_account ac
+                    left outer join tb_emp em on em.emp_id=ac.id
+                    left outer join tb_corp cp on cp.corp_id=em.corp_id
+                    left outer join tb_shop sh on sh.shop_id=em.shop_id
+        )
+
+        select
+            *
+        from
+            tb
+        where
+            ${andSelect} and
+            ${orSearch}
+                ${prop}
+    </select>
+
+    <select id="selectUserInfo" parameterType="com.momo.vo.UserCommonVO">
+        with tb as (
+            select
+                ac.*,
+                cp.bp_no as bp_no,
+                cp.corp_id as corp_id,
+                sh.shop_nm as shop_nm
+            from
+                tb_account ac
+        left outer join tb_emp em on em.emp_id=ac.id
+        left outer join tb_corp cp on cp.corp_id=em.corp_id
+        left outer join tb_shop sh on sh.shop_id=em.shop_id
+        )
+
+        select
+            *
+        from
+            tb
+        where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
+        <if test='pwd != null and !pwd.equals("")'>
+            pwd=#{pwd} and
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email} and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            bp_no=#{bpNo} and
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
+        </if>
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm=#{shopNm} and
+        </if>
+        <if test='regiDt != null and !regiDt.equals("")'>
+            regi_dt=#{regiDt} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
 <!--    User-->
     <select id="selectUser" parameterType="com.momo.vo.UserCommonVO">
         select
@@ -93,9 +173,9 @@
     <insert id="insertEmp" parameterType="com.momo.vo.UserCommonVO">
         insert into
             tb_emp
-            (emp_id, role, bp_no, shop_id)
+            (emp_id, role,corp_id, shop_id)
         VALUES
-            (#{empId},#{role},#{bpNo},#{shopId})
+            (#{empId},#{role},#{corpId},#{shopId})
     </insert>
 
     <update id="updateEmp" parameterType="com.momo.vo.UserCommonVO">
@@ -118,22 +198,34 @@
     </delete>
 
     <select id="selectEmp" parameterType="com.momo.vo.UserCommonVO">
+        with tb as (
+            select
+                em.*,
+                cp.bp_no as bp_no
+            from
+            tb_emp em
+            left outer join tb_corp cp on cp.reps_id=em.emp_id
+        )
+
         select
             *
         from
-            tb_emp
+            tb
         where
         <if test='empId != null and !empId.equals("")'>
             emp_id=#{empId} and
         </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
-        </if>
         <if test='role != null and !role.equals("")'>
             role=#{role} and
         </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
+        </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            bp_no=#{bpNo} and
         </if>
         <if test='approvalSt != null'>
             approval_st=#{approvalSt} and
@@ -149,10 +241,19 @@
     </select>
 
     <select id="searchEmp" parameterType="com.momo.vo.SearchVO">
+        with tb as (
+            select
+                em.*,
+                cp.bp_no as bp_no
+            from
+                tb_emp em
+                    left outer join tb_corp cp on cp.reps_id=em.emp_id
+        )
+
         select
             *
         from
-            tb_emp
+            tb
         where
             ${andSelect} and
             ${orSearch}

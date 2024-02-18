@@ -1,6 +1,5 @@
 package com.momo.interceptor;
 
-import com.momo.auth.Approval;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,33 +7,27 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-@RequiredArgsConstructor
 @Component
-@Deprecated
-public class ApprovalInterceptor implements HandlerInterceptor {
+@RequiredArgsConstructor
+public class HomeInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String url = request.getRequestURI();
-		System.out.println("[appr] url: "+url);
-
-		if(!(handler instanceof HandlerMethod)){
-			return true;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication == null){
+			response.sendRedirect("/error/common");
+			return false;
 		}
-		HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-		Approval approval = handlerMethod.getMethodAnnotation(Approval.class);
-		System.out.println(approval);
-		if(approval != null){
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if(authentication == null || !authentication.getAuthorities().contains(new SimpleGrantedAuthority("APPROVE"))){
-				response.sendRedirect("/error/approval");
-				return false;
+		if(!authentication.getAuthorities().isEmpty()){
+			if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))){
+				response.sendRedirect("/admin/home");
+				return true;
 			}
 		}
+
 
 		return true;
 	}

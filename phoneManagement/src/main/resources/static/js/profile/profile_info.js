@@ -2,16 +2,6 @@
 let isPasswordChecked = false;
 let isPasswordMatched = false;
 
-// url 보안
-$(document).ready(function (){
-    var id = $('#user_id').val();
-    var url_id = window.location.href.split("/profile/")[1];
-    if(id !== url_id){
-        alert("허용되지 않은 접근입니다!")
-        window.location.href = "/";
-    }
-});
-
 // 비밀번호 형식 검사
 function validatePassword(){
     var pwd = $('#update_pwd').val();
@@ -94,7 +84,7 @@ function updatePassword(){
         id: $('#user_id').val(),
         role: $('#user_role').val(),
         pwd: $('#pwd').val(),
-        updatePwd: $('#update_pwd').val()
+        update_pwd: $('#update_pwd').val()
     };
 
     $.ajax({

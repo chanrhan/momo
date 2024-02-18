@@ -78,7 +78,7 @@ function    updateSaleList(result){
             value.cust_nm +
             "</td>" +
             "<td>" +
-            value.cust_tel +
+            value.cust_tel + " " + "(" + value.dup_tel + ")" +
             "</td>" +
             "<td>" +
             value.cust_cd +

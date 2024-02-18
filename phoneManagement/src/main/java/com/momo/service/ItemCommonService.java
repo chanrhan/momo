@@ -14,6 +14,20 @@ import java.util.Map;
 public class ItemCommonService extends CommonService {
 	private final ItemCommonMapper itemCommonMapper;
 
+	// Phone Model
+	public List<Map<String,Object>> selectPhoneModel(ItemCommonVO vo){
+		return itemCommonMapper.selectPhoneModel(vo);
+	}
+	public String[] getColorList(String id){
+		String colors = itemCommonMapper.getColorById(id);
+		return colors.split(",");
+	}
+
+	public String[] getStorageList(String id){
+		String storages = itemCommonMapper.getStorageById(id);
+		return storages.split(",");
+	}
+
 	// Plan
 	public int insertPlan(ItemCommonVO vo) {
 		return itemCommonMapper.insertPlan(vo);

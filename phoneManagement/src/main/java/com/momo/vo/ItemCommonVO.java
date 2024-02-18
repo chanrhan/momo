@@ -13,6 +13,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ItemCommonVO extends CommonQueryVO {
+	private Integer phId;
+	private String phNm;
+
 	private Integer planId;
 	private String planNm;
 

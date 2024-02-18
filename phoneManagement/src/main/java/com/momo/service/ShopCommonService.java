@@ -16,6 +16,14 @@ public class ShopCommonService extends CommonService {
 	private final UserCommonService userCommonService;
 	private final ShopCommonMapper shopCommonMapper;
 
+	public int updateSendTel(ShopCommonVO vo){
+		return shopCommonMapper.updateShop(vo);
+	}
+	public String getBpNoByShopId(int id){
+		return shopCommonMapper.getBpNoByShopId(id);
+	}
+
+	// Common
 	// Shop
 	public int insertShop(ShopCommonVO vo) {
 		return shopCommonMapper.insertShop(vo);
@@ -32,7 +40,13 @@ public class ShopCommonService extends CommonService {
 	public List<Map<String,Object>> selectShop(ShopCommonVO vo) {
 		return shopCommonMapper.selectShop(vo);
 	}
-	public List<Map<String,Object>> searchShop(SearchVO vo) {
+	public List<Map<String,Object>> searchShopByRole(SearchVO vo) {
+		Integer shopId = Integer.parseInt(vo.getSelect().get("shop_id").toString());
+		if(shopId != null && shopId == 0){
+			vo.getSelect().remove("shop_id");
+			String bpNo = getBpNoByShopId(shopId);
+			vo.getSelect().put("bp_no", bpNo);
+		}
 		return shopCommonMapper.searchShop(vo);
 	}
 
@@ -44,15 +58,15 @@ public class ShopCommonService extends CommonService {
 		return code;
 	}
 
-	public List<Map<String,Object>> selectShopByUser(){
+	public List<Map<String,Object>> selectShopByContext(){
 		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
-		ShopCommonVO shopCommonVO = new ShopCommonVO();
+		ShopCommonVO vo = new ShopCommonVO();
 		if(emp.get("role").equals("REPS")){
-			shopCommonVO.setBpNo(emp.get("bp_no").toString());
+			vo.setBpNo(emp.get("bp_no").toString());
 		}else{
-			shopCommonVO.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
+			vo.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
 		}
-		return selectShop(shopCommonVO);
+		return selectShop(vo);
 	}
 
 	public Map<String,Object> selectShopById(int id){
@@ -62,7 +76,7 @@ public class ShopCommonService extends CommonService {
 
 	// Corperation
 	public int insertCorp(ShopCommonVO vo) {
-		System.out.println(vo);
+		vo.setCorpId(getMaxCorpId()+1);
 		return shopCommonMapper.insertCorp(vo);
 	}
 
@@ -78,13 +92,21 @@ public class ShopCommonService extends CommonService {
 		return shopCommonMapper.selectCorp(vo);
 	}
 
-	public Map<String,Object> selectCorpByUser(String id) {
-		ShopCommonVO vo = ShopCommonVO.builder().repsId(id).build();
+	public Map<String,Object> selectCorpById(int id) {
+		ShopCommonVO vo = ShopCommonVO.builder().corpId(id).build();
 		return shopCommonMapper.selectCorp(vo).get(0);
 	}
 
 	public List<Map<String,Object>> searchCorp(SearchVO vo) {
 		return shopCommonMapper.searchCorp(vo);
+	}
+
+	public int getMaxCorpId(){
+		Integer id = shopCommonMapper.getMaxCorpId();
+		if(id == null){
+			return 0;
+		}
+		return id;
 	}
 
 }

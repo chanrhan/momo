@@ -1,5 +1,6 @@
 package com.momo.controller;
 
+import com.momo.auth.RoleAuth;
 import com.momo.service.UserCommonService;
 import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,18 @@ import java.util.Map;
 public class ProfileController {
 	private final UserCommonService userCommonService;
 
-	@GetMapping("/{id}")
-	public String profileInfo(Model model, @PathVariable String id){
-		Map<String,Object> user = userCommonService.selectUserById(id);
+	@GetMapping("/home")
+	public String profileInfo(Model model){
+		Map<String,Object> user = userCommonService.selectUserByContext();
 		model.addAttribute("userInfo", user);
-		return "profile/profile_info";
+		return "profile/home";
+	}
+
+	@GetMapping("/payment")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String payment(Model model){
+
+		return "profile/payment";
 	}
 
 	@PostMapping("/update")

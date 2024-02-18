@@ -9,6 +9,9 @@ import java.util.Map;
 
 @Mapper
 public interface UserCommonMapper {
+	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
+	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo);
+
 	// User Account
 	public int insertUser(UserCommonVO vo);
 	public int updateUser(UserCommonVO vo);

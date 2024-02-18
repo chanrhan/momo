@@ -1,21 +1,18 @@
 package com.momo.controller;
 
-import com.momo.auth.Approval;
 import com.momo.auth.RoleAuth;
 import com.momo.service.MsgCommonService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserCommonService;
-import com.momo.util.SecurityContextUtil;
 import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
-import com.momo.vo.SupportVO;
+import com.momo.vo.ShopCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +34,17 @@ public class MessageController {
 	@GetMapping("/reserve")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String reserveMsgForm(Model model) {
-		List<Map<String, Object>> list_shop = shopCommonService.selectShopByUser();
-		List<Map<String,Object>> list_msg = msgCommonService.selectMsgByUser();
+		List<Map<String, Object>> list_shop = shopCommonService.selectShopByContext();
 
-		model.addAttribute("list_msg", list_msg);
+		Map<String, Object> selecedShop = null;
+		if(list_shop != null && !list_shop.isEmpty()){
+			selecedShop = list_shop.get(0);
+			List<Map<String,Object>> list_msg = msgCommonService.selectMsgByContext();
+			model.addAttribute("list_msg", list_msg);
+		}
+		model.addAttribute("selected_shop", selecedShop);
 		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", list_shop.get(0));
+
 		return "message/msg_reserve";
 	}
 
@@ -61,15 +63,23 @@ public class MessageController {
 	}
 
 	@GetMapping("/send")
-	@RoleAuth(role = RoleAuth.Role.REPS)
-	public String sendMsg() {
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String sendMsg(Model model) {
+		Map<String,Object> shop = shopCommonService.selectShopByContext().get(0);
+		model.addAttribute("shop",shop);
 		return "message/msg_send";
+	}
+
+	@GetMapping("/form")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String msgForm() {
+		return "message/form";
 	}
 
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
-		return msgCommonService.searchMsgByUser(searchVO);
+		return msgCommonService.searchMsgByRole(searchVO);
 	}
 
 	@PostMapping("/delete/{id}")
@@ -78,9 +88,11 @@ public class MessageController {
 		return msgCommonService.deleteMsgReserve(id) != 0;
 	}
 
-//	@PostMapping("/update")
-//	@ResponseBody
-//	public boolean updateMessage(@RequestBody MsgCommonVO vo) {
-//		return msgCommonService.updateMsg(vo) != 0;
-//	}
+	@PostMapping("/regi/tel")
+	@ResponseBody
+	public boolean registrateSendTel(@RequestBody ShopCommonVO vo){
+		return shopCommonService.updateSendTel(vo) != 0;
+	}
+
+
 }

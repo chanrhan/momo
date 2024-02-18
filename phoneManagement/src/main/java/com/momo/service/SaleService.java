@@ -16,9 +16,19 @@ public class SaleService extends CommonService {
 	private final SaleMapper saleMapper;
 
 	private final UserCommonService userCommonService;
+	private final ShopCommonService shopCommonService;
 
+	public int countTel(SaleVO vo){
+		return saleMapper.countTel(vo);
+	}
+
+	public List<Map<String,Object>> dupTelOnMonth(SaleVO vo){
+		return saleMapper.dupTelOnMonth(vo);
+	}
+
+	// Common
 	public int insertSale(SaleVO vo) {
-		vo.setSaleId(getMaxSaleNo()+1);
+		vo.setSaleId(getMaxSaleId()+1);
 		return saleMapper.insertSale(vo);
 	}
 	public int updateSale(SaleVO vo) {
@@ -30,25 +40,40 @@ public class SaleService extends CommonService {
 	}
 
 	public List<Map<String,Object>> selectSale(SaleVO vo) {
-		vo.setOrder("actv_dt");
-		vo.setAsc("desc");
+		if(vo.getOrder() == null){
+			vo.setOrder("actv_dt");
+		}
+		if(vo.getAsc() == null){
+			vo.setAsc("desc");
+		}
 		return saleMapper.selectSale(vo);
 	}
 
-	public List<Map<String,Object>> selectSaleByUser() {
-		return selectSaleByUser(new SaleVO());
-	}
-
-	// SELECT by User Context
-	public List<Map<String,Object>> selectSaleByUser(SaleVO vo) {
-		String username = SecurityContextUtil.getUsername();
-		Map<String,Object> emp = userCommonService.selectEmpById(username);
+	public List<Map<String,Object>> selectSaleByContext() {
+		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
+		SaleVO vo = new SaleVO();
 		if(emp.get("role").equals("REPS")){
 			vo.setBpNo(emp.get("bp_no").toString());
 		}else{
 			vo.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
 		}
+		return selectSale(vo);
+	}
 
+	public List<Map<String,Object>> selectSaleByRole() {
+		return selectSaleByRole(new SaleVO());
+	}
+
+
+	public List<Map<String,Object>> selectSaleByRole(SaleVO vo) {
+		Integer shopId = vo.getShopId();
+		if(shopId != null && shopId == 0){
+			vo.setShopId(null);
+			if(vo.getBpNo() == null){
+				String bpNo = shopCommonService.getBpNoByShopId(shopId);
+				vo.setBpNo(bpNo);
+			}
+		}
 		return selectSale(vo);
 	}
 
@@ -68,15 +93,15 @@ public class SaleService extends CommonService {
 	// ex) 중고폰만 찾는 쿼리면 (개통날짜, 이름, 번호, 식별번호, 중고폰 모델명, 상태, 판매금액, 매니저 아이디) 만 select 하게
 	public List<Map<String,Object>> selectSaleByType(String type){
 		SaleVO vo = SaleVO.builder().target(type).build();
-		return selectSaleByUser(vo);
+		return selectSaleByRole(vo);
 	}
 
 	public List<Map<String,Object>> searchSaleByType(String type, SearchVO vo){
 		vo.setTarget(type);
-		return searchSaleByUser(vo);
+		return searchSaleByRole(vo);
 	}
 
-	public int getMaxSaleNo(){
+	public int getMaxSaleId(){
 		Integer result = saleMapper.getMaxId();
 		if(result == null){
 			return 0;
@@ -88,38 +113,16 @@ public class SaleService extends CommonService {
 		return saleMapper.searchSale(searchVO);
 	}
 
-	public List<Map<String,Object>> searchSaleByUser(SearchVO vo){
-		String username = SecurityContextUtil.getUsername();
-		Map<String,Object> emp = userCommonService.selectEmpById(username);
-		if(emp.get("role").equals("REPS")){
-			vo.getSelect().put("bp_no",emp.get("bp_no").toString());
-		}else{
-			vo.getSelect().put("shop_id",emp.get("shop_id").toString());
+	public List<Map<String,Object>> searchSaleByRole(SearchVO vo){
+		String shopId = vo.getSelect().get("shop_id").toString();
+		if(shopId != null && shopId.equals("0")){
+			vo.getSelect().remove("shop_id");
+			if(vo.getSelect().get("bp_no") == null){
+				String bpNo = shopCommonService.getBpNoByShopId(Integer.parseInt(shopId));
+				vo.getSelect().put("bp_no", bpNo);
+			}
 		}
+
 		return saleMapper.searchSale(vo);
 	}
-
-//	public Paging<SaleVO> selectPage(int page, SaleVO saleVO){
-//		Paging<SaleVO> paging = new Paging<>(page, 10);
-//		saleVO.setOffset(paging.getOffset());
-//		saleVO.setLimit(paging.getSize());
-//
-//		paging.setRecords(saleMapper.select(saleVO));
-//		paging.setTotalRecordCount(saleMapper.countSelect(saleVO));
-//
-//		return paging;
-//	}
-
-
-
-//	public Paging<SaleVO> searchPage(SaleVO saleVO){
-//		Paging<SaleVO> paging = new Paging<>(saleVO.getPage(), 10);
-//		saleVO.setOffset(paging.getOffset());
-//		saleVO.setLimit(paging.getSize());
-//
-//		paging.setRecords(search(saleVO));
-//		paging.setTotalRecordCount(saleMapper.countSearch(saleVO));
-//
-//		return paging;
-//	}
 }

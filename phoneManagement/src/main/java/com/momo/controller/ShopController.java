@@ -39,9 +39,12 @@ public class ShopController {
 	@ResponseBody
 //	@Transactional
 	public boolean createShop(@RequestBody ShopCommonVO vo){
-		Map<String,Object> corp = shopCommonService.selectCorpByUser(vo.getRepsId());
+		Map<String,Object> corp = shopCommonService.selectCorpById(vo.getCorpId());
 
-		vo.setBpNo(corp.get("bp_no").toString());
+		if(corp == null || corp.get("corp_id") == null){
+			return false;
+		}
+		vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
 
 		return shopCommonService.insertShop(vo) != 0;
@@ -50,7 +53,7 @@ public class ShopController {
 	@GetMapping("/detail")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String shopDetail(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByUser();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
 		Map<String,Object>       shop      = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -77,6 +80,6 @@ public class ShopController {
 	@PostMapping("/search/shop")
 	@ResponseBody
 	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
-		return shopCommonService.searchShop(vo);
+		return shopCommonService.searchShopByRole(vo);
 	}
 }

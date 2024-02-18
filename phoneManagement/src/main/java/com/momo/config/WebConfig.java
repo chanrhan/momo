@@ -1,6 +1,7 @@
 package com.momo.config;
 
 import com.momo.interceptor.ApprovalInterceptor;
+import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -25,13 +26,13 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(new ApprovalInterceptor())
-//				.addPathPatterns("/**")
-//				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**");
+		registry.addInterceptor(new HomeInterceptor())
+				.addPathPatterns("/home")
+				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**");
 
 		registry.addInterceptor(new RoleAuthInterceptor())
 				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**");
+				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/home");
 	}
 
 	// 아래의 방식 대신 @WebFilter를 사용해서 필터를 거는 방식도 사용할 수 있음

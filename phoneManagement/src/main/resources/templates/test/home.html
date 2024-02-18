@@ -33,5 +33,15 @@
 <br>
 <button type="button" class="btn btn-primary" onclick="trTest()">트랜잭션 테스트</button>
 
+<br>
+매장 번호<input type="text" class="form-control" id="shop_id" value="1">
+<br>
+전화번호<input type="text" class="form-control" id="cust_tel" value="01077280636">
+<br>
+날짜<input type="date" class="form-control" id="actv_dt" value="2024-01-21">
+<br>
+<button type="button" class="btn btn-primary" onclick="dupTel($('#cust_tel').val())">전화번호 중복 조회</button>
+<button type="button" class="btn btn-primary" onclick="dupTelOnDate($('#cust_tel').val(), $('#actv_dt').val())">해당 날짜에 전화번호 조회</button>
+
 </body>
 </html>

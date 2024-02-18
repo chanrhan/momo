@@ -56,10 +56,10 @@ public class MsgCommonService extends CommonService {
 	}
 	public Map<String,Object> selectMsgById(int id){
 		MsgCommonVO vo = MsgCommonVO.builder().msgId(id).build();
-		return selectMsgByUser(vo).get(0);
+		return selectMsgByContext(vo).get(0);
 	}
 
-	public List<Map<String, Object>> selectMsgByUser(MsgCommonVO vo) {
+	public List<Map<String, Object>> selectMsgByContext(MsgCommonVO vo) {
 		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
 
 		if(emp.get("role").equals("REPS")){
@@ -70,8 +70,8 @@ public class MsgCommonService extends CommonService {
 		return selectMsg(vo);
 	}
 
-	public List<Map<String, Object>> selectMsgByUser() {
-		return selectMsgByUser(new MsgCommonVO());
+	public List<Map<String, Object>> selectMsgByContext() {
+		return selectMsgByContext(new MsgCommonVO());
 	}
 	public List<Map<String, Object>> searchMsg(SearchVO vo) {
 		vo.setOrder("regi_dt");
@@ -79,15 +79,17 @@ public class MsgCommonService extends CommonService {
 		return msgCommonMapper.searchMsg(vo);
 	}
 
-	public List<Map<String, Object>> searchMsgByUser(SearchVO vo) {
-		String username = SecurityContextUtil.getUsername();
-		Map<String,Object> emp = userCommonService.selectEmpById(username);
-		if(emp.get("role").equals("REPS")){
-			vo.getSelect().put("bp_no",emp.get("bp_no").toString());
-		}else{
-			vo.getSelect().put("shop_id",emp.get("shop_id").toString());
+	public List<Map<String, Object>> searchMsgByRole(SearchVO vo) {
+		String shopId = vo.getSelect().get("shop_id").toString();
+		if(shopId != null && shopId.equals("0")){
+			vo.getSelect().remove("shop_id");
+			if(vo.getSelect().get("bp_no") == null){
+				String bpNo = shopCommonService.getBpNoByShopId(Integer.parseInt(shopId));
+				vo.getSelect().put("bp_no", bpNo);
+			}
 		}
-		return searchMsg(vo);
+
+		return msgCommonMapper.searchMsg(vo);
 	}
 
 	public int getMaxMsgId(){

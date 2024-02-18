@@ -17,6 +17,7 @@ public class HomeController {
 
 	@GetMapping("/home")
 	@PreAuthorize("isAuthenticated()")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String home(){
 		return "main/home";
 	}

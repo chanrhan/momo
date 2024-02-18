@@ -10,6 +10,8 @@ import java.util.Map;
 
 @Mapper
 public interface ShopCommonMapper {
+	public String getBpNoByShopId(int id);
+
 	// Shop
 	public int insertShop(ShopCommonVO vo);
 	public int updateShop(ShopCommonVO vo);
@@ -24,4 +26,5 @@ public interface ShopCommonMapper {
 	public int deleteCorp(String bNo);
 	public List<Map<String,Object>> selectCorp(ShopCommonVO vo);
 	public List<Map<String,Object>> searchCorp(SearchVO vo);
+	public Integer getMaxCorpId();
 }

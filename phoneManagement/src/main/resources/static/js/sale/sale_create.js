@@ -6,6 +6,13 @@ function stepToNext(){
     var formData = new FormData(document.getElementById('create_form'));
     var body = convertFormDataToObject(formData);
 
+    if(dupTelOnMonth(body["shop_id"],body["cust_tel"],body["actv_dt"])){
+        var result = confirm("선택한 달에 동일한 전화번호가 존재합니다. 계속 진행하시겠습니까?");
+        if(!result){
+            return;
+        }
+    }
+
     var div_sb = [];
     document.getElementsByName('sup_div').forEach(function (value, key, parent){
         div_sb.push($(value).val());
@@ -50,4 +57,28 @@ function addSupDiv(){
 
 function subSupDiv(_this){
     $(_this).remove();
+}
+
+function dupTelOnMonth(shop_id, cust_tel, actv_dt){
+    var body = {
+        shop_id: shop_id,
+        cust_tel: cust_tel,
+        actv_dt: actv_dt
+    }
+
+    var result = false;
+    $.ajax({
+        url: '/sale/dup/tel',
+        type:'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header,token);
+        },
+        success: function (rst){
+            result = rst;
+        }
+    });
+    return result;
 }

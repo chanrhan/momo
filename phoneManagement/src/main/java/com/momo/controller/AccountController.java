@@ -8,7 +8,6 @@ import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -163,7 +162,7 @@ public class AccountController {
 	@PostMapping("/search/shop")
 	@ResponseBody
 	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
-		return shopCommonService.searchShop(vo);
+		return shopCommonService.searchShopByRole(vo);
 	}
 
 	@PostMapping("/approve")
