@@ -7,6 +7,7 @@ import com.momo.service.UserCommonService;
 import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,15 +34,16 @@ public class MessageController {
 
 	@GetMapping("/reserve")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String reserveMsgForm(Model model) {
-		List<Map<String, Object>> list_shop = shopCommonService.selectShopByContext();
+	public String reserveMsgForm(Model model, HttpSession session) {
+		List<Map<String, Object>> list_shop = shopCommonService.selectShopBySession(session);
 
+		List<Map<String,Object>> list_msg = null;
 		Map<String, Object> selecedShop = null;
 		if(list_shop != null && !list_shop.isEmpty()){
 			selecedShop = list_shop.get(0);
-			List<Map<String,Object>> list_msg = msgCommonService.selectMsgByContext();
-			model.addAttribute("list_msg", list_msg);
+			list_msg = msgCommonService.selectMsgBySession(session);
 		}
+		model.addAttribute("list_msg", list_msg);
 		model.addAttribute("selected_shop", selecedShop);
 		model.addAttribute("list_shop", list_shop);
 
@@ -64,8 +66,8 @@ public class MessageController {
 
 	@GetMapping("/send")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String sendMsg(Model model) {
-		Map<String,Object> shop = shopCommonService.selectShopByContext().get(0);
+	public String sendMsg(Model model, HttpSession session) {
+		Map<String,Object> shop = shopCommonService.selectShopBySession(session).get(0);
 		model.addAttribute("shop",shop);
 		return "message/msg_send";
 	}
@@ -78,8 +80,8 @@ public class MessageController {
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO) {
-		return msgCommonService.searchMsgByRole(searchVO);
+	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO, HttpSession session) {
+		return msgCommonService.searchMsgBySession(searchVO, session);
 	}
 
 	@PostMapping("/delete/{id}")

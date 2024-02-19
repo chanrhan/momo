@@ -2,6 +2,7 @@ package com.momo.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.momo.service.AlarmService;
+import com.momo.service.ShopCommonService;
 import com.momo.vo.AlarmVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.Set;
 public class WebSocketChatHandler extends TextWebSocketHandler {
 	private final ObjectMapper objectMapper;
 	private final AlarmService alarmService;
+	private final ShopCommonService shopCommonService;
 
 	private       Set<WebSocketSession>            sessions           = new HashSet<>();
 
@@ -36,14 +38,17 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String payload = message.getPayload();
 
-		AlarmVO alarm = objectMapper.readValue(payload, AlarmVO.class);
-		System.out.println(alarm);
+		AlarmVO vo = objectMapper.readValue(payload, AlarmVO.class);
+		System.out.println(vo);
 
-		if(alarm.getSenderId() == null || alarm.getReceiverId() == null){
+		if(vo.getSenderId() == null || vo.getCorpId() == null){
 			return;
 		}
 
-		int result = alarmService.insertAlarm(alarm);
+		Map<String,Object> corp = shopCommonService.selectCorpById(vo.getCorpId());
+		vo.setReceiverId(corp.get("reps_id").toString());
+
+		int result = alarmService.insertAlarm(vo);
 		if(result == 0){
 			return;
 		}

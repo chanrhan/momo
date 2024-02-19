@@ -9,6 +9,7 @@
                 ac.*,
                 cp.bp_no as bp_no,
                 cp.corp_id as corp_id,
+                cp.corp_nm,
                 sh.shop_nm as shop_nm
             from
                 tb_account ac
@@ -33,6 +34,7 @@
                 ac.*,
                 cp.bp_no as bp_no,
                 cp.corp_id as corp_id,
+                cp.corp_nm,
                 sh.shop_nm as shop_nm
             from
                 tb_account ac
@@ -66,6 +68,9 @@
         </if>
         <if test='corpId != null'>
             corp_id=#{corpId} and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm} and
         </if>
         <if test='shopNm != null and !shopNm.equals("")'>
             shop_nm=#{shopNm} and

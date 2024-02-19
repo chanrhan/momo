@@ -20,12 +20,12 @@ function changeUserList(){
     searchUser();
 }
 
-function orderMessage(th){
+function orderUser(th){
     order = $(th).attr('value');
     asc = $(th).hasClass('desc') ? 'desc' : 'asc';
     $(th).toggleClass('desc');
 
-    searchMessage();
+    searchUser();
 }
 
 function searchUser(){

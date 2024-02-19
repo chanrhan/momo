@@ -250,7 +250,8 @@
                 sl.*,
                 sh.shop_nm as shop_nm,
                 ac.name as seller_nm,
-                cp.bp_no as bp_no
+                sh.corp_id,
+                cp.bp_no
                 from
                 tb_sale sl
                 left outer join tb_shop sh on sl.shop_id = sh.shop_id
@@ -261,6 +262,7 @@
         where
         <if test='target != null and !target.equals("")'>
             ${target} is not null and
+            ${target} != '' and
             ${target} != '0' and
         </if>
             ${andSelect} and
@@ -288,7 +290,8 @@
         sl.*,
         sh.shop_nm as shop_nm,
         ac.name as seller_nm,
-        cp.bp_no as bp_no
+        sh.corp_id,
+        cp.bp_no
         from
         tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
@@ -305,6 +308,9 @@
         </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
         </if>
         <if test='bpNo != null and !bpNo.equals("")'>
             bp_no=#{bpNo} and

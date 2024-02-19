@@ -26,7 +26,7 @@ public class RoleAuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //		String url = request.getRequestURI();
 //		System.out.println("[role] url: "+url);
-
+		System.out.println("ROLE AUTH INTERCEPTOR");
 		if(!(handler instanceof HandlerMethod)){
 			return true;
 		}

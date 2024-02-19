@@ -95,9 +95,30 @@ function submitREPS(){
         start_dt: startDt
     };
 
-    var result = submitRole(data);
+    var result = submitReps(data);
     if(result){
         window.location.href = "/home";
     }
 
+}
+
+function submitReps(data){
+    var rst = false;
+    $.ajax({
+        url: '/account/submit/reps',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+            console.log(result);
+        }
+    });
+    console.log("end: "+rst);
+    return rst;
 }

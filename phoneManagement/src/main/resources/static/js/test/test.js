@@ -1,6 +1,18 @@
 const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
+function sendEmail(){
+    var email = $('#email').val();
+
+    $.ajax({
+        url: '/mail/invite?email='+email,
+        type:'get',
+        success: function (result){
+            console.log(result);
+        }
+    })
+}
+
 function dupTel(tel){
     var body = {
         shop_id: $('#shop_id').val(),

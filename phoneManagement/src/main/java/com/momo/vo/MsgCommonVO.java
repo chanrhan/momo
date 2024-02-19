@@ -24,6 +24,8 @@ public class MsgCommonVO extends CommonQueryVO {
 
 	private String bpNo;
 
+	private Integer corpId;
+
 	private Integer msgId;
 	private Integer shopId;
 	private String  shopNm;

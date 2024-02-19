@@ -21,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleVO extends CommonQueryVO {
+	private Integer corpId;
 	private Integer dupTel; // 중복된 전화번호 개수
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드

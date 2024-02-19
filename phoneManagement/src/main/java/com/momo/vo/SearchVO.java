@@ -50,6 +50,7 @@ public class SearchVO {
 	public String getOrSelect() {
 		StringBuilder sb = new StringBuilder();
 		if (select != null && !select.isEmpty()) {
+			sb.append("(");
 			int[] size = {0};
 			select.forEach((key, value) -> {
 				if (value == null || value.equals("")) {
@@ -58,12 +59,14 @@ public class SearchVO {
 				sb.append(key).append("=").append("'").append(value).append("'");
 				size[0]++;
 				if (size[0] == select.size()) {
+					sb.append(")");
 					sb.append(" and");
 				}
 				else {
 					sb.append(" or ");
 				}
 			});
+
 		}
 		sb.append(" 1 = 1");
 
@@ -85,11 +88,13 @@ public class SearchVO {
 	public String getOrSearch() {
 		StringBuilder sb = new StringBuilder();
 		if (search != null && !search.isEmpty()) {
+			sb.append("(");
 			final int[] size = {0};
 			search.forEach((key, value) -> {
 				sb.append(key).append(" like ").append("'%").append(value).append("%'");
 				size[0]++;
 				if (size[0] == search.size()) {
+					sb.append(")");
 					sb.append(" and");
 				}
 				else {

@@ -4,6 +4,7 @@ import com.momo.mapper.ItemCommonMapper;
 import com.momo.mapper.MsgCommonMapper;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,39 +55,54 @@ public class MsgCommonService extends CommonService {
 	public List<Map<String, Object>> selectMsg(MsgCommonVO vo) {
 		return msgCommonMapper.selectMsg(vo);
 	}
+
 	public Map<String,Object> selectMsgById(int id){
 		MsgCommonVO vo = MsgCommonVO.builder().msgId(id).build();
-		return selectMsgByContext(vo).get(0);
+		return selectMsg(vo).get(0);
 	}
 
-	public List<Map<String, Object>> selectMsgByContext(MsgCommonVO vo) {
-		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
+//	public List<Map<String, Object>> selectMsgBySession(MsgCommonVO vo, HttpSession session) {
+//		Integer shopId = vo.getShopId();
+//		if(shopId != null && shopId == 0){
+//
+//		}
+//		return selectMsg(vo);
+//	}
 
-		if(emp.get("role").equals("REPS")){
-			vo.setBpNo(emp.get("bp_no").toString());
+	public List<Map<String, Object>> selectMsgBySession(HttpSession session) {
+		MsgCommonVO vo = new MsgCommonVO();
+		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+		if(shopId == 0){
+			vo.setCorpId(corpId);
 		}else{
-			vo.setShopId(Integer.parseInt(emp.get("shop_id").toString()));
+			vo.setShopId(shopId);
 		}
 		return selectMsg(vo);
 	}
 
-	public List<Map<String, Object>> selectMsgByContext() {
-		return selectMsgByContext(new MsgCommonVO());
-	}
 	public List<Map<String, Object>> searchMsg(SearchVO vo) {
 		vo.setOrder("regi_dt");
 		vo.setAsc("desc");
 		return msgCommonMapper.searchMsg(vo);
 	}
 
-	public List<Map<String, Object>> searchMsgByRole(SearchVO vo) {
-		String shopId = vo.getSelect().get("shop_id").toString();
-		if(shopId != null && shopId.equals("0")){
+	public List<Map<String, Object>> searchMsgBySession(SearchVO vo, HttpSession session) {
+		Object _shopId = vo.getSelect().get("shop_id");
+		int shopId = 0;
+		if(_shopId == null){
+			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+		}else{
+			shopId = Integer.parseInt(_shopId.toString());
+		}
+		if(shopId == 0){
 			vo.getSelect().remove("shop_id");
-			if(vo.getSelect().get("bp_no") == null){
-				String bpNo = shopCommonService.getBpNoByShopId(Integer.parseInt(shopId));
-				vo.getSelect().put("bp_no", bpNo);
+			if(!vo.getSelect().containsKey("corp_id")){
+				int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+				vo.getSelect().put("corp_id",corpId);
 			}
+		}else{
+			vo.getSelect().put("shop_id",shopId);
 		}
 
 		return msgCommonMapper.searchMsg(vo);

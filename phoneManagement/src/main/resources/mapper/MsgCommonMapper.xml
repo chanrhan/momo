@@ -95,7 +95,8 @@
             sh.shop_nm as shop_nm,
             mr.*,
             a.name as seller_nm,
-            cp.bp_no as bp_no
+            cp.bp_no as bp_no,
+            cp.corp_id
         from
             tb_msg_rsv mr
             left outer join tb_shop sh on mr.shop_id=sh.shop_id
@@ -113,6 +114,9 @@
         </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
         </if>
         <if test='bpNo != null and !bpNo.equals("")'>
             bp_no=#{bpNo} and
@@ -148,7 +152,8 @@
                 sh.shop_nm as shop_nm,
                 mr.*,
                 a.name as seller_nm,
-                cp.bp_no as bp_no
+                cp.bp_no as bp_no,
+                cp.corp_id
             from
                 tb_msg_rsv mr
                     left outer join tb_shop sh on mr.shop_id=sh.shop_id

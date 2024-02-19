@@ -2,8 +2,8 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.service.*;
-import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,22 +28,24 @@ public class SaleController {
 
 	@GetMapping("/home")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleHome(Model model) {
+	public String saleHome(HttpSession session, Model model) {
 		// 1. 현재 로그인된 유저의 아이디를 가져옴
 		// 2. 유저가 속한 매장을 찾아 'selected_shop'에 할당
 		// 3. 해당 매장과 같은 회사의 매장들을 'list_shop'에 할당
 		// 4. 해당 매장의 모든 판매일보들을 'list_sale'에 할당
 
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+		model.addAttribute("list_shop", list_shop);
+
+		List<Map<String,Object>> list_sale = null;
 		Map<String,Object> shop = null;
 		if(list_shop != null && !list_shop.isEmpty()){
 			shop = list_shop.get(0);
-			List<Map<String,Object>> list_sale = saleService.selectSaleByContext();
-			model.addAttribute("list_sale", list_sale);
+			list_sale = saleService.selectSaleBySession(session);
 		}
 
-		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
+		model.addAttribute("list_sale", list_sale);
 
 		return "sale/home";
 	}
@@ -72,12 +74,10 @@ public class SaleController {
 	@GetMapping("/create/form")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleCreateGET(Model model, @RequestParam int shopId) {
-		String username = SecurityContextUtil.getUsername();
 		Map<String,Object> shopMap = shopCommonService.selectShopById(shopId);
 
 		model.addAttribute("shop_nm", shopMap.get("shop_nm").toString());
 		model.addAttribute("shop_id", shopId);
-
 
 		return "sale/sale_create";
 	}
@@ -144,8 +144,8 @@ public class SaleController {
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO) {
-		return saleService.searchSaleByRole(searchVO);
+	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO, HttpSession session) {
+		return saleService.searchSaleSession(searchVO, session);
 	}
 
 	@GetMapping("/msg/form/func")
@@ -165,8 +165,8 @@ public class SaleController {
 
 	@GetMapping("/green")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleGreenPhone(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String saleGreenPhone(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -174,13 +174,14 @@ public class SaleController {
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list", saleService.selectSaleByType("green_md"));
+
+		model.addAttribute("list", saleService.selectSaleByTypeAndSession("green_md", session));
 		return "sale/green_phone";
 	}
 	@GetMapping("/card")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleCard(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String saleCard(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -188,13 +189,14 @@ public class SaleController {
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list",saleService.selectSaleByType("card"));
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("card", session));
 		return "sale/card";
 	}
 	@GetMapping("/comb")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleComb(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String saleComb(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -202,13 +204,14 @@ public class SaleController {
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list",saleService.selectSaleByType("comb_move"));
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("comb_move", session));
 		return "sale/comb";
 	}
 	@GetMapping("/support")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleSupport(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String saleSupport(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -216,13 +219,15 @@ public class SaleController {
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list",saleService.selectSaleByType("sup_div1"));
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sup_div", session));
 		return "sale/support";
 	}
+
 	@GetMapping("/second")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleSecondPhone(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String saleSecondPhone(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object> shop = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);
@@ -230,13 +235,14 @@ public class SaleController {
 
 		model.addAttribute("list_shop", list_shop);
 		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list",saleService.selectSaleByType("sec_md"));
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sec_md", session));
 		return "sale/second";
 	}
 
 	@PostMapping("/list/srch/{type}")
 	@ResponseBody
-	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SearchVO vo){
+	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SearchVO vo, HttpSession session){
 		String column = "";
 		switch (type){
 			case "green":
@@ -257,7 +263,7 @@ public class SaleController {
 			default:
 				return null;
 		}
-		return saleService.searchSaleByType(column, vo);
+		return saleService.searchSaleByTypeAndSession(column, vo, session);
 	}
 
 	@PostMapping("/count/tel")

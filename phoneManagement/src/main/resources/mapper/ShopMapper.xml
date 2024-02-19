@@ -66,14 +66,10 @@
                 c.bp_en_nm as bp_en_nm,
                 c.corp_nm as corp_nm,
                 c.bp_no as bp_no,
-                s.shop_nm as shop_nm,
-                s.shop_addr as shop_addr,
-                s.shop_tel as shop_tel,
-                s.shop_id as shop_id,
-                s.regi_dt as regi_dt
+                s.*
             from
-                tb_corp as c
-            left outer join tb_shop s on c.corp_id = s.corp_id
+                tb_shop as s
+            left outer join tb_corp c on c.corp_id = s.corp_id
             )
 
         select

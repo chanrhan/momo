@@ -99,29 +99,49 @@ public class AccountController {
 		return result != 0;
 	}
 
-	@PostMapping("/submit/role")
+	@PostMapping("/submit/reps")
 	@ResponseBody
 	@Transactional
-	public boolean submitRole(@RequestBody UserCommonVO vo) {
-//		System.out.println(vo);
-		String role = vo.getRole();
-		int result = userCommonService.updateRole(vo.getEmpId(), role);
+	public boolean submitReps(HttpSession session, @RequestBody UserCommonVO vo) {
+		int result = userCommonService.updateRole(vo.getEmpId(), "REPS");
 		if (result == 0) {
 			return false;
 		}
 
-		userCommonService.replaceAuthority(role);
+		userCommonService.replaceAuthority("REPS");
 
-		if (role.equals("REPS")) {
-			result = shopCommonService.insertCorp(vo.toShopCommonVO());
-			if(result == 0){
-				return false;
-			}
+		int corpId = shopCommonService.getMaxCorpId()+1;
+		vo.setCorpId(corpId);
+		vo.setShopId(0);
+
+		result = shopCommonService.insertCorp(vo.toShopCommonVO());
+		if(result == 0){
+			return false;
 		}
 
-		if (role.equals("REPS") || role.equals("MANAGER")) {
-			result = userCommonService.insertEmp(vo);
+		result = userCommonService.insertEmp(vo);
+
+		session.setAttribute("shop_id", 0);
+		session.setAttribute("corp_id", corpId);
+
+		return result != 0;
+	}
+
+	@PostMapping("/submit/manager")
+	@ResponseBody
+	@Transactional
+	public boolean submitManager(HttpSession session, @RequestBody UserCommonVO vo) {
+		int result = userCommonService.updateRole(vo.getEmpId(), "MANAGER");
+		if (result == 0) {
+			return false;
 		}
+
+		userCommonService.replaceAuthority("MANAGER");
+
+		result = userCommonService.insertEmp(vo);
+
+		session.setAttribute("shop_id", vo.getShopId());
+		session.setAttribute("corp_id", vo.getCorpId());
 
 		return result != 0;
 	}
@@ -161,7 +181,7 @@ public class AccountController {
 
 	@PostMapping("/search/shop")
 	@ResponseBody
-	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
+	public List<Map<String,Object>> searchShop( @RequestBody SearchVO vo){
 		return shopCommonService.searchShopByRole(vo);
 	}
 

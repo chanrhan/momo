@@ -1,5 +1,6 @@
 package com.momo.config;
 
+import com.momo.handler.LoginSuccessHandler;
 import com.momo.service.UserCommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class SecurityConfig {
 				.formLogin((formLogin)->formLogin
 						.loginPage("/account/login")
 						.defaultSuccessUrl("/home")
+								   .successHandler(new LoginSuccessHandler(userCommonService))
 						  )
 				// 로그아웃 URL 설정
 				.logout((logout)-> logout
@@ -60,6 +62,7 @@ public class SecurityConfig {
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
 		return authenticationConfiguration.getAuthenticationManager();
 	}
+
 
 
 }

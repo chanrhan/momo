@@ -26,4 +26,6 @@ public class AlarmVO extends CommonQueryVO {
 
 	private String senderNm;
 	private String shopNm;
+
+	private Integer corpId;
 }

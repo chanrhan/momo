@@ -5,6 +5,7 @@ import com.momo.service.RegionService;
 import com.momo.service.ShopCommonService;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ShopController {
 	@ResponseBody
 //	@Transactional
 	public boolean createShop(@RequestBody ShopCommonVO vo){
-		Map<String,Object> corp = shopCommonService.selectCorpById(vo.getCorpId());
+		Map<String,Object> corp = shopCommonService.selectCorpByRepsId(vo.getRepsId());
 
 		if(corp == null || corp.get("corp_id") == null){
 			return false;
@@ -52,8 +53,8 @@ public class ShopController {
 
 	@GetMapping("/detail")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String shopDetail(Model model){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopByContext();
+	public String shopDetail(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
 		Map<String,Object>       shop      = null;
 		if(!list_shop.isEmpty()){
 			shop = list_shop.get(0);

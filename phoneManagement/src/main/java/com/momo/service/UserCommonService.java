@@ -1,9 +1,11 @@
 package com.momo.service;
 
 import com.momo.domain.user.UserDetailsImpl;
+import com.momo.mapper.ShopCommonMapper;
 import com.momo.mapper.UserCommonMapper;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SearchVO;
+import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ import java.util.*;
 public class UserCommonService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserCommonMapper userCommonMapper;
+	private final ShopCommonMapper shopCommonMapper;
+
 
 	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo){
 		if(vo.getOrder() == null){
@@ -112,6 +116,11 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 
 	// Employee
 	public int insertEmp(UserCommonVO vo){
+//		Integer shopId = vo.getShopId();
+//		if(shopId != null && shopId != 0){
+//			Map<String,Object> corp = shopCommonMapper.selectShop(ShopCommonVO.builder().shopId(shopId).build()).get(0);
+//			vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
+//		}
 		return userCommonMapper.insertEmp(vo);
 	}
 	public int updateEmp(UserCommonVO vo){
