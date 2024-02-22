@@ -1,8 +1,10 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
+import com.momo.service.ShopCommonService;
 import com.momo.service.UserCommonService;
 import com.momo.vo.UserCommonVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.Map;
 @PreAuthorize("isAuthenticated()")
 public class ProfileController {
 	private final UserCommonService userCommonService;
+	private final ShopCommonService shopCommonService;
 
 	@GetMapping("/home")
 	public String profileInfo(Model model){
@@ -42,5 +45,12 @@ public class ProfileController {
 	@ResponseBody
 	public boolean updatePassword(@RequestBody UserCommonVO vo){
 		return userCommonService.updatePassword(vo) != 0;
+	}
+
+	@GetMapping("/payment/charge")
+	@ResponseBody
+	public boolean chargePoint(HttpSession session, @RequestParam int amount){
+		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+		return shopCommonService.updateCorpPoint(corpId, amount) != 0;
 	}
 }

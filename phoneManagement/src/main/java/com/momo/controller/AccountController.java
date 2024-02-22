@@ -194,6 +194,15 @@ public class AccountController {
 			return false;
 		}
 
+		Map<String,Object> emp = userCommonService.selectEmpById(vo.getSenderId());
+		if(emp.get("role").equals("REPS")){
+			int corpId = Integer.parseInt(emp.get("corp_id").toString());
+			result = shopCommonService.updateCorpPoint(corpId, 5000);
+			if(result == 0){
+				return false;
+			}
+		}
+
 		return alarmService.approve(vo.getAlarmId()) != 0;
 	}
 

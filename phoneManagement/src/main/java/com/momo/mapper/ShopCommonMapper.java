@@ -23,8 +23,10 @@ public interface ShopCommonMapper {
 	// Corperation
 	public int insertCorp(ShopCommonVO vo);
 	public int updateCorp(ShopCommonVO vo);
+	public int updateCorpPoint(int id, int amount);
 	public int deleteCorp(String bNo);
 	public List<Map<String,Object>> selectCorp(ShopCommonVO vo);
 	public List<Map<String,Object>> searchCorp(SearchVO vo);
 	public Integer getMaxCorpId();
+	public Integer getCorpPoint(int id);
 }

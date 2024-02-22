@@ -1,5 +1,6 @@
 package com.momo.config;
 
+import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-//	private final LoginInterceptor loginInterceptor;
 	private final RoleAuthInterceptor roleAuthInterceptor;
 	private final HomeInterceptor homeInterceptor;
+	private final CommonInterceptor commonInterceptor;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -28,7 +29,6 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-
 		registry.addInterceptor(homeInterceptor)
 				.addPathPatterns("/home")
 				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**");
@@ -37,6 +37,10 @@ public class WebConfig implements WebMvcConfigurer {
 				.addPathPatterns("/**")
 				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/home"
 									,"/","/account/login","/account/logout");
+
+		registry.addInterceptor(commonInterceptor)
+				.addPathPatterns("/**")
+				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/account/**","/");
 	}
 
 	// 아래의 방식 대신 @WebFilter를 사용해서 필터를 거는 방식도 사용할 수 있음

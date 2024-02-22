@@ -73,6 +73,7 @@ function submitREPS(){
     //     alert("사업자번호 인증은 필수입니다!");
     //     return;
     // }
+    var userId = $('#user_id').val();
 
     var pKoNm = $('#p_ko_nm').val();
     var pEnNm = $('#p_en_nm').val();
@@ -85,7 +86,7 @@ function submitREPS(){
     }
 
     var data = {
-        emp_id: $('#user_id').val(),
+        emp_id: userId,
         role: 'REPS',
         bp_no: $('#b_no').val(),
         bp_ko_nm: pKoNm,
@@ -97,6 +98,11 @@ function submitREPS(){
 
     var result = submitReps(data);
     if(result){
+        var body2 = {
+            alarm_tp: 'approval',
+            sender_id: userId
+        }
+        ws.send(JSON.stringify(body2));
         window.location.href = "/home";
     }
 

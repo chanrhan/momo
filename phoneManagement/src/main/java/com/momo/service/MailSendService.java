@@ -15,7 +15,7 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class MailSendService {
-	private JavaMailSenderImpl mailSender;
+	private final JavaMailSenderImpl mailSender;
 	private int authNumber;
 
 	public void makeRandomNumber(){

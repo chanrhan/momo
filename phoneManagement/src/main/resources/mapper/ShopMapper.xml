@@ -169,6 +169,15 @@
             corp_id=#{corpId}
     </update>
 
+    <update id="updateCorpPoint">
+        update
+            tb_corp
+        set
+            corp_pt=corp_pt+(#{amount})
+        where
+            corp_id=#{id}
+    </update>
+
     <delete id="deleteCorp">
         delete from
             tb_corp
@@ -232,6 +241,15 @@
             ${andSelect} and
             ${orSearch}
                 ${prop}
+    </select>
+
+    <select id="getCorpPoint">
+        select
+            corp_pt
+        from
+            tb_corp
+        where
+            corp_id=#{id}
     </select>
 
 

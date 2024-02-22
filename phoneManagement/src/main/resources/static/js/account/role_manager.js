@@ -32,6 +32,8 @@ function searchCorp(){
                     value.shop_id +
                     "' corp_id='" +
                     value.corp_id +
+                    "' reps_id='" +
+                    value.reps_id +
                     "' onclick='submitMANAGER(this)" +
                     "'>" +
                     "<td>" +
@@ -62,7 +64,7 @@ function submitMANAGER(_this){
     var userId = $('#user_id').val();
     var shopId = $(_this).attr('shop_id');
     var corpId = $(_this).attr('corp_id');
-    // console.log(shopId + ", "+ repsId);
+    var repsId = $(_this).attr('reps_id');
 
     var data = {
         emp_id: userId,
@@ -76,7 +78,7 @@ function submitMANAGER(_this){
         data = {
             alarm_tp: 'approval',
             sender_id: userId,
-            corp_id: corpId
+            receiver_id: repsId
         };
 
         ws.send(JSON.stringify(data));

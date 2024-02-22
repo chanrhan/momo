@@ -8,6 +8,9 @@
     <script src="/js/profile/payment.js" th:inline="javascript"></script>
     <h3>결제</h3>
 
-    <h4>모모 플랜</h4>
+    <h4>포인트 충전</h4>
+    <p th:text="|잔여 포인트: ${corp_pt}|"></p>
+    충전할 포인트<input type="text" class="form-control" id="point">
+    <button type="button" class="btn-primary" onclick="chargePoint()">충전</button>
 </div>
 </html>

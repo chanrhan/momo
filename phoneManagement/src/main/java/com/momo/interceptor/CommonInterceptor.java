@@ -1,0 +1,49 @@
+package com.momo.interceptor;
+
+import com.momo.service.ShopCommonService;
+import com.momo.service.UserCommonService;
+import com.momo.util.SecurityContextUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class CommonInterceptor implements HandlerInterceptor {
+	private final ShopCommonService shopCommonService;
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		return HandlerInterceptor.super.preHandle(request, response, handler);
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		if(modelAndView == null){
+			modelAndView = new ModelAndView();
+		}
+		HttpSession session = request.getSession();
+
+		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+		if(corpId == 0){
+			log.error("'corp_id' is not existed in HttpSession");
+			return;
+		}
+
+		int corpPt = shopCommonService.getCorpPoint(corpId);
+		modelAndView.addObject("corp_pt",corpPt);
+	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+	}
+}

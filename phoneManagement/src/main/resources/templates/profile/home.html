@@ -6,7 +6,7 @@
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
     <script src="/js/profile/profile_info.js" th:inline="javascript"></script>
-    <a th:href="@{|/profile/${#authentication.getPrincipal().getUsername()}|}">결제 관리</a>
+    <a th:href="@{/profile/payment}">결제 관리</a>
     <div>
         <div class="form-label">
             이름 <input type="text" class="form-control" id="name" th:value="${userInfo.name}">

@@ -12,6 +12,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,17 +21,22 @@ import java.util.Set;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class WebSocketChatHandler extends TextWebSocketHandler {
+//@ServerEndpoint(value = "/ws", configurator = HttpSessionConfigurater.class)
+public class WebSocketHandler extends TextWebSocketHandler {
 	private final ObjectMapper objectMapper;
 	private final AlarmService alarmService;
 	private final ShopCommonService shopCommonService;
 
 	private       Set<WebSocketSession>            sessions           = new HashSet<>();
+//	private Map<String,WebSocketSession> userSessionMap = new HashMap<>();
 
 	@Override
 	// 소켓 연결 확인
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception{
 		super.afterConnectionEstablished(session);
+		System.out.println("session: "+session);
+		System.out.println("session: "+session.getAttributes());
+//		System.out.println("get: "+session.getAttributes().get("SPRING_SECURITY_CONTEXT"));
 		sessions.add(session);
 	}
 
@@ -39,23 +46,48 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 		String payload = message.getPayload();
 
 		AlarmVO vo = objectMapper.readValue(payload, AlarmVO.class);
-		System.out.println(vo);
+//		System.out.println(vo);
 
-		if(vo.getSenderId() == null || vo.getCorpId() == null){
+		if(vo.getSenderId() == null){
 			return;
 		}
 
-		Map<String,Object> corp = shopCommonService.selectCorpById(vo.getCorpId());
-		vo.setReceiverId(corp.get("reps_id").toString());
+		if(vo.getReceiverId() == null){
+			vo.setReceiverId("admin");
+		}
+
+//		Map<String,Object> corp = shopCommonService.selectCorpById(vo.getCorpId());
+//		vo.setReceiverId(corp.get("reps_id").toString());
 
 		int result = alarmService.insertAlarm(vo);
 		if(result == 0){
 			return;
 		}
+
+		sendAlarmToAllSession(vo);
+	}
+
+	private void sendAlarmTo(AlarmVO vo){
+		String receiverId = vo.getReceiverId();
+
+	}
+
+	private void sendAlarmToAllSession(AlarmVO vo){
+		for(WebSocketSession session : sessions){
+			sendMessage(session, vo);
+		}
+	}
+
+	private <T> void sendMessage(WebSocketSession session, T message){
+		try{
+			session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+		}catch (IOException e){
+			log.error(e.getMessage());
+		}
 	}
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-
+		sessions.remove(session);
 	}
 }

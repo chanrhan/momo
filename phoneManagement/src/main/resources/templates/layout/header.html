@@ -23,6 +23,7 @@
                         <p sec:authorize="hasAuthority('REPS')">대표</p>
                         <p sec:authorize="hasAuthority('MANAGER')">직원</p>
                     </div>
+                    <p th:text="|잔여 포인트: ${corp_pt}|"></p>
                     <div>
                         <a th:href="@{/alarm}">알람</a>
                         <p id="alarm_count"></p>

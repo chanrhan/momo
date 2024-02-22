@@ -19,6 +19,7 @@ public class ShopCommonVO extends CommonQueryVO {
 	private String        bpEnNm; // 사업자명 영문
 	private String        corpNm;
 	private String        corpTel;
+	private Integer corpPt;
 	private String startDt;
 	private String regiDt;
 

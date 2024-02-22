@@ -5,12 +5,14 @@ import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AlarmService extends CommonService {
 	private final AlarmMapper alarmMapper;
 

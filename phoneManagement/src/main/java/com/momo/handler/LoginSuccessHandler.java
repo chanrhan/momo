@@ -27,7 +27,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		System.out.println("LOGIN INTERCEPTOR");
+//		System.out.println("LOGIN HANDLER");
 		HttpSession session = request.getSession();
 		if(session == null){
 			response.sendRedirect("/");
@@ -40,7 +40,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			return;
 		}
 
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication == null){
 			response.sendRedirect("/error/common");
 			return;
@@ -52,7 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		}
 
 		Map<String,Object> emp = userCommonService.selectEmpById(username);
-		System.out.println("emp: "+emp);
+//		System.out.println("emp: "+emp);
 		if(emp == null || emp.isEmpty()){
 			response.sendRedirect("/error/common");
 			return;
@@ -66,6 +65,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		session.setAttribute("shop_id", shopId);
 		session.setAttribute("corp_id", corpId);
+
+		session.setMaxInactiveInterval(3600); // 3600초 = 60분 = 1시간
 
 		response.sendRedirect("/home");
 	}

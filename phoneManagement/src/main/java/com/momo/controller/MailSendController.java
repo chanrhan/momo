@@ -13,7 +13,7 @@ public class MailSendController {
 
 	@GetMapping("/invite")
 	@ResponseBody
-	public String inviteByMail(@RequestParam String email){
+	public String inviteByEmail(@RequestParam String email){
 		return mailSendService.joinEmail(email);
 	}
 

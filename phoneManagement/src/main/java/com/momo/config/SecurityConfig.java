@@ -1,6 +1,7 @@
 package com.momo.config;
 
 import com.momo.handler.LoginSuccessHandler;
+import com.momo.handler.LogoutSuccessHandler;
 import com.momo.service.UserCommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class SecurityConfig {
 				.logout((logout)-> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
 						.logoutSuccessUrl("/")
+						.logoutSuccessHandler(new LogoutSuccessHandler())
 						.invalidateHttpSession(true)
 					   );
 

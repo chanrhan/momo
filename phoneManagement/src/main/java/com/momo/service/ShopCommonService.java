@@ -116,10 +116,24 @@ public class ShopCommonService extends CommonService {
 
 	public int getMaxCorpId(){
 		Integer id = shopCommonMapper.getMaxCorpId();
-		if(id == null){
+		return (id != null) ? id : 0;
+	}
+
+	public int getCorpPoint(int id){
+		Integer pt = shopCommonMapper.getCorpPoint(id);
+		return (pt != null) ? pt : 0;
+	}
+
+	// 최초 가입 시 지급 포인트
+	public void giveFirstSignupPoint(){
+
+	}
+
+	public int updateCorpPoint(int corpId, int amount){
+		if(amount == 0){
 			return 0;
 		}
-		return id;
+		return shopCommonMapper.updateCorpPoint(corpId, amount);
 	}
 
 }
