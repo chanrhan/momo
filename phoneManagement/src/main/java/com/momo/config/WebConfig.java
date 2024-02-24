@@ -4,10 +4,13 @@ import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
 @RequiredArgsConstructor
@@ -40,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 		registry.addInterceptor(commonInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/account/**","/");
+				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/account/**","/","/admin/**");
 	}
 
 	// 아래의 방식 대신 @WebFilter를 사용해서 필터를 거는 방식도 사용할 수 있음

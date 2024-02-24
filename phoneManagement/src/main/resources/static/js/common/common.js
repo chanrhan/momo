@@ -8,8 +8,6 @@ const koreanRegex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
 const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
-
-
 $(document).ready(function (){
     setPasswordToggle();
 });

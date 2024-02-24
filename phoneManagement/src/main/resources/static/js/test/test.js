@@ -2,7 +2,7 @@ const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
 function sendEmail(){
-    var email = $('#email').val();
+    var email = $('#send_email').val();
 
     $.ajax({
         url: '/mail/invite?email='+email,

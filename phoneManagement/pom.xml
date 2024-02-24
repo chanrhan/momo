@@ -14,7 +14,7 @@
 	<name>Momo</name>
 	<description>Demo project for Momo</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +49,20 @@
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>2.5.0</version>
+			<exclusions>
+<!--				<exclusion>-->
+<!--					<artifactId>thymeleaf-expression-processor</artifactId>-->
+<!--					<groupId>nz.net.ultraq.thymeleaf</groupId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<artifactId>groovy-extensions</artifactId>-->
+<!--					<groupId>nz.net.ultraq.extensions</groupId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<artifactId>groovy</artifactId>-->
+<!--					<groupId>org.codehaus.groovy</groupId>-->
+<!--				</exclusion>-->
+			</exclusions>
 		</dependency>
 
 <!--		Validation-->
@@ -67,6 +81,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>sockjs-client</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.3</version>
 		</dependency>
 
 <!--		SpringBoot DevTools-->
@@ -206,10 +238,6 @@
 					<artifactId>jakarta.activation-api</artifactId>
 					<groupId>jakarta.activation</groupId>
 				</exclusion>
-				<exclusion>
-					<artifactId>spring-context-support</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
 			</exclusions>
 		</dependency>
 <!--		<dependency>-->
@@ -222,17 +250,18 @@
 			<artifactId>javax.mail</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>5.3.9</version>
-		</dependency>
 
-<!--		Quartz-->
+		<!--		Quartz-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
 			<version>2.7.5</version>
+			<exclusions>
+<!--				<exclusion>-->
+<!--					<artifactId>spring-context-support</artifactId>-->
+<!--					<groupId>org.springframework</groupId>-->
+<!--				</exclusion>-->
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -250,7 +279,15 @@
 					</excludes>
 				</configuration>
 			</plugin>
-<!--			<plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+            <!--			<plugin>-->
 <!--				<groupId>com.github.ferstl</groupId>-->
 <!--				<artifactId>depgraph-maven-plugin</artifactId>-->
 <!--&lt;!&ndash;				<version>4.0.1</version>&ndash;&gt;-->

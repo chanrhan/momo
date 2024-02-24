@@ -51,6 +51,16 @@ public class TestController {
 		return "test/msg";
 	}
 
+	@GetMapping("/ws")
+	public String webSocketTest(){
+		return "test/ws";
+	}
+
+	@GetMapping("/sse")
+	public String sseTest(){
+		return "test/sse";
+	}
+
 	@PostMapping("/msg")
 	@ResponseBody
 	public JSONObject testMessage(@RequestBody Map<String,Object> body){

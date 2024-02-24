@@ -1,8 +1,10 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
+import com.momo.emitter.NotificationService;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.UserCommonVO;
@@ -24,7 +26,8 @@ public class AccountController {
 
 	private final TermService       termService;
 	private final ShopCommonService shopCommonService;
-	private final RegionService regionService;
+	private final RegionService       regionService;
+	private final NotificationService notificationService;
 
 	private final AlarmService alarmService;
 
@@ -87,13 +90,15 @@ public class AccountController {
 	@PostMapping("/submit/admin")
 	@ResponseBody
 	@Transactional
-	public boolean submitAdmin(@RequestBody UserCommonVO vo) {
+	public boolean submitAdmin(@RequestBody UserCommonVO vo, HttpSession session) {
 //		System.out.println(vo);
 		String role = vo.getRole();
 		int result = userCommonService.updateRole(vo.getId(), role);
 		if (result == 0) {
 			return false;
 		}
+
+		session.setAttribute("user_id", vo.getId());
 		userCommonService.replaceAuthority(role);
 
 		return result != 0;
@@ -108,6 +113,7 @@ public class AccountController {
 			return false;
 		}
 
+		session.setAttribute("user_id", vo.getEmpId());
 		userCommonService.replaceAuthority("REPS");
 
 		int corpId = shopCommonService.getMaxCorpId()+1;
@@ -124,6 +130,8 @@ public class AccountController {
 		session.setAttribute("shop_id", 0);
 		session.setAttribute("corp_id", corpId);
 
+		notificationService.approvalRequestToAdmin(vo.getEmpId(), corpId);
+
 		return result != 0;
 	}
 
@@ -136,12 +144,17 @@ public class AccountController {
 			return false;
 		}
 
+		session.setAttribute("user_id", vo.getEmpId());
 		userCommonService.replaceAuthority("MANAGER");
 
 		result = userCommonService.insertEmp(vo);
 
-		session.setAttribute("shop_id", vo.getShopId());
-		session.setAttribute("corp_id", vo.getCorpId());
+		int shopId = vo.getShopId();
+		int corpId = vo.getCorpId();
+		session.setAttribute("shop_id", shopId);
+		session.setAttribute("corp_id", corpId);
+
+		notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
 
 		return result != 0;
 	}
@@ -189,18 +202,24 @@ public class AccountController {
 	@ResponseBody
 	@Transactional
 	public boolean approve(@RequestBody AlarmVO vo){
-		int result = userCommonService.updateApproveState(vo.getSenderId(), true);
+		String receiverId = vo.getReceiverId();
+		int result = userCommonService.updateApproveState(receiverId, true);
 		if(result == 0){
 			return false;
 		}
 
-		Map<String,Object> emp = userCommonService.selectEmpById(vo.getSenderId());
+		Map<String,Object> emp = userCommonService.selectEmpById(receiverId);
 		if(emp.get("role").equals("REPS")){
 			int corpId = Integer.parseInt(emp.get("corp_id").toString());
 			result = shopCommonService.updateCorpPoint(corpId, 5000);
 			if(result == 0){
 				return false;
 			}
+
+			String title = "포인트 지급";
+			String content ="최초 회원가입으로 인한 5000포인트가 지급되었습니다. 문자, 카톡 250건을 무료로 발송 가능합니다.";
+
+			notificationService.sendMessage("admin", receiverId, title, content);
 		}
 
 		return alarmService.approve(vo.getAlarmId()) != 0;

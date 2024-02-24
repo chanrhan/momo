@@ -75,13 +75,13 @@ function submitMANAGER(_this){
 
     var result = submitManager(data);
     if(result){
-        data = {
-            alarm_tp: 'approval',
-            sender_id: userId,
-            receiver_id: repsId
-        };
-
-        ws.send(JSON.stringify(data));
+        // data = {
+        //     alarm_tp: 'approval',
+        //     sender_id: userId,
+        //     receiver_id: repsId
+        // };
+        //
+        // ws.send(JSON.stringify(data));
         window.location.href = "/home";
     }
 }

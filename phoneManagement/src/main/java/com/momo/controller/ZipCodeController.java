@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
-@Controller
-@RequiredArgsConstructor
-@RequestMapping("/zipcode")
+//@Controller
+//@RequiredArgsConstructor
+//@RequestMapping("/zipcode")
+@Deprecated
 public class ZipCodeController {
 	@GetMapping("/window/open")
 	public String zipCodeWindowOpen(){

@@ -13,12 +13,11 @@ public class HttpSessionConfigurater extends ServerEndpointConfig.Configurator {
 
 	@Override
 	public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
-//		super.modifyHandshake(config, request, response);
+		System.out.println("[qq] modify handshake");
 		HttpSession session = (HttpSession) request.getHttpSession();
-
-		ServletContext context = session.getServletContext();
+		System.out.println("session: "+session.getId());
+		System.out.println("session n: "+session.getAttributeNames());
 		config.getUserProperties().put(HttpSessionConfigurater.Session, session);
-		config.getUserProperties().put(HttpSessionConfigurater.Context, context);
 	}
 
 }

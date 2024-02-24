@@ -27,7 +27,7 @@ function approve(_this){
 
     var body = {
         alarm_id: $(_this).attr('alarm_id'),
-        sender_id: $(_this).attr('user_id')
+        receiver_id: $(_this).attr('user_id')
     }
 
     $.ajax({

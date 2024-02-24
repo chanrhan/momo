@@ -21,16 +21,16 @@ public class CommonInterceptor implements HandlerInterceptor {
 	private final ShopCommonService shopCommonService;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		return HandlerInterceptor.super.preHandle(request, response, handler);
-	}
-
-	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		System.out.println("[qq] Common postHandle");
 		if(modelAndView == null){
 			modelAndView = new ModelAndView();
 		}
 		HttpSession session = request.getSession();
+		if(session == null || session.getAttribute("corp_id") == null){
+			return;
+		}
+		System.out.println("sid: "+session.getId());
 
 		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
 		if(corpId == 0){

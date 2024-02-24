@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test</title>
+    <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+  <script src="/js/test/ws.js" th:inline="javascript"></script>
+</head>
+<body>
+  <h3>웹소켓 테스트</h3>
+  <button type="button" class="btn-primary" onclick="connect()">Connect</button>
+  <br>
+  <input type="text" class="form-control" id="msg" placeholder="보낼 메세지를 입력해주세요">
+  <button type="button" class="btn-primary" onclick="send()">Send</button>
+  <button type="button" class="btn-primary" onclick="sendAjax()">Ajax Send</button>
+</body>
+</html>

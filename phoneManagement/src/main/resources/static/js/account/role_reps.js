@@ -98,11 +98,11 @@ function submitREPS(){
 
     var result = submitReps(data);
     if(result){
-        var body2 = {
-            alarm_tp: 'approval',
-            sender_id: userId
-        }
-        ws.send(JSON.stringify(body2));
+        // var body2 = {
+        //     alarm_tp: 'approval',
+        //     sender_id: userId
+        // }
+        // ws.send(JSON.stringify(body2));
         window.location.href = "/home";
     }
 

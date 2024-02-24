@@ -1,9 +1,14 @@
 package com.momo.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.momo.config.HttpSessionConfigurater;
 import com.momo.service.AlarmService;
 import com.momo.service.ShopCommonService;
+import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.ServerEndpoint;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,24 +24,26 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+//@Component
 //@ServerEndpoint(value = "/ws", configurator = HttpSessionConfigurater.class)
-public class WebSocketHandler extends TextWebSocketHandler {
-	private final ObjectMapper objectMapper;
+public class WebSocketAlarmHandler extends TextWebSocketHandler {
+	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final AlarmService alarmService;
 	private final ShopCommonService shopCommonService;
 
-	private       Set<WebSocketSession>            sessions           = new HashSet<>();
-//	private Map<String,WebSocketSession> userSessionMap = new HashMap<>();
+	private Set<WebSocketSession>        sessions       = new HashSet<>();
+	private Map<String,WebSocketSession> userSessionMap = new HashMap<>();
 
 	@Override
 	// 소켓 연결 확인
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception{
 		super.afterConnectionEstablished(session);
-		System.out.println("session: "+session);
-		System.out.println("session: "+session.getAttributes());
-//		System.out.println("get: "+session.getAttributes().get("SPRING_SECURITY_CONTEXT"));
+		System.out.println("[qq] WebSocket after Conn");
+
+		System.out.println("session attributes: "+session.getAttributes());
+
+
 		sessions.add(session);
 	}
 
@@ -64,12 +71,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			return;
 		}
 
-		sendAlarmToAllSession(vo);
+		sendAlarmTo(vo);
 	}
 
 	private void sendAlarmTo(AlarmVO vo){
 		String receiverId = vo.getReceiverId();
 
+		WebSocketSession session = userSessionMap.get(receiverId);
+		sendMessage(session, vo);
 	}
 
 	private void sendAlarmToAllSession(AlarmVO vo){
