@@ -27,6 +27,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 //@Component
 //@ServerEndpoint(value = "/ws", configurator = HttpSessionConfigurater.class)
+@Deprecated
 public class WebSocketAlarmHandler extends TextWebSocketHandler {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final AlarmService alarmService;

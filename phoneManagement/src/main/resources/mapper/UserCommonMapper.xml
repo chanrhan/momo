@@ -3,6 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserCommonMapper">
+    <update id="findGhostUserAndUpdateToDormant">
+
+        update
+            tb_account
+        set
+            user_st=2
+        where
+            role!='ADMIN' and
+            user_st=1 and
+            DATEDIFF(CURRENT_DATE, last_login_dt) > #{date}
+    </update>
+
+    <update id="loginNow">
+        update
+            tb_account
+        set
+            last_login_dt=NOW()
+        where
+            id=#{id}
+    </update>
+
     <select id="searchUserInfo" parameterType="com.momo.vo.SearchVO">
         with tb as (
             select

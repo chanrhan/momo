@@ -18,7 +18,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
 
-@Component
+//@Component
+@Deprecated
 public class CustomHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {

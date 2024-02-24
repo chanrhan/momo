@@ -9,6 +9,9 @@ import java.util.Map;
 
 @Mapper
 public interface UserCommonMapper {
+	public int loginNow(String id);
+
+	public int findGhostUserAndUpdateToDormant(int date);
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
 	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo);
 

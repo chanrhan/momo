@@ -1,5 +1,6 @@
 package com.momo;
 
+import com.momo.job.TestJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.SpringApplication;
@@ -15,28 +16,8 @@ public class PhoneManagementApplication {
 
 	public static void main(String[] args) throws SchedulerException {
 		SpringApplication.run(PhoneManagementApplication.class, args);
-
-//		JobDetail job = JobBuilder.newJob(MyJob.class)
-//				.withIdentity("myJob","group1")
-//				.build();
-//
-//		Trigger trigger = TriggerBuilder.newTrigger()
-//				.withIdentity("myTrigger","group1")
-//				.startNow()
-//				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
-//									  .withIntervalInSeconds(10)
-//									  .repeatForever())
-//				.build();
-//
-//		Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-//		scheduler.start();
-//		scheduler.scheduleJob(job, trigger);
 	}
 
 }
 
-//class MyJob implements Job {
-//	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//		System.out.println("Test Quartz!");
-//	}
-//}
+

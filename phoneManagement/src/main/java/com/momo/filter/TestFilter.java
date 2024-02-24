@@ -13,6 +13,7 @@ import java.io.IOException;
 
 //@WebFilter(urlPatterns = "/test/*")
 //@Order(1)
+@Deprecated
 public class TestFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

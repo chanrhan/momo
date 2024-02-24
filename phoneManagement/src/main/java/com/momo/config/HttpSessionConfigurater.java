@@ -7,6 +7,7 @@ import jakarta.websocket.HandshakeResponse;
 import jakarta.websocket.server.HandshakeRequest;
 import jakarta.websocket.server.ServerEndpointConfig;
 
+@Deprecated
 public class HttpSessionConfigurater extends ServerEndpointConfig.Configurator {
 	public static final String Session = "Session";
 	public static final String Context = "Context";

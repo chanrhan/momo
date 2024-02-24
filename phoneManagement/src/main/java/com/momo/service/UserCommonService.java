@@ -32,6 +32,13 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	private final UserCommonMapper userCommonMapper;
 	private final ShopCommonMapper shopCommonMapper;
 
+	public int loginNow(String id){
+		return userCommonMapper.loginNow(id);
+	}
+
+	public int findGhostUserAndUpdateToDormant(int date){
+		return userCommonMapper.findGhostUserAndUpdateToDormant(date);
+	}
 
 	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo){
 		if(vo.getOrder() == null){

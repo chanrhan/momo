@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private final UserCommonService userCommonService;
 
 	@Override
+	@Transactional
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		System.out.println("[qq] LoginSuccess on Auth");
 		HttpSession session = request.getSession();
@@ -36,6 +38,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		}
 		session.setAttribute("user_id", username);
 		session.setMaxInactiveInterval(3600); // 3600초 = 60분 = 1시간
+
+		userCommonService.loginNow(username);
 
 		if(authentication == null){
 			response.sendRedirect("/error/common");

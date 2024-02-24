@@ -12,6 +12,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 //@Configuration
 //@EnableWebSocket
 @RequiredArgsConstructor
+@Deprecated
 public class WebSocketConfig implements WebSocketConfigurer  {
 	private final WebSocketAlarmHandler webSocketAlarmHandler;
 
