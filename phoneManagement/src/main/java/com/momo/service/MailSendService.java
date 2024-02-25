@@ -61,10 +61,7 @@ public class MailSendService {
 				"'>" +
 				"<input type='hidden' id='corp_id' value='" +
 				corpId +
-				"'>" +
-				"<h1>" +
-				"모모(Momo) 회원 초대" +
-				"</h1>");
+				"'>");
 		sb.append("<p>" +
 						  "회사명" + corpNm +
 						  "</p>");

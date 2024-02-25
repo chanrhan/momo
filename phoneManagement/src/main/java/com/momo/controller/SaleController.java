@@ -2,14 +2,20 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.service.*;
+import com.momo.util.FileServiceUtil;
 import com.momo.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,8 @@ public class SaleController {
 
 	private final MsgCommonService msgCommonService;
 	private final ItemCommonService itemCommonService;
+
+	private final ImageService imageService;
 
 	@GetMapping("/home")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
@@ -52,9 +60,9 @@ public class SaleController {
 
 	@GetMapping("/detail/{id}")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleDetail(Model model, @PathVariable int id) {
+	public String saleDetail(Model model, @PathVariable int id) throws IOException {
 		Map<String,Object> map = saleService.selectSaleById(id);
-		System.out.println(map);
+//		System.out.println(map);
 		model.addAttribute("sale", map);
 		Object sup_div = map.get("sup_div");
 		Object sup_pay = map.get("sup_pay");
@@ -65,15 +73,22 @@ public class SaleController {
 			for(int i=0;i<d.length;++i){
 				list_sup.add(new SupportVO(d[i],p[i]));
 			}
-			System.out.println(list_sup);
+//			System.out.println(list_sup);
 		}
 		model.addAttribute("list_sup", list_sup);
+
+//		Object         filePath = map.get("spec");
+//		Object byteArray = null;
+//		if(filePath != null && !"".equals(filePath)){
+//			byteArray = imageService.download(filePath.toString()).getBody();
+//		}
+//		model.addAttribute("spec", byteArray);
 		return "sale/sale_detail";
 	}
 
 	@GetMapping("/create/form")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleCreateGET(Model model, @RequestParam int shopId) {
+	public String saleCreateForm(Model model, @RequestParam int shopId) {
 		Map<String,Object> shopMap = shopCommonService.selectShopById(shopId);
 
 		model.addAttribute("shop_nm", shopMap.get("shop_nm").toString());
@@ -82,24 +97,31 @@ public class SaleController {
 		return "sale/sale_create";
 	}
 
-	@PostMapping("/update")
-	@ResponseBody
-	public boolean saleUpdate(@RequestBody SaleVO vo) {
-		System.out.println(vo);
-		return saleService.updateSale(vo) != 0;
-	}
-
 	@GetMapping("/delete/{id}")
 	@ResponseBody
-	public boolean saleDelete(@PathVariable int id) {
+	public boolean deleteSale(@PathVariable int id) {
 		return saleService.deleteSale(id) != 0;
 	}
 
 	@PostMapping("/create")
 	@ResponseBody
-	public boolean saleCreatePOST(@RequestBody SaleVO vo) {
-//		System.out.println(vo);
+	public boolean createSale(@RequestPart(value = "sale") SaleVO vo,
+								  @RequestPart(value = "spec") MultipartFile file) {
+		System.out.println("create vo: "+vo);
+		System.out.println("create files: "+file);
+		String path = imageService.upload(file);
+		vo.setSpec(path);
 		return saleService.insertSale(vo) != 0;
+	}
+
+	@PostMapping("/update")
+	@ResponseBody
+	public boolean updateSale(@RequestPart(value = "sale") SaleVO vo,
+							  @RequestPart(value = "spec") MultipartFile file) {
+		System.out.println(vo);
+		String path = imageService.upload(file);
+		vo.setSpec(path);
+		return saleService.updateSale(vo) != 0;
 	}
 
 	@GetMapping("/msg/rsv")

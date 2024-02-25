@@ -3,8 +3,11 @@ $(document).ready(function (){
 })
 
 function stepToNext(){
-    var formData = new FormData(document.getElementById('create_form'));
-    var body = convertFormDataToObject(formData);
+    var createForm = new FormData(document.getElementById('create_form'));
+
+    var file = createForm.get('spec');
+    createForm.delete('spec');
+    var body = convertFormDataToObject(createForm);
 
     if(dupTelOnMonth(body["shop_id"],body["cust_tel"],body["actv_dt"])){
         var result = confirm("선택한 달에 동일한 전화번호가 존재합니다. 계속 진행하시겠습니까?");
@@ -26,9 +29,41 @@ function stepToNext(){
     body['sup_pay'] = pay_sb;
     body['seller_id'] = $('#user_id').val();
 
-    sessionStorage.setItem("formData", JSON.stringify(body));
-    sessionStorage.setItem("from", "create");
-    window.location.href = '/sale/msg/rsv';
+    var formData = new FormData();
+    formData.append('spec', file);
+    formData.append('sale', new Blob([JSON.stringify(body)],{type: 'application/json'}));
+
+    // sessionStorage.setItem("sale", JSON.stringify(body));
+    // sessionStorage.setItem("from", "create");
+    // window.location.href = '/sale/msg/rsv';
+
+    if(createSale(formData)){
+        if(confirm("판매일보 등록이 완료되었습니다. 이어서 문자 예약을 바로 하시겠습니까?")){
+            sessionStorage.setItem("sale", JSON.stringify(body));
+            window.location.href = '/sale/msg/rsv';
+        }else{
+            window.close();
+        }
+    }
+}
+
+function createSale(formData){
+    var rst = false;
+    $.ajax({
+        url: '/sale/create',
+        type: 'post',
+        contentType: false,
+        processData: false,
+        data: formData,
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+        }
+    })
+    return rst;
 }
 
 function addSupDiv(){

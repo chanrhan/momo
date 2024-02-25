@@ -61,6 +61,12 @@ public class TestController {
 		return "test/sse";
 	}
 
+
+	@GetMapping("/img")
+	public String imageTest(){
+		return "test/image";
+	}
+
 	@PostMapping("/msg")
 	@ResponseBody
 	public JSONObject testMessage(@RequestBody Map<String,Object> body){

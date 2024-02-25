@@ -3,21 +3,27 @@ package com.momo.config;
 import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
+import com.momo.util.FileServiceUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 	private final RoleAuthInterceptor roleAuthInterceptor;
 	private final HomeInterceptor homeInterceptor;
 	private final CommonInterceptor commonInterceptor;
+
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		registry.addResourceHandler("/images/**")
+//				.addResourceLocations("file://"+ "${file.path}");
+//	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <title>Image Test</title>
+    <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+  <script src="/js/test/image.js" th:inline="javascript"></script>
+</head>
+<body>
+  <div class="form-label">
+      <h5>이미지 1개</h5>
+      <input type="file" id="file" style="height: 30px;">
+      <button type="button" class="btn-primary" onclick="uploadImage($('#file'))">업로드</button>
+      <br>
+      <h5>이미지 여러개</h5>
+      <input type="file" multiple id="multi_file" style="height: 30px;">
+      <button type="button" class="btn-primary" onclick="uploadImage($('#multi_file'))">업로드</button>
+  </div>
+</body>
+</html>

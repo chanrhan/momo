@@ -229,7 +229,7 @@
 			<version>4.13.6</version>
 		</dependency>
 
-<!--		이메일 인증-->
+<!--		이메일 라우팅-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>

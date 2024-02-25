@@ -2,7 +2,7 @@
 let child_window = null;
 
 $(document).ready(function (){
-    var formData = sessionStorage.getItem("formData");
+    var formData = sessionStorage.getItem("sale");
     if(formData === null || formData === "") {
         alert("잘못된 접근입니다!");
         window.close();
@@ -30,27 +30,34 @@ function clickSelectButton(formId){
 }
 
 function submitReservation(){
-    var from = sessionStorage.getItem("from");
-    if(from === "create"){
-        createSale();
-    }else{
-        reserveMessage();
-    }
+    reserveMessage();
+    // if(from === "create"){
+    //     createSale();
+    // }else{
+    //     reserveMessage();
+    // }
 }
 
 function createSale(){
-    var sale_body = JSON.parse(sessionStorage.getItem("formData"));
+    var sale_body = JSON.parse(sessionStorage.getItem("sale"));
+    var spec = sessionStorage.getItem('spec');
+
     var custNm = $('#custNm').val();
     var custTel = $('#custTel').val();
     sale_body["cust_nm"] = custNm;
     sale_body["cust_tel"] = custTel;
 
+    var formData = new FormData();
+    formData.append('spec', spec);
+    formData.append('sale', new Blob([JSON.stringify(sale_body)], {type: 'application/json'}));
+
     var rst = false;
     $.ajax({
         url: '/sale/create',
         type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify(sale_body),
+        contentType: false,
+        processData: false,
+        data: formData,
         async: false,
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
@@ -91,7 +98,7 @@ function reserveMessage(){
         }
     });
     // console.log(msgRsv);
-    var msg_body = JSON.parse(sessionStorage.getItem("formData"));
+    var msg_body = JSON.parse(sessionStorage.getItem("sale"));
     msg_body["cust_nm"] = custNm;
     msg_body["cust_tel"] = custTel;
 
@@ -117,9 +124,8 @@ function reserveMessage(){
         })
     }
     if(rst){
-        sessionStorage.removeItem("formData");
-        sessionStorage.removeItem("from");
-        window.opener.parent.searchSale();
+        sessionStorage.removeItem("sale");
+
         window.close();
     }
 }

@@ -1,16 +1,20 @@
 
 function stepToMessageReserve(){
     var formData = new FormData(document.getElementById('detail_form'));
+
+    formData.delete('spec');
     var body = convertFormDataToObject(formData);
 
-    sessionStorage.setItem("formData", JSON.stringify(body));
-    sessionStorage.setItem("from", "update");
+    sessionStorage.setItem("sale", JSON.stringify(body));
     window.location.href = '/sale/msg/rsv';
 }
 
 function updateSale(){
-    var formData = new FormData(document.getElementById('detail_form'));
-    var body = convertFormDataToObject(formData);
+    var detailForm = new FormData(document.getElementById('detail_form'));
+
+    var file = detailForm.get('spec');
+    detailForm.delete('spec');
+    var body = convertFormDataToObject(detailForm);
 
     var div_sb = [];
     document.getElementsByName('sup_div').forEach(function (value, key, parent){
@@ -24,18 +28,23 @@ function updateSale(){
     body['sup_div'] = div_sb;
     body['sup_pay'] = pay_sb;
 
+    var formData = new FormData();
+    formData.append('spec', file);
+    formData.append('sale', new Blob([JSON.stringify(body)],{type: 'application/json'}));
+
     $.ajax({
         url: '/sale/update',
         type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify(body),
+        contentType: false,
+        processData: false,
+        data: formData,
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
             if(result){
                 window.opener.parent.searchSale();
-                window.close();
+                alert("수정이 완료되었습니다.");
             }
         }
     })

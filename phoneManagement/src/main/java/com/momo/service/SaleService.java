@@ -18,6 +18,10 @@ public class SaleService extends CommonService {
 	private final UserCommonService userCommonService;
 	private final ShopCommonService shopCommonService;
 
+	public String getSpecFilePath(int id){
+		return saleMapper.getSpecFilePath(id);
+	}
+
 	public int countTel(SaleVO vo){
 		return saleMapper.countTel(vo);
 	}

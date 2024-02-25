@@ -18,4 +18,5 @@ public interface SaleMapper{
 	public Integer getMaxId();
 	public Integer countTel(SaleVO vo);
 	public List<Map<String,Object>> dupTelOnMonth(SaleVO vo);
+	public String getSpecFilePath(int id);
 }

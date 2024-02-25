@@ -3,6 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="getSpecFilePath">
+        select
+            spec
+        from
+            tb_sale
+        where
+            sale_id=#{id}
+    </select>
+
     <select id="dupTelOnMonth">
         select *
         from tb_sale

@@ -16,6 +16,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 		if(session != null){
+			session.removeAttribute("user_id");
 			session.removeAttribute("shop_id");
 			session.removeAttribute("corp_id");
 		}else{

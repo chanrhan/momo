@@ -1,11 +1,8 @@
 package com.momo;
 
-import com.momo.job.TestJob;
 import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 

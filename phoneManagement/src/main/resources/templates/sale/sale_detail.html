@@ -27,6 +27,8 @@
     식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="cust_cd" th:value="*{cust_cd}">
     <br>
     <h4>개통 정보</h4>
+    견적서 파일 <img th:src="@{|/img/spec/${sale.sale_id}|}" alt="이미지 확인하기" width="300px"/>
+    <br>
     통신사<select name="provider" th:value="*{provider}">
         <option selected value="skt">SKT</option>
         <option value="kt">KT</option>
