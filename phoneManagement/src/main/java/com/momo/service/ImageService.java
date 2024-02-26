@@ -28,6 +28,9 @@ public class ImageService {
 
 	public ResponseEntity<?> download(String path) throws IOException {
 		UrlResource resource = FileServiceUtil.getFileResource(path);
+		if(!resource.exists()){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		byte[] byteArray = Files.readAllBytes(resource.getFile().toPath());
 
 		return new ResponseEntity<>(byteArray, HttpStatus.OK);
@@ -41,7 +44,7 @@ public class ImageService {
 		String fileName = FileServiceUtil.createSaveFileName(mf.getOriginalFilename());
 		long fileSize = mf.getSize();
 		String savePath = FileServiceUtil.getSaveFilePath(fileName);
-		log.info("save path: "+savePath);
+//		log.info("save path: "+savePath);
 		File file = new File(savePath);
 
 		if(file.exists()){
@@ -69,7 +72,7 @@ public class ImageService {
 		fileInfo.put("fileName", fileName);
 		fileInfo.put("fileSize",fileSize);
 
-		log.info("Save File: "+fileInfo);
+//		log.info("Save File: "+fileInfo);
 
 		return fileName;
 	}

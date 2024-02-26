@@ -225,6 +225,8 @@ function submitSignup(){
             tel: $('#tel').val(),
             terms: termString,
         };
+        sessionStorage.setItem('shop_id', $('#shop_id').val());
+        sessionStorage.setItem('corp_id',$('#corp_id').val());
         return submitDefaultSignup(data);
     }else{
         alert("올바르지 않은 입력 형식이 있습니다!");

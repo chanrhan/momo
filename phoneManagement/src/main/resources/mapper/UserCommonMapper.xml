@@ -19,7 +19,8 @@
         update
             tb_account
         set
-            last_login_dt=NOW()
+            last_login_dt=NOW(),
+            user_st=1
         where
             id=#{id}
     </update>
@@ -199,9 +200,9 @@
     <insert id="insertEmp" parameterType="com.momo.vo.UserCommonVO">
         insert into
             tb_emp
-            (emp_id, role,corp_id, shop_id)
+            (emp_id, role,corp_id, shop_id, approval_st)
         VALUES
-            (#{empId},#{role},#{corpId},#{shopId})
+            (#{empId},#{role},#{corpId},#{shopId}, #{approvalSt})
     </insert>
 
     <update id="updateEmp" parameterType="com.momo.vo.UserCommonVO">

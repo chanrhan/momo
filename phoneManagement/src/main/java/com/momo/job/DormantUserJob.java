@@ -20,6 +20,6 @@ public class DormantUserJob implements Job {
 		log.info("Dormant User Job is processing!");
 
 		int result = userCommonService.findGhostUserAndUpdateToDormant(1);
-
+		log.info("User Update to Dormant: "+result);
 	}
 }

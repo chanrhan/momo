@@ -128,6 +128,9 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 //			Map<String,Object> corp = shopCommonMapper.selectShop(ShopCommonVO.builder().shopId(shopId).build()).get(0);
 //			vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
 //		}
+		if(vo.getApprovalSt() == null){
+			vo.setApprovalSt(false);
+		}
 		return userCommonMapper.insertEmp(vo);
 	}
 	public int updateEmp(UserCommonVO vo){
@@ -155,10 +158,17 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	public void replaceAuthority(String role){
+		replaceAuthority(role, false);
+	}
+
+	public void replaceAuthority(String role, boolean approve){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
 
 		updateAuthorities.add(new SimpleGrantedAuthority(role));
+		if(approve){
+			updateAuthorities.add(new SimpleGrantedAuthority("APPROVE"));
+		}
 
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
 

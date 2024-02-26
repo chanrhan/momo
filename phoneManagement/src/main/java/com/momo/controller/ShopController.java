@@ -81,6 +81,6 @@ public class ShopController {
 	@PostMapping("/search/shop")
 	@ResponseBody
 	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
-		return shopCommonService.searchShopByRole(vo);
+		return shopCommonService.searchShop(vo);
 	}
 }

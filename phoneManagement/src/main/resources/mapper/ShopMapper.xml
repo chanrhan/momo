@@ -29,7 +29,9 @@
         <if test='shopNm != null and !shopNm.equals("")'>
             shop_nm=#{shopNm},
         </if>
-
+        <if test='corpId != null'>
+            corp_id=#{corpId},
+        </if>
         <if test='shopTel != null and !shopTel.equals("")'>
             shop_tel=#{shopTel},
         </if>

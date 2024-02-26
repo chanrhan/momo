@@ -11,7 +11,7 @@ import java.util.UUID;
 public class FileServiceUtil {
 	public static String LOCAL_STORAGE_PATH;
 
-	@Value("${file.path}") // @Value 어노테이션은 static 변수 위에 붙여서 쓰면 오류가 발생한다.
+	@Value("${momo.file.path}") // @Value 어노테이션은 static 변수 위에 붙여서 쓰면 오류가 발생한다.
 						   // 따라서 아래와 같이 Setter와 같이 사용한다.
 	public void setLocalStoragePath(String path){
 		LOCAL_STORAGE_PATH = path;

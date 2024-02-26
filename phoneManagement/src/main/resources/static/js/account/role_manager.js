@@ -1,9 +1,18 @@
 
 let pageNo = 1;
 
-function searchCorp(){
+
+$(document).ready(function (){
+   var keyword =  searchCorp(sessionStorage.getItem('corp_id'));
+   $('#input_search_corp').val(keyword);
+});
+
+function searchCorp(corpId){
     var keyword = $('#input_search_corp').val();
     var body = {
+        select:{
+
+        },
         search: {
             bp_no: keyword,
             bp_ko_nm: keyword,
@@ -13,13 +22,21 @@ function searchCorp(){
             corp_nm: keyword
         },
         order: "regi_dt"
+    };
+
+    if(corpId !== null && corpId !== 0 && corpId !== '0'){
+        body['select']['corp_id'] = corpId;
     }
+    console.log(body);
+
+    var corp_nm_keyword = "";
 
     $.ajax({
         url: '/shop/search/shop',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),
+        async: false,
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
@@ -28,6 +45,7 @@ function searchCorp(){
             list_shop.innerHTML = "";
 
             result.forEach(function (value, index, array){
+                corp_nm_keyword = value.corp_nm;
                 list_shop.innerHTML += "<tr shop_id='" +
                     value.shop_id +
                     "' corp_id='" +
@@ -58,6 +76,7 @@ function searchCorp(){
             });
         }
     });
+    return corp_nm_keyword;
 }
 
 function submitMANAGER(_this){
@@ -70,10 +89,13 @@ function submitMANAGER(_this){
         emp_id: userId,
         role: 'MANAGER',
         shop_id: shopId,
-        corp_id: corpId
+        corp_id: corpId,
+        approval_st: (corpId !== '0' && corpId === sessionStorage.getItem('corp_id'))
     };
 
     var result = submitManager(data);
+    sessionStorage.removeItem('shop_id');
+    sessionStorage.removeItem('corp_id');
     if(result){
         // data = {
         //     alarm_tp: 'approval',

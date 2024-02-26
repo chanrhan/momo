@@ -40,6 +40,10 @@ public class ShopCommonService extends CommonService {
 	public List<Map<String,Object>> selectShop(ShopCommonVO vo) {
 		return shopCommonMapper.selectShop(vo);
 	}
+	public List<Map<String,Object>> searchShop(SearchVO vo){
+		return shopCommonMapper.searchShop(vo);
+	}
+
 	public List<Map<String,Object>> searchShopByRole(SearchVO vo) {
 		if(vo.getSelect() != null){
 			Integer shopId = Integer.parseInt(vo.getSelect().get("shop_id").toString());

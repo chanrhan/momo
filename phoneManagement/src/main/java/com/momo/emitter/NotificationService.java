@@ -22,7 +22,7 @@ public class NotificationService {
 	private final AlarmMapper alarmMapper;
 
 	private final Map<String,SseEmitter> emitterMap      = new HashMap<>();
-	private static final Long DEFAULT_TIMEOUT = 60 * 1000L;
+	private static final Long DEFAULT_TIMEOUT = 60 * 60 * 1000L; // 1시간마다 타임아웃
 
 	public SseEmitter connect(String lastEventId, HttpSession session){
 		Object _userId = session.getAttribute("user_id");

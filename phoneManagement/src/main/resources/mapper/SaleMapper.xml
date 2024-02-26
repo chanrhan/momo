@@ -17,9 +17,9 @@
         from tb_sale
         where
             shop_id = #{shopId} and
+            cust_tel=#{custTel} and
             MONTH(actv_dt) = MONTH(#{actvDt}) and
-            YEAR(actv_dt) = YEAR(#{actvDt}) and
-            cust_tel=#{custTel}
+            YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
     <select id="countTel">

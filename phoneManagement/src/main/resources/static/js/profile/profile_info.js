@@ -2,6 +2,22 @@
 let isPasswordChecked = false;
 let isPasswordMatched = false;
 
+function inviteMail(){
+    var addr = $('#invite_addr').val();
+    if(addr === null || addr === ''){
+        alert("메일 주소를 입력해야 합니다!");
+        return;
+    }
+
+    $.ajax({
+        url: '/mail/invite?email='+addr,
+        type: 'get',
+        success: function (result){
+            console.log(result);
+        }
+    })
+}
+
 // 비밀번호 형식 검사
 function validatePassword(){
     var pwd = $('#update_pwd').val();

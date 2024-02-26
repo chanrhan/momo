@@ -93,10 +93,13 @@ function submitREPS(){
         bp_en_nm: pEnNm,
         corp_nm: corpNm,
         corp_tel: corpTel,
-        start_dt: startDt
+        start_dt: startDt,
+        shop_id: sessionStorage.getItem('shop_id')
     };
 
     var result = submitReps(data);
+    sessionStorage.removeItem('shop_id');
+    sessionStorage.removeItem('corp_id');
     if(result){
         // var body2 = {
         //     alarm_tp: 'approval',

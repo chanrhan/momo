@@ -7,6 +7,7 @@ import com.momo.util.BusinessmanApiUtil;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
 import com.momo.vo.SearchVO;
+import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,15 @@ public class AccountController {
 
 
 	@GetMapping("/signup")
-	public String signup(Model model) {
+	public String signup(Model model,
+						 @RequestParam(required = false, defaultValue = "") String email,
+						 @RequestParam(value = "shop_id", required = false, defaultValue = "0") int shopId,
+						 @RequestParam(value = "corp_id", required = false, defaultValue = "0") int corpId) {
 		List<Map<String,Object>> list_term = termService.selectTerm(null);
 		model.addAttribute("terms", list_term);
+		model.addAttribute("email", email);
+		model.addAttribute("shop_id", shopId);
+		model.addAttribute("corp_id", corpId);
 		return "account/signup";
 	}
 
@@ -114,7 +121,6 @@ public class AccountController {
 		}
 
 		session.setAttribute("user_id", vo.getEmpId());
-		userCommonService.replaceAuthority("REPS");
 
 		int corpId = shopCommonService.getMaxCorpId()+1;
 		vo.setCorpId(corpId);
@@ -127,11 +133,20 @@ public class AccountController {
 
 		result = userCommonService.insertEmp(vo);
 
+		Integer shopId = vo.getShopId();
+		if(shopId != null && shopId != 0){
+			result = shopCommonService.updateShop(ShopCommonVO.builder().shopId(shopId).corpId(corpId).build());
+			if(result == 0){
+				return false;
+			}
+		}
+
 		session.setAttribute("shop_id", 0);
 		session.setAttribute("corp_id", corpId);
 
 		notificationService.approvalRequestToAdmin(vo.getEmpId(), corpId);
 
+		userCommonService.replaceAuthority("REPS");
 		return result != 0;
 	}
 
@@ -145,7 +160,6 @@ public class AccountController {
 		}
 
 		session.setAttribute("user_id", vo.getEmpId());
-		userCommonService.replaceAuthority("MANAGER");
 
 		result = userCommonService.insertEmp(vo);
 
@@ -154,7 +168,11 @@ public class AccountController {
 		session.setAttribute("shop_id", shopId);
 		session.setAttribute("corp_id", corpId);
 
-		notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
+		boolean approve = vo.getApprovalSt();
+		if(!approve){
+			notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
+		}
+		userCommonService.replaceAuthority("MANAGER", vo.getApprovalSt());
 
 		return result != 0;
 	}

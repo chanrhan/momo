@@ -107,8 +107,8 @@ public class SaleController {
 	@ResponseBody
 	public boolean createSale(@RequestPart(value = "sale") SaleVO vo,
 								  @RequestPart(value = "spec") MultipartFile file) {
-		System.out.println("create vo: "+vo);
-		System.out.println("create files: "+file);
+//		System.out.println("create vo: "+vo);
+//		System.out.println("create files: "+file);
 		String path = imageService.upload(file);
 		vo.setSpec(path);
 		return saleService.insertSale(vo) != 0;
@@ -118,7 +118,7 @@ public class SaleController {
 	@ResponseBody
 	public boolean updateSale(@RequestPart(value = "sale") SaleVO vo,
 							  @RequestPart(value = "spec") MultipartFile file) {
-		System.out.println(vo);
+//		System.out.println(vo);
 		String path = imageService.upload(file);
 		vo.setSpec(path);
 		return saleService.updateSale(vo) != 0;
