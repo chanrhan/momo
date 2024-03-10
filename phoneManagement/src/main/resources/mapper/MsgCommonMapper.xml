@@ -45,9 +45,12 @@
 
     <select id="getMaxMsgId">
         select
-            count(*)
+            max(msg_id)
         from
             tb_msg_rsv
+        where
+            shop_id=#{shopId}
+        for update
     </select>
 
     <insert id="insertMsg" parameterType="com.momo.vo.MsgCommonVO">
@@ -95,7 +98,7 @@
             sh.shop_nm as shop_nm,
             mr.*,
             a.name as seller_nm,
-            cp.bp_no as bp_no,
+            cp.corp_bp_no,
             cp.corp_id
         from
             tb_msg_rsv mr
@@ -117,9 +120,6 @@
         </if>
         <if test='corpId != null'>
             corp_id=#{corpId} and
-        </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
         </if>
         <if test='saleId != null'>
             sale_id=#{saleId} and
@@ -152,7 +152,7 @@
                 sh.shop_nm as shop_nm,
                 mr.*,
                 a.name as seller_nm,
-                cp.bp_no as bp_no,
+                cp.corp_bp_no,
                 cp.corp_id
             from
                 tb_msg_rsv mr

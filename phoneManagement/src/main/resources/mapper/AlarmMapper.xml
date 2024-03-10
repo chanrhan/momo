@@ -138,6 +138,7 @@
             max(alarm_id)
         from
             tb_alarm
+        for update
 
     </select>
 

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.ChatMapper">
+<!--    Chatroom Info-->
+    <insert id="insertChatroom" parameterType="com.momo.vo.ChatVO">
+        insert into
+            tb_chatroom_info
+        (room_id, room_nm)
+        values
+            (#{roomId},#{roomNm})
+    </insert>
+    
+    <update id="updateChatroom" parameterType="com.momo.vo.ChatVO">
+        update
+        tb_chatroom_info
+        set
+        <if test='roomNm != null and !roomNm.equals("")'>
+            room_nm=#{roomNm},
+        </if>
+        <if test='roomImg != null and !roomImg.equals("")'>
+            room_img=#{roomImg},
+        </if>
+        <if test='roomHc != null and !roomHc.equals("")'>
+            room_hc=#{roomHc},
+        </if>
+            room_id=#{roomId}
+        where
+            room_id=#{roomId}
+    </update>
+    
+    <select id="selectChatroom" parameterType="com.momo.vo.ChatVO">
+        select
+            ci.*,
+            cm.master,
+            cm.alarm_st,
+            cm.note_fold
+        from
+            tb_chatroom_member cm
+                left outer join tb_chatroom_info ci on cm.room_id=ci.room_id
+        where
+        <if test='userId != null and !userId.equals("")'>
+            cm.user_id=#{userId} and
+        </if>
+        <if test='roomId != null'>
+            cm.room_id=#{roomId} and
+        </if>
+            1=1
+    </select>
+    
+    <select id="getMaxChatroomId">
+        select
+            max(room_id)
+        from
+            tb_chatroom_info
+        for update 
+    </select>
+    
+    <select id="getChatroomHeadCount">
+        select
+            room_hc
+        from
+            tb_chatroom_info
+        where
+            room_id=#{roomId}
+    </select>
+
+<!--    Chatroom Member-->
+    <insert id="insertChatroomMember" parameterType="com.momo.vo.ChatVO">
+        insert into
+        tb_chatroom_member
+        (room_id, user_id, master)
+        VALUES
+            (#{roomId},#{userId},#{master})
+    </insert>
+
+<!--    Chatroom Last Read-->
+
+<!--    Chatroom Note-->
+
+<!--    Chat Log-->
+    <insert id="insertChat" parameterType="com.momo.vo.ChatVO">
+        insert into
+        tb_chat_log
+        (room_id, chat_id, user_id, server_send, content, file, ref, non_read)
+        values
+            (#{roomId},#{chatId},#{userId},#{serverSend},#{content},#{file},#{ref},#{nonRead})
+
+    </insert>
+
+    <select id="getMaxChatId">
+        select
+            max(chat_id)
+        from
+            tb_chat_log
+        where
+            room_id=#{roomId}
+    </select>
+    
+    <select id="selectChatLog" parameterType="com.momo.vo.ChatVO">
+    with tb as (
+        select
+            *
+        from
+            tb_chat_deleted
+        where
+            user_id=#{userId} or
+            to_all=true
+    )
+
+        select
+            cl.*,
+            ac.name as user_nm,
+            ce.emo_bits,
+            cd.user_id as deleted
+        from
+            tb_chat_log cl
+        left outer join tb_chat_emo ce on (cl.room_id=ce.room_id and cl.chat_id=ce.chat_id)
+        left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
+        left outer join tb_account ac on cl.user_id=ac.id
+        where
+            cl.room_id=#{roomId}
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+    
+<!--    Chat Emo-->
+
+<!--    Chat Deleted-->
+
+</mapper>

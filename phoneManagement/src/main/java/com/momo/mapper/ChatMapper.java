@@ -1,0 +1,47 @@
+package com.momo.mapper;
+
+import com.momo.vo.ChatVO;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
+
+@Mapper
+public interface ChatMapper {
+	// Chatroom Info
+	public int insertChatroom(ChatVO vo);
+	public int updateChatroom(ChatVO vo);
+	public List<Map<String,Object>> selectChatroom(ChatVO vo);
+	public Integer getMaxChatroomId();
+	public Integer getChatroomHeadCount(int roomId);
+
+	// Chatroom Member
+	public int insertChatroomMember(ChatVO vo);
+	public int deleteChatroomMember(ChatVO vo);
+	public int updateAlarmState(ChatVO vo);
+	public int updateNoteFold(ChatVO vo);
+	public List<Map<String,Object>> selectChatMember(ChatVO vo);
+
+	// Chatroom Last Read
+	public int insertLastRead(ChatVO vo);
+	public int updateLastRead(ChatVO vo);
+	public Integer getLastRead(ChatVO vo);
+
+	// Chatroom Note
+	public int insertNote(ChatVO vo);
+	public List<Map<String,Object>> selectNote(ChatVO vo);
+
+	// Chat Log
+	public int insertChat(ChatVO vo);
+	public Integer getMaxChatId(int roomId);
+	public List<Map<String,Object>> selectChatLog(ChatVO vo);
+
+	// Chat Emo
+	public int insertChatEmo(ChatVO vo);
+	public int updateChatEmo(ChatVO vo);
+	public List<String> selectEmoList(ChatVO vo);
+
+	// Chat Deleted
+	public int insertDeletedChat(ChatVO vo);
+
+}

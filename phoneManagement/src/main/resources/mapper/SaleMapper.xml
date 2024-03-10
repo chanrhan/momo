@@ -260,7 +260,7 @@
                 sh.shop_nm as shop_nm,
                 ac.name as seller_nm,
                 sh.corp_id,
-                cp.bp_no
+                cp.corp_bp_no
                 from
                 tb_sale sl
                 left outer join tb_shop sh on sl.shop_id = sh.shop_id
@@ -300,7 +300,7 @@
         sh.shop_nm as shop_nm,
         ac.name as seller_nm,
         sh.corp_id,
-        cp.bp_no
+        cp.corp_bp_no
         from
         tb_sale sl
         left outer join tb_shop sh on sl.shop_id = sh.shop_id
@@ -321,8 +321,8 @@
         <if test='corpId != null'>
             corp_id=#{corpId} and
         </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo} and
         </if>
         <if test='custNm != null and !custNm.equals("")'>
             cust_nm=#{custNm} and
@@ -541,6 +541,9 @@
             max(sale_id)
         from
             tb_sale
+        where
+            shop_id=#{shopId}
+        for update
     </select>
 
     <insert id="insertSale" parameterType="com.momo.vo.SaleVO">

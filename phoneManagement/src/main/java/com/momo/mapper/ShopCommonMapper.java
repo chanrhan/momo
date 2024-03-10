@@ -10,7 +10,6 @@ import java.util.Map;
 
 @Mapper
 public interface ShopCommonMapper {
-	public String getBpNoByShopId(int id);
 
 	// Shop
 	public int insertShop(ShopCommonVO vo);

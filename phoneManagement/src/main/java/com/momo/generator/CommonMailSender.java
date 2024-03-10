@@ -17,10 +17,7 @@ public class CommonMailSender {
 	private final JavaMailSenderImpl mailSender;
 
 	public int makeRandomNumber(){
-		Random random   = new Random();
-		int    checkNum = random.nextInt(8888888)+111111;
-		System.out.println("인증번호: "+checkNum);
-		return checkNum;
+		return new Random().nextInt(8888888)+111111;
 	}
 
 	public void mailSend(String toEmail, MailCreateResponse response){

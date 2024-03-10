@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/layout.html}">
+<div layout:fragment="content">
+    <script src="/js/chat/home.js" th:inline="javascript"></script>
+    <h2>채팅</h2>
+    <input type="text" class="form-control" id="create_room_name" placeholder="새로 만들 채팅방 이름을 입력하세요." style="width: 300px;">
+    <button type="button" class="btn-primary" onclick="createChatroom()">새 채팅방 만들기</button>
+    <div id="list_room" style="width: 600px; height: 400px; border: 1px solid black; overflow: auto; background-color: #e6dbb9;">
+
+    </div>
+    <div id="room">
+        <h3 id="room_name">채팅방 선택되지 않음</h3>
+        <h3 id="head_count"></h3>
+        <input type="hidden" id="selected_room_id" value="">
+        <div id="setting_pannel">
+            <button type="button" class="btn-primary" onclick="quit()">나가기</button>
+        </div>
+        <div id="invite_pannel">
+            <button type="button" class="btn-primary" onclick="invite()">초대하기</button>
+        </div>
+        <div id="note_pannel">
+
+        </div>
+        <div id="chat_log" class="chat-container">
+
+        </div>
+        <div id="chat_pannel">
+            <input type="text" class="form-control" id="content" placeholder="메시지를 입력하세요." style="width: 800px;">
+            <button type="button" class="btn-primary" onclick="sendChat()">전송</button>
+        </div>
+    </div>
+</div>
+</html>

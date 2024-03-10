@@ -1,24 +1,15 @@
 package com.momo.service;
 
 import com.momo.util.FileServiceUtil;
-import javassist.bytecode.ByteArray;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.io.Resources;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,30 +32,39 @@ public class ImageService {
 			return null;
 		}
 
-		String fileName = FileServiceUtil.createSaveFileName(mf.getOriginalFilename());
+		String fileName = FileServiceUtil.createSaveFileName(mf);
+		String formatName = FileServiceUtil.extractExt(fileName);
 		long fileSize = mf.getSize();
-		String savePath = FileServiceUtil.getSaveFilePath(fileName);
-//		log.info("save path: "+savePath);
-		File file = new File(savePath);
+		String savePath = "C:" + FileServiceUtil.LOCAL_STORAGE_PATH;
 
-		if(file.exists()){
-			return null;
-		}
-
-		if(file.getParentFile().mkdirs()){
-			try{
-				file.createNewFile();
-			}catch (IOException e){
-				e.printStackTrace();
-				return null;
+		if(!new File(savePath).exists()){
+			log.info(savePath+" is not existed");
+			try {
+				new File(savePath).mkdir();
+			}catch (Exception e){
+				throw new IllegalArgumentException("디렉토리 생성에 실패하였습니다.");
 			}
 		}
 
+		String filePath = savePath + "/" + fileName;
+//		try{
+//			new File(filePath).createNewFile();
+//		} catch (IOException e) {
+//			log.error("파일 생성에 실패하였습니다. "+e.getMessage());
+//			throw new RuntimeException(e);
+//		}
+
 		try{
-			mf.transferTo(file);
+			FileServiceUtil.resizeImageAndSave(mf, filePath, formatName);
+//			FileServiceUtil.compress(mf.getInputStream(), filePath);
+//			mf.transferTo(FileServiceUtil.compressWithThumbnails(mf.getInputStream(), filePath));
+
 		}catch (IOException e){
+			log.error("파일 저장에 실패하였습니다. "+e.getMessage());
 			e.printStackTrace();
 			return null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 
 		Map<String,Object> fileInfo = new HashMap<>();

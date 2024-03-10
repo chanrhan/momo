@@ -3,23 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopCommonMapper">
-    <select id="getBpNoByShopId">
-        select
-            cp.bp_no
-        from
-            tb_shop sh
-        left outer join tb_corp cp on sh.corp_id=cp.corp_id
-        where
-            shop_id=#{id}
-    </select>
 
 <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.vo.UserCommonVO">
         insert into
             tb_shop
-            (shop_id, corp_id, shop_nm, shop_addr, shop_tel)
+            (shop_id, corp_id, shop_bp_no, shop_nm, shop_addr, shop_tel)
         values
-            (#{shopId},#{corpId},#{shopNm},#{shopAddr},#{shopTel})
+            (#{shopId},#{corpId},#{shopBpNo},#{shopNm},#{shopAddr},#{shopTel})
     </insert>
 
     <update id="updateShop" parameterType="com.momo.vo.UserCommonVO">
@@ -58,16 +49,17 @@
             max(shop_id)
         from
             tb_shop
+        for update
     </select>
 
     <select id="searchShop" parameterType="com.momo.vo.SearchVO">
         with branch as(
             select
-                c.reps_id as reps_id,
-                c.bp_ko_nm as bp_ko_nm,
-                c.bp_en_nm as bp_en_nm,
-                c.corp_nm as corp_nm,
-                c.bp_no as bp_no,
+                c.reps_id,
+                c.bp_ko_nm,
+                c.bp_en_nm,
+                c.corp_nm,
+                c.corp_bp_no,
                 s.*
             from
                 tb_shop as s
@@ -88,7 +80,7 @@
         with tb as (
             select
                 sh.*,
-                cp.bp_no as bp_no,
+                cp.corp_bp_no,
                 ac.name as reps_nm
             from
                 tb_shop sh
@@ -107,8 +99,8 @@
         <if test='shopId != null'>
             shop_id=#{shopId} and
         </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
+        <if test='shopBpNo != null and !shopBpNo.equals("")'>
+            shop_bp_no=#{shopBpNo} and
         </if>
         <if test='shopNm != null and !shopNm.equals("")'>
             shop_nm=#{shopNm} and
@@ -133,20 +125,21 @@
     </select>
 
 <!--    Corperation-->
-
-
     <insert id="insertCorp" parameterType="com.momo.vo.ShopCommonVO">
         insert into
             tb_corp
-            (corp_id,reps_id, bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
+            (corp_id,reps_id, corp_bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
         values
-            (#{corpId},#{repsId},#{bpNo},#{bpKoNm},#{bpEnNm},#{corpNm},#{corpTel},#{startDt})
+            (#{corpId},#{repsId},#{corpBpNo},#{bpKoNm},#{bpEnNm},#{corpNm},#{corpTel},#{startDt})
     </insert>
 
     <update id="updateCorp" parameterType="com.momo.vo.ShopCommonVO">
         update
             tb_corp
         set
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo},
+        </if>
         <if test='bpKoNm != null and !bpKoNm.equals("")'>
             bp_ko_nm=#{bpKoNm},
         </if>
@@ -192,6 +185,7 @@
             max(corp_id)
         from
             tb_corp
+        for update
     </select>
 
     <select id="selectCorp" parameterType="com.momo.vo.ShopCommonVO">
@@ -206,8 +200,8 @@
         <if test='repsId != null and !repsId.equals("")'>
             reps_id=#{repsId} and
         </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo} and
         </if>
         <if test='bpKoNm != null and !bpKoNm.equals("")'>
             bp_ko_nm=#{bpKoNm} and

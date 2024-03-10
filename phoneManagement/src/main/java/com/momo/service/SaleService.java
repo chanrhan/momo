@@ -32,7 +32,7 @@ public class SaleService extends CommonService {
 
 	// Common
 	public int insertSale(SaleVO vo) {
-		vo.setSaleId(getMaxSaleId()+1);
+		vo.setSaleId(getMaxSaleId(vo.getShopId())+1);
 		return saleMapper.insertSale(vo);
 	}
 	public int updateSale(SaleVO vo) {
@@ -148,8 +148,8 @@ public class SaleService extends CommonService {
 		return searchSaleSession(vo, session);
 	}
 
-	public int getMaxSaleId(){
-		Integer result = saleMapper.getMaxId();
+	public int getMaxSaleId(int shopId){
+		Integer result = saleMapper.getMaxId(shopId);
 		if(result == null){
 			return 0;
 		}

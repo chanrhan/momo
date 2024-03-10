@@ -22,8 +22,8 @@ public class ImageController {
 
 	@PostMapping("/upload")
 	@ResponseBody
-	public ResponseEntity<Map<String,Object>> upload(@RequestPart MultipartFile file) {
-		return null;
+	public String upload(@RequestPart MultipartFile file) {
+		return imageService.upload(file);
 	}
 
 	@GetMapping("/spec/{id}")

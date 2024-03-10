@@ -41,12 +41,15 @@ public class ShopController {
 //	@Transactional
 	public boolean createShop(@RequestBody ShopCommonVO vo){
 		Map<String,Object> corp = shopCommonService.selectCorpByRepsId(vo.getRepsId());
-
 		if(corp == null || corp.get("corp_id") == null){
 			return false;
 		}
 		vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
+
+		// 대표가 매장을 추가할 때,
+		// 해당 회사의 사업자번호를 따옴
+		vo.setShopBpNo(corp.get("corp_bp_no").toString());
 
 		return shopCommonService.insertShop(vo) != 0;
 	}

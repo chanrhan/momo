@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
@@ -14,8 +12,9 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ShopCommonVO extends CommonQueryVO {
 	private Integer corpId;
-	private String        bpNo;
-	private String        bpKoNm; // 시압지명 한글
+	private String  shopBpNo;
+	private String  corpBpNo;
+	private String  bpKoNm; // 시압지명 한글
 	private String        bpEnNm; // 사업자명 영문
 	private String        corpNm;
 	private String        corpTel;

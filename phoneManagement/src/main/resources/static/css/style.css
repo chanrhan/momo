@@ -11,11 +11,47 @@
     color: #bb2d3b;
 }
 
+.chat-container{
+    display: flex;
+    flex-direction: column;
+    border-color: black;
+    background-color: #dde0e3;
+    width: 1100px;
+    height: 700px;
+    overflow-y: scroll;
+}
 
+.chat-content {
+    background: #c1d6cc;
+    border: 1px solid black;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 10px;
+    /*max-width: 100%;*/
+}
 
-/*i{*/
-/*    position: absolute;*/
-/*    left: 75%;*/
-/*    top: 27px;*/
-/*    color: orange;*/
-/*}*/
+.chat{
+    margin-bottom: 10px; /* 채팅 사이 여백 설정 */
+    max-width: 70%;
+    padding: 10px;
+}
+
+.chat-self{
+    background: #ffcd39;
+}
+
+.mine{
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    align-self: flex-end;
+}
+
+.other{
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    align-self: flex-start;
+}
+
+.chat-date{
+    font-size: 12px;
+}

@@ -4,9 +4,7 @@ import com.momo.auth.RoleAuth;
 import com.momo.emitter.NotificationService;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.util.SecurityContextUtil;
 import com.momo.vo.AlarmVO;
-import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
@@ -106,6 +104,7 @@ public class AccountController {
 		}
 
 		session.setAttribute("user_id", vo.getId());
+
 		userCommonService.replaceAuthority(role);
 
 		return result != 0;
@@ -124,9 +123,8 @@ public class AccountController {
 
 		int corpId = shopCommonService.getMaxCorpId()+1;
 		vo.setCorpId(corpId);
-		vo.setShopId(0);
 
-		result = shopCommonService.insertCorp(vo.toShopCommonVO());
+		result = shopCommonService.insertCorp(vo.toCorpVO());
 		if(result == 0){
 			return false;
 		}
@@ -136,6 +134,10 @@ public class AccountController {
 		Integer shopId = vo.getShopId();
 		if(shopId != null && shopId != 0){
 			result = shopCommonService.updateShop(ShopCommonVO.builder().shopId(shopId).corpId(corpId).build());
+			if(result == 0){
+				return false;
+			}
+			result = userCommonService.updateEmp(UserCommonVO.builder().corpId(corpId).build());
 			if(result == 0){
 				return false;
 			}
@@ -159,19 +161,31 @@ public class AccountController {
 			return false;
 		}
 
-		session.setAttribute("user_id", vo.getEmpId());
-
-		result = userCommonService.insertEmp(vo);
-
 		int shopId = vo.getShopId();
 		int corpId = vo.getCorpId();
+		if(corpId == 0){
+			vo.setApprovalSt(true);
+		}
+		boolean approve = vo.getApprovalSt();
+
+		result = userCommonService.insertEmp(vo);
+		if(result == 0){
+			return false;
+		}
+
+		if(!approve && corpId != 0) {
+			notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
+		}
+
+		if(corpId == 0){
+			shopCommonService.insertShop(vo.toShopVO());
+		}
+
+
+		session.setAttribute("user_id", vo.getEmpId());
 		session.setAttribute("shop_id", shopId);
 		session.setAttribute("corp_id", corpId);
 
-		boolean approve = vo.getApprovalSt();
-		if(!approve){
-			notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
-		}
 		userCommonService.replaceAuthority("MANAGER", vo.getApprovalSt());
 
 		return result != 0;
@@ -208,12 +222,6 @@ public class AccountController {
 	public String[] getCity(@RequestParam String state) {
 		String cities = regionService.selectByState(state);
 		return cities.split(",");
-	}
-
-	@PostMapping("/search/shop")
-	@ResponseBody
-	public List<Map<String,Object>> searchShop( @RequestBody SearchVO vo){
-		return shopCommonService.searchShopByRole(vo);
 	}
 
 	@PostMapping("/approve")

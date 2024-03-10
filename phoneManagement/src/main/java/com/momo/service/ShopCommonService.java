@@ -19,9 +19,6 @@ public class ShopCommonService extends CommonService {
 	public int updateSendTel(ShopCommonVO vo){
 		return shopCommonMapper.updateShop(vo);
 	}
-	public String getBpNoByShopId(int id){
-		return shopCommonMapper.getBpNoByShopId(id);
-	}
 
 	// Common
 	// Shop
@@ -41,21 +38,26 @@ public class ShopCommonService extends CommonService {
 		return shopCommonMapper.selectShop(vo);
 	}
 	public List<Map<String,Object>> searchShop(SearchVO vo){
-		return shopCommonMapper.searchShop(vo);
-	}
-
-	public List<Map<String,Object>> searchShopByRole(SearchVO vo) {
-		if(vo.getSelect() != null){
-			Integer shopId = Integer.parseInt(vo.getSelect().get("shop_id").toString());
-			if(shopId != null && shopId == 0){
-				vo.getSelect().remove("shop_id");
-				String bpNo = getBpNoByShopId(shopId);
-				vo.getSelect().put("bp_no", bpNo);
-			}
+		if(vo.getSelect() != null && vo.getSelect().containsKey("bp_no")){
+			String bpNo = vo.getSelect().get("bp_no").toString();
+			vo.getSelect().put("shop_bp_no", bpNo);
+			vo.getSelect().put("corp_bp_no",bpNo);
 		}
-
 		return shopCommonMapper.searchShop(vo);
 	}
+
+//	public List<Map<String,Object>> searchShopByRole(SearchVO vo) {
+//		if(vo.getSelect() != null){
+//			Integer shopId = Integer.parseInt(vo.getSelect().get("shop_id").toString());
+//			if(shopId != null && shopId == 0){
+//				vo.getSelect().remove("shop_id");
+//				String bpNo = getBpNoByShopId(shopId);
+//				vo.getSelect().put("bp_no", bpNo);
+//			}
+//		}
+//
+//		return shopCommonMapper.searchShop(vo);
+//	}
 
 	public int getMaxShopId(){
 		Integer code = shopCommonMapper.getMaxShopId();

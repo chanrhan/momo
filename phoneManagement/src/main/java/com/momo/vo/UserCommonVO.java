@@ -1,14 +1,9 @@
 package com.momo.vo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -52,13 +47,28 @@ public class UserCommonVO extends CommonQueryVO {
 //		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 //	}
 
-	public ShopCommonVO toShopCommonVO() {
+	public ShopCommonVO toShopVO(){
 		return ShopCommonVO.builder()
+				.shopId(shopId)
+				.corpId(corpId)
+				.shopBpNo(bpNo)
+				.shopNm(shopNm)
+				.shopAddr(shopAddr)
+				.shopTel(shopTel)
+				.build();
+	}
+
+	public ShopCommonVO toCorpVO() {
+		return ShopCommonVO.builder()
+				.corpId(corpId)
 				.repsId(empId)
-				.bpNo(bpNo)
+				.corpBpNo(bpNo)
 				.bpKoNm(bpKoNm)
-				.bpEnNm(bpEnNm).corpNm(corpNm).corpTel(corpTel).startDt(startDt).shopId(shopId)
-				.shopNm(shopNm).shopAddr(shopAddr).shopTel(shopTel).build();
+				.bpEnNm(bpEnNm)
+				.corpNm(corpNm)
+				.corpTel(corpTel)
+				.startDt(startDt)
+				.build();
 	}
 
 

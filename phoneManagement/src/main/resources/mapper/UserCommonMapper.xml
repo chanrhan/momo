@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserCommonMapper">
     <update id="findGhostUserAndUpdateToDormant">
-
         update
             tb_account
         set
@@ -29,7 +28,7 @@
         with tb as (
             select
                 ac.*,
-                cp.bp_no as bp_no,
+                cp.corp_bp_no,
                 cp.corp_id as corp_id,
                 cp.corp_nm,
                 sh.shop_nm as shop_nm
@@ -54,7 +53,7 @@
         with tb as (
             select
                 ac.*,
-                cp.bp_no as bp_no,
+                cp.corp_bp_no,
                 cp.corp_id as corp_id,
                 cp.corp_nm,
                 sh.shop_nm as shop_nm
@@ -86,7 +85,7 @@
             role=#{role} and
         </if>
         <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
+            corp_bp_no=#{bpNo} and
         </if>
         <if test='corpId != null'>
             corp_id=#{corpId} and
@@ -228,7 +227,7 @@
         with tb as (
             select
                 em.*,
-                cp.bp_no as bp_no
+                cp.corp_bp_no
             from
             tb_emp em
             left outer join tb_corp cp on cp.reps_id=em.emp_id
@@ -250,9 +249,6 @@
         </if>
         <if test='shopId != null'>
             shop_id=#{shopId} and
-        </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            bp_no=#{bpNo} and
         </if>
         <if test='approvalSt != null'>
             approval_st=#{approvalSt} and

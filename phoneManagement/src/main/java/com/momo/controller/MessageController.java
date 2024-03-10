@@ -78,6 +78,19 @@ public class MessageController {
 		return "message/form";
 	}
 
+	@GetMapping("/form/create")
+	public String createForm(){
+
+		return "message/form_create";
+	}
+
+	@PostMapping("/form/create")
+	@ResponseBody
+	public boolean createMessageForm(@RequestBody MsgCommonVO vo){
+
+		return false;
+	}
+
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO, HttpSession session) {

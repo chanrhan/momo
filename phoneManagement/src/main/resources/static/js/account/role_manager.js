@@ -61,7 +61,7 @@ function searchCorp(corpId){
                     value.bp_ko_nm +
                     "</td>" +
                     "<td>" +
-                    value.bp_no +
+                    value.shop_bp_no +
                     "</td>" +
                     "<td>" +
                     value.shop_nm +

@@ -108,8 +108,8 @@ public class MsgCommonService extends CommonService {
 		return msgCommonMapper.searchMsg(vo);
 	}
 
-	public int getMaxMsgId(){
-		Integer result = msgCommonMapper.getMaxMsgId();
+	public int getMaxMsgId(int shopId){
+		Integer result = msgCommonMapper.getMaxMsgId(shopId);
 		if(result == null){
 			return 0;
 		}
@@ -118,7 +118,7 @@ public class MsgCommonService extends CommonService {
 
 	public int reserve(MsgCommonVO vo){
 		List<MsgCommonVO> list = vo.getMsgList();
-		int maxMsgId = getMaxMsgId();
+		int maxMsgId = getMaxMsgId(vo.getShopId());
 		int result = 0;
 
 		String content = "";
@@ -147,27 +147,37 @@ public class MsgCommonService extends CommonService {
 		int typeId = vo.getTypeId();
 		String content = selectForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
 
-		Map<String,Object > user = userCommonService.selectUser(UserCommonVO.builder().id(vo.getSellerId()).build()).get(0);
+		Map<String,Object > seller = userCommonService.selectUser(UserCommonVO.builder().id(vo.getSellerId()).build()).get(0);
+		Map<String,Object > customer = userCommonService.selectUser(UserCommonVO.builder().id(vo.getCustNm()).build()).get(0);
 		Map<String,Object> shop = shopCommonService.selectShop(ShopCommonVO.builder().shopId(vo.getShopId()).build()).get(0);
-		content = content.replace("%[seller_nm]%", user.get("name").toString())
-				.replace("%[shop_nm]%]", shop.get("shop_nm").toString());
+		content = content.replace("#{seller_nm}", seller.get("name").toString())
+				.replace("#{cust_nm}",customer.get("name").toString())
+				.replace("#{shop_nm}]", shop.get("shop_nm").toString());
 
 
 		Map<String, Object> map = null;
+		String serviceNm = "null";
+		String desciprtion = "null";
 		switch (formId){
 			case -2: // 요금제
 				map = itemCommonService.selectPlan(ItemCommonVO.builder().planId(typeId).build()).get(0);
-				content = content.replace("%[plan_nm]%", map.get("plan_nm").toString())
-						.replace("%[description]%", map.get("description").toString());
+				serviceNm = map.get("plan_nm").toString();
+				desciprtion = map.get("description").toString();
+//				content = content.replace("%[plan_nm]%", map.get("plan_nm").toString())
+//						.replace("%[description]%", map.get("description").toString());
 				break;
 			case -3: // 부가서비스
 				map = itemCommonService.selectExsvc(ItemCommonVO.builder().exsvcId(typeId).build()).get(0);
-				content = content.replace("%[exsvc_nm]%", map.get("exsvc_nm").toString())
-						.replace("%[description]%", map.get("description").toString());
+				serviceNm = map.get("exsvc_nm").toString();
+				desciprtion = map.get("description").toString();
+//				content = content.replace("%[exsvc_nm]%", map.get("exsvc_nm").toString())
+//						.replace("%[description]%", map.get("description").toString());
 				break;
 			default:
 				break;
 		}
+		content = content.replace("#{service_nm}", serviceNm)
+				.replace("#{description}", desciprtion);
 
 		return content;
 	}

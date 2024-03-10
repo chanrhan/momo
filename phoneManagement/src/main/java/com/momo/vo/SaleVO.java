@@ -1,18 +1,13 @@
 package com.momo.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,7 +20,8 @@ public class SaleVO extends CommonQueryVO {
 	private Integer dupTel; // 중복된 전화번호 개수
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드
-	private String bpNo; // 사업자등록번호
+	private String  corpBpNo; // 회사 사업자등록번호
+	private String  shopBpNo; // 매장 사업자등록번호
 
 	// 고객 정보
 	private String custNm; // 고객 이름
