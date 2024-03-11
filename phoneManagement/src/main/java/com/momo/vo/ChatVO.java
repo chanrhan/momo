@@ -25,9 +25,9 @@ public class ChatVO extends CommonQueryVO{
 	private String joinDt;
 	private Boolean alarmSt;
 	private Boolean noteFold;
+	private Integer lastRead;
 
 	// Chatroom Last Read
-	private Integer lastChatId;
 
 	// Chatroom Note
 	private Integer noteId;

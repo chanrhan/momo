@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ChatMapper">
 <!--    Chatroom Info-->
-    <insert id="insertChatroom" parameterType="com.momo.vo.ChatVO">
+    <insert id="insertChatRoom" parameterType="com.momo.vo.ChatVO">
         insert into
             tb_chatroom_info
         (room_id, room_nm)
@@ -12,7 +12,7 @@
             (#{roomId},#{roomNm})
     </insert>
     
-    <update id="updateChatroom" parameterType="com.momo.vo.ChatVO">
+    <update id="updateChatRoom" parameterType="com.momo.vo.ChatVO">
         update
         tb_chatroom_info
         set
@@ -30,7 +30,7 @@
             room_id=#{roomId}
     </update>
     
-    <select id="selectChatroom" parameterType="com.momo.vo.ChatVO">
+    <select id="selectChatRoom" parameterType="com.momo.vo.ChatVO">
         select
             ci.*,
             cm.master,
@@ -49,7 +49,7 @@
             1=1
     </select>
     
-    <select id="getMaxChatroomId">
+    <select id="getMaxChatRoomId">
         select
             max(room_id)
         from
@@ -57,7 +57,7 @@
         for update 
     </select>
     
-    <select id="getChatroomHeadCount">
+    <select id="getChatRoomHeadCount">
         select
             room_hc
         from
@@ -67,7 +67,7 @@
     </select>
 
 <!--    Chatroom Member-->
-    <insert id="insertChatroomMember" parameterType="com.momo.vo.ChatVO">
+    <insert id="insertChatRoomMember" parameterType="com.momo.vo.ChatVO">
         insert into
         tb_chatroom_member
         (room_id, user_id, master)
@@ -75,8 +75,26 @@
             (#{roomId},#{userId},#{master})
     </insert>
 
-<!--    Chatroom Last Read-->
+    <update id="updateLastRead" parameterType="com.momo.vo.ChatVO">
+        update
+        tb_chatroom_member
+        set
+            last_read=#{lastRead}
+        where
+            room_id=#{roomId} and
+            user_id=#{userId}
+    </update>
 
+    <select id="getLastRead" parameterType="com.momo.vo.ChatVO">
+        select
+            last_read
+        from
+            tb_chatroom_member
+        where
+            room_id=#{roomId} and
+            user_id=#{userId}
+    </select>
+    
 <!--    Chatroom Note-->
 
 <!--    Chat Log-->

@@ -12,7 +12,7 @@ $(document).ready(function (){
         // stompClient.subscriptions.forEach(id=>{
         //     stompClient.unsubscribe(id);
         // })
-        console.log("Connected Room ,frame: "+ frame);
+        // console.log("Connected Room ,frame: "+ frame);
         updateChatroom();
         isSubscribe = true;
     })
@@ -30,8 +30,8 @@ function subscribe(roomId){
     //     })
     // })
     stompClient.subscribe('/sub/chat/room/'+roomId, function (msg){
-        console.log("data: "+msg);
-        console.log("data body: "+msg.body);
+        // console.log("data: "+msg);
+        // console.log("data body: "+msg.body);
         if(msg !== 0){
             onChat(msg.body);
         }
@@ -43,17 +43,22 @@ function onChat(roomId){
     console.log("onchat: "+roomId);
     var selectedRoomId = $('#selected_room_id').val();
     if(roomId === selectedRoomId){
+        readChatroom(roomId);
         updateChatLog();
     }else{
-        increseStackedChat(roomId);
+        var roomList = $('#list_room');
+        if(roomList.find('[name="room_'+ roomId +'"]').length === 0){
+            updateChatroom();
+        }
+        updateStackedChat(roomId);
     }
 }
 
-function increseStackedChat(roomId){
+function updateStackedChat(roomId){
     console.log("increase stacked chat");
-    var nameToFind = "room_"+roomId;
-    var count = $('div[name="'+nameToFind+'"] p[name="stacked_chat"]');
-    count.text(count.text()+1);
+    // var nameToFind = "room_"+roomId;
+    var count = $('p[name="stacked_chat_'+roomId+'"]');
+    count.text(getStackedChat(roomId));
 }
 
 function createChatroom(){
@@ -71,9 +76,9 @@ function createChatroom(){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-            console.log(result);
-            if(result){
-                updateChatroom();
+            // console.log(result);
+            if(result !== 0){
+                updateChatroomOnly(result);
             }
         }
     })
@@ -96,7 +101,7 @@ function updateChatroom(){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-            // console.log(result);
+            // console.log("updateChatRoom: "+result);
             var roomList = document.getElementById('list_room');
             roomList.innerHTML = "";
             result.forEach(function (value, index, array){
@@ -104,7 +109,7 @@ function updateChatroom(){
                     subscribe(value.room_id);
                 }
                 var addHTML = "";
-                addHTML += "<div id='room_" +
+                addHTML += "<div name='room_" +
                     value.room_id +
                     "' onclick='selectRoom(" +
                     value.room_id +
@@ -114,18 +119,33 @@ function updateChatroom(){
                     "</p>";
 
                 var lastChat = getLastChatLog(value.room_id);
+                var stackedChat = getStackedChat(value.room_id);
                 addHTML +=
                     "<div>" +
                     lastChat.content + "        | " + lastChat.send_dt +
                     "</div>" +
-                    "<p name='stacked_chat'>" +
-                    "0" +
+                    "<p class='chat-stacked-count' name='stacked_chat_" +
+                    value.room_id +
+                    "'>" +
+                    stackedChat +
                     "</p>" +
                     "</div>";
                 roomList.innerHTML += addHTML;
             });
         }
     })
+}
+
+function updateChatroomOnly(roomId){
+    var room = $('div[name="room_' + roomId + '"]');
+    var content = room.children('div').first();
+    var stackedChat = room.find('[name="stacked_chat_'+roomId+'"]').first();
+
+    var lastChat = getLastChatLog(roomId);
+    var stackedChatCount = getStackedChat(roomId);
+
+    $(content).text(lastChat.content + "        | " + lastChat.send_dt);
+    $(stackedChat).text(stackedChatCount)
 }
 
 function getLastChatLog(roomId){
@@ -153,6 +173,7 @@ function selectRoom(roomId){
         }
     })
     updateInvitableUsers();
+    readChatroom(roomId);
     updateChatLog();
 }
 
@@ -204,61 +225,95 @@ function updateChatLog(){
                 }
                 // console.log("org: "+userId+" , chat: "+value.user_id)
                 var className = "chat ";
-                className += (userId === value.user_id) ? "mine" : "other";
-                // console.log(className);
-
                 var addHTML = "";
-                addHTML += "<div class='" +
-                    className +
-                    "' chat_id='" +
-                    value.chat_id +
-                    "' user_id='" +
-                    value.user_id +
-                    "'>" +
-                    "<p>" +
-                    value.user_nm +
-                    "</p>" +
-                    "<div class='chat-content";
-
-                if(userId === value.user_id){
-                    // console.log("match!");
-                    addHTML += " chat-self"
-                }
-
-                addHTML +=
-                    "'>" +
-                    "<p>" +
-                    content +
-                    "</p>";
-                if(value.emo_bits !== null){
-                    addHTML +=
+                if(value.server_send){
+                    className += "chat-server";
+                    addHTML += "<div class='" +
+                        className +
+                        "'>" +
+                        value.content +
+                        "</div>";
+                }else{
+                    className += (userId === value.user_id) ? "mine" : "other";
+                    addHTML += "<div class='" +
+                        className +
+                        "' chat_id='" +
+                        value.chat_id +
+                        "' user_id='" +
+                        value.user_id +
+                        "'>" +
                         "<p>" +
-                        value.emo_bits +
-                        "</p>"
+                        value.user_nm +
+                        "</p>" +
+                        "<div class='chat-content";
+
+                    if(userId === value.user_id){
+                        // console.log("match!");
+                        addHTML += " chat-self"
+                    }
+
+                    addHTML +=
+                        "'>" +
+                        "<p>" +
+                        content +
+                        "</p>";
+                    if(value.emo_bits !== null){
+                        addHTML +=
+                            "<p>" +
+                            value.emo_bits +
+                            "</p>"
+                    }
+
+                    addHTML +=
+                        "</div>" +
+                        "<p class='chat-date'>" +
+                        value.send_dt +
+                        "</p>";
+
+                    if(value.non_read !== null && value.non_read !== 0){
+                        addHTML += value.non_read;
+                    }
+                    addHTML += "</div>";
                 }
-
-                addHTML +=
-                    "</div>" +
-                    "<p class='chat-date'>" +
-                    value.send_dt +
-                    "</p>";
-
-                if(value.non_read !== null && value.non_read !== 0){
-                    addHTML += value.non_read;
-                }
-
-                addHTML += "</div>";
-                // console.log(addHTML);
                 chatLog.innerHTML += addHTML;
             })
             chatLog.scrollTop = chatLog.scrollHeight;
         }
     });
-    updateChatroom();
+    updateChatroomOnly(roomId);
+}
+
+function getStackedChat(roomId){
+    var rst = null;
+    var body = {
+        user_id: $('#user_id').val(),
+        room_id: roomId
+    }
+    $.ajax({
+        url: '/chat/msg/stacked',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+        }
+    });
+    return rst;
 }
 
 function updateInvitableUsers(){
+    var invitableList = document.getElementById('invitable_users');
     var keyword = $('#invite_keyword').val();
+    // console.log(invitableList);
+    // console.log(keyword);
+    if(invitableList.innerHTML.trim() !== "" && keyword === "") {
+        return;
+    }
+    selectedInviteUser = "";
     var body = {
         search:{
             user_nm: keyword,
@@ -267,7 +322,7 @@ function updateInvitableUsers(){
         }
     };
 
-    console.log("invitable update: "+ body);
+    // console.log("invitable update: "+ body);
 
     $.ajax({
         url: '/account/list/chat/invitable',
@@ -278,10 +333,12 @@ function updateInvitableUsers(){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-            console.log(result);
-            var invitableList = document.getElementById('invitable_users');
+            // console.log(result);
             invitableList.innerHTML = "";
             result.forEach(function (value){
+                if(value.user_id === $('#user_id').val()){
+                    return;
+                }
                 var role = (value.role === "REPS") ? "대표" : "직원";
                 var from = "";
                 if(value.shop_nm !== null && value.shop_nm !== ""){
@@ -289,7 +346,7 @@ function updateInvitableUsers(){
                 }else if(value.corp_nm !== null && value.corp_nm !== ""){
                     from = value.corp_nm;
                 }
-               invitableList.innerHTML += "<div class='' name='invitable_pannel' user_id='" +
+               invitableList.innerHTML += "<div class='chat-invitable-user' name='invitable_pannel' user_id='" +
                    value.user_id +
                    "' onclick='selectInviteUser($(this))'>" +
                    value.user_nm + " | " + role + " | " + from +
@@ -306,18 +363,14 @@ function emo(){
 
 function selectInviteUser(user){
     selectedInviteUser = $(user).attr('user_id');
-    console.log("selected: "+selectedInviteUser);
-    if(!$(user).hasClass('chat-invite-selected')){
-        $(user).addClass('chat-invite-selected');
-    }else{
-        $(user).toggleClass('chat-invite-selected');
-    }
+
     document.getElementsByName('invitable_pannel')
         .forEach(
             function (value, key, parent){
                 $(value).toggleClass('chat-invite-selected',false);
             }
         )
+    $(user).toggleClass('chat-invite-selected');
 }
 
 function invite(){
@@ -344,6 +397,27 @@ function invite(){
             if(result){
                 alert("초대되었습니다.");
             }
+        }
+    })
+}
+
+function readChatroom(roomId){
+    var body = {
+        user_id: $('#user_id').val(),
+        room_id: roomId
+    };
+
+    $.ajax({
+        url: '/chat/room/read',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        async: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+
         }
     })
 }

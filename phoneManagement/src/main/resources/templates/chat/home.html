@@ -20,7 +20,7 @@
             <button type="button" class="btn-primary" onclick="quit()">나가기</button>
         </div>
         <div id="invite_pannel">
-            <input type="text" class="form-control" id="invite_keyword" placeholder="초대할 멤버를 검색하세요.">
+            <input type="text" class="form-control" id="invite_keyword" onchange="updateInvitableUsers()" placeholder="초대할 멤버를 검색하세요.">
             <div id="invitable_users">
 
             </div>

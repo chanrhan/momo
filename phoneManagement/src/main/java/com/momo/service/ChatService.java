@@ -1,7 +1,9 @@
 package com.momo.service;
 
 import com.momo.mapper.ChatMapper;
+import com.momo.mapper.UserCommonMapper;
 import com.momo.vo.ChatVO;
+import com.momo.vo.UserCommonVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,33 +15,46 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ChatService {
 	private final ChatMapper chatMapper;
+	private final UserCommonMapper userCommonMapper;
 
-	private int getMaxChatroomId(){
-		Integer id = chatMapper.getMaxChatroomId();
+	// Chat Room
+	private int getMaxChatRoomId(){
+		Integer id = chatMapper.getMaxChatRoomId();
 		return (id != null) ? id : 0;
 	}
 
 	@Transactional
 	public int createChatroom(ChatVO vo){
-		vo.setRoomId(getMaxChatroomId()+1);
-		int result = chatMapper.insertChatroom(vo);
+		int roomId = getMaxChatRoomId()+1;
+		vo.setRoomId(roomId);
+		int result = chatMapper.insertChatRoom(vo);
 		if(result == 0){
 			return result;
 		}
 		vo.setMaster(true);
 
-		return chatMapper.insertChatroomMember(vo);
+		joinChatroom(vo);
+		return roomId;
 	}
 
-	@Transactional
 	public int joinChatroom(ChatVO vo){
-		chatMapper.insertChatroomMember(vo);
-		sendWelcomeMessage(vo.getRoomId(), vo.getUserId());
-
-		vo.setRoomHc(chatMapper.getChatroomHeadCount(vo.getRoomId())+1);
-		return chatMapper.updateChatroom(vo);
+		return chatMapper.insertChatRoomMember(vo);
 	}
 
+	public int increateChatRoomHeadCount(int roomId){
+		ChatVO vo = ChatVO.builder().roomHc(chatMapper.getChatRoomHeadCount(roomId)+1).build();
+		return chatMapper.updateChatRoom(vo);
+	}
+
+	public List<Map<String,Object>> selectChatroom(ChatVO vo){
+		return chatMapper.selectChatRoom(vo);
+	}
+
+	public Map<String,Object> selectChatroom(int roomId){
+		return selectChatroom(ChatVO.builder().roomId(roomId).build()).get(0);
+	}
+
+	// Chat Log
 	private int getMaxChatId(int roomId){
 		Integer id = chatMapper.getMaxChatId(roomId);
 		if(id == null){
@@ -48,15 +63,23 @@ public class ChatService {
 		return id;
 	}
 
+	@Transactional
 	public int sendChat(ChatVO vo){
-		vo.setChatId(getMaxChatId(vo.getRoomId())+1);
-		vo.setNonRead(chatMapper.getChatroomHeadCount(vo.getRoomId())-1);
-		return chatMapper.insertChat(vo);
+		int maxChatId = getMaxChatId(vo.getRoomId())+1;
+		vo.setChatId(maxChatId);
+		vo.setNonRead(chatMapper.getChatRoomHeadCount(vo.getRoomId())-1);
+		chatMapper.insertChat(vo);
+		vo.setLastRead(maxChatId);
+		return readChat(vo);
 	}
 
-	public void sendWelcomeMessage(int roomId, String userId){
+	public int readChat(ChatVO vo){
+		return chatMapper.updateLastRead(vo);
+	}
+
+	public int sendWelcomeMessage(int roomId, String userId){
 		if(roomId == 0 || userId == null){
-			return;
+			return 0;
 		}
 		ChatVO chat = ChatVO.builder()
 				.roomId(roomId)
@@ -64,16 +87,16 @@ public class ChatService {
 				.chatId(getMaxChatId(roomId)+1)
 				.serverSend(true)
 				.build();
-		chat.setContent(userId + "님이 입장하였습니다.");
-		chatMapper.insertChat(chat);
-	}
 
-	public List<Map<String,Object>> selectChatroom(ChatVO vo){
-		return chatMapper.selectChatroom(vo);
-	}
-
-	public Map<String,Object> selectChatroom(int roomId){
-		return selectChatroom(ChatVO.builder().roomId(roomId).build()).get(0);
+		String name = "";
+		try{
+			name = userCommonMapper.selectUser(UserCommonVO.builder().id(userId).build()).get(0).get("name").toString();
+		}catch (NullPointerException e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		chat.setContent(name + "님이 입장하였습니다.");
+	 	return 	chatMapper.insertChat(chat);
 	}
 
 	public List<Map<String,Object>> selectChatLog(ChatVO vo){
@@ -84,5 +107,19 @@ public class ChatService {
 	public Map<String,Object> getLastChatLog(int roomId){
 		ChatVO vo = ChatVO.builder().roomId(roomId).chatId(getMaxChatId(roomId)).build();
 		return chatMapper.selectChatLog(vo).get(0);
+	}
+
+	public int readChatroom(ChatVO vo){
+		vo.setLastRead(getMaxChatId(vo.getRoomId()));
+		return readChat(vo);
+	}
+
+	public int getStackedChat(ChatVO vo){
+		Integer lastRead = chatMapper.getLastRead(vo);
+		if(lastRead == null){
+			return 0;
+		}
+		int maxChatId = getMaxChatId(vo.getRoomId());
+		return maxChatId - lastRead;
 	}
 }

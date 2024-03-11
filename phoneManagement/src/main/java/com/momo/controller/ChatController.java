@@ -49,6 +49,12 @@ public class ChatController {
 		return chatService.getLastChatLog(roomId);
 	}
 
+	@PostMapping("/msg/stacked")
+	@ResponseBody
+	public int getStackedChat(@RequestBody ChatVO vo){
+		return chatService.getStackedChat(vo);
+	}
+
 
 	@PostMapping("/msg/emo")
 	@ResponseBody
@@ -72,7 +78,7 @@ public class ChatController {
 	@PostMapping("/room/read")
 	@ResponseBody
 	public boolean readAllMessageInRoom(@RequestBody ChatVO vo){
-		return false;
+		return chatService.readChatroom(vo) != 0;
 	}
 
 	@PostMapping("/room/note")
@@ -96,8 +102,8 @@ public class ChatController {
 	@PostMapping("/room/create")
 	@ResponseBody
 	@Transactional
-	public boolean createChatroom(@RequestBody ChatVO vo){
-		return chatService.createChatroom(vo) != 0;
+	public int createChatroom(@RequestBody ChatVO vo){
+		return chatService.createChatroom(vo);
 	}
 
 	@PostMapping("/room/join")
@@ -110,7 +116,18 @@ public class ChatController {
 	@PostMapping("/room/invite")
 	@ResponseBody
 	public boolean inviteUser(@RequestBody ChatVO vo){
-		return chatService.joinChatroom(vo) != 0;
+		int result = chatService.joinChatroom(vo);
+		if(result == 0){
+			return false;
+		}
+		int roomId = vo.getRoomId();
+		result = chatService.sendWelcomeMessage(roomId, vo.getUserId());
+		if(result == 0){
+			return false;
+		}
+
+		result = chatService.increateChatRoomHeadCount(roomId);
+		return result != 0;
 	}
 
 	@PostMapping("/room/quit")
