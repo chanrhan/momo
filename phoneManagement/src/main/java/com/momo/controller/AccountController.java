@@ -5,6 +5,7 @@ import com.momo.emitter.NotificationService;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
 import com.momo.vo.AlarmVO;
+import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -249,6 +251,17 @@ public class AccountController {
 		}
 
 		return alarmService.approve(vo.getAlarmId()) != 0;
+	}
+
+	@PostMapping("/list/chat/invitable")
+	@ResponseBody
+	public List<Map<String,Object>> searchChatInvitableUsers(@RequestBody SearchVO vo, HttpSession session){
+		if(vo.getSelect() == null){
+			vo.setSelect(new HashMap<>());
+		}
+		vo.getSelect().put("corp_id", session.getAttribute("corp_id").toString());
+		System.out.println("invitable chat : "+vo);
+		return userCommonService.searchChatInvitableUser(vo);
 	}
 
 	//	@PostMapping("/search/shop")

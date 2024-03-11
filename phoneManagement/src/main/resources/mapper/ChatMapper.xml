@@ -120,7 +120,13 @@
         left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
         left outer join tb_account ac on cl.user_id=ac.id
         where
-            cl.room_id=#{roomId}
+        <if test='roomId != null'>
+            cl.room_id=#{roomId} and
+        </if>
+        <if test='chatId != null'>
+            cl.chat_id=#{chatId} and
+        </if>
+        1=1
         <if test='order != null and !order.equals("")'>
             order by
             ${order} ${asc}

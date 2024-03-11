@@ -3,6 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserCommonMapper">
+    <select id="searchChatInvitableUser" parameterType="com.momo.vo.SearchVO">
+        with tb as (
+            select
+                ac.id as user_id,
+                ac.name as user_nm,
+                em.role,
+                em.shop_id,
+                em.corp_id,
+                sh.shop_nm,
+                cp.corp_nm
+            from
+                tb_emp em
+                    left outer join tb_account ac on ac.id=em.emp_id
+                    left outer join tb_shop sh on em.shop_id=sh.shop_id
+                    left outer join tb_corp cp on em.corp_id=cp.corp_id
+        )
+
+        select
+            *
+        from
+            tb
+        where
+            ${andSelect} and
+            ${orSearch}
+                ${prop}
+    </select>
+    
     <update id="findGhostUserAndUpdateToDormant">
         update
             tb_account
@@ -29,9 +56,10 @@
             select
                 ac.*,
                 cp.corp_bp_no,
-                cp.corp_id as corp_id,
+                cp.corp_id,
                 cp.corp_nm,
-                sh.shop_nm as shop_nm
+                sh.shop_id,
+                sh.shop_nm
             from
                 tb_account ac
                     left outer join tb_emp em on em.emp_id=ac.id
@@ -267,7 +295,7 @@
         with tb as (
             select
                 em.*,
-                cp.bp_no as bp_no
+                cp.corp_bp_no as bp_no
             from
                 tb_emp em
                     left outer join tb_corp cp on cp.reps_id=em.emp_id

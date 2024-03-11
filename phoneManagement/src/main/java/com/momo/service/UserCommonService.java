@@ -115,6 +115,10 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		return userCommonMapper.searchUser(vo);
 	}
 
+	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo){
+		return userCommonMapper.searchChatInvitableUser(vo);
+	}
+
 	public int updateRole(String id, String role){
 		UserCommonVO vo = UserCommonVO.builder().id(id).role(role).build();
 		return userCommonMapper.updateUser(vo);

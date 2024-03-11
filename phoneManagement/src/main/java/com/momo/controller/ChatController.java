@@ -43,6 +43,13 @@ public class ChatController {
 		return roomId;
 	}
 
+	@GetMapping("/msg/last/{roomId}")
+	@ResponseBody
+	public Map<String,Object> getLastChatLog(@PathVariable int roomId){
+		return chatService.getLastChatLog(roomId);
+	}
+
+
 	@PostMapping("/msg/emo")
 	@ResponseBody
 	public boolean emoChat(@RequestBody ChatVO vo){
@@ -103,7 +110,7 @@ public class ChatController {
 	@PostMapping("/room/invite")
 	@ResponseBody
 	public boolean inviteUser(@RequestBody ChatVO vo){
-		return false;
+		return chatService.joinChatroom(vo) != 0;
 	}
 
 	@PostMapping("/room/quit")

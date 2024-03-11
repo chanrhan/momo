@@ -60,6 +60,7 @@ public class ChatService {
 		}
 		ChatVO chat = ChatVO.builder()
 				.roomId(roomId)
+				.userId("")
 				.chatId(getMaxChatId(roomId)+1)
 				.serverSend(true)
 				.build();
@@ -78,5 +79,10 @@ public class ChatService {
 	public List<Map<String,Object>> selectChatLog(ChatVO vo){
 		vo.setOrder("send_dt");
 		return chatMapper.selectChatLog(vo);
+	}
+
+	public Map<String,Object> getLastChatLog(int roomId){
+		ChatVO vo = ChatVO.builder().roomId(roomId).chatId(getMaxChatId(roomId)).build();
+		return chatMapper.selectChatLog(vo).get(0);
 	}
 }

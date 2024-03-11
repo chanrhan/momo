@@ -10,6 +10,7 @@ import java.util.Map;
 @Mapper
 public interface UserCommonMapper {
 	public int loginNow(String id);
+	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo);
 
 	public int findGhostUserAndUpdateToDormant(int date);
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
