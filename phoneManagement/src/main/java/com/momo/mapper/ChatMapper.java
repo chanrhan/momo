@@ -21,16 +21,19 @@ public interface ChatMapper {
 	public int updateAlarmState(ChatVO vo);
 	public int updateNoteFold(ChatVO vo);
 	public List<Map<String,Object>> selectChatRoomMember(ChatVO vo);
-	public int updateLastRead(ChatVO vo);
+	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo);
+	public List<Map<String,Object>> readChatRoom(ChatVO vo);
 	public Integer getLastRead(ChatVO vo);
+	public boolean isEqualsToLastRead(ChatVO vo);
 
 	// Chatroom Note
 	public int insertNote(ChatVO vo);
-	public List<Map<String,Object>> selectNote(ChatVO vo);
 
+	public List<Map<String,Object>> selectNote(ChatVO vo);
 	// Chat Log
-	public int insertChat(ChatVO vo);
+	public Map<String,Object> insertChat(ChatVO vo);
 	public Integer getMaxChatId(int roomId);
+	public Integer getAutoIncrement();
 	public List<Map<String,Object>> selectChatLog(ChatVO vo);
 
 	// Chat Emo

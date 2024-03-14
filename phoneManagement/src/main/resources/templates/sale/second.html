@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody id="list_sale">
-        <tr th:each="sale : ${list}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.sale_id})|">
+        <tr th:each="sale : ${list}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.shop_id}, ${sale.sale_id})|">
             <td th:text="*{shop_nm}"></td>
             <td th:text="*{actv_dt}"></td>
             <td th:text="*{cust_nm}"></td>

@@ -16,6 +16,7 @@ public interface AlarmMapper {
 	public List<Map<String,Object>> selectAlarm(AlarmVO vo);
 	public List<Map<String,Object>> searchAlarm(SearchVO vo);
 	public int read(int alarmId);
+	public int readAllByReceiver(String id);
 	public int approve(int alarmId);
 	public int getMaxId();
 }

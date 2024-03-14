@@ -3,9 +3,9 @@
 let order = "actv_dt";
 let asc = 'asc';
 
-function showSaleDetail(saleNo){
+function showSaleDetail(shopId, saleId){
     window.open(
-        "/sale/detail/"+saleNo,
+        "/sale/detail?shopId="+shopId+"&saleId="+saleId,
         "판매일보 추가",
         "width=800, height=1400, location=no"
     );

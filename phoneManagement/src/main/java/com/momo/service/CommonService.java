@@ -1,14 +1,18 @@
 package com.momo.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import org.apache.ibatis.ognl.BooleanExpression;
-import org.springframework.stereotype.Service;
+import com.momo.util.TransactionTemplateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
+
+
 public abstract class CommonService {
+	@Autowired
+	protected TransactionTemplateUtil transactionTemplate;
+
 	protected final ObjectMapper objectMapper = new ObjectMapper()
 			.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 

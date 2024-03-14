@@ -9,6 +9,9 @@ function connect(){
         stompClient.subscribe("/sub/greeting",function (msg){
             console.log("msg: "+msg);
         })
+        stompClient.subscribe("/sub/test/pub",function (msg){
+            onSend(msg);
+        })
     })
 }
 
@@ -28,4 +31,18 @@ function sendAjax(){
             console.log(result);
         }
     })
+}
+
+function sendTo(){
+    $.ajax({
+        url: '/test/server/pub',
+        type: 'get',
+        success: function (result){
+            console.log(result);
+        }
+    })
+}
+
+function onSend(msg){
+    console.log(msg);
 }

@@ -19,48 +19,58 @@ $(document).ready(function (){
 
 });
 
+
+// Connection
 function subscribe(roomId){
-    // stompClient.connect({},function (frame){
-    //     console.log("Connected Room: "+roomId + " ,frame: "+ frame);
-    //     console.log("sub: "+roomId);
-    //     stompClient.subscribe("/sub/chat/"+roomId, function (roomId){
-    //         if(roomId !== 0){
-    //             onChat(roomId);
-    //         }
-    //     })
-    // })
     stompClient.subscribe('/sub/chat/room/'+roomId, function (msg){
         // console.log("data: "+msg);
         // console.log("data body: "+msg.body);
         if(msg !== 0){
-            onChat(msg.body);
+            onChat(msg.body, roomId);
         }
     })
     console.log("Subscribe Room: "+roomId);
 }
+function onChat(result, roomId){
+    // console.log("onchat: "+roomId);
+    var res = JSON.parse(result);
+    var header = res.response_header;
 
-function onChat(roomId){
-    console.log("onchat: "+roomId);
     var selectedRoomId = $('#selected_room_id').val();
-    if(roomId === selectedRoomId){
-        readChatroom(roomId);
-        updateChatLog();
-    }else{
-        var roomList = $('#list_room');
-        if(roomList.find('[name="room_'+ roomId +'"]').length === 0){
-            updateChatroom();
+    // console.log("org: "+roomId+", selected: "+selectedRoomId);
+    if(roomId == selectedRoomId){
+        console.log(header);
+        switch (header){
+            case 'SEND': // SEND
+                onSend(res);
+                break;
+            case 'READ': // READ
+                updateChatRead(res);
+                break;
+            case 'EMO': // EMO
+                updateChatEmo(res);
+                break;
+            case 'DEL': // DEL
+                updateDeletedChat(res);
+                break;
+            case 'QUIT': // QUIT
+                updateQuit(res);
+                break;
         }
-        updateStackedChat(roomId);
+
+    }else{
+        if(header === 0){ // header 0 -> "SEND"
+            var roomList = $('#list_room');
+            if(roomList.find('[name="room_'+ roomId +'"]').length === 0){
+                updateChatroom();
+            }
+            updateChatroomOnly(res.chat_log[0], roomId);
+        }
+
     }
 }
 
-function updateStackedChat(roomId){
-    console.log("increase stacked chat");
-    // var nameToFind = "room_"+roomId;
-    var count = $('p[name="stacked_chat_'+roomId+'"]');
-    count.text(getStackedChat(roomId));
-}
-
+// Chat Room
 function createChatroom(){
     var body = {
         room_nm: $('#create_room_name').val(),
@@ -75,17 +85,17 @@ function createChatroom(){
         beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
-        success: function (result){
+        success: function (roomId){
             // console.log(result);
-            if(result !== 0){
-                updateChatroomOnly(result);
+            if(roomId !== 0){
+                updateChatroom();
+                selectRoom(roomId);
             }
         }
-    })
+    });
 
     $('#create_room_name').val("");
 }
-
 function updateChatroom(){
     var body = {
         user_id: $('#user_id').val()
@@ -101,6 +111,7 @@ function updateChatroom(){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
+            if(result === null) return;
             // console.log("updateChatRoom: "+result);
             var roomList = document.getElementById('list_room');
             roomList.innerHTML = "";
@@ -135,154 +146,38 @@ function updateChatroom(){
         }
     })
 }
-
-function updateChatroomOnly(roomId){
+function updateChatroomOnly(chat, roomId){
     var room = $('div[name="room_' + roomId + '"]');
+    if(room === null || room.length === 0) return;
+
     var content = room.children('div').first();
     var stackedChat = room.find('[name="stacked_chat_'+roomId+'"]').first();
 
     var lastChat = getLastChatLog(roomId);
+    if(lastChat !== null){
+        $(content).text(lastChat.content + "        | " + lastChat.send_dt);
+    }
+
     var stackedChatCount = getStackedChat(roomId);
-
-    $(content).text(lastChat.content + "        | " + lastChat.send_dt);
-    $(stackedChat).text(stackedChatCount)
+    if(stackedChatCount !== null){
+        $(stackedChat).text(stackedChatCount)
+    }
 }
-
-function getLastChatLog(roomId){
-    var result = null;
-    $.ajax({
-        url: '/chat/msg/last/'+roomId,
-        type: 'get',
-        async: false,
-        success: function (rst){
-            result = rst;
-        }
-    });
-    return result;
-}
-
 function selectRoom(roomId){
     $('#selected_room_id').val(roomId);
     $.ajax({
         url: '/chat/room/info/'+roomId,
         type: 'get',
-        success: function (result){
+        success: function (res){
             // console.log(result);
-            $('#room_name').text(result.room_nm);
-            $('#head_count').text(result.room_hc);
-        }
-    })
-    updateInvitableUsers();
-    readChatroom(roomId);
-    updateChatLog();
-}
+            $('#room_name').text(res.room_nm);
+            $('#head_count').text(res.room_hc);
+            updateInvitableUsers();
+            loadAllChat();
 
-function sendChat(){
-    var roomId = $('#selected_room_id').val();
-    var body = {
-        user_id: $('#user_id').val(),
-        content: $('#content').val(),
-        file: '',
-        ref: 0
-    }
-
-    stompClient.send('/pub/chat/'+roomId,{},JSON.stringify(body));
-    $('#content').val("");
-}
-
-function updateChatLog(){
-    // console.log("update chat log");
-    var roomId = $('#selected_room_id').val();
-    if(roomId === null || roomId === '0'){
-        return;
-    }
-
-    var userId = $('#user_id').val();
-
-    var body = {
-        room_id: roomId,
-        user_id: userId
-    };
-
-    // console.log(body);
-
-    $.ajax({
-        url: '/chat/msg/log',
-        type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify(body),
-        beforeSend: function (xhr){
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (result){
-            // console.log(result);
-            var chatLog = document.getElementById('chat_log');
-            chatLog.innerHTML = "";
-            result.forEach(function (value, index, array){
-                var content = value.content;
-                if(value.deleted != null){
-                    content = "삭제된 메시지입니다.";
-                }
-                // console.log("org: "+userId+" , chat: "+value.user_id)
-                var className = "chat ";
-                var addHTML = "";
-                if(value.server_send){
-                    className += "chat-server";
-                    addHTML += "<div class='" +
-                        className +
-                        "'>" +
-                        value.content +
-                        "</div>";
-                }else{
-                    className += (userId === value.user_id) ? "mine" : "other";
-                    addHTML += "<div class='" +
-                        className +
-                        "' chat_id='" +
-                        value.chat_id +
-                        "' user_id='" +
-                        value.user_id +
-                        "'>" +
-                        "<p>" +
-                        value.user_nm +
-                        "</p>" +
-                        "<div class='chat-content";
-
-                    if(userId === value.user_id){
-                        // console.log("match!");
-                        addHTML += " chat-self"
-                    }
-
-                    addHTML +=
-                        "'>" +
-                        "<p>" +
-                        content +
-                        "</p>";
-                    if(value.emo_bits !== null){
-                        addHTML +=
-                            "<p>" +
-                            value.emo_bits +
-                            "</p>"
-                    }
-
-                    addHTML +=
-                        "</div>" +
-                        "<p class='chat-date'>" +
-                        value.send_dt +
-                        "</p>";
-
-                    if(value.non_read !== null && value.non_read !== 0){
-                        addHTML += value.non_read;
-                    }
-                    addHTML += "</div>";
-                }
-                chatLog.innerHTML += addHTML;
-            })
-            chatLog.scrollTop = chatLog.scrollHeight;
         }
     });
-    updateChatroomOnly(roomId);
 }
-
 function getStackedChat(roomId){
     var rst = null;
     var body = {
@@ -305,6 +200,7 @@ function getStackedChat(roomId){
     return rst;
 }
 
+// Chat Room Invite
 function updateInvitableUsers(){
     var invitableList = document.getElementById('invitable_users');
     var keyword = $('#invite_keyword').val();
@@ -346,21 +242,16 @@ function updateInvitableUsers(){
                 }else if(value.corp_nm !== null && value.corp_nm !== ""){
                     from = value.corp_nm;
                 }
-               invitableList.innerHTML += "<div class='chat-invitable-user' name='invitable_pannel' user_id='" +
-                   value.user_id +
-                   "' onclick='selectInviteUser($(this))'>" +
-                   value.user_nm + " | " + role + " | " + from +
-                   "</div>";
+                invitableList.innerHTML += "<div class='chat-invitable-user' name='invitable_pannel' user_id='" +
+                    value.user_id +
+                    "' onclick='selectInviteUser($(this))'>" +
+                    value.user_nm + " | " + role + " | " + from +
+                    "</div>";
 
             });
         }
     })
 }
-
-function emo(){
-
-}
-
 function selectInviteUser(user){
     selectedInviteUser = $(user).attr('user_id');
 
@@ -372,20 +263,122 @@ function selectInviteUser(user){
         )
     $(user).toggleClass('chat-invite-selected');
 }
-
-function invite(){
+function inviteUser(){
     if(selectedInviteUser === null || selectedInviteUser === ""){
         alert("초대할 멤버를 선택해야 합니다!");
         return;
     }
 
+    stompClient.send("/pub/chat/invite/"+$('#selected_room_id').val(),{},
+        JSON.stringify(selectedInviteUser));
+
+    // $.ajax({
+    //     url: '/chat/room/invite',
+    //     type: 'post',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(body),
+    //     beforeSend: function (xhr){
+    //         xhr.setRequestHeader(header, token);
+    //     },
+    //     success: function (result){
+    //         console.log(result);
+    //         if(result){
+    //             alert("초대되었습니다.");
+    //         }
+    //     }
+    // })
+}
+
+// Chat Room Note
+function noteToRoom(){
+
+}
+function foldNote(){
+
+}
+
+// Chat Send
+function sendChat(){
+    var roomId = $('#selected_room_id').val();
     var body = {
-        room_id: $('#selected_room_id').val(),
-        user_id: selectedInviteUser
+        user_id: $('#user_id').val(),
+        content: $('#content').val(),
+        file: '',
+        ref: 0
     }
 
+    stompClient.send('/pub/chat/send/'+roomId,{},JSON.stringify(body));
+    $('#content').val("");
+}
+function onSend(res){
+    console.log("on send");
+    updateChatLog(res.chat_log); // Load 후 Read 를 해야 정확한 통신이 가능하다!
+    readChatroom($('#selected_room_id').val());
+}
+
+// Chat Read
+function updateChatRead(res){
+    console.log(res);
+    var chat_log = res.chat_log;
+    console.log(chat_log);
+    if(chat_log === null || chat_log.length === 0) return;
+
+    chat_log.forEach(function (value) {
+        console.log("for each: "+value.chat_id);
+        var chat_non_read = $('#chat_log div[chat_id='+value.chat_id+'] .chat-non-read');
+        console.log("on Read: "+$(chat_non_read).text());
+        $(chat_non_read).text(value.non_read);
+    })
+}
+function readChatroom(roomId){
+    console.log("read");
+    stompClient.send('/pub/chat/read/'+roomId,{},
+        $('#user_id').val());
+
+    // $.ajax({
+    //     url: '/chat/room/read',
+    //     type: 'post',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(body),
+    //     async: false,
+    //     beforeSend: function (xhr) {
+    //         xhr.setRequestHeader(header, token);
+    //     },
+    //     success: function (result){
+    //
+    //     }
+    // })
+}
+
+// Chat Log
+function getLastChatLog(roomId){
+    var result = null;
     $.ajax({
-        url: '/chat/room/invite',
+        url: '/chat/msg/last/'+roomId,
+        type: 'get',
+        async: false,
+        success: function (rst){
+            result = rst;
+        }
+    });
+    return result;
+}
+function loadChat(){
+    var roomId = $('#selected_room_id').val();
+    if(roomId === null || roomId === '0'){
+        alert("잘못된 요청입니다.");
+        return;
+    }
+
+    var userId = $('#user_id').val();
+
+    var body = {
+        room_id: roomId,
+        user_id: userId
+    };
+
+    $.ajax({
+        url: '/chat/msg/load',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),
@@ -393,47 +386,134 @@ function invite(){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-            console.log(result);
-            if(result){
-                alert("초대되었습니다.");
+            if(result !== null && result.length > 0){
+                updateChatLog(result);
+                readChatroom(roomId);
             }
         }
-    })
+    });
 }
+function loadAllChat(){
+    var roomId = $('#selected_room_id').val();
+    if(roomId === null || roomId === '0'){
+        alert("잘못된 요청입니다.");
+        return;
+    }
 
-function readChatroom(roomId){
+    var userId = $('#user_id').val();
+
     var body = {
-        user_id: $('#user_id').val(),
-        room_id: roomId
+        room_id: roomId,
+        user_id: userId
     };
 
     $.ajax({
-        url: '/chat/room/read',
+        url: '/chat/msg/load/all',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),
-        async: false,
-        beforeSend: function (xhr) {
+        beforeSend: function (xhr){
             xhr.setRequestHeader(header, token);
         },
         success: function (result){
-
+            updateChatLog(result);
+            readChatroom(roomId);
         }
+    });
+}
+function updateChatLog(result, refresh = false){
+    if(result === null || result.length === 0) return;
+    var roomId = $('#selected_room_id').val();
+    var userId = $('#user_id').val();
+
+    var chatLog = document.getElementById('chat_log');
+    if(refresh){
+        chatLog.innerHTML = "";
+    }
+    result.forEach(function (value, index, array){
+        var content = value.content;
+        // console.log("org: "+userId+" , chat: "+value.user_id)
+        var className = "chat ";
+        var addHTML = "";
+        if(value.server_send){
+            className += "chat-server";
+            addHTML += "<div name='chat_" +
+                value.chat_id +
+                "' class='" +
+                className +
+                "'>" +
+                value.content +
+                "</div>";
+        }else{
+            className += (userId === value.user_id) ? "mine" : "other";
+            addHTML += "<div class='" +
+                className +
+                "' chat_id='" +
+                value.chat_id +
+                "' user_id='" +
+                value.user_id +
+                "'>" +
+                "<p>" +
+                value.user_nm +
+                "</p>" +
+                "<div class='chat-content";
+
+            if(userId === value.user_id){
+                // console.log("match!");
+                addHTML += " chat-self"
+            }
+
+            addHTML +=
+                "'>" +
+                "<p>" +
+                content +
+                "</p>";
+            if(value.emo_bits !== null && value.emo_bits !== undefined){
+                addHTML +=
+                    "<p>" +
+                    value.emo_bits +
+                    "</p>"
+            }
+
+            addHTML +=
+                "</div>" +
+                "<p class='chat-date'>" +
+                value.send_dt +
+                "</p>" +
+                "<p class='chat-non-read''>" +
+                value.non_read +
+                "</p>" +
+                "</div>";
+        }
+        chatLog.innerHTML += addHTML;
     })
+    chatLog.scrollTop = chatLog.scrollHeight;
+    updateChatroomOnly(roomId);
 }
 
-function quit(){
+// Chat Emo
+function sendChatEmo(){
+
+}
+function updateChatEmo(result){
 
 }
 
+// Chat Delete
 function deleteChat(){
 
 }
-
-function noteToRoom(){
+function updateDeletedChat(result){
 
 }
 
-function foldNote(){
+// Chat Quit / Kick
+function quit(){
+
+}
+function updateQuit(result){
+
+}
+function kick(){
 
 }

@@ -44,22 +44,24 @@ function validateId(){
 
 // 비밀번호 형식 검사
 function validatePassword(){
-    var pwd = $('#pwd').val();
-    $('#confirm_pwd').val("");
-    $('#error_pwd').text("");
-    $('#error_confirm_pwd').val("");
-    isPasswordMatched = false;
-    isPasswordChecked = false;
-
-    if(pwd.length < 8 || pwd.length > 33){
-        $('#error_pwd').text("비밀번호는 8~32자리 사이여야 합니다.");
-        return;
-    }
-
-    if(!pwdRegex.test(pwd)){
-        $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
-        return;
-    }
+    // 테스트 할 때만 막아놓자
+    // 런칭할 때는 다시 검사해야함
+    // var pwd = $('#pwd').val();
+    // $('#confirm_pwd').val("");
+    // $('#error_pwd').text("");
+    // $('#error_confirm_pwd').val("");
+    // isPasswordMatched = false;
+    // isPasswordChecked = false;
+    //
+    // if(pwd.length < 8 || pwd.length > 33){
+    //     $('#error_pwd').text("비밀번호는 8~32자리 사이여야 합니다.");
+    //     return;
+    // }
+    //
+    // if(!pwdRegex.test(pwd)){
+    //     $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
+    //     return;
+    // }
 
     $('#error_pwd').text("");
     isPasswordChecked = true;

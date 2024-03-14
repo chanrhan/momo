@@ -42,6 +42,7 @@ function stepToNext(){
             sessionStorage.setItem("sale", JSON.stringify(body));
             window.location.href = '/sale/msg/rsv';
         }else{
+            window.opener.parent.searchSale();
             window.close();
         }
     }

@@ -19,10 +19,11 @@ import java.util.Map;
 @Slf4j
 public class CommonInterceptor implements HandlerInterceptor {
 	private final ShopCommonService shopCommonService;
+	private final UserCommonService userCommonService;
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		System.out.println("[qq] Common postHandle");
+//		System.out.println("[qq] Common postHandle");
 		if(modelAndView == null){
 			modelAndView = new ModelAndView();
 		}
@@ -30,7 +31,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 		if(session == null || session.getAttribute("corp_id") == null){
 			return;
 		}
-		System.out.println("sid: "+session.getId());
+//		System.out.println("sid: "+session.getId());
 
 		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
 		if(corpId == 0){
@@ -40,6 +41,10 @@ public class CommonInterceptor implements HandlerInterceptor {
 
 		int corpPt = shopCommonService.getCorpPoint(corpId);
 		modelAndView.addObject("corp_pt",corpPt);
+
+		String userName = userCommonService.selectUserByContext().get("name").toString();
+		modelAndView.addObject("user_nm", userName);
+
 	}
 
 	@Override

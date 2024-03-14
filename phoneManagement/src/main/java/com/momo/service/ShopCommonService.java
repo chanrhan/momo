@@ -5,8 +5,11 @@ import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +90,13 @@ public class ShopCommonService extends CommonService {
 	}
 
 	// Corperation
+//	@Transactional
 	public int insertCorp(ShopCommonVO vo) {
-		if(vo.getCorpId() == null || vo.getCorpId() == 0){
-			vo.setCorpId(getMaxCorpId()+1);
-		}
-		return shopCommonMapper.insertCorp(vo);
+//		if(vo.getCorpId() == null || vo.getCorpId() == 0){
+//			vo.setCorpId(getMaxCorpId()+1);
+//		}
+		Integer result = transactionTemplate.executeRepeatedly(status -> shopCommonMapper.insertCorp(vo));
+		return (result != null) ? result : 0;
 	}
 
 	public int updateCorp(ShopCommonVO vo) {

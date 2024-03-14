@@ -1,13 +1,14 @@
 package com.momo.controller;
 
 import com.momo.service.ChatService;
+import com.momo.vo.ChatMessageType;
+import com.momo.vo.ChatResponse;
 import com.momo.vo.ChatVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatController {
+	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatService chatService;
 
 	@GetMapping("/home")
@@ -26,21 +28,26 @@ public class ChatController {
 		return "chat/home";
 	}
 
-	@PostMapping("/msg/log")
+	@PostMapping("/msg/load")
 	@ResponseBody
-	public List<Map<String,Object>> getChatLog(@RequestBody ChatVO vo){
-		System.out.println("log: "+vo);
+	public List<Map<String,Object>> loadChatLog(@RequestBody ChatVO vo){
+//		System.out.println("log: "+vo);
+		return chatService.selectChatLogFromLastRead(vo);
+	}
+
+	@PostMapping("/msg/load/all")
+	@ResponseBody
+	public List<Map<String,Object>> loadAllChatLog(@RequestBody ChatVO vo){
+//		System.out.println("log: "+vo);
 		return chatService.selectChatLog(vo);
 	}
 
-	@MessageMapping("/chat/{roomId}")
+	@MessageMapping("/chat/send/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
-//	@Transactional
-	public int sendChat(@DestinationVariable Integer roomId, @RequestBody ChatVO vo){
+	public ChatResponse sendChat(@DestinationVariable Integer roomId, @RequestBody ChatVO vo){
 		vo.setRoomId(roomId);
 		System.out.println("send: "+vo);
-		int result = chatService.sendChat(vo);
-		return roomId;
+		return chatService.sendChat(vo);
 	}
 
 	@GetMapping("/msg/last/{roomId}")
@@ -75,10 +82,14 @@ public class ChatController {
 		return false;
 	}
 
-	@PostMapping("/room/read")
-	@ResponseBody
-	public boolean readAllMessageInRoom(@RequestBody ChatVO vo){
-		return chatService.readChatroom(vo) != 0;
+	@MessageMapping("/chat/read/{roomId}")
+//	@SendTo("/sub/chat/room/{roomId}")
+	public void readChatRoom(@DestinationVariable int roomId, @RequestBody String userId){
+		ChatResponse result = chatService.readChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
+		System.out.println("read result: "+ result);
+		if(result != null){
+			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, result);
+		}
 	}
 
 	@PostMapping("/room/note")
@@ -113,21 +124,14 @@ public class ChatController {
 		return null;
 	}
 
-	@PostMapping("/room/invite")
-	@ResponseBody
-	public boolean inviteUser(@RequestBody ChatVO vo){
-		int result = chatService.joinChatroom(vo);
-		if(result == 0){
-			return false;
-		}
-		int roomId = vo.getRoomId();
-		result = chatService.sendWelcomeMessage(roomId, vo.getUserId());
-		if(result == 0){
-			return false;
-		}
+	@MessageMapping("/room/invite/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public ChatResponse inviteUser(@DestinationVariable int roomId, @RequestBody String userId){
+		ChatVO vo = ChatVO.builder().roomId(roomId).userId(userId).build();
+		ChatResponse response = chatService.sendServerChat(ChatMessageType.INVITE, vo);
+		chatService.joinChatroom(vo);
 
-		result = chatService.increateChatRoomHeadCount(roomId);
-		return result != 0;
+		return response;
 	}
 
 	@PostMapping("/room/quit")

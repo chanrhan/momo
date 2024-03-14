@@ -96,7 +96,7 @@
         <if test='corpId != null and !corpId.equals("")'>
             corp_id=#{corpId} and
         </if>
-        <if test='shopId != null'>
+        <if test='shopId != null and shopId != 0'>
             shop_id=#{shopId} and
         </if>
         <if test='shopBpNo != null and !shopBpNo.equals("")'>

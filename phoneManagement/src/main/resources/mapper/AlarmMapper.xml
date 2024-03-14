@@ -8,7 +8,21 @@
             tb_alarm
         (alarm_id, sender_id, receiver_id, alarm_tp, content)
         values
-            (#{alarmId},#{senderId},#{receiverId},#{alarmTp},#{content})
+            ((
+                select
+                    *
+                from
+                    (
+                        select
+                            max(alarm_id) + 1
+                        from
+                            tb_alarm
+                        where
+                            receiver_id=#{receiverId}
+                    ) as sub
+                for update
+                 )
+            ,#{senderId},#{receiverId},#{alarmTp},#{content})
 
     </insert>
 
@@ -29,6 +43,15 @@
             read_st=true
         where
             alarm_id=#{alarmId}
+    </update>
+
+    <update id="readAllByReceiver">
+        update
+        tb_alarm
+        set
+            read_st=1
+        where
+            receiver_id=#{id}
     </update>
 
     <update id="approve">

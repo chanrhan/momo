@@ -10,6 +10,7 @@ import com.momo.vo.UserCommonVO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -99,5 +100,17 @@ public class TestController {
 		vo.setRole("MANAGER");
 		userCommonService.insertEmp(vo);
 		return "Success";
+	}
+
+	@GetMapping("/server/pub")
+	@ResponseBody
+	public boolean serverPublish(){
+		sendTestPub("Hello, World");
+		return true;
+	}
+
+	@SendTo("/sub/test/pub")
+	public String sendTestPub(String msg){
+		return msg;
 	}
 }

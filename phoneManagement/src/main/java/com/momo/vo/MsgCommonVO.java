@@ -2,6 +2,7 @@ package com.momo.vo;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.momo.util.IntegerUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,8 @@ public class MsgCommonVO extends CommonQueryVO {
 
 	private List<MsgCommonVO> msgList;
 
-	//	public void setRsvDt(String rsvDt) {
-	//		Date date = new Date();
-	//		this.rsvDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-	//	}
+	public Integer getShopId(){
+		return IntegerUtil.zeroToNull(shopId);
+	}
+
 }

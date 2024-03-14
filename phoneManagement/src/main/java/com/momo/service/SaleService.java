@@ -1,12 +1,14 @@
 package com.momo.service;
 
 import com.momo.mapper.SaleMapper;
+import com.momo.util.IntegerUtil;
 import com.momo.vo.SaleVO;
 import com.momo.vo.SearchVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SaleService extends CommonService {
 	private final SaleMapper saleMapper;
-
 	private final UserCommonService userCommonService;
 	private final ShopCommonService shopCommonService;
 
@@ -32,7 +33,7 @@ public class SaleService extends CommonService {
 
 	// Common
 	public int insertSale(SaleVO vo) {
-		vo.setSaleId(getMaxSaleId(vo.getShopId())+1);
+//		vo.setSaleId(getMaxSaleId(vo.getShopId())+1);
 		return saleMapper.insertSale(vo);
 	}
 	public int updateSale(SaleVO vo) {
@@ -56,35 +57,37 @@ public class SaleService extends CommonService {
 	public List<Map<String,Object>> selectSaleBySession(HttpSession session) {
 //		Map<String,Object> emp = userCommonService.selectEmpById(SecurityContextUtil.getUsername());
 		SaleVO vo = new SaleVO();
+		vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
+		vo.setCorpId(Integer.parseInt(session.getAttribute("corp_id").toString()));
 
-		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-		if(shopId == 0){
-			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-			vo.setCorpId(corpId);
-		}else{
-			vo.setShopId(shopId);
-		}
+//		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+//		if(shopId == 0){
+//			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//			vo.setCorpId(corpId);
+//		}else{
+//			vo.setShopId(shopId);
+//		}
 		return selectSale(vo);
 	}
 
-	public List<Map<String,Object>> selectSaleBySession(SaleVO vo, HttpSession session) {
-		Integer shopId = vo.getShopId();
-		if(shopId == null){
-			vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
-		}
-		return selectSale(vo);
-	}
+//	public List<Map<String,Object>> selectSaleBySession(SaleVO vo, HttpSession session) {
+//		Integer shopId = vo.getShopId();
+//		if(shopId == null){
+//			vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
+//		}
+//		return selectSale(vo);
+//	}
 	
 	public List<Map<String,Object>> selectSale(SaleVO vo) {
 		Integer shopId = vo.getShopId();
 
-		if(shopId != null && shopId == 0){
-			vo.setShopId(null);
-			if(vo.getCorpId() == null || vo.getCorpId() == 0){
-				int corpId = Integer.parseInt(shopCommonService.selectShopById(shopId).get("corp_id").toString());
-				vo.setCorpId(corpId);
-			}
-		}
+//		if(shopId != null && shopId == 0){
+//			vo.setShopId(null);
+//			if(vo.getCorpId() == null || vo.getCorpId() == 0){
+//				int corpId = Integer.parseInt(shopCommonService.selectShopById(shopId).get("corp_id").toString());
+//				vo.setCorpId(corpId);
+//			}
+//		}
 		if(vo.getOrder() == null){
 			vo.setOrder("actv_dt");
 		}
@@ -111,41 +114,51 @@ public class SaleService extends CommonService {
 	// 완료
 	public List<Map<String,Object>> selectSaleByTypeAndSession(String type, HttpSession session){
 		SaleVO vo = SaleVO.builder().target(type).build();
+		vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
+		vo.setCorpId(Integer.parseInt(session.getAttribute("corp_id").toString()));
 
-		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-		if(shopId == 0){
-			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-			vo.setCorpId(corpId);
-		}else{
-			vo.setShopId(shopId);
-		}
-		vo.setOrder("actv_dt");
-		vo.setAsc("desc");
-		return saleMapper.selectSale(vo);
+//		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+//		if(shopId == 0){
+//			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//			vo.setCorpId(corpId);
+//		}else{
+//			vo.setShopId(shopId);
+//		}
+//		vo.setOrder("actv_dt");
+//		vo.setAsc("desc");
+		return selectSale(vo);
 	}
 
-	public List<Map<String,Object>> searchSaleSession(SearchVO vo, HttpSession session){
-		Object _shopId = vo.getSelect().get("shop_id");
-		int shopId = 0;
-		if(_shopId == null){
-			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-		}else{
-			shopId = Integer.parseInt(_shopId.toString());
+	public List<Map<String,Object>> searchSaleBySession(SearchVO vo, HttpSession session){
+//		Object _shopId = vo.getSelect().get("shop_id");
+//		int shopId = 0;
+//		if(_shopId == null){
+//			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+//		}else{
+//			shopId = Integer.parseInt(_shopId.toString());
+//		}
+//
+//		if(shopId == 0){
+//			vo.getSelect().remove("shop_id");
+//			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//			vo.getSelect().put("corp_id",corpId);
+//		}else{
+//			vo.getSelect().put("shop_id",shopId);
+//		}
+		if(vo.getSelect() == null){
+			vo.setSelect(new HashMap<>());
 		}
 
-		if(shopId == 0){
-			vo.getSelect().remove("shop_id");
-			int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-			vo.getSelect().put("corp_id",corpId);
-		}else{
-			vo.getSelect().put("shop_id",shopId);
+		if(!vo.getSelect().containsKey("shop_id")){
+			vo.getSelect().put("shop_id", IntegerUtil.zeroToNull(session.getAttribute("shop_id")));
 		}
+		vo.getSelect().put("corp_id", session.getAttribute("corp_id"));
 		return searchSale(vo);
 	}
 
 	public List<Map<String,Object>> searchSaleByTypeAndSession(String type, SearchVO vo, HttpSession session){
 		vo.setTarget(type);
-		return searchSaleSession(vo, session);
+		return searchSaleBySession(vo, session);
 	}
 
 	public int getMaxSaleId(int shopId){
@@ -157,17 +170,12 @@ public class SaleService extends CommonService {
 	}
 
 	public List<Map<String,Object>> searchSale(SearchVO vo){
-//		if(vo.getSelect() != null) {
-//			String shopId = vo.getSelect().get("shop_id").toString();
-//			if (shopId != null && shopId.equals("0")) {
-//				vo.getSelect().remove("shop_id");
-//				if (!vo.getSelect().containsKey("corp_id")) {
-//					System.out.println("corp corp");
-//					String corpId = shopCommonService.selectShopById(Integer.parseInt(shopId)).get("corp_id").toString();
-//					vo.getSelect().put("corp_id", Integer.parseInt(corpId));
-//				}
-//			}
-//		}
+		if(vo.getSelect() != null && vo.getSelect().containsKey("shop_id")) {
+			String shopId = vo.getSelect().get("shop_id").toString();
+			if (shopId != null && shopId.equals("0")) {
+				vo.getSelect().remove("shop_id");
+			}
+		}
 //		System.out.println(vo.getSelect());
 
 

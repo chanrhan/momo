@@ -2,12 +2,14 @@ package com.momo.service;
 
 import com.momo.mapper.ItemCommonMapper;
 import com.momo.mapper.MsgCommonMapper;
+import com.momo.util.IntegerUtil;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,13 +73,20 @@ public class MsgCommonService extends CommonService {
 
 	public List<Map<String, Object>> selectMsgBySession(HttpSession session) {
 		MsgCommonVO vo = new MsgCommonVO();
-		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-		if(shopId == 0){
-			vo.setCorpId(corpId);
-		}else{
-			vo.setShopId(shopId);
-		}
+
+//		Object _shopId = ;
+//		if(_shopId != null && !_shopId.equals("0")){
+//		}
+		vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
+		vo.setCorpId(Integer.parseInt(session.getAttribute("corp_id").toString()));
+
+//		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+//		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//		if(shopId == 0){
+//			vo.setCorpId(corpId);
+//		}else{
+//			vo.setShopId(shopId);
+//		}
 		return selectMsg(vo);
 	}
 
@@ -88,22 +97,30 @@ public class MsgCommonService extends CommonService {
 	}
 
 	public List<Map<String, Object>> searchMsgBySession(SearchVO vo, HttpSession session) {
-		Object _shopId = vo.getSelect().get("shop_id");
-		int shopId = 0;
-		if(_shopId == null){
-			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-		}else{
-			shopId = Integer.parseInt(_shopId.toString());
+		if(vo.getSelect() == null){
+			vo.setSelect(new HashMap<>());
 		}
-		if(shopId == 0){
-			vo.getSelect().remove("shop_id");
-			if(!vo.getSelect().containsKey("corp_id")){
-				int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-				vo.getSelect().put("corp_id",corpId);
-			}
-		}else{
-			vo.getSelect().put("shop_id",shopId);
-		}
+//		Object _shopId = ;
+//		if(_shopId != null && !_shopId.equals("0")){
+//		}
+		vo.getSelect().put("shop_id", IntegerUtil.zeroToNull(session.getAttribute("shop_id")));
+		vo.getSelect().put("corp_id", session.getAttribute("corp_id"));
+//		Object _shopId = vo.getSelect().get("shop_id");
+//		int shopId = 0;
+//		if(_shopId == null){
+//			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
+//		}else{
+//			shopId = Integer.parseInt(_shopId.toString());
+//		}
+//		if(shopId == 0){
+//			vo.getSelect().remove("shop_id");
+//			if(!vo.getSelect().containsKey("corp_id")){
+//				int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//				vo.getSelect().put("corp_id",corpId);
+//			}
+//		}else{
+//			vo.getSelect().put("shop_id",shopId);
+//		}
 
 		return msgCommonMapper.searchMsg(vo);
 	}
@@ -118,7 +135,7 @@ public class MsgCommonService extends CommonService {
 
 	public int reserve(MsgCommonVO vo){
 		List<MsgCommonVO> list = vo.getMsgList();
-		int maxMsgId = getMaxMsgId(vo.getShopId());
+//		int maxMsgId = getMaxMsgId(vo.getShopId());
 		int result = 0;
 
 		String content = "";
@@ -130,7 +147,7 @@ public class MsgCommonService extends CommonService {
 //			int typeId = Integer.parseInt(list.get(i).get("type_id").toString());
 			content = createContent(vo);
 
-			vo.setMsgId(maxMsgId+i+1);
+//			vo.setMsgId(maxMsgId+i+1);
 			vo.setContent(content);
 			vo.setRsvDt(list.get(i).getRsvDt());
 
@@ -148,10 +165,10 @@ public class MsgCommonService extends CommonService {
 		String content = selectForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
 
 		Map<String,Object > seller = userCommonService.selectUser(UserCommonVO.builder().id(vo.getSellerId()).build()).get(0);
-		Map<String,Object > customer = userCommonService.selectUser(UserCommonVO.builder().id(vo.getCustNm()).build()).get(0);
+//		Map<String,Object > customer = userCommonService.selectUser(UserCommonVO.builder().id(vo.getCustNm()).build()).get(0);
 		Map<String,Object> shop = shopCommonService.selectShop(ShopCommonVO.builder().shopId(vo.getShopId()).build()).get(0);
 		content = content.replace("#{seller_nm}", seller.get("name").toString())
-				.replace("#{cust_nm}",customer.get("name").toString())
+				.replace("#{cust_nm}", vo.getCustNm())
 				.replace("#{shop_nm}]", shop.get("shop_nm").toString());
 
 

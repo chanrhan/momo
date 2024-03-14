@@ -315,7 +315,7 @@
         <if test='saleId != null'>
             sale_id=#{saleId} and
         </if>
-        <if test='shopId != null'>
+        <if test='shopId != null and shopId != 0'>
             shop_id=#{shopId} and
         </if>
         <if test='corpId != null'>
@@ -554,7 +554,20 @@
          tv_dec_plan, add_item, add_pay, add_dt, sup_div, sup_pay, friend, exsvc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
          spec, wt_expr_dt, non_disc, actv_time, etc)
         values
-            (#{saleId},#{shopId},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
+            ((
+                select
+                    *
+                from
+                    (
+                        select
+                            max(sale_id) + 1
+                        from
+                            tb_sale
+                        where
+                            shop_id=#{shopId}
+                    ) as sub
+                    for update
+             ),#{shopId},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
              #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
              #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv},#{supPay},#{friend},#{exsvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
              #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{actvTime},#{etc})

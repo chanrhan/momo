@@ -25,6 +25,7 @@ public class ChatVO extends CommonQueryVO{
 	private String joinDt;
 	private Boolean alarmSt;
 	private Boolean noteFold;
+	private Integer firstRead;
 	private Integer lastRead;
 
 	// Chatroom Last Read
@@ -38,8 +39,8 @@ public class ChatVO extends CommonQueryVO{
 	private Integer chatId;
 	private Boolean serverSend = false;
 	private Integer ref = 0;
-	private String sendDt;
-	private Integer nonRead;
+	private String  sendDt;
+	private Integer currHc; // 채팅 보냈을 시 채팅방에 있던 인원 수
 
 	// Chat Emo
 	private String emoBits;

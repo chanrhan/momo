@@ -17,7 +17,7 @@ public class AlarmService extends CommonService {
 	private final AlarmMapper alarmMapper;
 
 	public int insertAlarm(AlarmVO vo) {
-		vo.setAlarmId(getMaxId()+1);
+//		vo.setAlarmId(getMaxId()+1);
 		return alarmMapper.insertAlarm(vo);
 	}
 
@@ -53,12 +53,8 @@ public class AlarmService extends CommonService {
 		return alarmMapper.approve(alarmId);
 	}
 
-	public int readAll(List<Integer> alarmList){
-		int result = 0;
-		for(int alarmId : alarmList){
-			result += read(alarmId);
-		}
-		return result;
+	public int readAllByReceiver(String receiverId){
+		return alarmMapper.readAllByReceiver(receiverId);
 	}
 
 	public int read(int alarmId){

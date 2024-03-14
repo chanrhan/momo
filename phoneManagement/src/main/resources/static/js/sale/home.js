@@ -67,6 +67,8 @@ function    updateSaleList(result){
     list_sale.innerHTML = "";
     result.forEach(function (value, index, array) {
         list_sale.innerHTML += "<tr onclick='showSaleDetail(" +
+            value.shop_id +
+            "," +
             value.sale_id +
             ")" +
             "' class='" +

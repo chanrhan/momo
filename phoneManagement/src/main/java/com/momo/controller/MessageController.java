@@ -57,10 +57,15 @@ public class MessageController {
 		return msgCommonService.reserve(vo) != 0;
 	}
 
-	@GetMapping("/detail/{id}")
+	@GetMapping("/detail")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String msgDetail(Model model, @PathVariable int id) {
-		model.addAttribute("msg",msgCommonService.selectMsgById(id));
+	public String msgDetail(Model model,
+							@RequestParam int shopId,
+							@RequestParam int msgId) {
+		model.addAttribute("msg",msgCommonService.selectMsg(MsgCommonVO.builder()
+																	.shopId(shopId)
+																	.msgId(msgId)
+																	.build()).get(0));
 		return "message/msg_detail";
 	}
 

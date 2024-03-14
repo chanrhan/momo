@@ -3,6 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <header th:fragment="header">
+    <script src="/js/layout/common_header.js" th:inline="javascript"></script>
     <nav>
         <div class="container-fluid">
             <a class="navbar-brand" sec:authorize="isAuthenticated()" href="/home" style="font-size: 30px">MOMO (모바일의 모든것)</a>
@@ -13,8 +14,7 @@
                         <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/account/logout}">로그아웃</a>
                     </div>
                     <div class="nav-item">
-                        <a class="nav-link" sec:authorize="isAuthenticated()"
-                           th:text="${#authentication.getPrincipal().getUsername()}"
+                        <a id="header_user_nm" class="nav-link" sec:authorize="isAuthenticated()"
                             th:href="@{/profile/home}"></a>
                     </div>
                     <div sec:authorize="hasAuthority('APPROVE') or hasAuthority('ADMIN')">

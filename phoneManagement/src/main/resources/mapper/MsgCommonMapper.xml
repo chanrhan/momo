@@ -58,7 +58,21 @@
             tb_msg_rsv
         (msg_id, shop_id, send_tp, cust_nm, cust_tel, content, seller_id, rsv_dt)
         values
-            (#{msgId},#{shopId},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
+            ((
+                select
+                    *
+                from
+                    (
+                        select
+                            max(msg_id) + 1
+                        from
+                            tb_msg_rsv
+                        where
+                            shop_id=#{shopId}
+                    ) as sub
+                for update
+                 ),
+             #{shopId},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
     </insert>
 
     <update id="updateMsg" parameterType="com.momo.vo.MsgCommonVO">
@@ -95,7 +109,7 @@
     <select id="selectMsg" parameterType="com.momo.vo.MsgCommonVO">
         with tb as (
         select
-            sh.shop_nm as shop_nm,
+            sh.shop_nm,
             mr.*,
             a.name as seller_nm,
             cp.corp_bp_no,

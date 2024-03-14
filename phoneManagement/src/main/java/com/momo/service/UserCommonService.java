@@ -135,6 +135,11 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		if(vo.getApprovalSt() == null){
 			vo.setApprovalSt(false);
 		}
+		// 이거 임시 코드임. 나중에 수정
+		if(vo.getShopId() == null){
+			vo.setShopId(0);
+		}
+
 		return userCommonMapper.insertEmp(vo);
 	}
 	public int updateEmp(UserCommonVO vo){

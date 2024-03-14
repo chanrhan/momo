@@ -9,10 +9,10 @@ let selected_columns = [
     "seller_nm"
 ];
 
-function showMsgDetail(id){
+function showMsgDetail(shopId, msgId){
     window.open(
-        "/msg/detail/"+id,
-        "메세지 정보",
+        "/msg/detail?shopId="+shopId+"&msgId="+msgId,
+        "예약문자 정보",
         "width=400, height=400, location=no"
     );
 }
@@ -70,6 +70,8 @@ function updateMessageList(list){
     list_msg.innerHTML = "";
     list.forEach(function (value, index, array) {
         list_msg.innerHTML += "<tr onclick='showMsgDetail(" +
+            value.shop_id +
+            "," +
             value.msg_id +
             ")'>" +
             "<td>" +

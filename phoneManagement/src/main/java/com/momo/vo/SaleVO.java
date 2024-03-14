@@ -2,6 +2,7 @@ package com.momo.vo;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.momo.util.IntegerUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -106,6 +107,10 @@ public class SaleVO extends CommonQueryVO {
 
 	// 예약 발송
 	private List<MsgCommonVO> msgRsvList;
+
+	public Integer getShopId(){
+		return IntegerUtil.zeroToNull(shopId);
+	}
 
 	public String getSupDiv() {
 		if(supDiv == null) return null;

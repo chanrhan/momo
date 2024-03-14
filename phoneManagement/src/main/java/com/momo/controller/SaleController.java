@@ -2,20 +2,15 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.service.*;
-import com.momo.util.FileServiceUtil;
 import com.momo.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,10 +53,15 @@ public class SaleController {
 		return "sale/home";
 	}
 
-	@GetMapping("/detail/{id}")
+	@GetMapping("/detail")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleDetail(Model model, @PathVariable int id) throws IOException {
-		Map<String,Object> map = saleService.selectSaleById(id);
+	public String saleDetail(Model model,
+							 @RequestParam int shopId,
+							 @RequestParam int saleId) throws Exception {
+		Map<String,Object> map = saleService.selectSale(SaleVO.builder()
+																.shopId(shopId)
+																.saleId(saleId)
+																.build()).get(0);
 //		System.out.println(map);
 		model.addAttribute("sale", map);
 		Object sup_div = map.get("sup_div");
@@ -88,10 +88,22 @@ public class SaleController {
 
 	@GetMapping("/create/form")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleCreateForm(Model model, @RequestParam int shopId) {
-		Map<String,Object> shopMap = shopCommonService.selectShopById(shopId);
+	public String saleCreateForm(Model model, @RequestParam int shopId, HttpSession session) {
+		ShopCommonVO vo = ShopCommonVO.builder()
+				.corpId(Integer.parseInt(session.getAttribute("corp_id").toString()))
+				.shopId(shopId).build();
 
-		model.addAttribute("shop_nm", shopMap.get("shop_nm").toString());
+		String shopName = null;
+		try{
+			Map<String,Object> shopMap = shopCommonService.selectShop(vo).get(0);
+			shopName = shopMap.get("shop_nm").toString();
+			shopId = Integer.parseInt(shopMap.get("shop_id").toString());
+		}catch (NullPointerException e){
+			e.printStackTrace();
+			shopName = "[!] 데이터 오류가 발생했습니다.";
+		}
+
+		model.addAttribute("shop_nm", shopName);
 		model.addAttribute("shop_id", shopId);
 
 		return "sale/sale_create";
@@ -167,7 +179,8 @@ public class SaleController {
 	@PostMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO, HttpSession session) {
-		return saleService.searchSaleSession(searchVO, session);
+		System.out.println("qqq: "+searchVO);
+		return saleService.searchSaleBySession(searchVO, session);
 	}
 
 	@GetMapping("/msg/form/func")
