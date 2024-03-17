@@ -1,17 +1,23 @@
 package com.momo.controller;
 
-import com.momo.service.ChatService;
-import com.momo.vo.ChatMessageType;
+import com.momo.domain.user.UserDetailsImpl;
+import com.momo.enums.ChatResponseHeader;
 import com.momo.vo.ChatResponse;
+import com.momo.service.ChatService;
 import com.momo.vo.ChatVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +27,42 @@ import java.util.Map;
 @RequestMapping("/chat")
 public class ChatController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
-	private final ChatService chatService;
+	private final ChatService          chatService;
+
+	// 웹소켓 Connect 콜백함수
+	@EventListener
+	public void handleWebSocketConnectListener(SessionConnectEvent event){
+		System.out.println("WebSocket Connect: "+event);
+		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getMessage().getHeaders().get("simpUser");
+		if(token == null){
+			return;
+		}
+		Object simpSessionId = event.getMessage().getHeaders().get("simpSessionId");
+		Object principal = token.getPrincipal();
+		if(principal == null){
+			return;
+		}
+		UserDetailsImpl userDetails = (UserDetailsImpl)principal;
+		if(simpSessionId != null && userDetails != null){
+			ChatResponse res = chatService.connect(simpSessionId.toString(), userDetails.getUsername());
+			System.out.println("res: "+res);
+			simpMessagingTemplate.convertAndSend("/sub/chat/conn", res);
+		}
+	}
+
+	// 웹소켓 Disconnect 콜백함수
+	@EventListener
+	public void handleWebSocketDisconnectListener(SessionDisconnectEvent event){
+		System.out.println("WebSocket Disconnect: "+event);
+		String simpSessionId = event.getMessage().getHeaders().get("simpSessionId").toString();
+		ChatResponse res = chatService.disconnect(simpSessionId);
+	}
+
+	@GetMapping("/connected")
+	@ResponseBody
+	public List<String> getConnectedUsers(){
+		return chatService.getConnectedUser();
+	}
 
 	@GetMapping("/home")
 	public String chatroomHome(){
@@ -46,14 +87,15 @@ public class ChatController {
 	@SendTo("/sub/chat/room/{roomId}")
 	public ChatResponse sendChat(@DestinationVariable Integer roomId, @RequestBody ChatVO vo){
 		vo.setRoomId(roomId);
-		System.out.println("send: "+vo);
-		return chatService.sendChat(vo);
+		ChatResponse result = chatService.sendChat(vo, ChatResponseHeader.CHAT);
+		System.out.println("send response: "+result);
+		return result;
 	}
 
-	@GetMapping("/msg/last/{roomId}")
+	@PostMapping("/msg/last")
 	@ResponseBody
-	public Map<String,Object> getLastChatLog(@PathVariable int roomId){
-		return chatService.getLastChatLog(roomId);
+	public Map<String,Object> getLastChatLog(@RequestBody ChatVO vo){
+		return chatService.getLastChatLog(vo);
 	}
 
 	@PostMapping("/msg/stacked")
@@ -85,11 +127,17 @@ public class ChatController {
 	@MessageMapping("/chat/read/{roomId}")
 //	@SendTo("/sub/chat/room/{roomId}")
 	public void readChatRoom(@DestinationVariable int roomId, @RequestBody String userId){
-		ChatResponse result = chatService.readChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
-		System.out.println("read result: "+ result);
-		if(result != null){
-			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, result);
+		ChatResponse res = chatService.readChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
+//		System.out.println("read result: "+ result);
+		if(res != null){
+			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
 		}
+	}
+
+	@GetMapping("/room/user/{roomId}")
+	@ResponseBody
+	public List<Map<String,Object>> getChatRoomUser(@PathVariable int roomId){
+		return chatService.getChatRoomUser(roomId);
 	}
 
 	@PostMapping("/room/note")
@@ -117,19 +165,24 @@ public class ChatController {
 		return chatService.createChatroom(vo);
 	}
 
-	@PostMapping("/room/join")
-	@ResponseBody
-	public String joinChatroom(@RequestBody ChatVO vo){
-
-		return null;
+	@MessageMapping("/chat/room/join/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public String joinChatroom(@DestinationVariable int roomId, StompSession session){
+		String id = session.getSessionId();
+		System.out.println("session id: "+ id);
+//		Map<String,Object> names = session.get
+//		for(Object ob : names.keySet()){
+//			System.out.println("session attr: "+ob.toString());
+//		}
+		return id;
 	}
 
-	@MessageMapping("/room/invite/{roomId}")
+	@MessageMapping("/chat/room/invite/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse inviteUser(@DestinationVariable int roomId, @RequestBody String userId){
+	public ChatResponse inviteUser(@DestinationVariable int roomId, String userId){
 		ChatVO vo = ChatVO.builder().roomId(roomId).userId(userId).build();
-		ChatResponse response = chatService.sendServerChat(ChatMessageType.INVITE, vo);
-		chatService.joinChatroom(vo);
+		System.out.println("invite room: "+vo);
+		ChatResponse response = chatService.inviteChatroom(vo);
 
 		return response;
 	}

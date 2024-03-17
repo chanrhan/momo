@@ -21,7 +21,7 @@ public class ChatVO extends CommonQueryVO{
 
 	// Chatroom Member
 	private String userId;
-	private Boolean master = false;
+	private boolean master = false;
 	private String joinDt;
 	private Boolean alarmSt;
 	private Boolean noteFold;
@@ -48,4 +48,8 @@ public class ChatVO extends CommonQueryVO{
 	// Chat Deleted
 	private Boolean toAll;
 	private String delDt;
+
+	public ChatVO(ChatVO vo){
+
+	}
 }

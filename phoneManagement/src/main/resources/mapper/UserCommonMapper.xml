@@ -3,6 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserCommonMapper">
+    <select id="getConnectedUser">
+        select  id as user_id,
+                name as user_nm,
+                role,
+                pfp
+        from    tb_account
+        where   id = #{id}
+    </select>
+
     <select id="searchChatInvitableUser" parameterType="com.momo.vo.SearchVO">
         with tb as (
             select

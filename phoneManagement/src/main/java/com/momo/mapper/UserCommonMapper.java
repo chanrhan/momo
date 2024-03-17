@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserCommonMapper {
+	public Map<String,Object> getConnectedUser(String id);
 	public int loginNow(String id);
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo);
 

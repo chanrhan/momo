@@ -28,13 +28,14 @@ public interface ChatMapper {
 
 	// Chatroom Note
 	public int insertNote(ChatVO vo);
-
 	public List<Map<String,Object>> selectNote(ChatVO vo);
+
 	// Chat Log
 	public Map<String,Object> insertChat(ChatVO vo);
 	public Integer getMaxChatId(int roomId);
 	public Integer getAutoIncrement();
 	public List<Map<String,Object>> selectChatLog(ChatVO vo);
+	public Map<String,Object> getLastChatLog(ChatVO vo);
 
 	// Chat Emo
 	public int insertChatEmo(ChatVO vo);

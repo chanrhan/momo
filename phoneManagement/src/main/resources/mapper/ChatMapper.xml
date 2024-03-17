@@ -6,8 +6,8 @@
     <!--    Chatroom Info-->
     <insert id="insertChatRoom" parameterType="com.momo.vo.ChatVO">
         insert into tb_chatroom_info
-            (room_id, room_nm)
-        values (#{roomId}, #{roomNm})
+                    (room_id, room_nm)
+        values      (#{roomId}, #{roomNm})
     </insert>
 
     <update id="updateChatRoom" parameterType="com.momo.vo.ChatVO">
@@ -28,7 +28,7 @@
         room_id=#{roomId}
     </update>
 
-    <select id="selectChatRoom" parameterType="com.momo.vo.ChatVO">
+    <select id="selectChatRoom" parameterType="com.momo.vo.ChatVO"  >
         select
         ci.*,
         cm.master,
@@ -45,6 +45,14 @@
             cm.room_id=#{roomId} and
         </if>
         1=1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+
     </select>
 
     <select id="getMaxChatRoomId">
@@ -65,7 +73,7 @@
         insert into     tb_chatroom_member
                         (room_id, user_id, master, last_read)
         VALUES          (#{roomId}, #{userId}, #{master}, (
-                                                    select  max(chat_id)
+                                                    select  IFNULL(max(chat_id), 0)
                                                     from    tb_chat_log
                                                     where   room_id = #{roomId}));
 
@@ -78,6 +86,39 @@
         where   room_id = #{roomId}
     </insert>
 
+    <select id="selectChatRoomMember" parameterType="com.momo.vo.ChatVO">
+        with tb as (
+            select  cm.user_id as user_id,
+                    cm.room_id,
+                    ac.name as user_nm,
+                    ac.role,
+                    ac.pfp
+            from    tb_chatroom_member cm
+            left outer join tb_account ac on ac.id = cm.user_id
+        )
+
+        select  *
+        from    tb
+        where
+        <if test='roomId != null'>
+            room_id = #{roomId} and
+        </if>
+        <if test='userId != null and !userId.equals("")'>
+            user_id = #{userId} and
+        </if>
+<!--        <if test='userNm != null and !userNm.equals("")'>-->
+<!--            user_nm = #{userNm} and-->
+<!--        </if>-->
+        1=1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
     <select id="readChatRoom" parameterType="com.momo.vo.ChatVO">
         set @last_read := (
                 select  last_read
@@ -87,7 +128,7 @@
 
         update  tb_chatroom_member
         set     last_read = (
-                    select  max(chat_id)
+                    select  IFNULL(max(chat_id), 0)
                     from    tb_chat_log
                     where   tb_chat_log.room_id = #{roomId}
                 )
@@ -127,7 +168,7 @@
     <!--    Chat Log-->
     <select id="insertChat" parameterType="com.momo.vo.ChatVO">
         set @last_chat_id := (
-                select  max(chat_id)
+                select  IFNULL(max(chat_id), 0)
                 from    tb_chat_log
                 where   room_id = #{roomId}
         );
@@ -154,7 +195,8 @@
                 cl.content,
                 cl.file,
                 cl.ref,
-                cl.curr_hc - 1 as non_read
+                cl.curr_hc - 1 as non_read,
+                cl.send_dt
         from    tb_chat_log cl
         left outer join tb_account ac on cl.user_id=ac.id
         where   cl.room_id = #{roomId} and
@@ -162,7 +204,7 @@
     </select>
 
     <select id="getMaxChatId">
-        select  max(chat_id)
+        select  IFNULL(max(chat_id), 0)
         from    tb_chat_log
         where   room_id = #{roomId}
     </select>
@@ -186,12 +228,10 @@
                 cl.ref,
                 ce.emo_bits,
                 cl.curr_hc - (
-                select
-                count(*)
-                from
-                tb_chatroom_member cm
-                where
-                last_read >= cl.chat_id
+                    select  count(*)
+                    from    tb_chatroom_member
+                    where   tb_chatroom_member.room_id = #{roomId} and
+                            last_read >= cl.chat_id
                 ) as non_read,
         cl.send_dt
         from
@@ -245,12 +285,10 @@
             cl.ref,
             ce.emo_bits,
             cl.curr_hc - (
-                select
-                count(*)
-                from
-                tb_chatroom_member cm
-                where
-                last_read >= cl.chat_id
+                select  count(*)
+                from    tb_chatroom_member
+                where   tb_chatroom_member.room_id = #{roomId} and
+                        last_read >= cl.chat_id
             ) as non_read,
             cl.send_dt
         from
@@ -281,6 +319,32 @@
         </if>
     </select>
 
+    <select id="getLastChatLog">
+        with tb as (
+            select  *
+            from    tb_chat_deleted
+            where   user_id = #{userId} or
+                to_all = true
+        )
+
+        select  cl.chat_id,
+                cl.user_id,
+                IF(cd.user_id is not null, '삭제된 메세지입니다',cl.content) as content,
+                send_dt
+        from    tb_chat_log cl
+        left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
+        where   cl.room_id = #{roomId} and
+                cl.chat_id = (
+                    select *
+                    from (
+                        select  max(chat_id)
+                        from    tb_chat_log
+                        where   room_id = #{roomId} and
+                                tb_chat_log.server_send = false
+                     ) as chat
+                    for update
+                )
+    </select>
     <!--    Chat Emo-->
 
     <!--    Chat Deleted-->

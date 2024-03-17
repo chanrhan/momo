@@ -14,7 +14,7 @@ function searchCorp(corpId){
 
         },
         search: {
-            bp_no: keyword,
+            corp_bp_no: keyword,
             bp_ko_nm: keyword,
             bp_en_nm: keyword,
             shop_nm: keyword,

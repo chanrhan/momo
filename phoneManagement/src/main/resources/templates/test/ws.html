@@ -21,5 +21,10 @@
   <br>
   서버 Publish 테스트
   <button type="button" class="btn-primary" onclick="sendTo()">Server SendTo</button>
+  <br>
+
+  서버 Join 시 Session 값 검사 테스트
+  <input type="text" class="form-control" id="test_user_id" placeholder="유저 아이디">
+  <button type="button" class="btn-primary" onclick="stompSessionTest($('#test_user_id').val())">STOMP Session Test</button>
 </body>
 </html>

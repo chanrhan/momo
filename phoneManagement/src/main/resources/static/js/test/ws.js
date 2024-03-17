@@ -6,12 +6,15 @@ function connect(){
     stompClient = Stomp.over(socket);
     stompClient.connect({},function (frame){
         console.log("Connected"+ frame);
-        stompClient.subscribe("/sub/greeting",function (msg){
+        stompClient.subscribe("/sub/chat/conn",function (msg){
             console.log("msg: "+msg);
-        })
-        stompClient.subscribe("/sub/test/pub",function (msg){
-            onSend(msg);
-        })
+        });
+        // stompClient.subscribe("/sub/test/pub",function (msg){
+        //     onSend(msg);
+        // });
+        // stompClient.subscribe("/sub/chat/room/1",function (msg){
+        //     onSend(msg);
+        // })
     })
 }
 
@@ -45,4 +48,10 @@ function sendTo(){
 
 function onSend(msg){
     console.log(msg);
+}
+
+function stompSessionTest(_userId){
+    var userId = "";
+    userId = _userId;
+    stompClient.send('/pub/chat/room/join/1',{});
 }

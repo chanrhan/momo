@@ -86,3 +86,26 @@
 
 }
 
+.chat-room-user{
+    max-width: 200px;
+    border: 1px solid black;
+    background-color: #c1d6cc;
+}
+
+.chat-room-user-item{
+    border: 1px solid black;
+    max-width: 120px;
+    padding: 1px;
+    background-color: #ffcd39;
+    font-size: 20px;
+    border-radius: 15px;
+}
+
+.chat-room-user-state{
+    background-color: red;
+}
+
+.chat-online{
+    background-color: green;
+}
+

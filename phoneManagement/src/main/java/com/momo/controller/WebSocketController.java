@@ -18,19 +18,7 @@ import org.springframework.web.util.HtmlUtils;
 @RequiredArgsConstructor
 @Deprecated
 public class WebSocketController {
-	@EventListener
-	public void handleWebSocketConnectListener(SessionConnectEvent event){
-		System.out.println("WebSocket Connect: "+event);
-	}
 
-	@EventListener
-	public void handleWebSocketDisconnectListener(SessionDisconnectEvent event){
-		System.out.println("WebSocket Disconnect: "+event);
-		StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-		String sessionId = headerAccessor.getSessionId();
-
-
-	}
 
 	@MessageMapping("/hello")
 	@SendTo("/sub/greeting")
