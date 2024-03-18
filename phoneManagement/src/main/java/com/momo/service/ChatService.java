@@ -85,9 +85,8 @@ public class ChatService {
 		return sendServerChat(ChatResponseHeader.INVITE, vo);
 	}
 
-	public int increaseChatRoomHeadCount(int roomId){
-		ChatVO vo = ChatVO.builder().roomHc(chatMapper.getChatRoomHeadCount(roomId)+1).build();
-		return chatMapper.updateChatRoom(vo);
+	public int getChatRoomHeadCount(int roomId){
+		return chatMapper.getChatRoomHeadCount(roomId);
 	}
 
 	public List<Map<String,Object>> selectChatroom(ChatVO vo){
@@ -121,7 +120,7 @@ public class ChatService {
 				.build();
 	}
 
-	public ChatResponse sendServerChat(ChatResponseHeader header, ChatVO vo){
+	public ChatResponse sendServerChat( ChatResponseHeader header, ChatVO vo){
 		vo.setServerSend(true);
 		vo.setContent(makeChatContent(vo.getUserId(), header));
 		vo.setUserId("");
@@ -192,11 +191,12 @@ public class ChatService {
 	}
 
 	public int getStackedChat(ChatVO vo){
-		Integer lastRead = chatMapper.getLastRead(vo);
-		if(lastRead == null){
-			return 0;
-		}
-		int maxChatId = getMaxChatId(vo.getRoomId());
-		return maxChatId - lastRead;
+		return chatMapper.getStackedChatCount(vo);
+//		Integer lastRead = chatMapper.getLastRead(vo);
+//		if(lastRead == null){
+//			return 0;
+//		}
+//		int maxChatId = getMaxChatId(vo.getRoomId());
+//		return maxChatId - lastRead;
 	}
 }

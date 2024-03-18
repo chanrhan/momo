@@ -63,9 +63,9 @@
     </select>
 
     <select id="getChatRoomHeadCount">
-        select room_hc
-        from tb_chatroom_info
-        where room_id = #{roomId}
+        select  room_hc
+        from    tb_chatroom_info
+        where   room_id = #{roomId}
     </select>
 
     <!--    Chatroom Member-->
@@ -231,7 +231,8 @@
                     select  count(*)
                     from    tb_chatroom_member
                     where   tb_chatroom_member.room_id = #{roomId} and
-                            last_read >= cl.chat_id
+                            last_read >= cl.chat_id and
+                            cl.send_dt > tb_chatroom_member.join_dt
                 ) as non_read,
         cl.send_dt
         from
@@ -344,6 +345,19 @@
                      ) as chat
                     for update
                 )
+    </select>
+
+    <select id="getStackedChatCount" parameterType="com.momo.vo.ChatVO">
+        SELECT 	count(*)
+        FROM	tb_chat_log tcl
+        WHERE 	room_id = #{roomId} AND
+            server_send = FALSE AND
+                tcl.chat_id > (
+                SELECT 	last_read
+                FROM	tb_chatroom_member tcm
+                WHERE 	room_id = #{roomId} AND
+                        user_id = #{userId}
+            )
     </select>
     <!--    Chat Emo-->
 

@@ -9,10 +9,11 @@
 // ws.onmessage = function (data){
 //     updateAlarm();
 // };
+let sse = null;
 
 let alarm_count = 0;
 $(document).ready(function (){
-    const sse = new EventSource("http://localhost:8080/sse/connect");
+    sse = new EventSource("http://localhost:8080/sse/connect");
 
     sse.addEventListener('connect',(e)=>{
         const { data: receivedConnectData } = e;

@@ -1,6 +1,7 @@
 package com.momo.controller;
 
 import com.momo.domain.user.UserDetailsImpl;
+import com.momo.emitter.NotificationService;
 import com.momo.enums.ChatResponseHeader;
 import com.momo.vo.ChatResponse;
 import com.momo.service.ChatService;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class ChatController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatService          chatService;
+	private final NotificationService notificationService;
 
 	// 웹소켓 Connect 콜백함수
 	@EventListener
@@ -178,13 +180,15 @@ public class ChatController {
 	}
 
 	@MessageMapping("/chat/room/invite/{roomId}")
-	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse inviteUser(@DestinationVariable int roomId, String userId){
+//	@SendTo("/sub/chat/room/{roomId}")
+	public void inviteUser(@DestinationVariable int roomId, String userId){
 		ChatVO vo = ChatVO.builder().roomId(roomId).userId(userId).build();
 		System.out.println("invite room: "+vo);
-		ChatResponse response = chatService.inviteChatroom(vo);
-
-		return response;
+		ChatResponse res = chatService.inviteChatroom(vo);
+		if(res != null){
+			notificationService.sendChatInvite(roomId, userId);
+			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
+		}
 	}
 
 	@PostMapping("/room/quit")
@@ -206,6 +210,11 @@ public class ChatController {
 		return chatService.selectChatroom(vo);
 	}
 
+	@GetMapping("/room/hc/{roomId}")
+	@ResponseBody
+	public int getChatRoomHeadCount(@PathVariable int roomId){
+		return chatService.getChatRoomHeadCount(roomId);
+	}
 //	@PostMapping("/room/last/chat")
 //	@ResponseBody
 //	public ResponseEntity<List<Map<String,Object>>> getLastChatInRoom(){

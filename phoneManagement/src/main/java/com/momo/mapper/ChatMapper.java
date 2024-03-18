@@ -36,6 +36,7 @@ public interface ChatMapper {
 	public Integer getAutoIncrement();
 	public List<Map<String,Object>> selectChatLog(ChatVO vo);
 	public Map<String,Object> getLastChatLog(ChatVO vo);
+	public int getStackedChatCount(ChatVO vo);
 
 	// Chat Emo
 	public int insertChatEmo(ChatVO vo);

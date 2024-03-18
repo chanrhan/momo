@@ -82,6 +82,11 @@ public class NotificationService {
 		sendAlarm(senderId, repsId, "approval", data);
 	}
 
+	public void sendChatInvite(int roomId, String receiverId){
+		sendToClient(receiverId, "chat/invite", roomId);
+	}
+
+	// Private
 	private void sendAlarm(String senderId, String receiverId, String alarmTp, Map<String,Object> data){
 		data.put("sender_id", senderId);
 		data.put("type", alarmTp);
