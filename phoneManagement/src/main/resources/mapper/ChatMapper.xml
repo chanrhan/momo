@@ -174,7 +174,7 @@
         );
 
         insert into     tb_chat_log
-                        (room_id, chat_id, user_id, server_send, content, file, ref, curr_hc)
+                        (room_id, chat_id, user_id, server_send, content, file, reply, curr_hc)
         values          (#{roomId}, @last_chat_id + 1, #{userId}, #{serverSend}, #{content}, #{file}, #{ref},
                          (
                              select count(*)
@@ -194,7 +194,7 @@
                 cl.server_send,
                 cl.content,
                 cl.file,
-                cl.ref,
+                cl.reply,
                 cl.curr_hc - 1 as non_read,
                 cl.send_dt
         from    tb_chat_log cl
@@ -209,12 +209,12 @@
         where   room_id = #{roomId}
     </select>
 
-    <select id="selectChatLog" parameterType="com.momo.vo.ChatVO">
+    <sql id="chatLog">
         with tb as (
             select  *
             from    tb_chat_deleted
             where   user_id = #{userId} or
-                    to_all = true
+                to_all = true
         )
 
         select  cl.room_id,
@@ -225,21 +225,34 @@
                 IF(cd.user_id is not null, '삭제된 메세지입니다',cl.content) as content,
                 IF(cd.user_id is not null, true, false) as deleted,
                 cl.file,
-                cl.ref,
-                ce.emo_bits,
+                cl.reply,
+                concat_ws(',',
+                    IFNULL(emo.emo1,0),
+                    IFNULL(emo.emo2,0),
+                    IFNULL(emo.emo3,0),
+                    IFNULL(emo.emo4,0),
+                    IFNULL(emo.emo5,0),
+                    IFNULL(emo.emo6,0)
+                ) as emo_list,
                 cl.curr_hc - (
                     select  count(*)
                     from    tb_chatroom_member
                     where   tb_chatroom_member.room_id = #{roomId} and
-                            last_read >= cl.chat_id and
-                            cl.send_dt > tb_chatroom_member.join_dt
+                        last_read >= cl.chat_id and
+                        cl.send_dt > tb_chatroom_member.join_dt
                 ) as non_read,
-        cl.send_dt
+                cl.send_dt
         from
-        tb_chat_log cl
-        left outer join tb_chat_emo ce on (cl.room_id=ce.room_id and cl.chat_id=ce.chat_id)
-        left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
-        left outer join tb_account ac on cl.user_id=ac.id
+            tb_chat_log cl
+                left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
+                left outer join tb_account ac on cl.user_id=ac.id
+                left outer join (
+                    <include refid="chatEmo"></include>
+                ) as emo on cl.chat_id = emo.chat_id and cl.room_id = emo.room_id
+    </sql>
+
+    <select id="selectChatLog" parameterType="com.momo.vo.ChatVO">
+        <include refid="chatLog"></include>
         where
             cl.room_id=#{roomId} and
         <if test='chatId != null'>
@@ -264,39 +277,7 @@
     </select>
 
     <select id="selectChatLogFromLastRead" parameterType="com.momo.vo.ChatVO">
-        with tb as (
-            select
-            *
-            from
-            tb_chat_deleted
-            where
-            user_id=#{userId} or
-            to_all=true
-        )
-
-        select
-            cl.room_id,
-            cl.chat_id,
-            cl.user_id,
-            ac.name as user_nm,
-            cl.server_send,
-            IF(cd.user_id is not null, '삭제된 메세지입니다',cl.content) as content,
-            IF(cd.user_id is not null, true, false) as deleted,
-            cl.file,
-            cl.ref,
-            ce.emo_bits,
-            cl.curr_hc - (
-                select  count(*)
-                from    tb_chatroom_member
-                where   tb_chatroom_member.room_id = #{roomId} and
-                        last_read >= cl.chat_id
-            ) as non_read,
-            cl.send_dt
-        from
-            tb_chat_log cl
-            left outer join tb_chat_emo ce on (cl.room_id=ce.room_id and cl.chat_id=ce.chat_id)
-            left outer join tb cd on (cl.room_id=cd.room_id and cl.chat_id=cd.chat_id)
-            left outer join tb_account ac on cl.user_id=ac.id
+        <include refid="chatLog"></include>
         where
             cl.room_id=#{roomId} and
         <if test='chatId != null'>
@@ -360,6 +341,34 @@
             )
     </select>
     <!--    Chat Emo-->
+    <sql id="chatEmo">
+        SELECT  room_id,
+                chat_id,
+                sum(emo1) as emo1,
+                sum(emo2) as emo2,
+                sum(emo3) as emo3,
+                sum(emo4) as emo4,
+                sum(emo5) as emo5,
+                sum(emo6) as emo6
+        FROM 	tb_chat_emo ce
+        group by room_id, chat_id
+
+    </sql>
+    <select id="insertChatEmo" parameterType="com.momo.vo.ChatVO">
+        INSERT INTO 	tb_chat_emo
+                        (room_id, chat_id, user_id, ${emo})
+        VALUES		    (#{roomId}, #{chatId}, #{userId}, TRUE)
+        ON DUPLICATE KEY UPDATE ${emo} = !${emo};
+
+        SELECT  emo.chat_id,
+                emo.room_id,
+                concat_ws(',',emo.emo1,emo.emo2,emo.emo3,emo.emo4,emo.emo5,emo.emo6) as emo_list
+        from    (
+                <include refid="chatEmo"></include>
+                ) as emo
+        WHERE 	room_id = #{roomId} AND
+                chat_id = #{chatId}
+    </select>
 
     <!--    Chat Deleted-->
 

@@ -43,7 +43,7 @@ public class ChatVO extends CommonQueryVO{
 	private Integer currHc; // 채팅 보냈을 시 채팅방에 있던 인원 수
 
 	// Chat Emo
-	private String emoBits;
+	private String emo;
 
 	// Chat Deleted
 	private Boolean toAll;

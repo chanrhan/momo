@@ -2,9 +2,14 @@
 const socket = new SockJS("/ws");
 const stompClient = Stomp.over(socket);
 
+// let chatContextMenu = null;
 let isSubscribe = false;
 
 let selectedInviteUser = "";
+
+let replyPannel = null;
+
+let onChatContextMenu = false;
 
 $(document).ready(function (){
     // stompClient.disconnect();
@@ -32,7 +37,16 @@ $(document).ready(function (){
         updateChatroom();
         isSubscribe = true;
     });
+    replyPannel = $('#reply_pannel');
 });
+$(document).on('click',function (element){
+    if(!$(element.target).closest('#chat_context_menu').length){
+        hideChatContextMenu();
+    }
+    if(!$(element.target).closest('#chat_emo_menu').length){
+        hideChatEmoMenu();
+    }
+})
 
 // Connection
 function subscribe(roomId){
@@ -80,7 +94,7 @@ function onChat(result, roomId){
                 updateChatRead(body);
                 break;
             case 'EMO': // EMO
-                updateChatEmo(body);
+                onEmo(body.emoji);
                 break;
             case 'DEL': // DEL
                 updateDeletedChat(body);
@@ -424,7 +438,10 @@ function inviteUser(){
 }
 
 // Chat Room Note
-function noteToRoom(){
+function isNoted(chatId){
+    return false;
+}
+function noteChat(chat){
 
 }
 function foldNote(){
@@ -439,7 +456,7 @@ function sendChat(){
         user_id: $('#user_id').val(),
         content: $('#content').val(),
         file: '',
-        ref: 0
+        reply: $('#reply_chat_id').val()
     };
     console.log("send Chat: "+body);
 
@@ -466,7 +483,8 @@ function updateChatRead(res){
         // console.log("for each: "+value.chat_id);
         var chat_non_read = $('#chat_log div[chat_id='+value.chat_id+'] .chat-non-read');
         // console.log("on Read: "+$(chat_non_read).text());
-        $(chat_non_read).text(value.non_read);
+        var non_read = value.non_read;
+        $(chat_non_read).text(((non_read != 0) ? non_read : ""));
     })
 }
 function readChatroom(roomId){
@@ -476,6 +494,7 @@ function readChatroom(roomId){
 }
 
 // Chat Log
+
 function getLastChatLog(roomId){
     var result = null;
     var body = {
@@ -563,94 +582,321 @@ function loadAllChat(refresh = false){
 function updateChatLog(result, refresh = false){
     console.log("update Chat Log, refresh: "+refresh);
 
-    var chatLog = null;
+    var chatLog = $('#chat_log');
     if(refresh){
-        chatLog = document.getElementById('chat_log');
-        chatLog.innerHTML = "";
+        chatLog.empty();
     }
     if(result === null || result.length === 0) return;
-    chatLog = document.getElementById('chat_log');
-    var roomId = $('#selected_room_id').val();
 
-    var userId = $('#user_id').val();
+    var roomId = $('#selected_room_id').val();
     // console.log("refresh: "+refresh);
 
     result.forEach(function (value, index, array){
-        var content = value.content;
-        // console.log("org: "+userId+" , chat: "+value.user_id)
-        var className = "chat ";
-        var addHTML = "";
-        if(value.server_send){
-            className += "chat-server";
-            addHTML += "<div name='chat_" +
-                value.chat_id +
-                "' class='" +
-                className +
-                "'>" +
-                value.content +
-                "</div>";
-        }else{
-            className += (userId === value.user_id) ? "mine" : "other";
-            addHTML += "<div class='" +
-                className +
-                "' chat_id='" +
-                value.chat_id +
-                "' user_id='" +
-                value.user_id +
-                "'>" +
-                "<p>" +
-                value.user_nm +
-                "</p>" +
-                "<div class='chat-content";
-
-            if(userId === value.user_id){
-                // console.log("match!");
-                addHTML += " chat-self"
-            }
-
-            addHTML +=
-                "'>" +
-                "<p>" +
-                content +
-                "</p>";
-            if(value.emo_bits !== null && value.emo_bits !== undefined){
-                addHTML +=
-                    "<p>" +
-                    value.emo_bits +
-                    "</p>"
-            }
-
-            var non_read = value.non_read;
-            addHTML +=
-                "</div>" +
-                "<p class='chat-date'>" +
-                value.send_dt +
-                "</p>" +
-                "<p class='chat-non-read''>" +
-                ((non_read != 0) ? non_read : "") +
-                "</p>" +
-                "</div>";
-        }
-        chatLog.innerHTML += addHTML;
+        chatLog.append(generateChatLogElement(value));
     })
     chatLog.scrollTop = chatLog.scrollHeight;
+}
+function generateChatLogElement(value){
+    var userId = $('#user_id').val();
 
+    var content = value.content;
+    // console.log("org: "+userId+" , chat: "+value.user_id)
+    var className = "chat ";
+    var div_chat = $('<div>').attr('chat_id',value.chat_id);
+
+    if(value.server_send){
+        className += "chat-server";
+        div_chat.addClass(className);
+        div_chat.text(value.content);
+    }else{
+        className += (userId === value.user_id) ? "mine" : "other";
+        div_chat.addClass(className);
+        div_chat.append($('<p>').text(value.user_nm));
+        var div_chat_content = $('<p>').prop({
+            className: 'chat-content'
+        });
+
+        if(userId === value.user_id){
+            div_chat_content.addClass('chat-self');
+        }
+        div_chat_content.append(content);
+
+        if(!value.deleted){
+            div_chat_content.on('contextmenu',function (e){
+                e.preventDefault();
+                showChatContextMenu(e, value);
+            });
+            // 마우스 호버링 이벤트
+            div_chat_content.hover(
+                function (){
+                    if(!onChatContextMenu){
+                        showChatEmoMenu(div_chat_content, value.chat_id);
+                    }
+                }
+            );
+            div_chat_content.on('mouseout', function (e){
+                if(e.relatedTarget.id !== 'chat_emo_menu'){
+                    hideChatEmoMenu();
+                }
+            })
+        }
+
+        div_chat.append(div_chat_content);
+        var p_emo = $('<p>').addClass('chat-emo');
+
+        var emojis = value.emo_list.split(',');
+        console.log(emojis);
+        emojis.forEach(function (cnt, emoId){
+            console.log("cnt: "+cnt+", emoId: "+emoId);
+            if(Number(cnt) > 0){
+                p_emo.append(getEmoIcon(value.chat_id, emoId + 1, cnt));
+            }
+        })
+        div_chat.append(p_emo);
+
+        var p_chat_date = $('<p>').prop({
+            className: 'chat-date'
+        }).text(value.send_dt);
+        div_chat.append(p_chat_date);
+
+        var non_read = value.non_read;
+        var p_chat_non_read = $('<p>').prop({
+            className: 'chat-non-read'
+        }).text(((non_read != 0) ? non_read : ""));
+        div_chat.append(p_chat_non_read);
+    }
+    return div_chat;
+}
+function showChatContextMenu(e, chat){
+    // console.log("show context menu: "+chat);
+    let chatContextMenu = $('<div>').prop({
+        id: 'chat_context_menu'
+    }).addClass('chat-context-menu')
+        .append(renderChatContextMenu(chat))
+        .css({
+            left: e.pageX + 'px',
+            top: e.pageY + 'px'
+        });
+
+    // const prevContextMenu = $('#chat_context_menu');
+    // if(prevContextMenu.length){
+    //     prevContextMenu.remove();
+    // }
+    hideChatContextMenu();
+
+    $('body').append(chatContextMenu);
+    onChatContextMenu = true;
+}
+function renderChatContextMenu(chat){
+    var ul_menu = $('<ul>');
+
+    var p_note = $('<p>').text("공지로 등록").on('click', function (){
+        noteChat(chat);
+        hideChatContextMenu();
+    });
+    if(isNoted(chat.chat_id)){
+        p_note.prop('disabled',true);
+    }
+    ul_menu.append(p_note);
+    // 나중에 공지로 이미 등록된 채팅은 이거 안뜨도록
+    // var p_emo = $('<p>').text("공감").on('click', function (){
+    //     closeChatContextMenu();
+    // });
+    
+    var p_copy = $('<p>').text("복사").on('click', function (){
+        copyChat(chat.content);
+        hideChatContextMenu();
+    });
+    ul_menu.append(p_copy);
+    if(chat.user_id === $('#user_id').val()){
+        var p_delete = $('<p>').text("삭제").on('click', function (){
+            deleteChat(chat.chat_id);
+            hideChatContextMenu();
+        });
+        ul_menu.append(p_delete);
+    }
+
+    var p_reply = $('<p>').text("답장").on('click', function (){
+        showReplyPannel(chat);
+        hideChatContextMenu();
+    });
+    ul_menu.append(p_reply);
+    var p_forward = $('<p>').text("전달").on('click', function (){
+        forwardChat(chat);
+        hideChatContextMenu();
+    });
+    ul_menu.append(p_forward);
+    var p_forward_self = $('<p>').text("나에게 전달").on('click', function (){
+        forwardSelf(chat);
+        hideChatContextMenu();
+    });
+    ul_menu.append(p_forward_self);
+    // console.log($(ul_menu));
+    return ul_menu;
+}
+function hideChatContextMenu(){
+    var chatContextMenu = $('#chat_context_menu');
+    if(chatContextMenu.length && chatContextMenu.is(":visible")){
+        chatContextMenu.remove();
+        onChatContextMenu = false;
+    }
 }
 
 // Chat Emo
-function sendChatEmo(){
+function showChatEmoMenu(parent, chatId){
+    let chatEmoMenu = $('<div>').prop({
+        id: 'chat_emo_menu'
+    }).addClass('chat-emo-menu').css({
+        position: 'absolute',
+        left: parent.offset().left + 'px',
+        top: (parent.offset().top + 38) + 'px'
+    })
+        .append(renderChatEmoMenu(chatId))
+        .on('mouseout',function (e){
+            // console.log("leave: "+e.target.id);
+            if(e.relatedTarget.id == 'chat_emo_menu'){
+                // $('#chat_emo_menu').fadeOut(600);
+                hideChatEmoMenu();
+            }
+        });
 
+    hideChatEmoMenu();
+
+    $('body').append(chatEmoMenu);
+}
+function hideChatEmoMenu(){
+    var chatEmoMenu = $('#chat_emo_menu');
+    if(chatEmoMenu.length && chatEmoMenu.is(":visible")){
+        chatEmoMenu.remove();
+    }
+}
+function renderChatEmoMenu(chatId){
+    var ul_menu = $('<ul>')
+        .append($('<i>').addClass('chat-emo-icon bi bi-heart-fill').on('click', function (){
+            sendChatEmo(chatId, 1)
+        }))
+        .append($('<i>').addClass('chat-emo-icon bi bi-hand-thumbs-up-fill').on('click',function (){
+            sendChatEmo(chatId, 2)
+        }))
+        .append($('<i>').addClass('chat-emo-icon bi bi-check-lg').on('click', function () {
+            sendChatEmo(chatId, 3)
+        }))
+        .append($('<i>').addClass('chat-emo-icon bi bi-emoji-laughing-fill').on('click',function (){
+            sendChatEmo(chatId, 4)
+        }))
+        .append($('<i>').addClass('chat-emo-icon bi bi-emoji-surprise-fill').on('click',function (){
+            sendChatEmo(chatId, 5)
+        }))
+        .append($('<i>').addClass('chat-emo-icon bi bi-emoji-tear-fill').on('click',function (){
+            sendChatEmo(chatId, 6)
+        }));
+
+    return ul_menu;
+}
+function sendChatEmo(chatId, emo){
+    console.log("emo: "+emo);
+    var roomId = $('#selected_room_id').val();
+    var body = {
+        user_id: $('#user_id').val(),
+        chat_id: chatId,
+        emo: emo
+    };
+    stompClient.send('/pub/chat/emo/'+roomId, {}, JSON.stringify(body));
+    hideChatEmoMenu();
+}
+function onEmo(emoji){
+    var chat_emo = $('#chat_log div[chat_id="'+ emoji.chat_id +'"] .chat-emo');
+    if(chat_emo !== undefined){
+        var emojis = emoji.emo_list.split(',');
+        emojis.forEach(function (cnt, emoId){
+            var i_emo = chat_emo.children('.emo'+(emoId+1));
+            if(i_emo.length !== 0){
+                if(Number(cnt) <= 0){
+                    i_emo.remove();
+                }else{
+                    i_emo.text(cnt);
+                }
+            }else{
+                if(Number(cnt) > 0){
+                    chat_emo.append(getEmoIcon(emoji.chat_id, emoId+1, cnt));
+                }
+            }
+        })
+
+
+    }
+}
+function getEmoIcon(chatId, emoId, cnt){
+    if(emoId > 6){
+        return $('<i>');
+    }
+    var icon_class = "";
+    switch (emoId){
+        case 1:
+            icon_class = 'bi bi-heart-fill';
+            break;
+        case 2:
+            icon_class = 'bi bi-hand-thumbs-up-fill';
+            break;
+        case 3:
+            icon_class = 'bi bi-check-lg';
+            break;
+        case 4:
+            icon_class = 'bi bi-emoji-laughing-fill';
+            break;
+        case 5:
+            icon_class = 'bi bi-emoji-surprise-fill';
+            break;
+        case 6:
+            icon_class = 'bi bi-emoji-tear-fill';
+            break;
+    }
+    return $('<i>').addClass('emo'+emoId).addClass(icon_class).text(cnt).on('click', function (){
+        sendChatEmo(chatId, emoId)
+    })
 }
 function updateChatEmo(result){
 
 }
 
 // Chat Delete
-function deleteChat(){
+function deleteChat(chatId){
 
 }
 function updateDeletedChat(result){
 
+}
+
+// Chat Reply
+function showReplyPannel(chat){
+    replyPannel.show();
+    replyPannel.children('#reply_chat_id').val(chat.chat_id);
+
+    replyPannel.children('.chat-reply-user')
+        .text(((chat.user_id === $('#user_id').val()) ? '나' : chat.user_nm)+'에게 답장');
+    replyPannel.children('.chat-reply-content').text(chat.content);
+}
+function hideReplyPannel(){
+    replyPannel.children('#reply_chat_id').val("0");
+    replyPannel.children('.chat-reply-user').text("");
+    replyPannel.children('.chat-reply-content').text("");
+    replyPannel.hide();
+}
+
+// Chat Forward
+function forwardChat(chat){
+    
+}
+function forwardSelf(chat){
+
+}
+
+// Chat Copy & Download
+function copyChat(content){
+    
+}
+function downloadChatFile(){
+    
 }
 
 // Chat Quit / Kick

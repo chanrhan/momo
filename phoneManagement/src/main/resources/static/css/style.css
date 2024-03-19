@@ -21,6 +21,10 @@
     overflow-y: scroll;
 }
 
+.chat-text-input{
+    width: 800px;
+}
+
 .chat-content {
     background: #c1d6cc;
     border: 1px solid black;
@@ -107,5 +111,44 @@
 
 .chat-online{
     background-color: green;
+}
+
+.chat-context-menu{
+    position: absolute;
+    width: 170px;
+    max-height: 260px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.chat-reply-pannel{
+    width: 800px;
+    max-height: 200px;
+    background-color: #fff3cd;
+    border: 1px solid black;
+    padding: 3px;
+    display: none;
+}
+
+.chat-reply-icon{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.chat-emo-menu{
+    max-width: 250px;
+    background-color: white;
+    /*padding: 1px;*/
+    border: 1px solid black;
+}
+
+.chat-emo-icon{
+    padding-right: 4px;
+    font-size: 25px;
+}
+
+.chat-emo{
+
 }
 

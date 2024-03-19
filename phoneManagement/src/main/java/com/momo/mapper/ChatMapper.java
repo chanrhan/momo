@@ -39,7 +39,7 @@ public interface ChatMapper {
 	public int getStackedChatCount(ChatVO vo);
 
 	// Chat Emo
-	public int insertChatEmo(ChatVO vo);
+	public Map<String,Object> insertChatEmo(ChatVO vo);
 	public int updateChatEmo(ChatVO vo);
 	public List<String> selectEmoList(ChatVO vo);
 

@@ -36,7 +36,21 @@
 
         </div>
         <div id="chat_pannel">
-            <input type="text" class="form-control" id="content" placeholder="메시지를 입력하세요." style="width: 800px;">
+            <div id="reply_pannel" class="chat-reply-pannel">
+                <input type="hidden" id="reply_chat_id" value="0">
+                <p class="chat-reply-user">
+
+                </p>
+                <p class="chat-reply-content">
+
+                </p>
+                <button type="button" class="btn btn-danger" onclick="hideReplyPannel()">X</button>
+                <br>
+                <p class="chat-reply-icon">
+                    ->
+                </p>
+            </div>
+            <input type="text" class="chat-text-input" id="content" placeholder="메시지를 입력하세요.">
             <button type="button" class="btn-primary" onclick="sendChat()">전송</button>
         </div>
     </div>

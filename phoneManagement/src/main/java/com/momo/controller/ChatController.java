@@ -107,11 +107,11 @@ public class ChatController {
 	}
 
 
-	@PostMapping("/msg/emo")
-	@ResponseBody
-	public boolean emoChat(@RequestBody ChatVO vo){
-
-		return false;
+	@MessageMapping("/chat/emo/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public ChatResponse emoChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		vo.setRoomId(roomId);
+		return chatService.sendEmoChat(vo);
 	}
 
 	@PostMapping("/msg/del")

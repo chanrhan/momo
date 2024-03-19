@@ -192,11 +192,14 @@ public class ChatService {
 
 	public int getStackedChat(ChatVO vo){
 		return chatMapper.getStackedChatCount(vo);
-//		Integer lastRead = chatMapper.getLastRead(vo);
-//		if(lastRead == null){
-//			return 0;
-//		}
-//		int maxChatId = getMaxChatId(vo.getRoomId());
-//		return maxChatId - lastRead;
+	}
+
+	public ChatResponse sendEmoChat(ChatVO vo){
+		vo.setEmo("emo"+vo.getEmo());
+		System.out.println("emo: "+vo);
+		return ChatResponse.builder()
+				.header(ChatResponseHeader.EMO)
+				.emoji(chatMapper.insertChatEmo(vo))
+				.build();
 	}
 }

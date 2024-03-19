@@ -5,7 +5,6 @@ import com.momo.service.ShopCommonService;
 import com.momo.service.UserCommonService;
 import com.momo.util.MessageAPIUtil;
 import com.momo.vo.SaleVO;
-import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,11 @@ public class TestController {
 	@GetMapping("")
 	public String testHome(){
 		return "test/home";
+	}
+
+	@GetMapping("/js")
+	public String jsTest(){
+		return "test/js_test";
 	}
 
 	@Data

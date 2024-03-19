@@ -19,7 +19,7 @@ public class ChatResponse {
 	private Map<String,Object> body = new HashMap<>();
 
 	@Builder
-	public ChatResponse(ChatResponseHeader header, Integer chatId, String userId, List<Map<String, Object>> chatLog, Map<String, Object> chat, boolean serverSend, List<Map<String,Object>> connectedUsers) {
+	public ChatResponse(ChatResponseHeader header, Integer chatId, String userId, List<Map<String, Object>> chatLog, Map<String, Object> chat, Map<String,Object> emoji, boolean serverSend, List<Map<String,Object>> connectedUsers) {
 		this.header = header;
 		body.put("chat_id",chatId);
 		body.put("user_id",userId);
@@ -32,6 +32,7 @@ public class ChatResponse {
 		}
 		body.put("chat_log", chatLog);
 		body.put("connected_user", connectedUsers);
+		body.put("emoji",emoji);
 	}
 
 //	public int getHeader(){
