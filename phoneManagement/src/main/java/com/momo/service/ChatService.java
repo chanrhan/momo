@@ -202,4 +202,20 @@ public class ChatService {
 				.emoji(chatMapper.insertChatEmo(vo))
 				.build();
 	}
+
+	public ChatResponse deleteChat(ChatVO vo){
+		chatMapper.insertDeletedChat(vo);
+		return null;
+	}
+
+	public ChatResponse noteChat(ChatVO vo){
+		return ChatResponse.builder()
+				.header(ChatResponseHeader.NOTE)
+				.note(chatMapper.insertNote(vo))
+				.build();
+	}
+
+	public Map<String,Object> selectNote(ChatVO vo){
+		return chatMapper.selectNote(vo);
+	}
 }

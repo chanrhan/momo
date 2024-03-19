@@ -27,8 +27,8 @@ public interface ChatMapper {
 	public boolean isEqualsToLastRead(ChatVO vo);
 
 	// Chatroom Note
-	public int insertNote(ChatVO vo);
-	public List<Map<String,Object>> selectNote(ChatVO vo);
+	public Map<String,Object> insertNote(ChatVO vo);
+	public Map<String,Object> selectNote(ChatVO vo);
 
 	// Chat Log
 	public Map<String,Object> insertChat(ChatVO vo);

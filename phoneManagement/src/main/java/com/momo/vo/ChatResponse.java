@@ -19,20 +19,27 @@ public class ChatResponse {
 	private Map<String,Object> body = new HashMap<>();
 
 	@Builder
-	public ChatResponse(ChatResponseHeader header, Integer chatId, String userId, List<Map<String, Object>> chatLog, Map<String, Object> chat, Map<String,Object> emoji, boolean serverSend, List<Map<String,Object>> connectedUsers) {
+	public ChatResponse(ChatResponseHeader header, Integer chatId, String userId, List<Map<String, Object>> chatLog, Map<String, Object> chat, Map<String,Object> emoji, Map<String,Object> note, boolean serverSend, List<Map<String,Object>> connectedUsers) {
 		this.header = header;
-		body.put("chat_id",chatId);
-		body.put("user_id",userId);
-		body.put("server_send", serverSend);
+		putIfNotNull("chat_id", chatId);
+		putIfNotNull("user_id",userId);
+		putIfNotNull("server_send", serverSend);
 		if(chat != null){
 			if(chatLog == null){
 				chatLog = new ArrayList<>();
 			}
 			chatLog.add(chat);
 		}
-		body.put("chat_log", chatLog);
-		body.put("connected_user", connectedUsers);
-		body.put("emoji",emoji);
+		putIfNotNull("chat_log", chatLog);
+		putIfNotNull("connected_user", connectedUsers);
+		putIfNotNull("emoji",emoji);
+		putIfNotNull("note", note);
+	}
+
+	private void putIfNotNull(String key, Object ob){
+		if(ob != null){
+			body.put(key, ob);
+		}
 	}
 
 //	public int getHeader(){

@@ -9,6 +9,7 @@ public enum ChatResponseHeader {
 	READ,
 	EMO,
 	DEL,
+	NOTE,
 	QUIT,
 	KICK
 }

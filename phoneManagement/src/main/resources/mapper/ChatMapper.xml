@@ -29,14 +29,28 @@
     </update>
 
     <select id="selectChatRoom" parameterType="com.momo.vo.ChatVO"  >
-        select
-        ci.*,
-        cm.master,
-        cm.alarm_st,
-        cm.note_fold
-        from
-        tb_chatroom_member cm
+        select  distinct ci.*,
+                cl.content as last_content,
+                cl.send_dt as last_send_dt,
+                (
+                    SELECT 	count(*)
+                    FROM	tb_chat_log tcl
+                    WHERE 	room_id = cm.room_id AND
+                            server_send = FALSE AND
+                            tcl.chat_id > cm.last_read
+                ) as stacked_chat,
+                cm.master,
+                cm.alarm_st,
+                cm.note_fold
+        from    tb_chatroom_member cm
         left outer join tb_chatroom_info ci on cm.room_id=ci.room_id
+        left outer join tb_chat_log cl on cl.room_id = cm.room_id and
+                                          cl.chat_id = (
+                                            select  max(chat_id)
+                                            from    tb_chat_log
+                                            where   tb_chat_log.room_id = cm.room_id and
+                                                    tb_chat_log.server_send = false
+                                        )
         where
         <if test='userId != null and !userId.equals("")'>
             cm.user_id=#{userId} and
@@ -45,10 +59,7 @@
             cm.room_id=#{roomId} and
         </if>
         1=1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
+        order by last_send_dt desc, regi_dt desc
         <if test='limit != null and offset != null'>
             limit ${offset} ${limit}
         </if>
@@ -164,7 +175,45 @@
     </select>
 
     <!--    Chatroom Note-->
+    <select id="insertNote" parameterType="com.momo.vo.ChatVO">
+        set @last_note_id := (
+            select  IFNULL(max(note_id), 0)
+            from    tb_chatroom_note
+            where   room_id = #{roomId}
+        );
 
+        INSERT INTO tb_chatroom_note
+                    (room_id, note_id, chat_id, user_id, content, file)
+        VALUES      (#{roomId},@last_note_id + 1,#{chatId},#{userId},#{content},#{file});
+
+        select  *,
+                (
+                    select  name
+                    from    tb_account
+                    where   id = #{userId}
+                    ) as user_nm
+        from    tb_chatroom_note
+        where   room_id = #{roomId} and
+                note_id = @last_note_id + 1
+    </select>
+
+    <select id="selectNote" parameterType="com.momo.vo.ChatVO">
+        set @last_note_id := (
+            select  IFNULL(max(note_id), 0)
+            from    tb_chatroom_note
+            where   room_id = #{roomId}
+        );
+
+        select  *,
+                (
+                    select  name
+                    from    tb_account
+                    where   id = #{userId}
+                ) as user_nm
+        from    tb_chatroom_note
+        where   room_id = #{roomId} and
+                note_id = @last_note_id
+    </select>
     <!--    Chat Log-->
     <select id="insertChat" parameterType="com.momo.vo.ChatVO">
         set @last_chat_id := (
@@ -175,7 +224,7 @@
 
         insert into     tb_chat_log
                         (room_id, chat_id, user_id, server_send, content, file, reply, curr_hc)
-        values          (#{roomId}, @last_chat_id + 1, #{userId}, #{serverSend}, #{content}, #{file}, #{ref},
+        values          (#{roomId}, @last_chat_id + 1, #{userId}, #{serverSend}, #{content}, #{file}, #{reply},
                          (
                              select count(*)
                              from   tb_chatroom_member
@@ -187,18 +236,7 @@
         where   room_id = #{roomId} and
                 user_id = #{userId};
 
-        select  cl.room_id,
-                cl.chat_id,
-                cl.user_id,
-                ac.name as user_nm,
-                cl.server_send,
-                cl.content,
-                cl.file,
-                cl.reply,
-                cl.curr_hc - 1 as non_read,
-                cl.send_dt
-        from    tb_chat_log cl
-        left outer join tb_account ac on cl.user_id=ac.id
+        <include refid="chatLog"></include>
         where   cl.room_id = #{roomId} and
                 cl.chat_id = @last_chat_id + 1;
     </select>
@@ -371,5 +409,10 @@
     </select>
 
     <!--    Chat Deleted-->
+    <insert id="insertDeletedChat" parameterType="com.momo.vo.ChatVO">
+        INSERT INTO 	tb_chat_deleted
+                        (room_id ,chat_id ,user_id)
+        VALUES		    (#{roomId}, #{chatId}, #{userId})
+    </insert>
 
 </mapper>

@@ -94,17 +94,23 @@ public class ChatController {
 		return result;
 	}
 
+	@MessageMapping("/chat/delete/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public ChatResponse deleteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		return null;
+	}
+
 	@PostMapping("/msg/last")
 	@ResponseBody
 	public Map<String,Object> getLastChatLog(@RequestBody ChatVO vo){
 		return chatService.getLastChatLog(vo);
 	}
 
-	@PostMapping("/msg/stacked")
-	@ResponseBody
-	public int getStackedChat(@RequestBody ChatVO vo){
-		return chatService.getStackedChat(vo);
-	}
+//	@PostMapping("/msg/stacked")
+//	@ResponseBody
+//	public int getStackedChat(@RequestBody ChatVO vo){
+//		return chatService.getStackedChat(vo);
+//	}
 
 
 	@MessageMapping("/chat/emo/{roomId}")
@@ -142,10 +148,11 @@ public class ChatController {
 		return chatService.getChatRoomUser(roomId);
 	}
 
-	@PostMapping("/room/note")
-	@ResponseBody
-	public boolean noteToRoom(@RequestBody ChatVO vo){
-		return false;
+	@MessageMapping("/chat/note/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public ChatResponse noteToRoom(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		vo.setRoomId(roomId);
+		return chatService.noteChat(vo);
 	}
 
 	@PostMapping("/room/note/fold")
@@ -154,10 +161,10 @@ public class ChatController {
 		return false;
 	}
 
-	@PostMapping("/room/note/del")
+	@PostMapping("/note")
 	@ResponseBody
-	public boolean deleteNote(@RequestBody ChatVO vo){
-		return false;
+	public Map<String, Object> selectNote(@RequestBody ChatVO vo){
+		return chatService.selectNote(vo);
 	}
 
 	@PostMapping("/room/create")

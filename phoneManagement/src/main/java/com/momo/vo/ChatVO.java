@@ -38,7 +38,7 @@ public class ChatVO extends CommonQueryVO{
 	// Chat Log
 	private Integer chatId;
 	private Boolean serverSend = false;
-	private Integer ref = 0;
+	private Integer reply      = 0;
 	private String  sendDt;
 	private Integer currHc; // 채팅 보냈을 시 채팅방에 있던 인원 수
 

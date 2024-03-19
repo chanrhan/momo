@@ -34,7 +34,7 @@ $(document).ready(function (){
                 }
             }
         })
-        updateChatroom();
+        loadChatRoom();
         isSubscribe = true;
     });
     replyPannel = $('#reply_pannel');
@@ -92,12 +92,16 @@ function onChat(result, roomId){
                 break;
             case 'READ': // READ
                 updateChatRead(body);
+                loadChatRoom();
                 break;
             case 'EMO': // EMO
                 onEmo(body.emoji);
                 break;
             case 'DEL': // DEL
                 updateDeletedChat(body);
+                break;
+            case 'NOTE':
+                updateNote(body.note);
                 break;
             case 'QUIT': // QUIT
                 updateQuit(body);
@@ -110,9 +114,9 @@ function onChat(result, roomId){
             console.log("chat on other room")
             if(roomList.find('#list_room div[room_id="'+ roomId +'"]').length === 0){
                 console.log("find room: "+roomId);
-                updateChatroom();
+                loadChatRoom();
             }
-            updateChatRoomOnly(roomId);
+            // updateChatRoomOnly(roomId);
         }
 
     }
@@ -182,7 +186,7 @@ function createChatroom(){
             // console.log(roomId);
             if(roomId !== 0){
                 subscribe(roomId);
-                updateChatroom();
+                loadChatRoom();
                 selectRoom(roomId);
             }
         }
@@ -190,7 +194,7 @@ function createChatroom(){
 
     $('#create_room_name').val("");
 }
-function updateChatroom(){
+function loadChatRoom(){
     console.log("update Chat Room");
     var body = {
         user_id: $('#user_id').val()
@@ -208,38 +212,50 @@ function updateChatroom(){
         success: function (result){
             if(result === null) return;
             // console.log("updateChatRoom: "+result);
-            var roomList = document.getElementById('list_room');
-            roomList.innerHTML = "";
-            result.forEach(function (value, index, array){
-                if(!isSubscribe){
-                    subscribe(value.room_id);
-                }
-                var addHTML = "";
-                addHTML += "<div room_id='" +
-                    value.room_id +
-                    "' onclick='selectRoom(" +
-                    value.room_id +
-                    ")' style='border: 1px solid black'>" +
-                    "<p>" +
-                    value.room_nm +
-                    "</p>";
-
-                var lastChat = getLastChatLog(value.room_id);
-                var stackedChat = getStackedChat(value.room_id);
-                addHTML +=
-                    "<div>" +
-                    lastChat.content + "        | " + lastChat.send_dt +
-                    "</div>" +
-                    "<p class='chat-stacked-count' name='stacked_chat_" +
-                    value.room_id +
-                    "'>" +
-                    stackedChat +
-                    "</p>" +
-                    "</div>";
-                roomList.innerHTML += addHTML;
-            });
+            updateChatRoom(result);
         }
     })
+}
+function updateChatRoom(result){
+    var roomList = $('#list_room');
+    roomList.empty();
+    result.forEach(function (value, index, array){
+        if(!isSubscribe){
+            subscribe(value.room_id);
+        }
+        var div_root = $('<div>').addClass('chat-room-item')
+            .attr('room_id', value.room_id)
+            .on('click',function (){
+                selectRoom(value.room_id);
+            }).append($('<p>').text(value.room_nm));
+        // var addHTML = "";
+        // addHTML += "<div room_id='" +
+        //     value.room_id +
+        //     "' onclick='selectRoom(" +
+        //     value.room_id +
+        //     ")' style='border: 1px solid black'>" +
+        //     "<p>" +
+        //     value.room_nm +
+        //     "</p>";
+
+        // var lastChat = getLastChatLog(value.room_id);
+        var stackedChat = value.stacked_chat;
+        div_root.append($('<div>').text(value.last_content + "        | " + value.last_send_dt));
+        var p_stacked_chat = $('<p>').addClass('chat-stacked-count')
+            .text(((stackedChat != 0) ? stackedChat : ''));
+        div_root.append(p_stacked_chat);
+        // addHTML +=
+        //     "<div>" +
+        //      +
+        //     "</div>" +
+        //     "<p class='chat-stacked-count' name='stacked_chat_" +
+        //     value.room_id +
+        //     "'>" +
+        //      +
+        //     "</p>" +
+        //     "</div>";
+        roomList.append(div_root);
+    });
 }
 function updateChatRoomOnly(roomId){
     console.log("update Chat Room Only: "+roomId);
@@ -272,6 +288,7 @@ function selectRoom(roomId){
             updateInvitableUsers();
             loadAllChat(true);
             loadChatRoomUser();
+            loadNote();
             loadConectedUsers();
         }
     });
@@ -442,7 +459,49 @@ function isNoted(chatId){
     return false;
 }
 function noteChat(chat){
+    if(!confirm("채팅방 공지는 1건만 등록 가능합니다. 등록하시겠습니까?")){
+        return;
+    }
+    var roomId = $('#selected_room_id').val();
+    var body = {
+        user_id: $('#user_id').val(),
+        chat_id: chat.chat_id,
+        content: chat.content,
+        file: chat.file
+    };
+    stompClient.send('/pub/chat/note/'+roomId,{},JSON.stringify(body));
+}
+function loadNote(){
+    var body = {
+        room_id: $('#selected_room_id').val(),
+        user_id: $('#user_id').val()
+    };
 
+    $.ajax({
+        url: '/chat/note',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            if(result !== null){
+                updateNote(result);
+            }
+        }
+    })
+}
+function updateNote(note){
+    var note_pannel = $('#note_pannel');
+    note_pannel.empty();
+
+    var div_note = $('<div>').addClass('chat-note')
+        .attr('note_id',note.note_id)
+        .attr('chat_id',note.chat_id);
+    div_note.append($('<p>').text(note.user_nm+"님이 공지함"))
+        .append($('<p>').text(note.content));
+    note_pannel.append(div_note);
 }
 function foldNote(){
 
@@ -461,14 +520,15 @@ function sendChat(){
     console.log("send Chat: "+body);
 
     stompClient.send('/pub/chat/send/'+roomId,{},JSON.stringify(body));
-    $('#content').val("");
+    $('#content').val('');
 }
 function onSend(roomId, res){
     console.log("on Send: "+res);
     updateChatLog(res.chat_log); // Load 후 Read 를 해야 정확한 통신이 가능하다!
     if(!res.server_send){
         readChatroom($('#selected_room_id').val());
-        updateChatRoomOnly(roomId);
+        // updateChatRoomOnly(roomId);
+        // loadChatRoom();
     }
 }
 
@@ -494,7 +554,6 @@ function readChatroom(roomId){
 }
 
 // Chat Log
-
 function getLastChatLog(roomId){
     var result = null;
     var body = {
@@ -543,7 +602,8 @@ function loadChat(){
             if(result !== null && result.length > 0){
                 updateChatLog(result);
                 readChatroom(roomId);
-                updateChatRoomOnly(roomId);
+                // updateChatRoomOnly(roomId);
+                loadChatRoom();
             }
         }
     });
@@ -575,7 +635,8 @@ function loadAllChat(refresh = false){
         success: function (result){
             updateChatLog(result, refresh);
             readChatroom(roomId);
-            updateChatRoomOnly(roomId);
+            // updateChatRoomOnly(roomId);
+            // loadChatRoom();
         }
     });
 }
@@ -598,28 +659,44 @@ function updateChatLog(result, refresh = false){
 }
 function generateChatLogElement(value){
     var userId = $('#user_id').val();
+    var isSelf = (userId === value.user_id);
 
-    var content = value.content;
-    // console.log("org: "+userId+" , chat: "+value.user_id)
-    var className = "chat ";
-    var div_chat = $('<div>').attr('chat_id',value.chat_id);
+    var div_chat = $('<div>').addClass('chat')
+        .attr('chat_id',value.chat_id)
+        .attr('user_id',value.user_id);
 
     if(value.server_send){
-        className += "chat-server";
-        div_chat.addClass(className);
-        div_chat.text(value.content);
+        // 서버 메시지
+        div_chat.addClass('chat-server')
+            .text(value.content);
     }else{
-        className += (userId === value.user_id) ? "mine" : "other";
-        div_chat.addClass(className);
-        div_chat.append($('<p>').text(value.user_nm));
-        var div_chat_content = $('<p>').prop({
-            className: 'chat-content'
-        });
+        // 유저 메시지
+        div_chat.addClass((isSelf) ? 'mine' : 'other')
+            .append($('<p>').addClass('chat-user-name').text(value.user_nm));
+        var div_chat_content = $('<p>').addClass('chat-content');
 
-        if(userId === value.user_id){
+        if(isSelf){
             div_chat_content.addClass('chat-self');
         }
-        div_chat_content.append(content);
+        if(value.reply != 0){
+            console.log("reply: "+value.reply);
+            // 아래 예외는 일단 제외
+            // 1번 채팅이 있고, 1번에 답장한 8번 채팅이 있다. 근데 그 사이에 유저가 들어왔다면,
+            // 해당 답장 내용을 어떻게 표시할 것인가?
+            var reply_chat = $('#chat_log div[chat_id="'+ value.reply +'"]');
+            var reply_user_id = reply_chat.attr('user_id');
+            var reply_user_name = reply_chat.children('.chat-user-name').text();
+            var reply_content = reply_chat.find('p[name="chat_text"]').text();
+            console.log("reply content: "+reply_content);
+            var div_reply = $('<div>').addClass('chat-reply')
+                .append($('<p>').text(((reply_user_id === userId) ? '나': reply_user_name) + '에게 답장'))
+                .append($('<p>').text(reply_content))
+                .append('->').on('click',function (){
+                    moveToReply(value.reply);
+                });
+            div_chat_content.append(div_reply);
+        }
+        div_chat_content.append($('<p>').attr('name','chat_text').text(value.content));
 
         if(!value.deleted){
             div_chat_content.on('contextmenu',function (e){
@@ -644,25 +721,25 @@ function generateChatLogElement(value){
         div_chat.append(div_chat_content);
         var p_emo = $('<p>').addClass('chat-emo');
 
-        var emojis = value.emo_list.split(',');
-        console.log(emojis);
-        emojis.forEach(function (cnt, emoId){
-            console.log("cnt: "+cnt+", emoId: "+emoId);
-            if(Number(cnt) > 0){
-                p_emo.append(getEmoIcon(value.chat_id, emoId + 1, cnt));
-            }
-        })
+        if(value.emo_list !== null && value.emo_list !== undefined){
+            var emojis = value.emo_list.split(',');
+            // console.log(emojis);
+            emojis.forEach(function (cnt, emoId){
+                // console.log("cnt: "+cnt+", emoId: "+emoId);
+                if(Number(cnt) > 0){
+                    p_emo.append(getEmoIcon(value.chat_id, emoId + 1, cnt));
+                }
+            })
+        }
         div_chat.append(p_emo);
 
-        var p_chat_date = $('<p>').prop({
-            className: 'chat-date'
-        }).text(value.send_dt);
+        var p_chat_date = $('<p>').addClass('chat-date')
+            .text(value.send_dt);
         div_chat.append(p_chat_date);
 
         var non_read = value.non_read;
-        var p_chat_non_read = $('<p>').prop({
-            className: 'chat-non-read'
-        }).text(((non_read != 0) ? non_read : ""));
+        var p_chat_non_read = $('<p>').addClass('chat-non-read')
+            .text(((non_read != 0) ? non_read : ""));
         div_chat.append(p_chat_non_read);
     }
     return div_chat;
@@ -881,6 +958,12 @@ function hideReplyPannel(){
     replyPannel.children('.chat-reply-user').text("");
     replyPannel.children('.chat-reply-content').text("");
     replyPannel.hide();
+}
+function moveToReply(chatId){
+    var reply = $('#chat_log div[chat_id="'+ chatId+'"]');
+
+
+    $('#chat_log').scrollTop(reply.offset().top + 150);
 }
 
 // Chat Forward
