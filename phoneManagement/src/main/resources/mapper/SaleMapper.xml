@@ -12,24 +12,14 @@
             sale_id=#{id}
     </select>
 
-    <select id="dupTelOnMonth">
-        select *
+    <select id="isDupTelInSameMonth">
+        select IF(count(*) > 0, true, false)
         from tb_sale
         where
             shop_id = #{shopId} and
             cust_tel=#{custTel} and
             MONTH(actv_dt) = MONTH(#{actvDt}) and
             YEAR(actv_dt) = YEAR(#{actvDt})
-    </select>
-
-    <select id="countTel">
-        select
-            count(*)
-        from
-            tb_sale
-        where
-            shop_id=#{shopId} and
-            cust_tel=#{custTel}
     </select>
 
     <update id="updateSale" parameterType="com.momo.vo.SaleVO">
@@ -534,16 +524,6 @@
         <if test='limit != null and offset != null'>
             limit ${offset} ${limit}
         </if>
-    </select>
-
-    <select id="getMaxId">
-        select
-            max(sale_id)
-        from
-            tb_sale
-        where
-            shop_id=#{shopId}
-        for update
     </select>
 
     <insert id="insertSale" parameterType="com.momo.vo.SaleVO">

@@ -13,7 +13,7 @@ public interface UserCommonMapper {
 	public int loginNow(String id);
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo);
 
-	public int findGhostUserAndUpdateToDormant(int date);
+	public int updateUserToDormant(int date);
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
 	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo);
 

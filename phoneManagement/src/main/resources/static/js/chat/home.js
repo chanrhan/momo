@@ -71,12 +71,6 @@ function onChat(result, roomId){
     if(roomId == selectedRoomId){
         console.log("on Chat: "+header);
         switch (header){
-            // case 'CONNECT':
-            //     loadConectedUsers();
-            //     break;
-            // case 'DISCONNECT':
-            //     loadConectedUsers();
-            //     break;
             case 'CHAT': // SEND
                 onSend(roomId, body);
                 break;
@@ -97,7 +91,7 @@ function onChat(result, roomId){
             case 'EMO': // EMO
                 onEmo(body.emoji);
                 break;
-            case 'DEL': // DEL
+            case 'DELETE': // DEL
                 updateDeletedChat(body);
                 break;
             case 'NOTE':
@@ -257,24 +251,6 @@ function updateChatRoom(result){
         roomList.append(div_root);
     });
 }
-function updateChatRoomOnly(roomId){
-    console.log("update Chat Room Only: "+roomId);
-    var room = $('#list_room div[room_id="' + roomId + '"]');
-    if(room === null || room.length === 0) return;
-
-    var content = room.children('div').first();
-    var stackedChat = room.find('p[name="stacked_chat_'+roomId+'"]').first();
-
-    var lastChat = getLastChatLog(roomId);
-    if(lastChat !== null){
-        $(content).text(lastChat.content + "        | " + lastChat.send_dt);
-    }
-
-    var stackedChatCount = getStackedChat(roomId);
-    if(stackedChatCount !== null){
-        $(stackedChat).text(stackedChatCount)
-    }
-}
 function selectRoom(roomId){
     console.log("select Chat Room: "+roomId);
     $('#selected_room_id').val(roomId);
@@ -340,27 +316,6 @@ function updateChatRoomUser(result, refresh = false){
             "</p>" +
             "</div>";
     });
-}
-function getStackedChat(roomId){
-    var rst = null;
-    var body = {
-        user_id: $('#user_id').val(),
-        room_id: roomId
-    }
-    $.ajax({
-        url: '/chat/msg/stacked',
-        type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify(body),
-        async: false,
-        beforeSend: function (xhr){
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (result){
-            rst = result;
-        }
-    });
-    return rst;
 }
 
 // Chat Room Invite
@@ -554,28 +509,6 @@ function readChatroom(roomId){
 }
 
 // Chat Log
-function getLastChatLog(roomId){
-    var result = null;
-    var body = {
-        room_id: roomId,
-        user_id: $('#user_id').val()
-    }
-
-    $.ajax({
-        url: '/chat/msg/last',
-        type: 'post',
-        contentType: 'application/json',
-        data: JSON.stringify(body),
-        async: false,
-        beforeSend: function (xhr){
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (rst){
-            result = rst;
-        }
-    });
-    return result;
-}
 function loadChat(){
     var roomId = $('#selected_room_id').val();
     if(roomId === null || roomId === '0'){

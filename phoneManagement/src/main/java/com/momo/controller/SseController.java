@@ -1,6 +1,6 @@
 package com.momo.controller;
 
-import com.momo.emitter.NotificationService;
+import com.momo.emitter.NotificationEmitter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 @RequiredArgsConstructor
 public class SseController {
-	private final NotificationService notificationService;
+	private final NotificationEmitter notificationEmitter;
 	@GetMapping(value = "/connect",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<SseEmitter> connect(@RequestHeader(value = "Last-Event-ID",required = false,defaultValue = "") String lastEventId, HttpServletResponse response, HttpSession session){
 		response.setHeader("X-Accel-Buffering","no");
-		return ResponseEntity.ok(notificationService.connect(lastEventId, session));
+		return ResponseEntity.ok(notificationEmitter.connect(lastEventId, session));
 	}
 }
 

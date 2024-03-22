@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ChatVO extends CommonQueryVO{
+	private static final int deleteLimit = 5;
 	// Chatroom Info
 	private Integer roomId;
 	private String roomNm;
@@ -25,7 +26,6 @@ public class ChatVO extends CommonQueryVO{
 	private String joinDt;
 	private Boolean alarmSt;
 	private Boolean noteFold;
-	private Integer firstRead;
 	private Integer lastRead;
 
 	// Chatroom Last Read
@@ -49,7 +49,4 @@ public class ChatVO extends CommonQueryVO{
 	private Boolean toAll;
 	private String delDt;
 
-	public ChatVO(ChatVO vo){
-
-	}
 }

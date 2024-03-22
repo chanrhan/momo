@@ -15,8 +15,6 @@ public interface SaleMapper{
 	public int deleteSale(int id);
 	public List<Map<String,Object>> selectSale(SaleVO vo);
 	public List<Map<String,Object>> searchSale(SearchVO vo);
-	public Integer getMaxId(int shopId);
-	public Integer countTel(SaleVO vo);
-	public List<Map<String,Object>> dupTelOnMonth(SaleVO vo);
+	public boolean isDupTelInSameMonth(SaleVO vo);
 	public String getSpecFilePath(int id);
 }

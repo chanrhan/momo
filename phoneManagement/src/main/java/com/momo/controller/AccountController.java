@@ -1,10 +1,10 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
-import com.momo.emitter.NotificationService;
+import com.momo.emitter.NotificationEmitter;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
-import com.momo.vo.AlarmVO;
+import com.momo.vo.NotificationVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
@@ -28,9 +28,9 @@ public class AccountController {
 	private final TermService       termService;
 	private final ShopCommonService shopCommonService;
 	private final RegionService       regionService;
-	private final NotificationService notificationService;
+	private final NotificationEmitter notificationEmitter;
 
-	private final AlarmService alarmService;
+	private final NotificationService notificationService;
 
 	@GetMapping("/login")
 	public String login() {
@@ -229,7 +229,7 @@ public class AccountController {
 	@PostMapping("/approve")
 	@ResponseBody
 	@Transactional
-	public boolean approve(@RequestBody AlarmVO vo){
+	public boolean approve(@RequestBody NotificationVO vo){
 		String receiverId = vo.getReceiverId();
 		int result = userCommonService.updateApproveState(receiverId, true);
 		if(result == 0){
@@ -250,7 +250,7 @@ public class AccountController {
 			notificationService.sendMessage("admin", receiverId, title, content);
 		}
 
-		return alarmService.approve(vo.getAlarmId()) != 0;
+		return notificationService.approve(vo.getAlarmId()) != 0;
 	}
 
 	@PostMapping("/list/chat/invitable")

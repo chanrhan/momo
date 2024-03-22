@@ -5,18 +5,15 @@ import com.momo.mapper.ShopCommonMapper;
 import com.momo.mapper.UserCommonMapper;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
 import com.momo.vo.UserCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,8 +33,8 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		return userCommonMapper.loginNow(id);
 	}
 
-	public int findGhostUserAndUpdateToDormant(int date){
-		return userCommonMapper.findGhostUserAndUpdateToDormant(date);
+	public int updateUserToDormant(int date){
+		return userCommonMapper.updateUserToDormant(date);
 	}
 
 	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo){

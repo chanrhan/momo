@@ -1,8 +1,8 @@
 package com.momo.controller;
 
-import com.momo.service.AlarmService;
+import com.momo.service.NotificationService;
 import com.momo.util.SecurityContextUtil;
-import com.momo.vo.AlarmVO;
+import com.momo.vo.NotificationVO;
 import com.momo.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,33 +17,33 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
 @PreAuthorize("isAuthenticated()")
-public class AlarmController {
-	private final AlarmService alarmService;
+public class NotificationController {
+	private final NotificationService notificationService;
 
 	@GetMapping("")
 	public String homeAlarm(Model model){
 		String username = SecurityContextUtil.getUsername();
 
 		System.out.println("username: "+username);
-		model.addAttribute("list_alarm", alarmService.selectAlarmByReceiver(username));
+		model.addAttribute("list_alarm", notificationService.selectNotificationByReceiver(username));
 		return "layout/alarm";
 	}
 
 	@GetMapping("/list/srch")
 	@ResponseBody
 	public List<Map<String,Object>> searchAlarm(@RequestBody SearchVO vo){
-		return alarmService.searchAlarm(vo);
+		return notificationService.searchNotification(vo);
 	}
 
 	@PostMapping("/count")
 	@ResponseBody
-	public int countAlarm(@RequestBody AlarmVO vo){
-		return alarmService.selectAlarm(vo).size();
+	public int countAlarm(@RequestBody NotificationVO vo){
+		return notificationService.selectNotification(vo).size();
 	}
 
 	@GetMapping("/read/all")
 	@ResponseBody
 	public boolean readAlarmList(@RequestParam String id){
-		return alarmService.readAllByReceiver(id) != 0;
+		return notificationService.readAllByReceiver(id) != 0;
 	}
 }

@@ -26,5 +26,4 @@ public interface MsgCommonMapper {
 	public int deleteMsg(int id);
 	public List<Map<String,Object>> selectMsg(MsgCommonVO vo);
 	public List<Map<String,Object>> searchMsg(SearchVO vo);
-	public int getMaxMsgId(int shopId);
 }

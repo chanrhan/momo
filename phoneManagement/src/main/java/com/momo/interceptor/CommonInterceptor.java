@@ -2,7 +2,6 @@ package com.momo.interceptor;
 
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserCommonService;
-import com.momo.util.SecurityContextUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -11,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-//		System.out.println("[qq] Common postHandle");
+//		System.out.println("Common INTERCEPTOR: "+request.getRequestURL());
 		if(modelAndView == null){
 			modelAndView = new ModelAndView();
 		}

@@ -39,13 +39,13 @@
                 ${prop}
     </select>
     
-    <update id="findGhostUserAndUpdateToDormant">
+    <update id="updateUserToDormant">
         update
             tb_account
         set
             user_st=2
         where
-            role!='ADMIN' and
+            role !='ADMIN' and
             user_st=1 and
             DATEDIFF(CURRENT_DATE, last_login_dt) > #{date}
     </update>

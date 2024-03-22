@@ -20,7 +20,6 @@ import java.util.Map;
 @RequestMapping("/sale")
 @PreAuthorize("isAuthenticated()")
 public class SaleController {
-	private final UserCommonService userCommonService;
 	private final ShopCommonService shopCommonService;
 	private final SaleService       saleService;
 
@@ -62,7 +61,6 @@ public class SaleController {
 																.shopId(shopId)
 																.saleId(saleId)
 																.build()).get(0);
-//		System.out.println(map);
 		model.addAttribute("sale", map);
 		Object sup_div = map.get("sup_div");
 		Object sup_pay = map.get("sup_pay");
@@ -73,16 +71,9 @@ public class SaleController {
 			for(int i=0;i<d.length;++i){
 				list_sup.add(new SupportVO(d[i],p[i]));
 			}
-//			System.out.println(list_sup);
 		}
 		model.addAttribute("list_sup", list_sup);
 
-//		Object         filePath = map.get("spec");
-//		Object byteArray = null;
-//		if(filePath != null && !"".equals(filePath)){
-//			byteArray = imageService.download(filePath.toString()).getBody();
-//		}
-//		model.addAttribute("spec", byteArray);
 		return "sale/sale_detail";
 	}
 
@@ -118,9 +109,7 @@ public class SaleController {
 	@PostMapping("/create")
 	@ResponseBody
 	public boolean createSale(@RequestPart(value = "sale") SaleVO vo,
-								  @RequestPart(value = "spec") MultipartFile file) {
-//		System.out.println("create vo: "+vo);
-//		System.out.println("create files: "+file);
+							  @RequestPart(value = "spec") MultipartFile file) {
 		String path = imageService.upload(file);
 		vo.setSpec(path);
 		return saleService.insertSale(vo) != 0;
@@ -213,67 +202,67 @@ public class SaleController {
 		model.addAttribute("list", saleService.selectSaleByTypeAndSession("green_md", session));
 		return "sale/green_phone";
 	}
-	@GetMapping("/card")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleCard(Model model, HttpSession session){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-		Map<String,Object> shop = null;
-		if(!list_shop.isEmpty()){
-			shop = list_shop.get(0);
-		}
-
-		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", shop);
-
-		model.addAttribute("list",saleService.selectSaleByTypeAndSession("card", session));
-		return "sale/card";
-	}
-	@GetMapping("/comb")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleComb(Model model, HttpSession session){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-		Map<String,Object> shop = null;
-		if(!list_shop.isEmpty()){
-			shop = list_shop.get(0);
-		}
-
-		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", shop);
-
-		model.addAttribute("list",saleService.selectSaleByTypeAndSession("comb_move", session));
-		return "sale/comb";
-	}
-	@GetMapping("/support")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleSupport(Model model, HttpSession session){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-		Map<String,Object> shop = null;
-		if(!list_shop.isEmpty()){
-			shop = list_shop.get(0);
-		}
-
-		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", shop);
-
-		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sup_div", session));
-		return "sale/support";
-	}
-
-	@GetMapping("/second")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleSecondPhone(Model model, HttpSession session){
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-		Map<String,Object> shop = null;
-		if(!list_shop.isEmpty()){
-			shop = list_shop.get(0);
-		}
-
-		model.addAttribute("list_shop", list_shop);
-		model.addAttribute("selected_shop", shop);
-
-		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sec_md", session));
-		return "sale/second";
-	}
+//	@GetMapping("/card")
+//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+//	public String saleCard(Model model, HttpSession session){
+//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+//		Map<String,Object> shop = null;
+//		if(!list_shop.isEmpty()){
+//			shop = list_shop.get(0);
+//		}
+//
+//		model.addAttribute("list_shop", list_shop);
+//		model.addAttribute("selected_shop", shop);
+//
+//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("card", session));
+//		return "sale/card";
+//	}
+//	@GetMapping("/comb")
+//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+//	public String saleComb(Model model, HttpSession session){
+//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+//		Map<String,Object> shop = null;
+//		if(!list_shop.isEmpty()){
+//			shop = list_shop.get(0);
+//		}
+//
+//		model.addAttribute("list_shop", list_shop);
+//		model.addAttribute("selected_shop", shop);
+//
+//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("comb_move", session));
+//		return "sale/comb";
+//	}
+//	@GetMapping("/support")
+//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+//	public String saleSupport(Model model, HttpSession session){
+//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+//		Map<String,Object> shop = null;
+//		if(!list_shop.isEmpty()){
+//			shop = list_shop.get(0);
+//		}
+//
+//		model.addAttribute("list_shop", list_shop);
+//		model.addAttribute("selected_shop", shop);
+//
+//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sup_div", session));
+//		return "sale/support";
+//	}
+//
+//	@GetMapping("/second")
+//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+//	public String saleSecondPhone(Model model, HttpSession session){
+//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+//		Map<String,Object> shop = null;
+//		if(!list_shop.isEmpty()){
+//			shop = list_shop.get(0);
+//		}
+//
+//		model.addAttribute("list_shop", list_shop);
+//		model.addAttribute("selected_shop", shop);
+//
+//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sec_md", session));
+//		return "sale/second";
+//	}
 
 	@PostMapping("/list/srch/{type}")
 	@ResponseBody
@@ -287,7 +276,7 @@ public class SaleController {
 				column = "sec_md";
 				break;
 			case "support":
-				column = "sup_div1";
+				column = "sup_div";
 				break;
 			case "comb":
 				column = "comb_move";
@@ -301,26 +290,25 @@ public class SaleController {
 		return saleService.searchSaleByTypeAndSession(column, vo, session);
 	}
 
-	@PostMapping("/count/tel")
-	@ResponseBody
-	public int countTel(@RequestBody SaleVO vo){
-		Integer shopId = vo.getShopId();
-		String custTel = vo.getCustTel();
-		System.out.println(shopId+", "+custTel);
-		if(shopId == null || custTel == null){
-			return 0;
-		}
-
-		return saleService.countTel(vo);
-	}
+//	@PostMapping("/count/tel")
+//	@ResponseBody
+//	public int countTel(@RequestBody SaleVO vo){
+//		Integer shopId = vo.getShopId();
+//		String custTel = vo.getCustTel();
+//		System.out.println(shopId+", "+custTel);
+//		if(shopId == null || custTel == null){
+//			return 0;
+//		}
+//
+//		return saleService.countTel(vo);
+//	}
 
 	@PostMapping("/dup/tel")
 	@ResponseBody
-	public List<Map<String,Object>> checkDupTelOnDate(@RequestBody SaleVO vo){
-		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
-			return null;
-		}
-
+	public boolean checkDupTelOnDate(@RequestBody SaleVO vo){
+//		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
+//			return null;
+//		}
 		return saleService.dupTelOnMonth(vo);
 	}
 }

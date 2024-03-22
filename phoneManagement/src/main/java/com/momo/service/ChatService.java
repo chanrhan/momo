@@ -28,11 +28,10 @@ public class ChatService {
 		Integer id = chatMapper.getMaxChatRoomId();
 		return (id != null) ? id : 0;
 	}
-
 	// 채팅방 넘버는 auto_increment로 할려고 했는데,
 	// 방금 생성한 room_id를 반환해줘야 하기 떄문에 일단 현 상태로 보류
 	@Transactional
-	public int createChatroom(ChatVO vo){
+	public int createChatRoom(ChatVO vo){
 		int roomId = getMaxChatRoomId()+1; // *
 		vo.setRoomId(roomId);
 		System.out.println("create room: "+vo);
@@ -46,7 +45,6 @@ public class ChatService {
 //		sendServerChat(ChatMessageType.CREATE, vo);
 		return roomId;
 	}
-
 	public ChatResponse connect(String simpSessionId, String userId){
 		connectedUserMap.put(simpSessionId, userId);
 		return ChatResponse.builder()
@@ -54,7 +52,6 @@ public class ChatService {
 				.userId(userId)
 				.build();
 	}
-
 	public ChatResponse disconnect(String simpSessionId){
 		String userId = connectedUserMap.get(simpSessionId);
 		connectedUserMap.remove(simpSessionId);
@@ -63,15 +60,12 @@ public class ChatService {
 				.userId(userId)
 				.build();
 	}
-
-	public List<String> getConnectedUser(){
+	public List<String> loadConnectedUser(){
 		return connectedUserMap.values().stream().toList();
 	}
-
-	public List<Map<String,Object>> getChatRoomUser(int roomId){
+	public List<Map<String,Object>> loadChatRoomUser(int roomId){
 		return chatMapper.selectChatRoomMember(ChatVO.builder().roomId(roomId).build());
 	}
-
 	public ChatResponse joinChatroom(ChatVO vo){
 //		int maxChatId = getMaxChatId(vo.getRoomId());
 //		vo.setFirstRead(maxChatId);
@@ -79,54 +73,47 @@ public class ChatService {
 		chatMapper.insertChatRoomMember(vo);
 		return sendServerChat(ChatResponseHeader.JOIN, vo);
 	}
-
 	public ChatResponse inviteChatroom(ChatVO vo){
 		chatMapper.insertChatRoomMember(vo);
 		return sendServerChat(ChatResponseHeader.INVITE, vo);
 	}
-
 	public int getChatRoomHeadCount(int roomId){
 		return chatMapper.getChatRoomHeadCount(roomId);
 	}
-
 	public List<Map<String,Object>> selectChatroom(ChatVO vo){
 		vo.setOrder("regi_dt");
 		vo.setAsc("desc");
 		return chatMapper.selectChatRoom(vo);
 	}
-
 	public Map<String,Object> selectChatroom(int roomId){
 		return selectChatroom(ChatVO.builder().roomId(roomId).build()).get(0);
 	}
-
-	// Chat Log
-	private int getMaxChatId(int roomId){
-		Integer id = chatMapper.getMaxChatId(roomId);
-		if(id == null){
-			return 0;
+	public ChatResponse readChatroom(ChatVO vo){
+		//		System.out.println("read Chat: "+vo);
+		List<Map<String,Object>> nonReadList = chatMapper.readChatRoom(vo);
+		if(nonReadList == null || nonReadList.isEmpty()){
+			return null;
 		}
-		return id;
+		return ChatResponse.builder()
+				.header(ChatResponseHeader.READ)
+				.chatLog(nonReadList)
+				.build();
 	}
 
+	// Chat Log
 	public synchronized ChatResponse sendChat(ChatVO vo, ChatResponseHeader header){
-//		int roomId = vo.getRoomId();
-//		vo.setChatId(chatMapper.getMaxChatId(roomId)+1);
-//		vo.setCurrHc(chatMapper.getChatRoomHeadCount(roomId));
-//		log.info("insert chat: "+vo);
 		return ChatResponse.builder()
 				.header(header)
 				.chat(chatMapper.insertChat(vo))
 				.serverSend(vo.getServerSend())
 				.build();
 	}
-
-	public ChatResponse sendServerChat( ChatResponseHeader header, ChatVO vo){
+	public ChatResponse sendServerChat(ChatResponseHeader header, ChatVO vo){
 		vo.setServerSend(true);
 		vo.setContent(makeChatContent(vo.getUserId(), header));
 		vo.setUserId("");
 		return sendChat(vo, header);
 	}
-
 	private String makeChatContent(String userId, ChatResponseHeader type){
 		String username;
 		try{
@@ -153,47 +140,20 @@ public class ChatService {
 		}
 		return null;
 	}
-
-
-
 	public List<Map<String,Object>> selectChatLog(ChatVO vo){
 //		vo.setJoinDt(chatMapper.getChatMemberJoinDate(vo).toString());
 		vo.setOrder("send_dt");
 		return chatMapper.selectChatLog(vo);
 	}
-
 	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo){
 		vo.setOrder("send_dt");
 		return chatMapper.selectChatLogFromLastRead(vo);
 	}
-
-
 	public Map<String,Object> getLastChatLog(ChatVO vo){
-//		ChatVO vo = ChatVO.builder().roomId(roomId).chatId(getMaxChatId(roomId)).build();
-//		List<Map<String,Object>> logs = chatMapper.selectChatLog(vo);
-//		if(logs == null || logs.isEmpty()){
-//			return null;
-//		}
-//		return logs.get(0);
 		return chatMapper.getLastChatLog(vo);
 	}
 
-	public ChatResponse readChatroom(ChatVO vo){
-		System.out.println("read Chat: "+vo);
-		List<Map<String,Object>> nonReadList = chatMapper.readChatRoom(vo);
-		if(nonReadList == null || nonReadList.isEmpty()){
-			return null;
-		}
-		return ChatResponse.builder()
-				.header(ChatResponseHeader.READ)
-				.chatLog(nonReadList)
-				.build();
-	}
-
-	public int getStackedChat(ChatVO vo){
-		return chatMapper.getStackedChatCount(vo);
-	}
-
+	// Chat Emo
 	public ChatResponse sendEmoChat(ChatVO vo){
 		vo.setEmo("emo"+vo.getEmo());
 		System.out.println("emo: "+vo);
@@ -203,19 +163,38 @@ public class ChatService {
 				.build();
 	}
 
+	// Chat Delete
 	public ChatResponse deleteChat(ChatVO vo){
-		chatMapper.insertDeletedChat(vo);
-		return null;
+		chatMapper.deleteChat(vo);
+		return ChatResponse.builder()
+				.header(ChatResponseHeader.DELETE)
+				.chatId(vo.getChatId())
+				.build();
 	}
 
+	public boolean canDelete(ChatVO vo){
+		return chatMapper.canDelete(vo);
+	}
+
+	// Chat Note
 	public ChatResponse noteChat(ChatVO vo){
 		return ChatResponse.builder()
 				.header(ChatResponseHeader.NOTE)
 				.note(chatMapper.insertNote(vo))
 				.build();
 	}
-
 	public Map<String,Object> selectNote(ChatVO vo){
 		return chatMapper.selectNote(vo);
 	}
+
+	// Chat Quit/Kick
+	public ChatResponse quitChatRoom(ChatVO vo){
+		chatMapper.quitChatRoom(vo);
+		return ChatResponse.builder()
+				.header(ChatResponseHeader.QUIT)
+				.userId(vo.getUserId())
+				.build();
+	}
+
+
 }

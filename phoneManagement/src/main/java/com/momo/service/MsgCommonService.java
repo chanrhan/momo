@@ -125,14 +125,6 @@ public class MsgCommonService extends CommonService {
 		return msgCommonMapper.searchMsg(vo);
 	}
 
-	public int getMaxMsgId(int shopId){
-		Integer result = msgCommonMapper.getMaxMsgId(shopId);
-		if(result == null){
-			return 0;
-		}
-		return result;
-	}
-
 	public int reserve(MsgCommonVO vo){
 		List<MsgCommonVO> list = vo.getMsgList();
 //		int maxMsgId = getMaxMsgId(vo.getShopId());

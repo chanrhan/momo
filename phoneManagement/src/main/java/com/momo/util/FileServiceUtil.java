@@ -40,8 +40,7 @@ public class FileServiceUtil {
 	}
 
 	public static String extractExt(String fileName){
-		int pos = fileName.lastIndexOf(".");
-		return fileName.substring(pos + 1);
+		return fileName.substring(fileName.lastIndexOf(".") + 1);
 	}
 
 	public static UrlResource getFileResource(String path) throws MalformedURLException {

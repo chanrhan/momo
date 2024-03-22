@@ -1,10 +1,10 @@
 package com.momo.controller;
 
 import com.momo.domain.user.UserDetailsImpl;
-import com.momo.emitter.NotificationService;
 import com.momo.enums.ChatResponseHeader;
-import com.momo.vo.ChatResponse;
 import com.momo.service.ChatService;
+import com.momo.service.NotificationService;
+import com.momo.vo.ChatResponse;
 import com.momo.vo.ChatVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -12,7 +12,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/chat")
 public class ChatController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
-	private final ChatService          chatService;
+	private final ChatService         chatService;
 	private final NotificationService notificationService;
 
 	// 웹소켓 Connect 콜백함수
@@ -60,10 +59,11 @@ public class ChatController {
 		ChatResponse res = chatService.disconnect(simpSessionId);
 	}
 
+	// 접속된 유저 목록 불러오기
 	@GetMapping("/connected")
 	@ResponseBody
-	public List<String> getConnectedUsers(){
-		return chatService.getConnectedUser();
+	public List<String> loadConnectedUser(){
+		return chatService.loadConnectedUser();
 	}
 
 	@GetMapping("/home")
@@ -71,6 +71,7 @@ public class ChatController {
 		return "chat/home";
 	}
 
+	// 채팅 기록 불러오기 (마지막으로 읽은 곳부터)
 	@PostMapping("/msg/load")
 	@ResponseBody
 	public List<Map<String,Object>> loadChatLog(@RequestBody ChatVO vo){
@@ -78,41 +79,22 @@ public class ChatController {
 		return chatService.selectChatLogFromLastRead(vo);
 	}
 
+	// 채팅 기록 모두 불러오기
 	@PostMapping("/msg/load/all")
 	@ResponseBody
 	public List<Map<String,Object>> loadAllChatLog(@RequestBody ChatVO vo){
-//		System.out.println("log: "+vo);
 		return chatService.selectChatLog(vo);
 	}
 
+	// 채팅 메시지 전송
 	@MessageMapping("/chat/send/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse sendChat(@DestinationVariable Integer roomId, @RequestBody ChatVO vo){
+	public ChatResponse sendChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
 		vo.setRoomId(roomId);
-		ChatResponse result = chatService.sendChat(vo, ChatResponseHeader.CHAT);
-		System.out.println("send response: "+result);
-		return result;
+		return chatService.sendChat(vo, ChatResponseHeader.CHAT);
 	}
-
-	@MessageMapping("/chat/delete/{roomId}")
-	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse deleteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
-		return null;
-	}
-
-	@PostMapping("/msg/last")
-	@ResponseBody
-	public Map<String,Object> getLastChatLog(@RequestBody ChatVO vo){
-		return chatService.getLastChatLog(vo);
-	}
-
-//	@PostMapping("/msg/stacked")
-//	@ResponseBody
-//	public int getStackedChat(@RequestBody ChatVO vo){
-//		return chatService.getStackedChat(vo);
-//	}
-
-
+	
+	// 채팅 메시지 공감
 	@MessageMapping("/chat/emo/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
 	public ChatResponse emoChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
@@ -120,37 +102,41 @@ public class ChatController {
 		return chatService.sendEmoChat(vo);
 	}
 
-	@PostMapping("/msg/del")
-	@ResponseBody
-	public boolean deleteChat(@RequestBody ChatVO vo){
-		return false;
+	// 채팅 메시지 삭제
+	@MessageMapping("/chat/delete/{roomId}")
+	@SendTo("/sub/chat/room/{roomId}")
+	public ChatResponse deleteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		vo.setRoomId(roomId);
+		return chatService.deleteChat(vo);
 	}
 
-	@PostMapping("/msg/del/timeout")
+	// 채팅 메시지 삭제 가능한지 판별 (5분 타임아웃)
+	@PostMapping("/msg/can/delete")
 	@ResponseBody
-	public boolean checkDeleteTimeout(@RequestBody ChatVO vo){
-		return false;
+	public boolean canDelete(@RequestBody ChatVO vo){
+		return chatService.canDelete(vo);
 	}
 
+	// 채팅 메시지 읽음 처리 
 	@MessageMapping("/chat/read/{roomId}")
-//	@SendTo("/sub/chat/room/{roomId}")
 	public void readChatRoom(@DestinationVariable int roomId, @RequestBody String userId){
 		ChatResponse res = chatService.readChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
-//		System.out.println("read result: "+ result);
 		if(res != null){
 			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
 		}
 	}
 
+	// 채팅방 유저 목록 불러오기
 	@GetMapping("/room/user/{roomId}")
 	@ResponseBody
-	public List<Map<String,Object>> getChatRoomUser(@PathVariable int roomId){
-		return chatService.getChatRoomUser(roomId);
+	public List<Map<String,Object>> loadChatRoomUser(@PathVariable int roomId){
+		return chatService.loadChatRoomUser(roomId);
 	}
 
+	// 채팅 공지
 	@MessageMapping("/chat/note/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse noteToRoom(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+	public ChatResponse noteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
 		vo.setRoomId(roomId);
 		return chatService.noteChat(vo);
 	}
@@ -167,56 +153,56 @@ public class ChatController {
 		return chatService.selectNote(vo);
 	}
 
+	// 채팅방 생성
 	@PostMapping("/room/create")
 	@ResponseBody
 	@Transactional
-	public int createChatroom(@RequestBody ChatVO vo){
-		return chatService.createChatroom(vo);
+	public int createChatRoom(@RequestBody ChatVO vo){
+		return chatService.createChatRoom(vo);
 	}
 
-	@MessageMapping("/chat/room/join/{roomId}")
-	@SendTo("/sub/chat/room/{roomId}")
-	public String joinChatroom(@DestinationVariable int roomId, StompSession session){
-		String id = session.getSessionId();
-		System.out.println("session id: "+ id);
-//		Map<String,Object> names = session.get
-//		for(Object ob : names.keySet()){
-//			System.out.println("session attr: "+ob.toString());
-//		}
-		return id;
-	}
+//	@MessageMapping("/chat/room/join/{roomId}")
+//	@SendTo("/sub/chat/room/{roomId}")
+//	public String joinChatRoom(@DestinationVariable int roomId, StompSession session){
+//		String id = session.getSessionId();
+//		System.out.println("session id: "+ id);
+//		return id;
+//	}
 
 	@MessageMapping("/chat/room/invite/{roomId}")
-//	@SendTo("/sub/chat/room/{roomId}")
 	public void inviteUser(@DestinationVariable int roomId, String userId){
-		ChatVO vo = ChatVO.builder().roomId(roomId).userId(userId).build();
-		System.out.println("invite room: "+vo);
-		ChatResponse res = chatService.inviteChatroom(vo);
+		ChatResponse res = chatService.inviteChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
 		if(res != null){
-			notificationService.sendChatInvite(roomId, userId);
+			notificationService.sendChatInvitation(roomId, userId);
 			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
 		}
 	}
 
-	@PostMapping("/room/quit")
+	// 채팅방 나가기
+	@MessageMapping("/chat/room/quit/{roomId}")
 	@ResponseBody
-	public boolean quitChatroom(@RequestBody ChatVO vo){
-
-		return false;
+	public void quitChatroom(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		vo.setRoomId(roomId);
+		simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, chatService.quitChatRoom(vo));
+		simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId,
+											 chatService.sendServerChat(ChatResponseHeader.QUIT, vo));
 	}
 
+	// 채팅방 정보 불러오기
 	@GetMapping("/room/info/{roomId}")
 	@ResponseBody
-	public Map<String,Object> getChatroomInfo(@PathVariable int roomId){
+	public Map<String,Object> loadChatRoomInfo(@PathVariable int roomId){
 		return chatService.selectChatroom(roomId);
 	}
 
+	// 채팅방 목록 불러오기
 	@PostMapping("/room/list")
 	@ResponseBody
-	public List<Map<String,Object>> getChatroomList(@RequestBody ChatVO vo){
+	public List<Map<String,Object>> loadChatRoomList(@RequestBody ChatVO vo){
 		return chatService.selectChatroom(vo);
 	}
 
+	// 채팅방 인원 수
 	@GetMapping("/room/hc/{roomId}")
 	@ResponseBody
 	public int getChatRoomHeadCount(@PathVariable int roomId){

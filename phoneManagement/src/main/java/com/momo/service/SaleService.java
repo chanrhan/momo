@@ -23,12 +23,8 @@ public class SaleService extends CommonService {
 		return saleMapper.getSpecFilePath(id);
 	}
 
-	public int countTel(SaleVO vo){
-		return saleMapper.countTel(vo);
-	}
-
-	public List<Map<String,Object>> dupTelOnMonth(SaleVO vo){
-		return saleMapper.dupTelOnMonth(vo);
+	public boolean dupTelOnMonth(SaleVO vo){
+		return saleMapper.isDupTelInSameMonth(vo);
 	}
 
 	// Common
@@ -159,14 +155,6 @@ public class SaleService extends CommonService {
 	public List<Map<String,Object>> searchSaleByTypeAndSession(String type, SearchVO vo, HttpSession session){
 		vo.setTarget(type);
 		return searchSaleBySession(vo, session);
-	}
-
-	public int getMaxSaleId(int shopId){
-		Integer result = saleMapper.getMaxId(shopId);
-		if(result == null){
-			return 0;
-		}
-		return result;
 	}
 
 	public List<Map<String,Object>> searchSale(SearchVO vo){

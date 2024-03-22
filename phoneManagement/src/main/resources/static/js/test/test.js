@@ -13,25 +13,25 @@ function sendEmail(){
     })
 }
 
-function dupTel(tel){
-    var body = {
-        shop_id: $('#shop_id').val(),
-        cust_tel: tel
-    }
-
-    $.ajax({
-        url: '/sale/count/tel',
-        type: 'post',
-        contentType:'application/json',
-        data: JSON.stringify(body),
-        beforeSend: function (xhr){
-            xhr.setRequestHeader(header, token);
-        },
-        success: function (result){
-            console.log(result);
-        }
-    })
-}
+// function dupTel(tel){
+//     var body = {
+//         shop_id: $('#shop_id').val(),
+//         cust_tel: tel
+//     }
+//
+//     $.ajax({
+//         url: '/sale/count/tel',
+//         type: 'post',
+//         contentType:'application/json',
+//         data: JSON.stringify(body),
+//         beforeSend: function (xhr){
+//             xhr.setRequestHeader(header, token);
+//         },
+//         success: function (result){
+//             console.log(result);
+//         }
+//     })
+// }
 
 function dupTelOnDate(tel, date){
     var body = {

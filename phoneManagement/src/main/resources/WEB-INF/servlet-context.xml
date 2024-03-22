@@ -15,7 +15,7 @@
 <!--    </websocket:handlers>-->
 
 <!--    <bean id="wsHandler" class="com.momo.handler.WebSocketAlarmHandler">-->
-<!--        <constructor-arg index="0" ref="com.momo.service.AlarmService"/>-->
+<!--        <constructor-arg index="0" ref="com.momo.service.NotificationService"/>-->
 <!--        <constructor-arg index="1" ref=""/>-->
 <!--    </bean>-->
 

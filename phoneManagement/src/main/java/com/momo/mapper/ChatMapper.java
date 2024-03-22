@@ -44,6 +44,9 @@ public interface ChatMapper {
 	public List<String> selectEmoList(ChatVO vo);
 
 	// Chat Deleted
-	public int insertDeletedChat(ChatVO vo);
+	public int deleteChat(ChatVO vo);
+	public boolean canDelete(ChatVO vo);
 
+	// Chat Quit
+	public int quitChatRoom(ChatVO vo);
 }

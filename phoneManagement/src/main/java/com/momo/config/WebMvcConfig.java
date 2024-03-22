@@ -3,13 +3,10 @@ package com.momo.config;
 import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
-import com.momo.util.FileServiceUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -19,6 +16,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private final HomeInterceptor homeInterceptor;
 	private final CommonInterceptor commonInterceptor;
 
+	// 이거 왜 적용 안했지..?
+	// 나중에 시간 되면 알아보자.
 //	@Override
 //	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //		registry.addResourceHandler("/images/**")
@@ -40,16 +39,34 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(homeInterceptor)
 				.addPathPatterns("/home")
-				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**");
+				.excludePathPatterns("/error-page/**",
+									 "/js/**",
+									 "/css/**",
+									 "/api/**");
 
 		registry.addInterceptor(roleAuthInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/home"
-									,"/","/account/login","/account/logout");
+				.excludePathPatterns("/error-page/**",
+									 "/js/**",
+									 "/css/**",
+									 "/api/**",
+									 "/home",
+									 "/",
+									 "/account/login",
+									 "/account/logout",
+									 "/sse/**",
+									 "/webjars/**");
 
 		registry.addInterceptor(commonInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**","/js/**","/css/**","/api/**","/account/**","/","/admin/**");
+				.excludePathPatterns("/error-page/**",
+									 "/js/**",
+									 "/css/**",
+									 "/api/**",
+									 "/account/**",
+									 "/",
+									 "/admin/**",
+									 "/webjars/**");
 	}
 
 	// 아래의 방식 대신 @WebFilter를 사용해서 필터를 거는 방식도 사용할 수 있음

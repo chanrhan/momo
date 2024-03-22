@@ -9,7 +9,7 @@ function stepToNext(){
     createForm.delete('spec');
     var body = convertFormDataToObject(createForm);
 
-    if(dupTelOnMonth(body["shop_id"],body["cust_tel"],body["actv_dt"])){
+    if(isDupTelInSameMonth(body["shop_id"],body["cust_tel"],body["actv_dt"])){
         var result = confirm("선택한 달에 동일한 전화번호가 존재합니다. 계속 진행하시겠습니까?");
         if(!result){
             return;
@@ -95,7 +95,7 @@ function subSupDiv(_this){
     $(_this).remove();
 }
 
-function dupTelOnMonth(shop_id, cust_tel, actv_dt){
+function isDupTelInSameMonth(shop_id, cust_tel, actv_dt){
     var body = {
         shop_id: shop_id,
         cust_tel: cust_tel,

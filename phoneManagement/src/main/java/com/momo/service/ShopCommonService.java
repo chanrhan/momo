@@ -5,18 +5,14 @@ import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ShopCommonService extends CommonService {
-	private final UserCommonService userCommonService;
 	private final ShopCommonMapper shopCommonMapper;
 
 	public int updateSendTel(ShopCommonVO vo){

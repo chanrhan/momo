@@ -1,6 +1,5 @@
 package com.momo.mapper;
 
-import com.momo.vo.AlarmVO;
 import com.momo.vo.ItemCommonVO;
 import com.momo.vo.SearchVO;
 import org.apache.ibatis.annotations.Mapper;

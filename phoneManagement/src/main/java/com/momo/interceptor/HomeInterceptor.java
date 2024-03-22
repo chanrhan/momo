@@ -16,7 +16,7 @@ public class HomeInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("HOME INTERCEPTOR");
+//		System.out.println("HOME INTERCEPTOR: "+request.getRequestURL());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication == null){
 			response.sendRedirect("/error/common");
