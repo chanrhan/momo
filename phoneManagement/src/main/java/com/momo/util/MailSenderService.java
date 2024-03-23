@@ -1,9 +1,9 @@
-package com.momo.service;
+package com.momo.util;
 
 import com.momo.enums.MailType;
 import com.momo.generator.CommonMailSender;
-import com.momo.response.MailCreateResponse;
-import com.momo.util.PropertiesUtil;
+import com.momo.domain.response.MailCreateResponse;
+import com.momo.service.ShopCommonService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +15,11 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class MailSendService {
+public class MailSenderService {
 	@Value("${momo.mail.invite.address}")
 	private String INVITE_ADDRESS;
 
-	private final CommonMailSender mailSender;
+	private final CommonMailSender  mailSender;
 	private final ShopCommonService shopCommonService;
 
 	public ResponseEntity<MailCreateResponse> joinEmail(String email, MailType type, HttpSession session){
@@ -91,11 +91,9 @@ public class MailSendService {
 	}
 
 	private MailCreateResponse createAuthMail(HttpSession session){
-		MailCreateResponse response = new MailCreateResponse("회원 가입 인증 이메일입니다.");
+		MailCreateResponse response = new MailCreateResponse("모모 인증번호 확인 이메일입니다.");
 		int authNumber = mailSender.makeRandomNumber();
-
-//		Object _userId = session.getAttribute("user_id");
-//		String userId = (_userId != null) ? _userId.toString() : "unknown";
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("<h4>" +
 						  "아래의 인증번호를 인증번호 확인란에 기입하여 주세요." +

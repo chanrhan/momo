@@ -3,7 +3,7 @@ package com.momo.controller;
 import com.momo.auth.RoleAuth;
 import com.momo.service.MsgCommonService;
 import com.momo.service.ShopCommonService;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import com.momo.vo.MsgCommonVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
@@ -22,8 +22,8 @@ import java.util.Map;
 @RequestMapping("/msg")
 @PreAuthorize("isAuthenticated()")
 public class MessageController {
-	private final UserCommonService userCommonService;
-	private final MsgCommonService  msgCommonService;
+	private final UserService      userService;
+	private final MsgCommonService msgCommonService;
 	private final ShopCommonService shopCommonService;
 
 	@GetMapping("/home")

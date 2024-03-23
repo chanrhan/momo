@@ -10,7 +10,7 @@ function uploadImage(file){
     console.log(fileList[0]);
 
     $.ajax({
-        url: '/img/upload',
+        url: '/img/upload/spec',
         type: 'post',
         contentType: false,
         processData: false,

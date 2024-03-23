@@ -110,7 +110,7 @@ public class SaleController {
 	@ResponseBody
 	public boolean createSale(@RequestPart(value = "sale") SaleVO vo,
 							  @RequestPart(value = "spec") MultipartFile file) {
-		String path = imageService.upload(file);
+		String path = imageService.upload("spec", file);
 		vo.setSpec(path);
 		return saleService.insertSale(vo) != 0;
 	}
@@ -120,7 +120,7 @@ public class SaleController {
 	public boolean updateSale(@RequestPart(value = "sale") SaleVO vo,
 							  @RequestPart(value = "spec") MultipartFile file) {
 //		System.out.println(vo);
-		String path = imageService.upload(file);
+		String path = imageService.upload("spec", file);
 		vo.setSpec(path);
 		return saleService.updateSale(vo) != 0;
 	}
@@ -309,6 +309,6 @@ public class SaleController {
 //		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
 //			return null;
 //		}
-		return saleService.dupTelOnMonth(vo);
+		return saleService.isDuplicatedTel(vo);
 	}
 }

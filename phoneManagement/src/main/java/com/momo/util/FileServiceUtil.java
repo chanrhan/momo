@@ -43,8 +43,12 @@ public class FileServiceUtil {
 		return fileName.substring(fileName.lastIndexOf(".") + 1);
 	}
 
-	public static UrlResource getFileResource(String path) throws MalformedURLException {
-		return new UrlResource("file:" + LOCAL_STORAGE_PATH + path);
+	public static String getFileSavePath(String dir){
+		return "C:" + LOCAL_STORAGE_PATH + dir + '/';
+	}
+
+	public static UrlResource getFileResource(String dir, String path) throws MalformedURLException {
+		return new UrlResource("file:" + LOCAL_STORAGE_PATH + dir + '/' + path);
 	}
 
 	public static String getSaveFilePath(String fileName){
@@ -87,6 +91,8 @@ public class FileServiceUtil {
 		}
 	}
 
+
+	// 시도했지만 안 쓰는 이미지 압축 함수들
 	public static void compress(InputStream is) throws Exception{
 		compress(is, "C:/"+LOCAL_STORAGE_PATH);
 	}

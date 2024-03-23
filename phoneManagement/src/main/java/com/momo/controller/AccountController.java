@@ -1,19 +1,19 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
-import com.momo.emitter.NotificationEmitter;
 import com.momo.service.*;
 import com.momo.util.BusinessmanApiUtil;
 import com.momo.vo.NotificationVO;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserCommonVO;
+import com.momo.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +23,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-	private final UserCommonService userCommonService;
+	private final UserService userService;
 
 	private final TermService       termService;
 	private final ShopCommonService shopCommonService;
 	private final RegionService       regionService;
-	private final NotificationEmitter notificationEmitter;
 
 	private final NotificationService notificationService;
+	private final ImageService imageService;
 
 	@GetMapping("/login")
 	public String login() {
@@ -84,12 +84,12 @@ public class AccountController {
 	@PostMapping("/submit")
 	@ResponseBody
 	@Transactional
-	public boolean signupSubmit(@RequestBody UserCommonVO vo, HttpSession session) {
-		int result = userCommonService.insertUser(vo);
+	public boolean signupSubmit(@RequestBody UserVO vo, HttpSession session) {
+		int result = userService.insertUser(vo);
 		if(result == 0){
 			return false;
 		}
-		userCommonService.loginWithoutForm(vo.getId(), session);
+		userService.loginDirectly(vo.getId(), session);
 
 		return result != 0;
 	}
@@ -97,17 +97,17 @@ public class AccountController {
 	@PostMapping("/submit/admin")
 	@ResponseBody
 	@Transactional
-	public boolean submitAdmin(@RequestBody UserCommonVO vo, HttpSession session) {
+	public boolean submitAdmin(@RequestBody UserVO vo, HttpSession session) {
 //		System.out.println(vo);
 		String role = vo.getRole();
-		int result = userCommonService.updateRole(vo.getId(), role);
+		int result = userService.updateRole(vo.getId(), role);
 		if (result == 0) {
 			return false;
 		}
 
 		session.setAttribute("user_id", vo.getId());
 
-		userCommonService.replaceAuthority(role);
+		userService.replaceAuthority(role);
 
 		return result != 0;
 	}
@@ -115,8 +115,8 @@ public class AccountController {
 	@PostMapping("/submit/reps")
 	@ResponseBody
 	@Transactional
-	public boolean submitReps(HttpSession session, @RequestBody UserCommonVO vo) {
-		int result = userCommonService.updateRole(vo.getEmpId(), "REPS");
+	public boolean submitReps(HttpSession session, @RequestBody UserVO vo) {
+		int result = userService.updateRole(vo.getEmpId(), "REPS");
 		if (result == 0) {
 			return false;
 		}
@@ -131,7 +131,7 @@ public class AccountController {
 			return false;
 		}
 
-		result = userCommonService.insertEmp(vo);
+		result = userService.insertEmp(vo);
 
 		Integer shopId = vo.getShopId();
 		if(shopId != null && shopId != 0){
@@ -139,7 +139,7 @@ public class AccountController {
 			if(result == 0){
 				return false;
 			}
-			result = userCommonService.updateEmp(UserCommonVO.builder().corpId(corpId).build());
+			result = userService.updateEmp(UserVO.builder().corpId(corpId).build());
 			if(result == 0){
 				return false;
 			}
@@ -150,37 +150,35 @@ public class AccountController {
 
 		notificationService.approvalRequestToAdmin(vo.getEmpId(), corpId);
 
-		userCommonService.replaceAuthority("REPS");
+		userService.replaceAuthority("REPS");
 		return result != 0;
 	}
 
 	@PostMapping("/submit/manager")
 	@ResponseBody
 	@Transactional
-	public boolean submitManager(HttpSession session, @RequestBody UserCommonVO vo) {
-		int result = userCommonService.updateRole(vo.getEmpId(), "MANAGER");
+	public boolean submitManager(HttpSession session, @RequestBody UserVO vo) {
+		int result = userService.updateRole(vo.getEmpId(), "MANAGER");
 		if (result == 0) {
 			return false;
 		}
 
 		int shopId = vo.getShopId();
 		int corpId = vo.getCorpId();
-		if(corpId == 0){
-			vo.setApprovalSt(true);
-		}
-		boolean approve = vo.getApprovalSt();
+//		if(corpId == 0){
+//			vo.setApprovalSt(true);
+//		}
+//		boolean approve = vo.getApprovalSt();
 
-		result = userCommonService.insertEmp(vo);
+		result = userService.insertEmp(vo);
 		if(result == 0){
 			return false;
 		}
 
-		if(!approve && corpId != 0) {
+		if(corpId != 0) {
 			notificationService.approvalRequestToReps(vo.getEmpId(), corpId, shopId);
-		}
-
-		if(corpId == 0){
-			shopCommonService.insertShop(vo.toShopVO());
+		}else {
+			result = shopCommonService.insertShop(vo.toShopVO());
 		}
 
 
@@ -188,7 +186,7 @@ public class AccountController {
 		session.setAttribute("shop_id", shopId);
 		session.setAttribute("corp_id", corpId);
 
-		userCommonService.replaceAuthority("MANAGER", vo.getApprovalSt());
+		userService.replaceAuthority("MANAGER", vo.getApprovalSt());
 
 		return result != 0;
 	}
@@ -196,34 +194,30 @@ public class AccountController {
 	// 아이디 중복체크 API
 	@GetMapping("/validate/dup/{target}")
 	@ResponseBody
-	public boolean checkDupId(@PathVariable String target, @RequestParam("value") String value) {
+	public boolean isDuplicated(@PathVariable String target, @RequestParam String value) {
 		//		System.out.println(target);
 		//		System.out.println(value);
 		switch (target) {
 			case "id":
-				return userCommonService.selectUserById(value) == null;
+				return userService.selectUserById(value) == null;
 			case "email":
-				return userCommonService.selectUserByEmail(value) == null;
+				return userService.selectUserByEmail(value) == null;
 		}
 		return false;
+	}
+
+	@PostMapping("/pfp/update")
+	@ResponseBody
+	public boolean updatePfp(@RequestPart String userId,
+							 @RequestPart MultipartFile mf){
+		String pfpPath = imageService.upload("pfp", mf);
+		return userService.updatePfp(UserVO.builder().id(userId).pfp(pfpPath).build()) != 0;
 	}
 
 	@PostMapping("/validate/bno")
 	@ResponseBody
 	public Map<String,Object> validateBusinessNumber(@RequestBody Map<String,Object> map) {
-//		String startDt = map.get("businesses").toString().replace("-","");
-//		map.put("start_dt",startDt);
-		System.out.println("before: "+map);
-		Map<String,Object> j = BusinessmanApiUtil.validate(map);
-		System.out.println("after: "+j);
-		return j;
-	}
-
-	@GetMapping("/city")
-	@ResponseBody
-	public String[] getCity(@RequestParam String state) {
-		String cities = regionService.selectByState(state);
-		return cities.split(",");
+		return BusinessmanApiUtil.validate(map);
 	}
 
 	@PostMapping("/approve")
@@ -231,12 +225,12 @@ public class AccountController {
 	@Transactional
 	public boolean approve(@RequestBody NotificationVO vo){
 		String receiverId = vo.getReceiverId();
-		int result = userCommonService.updateApproveState(receiverId, true);
+		int result = userService.updateApproval(receiverId, true);
 		if(result == 0){
 			return false;
 		}
 
-		Map<String,Object> emp = userCommonService.selectEmpById(receiverId);
+		Map<String,Object> emp = userService.selectEmpById(receiverId);
 		if(emp.get("role").equals("REPS")){
 			int corpId = Integer.parseInt(emp.get("corp_id").toString());
 			result = shopCommonService.updateCorpPoint(corpId, 5000);
@@ -260,16 +254,21 @@ public class AccountController {
 			vo.setSelect(new HashMap<>());
 		}
 		vo.getSelect().put("corp_id", session.getAttribute("corp_id").toString());
-		System.out.println("invitable chat : "+vo);
-		return userCommonService.searchChatInvitableUser(vo);
+//		System.out.println("invitable chat : "+vo);
+		return userService.searchChatInvitableUser(vo);
 	}
 
-	//	@PostMapping("/search/shop")
-	//	@ResponseBody
-	//	public List<ShopVO> searchShopByAddress(@RequestBody RegionVO regionVO){
-	////		System.out.println(regionVO);
-	//		return shopService.searchByRegion(regionVO);
-	//	}
+	@PostMapping("/find/id/tel")
+	@ResponseBody
+	public List<Map<String,Object>> tryFindUserIdByTel(@RequestBody UserVO vo){
+		return userService.tryFindUserIdByTel(vo);
+	}
+
+	@PostMapping("/find/id/email")
+	@ResponseBody
+	public List<Map<String,Object>> tryFindUserIdByEmail(@RequestBody UserVO vo){
+		return userService.tryFindUserIdByEmail(vo);
+	}
 
 
 }

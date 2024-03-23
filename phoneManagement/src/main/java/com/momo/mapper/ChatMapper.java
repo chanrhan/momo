@@ -9,18 +9,18 @@ import java.util.Map;
 @Mapper
 public interface ChatMapper {
 	// Chatroom Info
-	public int insertChatRoom(ChatVO vo);
+	public int createChatRoom(ChatVO vo);
 	public int updateChatRoom(ChatVO vo);
 	public List<Map<String,Object>> selectChatRoom(ChatVO vo);
 	public Integer getMaxChatRoomId();
 	public Integer getChatRoomHeadCount(int roomId);
 
 	// Chatroom Member
-	public int insertChatRoomMember(ChatVO vo);
+	public int insertChatRoomUser(ChatVO vo);
 	public int deleteChatRoomMember(ChatVO vo);
 	public int updateAlarmState(ChatVO vo);
 	public int updateNoteFold(ChatVO vo);
-	public List<Map<String,Object>> selectChatRoomMember(ChatVO vo);
+	public List<Map<String,Object>> selectChatRoomUser(ChatVO vo);
 	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo);
 	public List<Map<String,Object>> readChatRoom(ChatVO vo);
 	public Integer getLastRead(ChatVO vo);

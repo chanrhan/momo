@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface RegionMapper {
 	public List<String> selectAllState();
-	public String selectByState(String state);
+	public String selectCityByState(String state);
 }

@@ -2,8 +2,8 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.service.ShopCommonService;
-import com.momo.service.UserCommonService;
-import com.momo.vo.UserCommonVO;
+import com.momo.service.UserService;
+import com.momo.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +18,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class ProfileController {
-	private final UserCommonService userCommonService;
+	private final UserService       userService;
 	private final ShopCommonService shopCommonService;
 
 	@GetMapping("/home")
 	public String profileInfo(Model model){
-		Map<String,Object> user = userCommonService.selectUserByContext();
+		Map<String,Object> user = userService.selectUserByContext();
 		model.addAttribute("userInfo", user);
 		return "profile/home";
 	}
@@ -37,14 +37,14 @@ public class ProfileController {
 
 	@PostMapping("/update")
 	@ResponseBody
-	public boolean updateProfile(@RequestBody UserCommonVO vo){
-		return userCommonService.updateUser(vo) != 0;
+	public boolean updateProfile(@RequestBody UserVO vo){
+		return userService.updateUser(vo) != 0;
 	}
 
 	@PostMapping("/update/password")
 	@ResponseBody
-	public boolean updatePassword(@RequestBody UserCommonVO vo){
-		return userCommonService.updatePassword(vo) != 0;
+	public boolean updatePassword(@RequestBody UserVO vo){
+		return userService.updatePassword(vo) != 0;
 	}
 
 	@GetMapping("/payment/charge")

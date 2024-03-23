@@ -2,10 +2,10 @@ package com.momo.service;
 
 import com.momo.enums.ChatResponseHeader;
 import com.momo.mapper.ChatMapper;
-import com.momo.mapper.UserCommonMapper;
-import com.momo.vo.ChatResponse;
+import com.momo.mapper.UserMapper;
+import com.momo.domain.response.ChatResponse;
 import com.momo.vo.ChatVO;
-import com.momo.vo.UserCommonVO;
+import com.momo.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 public class ChatService {
-	private final ChatMapper chatMapper;
-	private final UserCommonMapper userCommonMapper;
+	private final ChatMapper          chatMapper;
+	private final UserMapper          userMapper;
 	private final Map<String, String> connectedUserMap = new HashMap<>();
 
 	// Chat Room
@@ -32,18 +32,7 @@ public class ChatService {
 	// 방금 생성한 room_id를 반환해줘야 하기 떄문에 일단 현 상태로 보류
 	@Transactional
 	public int createChatRoom(ChatVO vo){
-		int roomId = getMaxChatRoomId()+1; // *
-		vo.setRoomId(roomId);
-		System.out.println("create room: "+vo);
-		int result = chatMapper.insertChatRoom(vo);
-		if(result == 0){
-			return result;
-		}
-		vo.setMaster(true);
-
-		chatMapper.insertChatRoomMember(vo);
-//		sendServerChat(ChatMessageType.CREATE, vo);
-		return roomId;
+		return chatMapper.createChatRoom(vo);
 	}
 	public ChatResponse connect(String simpSessionId, String userId){
 		connectedUserMap.put(simpSessionId, userId);
@@ -64,17 +53,17 @@ public class ChatService {
 		return connectedUserMap.values().stream().toList();
 	}
 	public List<Map<String,Object>> loadChatRoomUser(int roomId){
-		return chatMapper.selectChatRoomMember(ChatVO.builder().roomId(roomId).build());
+		return chatMapper.selectChatRoomUser(ChatVO.builder().roomId(roomId).build());
 	}
 	public ChatResponse joinChatroom(ChatVO vo){
 //		int maxChatId = getMaxChatId(vo.getRoomId());
 //		vo.setFirstRead(maxChatId);
 //		vo.setLastRead(maxChatId);
-		chatMapper.insertChatRoomMember(vo);
+		chatMapper.insertChatRoomUser(vo);
 		return sendServerChat(ChatResponseHeader.JOIN, vo);
 	}
 	public ChatResponse inviteChatroom(ChatVO vo){
-		chatMapper.insertChatRoomMember(vo);
+		chatMapper.insertChatRoomUser(vo);
 		return sendServerChat(ChatResponseHeader.INVITE, vo);
 	}
 	public int getChatRoomHeadCount(int roomId){
@@ -117,7 +106,7 @@ public class ChatService {
 	private String makeChatContent(String userId, ChatResponseHeader type){
 		String username;
 		try{
-			username = userCommonMapper.selectUser(UserCommonVO.builder().id(userId).build()).get(0).get("name").toString();
+			username = userMapper.selectUser(UserVO.builder().id(userId).build()).get(0).get("name").toString();
 		}catch (NullPointerException e){
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -156,7 +145,7 @@ public class ChatService {
 	// Chat Emo
 	public ChatResponse sendEmoChat(ChatVO vo){
 		vo.setEmo("emo"+vo.getEmo());
-		System.out.println("emo: "+vo);
+//		System.out.println("emo: "+vo);
 		return ChatResponse.builder()
 				.header(ChatResponseHeader.EMO)
 				.emoji(chatMapper.insertChatEmo(vo))

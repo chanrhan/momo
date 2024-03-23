@@ -1,11 +1,10 @@
 package com.momo.service;
 
 import com.momo.domain.user.UserDetailsImpl;
-import com.momo.mapper.ShopCommonMapper;
-import com.momo.mapper.UserCommonMapper;
+import com.momo.mapper.UserMapper;
 import com.momo.util.SecurityContextUtil;
 import com.momo.vo.SearchVO;
-import com.momo.vo.UserCommonVO;
+import com.momo.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,36 +19,55 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class UserCommonService extends CommonService implements UserDetailsService{
+public class UserService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
-	private final UserCommonMapper userCommonMapper;
-	private final ShopCommonMapper shopCommonMapper;
+	private final UserMapper       userMapper;
 
-	public int loginNow(String id){
-		return userCommonMapper.loginNow(id);
+
+
+	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
+		return userMapper.tryFindUserIdByTel(vo);
+	}
+
+	public List<Map<String,Object>> tryFindUserIdByEmail(UserVO vo){
+		return userMapper.tryFindUserIdByEmail(vo);
+	}
+
+	public void sendAuthNumberByEmailForUpdatePassword(String id){
+
+	}
+
+	public void sendAuthNumberByTelForUpdatePassword(String id){
+
+	}
+
+	public void loginNow(String id){
+		userMapper.loginNow(id);
 	}
 
 	public int updateUserToDormant(int date){
-		return userCommonMapper.updateUserToDormant(date);
+		return userMapper.updateUserToDormant(date);
 	}
 
-	public List<Map<String,Object>> selectUserInfo(UserCommonVO vo){
+	public List<Map<String,Object>> selectUserInfo(UserVO vo){
 		if(vo.getOrder() == null){
 			vo.setOrder("regi_dt");
 		}
-		return userCommonMapper.selectUserInfo(vo);
+		return userMapper.selectUserInfo(vo);
 	}
 
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo){
-		return userCommonMapper.searchUserInfo(vo);
+		return userMapper.searchUserInfo(vo);
 	}
 
 	// Common
-	public void loginWithoutForm(String username, HttpSession session){
+	public void loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
 		Authentication auth = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -60,29 +78,34 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	// User Account
-	public int insertUser(UserCommonVO vo){
+	public int insertUser(UserVO vo){
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
-		return userCommonMapper.insertUser(vo);
+		return userMapper.insertUser(vo);
 	}
-	public int updateUser(UserCommonVO vo){
-		return userCommonMapper.updateUser(vo);
+	public int updateUser(UserVO vo){
+		return userMapper.updateUser(vo);
 	}
 
-	public int updatePassword(UserCommonVO vo){
+	public int updatePassword(UserVO vo){
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
-		return userCommonMapper.updateUser(vo);
+		return userMapper.updateUser(vo);
 	}
-	public int updateApproveState(String id, boolean state){
-		UserCommonVO vo = UserCommonVO.builder().empId(id).approvalSt(state).build();
+	public int updateApproval(String id, boolean state){
+		UserVO vo = UserVO.builder().empId(id).approvalSt(state).build();
 		return updateEmp(vo);
 	}
-
+	public int updatePfp(UserVO vo){
+		return userMapper.updatePfp(vo);
+	}
+	public String getPfpFilePath(String id){
+		return userMapper.getPfpFilePath(id);
+	}
 	public int deleteUser(String id) {
-		return userCommonMapper.deleteUser(id);
+		return userMapper.deleteUser(id);
 	}
 
-	public List<Map<String,Object>> selectUser(UserCommonVO vo) {
-		return userCommonMapper.selectUser(vo);
+	public List<Map<String,Object>> selectUser(UserVO vo) {
+		return userMapper.selectUser(vo);
 	}
 
 	public Map<String,Object> selectUserByContext(){
@@ -91,8 +114,7 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	public Map<String,Object> selectUserById(String id){
-		UserCommonVO vo = UserCommonVO.builder().id(id).build();
-		List<Map<String,Object>> list = selectUser(vo);
+		List<Map<String,Object>> list = selectUser(UserVO.builder().id(id).build());
 		if(list == null || list.isEmpty()){
 			return null;
 		}
@@ -100,8 +122,7 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	public Map<String,Object> selectUserByEmail(String email){
-		UserCommonVO vo = UserCommonVO.builder().email(email).build();
-		List<Map<String,Object>> list = selectUser(vo);
+		List<Map<String,Object>> list = selectUser(UserVO.builder().email(email).build());
 		if(list == null || list.isEmpty()){
 			return null;
 		}
@@ -109,26 +130,21 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	public List<Map<String,Object>> searchUser(SearchVO vo) {
-		return userCommonMapper.searchUser(vo);
+		return userMapper.searchUser(vo);
 	}
 
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo){
-		return userCommonMapper.searchChatInvitableUser(vo);
+		return userMapper.searchChatInvitableUser(vo);
 	}
 
 	public int updateRole(String id, String role){
-		UserCommonVO vo = UserCommonVO.builder().id(id).role(role).build();
-		return userCommonMapper.updateUser(vo);
+		UserVO vo = UserVO.builder().id(id).role(role).build();
+		return userMapper.updateUser(vo);
 	}
 
 
 	// Employee
-	public int insertEmp(UserCommonVO vo){
-//		Integer shopId = vo.getShopId();
-//		if(shopId != null && shopId != 0){
-//			Map<String,Object> corp = shopCommonMapper.selectShop(ShopCommonVO.builder().shopId(shopId).build()).get(0);
-//			vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
-//		}
+	public int insertEmp(UserVO vo){
 		if(vo.getApprovalSt() == null){
 			vo.setApprovalSt(false);
 		}
@@ -137,21 +153,21 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 			vo.setShopId(0);
 		}
 
-		return userCommonMapper.insertEmp(vo);
+		return userMapper.insertEmp(vo);
 	}
-	public int updateEmp(UserCommonVO vo){
-		return userCommonMapper.updateEmp(vo);
+	public int updateEmp(UserVO vo){
+		return userMapper.updateEmp(vo);
 	}
 
 	public int deleteEmp(String id) {
-		return userCommonMapper.deleteEmp(id);
+		return userMapper.deleteEmp(id);
 	}
 
-	public List<Map<String,Object>> selectEmp(UserCommonVO vo) {
-		return userCommonMapper.selectEmp(vo);
+	public List<Map<String,Object>> selectEmp(UserVO vo) {
+		return userMapper.selectEmp(vo);
 	}
 	public Map<String,Object> selectEmpById(String id){
-		UserCommonVO vo = UserCommonVO.builder().empId(id).build();
+		UserVO                   vo   = UserVO.builder().empId(id).build();
 		List<Map<String,Object>> list = selectEmp(vo);
 		if(list == null || list.isEmpty()){
 			return null;
@@ -160,7 +176,7 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 	}
 
 	public List<Map<String,Object>> searchEmp(SearchVO vo) {
-		return userCommonMapper.searchEmp(vo);
+		return userMapper.searchEmp(vo);
 	}
 
 	public void replaceAuthority(String role){
@@ -181,9 +197,6 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
-
-
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Map<String,Object> user = selectUserById(username);
@@ -202,9 +215,9 @@ public class UserCommonService extends CommonService implements UserDetailsServi
 		}
 
 		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
-			Map<String,Object> emp = selectEmp(UserCommonVO.builder().empId(id).build()).get(0);
-			if(emp.get("approval_st").equals(true)){
-				System.out.println("success!");
+//			Map<String,Object> emp = selectEmp(UserVO.builder().empId(id).build()).get(0);
+			if(userMapper.isApproved(id)){
+//				System.out.println("success!");
 				userDetails.add(new SimpleGrantedAuthority("APPROVE"));
 			}
 		}

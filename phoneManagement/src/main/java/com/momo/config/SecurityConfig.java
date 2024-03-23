@@ -2,9 +2,8 @@ package com.momo.config;
 
 import com.momo.handler.LoginSuccessHandler;
 import com.momo.handler.LogoutSuccessHandler;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-	private final UserCommonService userCommonService;
+	private final UserService userService;
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -30,7 +29,7 @@ public class SecurityConfig {
 									.key("key")
 									.rememberMeParameter("rememberMe")
 									.tokenValiditySeconds(3600*24*30)
-									.userDetailsService(userCommonService)
+									.userDetailsService(userService)
 						   )
 				.authorizeRequests((authorizeHttpRequests)->authorizeHttpRequests
 						// 모든 인증되지 않은 요청들을 허락한다는 의미
@@ -45,7 +44,7 @@ public class SecurityConfig {
 				.formLogin((formLogin)->formLogin
 						.loginPage("/account/login")
 						.defaultSuccessUrl("/home")
-								   .successHandler(new LoginSuccessHandler(userCommonService))
+								   .successHandler(new LoginSuccessHandler(userService))
 						  )
 				// 로그아웃 URL 설정
 				.logout((logout)-> logout

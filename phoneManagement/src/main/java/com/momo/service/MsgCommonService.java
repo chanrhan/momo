@@ -1,9 +1,8 @@
 package com.momo.service;
 
-import com.momo.mapper.ItemCommonMapper;
+import com.momo.generator.MessageGenerator;
 import com.momo.mapper.MsgCommonMapper;
 import com.momo.util.IntegerUtil;
-import com.momo.util.SecurityContextUtil;
 import com.momo.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,30 +15,14 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class MsgCommonService extends CommonService {
-	private final MsgCommonMapper msgCommonMapper;
-	private final ItemCommonMapper itemCommonMapper;
+	private final MessageGenerator messageGenerator;
 
-	private final ItemCommonService itemCommonService;
-	private final UserCommonService userCommonService;
-	private final ShopCommonService shopCommonService;
+	private final MsgCommonMapper msgCommonMapper;
 
 	// Message Form
-	public int insertForm(MsgCommonVO vo) {
-		return msgCommonMapper.insertForm(vo);
-	}
-	public int updateMsgForm(MsgCommonVO vo) {
-		return msgCommonMapper.updateForm(vo);
-	}
-	public int deleteForm(int id) {
-		return msgCommonMapper.deleteForm(id);
-	}
 	public List<Map<String, Object>> selectForm(MsgCommonVO vo) {
 		return msgCommonMapper.selectForm(vo);
 	}
-	public List<Map<String, Object>> searchForm(SearchVO vo) {
-		return msgCommonMapper.searchForm(vo);
-	}
-
 	public List<Map<String,Object>> getAllDefaultForm(){
 		return msgCommonMapper.getAllDefaultForm();
 	}
@@ -58,35 +41,12 @@ public class MsgCommonService extends CommonService {
 		return msgCommonMapper.selectMsg(vo);
 	}
 
-	public Map<String,Object> selectMsgById(int id){
-		MsgCommonVO vo = MsgCommonVO.builder().msgId(id).build();
-		return selectMsg(vo).get(0);
-	}
-
-//	public List<Map<String, Object>> selectMsgBySession(MsgCommonVO vo, HttpSession session) {
-//		Integer shopId = vo.getShopId();
-//		if(shopId != null && shopId == 0){
-//
-//		}
-//		return selectMsg(vo);
-//	}
-
 	public List<Map<String, Object>> selectMsgBySession(HttpSession session) {
 		MsgCommonVO vo = new MsgCommonVO();
 
-//		Object _shopId = ;
-//		if(_shopId != null && !_shopId.equals("0")){
-//		}
 		vo.setShopId(Integer.parseInt(session.getAttribute("shop_id").toString()));
 		vo.setCorpId(Integer.parseInt(session.getAttribute("corp_id").toString()));
 
-//		int shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-//		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-//		if(shopId == 0){
-//			vo.setCorpId(corpId);
-//		}else{
-//			vo.setShopId(shopId);
-//		}
 		return selectMsg(vo);
 	}
 
@@ -100,34 +60,16 @@ public class MsgCommonService extends CommonService {
 		if(vo.getSelect() == null){
 			vo.setSelect(new HashMap<>());
 		}
-//		Object _shopId = ;
-//		if(_shopId != null && !_shopId.equals("0")){
-//		}
 		vo.getSelect().put("shop_id", IntegerUtil.zeroToNull(session.getAttribute("shop_id")));
 		vo.getSelect().put("corp_id", session.getAttribute("corp_id"));
-//		Object _shopId = vo.getSelect().get("shop_id");
-//		int shopId = 0;
-//		if(_shopId == null){
-//			shopId = Integer.parseInt(session.getAttribute("shop_id").toString());
-//		}else{
-//			shopId = Integer.parseInt(_shopId.toString());
-//		}
-//		if(shopId == 0){
-//			vo.getSelect().remove("shop_id");
-//			if(!vo.getSelect().containsKey("corp_id")){
-//				int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-//				vo.getSelect().put("corp_id",corpId);
-//			}
-//		}else{
-//			vo.getSelect().put("shop_id",shopId);
-//		}
 
 		return msgCommonMapper.searchMsg(vo);
 	}
 
+
+	// 코드 너무 지저분하니 나중에 수정할 것
 	public int reserve(MsgCommonVO vo){
 		List<MsgCommonVO> list = vo.getMsgList();
-//		int maxMsgId = getMaxMsgId(vo.getShopId());
 		int result = 0;
 
 		String content = "";
@@ -135,11 +77,10 @@ public class MsgCommonService extends CommonService {
 			vo.setFormId(list.get(i).getFormId());
 			if(list.get(0).getTypeId() == null || list.get(0).getTypeId() == 0) continue;
 			vo.setTypeId(list.get(i).getTypeId());
-//			int formId = Integer.parseInt(list.get(i).get("form_id").toString());
-//			int typeId = Integer.parseInt(list.get(i).get("type_id").toString());
-			content = createContent(vo);
+			String _content = selectForm(MsgCommonVO.builder().formId(vo.getFormId()).build()).get(0).get("content").toString();
+			vo.setContent(_content);
+			content = messageGenerator.createContent(vo);
 
-//			vo.setMsgId(maxMsgId+i+1);
 			vo.setContent(content);
 			vo.setRsvDt(list.get(i).getRsvDt());
 
@@ -151,43 +92,5 @@ public class MsgCommonService extends CommonService {
 		return result;
 	}
 
-	public String createContent(MsgCommonVO vo){
-		int formId = vo.getFormId();
-		int typeId = vo.getTypeId();
-		String content = selectForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
 
-		Map<String,Object > seller = userCommonService.selectUser(UserCommonVO.builder().id(vo.getSellerId()).build()).get(0);
-//		Map<String,Object > customer = userCommonService.selectUser(UserCommonVO.builder().id(vo.getCustNm()).build()).get(0);
-		Map<String,Object> shop = shopCommonService.selectShop(ShopCommonVO.builder().shopId(vo.getShopId()).build()).get(0);
-		content = content.replace("#{seller_nm}", seller.get("name").toString())
-				.replace("#{cust_nm}", vo.getCustNm())
-				.replace("#{shop_nm}]", shop.get("shop_nm").toString());
-
-
-		Map<String, Object> map = null;
-		String serviceNm = "null";
-		String desciprtion = "null";
-		switch (formId){
-			case -2: // 요금제
-				map = itemCommonService.selectPlan(ItemCommonVO.builder().planId(typeId).build()).get(0);
-				serviceNm = map.get("plan_nm").toString();
-				desciprtion = map.get("description").toString();
-//				content = content.replace("%[plan_nm]%", map.get("plan_nm").toString())
-//						.replace("%[description]%", map.get("description").toString());
-				break;
-			case -3: // 부가서비스
-				map = itemCommonService.selectExsvc(ItemCommonVO.builder().exsvcId(typeId).build()).get(0);
-				serviceNm = map.get("exsvc_nm").toString();
-				desciprtion = map.get("description").toString();
-//				content = content.replace("%[exsvc_nm]%", map.get("exsvc_nm").toString())
-//						.replace("%[description]%", map.get("description").toString());
-				break;
-			default:
-				break;
-		}
-		content = content.replace("#{service_nm}", serviceNm)
-				.replace("#{description}", desciprtion);
-
-		return content;
-	}
 }

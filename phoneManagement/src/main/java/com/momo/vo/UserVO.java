@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class UserCommonVO extends CommonQueryVO {
+public class UserVO extends CommonQueryVO {
 	private String id;
 	private String empId;
 	private String repsId;
@@ -26,6 +26,8 @@ public class UserCommonVO extends CommonQueryVO {
 
 	private String  role;
 	private Boolean approvalSt; // 승인 여부
+
+	private String pfp;
 
 	private Integer corpId; // 회사 아이디
 	

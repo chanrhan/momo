@@ -1,7 +1,7 @@
 package com.momo.interceptor;
 
 import com.momo.service.ShopCommonService;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 public class CommonInterceptor implements HandlerInterceptor {
 	private final ShopCommonService shopCommonService;
-	private final UserCommonService userCommonService;
+	private final UserService       userService;
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
@@ -39,7 +39,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 		int corpPt = shopCommonService.getCorpPoint(corpId);
 		modelAndView.addObject("corp_pt",corpPt);
 
-		String userName = userCommonService.selectUserByContext().get("name").toString();
+		String userName = userService.selectUserByContext().get("name").toString();
 		modelAndView.addObject("user_nm", userName);
 
 	}

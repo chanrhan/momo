@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="getSpecFilePath">
+    <select id="getSpecFilePath" resultType="java.lang.String">
         select
             spec
         from
@@ -12,7 +12,7 @@
             sale_id=#{id}
     </select>
 
-    <select id="isDupTelInSameMonth">
+    <select id="isDuplicatedTel" resultType="java.lang.Boolean">
         select IF(count(*) > 0, true, false)
         from tb_sale
         where
@@ -229,7 +229,7 @@
 
     </update>
 
-    <select id="searchSale" parameterType="com.momo.vo.SearchVO">
+    <select id="searchSale" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
         with tb as (
             select
                 count(cust_tel) as dup_tel,
@@ -269,7 +269,7 @@
         ${prop}
     </select>
 
-    <select id="selectSale" parameterType="com.momo.vo.SaleVO">
+    <select id="selectSale" parameterType="com.momo.vo.SaleVO" resultType="java.util.Map">
         with tb as (
         select
         count(cust_tel) as dup_tel,

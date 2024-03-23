@@ -1,8 +1,8 @@
 package com.momo.controller;
 
 import com.momo.enums.MailType;
-import com.momo.response.MailCreateResponse;
-import com.momo.service.MailSendService;
+import com.momo.domain.response.MailCreateResponse;
+import com.momo.util.MailSenderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/mail")
 public class MailSendController {
-	private final MailSendService mailSendService;
+	private final MailSenderService mailSenderService;
 
 	@GetMapping("/invite")
 	@ResponseBody
 	public ResponseEntity<MailCreateResponse> invite(@RequestParam String email, HttpSession session){
-		return mailSendService.joinEmail(email, MailType.INVITE, session);
+		return mailSenderService.joinEmail(email, MailType.INVITE, session);
 	}
 
 }

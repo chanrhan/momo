@@ -1,4 +1,4 @@
-package com.momo.vo;
+package com.momo.enums;
 
 public enum ChatMessageType {
 	JOIN,

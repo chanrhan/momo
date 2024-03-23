@@ -1,4 +1,4 @@
-package com.momo.response;
+package com.momo.domain.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

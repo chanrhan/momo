@@ -14,9 +14,8 @@ import java.nio.file.Files;
 @Service
 @Slf4j
 public class ImageService {
-
-	public ResponseEntity<?> download(String path) throws IOException {
-		UrlResource resource = FileServiceUtil.getFileResource(path);
+	public ResponseEntity<?> download(String dir,String path) throws IOException {
+		UrlResource resource = FileServiceUtil.getFileResource(dir, path);
 		if(!resource.exists()){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -25,7 +24,7 @@ public class ImageService {
 		return new ResponseEntity<>(byteArray, HttpStatus.OK);
 	}
 
-	public String upload(MultipartFile mf) {
+	public String upload(String dir, MultipartFile mf) {
 		if (mf.isEmpty()) {
 			return null;
 		}
@@ -33,7 +32,7 @@ public class ImageService {
 		String fileName = FileServiceUtil.createSaveFileName(mf);
 		String formatName = FileServiceUtil.extractExt(fileName);
 		long fileSize = mf.getSize();
-		String savePath = "C:" + FileServiceUtil.LOCAL_STORAGE_PATH;
+		String savePath = FileServiceUtil.getFileSavePath(dir);
 
 //		if(!new File(savePath).exists()){
 //			log.info(savePath+" is not existed");

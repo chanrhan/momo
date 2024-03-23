@@ -1,6 +1,6 @@
 package com.momo.generator;
 
-import com.momo.response.MailCreateResponse;
+import com.momo.domain.response.MailCreateResponse;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSenderImpl;

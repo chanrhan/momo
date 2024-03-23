@@ -2,10 +2,10 @@ package com.momo.controller;
 
 import com.momo.service.SaleService;
 import com.momo.service.ShopCommonService;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import com.momo.util.MessageAPIUtil;
 import com.momo.vo.SaleVO;
-import com.momo.vo.UserCommonVO;
+import com.momo.vo.UserVO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
-	private final UserCommonService userCommonService;
+	private final UserService       userService;
 	private final ShopCommonService shopCommonService;
 	private final SaleService saleService;
 
@@ -92,17 +92,17 @@ public class TestController {
 	@ResponseBody
 	@Transactional
 	public String transactionTest(){
-		UserCommonVO vo = UserCommonVO.builder()
+		UserVO vo = UserVO.builder()
 				.id("adminadmin")
 				.pwd("0000")
 				.name("chan_test")
 				.email("km1104rs@naver.com")
 				.tel("01045240636")
 				.terms("00010").build();
-		userCommonService.insertUser(vo);
+		userService.insertUser(vo);
 
 		vo.setRole("MANAGER");
-		userCommonService.insertEmp(vo);
+		userService.insertEmp(vo);
 		return "Success";
 	}
 

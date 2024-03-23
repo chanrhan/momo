@@ -1,6 +1,6 @@
 package com.momo.job;
 
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
@@ -17,13 +17,13 @@ public class DormantUserJob implements Job {
 	@Value("${momo.schedule.dormant.cycle.date}")
 	public static int DORMANT_CYCLE_DATE; // 일 기준
 
-	private final UserCommonService userCommonService;
+	private final UserService userService;
 
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		log.info("Dormant User Job is processing!");
 
-		int result = userCommonService.updateUserToDormant(DORMANT_CYCLE_DATE);
+		int result = userService.updateUserToDormant(DORMANT_CYCLE_DATE);
 		log.info("User Update to Dormant: "+result);
 	}
 }

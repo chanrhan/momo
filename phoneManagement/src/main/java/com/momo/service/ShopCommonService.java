@@ -45,19 +45,6 @@ public class ShopCommonService extends CommonService {
 		return shopCommonMapper.searchShop(vo);
 	}
 
-//	public List<Map<String,Object>> searchShopByRole(SearchVO vo) {
-//		if(vo.getSelect() != null){
-//			Integer shopId = Integer.parseInt(vo.getSelect().get("shop_id").toString());
-//			if(shopId != null && shopId == 0){
-//				vo.getSelect().remove("shop_id");
-//				String bpNo = getBpNoByShopId(shopId);
-//				vo.getSelect().put("bp_no", bpNo);
-//			}
-//		}
-//
-//		return shopCommonMapper.searchShop(vo);
-//	}
-
 	public int getMaxShopId(){
 		Integer code = shopCommonMapper.getMaxShopId();
 		if(code == null){
@@ -86,11 +73,7 @@ public class ShopCommonService extends CommonService {
 	}
 
 	// Corperation
-//	@Transactional
 	public int insertCorp(ShopCommonVO vo) {
-//		if(vo.getCorpId() == null || vo.getCorpId() == 0){
-//			vo.setCorpId(getMaxCorpId()+1);
-//		}
 		Integer result = transactionTemplate.executeRepeatedly(status -> shopCommonMapper.insertCorp(vo));
 		return (result != null) ? result : 0;
 	}
@@ -129,11 +112,6 @@ public class ShopCommonService extends CommonService {
 	public int getCorpPoint(int id){
 		Integer pt = shopCommonMapper.getCorpPoint(id);
 		return (pt != null) ? pt : 0;
-	}
-
-	// 최초 가입 시 지급 포인트
-	public void giveFirstSignupPoint(){
-
 	}
 
 	public int updateCorpPoint(int corpId, int amount){

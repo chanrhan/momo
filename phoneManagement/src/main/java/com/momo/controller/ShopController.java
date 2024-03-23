@@ -78,7 +78,7 @@ public class ShopController {
 	@GetMapping("/city")
 	@ResponseBody
 	public String[] getCitiesByState(@RequestParam String state){
-		return regionService.selectByState(state).split(",");
+		return regionService.selectCityByState(state).split(",");
 	}
 
 	@PostMapping("/search/shop")

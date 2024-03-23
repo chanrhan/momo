@@ -4,7 +4,7 @@ import com.momo.domain.user.UserDetailsImpl;
 import com.momo.enums.ChatResponseHeader;
 import com.momo.service.ChatService;
 import com.momo.service.NotificationService;
-import com.momo.vo.ChatResponse;
+import com.momo.domain.response.ChatResponse;
 import com.momo.vo.ChatVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;

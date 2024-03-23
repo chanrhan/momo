@@ -15,7 +15,7 @@ public class RegionService {
 		return regionMapper.selectAllState();
 	}
 
-	public String selectByState(String state){
-		return regionMapper.selectByState(state);
+	public String selectCityByState(String state){
+		return regionMapper.selectCityByState(state);
 	}
 }

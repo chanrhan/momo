@@ -2,7 +2,7 @@ package com.momo.controller;
 
 import com.momo.service.ImageService;
 import com.momo.service.SaleService;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +18,26 @@ import java.io.IOException;
 @RequestMapping("/img")
 public class ImageController {
 	private final ImageService imageService;
-	private final UserCommonService userCommonService;
-	private final SaleService saleService;
+	private final UserService  userService;
+	private final SaleService  saleService;
 
 	@PostMapping("/upload")
 	@ResponseBody
 	public String upload(@RequestPart MultipartFile file) {
-		return imageService.upload(file);
+		return imageService.upload("spec", file);
 	}
 
 	@GetMapping("/spec/{id}")
 	@ResponseBody
 	public ResponseEntity<?> downloadSpecImage(@PathVariable int id) throws IOException {
 		String path = saleService.getSpecFilePath(id);
-		return imageService.download(path);
+		return imageService.download("spec",path);
 	}
 
 	@GetMapping("/pfp/{id}")
 	@ResponseBody
-	public ResponseEntity<?> downloadUserProfileImage(@PathVariable int id) throws IOException {
-		String path = saleService.getSpecFilePath(id);
-		return imageService.download(path);
+	public ResponseEntity<?> downloadPfpImage(@PathVariable String id) throws IOException {
+		String path = userService.getPfpFilePath(id);
+		return imageService.download("pfp",path);
 	}
 }

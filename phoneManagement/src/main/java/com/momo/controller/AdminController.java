@@ -3,10 +3,10 @@ package com.momo.controller;
 import com.momo.auth.RoleAuth;
 import com.momo.service.AdminService;
 import com.momo.service.ShopCommonService;
-import com.momo.service.UserCommonService;
+import com.momo.service.UserService;
 import com.momo.vo.SearchVO;
 import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserCommonVO;
+import com.momo.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,8 +21,8 @@ import java.util.Map;
 @RequestMapping("/admin")
 @PreAuthorize("isAuthenticated()")
 public class AdminController {
-	private final AdminService adminService;
-	private final UserCommonService userCommonService;
+	private final AdminService      adminService;
+	private final UserService       userService;
 	private final ShopCommonService shopCommonService;
 
 	@GetMapping("/home")
@@ -39,7 +39,7 @@ public class AdminController {
 		if(list_corp != null && !list_corp.isEmpty()){
 			selectedCorp = list_corp.get(0);
 //			int corpId = Integer.parseInt(selectedCorp.get("corp_id").toString());
-			List<Map<String,Object>> list_user = userCommonService.selectUserInfo(new UserCommonVO());
+			List<Map<String,Object>> list_user = userService.selectUserInfo(new UserVO());
 			model.addAttribute("list_user",list_user);
 		}
 		model.addAttribute("selected_corp", selectedCorp);
@@ -51,7 +51,7 @@ public class AdminController {
 	@PostMapping("/member/list")
 	@ResponseBody
 	public List<Map<String,Object>> searchMemberList(@RequestBody SearchVO vo){
-		return userCommonService.searchUserInfo(vo);
+		return userService.searchUserInfo(vo);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.momo.vo;
+package com.momo.domain.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
