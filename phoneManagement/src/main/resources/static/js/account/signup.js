@@ -44,22 +44,24 @@ function validateId(){
 
 // 비밀번호 형식 검사
 function validatePassword(){
-    var pwd = $('#pwd').val();
-    $('#confirm_pwd').val("");
-    $('#error_pwd').text("");
-    $('#error_confirm_pwd').val("");
-    isPasswordMatched = false;
-    isPasswordChecked = false;
-
-    if(pwd.length < 8 || pwd.length > 33){
-        $('#error_pwd').text("비밀번호는 8~32자리 사이여야 합니다.");
-        return;
-    }
-
-    if(!pwdRegex.test(pwd)){
-        $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
-        return;
-    }
+    // 테스트 할 때만 막아놓자
+    // 런칭할 때는 다시 검사해야함
+    // var pwd = $('#pwd').val();
+    // $('#confirm_pwd').val("");
+    // $('#error_pwd').text("");
+    // $('#error_confirm_pwd').val("");
+    // isPasswordMatched = false;
+    // isPasswordChecked = false;
+    //
+    // if(pwd.length < 8 || pwd.length > 33){
+    //     $('#error_pwd').text("비밀번호는 8~32자리 사이여야 합니다.");
+    //     return;
+    // }
+    //
+    // if(!pwdRegex.test(pwd)){
+    //     $('#error_pwd').text("비밀번호는 영문,숫자,특수문자 3종류를 모두 조합해야 합니다.");
+    //     return;
+    // }
 
     $('#error_pwd').text("");
     isPasswordChecked = true;
@@ -82,7 +84,6 @@ function matchPassword(){
 // 아이디 중복체크
 function checkDupId(){
     var result = checkIdDuplication($('#id').val());
-    console.log(result);
     if(result){
         isIdChecked = true;
         alert("사용 가능한 아이디입니다");
@@ -198,8 +199,6 @@ function isRequiredTermChecked(){
         var st = icon.hasClass('checked');
 
         termString += (st) ? '1':'0';
-        console.log(require);
-        console.log(st);
         if(require === 'true' && st === false){
             rst = false;
         }
@@ -226,8 +225,10 @@ function submitSignup(){
             name: $('#name').val(),
             email: email,
             tel: $('#tel').val(),
-            termStr: termString,
+            terms: termString,
         };
+        sessionStorage.setItem('shop_id', $('#shop_id').val());
+        sessionStorage.setItem('corp_id',$('#corp_id').val());
         return submitDefaultSignup(data);
     }else{
         alert("올바르지 않은 입력 형식이 있습니다!");

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.UserMapper">
+    <select id="getPfpFilePath" resultType="java.lang.String">
+        SELECT pfp
+        FROM tb_account
+        WHERE id = #{id}
+    </select>
+
+    <update id="updatePfp">
+        UPDATE tb_account
+        SET pfp=#{pfp}
+        WHERE id = #{id}
+    </update>
+
+    <select id="isApproved" resultType="java.lang.Boolean">
+        SELECT approval_st
+        FROM tb_emp
+        WHERE emp_id = #{id}
+    </select>
+
+    <select id="tryFindUserIdByEmail" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+        SELECT id,
+               regi_dt
+        FROM tb_account
+        WHERE name = #{name}
+          AND email = #{email}
+    </select>
+
+    <select id="tryFindUserIdByTel" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+        SELECT id,
+               regi_dt
+        FROM tb_account
+        WHERE name = #{name}
+          AND tel = #{tel}
+    </select>
+
+    <select id="getConnectedUser" resultType="java.util.Map">
+        SELECT id   AS user_id,
+               name AS user_nm,
+               role,
+               pfp
+        FROM tb_account
+        WHERE id = #{id}
+    </select>
+
+    <select id="searchChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
+        WITH tb AS (
+                       SELECT ac.id   AS user_id,
+                              ac.name AS user_nm,
+                              em.role,
+                              em.shop_id,
+                              em.corp_id,
+                              sh.shop_nm,
+                              cp.corp_nm
+                       FROM tb_emp em
+                                LEFT OUTER JOIN tb_account ac ON ac.id = em.emp_id
+                                LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id
+                                LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id
+                   )
+
+        SELECT *
+        FROM tb
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
+    </select>
+
+    <update id="updateUserToDormant">
+        UPDATE
+            tb_account
+        SET user_st=2
+        WHERE role != 'ADMIN'
+          AND user_st = 1
+          AND DATEDIFF(CURRENT_DATE, last_login_dt) > #{date}
+    </update>
+
+    <update id="loginNow">
+        UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=1
+        WHERE id = #{id}
+    </update>
+
+    <select id="searchUserInfo" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
+        WITH tb AS (
+                       SELECT ac.*,
+                              cp.corp_bp_no,
+                              cp.corp_id,
+                              cp.corp_nm,
+                              sh.shop_id,
+                              sh.shop_nm
+                       FROM tb_account ac
+                                LEFT OUTER JOIN tb_emp em ON em.emp_id = ac.id
+                                LEFT OUTER JOIN tb_corp cp ON cp.corp_id = em.corp_id
+                                LEFT OUTER JOIN tb_shop sh ON sh.shop_id = em.shop_id
+                   )
+
+        SELECT *
+        FROM tb
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
+    </select>
+
+    <select id="selectUserInfo" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+        with tb as (
+        select
+        ac.*,
+        cp.corp_bp_no,
+        cp.corp_id as corp_id,
+        cp.corp_nm,
+        sh.shop_nm as shop_nm
+        from
+        tb_account ac
+        left outer join tb_emp em on em.emp_id=ac.id
+        left outer join tb_corp cp on cp.corp_id=em.corp_id
+        left outer join tb_shop sh on sh.shop_id=em.shop_id
+        )
+
+        select
+        *
+        from
+        tb
+        where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
+        <if test='pwd != null and !pwd.equals("")'>
+            pwd=#{pwd} and
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email} and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='bpNo != null and !bpNo.equals("")'>
+            corp_bp_no=#{bpNo} and
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm} and
+        </if>
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm=#{shopNm} and
+        </if>
+        <if test='regiDt != null and !regiDt.equals("")'>
+            regi_dt=#{regiDt} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <!--    User-->
+    <select id="selectUser" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+        select
+        *
+        from
+        tb_account
+        where
+        <if test='id != null and !id.equals("")'>
+            id=#{id} and
+        </if>
+        <if test='pwd != null and !pwd.equals("")'>
+            pwd=#{pwd} and
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email} and
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='regiDt != null and !regiDt.equals("")'>
+            regi_dt=#{regiDt} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
+        SELECT *
+        FROM tb_account
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
+    </select>
+
+    <insert id="insertUser" parameterType="com.momo.common.vo.UserVO">
+        INSERT INTO tb_account
+            (id, pwd, name, email, tel, terms)
+        VALUES (#{id}, #{pwd}, #{name}, #{email}, #{tel}, #{terms})
+    </insert>
+
+    <update id="updateUser" parameterType="com.momo.common.vo.UserVO">
+        update
+        tb_account
+        set
+        <if test='name != null and !name.equals("")'>
+            name=#{name},
+        </if>
+        <if test='email != null and !email.equals("")'>
+            email=#{email},
+        </if>
+        <if test='tel != null and !tel.equals("")'>
+            tel=#{tel},
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role},
+        </if>
+        <if test='terms != null and !terms.equals("")'>
+            terms=#{terms},
+        </if>
+        id=#{id}
+        where
+        id=#{id}
+    </update>
+
+    <delete id="deleteUser">
+        DELETE
+        FROM tb_account
+        WHERE id = #{id}
+    </delete>
+
+    <!--    Employee-->
+
+    <insert id="insertEmp" parameterType="com.momo.common.vo.UserVO">
+        INSERT INTO tb_emp
+            (emp_id, role, corp_id, shop_id, approval_st)
+        VALUES (#{empId}, #{role}, #{corpId}, #{shopId}, #{approvalSt})
+    </insert>
+
+    <update id="updateEmp" parameterType="com.momo.common.vo.UserVO">
+        update
+        tb_emp
+        set
+        <if test='shopId != null'>
+            shop_id=#{shopId},
+        </if>
+        approval_st=#{approvalSt}
+        where
+        emp_id=#{empId}
+    </update>
+
+    <delete id="deleteEmp">
+        DELETE
+        FROM tb_emp
+        WHERE emp_id = #{id}
+    </delete>
+
+    <select id="selectEmp" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+        with tb as (
+        select
+        em.*,
+        cp.corp_bp_no
+        from
+        tb_emp em
+        left outer join tb_corp cp on cp.reps_id=em.emp_id
+        )
+
+        select
+        *
+        from
+        tb
+        where
+        <if test='empId != null and !empId.equals("")'>
+            emp_id=#{empId} and
+        </if>
+        <if test='role != null and !role.equals("")'>
+            role=#{role} and
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
+        </if>
+        <if test='shopId != null'>
+            shop_id=#{shopId} and
+        </if>
+        <if test='approvalSt != null'>
+            approval_st=#{approvalSt} and
+        </if>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
+            order by
+            ${order} ${asc}
+        </if>
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
+        </if>
+    </select>
+
+    <select id="searchEmp" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
+        WITH tb AS (
+                       SELECT em.*,
+                              cp.corp_bp_no AS bp_no
+                       FROM tb_emp em
+                                LEFT OUTER JOIN tb_corp cp ON cp.reps_id = em.emp_id
+                   )
+
+        SELECT *
+        FROM tb
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
+    </select>
+
+
+</mapper>

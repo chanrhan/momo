@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/sms")
+@Deprecated
 public class SMSController {
 	@GetMapping("/auth")
 	@ResponseBody

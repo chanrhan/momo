@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Test Home</title>
@@ -10,68 +13,33 @@
 <!--    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+    <script src="/js/test/test.js" th:inline="javascript"></script>
 </head>
 <body>
-<script>
-    const header = $("meta[name='_csrf_header']").attr('content');
-    const token = $("meta[name='_csrf']").attr('content');
+<h2>개발 테스트 페이지</h2>
+<ul>
+    <li>
+        <a th:href="@{/test/js}">Javascript 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/img}">이미지 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/msg}">문자메시지 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/sse}">SSE 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/ws}">WebSocket 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/res/entity}">ResponseEntity 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/exception}">예외 처리 테스트</a>
+    </li>
+</ul>
 
-    function post(side){
-        var data = {
-            name: 'Hee Chan'
-        };
-        var rst = "";
-
-        $.ajax({
-            async: false,
-            url: '/test/post',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            beforeSend: function (xhr){
-                xhr.setRequestHeader(header, token);
-                console.log("before: "+rst);
-            },
-            success: function (result){
-                rst = result;
-                console.log("success: "+rst);
-            },
-            error: function (error){
-                console.log(error);
-            },
-            complete: function (ret){
-                console.log("complete: "+rst);
-            }
-        });
-       console.log("final: "+rst);
-    }
-
-    function get(side){
-        var rst = "";
-
-        $.ajax({
-            async: (side === 'true'),
-            url: '/test/get?name=Chan',
-            type: 'get',
-            success: function (result){
-                rst = result;
-                console.log("success: "+rst);
-            },
-            error: function (error){
-                console.log(error);
-            }
-        });
-        console.log("final: "+rst);
-    }
-</script>
-<!--<a th:href="@{/test/search}">검색 테스트</a>-->
-async:
-<select id="async" class="form-select">
-    <option th:value="false">false</option>
-    <option th:value="true">true</option>
-</select>
-<br>
-<button type="button" class="btn btn-primary" onclick="post($('#async').val())">POST</button>
-<button type="button" class="btn btn-primary" onclick="get($('#async').val())">GET</button>
 </body>
 </html>

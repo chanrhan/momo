@@ -5,6 +5,40 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout.html}">
 <div layout:fragment="content">
-  Message Reserve
+  <script src="/js/msg/msg_reserve.js" th:inline="javascript"></script>
+  <h3>문자 예약 관리</h3>
+  <select id="filter_shop" th:value="${selected_shop != null} ? selected_shop.shop_id : 0" onchange="changeShop()">
+    <option th:if="${list_shop.isEmpty()}" selected value="" disabled>매장 없음</option>
+    <option th:if="${list_shop.size() > 1}" selected value="0">전체</option>
+    <option th:each="shop : ${list_shop}" th:value="${shop.shop_id}" th:text="${shop.shop_nm}"></option>
+  </select>
+  <input type="search" class="form-control" id="keyword">
+  <button type="button" class="btn btn-primary" onclick="searchMessage()">검색</button>
+  <table class="table">
+    <thead>
+    <tr>
+      <th th:value="shop_nm" onclick="orderMessage(this)">지점명</th>
+      <th th:value="send_tp" onclick="orderMessage(this)">문자 유형</th>
+      <th th:value="cust_nm" onclick="orderMessage(this)">받는 사람</th>
+      <th th:value="cust_tel" onclick="orderMessage(this)">전화번호</th>
+      <th th:value="seller_nm" onclick="orderMessage(this)">판매자</th>
+      <th th:value="send_st" onclick="orderMessage(this)">상태</th>
+      <th th:value="rsv_dt" onclick="orderMessage(this)">예약 날짜</th>
+      <th th:value="regi_dt" onclick="orderMessage(this)">등록 날짜</th>
+    </tr>
+    </thead>
+    <tbody id="list_msg" >
+    <tr th:each="msg : ${list_msg}" th:object="${msg}" th:onclick="|showMsgDetail(${msg.shop_id}, ${msg.msg_id})|">
+      <td th:text="*{shop_nm}"></td>
+      <td th:text="*{send_tp}"></td>
+      <td th:text="*{cust_nm}"></td>
+      <td th:text="*{cust_tel}"></td>
+      <td th:text="*{seller_nm}"></td>
+      <td th:text="${(msg.send_st) ? '발송 완료' : '발송 대기'}"></td>
+      <td th:text="*{rsv_dt}"></td>
+      <td th:text="*{regi_dt}"></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 </html>

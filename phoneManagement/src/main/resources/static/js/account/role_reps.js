@@ -12,26 +12,30 @@ let isBNoChecked = false;
 
 // 사업자등록번호 조회 API
 function checkBusinessmanNo(){
-    var data = {
-        "businesses": [
-            {
-                "b_no": $('#b_no').val(),
-                "start_dt": $('#start_dt').val(),
-                "p_nm": $('#p_en_nm').val(),
-                "p_nm2": $('#p_ko_nm').val(),
-                "b_nm": "",
-                "corp_no": "",
-                "b_sector": "",
-                "b_type": "",
-                "b_adr": ""
-            }
-        ]
-    };
+    // var data = {
+    //     "businesses": [
+    //         {
+    //             "b_no": $('#b_no').val(),
+    //             "start_dt": $('#start_dt').val(),
+    //             "p_nm": $('#p_en_nm').val(),
+    //             "p_nm2": $('#p_ko_nm').val(),
+    //             "b_nm": "",
+    //             "corp_no": "",
+    //             "b_sector": "",
+    //             "b_type": "",
+    //             "b_adr": ""
+    //         }
+    //     ]
+    // };
+    var body = {
+        b_no: $('#b_no').val(),
+        start_dt: $('#start_dt').val(),
+        p_nm: $('#p_en_nm').val(),
+        p_nm2: $('#p_ko_nm').val(),
+    }
 
-    var result = validateBusinessman(data);
-    console.log(result);
+    var result = validateBusinessman(body);
     if(result !== null && result.status_code === "OK"){
-        console.log(result);
         if(result.data[0].valid === "01"){
             alert("인증이 완료되었습니다");
             isBNoChecked = true;
@@ -65,10 +69,11 @@ function validateBNo(_this) {
 
 // 최종 회원가입 정보들 서버로 전송
 function submitREPS(){
-    if(!isBNoChecked){
-        alert("사업자번호 인증은 필수입니다!");
-        return;
-    }
+    // if(!isBNoChecked){
+    //     alert("사업자번호 인증은 필수입니다!");
+    //     return;
+    // }
+    var userId = $('#user_id').val();
 
     var pKoNm = $('#p_ko_nm').val();
     var pEnNm = $('#p_en_nm').val();
@@ -81,21 +86,48 @@ function submitREPS(){
     }
 
     var data = {
-        id: $('#user_id').val(),
+        emp_id: userId,
         role: 'REPS',
-        bNo: $('#b_no').val(),
-        pKoNm: pKoNm,
-        pEnNm: pEnNm,
-        corpNm: corpNm,
-        corpTel: corpTel,
-        startDt: startDt
+        bp_no: $('#b_no').val(),
+        bp_ko_nm: pKoNm,
+        bp_en_nm: pEnNm,
+        corp_nm: corpNm,
+        corp_tel: corpTel,
+        start_dt: startDt,
+        shop_id: sessionStorage.getItem('shop_id')
     };
 
-    var result = submitRole(data);
-    console.log(result);
+    var result = submitReps(data);
+    sessionStorage.removeItem('shop_id');
+    sessionStorage.removeItem('corp_id');
     if(result){
-        console.log("success: "+result);
+        // var body2 = {
+        //     alarm_tp: 'approval',
+        //     sender_id: userId
+        // }
+        // ws.send(JSON.stringify(body2));
         window.location.href = "/home";
     }
 
+}
+
+function submitReps(data){
+    var rst = false;
+    $.ajax({
+        url: '/account/submit/reps',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+            console.log(result);
+        }
+    });
+    console.log("end: "+rst);
+    return rst;
 }

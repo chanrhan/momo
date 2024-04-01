@@ -47,7 +47,26 @@ function updateProfile(data){
 function submitDefaultSignup(data){
     var rst = false;
     $.ajax({
-        url: '/account/submit',
+        url: '/account/submit/common',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+        }
+    });
+    return rst;
+}
+
+function submitAdmin(data){
+    var rst = false;
+    $.ajax({
+        url: '/account/submit/admin',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
@@ -78,7 +97,9 @@ function submitRole(data){
         },
         success: function (result){
             rst = result;
+            console.log(result);
         }
     });
+    console.log("end: "+rst);
     return rst;
 }

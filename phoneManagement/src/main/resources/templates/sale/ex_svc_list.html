@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/sale/saleForm_layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/ex_svc_list.js"></script>
+    <h3>부가서비스 목록</h3>
+    <input type="search" id="srch" class="form-control">
+    <button type="button" class="btn-primary" onclick="searchExsvc()">검색</button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>부가서비스 이름</th>
+            <th>설명</th>
+        </tr>
+        </thead>
+        <tbody id="list_exsvc">
+        <tr th:each="exsvc : ${list_exsvc}" th:object="${exsvc}"
+            th:exsvc_id="*{exsvc_id}" th:exsvc_nm="*{exsvc_nm}"
+            onclick="selectExsvc(this)">
+            <td th:text="*{exsvc_nm}"></td>
+            <td th:text="*{description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

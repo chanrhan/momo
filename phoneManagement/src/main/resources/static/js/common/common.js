@@ -8,8 +8,6 @@ const koreanRegex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
 const header = $("meta[name='_csrf_header']").attr('content');
 const token = $("meta[name='_csrf']").attr('content');
 
-
-
 $(document).ready(function (){
     setPasswordToggle();
 });
@@ -36,4 +34,24 @@ function setPasswordToggle(){
             }
         });
     })
+}
+
+
+function createMultiMap(key, value){
+    var map= {};
+    if(key !== ""){
+        value.forEach(function (value, index, array) {
+            map[value] = key;
+        });
+    }
+
+    return map;
+}
+
+function convertFormDataToObject(formData){
+    var ob = {};
+    for(const pair of formData.entries()){
+        ob[pair[0]] = pair[1];
+    }
+    return ob;
 }

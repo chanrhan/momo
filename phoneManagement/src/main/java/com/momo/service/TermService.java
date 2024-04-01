@@ -1,63 +1,32 @@
 package com.momo.service;
 
-import com.momo.mapper.DefaultCRUDMapper;
 import com.momo.mapper.TermMapper;
-import com.momo.role.UserRole;
-import com.momo.vo.TermVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.TermVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TermService implements DefaultCRUDService<TermVO, TermVO> {
+public class TermService extends CommonService {
 	private final TermMapper termMapper;
 
-	@Override
-	public int insert(TermVO key) {
-		return termMapper.insert(key);
+	public int insert(TermVO vo) {
+		return termMapper.insertTerm(vo);
 	}
-
-	@Override
-	public int update(TermVO key) {
-		return 0;
+	public int update(TermVO vo) {
+		return termMapper.updateTerm(vo);
 	}
-
-	@Override
-	public int delete(TermVO key) {
-		return 0;
+	public int delete(int id) {
+		return termMapper.deleteTerm(id);
 	}
-
-	@Override
-	public List<TermVO> select(TermVO key) {
-		return termMapper.select(key);
+	public List<Map<String,Object>> selectTerm(TermVO vo) {
+		return termMapper.selectTerm(vo);
 	}
-
-	@Override
-	public TermVO selectOne(TermVO key) {
-		return select(key).get(0);
+	public List<Map<String,Object>> searchTerm(SearchVO vo) {
+		return termMapper.searchTerm(vo);
 	}
-
-	public List<TermVO> search(TermVO key) {
-		return null;
-	}
-
-	public List<TermVO> selectAll(){
-		return termMapper.selectAll();
-	}
-
-	public int enrollTermStatement(String id, String role, String termSt){
-		int result = 0;
-		char[] terms = termSt.toCharArray();
-		for(int i=0;i<terms.length;++i){
-			result = insert(TermVO.builder().userId(id).role(role).checked((terms[i] == '1')).build());
-			if(result == 0){
-				return 0;
-			}
-		}
-		return result;
-	}
-
-
 }

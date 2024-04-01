@@ -8,6 +8,8 @@
   <script src="/js/api/userapi.js"></script>
   <script src="/js/account/signup.js"></script>
   <form th:action="@{/account/role}" onsubmit="return submitSignup()" method="get">
+    <input type="hidden" id="shop_id" th:value="${shop_id}">
+    <input type="hidden" id="corp_id" th:value="${corp_id}">
     <div class="form-label " id="area_id">
       아이디 : <input type="text" class="form-control" th:valid="false" oninput="validateId()" id="id">
       <button type="button" class="btn-primary" id="btn_checkDupId" onclick="checkDupId()" disabled>아이디 중복체크</button><br>
@@ -31,7 +33,7 @@
       <p class="fieldError" id="error_name"></p>
     </div>
     <div class="form-label " id="area_email">
-      이메일 : <input type="text" class="form-control" oninput="validateEmail()" id="email">
+      이메일 : <input type="text" class="form-control" oninput="validateEmail()" id="email" th:value="${email}">
       <p class="fieldError" id="error_email"></p>
     </div>
     <div class="form-label " id="area_tel">
@@ -46,10 +48,10 @@
     </div>
     이용약관
     <div class="form-label " name="term_field" th:each="term : ${terms}">
-      <i class="icon-check" name="icon_check" th:require="${term.termRqSt}" onclick="checkTerm($(this))" >icon</i>
-      <p th:text="${term.termNm}"></p>
-      <p th:if="${term.termRqSt == true}">[필수]</p>
-      <p th:if="${term.termRqSt == false}">[선택]</p>
+      <i class="icon-check" name="icon_check" th:require="${term.term_rq_st}" onclick="checkTerm($(this))" >icon</i>
+      <p th:text="${term.term_nm}"></p>
+      <p th:if="${term.term_rq_st == true}">[필수]</p>
+      <p th:if="${term.term_rq_st == false}">[선택]</p>
     </div>
     <button type="button" onclick="checkAllTerm()">전체동의</button>
 

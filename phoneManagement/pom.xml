@@ -14,7 +14,7 @@
 	<name>Momo</name>
 	<description>Demo project for Momo</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +49,20 @@
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>2.5.0</version>
+			<exclusions>
+<!--				<exclusion>-->
+<!--					<artifactId>thymeleaf-expression-processor</artifactId>-->
+<!--					<groupId>nz.net.ultraq.thymeleaf</groupId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<artifactId>groovy-extensions</artifactId>-->
+<!--					<groupId>nz.net.ultraq.extensions</groupId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<artifactId>groovy</artifactId>-->
+<!--					<groupId>org.codehaus.groovy</groupId>-->
+<!--				</exclusion>-->
+			</exclusions>
 		</dependency>
 
 <!--		Validation-->
@@ -68,12 +82,36 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>sockjs-client</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.3</version>
+		</dependency>
 
 <!--		SpringBoot DevTools-->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>3.0.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>mybatis</artifactId>
+					<groupId>org.mybatis</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -85,12 +123,34 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>xmlunit-core</artifactId>
+					<groupId>org.xmlunit</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+					<groupId>jakarta.xml.bind</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.mybatis.spring.boot</groupId>-->
+<!--			<artifactId>mybatis-spring-boot-starter-test</artifactId>-->
+<!--			<version>3.2.3</version>-->
+<!--			<scope>test</scope>-->
+<!--		</dependency>-->
+
+<!--		Mybatis-->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.15</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter-test</artifactId>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
 			<version>3.0.3</version>
-			<scope>test</scope>
 		</dependency>
 
 <!--		jaxb-->
@@ -98,6 +158,12 @@
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>4.0.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jakarta.activation-api</artifactId>
+					<groupId>jakarta.activation</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.activation</groupId>
@@ -108,6 +174,20 @@
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 			<version>4.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jakarta.activation-api</artifactId>
+					<groupId>jakarta.activation</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>angus-activation</artifactId>
+					<groupId>org.eclipse.angus</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+					<groupId>jakarta.xml.bind</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!--		jquery-->
@@ -138,13 +218,61 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
         <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
         </dependency>
+		<dependency>
+			<groupId>io.zipkin.brave</groupId>
+			<artifactId>brave-spring-web-servlet-interceptor</artifactId>
+			<version>4.13.6</version>
+		</dependency>
 
+<!--		이메일 라우팅-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>jakarta.activation-api</artifactId>
+					<groupId>jakarta.activation</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>javax.mail</groupId>-->
+<!--			<artifactId>mail</artifactId>-->
+<!--			<version>1.4.7</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 
-    </dependencies>
+		<!--		Quartz-->
+<!--		스케줄러 라이브러리-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+			<version>2.7.5</version>
+			<exclusions>
+<!--				<exclusion>-->
+<!--					<artifactId>spring-context-support</artifactId>-->
+<!--					<groupId>org.springframework</groupId>-->
+<!--				</exclusion>-->
+			</exclusions>
+		</dependency>
+
+<!--		이미지 압축 (Image Compression)-->
+<!--		Thumbnails Libaray-->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.19</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -160,6 +288,26 @@
 					</excludes>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+            <!--			<plugin>-->
+<!--				<groupId>com.github.ferstl</groupId>-->
+<!--				<artifactId>depgraph-maven-plugin</artifactId>-->
+<!--&lt;!&ndash;				<version>4.0.1</version>&ndash;&gt;-->
+<!--				<configuration>-->
+<!--					<createImage>true</createImage>-->
+<!--					<showGroupIds>true</showGroupIds>-->
+<!--					<showVersions>true</showVersions>-->
+<!--					<showDuplicates>true</showDuplicates>-->
+<!--					<showConflicts>true</showConflicts>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 

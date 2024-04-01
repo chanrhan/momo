@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/card.js" th:inline="javascript"></script>
+    <script src="/js/sale/common_sale.js" th:inline="javascript"></script>
+    <a th:href="@{/sale/home}">판매일보 홈</a>
+    <h2>카드</h2>
+    <select id="filter_shop" th:value="${selected_shop != null} ? selected_shop.shop_id : 0" onchange="changeShop()">
+        <option th:if="${list_shop.isEmpty()}" selected value="" disabled>매장 없음</option>
+        <option th:if="${list_shop.size() > 1}" selected value="0">전체</option>
+        <option th:each="shop : ${list_shop}" th:value="${shop.shop_id}" th:text="${shop.shop_nm}"></option>
+    </select>
+    <br>
+    <input type="search" class="form-control" id="srch_sale">
+    <button type="button" class="btn btn-primary" onclick="searchSale()">검색</button>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>견적서</th>
+            <th th:value="shop_nm" onclick="orderSale($(this))">지점명</th>
+            <th th:value="card_st" onclick="orderSale($(this))">상태</th>
+            <th th:value="actv_dt" onclick="orderSale($(this))">개통 날짜</th>
+            <th th:value="cust_nm" onclick="orderSale($(this))">이름</th>
+            <th th:value="cust_tel" onclick="orderSale($(this))">전화번호</th>
+            <th th:value="cust_cd" onclick="orderSale($(this))">식별번호</th>
+            <th th:value="card_div" onclick="orderSale($(this))">카드구분</th>
+            <th th:value="seller_id" onclick="orderSale($(this))">판매자</th>
+            <th th:value="spec" onclick="orderSale($(this))">연락완료</th>
+        </tr>
+        </thead>
+        <tbody id="list_sale" >
+        <tr th:each="sale : ${list}" th:object="${sale}" th:onclick="|showSaleDetail(${sale.shop_id}, ${sale.sale_id})|">
+            <td th:text="*{shop_nm}"></td>
+            <td th:text="*{card_st}"></td>
+            <td th:text="*{actv_dt}"></td>
+            <td th:text="*{cust_nm}"></td>
+            <td th:text="*{cust_tel}"></td>
+            <td th:text="*{cust_cd}"></td>
+            <td th:text="*{card_div}"></td>
+            <td th:text="*{seller_nm}"></td>
+            <td th:text="*{spec}"></td>
+            <td th:text="|X|"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

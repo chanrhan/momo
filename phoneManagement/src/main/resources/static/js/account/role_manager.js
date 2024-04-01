@@ -1,79 +1,130 @@
 
 let pageNo = 1;
 
-function searchCorp(){
+
+$(document).ready(function (){
+   var keyword =  searchCorp(sessionStorage.getItem('corp_id'));
+   $('#input_search_corp').val(keyword);
+});
+
+function searchCorp(corpId){
+    var keyword = $('#input_search_corp').val();
+    var body = {
+        select:{
+
+        },
+        search: {
+            corp_bp_no: keyword,
+            bp_ko_nm: keyword,
+            bp_en_nm: keyword,
+            shop_nm: keyword,
+            shop_addr: keyword,
+            corp_nm: keyword
+        },
+        order: "regi_dt"
+    };
+
+    if(corpId !== null && corpId !== 0 && corpId !== '0'){
+        body['select']['corp_id'] = corpId;
+    }
+    console.log(body);
+
+    var corp_nm_keyword = "";
+
     $.ajax({
-        url: '/account/search/corp?page='+pageNo+'&keyword='+$('#input_search_corp').val(),
-        type: 'get',
+        url: '/shop/search/shop',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
         success: function (result){
             var list_shop = document.getElementById('list_shop');
             list_shop.innerHTML = "";
 
-            var list = result.records;
-            list.forEach(function (value, index, array){
-                console.log(value.shopCd);
-                console.log(value.id);
-                list_shop.innerHTML += "<div>" +
-                    "<div>" +
-                    "<p>" +
-                    value.corpNm +
-                    "</p>" +
-                    "<p>" +
-                    value.bNo +
-                    "</p>" +
-                    "</div>" +
-                    "<div>" +
-                    "<p>" +
-                    value.shopNm +
-                    "</p>" +
-                    "<p>" +
-                    value.shopAddr +
-                    "</p>" +
-                    "<p>" +
-                    value.shopTel +
-                    "</p>" +
-                    "</div>" +
-                    "<button class='btn btn-primary' name='btn_select_shop' value='" +
-                    value.shopCd +
+            result.forEach(function (value, index, array){
+                corp_nm_keyword = value.corp_nm;
+                list_shop.innerHTML += "<tr shop_id='" +
+                    value.shop_id +
+                    "' corp_id='" +
+                    value.corp_id +
                     "' reps_id='" +
-                    value.id +
+                    value.reps_id +
+                    "' onclick='submitMANAGER(this)" +
                     "'>" +
-                    "선택" +
-                    "</button>" +
-                    "</div>";
+                    "<td>" +
+                    value.corp_nm +
+                    "</td>" +
+                    "<td>" +
+                    value.bp_ko_nm +
+                    "</td>" +
+                    "<td>" +
+                    value.shop_bp_no +
+                    "</td>" +
+                    "<td>" +
+                    value.shop_nm +
+                    "</td>" +
+                    "<td>" +
+                    value.shop_addr +
+                    "</td>" +
+                    "<td>" +
+                    value.shop_tel +
+                    "</td>" +
+                    "</tr>";
             });
-            document.getElementsByName('btn_select_shop')
-                .forEach(function (value, key, parent) {
-                    $(value).on('click',function (){
-                        var shopCode = $(value).val();
-                        var repsId = $(value).attr('reps_id');
-                        console.log("click: "+shopCode +" / " + repsId);
-                        submitMANAGER(shopCode, repsId);
-                    });
-                }
-            );
         }
     });
+    return corp_nm_keyword;
 }
 
-function submitMANAGER(shopCode, repsId){
+function submitMANAGER(_this){
+    var userId = $('#user_id').val();
+    var shopId = $(_this).attr('shop_id');
+    var corpId = $(_this).attr('corp_id');
+    var repsId = $(_this).attr('reps_id');
+
     var data = {
-        id: $('#user_id').val(),
+        emp_id: userId,
         role: 'MANAGER',
-        shopCd: shopCode
+        shop_id: shopId,
+        corp_id: corpId,
+        approval_st: (corpId !== '0' && corpId === sessionStorage.getItem('corp_id'))
     };
 
-    var result = submitRole(data);
-    console.log(result);
+    var result = submitManager(data);
+    sessionStorage.removeItem('shop_id');
+    sessionStorage.removeItem('corp_id');
     if(result){
-        data = {
-            alarmTp: 'approval',
-            sender: $('#user_id').val(),
-            receiver: repsId
-        };
-
-        ws.send(JSON.stringify(data));
-        console.log("success: "+result);
+        // data = {
+        //     alarm_tp: 'approval',
+        //     sender_id: userId,
+        //     receiver_id: repsId
+        // };
+        //
+        // ws.send(JSON.stringify(data));
         window.location.href = "/home";
     }
+}
+
+function submitManager(data){
+    var rst = false;
+    $.ajax({
+        url: '/account/submit/manager',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function (xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result){
+            rst = result;
+            console.log(result);
+        }
+    });
+    console.log("end: "+rst);
+    return rst;
 }

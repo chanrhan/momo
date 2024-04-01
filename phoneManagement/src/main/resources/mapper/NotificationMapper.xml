@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.NotificationMapper">
+    <insert id="insertNotification" parameterType="com.momo.common.vo.NotificationVO">
+        insert into
+            tb_push_notification
+        (alarm_id, sender_id, receiver_id, alarm_tp, content)
+        values
+            ((
+                select
+                    *
+                from
+                    (
+                        select
+                            max(alarm_id) + 1
+                        from
+                            tb_push_notification
+                        where
+                            receiver_id=#{receiverId}
+                    ) as sub
+                for update
+                 )
+            ,#{senderId},#{receiverId},#{alarmTp},#{content})
+
+    </insert>
+
+    <update id="read" >
+        update
+        tb_push_notification
+        set
+            read_st=true
+        where
+            alarm_id=#{alarmId}
+    </update>
+
+    <update id="readAllByReceiver">
+        update
+        tb_push_notification
+        set
+            read_st=1
+        where
+            receiver_id=#{id}
+    </update>
+
+    <update id="approve">
+        update
+            tb_push_notification
+        set
+            content='1'
+        where
+            alarm_id=#{alarmId}
+    </update>
+
+    <select id="searchNotification" parameterType="com.momo.common.vo.SearchVO">
+        with alarm as (
+            select
+                al.alarm_id as alarm_id,
+                al.alarm_tp as alarm_tp,
+                al.receiver_id as receiver_id,
+                ac.id as sender_id,
+                ac.name as sender_nm,
+                s.shop_nm as shop_nm,
+                al.content as content,
+                al.read_st as read_st,
+                al.send_dt as send_dt
+            from
+                tb_push_notification as al
+                    left outer join tb_account ac on ac.id=al.sender_id
+                    left outer join tb_emp e on e.emp_id=al.sender_id
+                    left outer join tb_shop s on s.shop_id=e.shop_id
+        )
+
+        select
+            *
+        from
+            alarm
+        where
+            ${andSelect} and
+            ${orSearch}
+        ${prop}
+<!--        <if test='order != null and !order.equals("")'>-->
+<!--            order by-->
+<!--                ${order} ${asc}-->
+<!--        </if>-->
+<!--        <if test='offset != null and offset gt 0 and limit != null and limit gt 0'>-->
+<!--            limit-->
+<!--            ${offset} ${limit}-->
+<!--        </if>-->
+    </select>
+
+    <select id="selectNotification" parameterType="com.momo.common.vo.NotificationVO">
+        with alarm as (
+            select
+                al.alarm_id as alarm_id,
+                al.alarm_tp as alarm_tp,
+                al.receiver_id as receiver_id,
+                ac.id as sender_id,
+                ac.name as sender_nm,
+                s.shop_nm as shop_nm,
+                al.content as content,
+                al.read_st as read_st,
+                DATE_FORMAT(al.send_dt, '%Y-%m-%d %H:%i') as send_dt
+            from
+                tb_push_notification as al
+                    left outer join tb_account ac on ac.id=al.sender_id
+                    left outer join tb_emp e on e.emp_id=al.sender_id
+                    left outer join tb_shop s on s.shop_id=e.shop_id
+        )
+
+        select
+            *
+        from
+            alarm
+        where
+        <if test='alarmId != null'>
+            alarm_id=#{alarmId} and
+        </if>
+        <if test='alarmTp != null and !alarmTp.equals("")'>
+            alarm_tp=#{alarmTp} and
+        </if>
+        <if test='receiverId != null and !receiverId.equals("")'>
+            receiver_id=#{receiverId} and
+        </if>
+        <if test='senderId != null and !senderId.equals("")'>
+            sender_id=#{senderId} and
+        </if>
+        <if test='content != null and !content.equals("")'>
+            content=#{content} and
+        </if>
+        <if test='readSt != null'>
+            read_st=#{readSt} and
+        </if>
+        <if test='sendDt != null and !sendDt.equals("")'>
+            send_dt=#{sendDt} and
+        </if>
+        <if test='senderNm != null and !senderNm.equals("")'>
+            sender_nm=#{senderNm} and
+        </if>
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm=#{shopNm} and
+        </if>
+        1 = 1
+        order by
+            send_dt desc
+    </select>
+
+</mapper>

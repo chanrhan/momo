@@ -2,44 +2,138 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>New Sale</title>
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+layout:decorate="~{/sale/saleForm_layout.html}">
+<div layout:fragment="content">
     <script src="/js/sale/sale_create.js" th:inline="javascript"></script>
-    <script src="/js/api/openapi.js"></script>
-</head>
-<body>
-    <h3>판매일보 추가</h3>
-    <form th:action="@{/sale/create}" type="post">
+    <h3 th:text="|${shop_nm} 판매일보 추가|"></h3>
+    <form id="create_form">
+        <input type="hidden" name="shop_id" th:value="${shop_id}">
         <h4>고객 정보</h4>
-        이름<input type="text" class="form-control" name="custNm">
-        성별<input type="text" class="form-control" name="custGd">
-        전화번호<input type="text" class="form-control" name="custTel">
-        식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="custCd">
+        이름<input type="text" class="form-control" name="cust_nm">
+        <br>
+        성별<select name="cust_gd">
+            <option selected value="law">법인</option>
+            <option value="male">남</option>
+            <option value="female">여</option>
+        </select>
+        <br>
+        전화번호<input type="text" class="form-control" name="cust_tel">
+        <br>
+        식별번호(생년원일 또는 사업자번호)<input type="text" class="form-control" name="cust_cd">
         <br>
         <h4>개통 정보</h4>
-        통신사<input type="text" class="form-control" name="provider">
+        견적서 파일 <input type="file" class="form-control" name="spec">
+        <br>
+        통신사<select name="provider">
+            <option selected value="skt">SKT</option>
+            <option value="kt">KT</option>
+            <option value="lg">LG</option>
+        </select>
+        <br>
+        모델명<input type="text" class="form-control" name="ph_md">
+        <br>
+        개통 날짜<input type="date" class="form-control" name="actv_dt">
+        <br>
+        판매자 수수료<input type="number" class="form-control" name="seller_cms">
         <br>
         <h4>그린폰</h4>
+        모델명<input type="text" class="form-control" name="green_md">
+        <br>
+        반납 여부<input type="checkbox" class="form-control" th:value="true" name="green_ret">
         <br>
         <h4>세컨</h4>
+        모델명<input type="text" class="form-control" name="sec_md">
+        <br>
+        판매 수수료<input type="number" class="form-control" name="sec_cms">
+        <br>
+        세컨 연결<input type="checkbox" class="form-control" th:value="true" name="sec_st">
         <br>
         <h4>유선</h4>
+        유형<input type="text" class="form-control" name="wt_tp">
+        <br>
+        구분<input type="text" class="form-control" name="wt_div">
+        <br>
+        판매 수수료<input type="text" class="form-control" name="wt_cms">
+        <br>
+        인터넷 개통 요금제<input type="text" class="form-control" name="net_actv_plan">
+        <br>
+        인터넷 하향 요금제<input type="text" class="form-control" name="net_dec_plan">
+        <br>
+        TV 개통 요금제<input type="text" class="form-control" name="tv_actv_plan">
+        <br>
+        TV 하향 요금제<input type="text" class="form-control" name="tv_dec_plan">
         <br>
         <h4>추가</h4>
+        항목<input type="text" class="form-control" name="add_item">
+        <br>
+        금액<input type="text" class="form-control" name="add_pay">
+        <br>
+        날짜<input type="date" class="form-control" name="add_dt">
         <br>
         <h4>지원</h4>
+        <div id="list_sup">
+            <div>
+                지원 구분
+                <select name="sup_div">
+                    <option selected value="" disabled>선택 없음</option>
+                    <option value="1">카드</option>
+                    <option value="2">이체</option>
+                    <option value="3">차액 예약</option>
+                    <option value="4">일시납 개통(현금 개통)</option>
+                    <option value="5">추가지원금(현금 개통)</option>
+                    <option value="6">전산 수납(현급 수납)</option>
+                    <option value="7">유심(현금 수납)</option>
+                    <option value="8">상품권</option>
+                    <option value="9">프리미엄 악세서리</option>
+                    <option value="10">기타</option>
+                </select>
+                지원 금액<input type="number" class="form-control" name="sup_pay">
+                <button type="button" class="btn-primary" onclick="subSupDiv($(this).parent())">-</button>
+            </div>
+        </div>
+        <button type="button" class="btn-primary" onclick="addSupDiv()">+</button>
         <br>
         <h4>체크박스</h4>
+        지인<input type="checkbox" class="form-control" th:value="true" name="friend">
+        <br>
+        부가서비스<input type="checkbox" class="form-control" th:value="true" name="exsvc">
+        <br>
+        결합 변경 예정<input type="checkbox" class="form-control" th:value="true" name="comb_move">
+        <br>
+        카드 예정<input type="checkbox" class="form-control" th:value="true" name="card">
+        <br>
+        카드 구분<input type="text" class="form-control" name="card_div">
         <br>
         <h4>토탈</h4>
+        총 추가 금액<input type="text" class="form-control" name="tot_add_pay">
         <br>
+        총 할인<input type="text" class="form-control" name="tot_rb">
+        <br>
+        총 지원<input type="text" class="form-control" name="tot_sup">
+        <br>
+        디펜스율<input type="text" class="form-control" name="def_pc">
+        <br>
+        무선 포인트<input type="text" class="form-control" name="ct_pt">
+        <br>
+        유선 포인트<input type="text" class="form-control" name="wt_pt">
+        <br>
+        총 포인트<input type="text" class="form-control" name="tot_pt">
+        <br>
+<!--        판매자 <input type="text" class="form-control" name="seller_id">-->
+<!--        <br>-->
         <h4>기타 관리</h4>
+        견적서 <input type="text" class="form-control" name="spec" disabled>
+        <br>
+        유선 만료 일자 <input type="date" class="form-control" name="wt_expr_dt">
+        <br>
+        결합 중 요금할인 빠짐 <input type="checkbox" class="form-control" th:value="true" name="non_disc">
+        <br>
+        개통 시간 <input type="time" class="form-control" name="actv_time">
+        <br>
+        비고 <input type="text" class="form-control" name="etc">
         <br>
     </form>
-    <button type="button" class="btn-primary">다음</button>
-</body>
+    <button type="button" class="btn-primary" onclick="stepToNext()">다음</button>
+</div>
 </html>

@@ -2,71 +2,96 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.momo.mapper.ShopMapper">
-    <select id="searchBranch" parameterType="com.momo.vo.ShopVO">
-        with branch as(
-            select
-                c.id as id,
-                c.corp_nm as corp_nm,
-                c.b_no as b_no,
-                s.shop_nm as shop_nm,
-                s.shop_addr as shop_addr,
-                s.shop_tel as shop_tel,
-                s.shop_cd as shop_cd
-            from
-                tb_corp as c
-            left outer join tb_shop s on c.b_no = s.b_no
-            )
+<mapper namespace="com.momo.mapper.ShopCommonMapper">
 
-        select
-            *
-        from
-            branch
+    <!--    Shop-->
+    <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
+        INSERT INTO tb_shop
+            (shop_id, corp_id, shop_bp_no, shop_nm, shop_addr, shop_tel)
+        VALUES (#{shopId}, #{corpId}, #{shopBpNo}, #{shopNm}, #{shopAddr}, #{shopTel})
+    </insert>
+
+    <update id="updateShop" parameterType="com.momo.common.vo.UserVO">
+        update
+        tb_shop
+        set
+        <if test='shopNm != null and !shopNm.equals("")'>
+            shop_nm=#{shopNm},
+        </if>
+        <if test='corpId != null'>
+            corp_id=#{corpId},
+        </if>
+        <if test='shopTel != null and !shopTel.equals("")'>
+            shop_tel=#{shopTel},
+        </if>
+        <if test='sendTel != null and !sendTel.equals("")'>
+            send_tel=#{sendTel},
+        </if>
+        <if test='shopAddr != null and !shopAddr.equals("")'>
+            shop_addr=#{shopAddr},
+        </if>
+        shop_id=#{shopId}
         where
-            b_no like '%${keyword}%' or
-            corp_nm like '%${keyword}%' or
-            shop_nm like '%${keyword}%'
-        order by
-            #{startDt}
-        limit
-            #{offset},#{limit}
+        shop_id=#{shopId}
+    </update>
 
+    <delete id="deleteShop">
+        DELETE
+        FROM tb_shop
+        WHERE shop_id = #{id}
+    </delete>
+
+    <select id="getMaxShopId">
+        SELECT MAX(shop_id)
+        FROM tb_shop
+            FOR
+        UPDATE
     </select>
 
-    <select id="countBranch" parameterType="com.momo.vo.ShopVO">
-        with branch as(
-            select
-                c.corp_nm as corp_nm,
-                c.b_no as b_no,
-                s.shop_nm as shop_nm,
-                s.shop_addr as shop_addr,
-                s.shop_tel as shop_tel
-            from
-                tb_corp as c
-                    left outer join tb_shop s on c.b_no = s.b_no
+    <select id="searchShop" parameterType="com.momo.common.vo.SearchVO">
+        WITH branch AS (
+                           SELECT c.reps_id,
+                                  c.bp_ko_nm,
+                                  c.bp_en_nm,
+                                  c.corp_nm,
+                                  c.corp_bp_no,
+                                  s.*
+                           FROM tb_shop AS s
+                                    LEFT OUTER JOIN tb_corp c ON c.corp_id = s.corp_id
+                       )
+
+        SELECT *
+        FROM branch
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
+    </select>
+
+    <select id="selectShop" parameterType="com.momo.common.vo.ShopCommonVO">
+        with tb as (
+        select
+        sh.*,
+        cp.corp_bp_no,
+        ac.name as reps_nm
+        from
+        tb_shop sh
+        left outer join tb_corp cp on cp.corp_id=sh.corp_id
+        left outer join tb_account ac on ac.id=cp.reps_id
         )
 
         select
-            count(*)
+        *
         from
-            branch
+        tb
         where
-            b_no like '%${keyword}%' or
-            corp_nm like '%${keyword}%' or
-            shop_nm like '%${keyword}%'
-
-    </select>
-
-
-    
-    <select id="select" parameterType="com.momo.vo.ShopVO">
-        select
-            *
-        from
-            tb_shop
-        where
-        <if test='shopCd gt 0'>
-            shop_cd=#{shopCd} and
+        <if test='corpId != null and !corpId.equals("")'>
+            corp_id=#{corpId} and
+        </if>
+        <if test='shopId != null and shopId != 0'>
+            shop_id=#{shopId} and
+        </if>
+        <if test='shopBpNo != null and !shopBpNo.equals("")'>
+            shop_bp_no=#{shopBpNo} and
         </if>
         <if test='shopNm != null and !shopNm.equals("")'>
             shop_nm=#{shopNm} and
@@ -77,115 +102,130 @@
         <if test='shopTel != null and !shopTel.equals("")'>
             shop_tel=#{shopTel} and
         </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no=#{bNo} and
+        <if test='regiDt != null and !regiDt.equals("")'>
+            regi_dt=#{regiDt} and
         </if>
-            1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
+        1 = 1
+        <if test='order != null and !order.equals("")'>
             order by
-            ${orderby}
+            ${order} ${asc}
         </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
         </if>
     </select>
 
-    <select id="search" parameterType="com.momo.vo.ShopVO">
+    <!--    Corperation-->
+    <insert id="insertCorp" parameterType="com.momo.common.vo.ShopCommonVO">
+        INSERT INTO tb_corp
+        (corp_id, reps_id, corp_bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
+        VALUES (#{corpId}, #{repsId}, #{corpBpNo}, #{bpKoNm}, #{bpEnNm}, #{corpNm}, #{corpTel}, #{startDt})
+    </insert>
+
+    <update id="updateCorp" parameterType="com.momo.common.vo.ShopCommonVO">
+        update
+        tb_corp
+        set
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo},
+        </if>
+        <if test='bpKoNm != null and !bpKoNm.equals("")'>
+            bp_ko_nm=#{bpKoNm},
+        </if>
+
+        <if test='bpEnNm != null and !bpEnNm.equals("")'>
+            bp_en_nm=#{bpEnNm},
+        </if>
+
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm},
+        </if>
+
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel=#{corpTel},
+        </if>
+
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt=#{startDt},
+        </if>
+        reps_id=#{repsId}
+        where
+        corp_id=#{corpId}
+    </update>
+
+    <update id="updateCorpPoint">
+        UPDATE
+            tb_corp
+        SET corp_pt=corp_pt + (#{amount})
+        WHERE corp_id = #{id}
+    </update>
+
+    <delete id="deleteCorp">
+        DELETE
+        FROM tb_corp
+        WHERE corp_id = #{id}
+    </delete>
+
+    <select id="getMaxCorpId">
+        SELECT MAX(corp_id)
+        FROM tb_corp
+            FOR
+        UPDATE
+    </select>
+
+    <select id="selectCorp" parameterType="com.momo.common.vo.ShopCommonVO">
         select
         *
         from
-        tb_shop
+        tb_corp
         where
-        <if test='shopCd gt 0'>
-            shop_cd like '%${shopCd}%' and
+        <if test='corpId != null'>
+            corp_id=#{corpId} and
         </if>
-        <if test='shopNm != null and !shopNm.equals("")'>
-            shop_nm like '%${shopNm}%' and
+        <if test='repsId != null and !repsId.equals("")'>
+            reps_id=#{repsId} and
         </if>
-        <if test='shopAddr != null and !shopAddr.equals("")'>
-            shop_addr like '%${shopAddr}%' and
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo} and
         </if>
-        <if test='shopTel != null and !shopTel.equals("")'>
-            shop_tel like '%${shopTel}%' and
+        <if test='bpKoNm != null and !bpKoNm.equals("")'>
+            bp_ko_nm=#{bpKoNm} and
         </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no like '%${bNo}%' and
+        <if test='bpEnNm != null and !bpEnNm.equals("")'>
+            bp_en_nm=#{bpEnNm} and
+        </if>
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm} and
+        </if>
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel=#{corpTel} and
+        </if>
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt=#{startDt} and
         </if>
         1 = 1
-        <if test='orderby != null and !orderby.equals("")'>
+        <if test='order != null and !order.equals("")'>
             order by
-            ${orderby}
+            ${order} ${asc}
         </if>
-        <if test='limit != null and limit gt 0'>
-            limit
-            ${offset},${limit}
+        <if test='limit != null and offset != null'>
+            limit ${offset} ${limit}
         </if>
     </select>
-    
-    <select id="getTotalRecordCount" parameterType="com.momo.vo.ShopVO">
-        select
-        count(*)
-        from
-        tb_shop
-        where
-        <if test='shopCd gt 0'>
-            shop_cd=#{shopCd} and
-        </if>
-        <if test='shopNm != null and !shopNm.equals("")'>
-            shop_nm=#{shopNm} and
-        </if>
-        <if test='shopAddr != null and !shopAddr.equals("")'>
-            shop_addr=#{shopAddr} and
-        </if>
-        <if test='shopTel != null and !shopTel.equals("")'>
-            shop_tel=#{shopTel} and
-        </if>
-        <if test='bNo != null and !bNo.equals("")'>
-            b_no=#{bNo} and
-        </if>
-        1 = 1
+
+    <select id="searchCorp" parameterType="com.momo.common.vo.SearchVO">
+        SELECT *
+        FROM tb_corp
+        WHERE ${andSelect}
+          AND ${orSearch}
+            ${prop}
     </select>
 
-    <select id="selectAll">
-        select
-            *
-        from
-            tb_shop;
+    <select id="getCorpPoint">
+        SELECT corp_pt
+        FROM tb_corp
+        WHERE corp_id = #{id}
     </select>
 
-    <insert id="insert" parameterType="com.momo.vo.ShopVO">
-        insert into
-            tb_shop
-            (shop_cd, shop_nm, shop_addr, shop_tel, b_no)
-        values
-            (#{shopCd},#{shopNm},#{shopAddr},#{shopTel},#{bNo})
-    </insert>
-
-    <update id="update" parameterType="com.momo.vo.ShopVO">
-        update
-            tb_shop
-        set
-            shop_nm=#{shopNm},
-            shop_tel=#{shopTel},
-            shop_addr=#{shopAddr},
-            b_no=#{bNo}
-        where
-            shop_cd=#{shopCd}
-    </update>
-
-    <delete id="delete" parameterType="com.momo.vo.ShopVO">
-        delete from
-            tb_shop
-               where
-                   shop_cd=#{shopCd}
-    </delete>
-
-    <select id="getMaxCode">
-        select
-            max(shop_cd)
-        from
-            tb_shop
-    </select>
 
 </mapper>

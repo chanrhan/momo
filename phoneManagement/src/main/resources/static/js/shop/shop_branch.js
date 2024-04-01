@@ -33,10 +33,10 @@ function addBranchShop(){
     var shop_addr = state + " " + city + " " + detail;
 
     var data = {
-        id: $('#user_id').val(),
-        shopNm: shop_nm,
-        shopTel: shop_tel,
-        shopAddr: shop_addr
+        reps_id: $('#user_id').val(),
+        shop_nm: shop_nm,
+        shop_tel: shop_tel,
+        shop_addr: shop_addr
     };
 
     $.ajax({
@@ -50,7 +50,7 @@ function addBranchShop(){
         },
         success: function (result){
             if(result){
-                window.location.href = '/shop';
+                window.location.href = '/shop/home';
             }
         }
     })

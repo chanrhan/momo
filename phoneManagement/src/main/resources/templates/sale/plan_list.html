@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/sale/saleForm_layout.html}">
+<div layout:fragment="content">
+    <script src="/js/sale/plan_list.js"></script>
+    <h3>요금제 목록</h3>
+    <input type="search" id="srch" class="form-control">
+    <button type="button" class="btn-primary" onclick="searchPlan()">검색</button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>요금제 이름</th>
+            <th>설명</th>
+        </tr>
+        </thead>
+        <tbody id="list_plan">
+        <tr th:each="plan : ${list_plan}" th:object="${plan}"
+            th:plan_id="*{plan_id}" th:plan_nm="*{plan_nm}"
+            onclick="selectPlan(this)">
+            <td th:text="*{plan_nm}"></td>
+            <td th:text="*{description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
