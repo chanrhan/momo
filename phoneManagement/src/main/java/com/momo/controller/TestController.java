@@ -9,6 +9,7 @@ import com.momo.common.util.MessageAPIUtil;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -20,8 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/api/test")
 @RequiredArgsConstructor
+@Slf4j
 public class TestController {
 	private final UserService       userService;
 	private final ShopCommonService shopCommonService;
@@ -67,6 +69,17 @@ public class TestController {
 	@GetMapping("/exception")
 	public String exceptionTest(){
 		return "test/exception";
+	}
+
+	@GetMapping("/react")
+	@ResponseBody
+	public Map<String,Object> reactCommuteTest(){
+		Map<String,Object> map = new HashMap<>();
+		map.put("id","km1104rs");
+		map.put("name","chan");
+		map.put("age",24);
+		log.info("react test: "+map);
+		return map;
 	}
 
 	@GetMapping("/exception/get")

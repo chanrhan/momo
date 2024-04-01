@@ -1,24 +1,24 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from "axios";
 
 function App() {
+  const [user, setUser] = useState('');
+
+  useEffect(()=>{
+      axios.get('/api/test/react')
+          .then((res)=>{
+            setUser(res.data);
+          })
+  },[]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <h4>Server Data</h4>
+        <p>{user.id}</p>
+        <p>{user.name}</p>
+        <p>{user.age}</p>
     </div>
   );
 }
