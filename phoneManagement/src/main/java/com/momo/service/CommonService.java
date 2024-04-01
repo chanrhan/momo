@@ -2,8 +2,10 @@ package com.momo.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.momo.util.TransactionTemplateUtil;
+import com.momo.common.util.TransactionTemplateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
@@ -85,5 +87,13 @@ public abstract class CommonService {
 			sb.append("limit ").append(offset).append(" ").append(limit);
 		}
 		return sb.toString();
+	}
+
+	protected ResponseEntity<Boolean> toResponseEntity(int result){
+		return ResponseEntity.status((result != 0) ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).body(true);
+	}
+
+	protected<T> ResponseEntity<T> toResponseEntity(T result){
+		return ResponseEntity.status((result != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND).body(result);
 	}
 }

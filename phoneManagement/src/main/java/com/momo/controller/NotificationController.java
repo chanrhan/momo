@@ -1,10 +1,12 @@
 package com.momo.controller;
 
 import com.momo.service.NotificationService;
-import com.momo.util.SecurityContextUtil;
-import com.momo.vo.NotificationVO;
-import com.momo.vo.SearchVO;
+import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.NotificationVO;
+import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,19 +33,19 @@ public class NotificationController {
 
 	@GetMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchAlarm(@RequestBody SearchVO vo){
-		return notificationService.searchNotification(vo);
+	public ResponseEntity<List<Map<String,Object>>> searchAlarm(@RequestBody SearchVO vo){
+		return ResponseEntityUtil.okOrNotFound(notificationService.searchNotification(vo));
 	}
 
 	@PostMapping("/count")
 	@ResponseBody
-	public int countAlarm(@RequestBody NotificationVO vo){
-		return notificationService.selectNotification(vo).size();
+	public ResponseEntity<Integer> countAlarm(@RequestBody NotificationVO vo){
+		return ResponseEntityUtil.okOrNotFound(notificationService.selectNotification(vo).size());
 	}
 
 	@GetMapping("/read/all")
 	@ResponseBody
-	public boolean readAlarmList(@RequestParam String id){
-		return notificationService.readAllByReceiver(id) != 0;
+	public ResponseEntity<Boolean> readAlarmList(@RequestParam String id){
+		return ResponseEntityUtil.okOrNotModified(notificationService.readAllByReceiver(id));
 	}
 }

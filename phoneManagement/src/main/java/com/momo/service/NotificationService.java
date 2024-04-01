@@ -2,8 +2,8 @@ package com.momo.service;
 
 import com.momo.emitter.NotificationEmitter;
 import com.momo.mapper.NotificationMapper;
-import com.momo.vo.NotificationVO;
-import com.momo.vo.SearchVO;
+import com.momo.common.vo.NotificationVO;
+import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

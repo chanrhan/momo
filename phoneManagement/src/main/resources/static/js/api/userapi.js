@@ -47,7 +47,7 @@ function updateProfile(data){
 function submitDefaultSignup(data){
     var rst = false;
     $.ajax({
-        url: '/account/submit',
+        url: '/account/submit/common',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',

@@ -5,13 +5,13 @@
 <mapper namespace="com.momo.mapper.ShopCommonMapper">
 
     <!--    Shop-->
-    <insert id="insertShop" parameterType="com.momo.vo.UserVO">
+    <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_shop
             (shop_id, corp_id, shop_bp_no, shop_nm, shop_addr, shop_tel)
         VALUES (#{shopId}, #{corpId}, #{shopBpNo}, #{shopNm}, #{shopAddr}, #{shopTel})
     </insert>
 
-    <update id="updateShop" parameterType="com.momo.vo.UserVO">
+    <update id="updateShop" parameterType="com.momo.common.vo.UserVO">
         update
         tb_shop
         set
@@ -48,7 +48,7 @@
         UPDATE
     </select>
 
-    <select id="searchShop" parameterType="com.momo.vo.SearchVO">
+    <select id="searchShop" parameterType="com.momo.common.vo.SearchVO">
         WITH branch AS (
                            SELECT c.reps_id,
                                   c.bp_ko_nm,
@@ -67,7 +67,7 @@
             ${prop}
     </select>
 
-    <select id="selectShop" parameterType="com.momo.vo.ShopCommonVO">
+    <select id="selectShop" parameterType="com.momo.common.vo.ShopCommonVO">
         with tb as (
         select
         sh.*,
@@ -116,13 +116,13 @@
     </select>
 
     <!--    Corperation-->
-    <insert id="insertCorp" parameterType="com.momo.vo.ShopCommonVO">
+    <insert id="insertCorp" parameterType="com.momo.common.vo.ShopCommonVO">
         INSERT INTO tb_corp
         (corp_id, reps_id, corp_bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
         VALUES (#{corpId}, #{repsId}, #{corpBpNo}, #{bpKoNm}, #{bpEnNm}, #{corpNm}, #{corpTel}, #{startDt})
     </insert>
 
-    <update id="updateCorp" parameterType="com.momo.vo.ShopCommonVO">
+    <update id="updateCorp" parameterType="com.momo.common.vo.ShopCommonVO">
         update
         tb_corp
         set
@@ -173,7 +173,7 @@
         UPDATE
     </select>
 
-    <select id="selectCorp" parameterType="com.momo.vo.ShopCommonVO">
+    <select id="selectCorp" parameterType="com.momo.common.vo.ShopCommonVO">
         select
         *
         from
@@ -213,7 +213,7 @@
         </if>
     </select>
 
-    <select id="searchCorp" parameterType="com.momo.vo.SearchVO">
+    <select id="searchCorp" parameterType="com.momo.common.vo.SearchVO">
         SELECT *
         FROM tb_corp
         WHERE ${andSelect}

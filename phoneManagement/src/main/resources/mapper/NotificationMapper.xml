@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.NotificationMapper">
-    <insert id="insertNotification" parameterType="com.momo.vo.NotificationVO">
+    <insert id="insertNotification" parameterType="com.momo.common.vo.NotificationVO">
         insert into
             tb_push_notification
         (alarm_id, sender_id, receiver_id, alarm_tp, content)
@@ -53,7 +53,7 @@
             alarm_id=#{alarmId}
     </update>
 
-    <select id="searchNotification" parameterType="com.momo.vo.SearchVO">
+    <select id="searchNotification" parameterType="com.momo.common.vo.SearchVO">
         with alarm as (
             select
                 al.alarm_id as alarm_id,
@@ -90,7 +90,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="selectNotification" parameterType="com.momo.vo.NotificationVO">
+    <select id="selectNotification" parameterType="com.momo.common.vo.NotificationVO">
         with alarm as (
             select
                 al.alarm_id as alarm_id,

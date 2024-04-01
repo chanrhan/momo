@@ -2,9 +2,14 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.service.*;
-import com.momo.vo.*;
+import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.vo.SaleVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.ShopCommonVO;
+import com.momo.common.vo.SupportVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,27 +107,24 @@ public class SaleController {
 
 	@GetMapping("/delete/{id}")
 	@ResponseBody
-	public boolean deleteSale(@PathVariable int id) {
-		return saleService.deleteSale(id) != 0;
+	public ResponseEntity<Boolean> deleteSale(@PathVariable int id) {
+		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(id));
 	}
 
 	@PostMapping("/create")
 	@ResponseBody
-	public boolean createSale(@RequestPart(value = "sale") SaleVO vo,
+	public ResponseEntity<Boolean> createSale(@RequestPart(value = "sale") SaleVO vo,
 							  @RequestPart(value = "spec") MultipartFile file) {
-		String path = imageService.upload("spec", file);
-		vo.setSpec(path);
-		return saleService.insertSale(vo) != 0;
+		vo.setSpec(imageService.upload("spec", file));
+		return ResponseEntityUtil.okOrNotModified(saleService.insertSale(vo));
 	}
 
 	@PostMapping("/update")
 	@ResponseBody
-	public boolean updateSale(@RequestPart(value = "sale") SaleVO vo,
-							  @RequestPart(value = "spec") MultipartFile file) {
-//		System.out.println(vo);
-		String path = imageService.upload("spec", file);
-		vo.setSpec(path);
-		return saleService.updateSale(vo) != 0;
+	public ResponseEntity<Boolean> updateSale(@RequestPart(value = "sale") SaleVO vo,
+							   @RequestPart(value = "spec") MultipartFile file) {
+		vo.setSpec(imageService.upload("spec", file));
+		return ResponseEntityUtil.okOrNotModified(saleService.updateSale(vo));
 	}
 
 	@GetMapping("/msg/rsv")
@@ -148,8 +150,8 @@ public class SaleController {
 
 	@PostMapping("/plan/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchPlan(@RequestBody SearchVO searchVO) {
-		return itemCommonService.searchPlan(searchVO);
+	public ResponseEntity<List<Map<String,Object>>> searchPlan(@RequestBody SearchVO searchVO) {
+		return ResponseEntityUtil.okOrNotFound(itemCommonService.searchPlan(searchVO));
 	}
 
 	@GetMapping("/exsvc/list")
@@ -161,28 +163,25 @@ public class SaleController {
 
 	@PostMapping("/exsvc/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchExsvc(@RequestBody SearchVO searchVO) {
-		return itemCommonService.searchExsvc(searchVO);
+	public ResponseEntity<List<Map<String,Object>>> searchExsvc(@RequestBody SearchVO searchVO) {
+		return ResponseEntityUtil.okOrNotFound(itemCommonService.searchExsvc(searchVO));
 	}
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchSale(@RequestBody SearchVO searchVO, HttpSession session) {
-		System.out.println("qqq: "+searchVO);
-		return saleService.searchSaleBySession(searchVO, session);
+	public ResponseEntity<List<Map<String,Object>>> searchSale(@RequestBody SearchVO searchVO, HttpSession session) {
+//		System.out.println("qqq: "+searchVO);
+		return ResponseEntityUtil.okOrNotFound(saleService.searchSaleBySession(searchVO, session));
 	}
 
 	@GetMapping("/msg/form/func")
 	@ResponseBody
-	public String msgFormFunction(@RequestParam int formId) {
-		switch (formId) {
-			case -2:
-				return "/sale/plan/list";
-			case -3:
-				return "/sale/exsvc/list";
-			default:
-				return null;
-		}
+	public ResponseEntity<String> msgFormFunction(@RequestParam int formId) {
+		return switch (formId) {
+			case -2 -> ResponseEntity.ok("/sale/plan/list");
+			case -3 -> ResponseEntity.ok("/sale/exsvc/list");
+			default -> ResponseEntity.badRequest().build();
+		};
 	}
 	
 	// 매장 관리
@@ -202,92 +201,83 @@ public class SaleController {
 		model.addAttribute("list", saleService.selectSaleByTypeAndSession("green_md", session));
 		return "sale/green_phone";
 	}
-//	@GetMapping("/card")
-//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-//	public String saleCard(Model model, HttpSession session){
-//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-//		Map<String,Object> shop = null;
-//		if(!list_shop.isEmpty()){
-//			shop = list_shop.get(0);
-//		}
-//
-//		model.addAttribute("list_shop", list_shop);
-//		model.addAttribute("selected_shop", shop);
-//
-//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("card", session));
-//		return "sale/card";
-//	}
-//	@GetMapping("/comb")
-//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-//	public String saleComb(Model model, HttpSession session){
-//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-//		Map<String,Object> shop = null;
-//		if(!list_shop.isEmpty()){
-//			shop = list_shop.get(0);
-//		}
-//
-//		model.addAttribute("list_shop", list_shop);
-//		model.addAttribute("selected_shop", shop);
-//
-//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("comb_move", session));
-//		return "sale/comb";
-//	}
-//	@GetMapping("/support")
-//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-//	public String saleSupport(Model model, HttpSession session){
-//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-//		Map<String,Object> shop = null;
-//		if(!list_shop.isEmpty()){
-//			shop = list_shop.get(0);
-//		}
-//
-//		model.addAttribute("list_shop", list_shop);
-//		model.addAttribute("selected_shop", shop);
-//
-//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sup_div", session));
-//		return "sale/support";
-//	}
-//
-//	@GetMapping("/second")
-//	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-//	public String saleSecondPhone(Model model, HttpSession session){
-//		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-//		Map<String,Object> shop = null;
-//		if(!list_shop.isEmpty()){
-//			shop = list_shop.get(0);
-//		}
-//
-//		model.addAttribute("list_shop", list_shop);
-//		model.addAttribute("selected_shop", shop);
-//
-//		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sec_md", session));
-//		return "sale/second";
-//	}
+	@GetMapping("/card")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String saleCard(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("card", session));
+		return "sale/card";
+	}
+	@GetMapping("/comb")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String saleComb(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("comb_move", session));
+		return "sale/comb";
+	}
+	@GetMapping("/support")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String saleSupport(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sup_div", session));
+		return "sale/support";
+	}
+
+	@GetMapping("/second")
+	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
+	public String saleSecondPhone(Model model, HttpSession session){
+		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
+		Map<String,Object> shop = null;
+		if(!list_shop.isEmpty()){
+			shop = list_shop.get(0);
+		}
+
+		model.addAttribute("list_shop", list_shop);
+		model.addAttribute("selected_shop", shop);
+
+		model.addAttribute("list",saleService.selectSaleByTypeAndSession("sec_md", session));
+		return "sale/second";
+	}
 
 	@PostMapping("/list/srch/{type}")
 	@ResponseBody
-	public List<Map<String,Object>> searchSaleByType(@PathVariable String type, @RequestBody SearchVO vo, HttpSession session){
+	public ResponseEntity<List<Map<String,Object>>> searchSaleByType(@PathVariable String type, @RequestBody SearchVO vo, HttpSession session){
 		String column = "";
-		switch (type){
-			case "green":
-				column = "green_md";
-				break;
-			case "second":
-				column = "sec_md";
-				break;
-			case "support":
-				column = "sup_div";
-				break;
-			case "comb":
-				column = "comb_move";
-				break;
-			case "card":
-				column = "card";
-				break;
-			default:
-				return null;
+		switch (type) {
+			case "green" -> column = "green_md";
+			case "second" -> column = "sec_md";
+			case "support" -> column = "sup_div";
+			case "comb" -> column = "comb_move";
+			case "card" -> column = "card";
+			default -> {
+				return ResponseEntity.badRequest().build();
+			}
 		}
-		return saleService.searchSaleByTypeAndSession(column, vo, session);
+		return ResponseEntityUtil.okOrNotFound(saleService.searchSaleByTypeAndSession(column, vo, session));
 	}
 
 //	@PostMapping("/count/tel")
@@ -305,10 +295,10 @@ public class SaleController {
 
 	@PostMapping("/dup/tel")
 	@ResponseBody
-	public boolean checkDupTelOnDate(@RequestBody SaleVO vo){
+	public ResponseEntity<Boolean> checkDupTelOnDate(@RequestBody SaleVO vo){
 //		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
 //			return null;
 //		}
-		return saleService.isDuplicatedTel(vo);
+		return ResponseEntity.ok(saleService.isDuplicatedTel(vo));
 	}
 }

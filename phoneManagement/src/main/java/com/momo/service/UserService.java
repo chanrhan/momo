@@ -1,10 +1,10 @@
 package com.momo.service;
 
-import com.momo.domain.user.UserDetailsImpl;
+import com.momo.common.UserDetailsImpl;
 import com.momo.mapper.UserMapper;
-import com.momo.util.SecurityContextUtil;
-import com.momo.vo.SearchVO;
-import com.momo.vo.UserVO;
+import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

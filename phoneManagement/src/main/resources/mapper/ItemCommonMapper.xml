@@ -22,7 +22,7 @@
             ph_id=#{id}
     </select>
 
-    <select id="selectPhoneModel" parameterType="com.momo.vo.ItemCommonVO">
+    <select id="selectPhoneModel" parameterType="com.momo.common.vo.ItemCommonVO">
         select
             *
         from
@@ -48,7 +48,7 @@
     </select>
 
 <!--    Plan-->
-    <select id="selectPlan" parameterType="com.momo.vo.ItemCommonVO">
+    <select id="selectPlan" parameterType="com.momo.common.vo.ItemCommonVO">
         select
             *
         from
@@ -70,7 +70,7 @@
         </if>
     </select>
 
-    <select id="searchPlan" parameterType="com.momo.vo.SearchVO">
+    <select id="searchPlan" parameterType="com.momo.common.vo.SearchVO">
         select
             *
         from
@@ -82,7 +82,7 @@
     </select>
 
 <!--    Extra Service-->
-    <select id="selectExsvc" parameterType="com.momo.vo.ItemCommonVO">
+    <select id="selectExsvc" parameterType="com.momo.common.vo.ItemCommonVO">
         select
             *
         from
@@ -104,7 +104,7 @@
         </if>
     </select>
 
-    <select id="searchExsvc" parameterType="com.momo.vo.SearchVO">
+    <select id="searchExsvc" parameterType="com.momo.common.vo.SearchVO">
         select
             *
         from

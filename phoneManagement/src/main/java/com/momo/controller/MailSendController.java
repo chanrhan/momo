@@ -1,8 +1,8 @@
 package com.momo.controller;
 
-import com.momo.enums.MailType;
-import com.momo.domain.response.MailCreateResponse;
-import com.momo.util.MailSenderService;
+import com.momo.common.enums.MailType;
+import com.momo.common.response.MailCreateResponse;
+import com.momo.common.util.MailSenderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

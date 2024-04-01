@@ -23,20 +23,20 @@ public class ImageController {
 
 	@PostMapping("/upload")
 	@ResponseBody
-	public String upload(@RequestPart MultipartFile file) {
-		return imageService.upload("spec", file);
+	public ResponseEntity<String> upload(@RequestPart MultipartFile file) {
+		return ResponseEntity.ok(imageService.upload("spec", file));
 	}
 
 	@GetMapping("/spec/{id}")
 	@ResponseBody
-	public ResponseEntity<?> downloadSpecImage(@PathVariable int id) throws IOException {
+	public ResponseEntity<byte[]> downloadSpecImage(@PathVariable int id) throws IOException {
 		String path = saleService.getSpecFilePath(id);
 		return imageService.download("spec",path);
 	}
 
 	@GetMapping("/pfp/{id}")
 	@ResponseBody
-	public ResponseEntity<?> downloadPfpImage(@PathVariable String id) throws IOException {
+	public ResponseEntity<byte[]> downloadPfpImage(@PathVariable String id) throws IOException {
 		String path = userService.getPfpFilePath(id);
 		return imageService.download("pfp",path);
 	}

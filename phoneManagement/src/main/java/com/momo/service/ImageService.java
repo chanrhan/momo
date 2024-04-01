@@ -1,9 +1,8 @@
 package com.momo.service;
 
-import com.momo.util.FileServiceUtil;
+import com.momo.common.util.FileServiceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,14 +13,14 @@ import java.nio.file.Files;
 @Service
 @Slf4j
 public class ImageService {
-	public ResponseEntity<?> download(String dir,String path) throws IOException {
+	public ResponseEntity<byte[]> download(String dir,String path) throws IOException {
 		UrlResource resource = FileServiceUtil.getFileResource(dir, path);
 		if(!resource.exists()){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 		byte[] byteArray = Files.readAllBytes(resource.getFile().toPath());
 
-		return new ResponseEntity<>(byteArray, HttpStatus.OK);
+		return ResponseEntity.ok(byteArray);
 	}
 
 	public String upload(String dir, MultipartFile mf) {

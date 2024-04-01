@@ -2,21 +2,15 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
-    <title>SSE Test</title>
-    <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/test/layout.html}">
+<div layout:fragment="content">
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-  <script src="/js/test/sse.js" th:inline="javascript"></script>
-</head>
-<body>
-  <h3>SSE 테스트</h3>
-  <br>
-  <input type="text" class="form-control" id="msg" placeholder="보낼 메세지를 입력해주세요">
-  <button type="button" class="btn-primary" onclick="send()">Send</button>
-</body>
+    <script src="/js/test/sse.js" th:inline="javascript"></script>
+    <h3>SSE 테스트</h3>
+    <br>
+    <input type="text" class="form-control" id="msg" placeholder="보낼 메세지를 입력해주세요">
+    <button type="button" class="btn-primary" onclick="send()">Send</button>
+</div>
 </html>

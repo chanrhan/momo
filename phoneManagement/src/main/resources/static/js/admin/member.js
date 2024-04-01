@@ -48,7 +48,7 @@ function searchUser(){
     };
 
     $.ajax({
-        url: '/admin/member/list',
+        url: '/admin/user/list',
         type: 'post',
         contentType: 'application/json',
         data: JSON.stringify(body),

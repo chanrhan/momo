@@ -4,11 +4,13 @@ import com.momo.auth.RoleAuth;
 import com.momo.service.MsgCommonService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserService;
-import com.momo.vo.MsgCommonVO;
-import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
+import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.vo.MsgCommonVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.ShopCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,9 +54,8 @@ public class MessageController {
 
 	@PostMapping("/reserve")
 	@ResponseBody
-	public boolean reserveMsgPOST(@RequestBody MsgCommonVO vo) {
-//		System.out.println(vo);
-		return msgCommonService.reserve(vo) != 0;
+	public ResponseEntity<Boolean> reserveMsgPOST(@RequestBody MsgCommonVO vo) {
+		return msgCommonService.reserve(vo);
 	}
 
 	@GetMapping("/detail")
@@ -92,26 +93,25 @@ public class MessageController {
 	@PostMapping("/form/create")
 	@ResponseBody
 	public boolean createMessageForm(@RequestBody MsgCommonVO vo){
-
 		return false;
 	}
 
 	@PostMapping("/list/srch")
 	@ResponseBody
-	public List<Map<String,Object>> searchMessage(@RequestBody SearchVO searchVO, HttpSession session) {
-		return msgCommonService.searchMsgBySession(searchVO, session);
+	public ResponseEntity<List<Map<String,Object>>> searchMessage(@RequestBody SearchVO searchVO, HttpSession session) {
+		return ResponseEntityUtil.okOrNotFound(msgCommonService.searchMsg(searchVO));
 	}
 
 	@PostMapping("/delete/{id}")
 	@ResponseBody
-	public boolean deleteMessage(@PathVariable int id) {
-		return msgCommonService.deleteMsgReserve(id) != 0;
+	public ResponseEntity<Boolean> deleteMessage(@PathVariable int id) {
+		return ResponseEntityUtil.okOrNotModified(msgCommonService.deleteMsgReserve(id));
 	}
 
 	@PostMapping("/regi/tel")
 	@ResponseBody
-	public boolean registrateSendTel(@RequestBody ShopCommonVO vo){
-		return shopCommonService.updateSendTel(vo) != 0;
+	public ResponseEntity<Boolean> registrateSendTel(@RequestBody ShopCommonVO vo){
+		return ResponseEntityUtil.okOrNotModified(shopCommonService.updateSendTel(vo));
 	}
 
 

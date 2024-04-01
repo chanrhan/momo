@@ -1,11 +1,11 @@
 package com.momo.service;
 
-import com.momo.enums.ChatResponseHeader;
+import com.momo.common.enums.ChatResponseHeader;
 import com.momo.mapper.ChatMapper;
 import com.momo.mapper.UserMapper;
-import com.momo.domain.response.ChatResponse;
-import com.momo.vo.ChatVO;
-import com.momo.vo.UserVO;
+import com.momo.common.response.ChatResponse;
+import com.momo.common.vo.ChatVO;
+import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class ChatService {
 	// 채팅방 넘버는 auto_increment로 할려고 했는데,
 	// 방금 생성한 room_id를 반환해줘야 하기 떄문에 일단 현 상태로 보류
 	@Transactional
-	public int createChatRoom(ChatVO vo){
+	public Integer createChatRoom(ChatVO vo){
 		return chatMapper.createChatRoom(vo);
 	}
 	public ChatResponse connect(String simpSessionId, String userId){

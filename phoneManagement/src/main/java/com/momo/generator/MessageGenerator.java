@@ -3,10 +3,10 @@ package com.momo.generator;
 import com.momo.service.ItemCommonService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserService;
-import com.momo.vo.ItemCommonVO;
-import com.momo.vo.MsgCommonVO;
-import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserVO;
+import com.momo.common.vo.ItemCommonVO;
+import com.momo.common.vo.MsgCommonVO;
+import com.momo.common.vo.ShopCommonVO;
+import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

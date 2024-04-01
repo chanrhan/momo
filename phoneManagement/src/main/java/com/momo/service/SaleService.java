@@ -1,9 +1,9 @@
 package com.momo.service;
 
 import com.momo.mapper.SaleMapper;
-import com.momo.util.IntegerUtil;
-import com.momo.vo.SaleVO;
-import com.momo.vo.SearchVO;
+import com.momo.common.util.IntegerUtil;
+import com.momo.common.vo.SaleVO;
+import com.momo.common.vo.SearchVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

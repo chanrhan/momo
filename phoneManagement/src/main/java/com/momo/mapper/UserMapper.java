@@ -1,7 +1,7 @@
 package com.momo.mapper;
 
-import com.momo.vo.SearchVO;
-import com.momo.vo.UserVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

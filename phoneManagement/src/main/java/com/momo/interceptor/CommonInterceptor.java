@@ -24,7 +24,7 @@ public class CommonInterceptor implements HandlerInterceptor {
 		if(modelAndView == null){
 			modelAndView = new ModelAndView();
 		}
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(); // 오류있음 이거 null일 떄
 		if(session == null || session.getAttribute("corp_id") == null){
 			return;
 		}

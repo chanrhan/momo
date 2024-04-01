@@ -1,6 +1,6 @@
 package com.momo.mapper;
 
-import com.momo.vo.ChatVO;
+import com.momo.common.vo.ChatVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

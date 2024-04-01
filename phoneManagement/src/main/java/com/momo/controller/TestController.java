@@ -1,19 +1,22 @@
 package com.momo.controller;
 
+import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.exception.RestApiException;
 import com.momo.service.SaleService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserService;
-import com.momo.util.MessageAPIUtil;
-import com.momo.vo.SaleVO;
-import com.momo.vo.UserVO;
-import lombok.Data;
+import com.momo.common.util.MessageAPIUtil;
+import com.momo.common.vo.SaleVO;
+import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -34,22 +37,6 @@ public class TestController {
 		return "test/js_test";
 	}
 
-	@Data
-	static class Test{
-		private String name;
-	}
-
-	@RequestMapping("/post")
-	@ResponseBody
-	public String testPost(@RequestBody Test test){
-		System.out.println("server: "+test.getName());
-		return "Hello, "+test.name;
-	}
-	@GetMapping("/get")
-	@ResponseBody
-	public String testGet(@RequestParam String name){
-		return "Hello, "+name;
-	}
 
 	@GetMapping("/msg")
 	public String msg(){
@@ -70,6 +57,32 @@ public class TestController {
 	@GetMapping("/img")
 	public String imageTest(){
 		return "test/image";
+	}
+
+	@GetMapping("/res/entity")
+	public String responseEntityTest(){
+		return "test/res_entity";
+	}
+
+	@GetMapping("/exception")
+	public String exceptionTest(){
+		return "test/exception";
+	}
+
+	@GetMapping("/exception/get")
+	@ResponseBody
+	public ResponseEntity<?> getException(){
+		throw new RestApiException(CommonErrorCode.INSERT_ERROR, "의도한 에러가 발생하였습니다.");
+	}
+
+	@GetMapping("/res/entity/get")
+	@ResponseBody
+	public ResponseEntity<Map<String,Object>> getResponseEntity(@RequestParam int status){
+		Map<String,Object> map = new HashMap<>();
+		map.put("id","km151rs");
+		map.put("name","chan");
+		map.put("tel","01045240636");
+		return ResponseEntity.status(status).body(map);
 	}
 
 	@PostMapping("/msg")
@@ -117,4 +130,6 @@ public class TestController {
 	public String sendTestPub(String msg){
 		return msg;
 	}
+
+
 }

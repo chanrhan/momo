@@ -22,7 +22,7 @@
             YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
-    <update id="updateSale" parameterType="com.momo.vo.SaleVO">
+    <update id="updateSale" parameterType="com.momo.common.vo.SaleVO">
         update
         tb_sale
         set
@@ -229,7 +229,7 @@
 
     </update>
 
-    <select id="searchSale" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
+    <select id="searchSale" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         with tb as (
             select
                 count(cust_tel) as dup_tel,
@@ -269,7 +269,7 @@
         ${prop}
     </select>
 
-    <select id="selectSale" parameterType="com.momo.vo.SaleVO" resultType="java.util.Map">
+    <select id="selectSale" parameterType="com.momo.common.vo.SaleVO" resultType="java.util.Map">
         with tb as (
         select
         count(cust_tel) as dup_tel,
@@ -526,7 +526,7 @@
         </if>
     </select>
 
-    <insert id="insertSale" parameterType="com.momo.vo.SaleVO">
+    <insert id="insertSale" parameterType="com.momo.common.vo.SaleVO">
         insert into
             tb_sale
         (sale_id, shop_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,

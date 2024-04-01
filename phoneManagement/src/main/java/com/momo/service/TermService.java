@@ -1,8 +1,8 @@
 package com.momo.service;
 
 import com.momo.mapper.TermMapper;
-import com.momo.vo.SearchVO;
-import com.momo.vo.TermVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.TermVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

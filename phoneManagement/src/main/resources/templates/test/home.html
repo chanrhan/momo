@@ -16,35 +16,30 @@
     <script src="/js/test/test.js" th:inline="javascript"></script>
 </head>
 <body>
-<input type="search" list="list_search">
-<datalist id="list_search">
-    <option value="오늘의날씨"></option>
-    <option value="박희찬"></option>
-    <option value="날"></option>
-    <option value="날조"></option>
-    <option value="오늘의뉴스"></option>
-</datalist>
-<br>
-<button type="button" class="btn btn-primary" onclick="post($('#async').val())">POST</button>
-<button type="button" class="btn btn-primary" onclick="get($('#async').val())">GET</button>
-
-<button type="button" class="btn btn-primary" onclick="getMAP()">쿼리 결과 반환</button>
-
-<br>
-<button type="button" class="btn btn-primary" onclick="trTest()">트랜잭션 테스트</button>
-
-<br>
-매장 번호<input type="text" class="form-control" id="shop_id" value="1">
-<br>
-전화번호<input type="text" class="form-control" id="cust_tel" value="01077280636">
-<br>
-날짜<input type="date" class="form-control" id="actv_dt" value="2024-01-21">
-<br>
-<button type="button" class="btn btn-primary" onclick="dupTel($('#cust_tel').val())">전화번호 중복 조회</button>
-<button type="button" class="btn btn-primary" onclick="dupTelOnDate($('#cust_tel').val(), $('#actv_dt').val())">해당 날짜에 전화번호 조회</button>
-<br>
-<input type="text" class="form-control" id="send_email" value="km1104rs@naver.com">
-<button type="button" class="btn-primary" onclick="sendEmail()">이메일 전송</button>
+<h2>개발 테스트 페이지</h2>
+<ul>
+    <li>
+        <a th:href="@{/test/js}">Javascript 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/img}">이미지 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/msg}">문자메시지 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/sse}">SSE 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/ws}">WebSocket 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/res/entity}">ResponseEntity 테스트</a>
+    </li>
+    <li>
+        <a th:href="@{/test/exception}">예외 처리 테스트</a>
+    </li>
+</ul>
 
 </body>
 </html>

@@ -15,7 +15,7 @@
             form_id desc
     </select>
 
-    <select id="selectForm" parameterType="com.momo.vo.MsgCommonVO">
+    <select id="selectForm" parameterType="com.momo.common.vo.MsgCommonVO">
         select
             *
         from
@@ -41,7 +41,7 @@
     </select>
 
 <!--    Message Reserve-->
-    <insert id="insertMsg" parameterType="com.momo.vo.MsgCommonVO">
+    <insert id="insertMsg" parameterType="com.momo.common.vo.MsgCommonVO">
         insert into
             tb_msg_rsv
         (msg_id, shop_id, send_tp, cust_nm, cust_tel, content, seller_id, rsv_dt)
@@ -63,7 +63,7 @@
              #{shopId},#{sendTp},#{custNm},#{custTel},#{content},#{sellerId},#{rsvDt})
     </insert>
 
-    <update id="updateMsg" parameterType="com.momo.vo.MsgCommonVO">
+    <update id="updateMsg" parameterType="com.momo.common.vo.MsgCommonVO">
         update
             tb_msg_rsv
         set
@@ -94,7 +94,7 @@
             msg_id=#{id}
     </delete>
 
-    <select id="selectMsg" parameterType="com.momo.vo.MsgCommonVO">
+    <select id="selectMsg" parameterType="com.momo.common.vo.MsgCommonVO">
         with tb as (
         select
             sh.shop_nm,
@@ -148,7 +148,7 @@
         </if>
     </select>
 
-    <select id="searchMsg" parameterType="com.momo.vo.SearchVO">
+    <select id="searchMsg" parameterType="com.momo.common.vo.SearchVO">
         with tb as (
             select
                 sh.shop_nm as shop_nm,

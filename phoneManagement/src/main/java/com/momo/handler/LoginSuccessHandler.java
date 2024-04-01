@@ -2,7 +2,7 @@ package com.momo.handler;
 
 
 import com.momo.service.UserService;
-import com.momo.util.SecurityContextUtil;
+import com.momo.common.util.SecurityContextUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

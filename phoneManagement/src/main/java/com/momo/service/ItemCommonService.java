@@ -1,8 +1,8 @@
 package com.momo.service;
 
 import com.momo.mapper.ItemCommonMapper;
-import com.momo.vo.ItemCommonVO;
-import com.momo.vo.SearchVO;
+import com.momo.common.vo.ItemCommonVO;
+import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

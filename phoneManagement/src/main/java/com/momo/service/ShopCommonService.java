@@ -1,8 +1,8 @@
 package com.momo.service;
 
 import com.momo.mapper.ShopCommonMapper;
-import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.ShopCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

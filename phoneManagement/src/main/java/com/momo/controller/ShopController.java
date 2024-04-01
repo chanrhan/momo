@@ -3,10 +3,12 @@ package com.momo.controller;
 import com.momo.auth.RoleAuth;
 import com.momo.service.RegionService;
 import com.momo.service.ShopCommonService;
-import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
+import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.ShopCommonVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,11 +40,10 @@ public class ShopController {
 
 	@PostMapping("/create")
 	@ResponseBody
-//	@Transactional
-	public boolean createShop(@RequestBody ShopCommonVO vo){
+	public ResponseEntity<Boolean> createShop(@RequestBody ShopCommonVO vo){
 		Map<String,Object> corp = shopCommonService.selectCorpByRepsId(vo.getRepsId());
 		if(corp == null || corp.get("corp_id") == null){
-			return false;
+			return ResponseEntity.badRequest().build();
 		}
 		vo.setCorpId(Integer.parseInt(corp.get("corp_id").toString()));
 		vo.setShopId(shopCommonService.getMaxShopId()+1);
@@ -51,7 +52,7 @@ public class ShopController {
 		// 해당 회사의 사업자번호를 따옴
 		vo.setShopBpNo(corp.get("corp_bp_no").toString());
 
-		return shopCommonService.insertShop(vo) != 0;
+		return ResponseEntityUtil.okOrNotModified(shopCommonService.insertShop(vo));
 	}
 
 	@GetMapping("/detail")
@@ -71,19 +72,23 @@ public class ShopController {
 
 	@GetMapping("/list/{id}")
 	@ResponseBody
-	public Map<String,Object> selectShopById(@PathVariable int id){
-		return shopCommonService.selectShopById(id);
+	public ResponseEntity<Map<String,Object>> selectShopById(@PathVariable int id){
+		return ResponseEntityUtil.okOrNotFound(shopCommonService.selectShopById(id));
 	}
 
 	@GetMapping("/city")
 	@ResponseBody
-	public String[] getCitiesByState(@RequestParam String state){
-		return regionService.selectCityByState(state).split(",");
+	public ResponseEntity<String[]> getCitiesByState(@RequestParam String state){
+		String stateList = regionService.selectCityByState(state);
+		if(stateList == null){
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntityUtil.okOrNotFound(stateList.split(","));
 	}
 
 	@PostMapping("/search/shop")
 	@ResponseBody
-	public List<Map<String,Object>> searchShop(@RequestBody SearchVO vo){
-		return shopCommonService.searchShop(vo);
+	public ResponseEntity<List<Map<String,Object>>> searchShop(@RequestBody SearchVO vo){
+		return ResponseEntityUtil.okOrNotFound(shopCommonService.searchShop(vo));
 	}
 }

@@ -4,10 +4,12 @@ import com.momo.auth.RoleAuth;
 import com.momo.service.AdminService;
 import com.momo.service.ShopCommonService;
 import com.momo.service.UserService;
-import com.momo.vo.SearchVO;
-import com.momo.vo.ShopCommonVO;
-import com.momo.vo.UserVO;
+import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.vo.SearchVO;
+import com.momo.common.vo.ShopCommonVO;
+import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,10 +50,10 @@ public class AdminController {
 		return "admin/member";
 	}
 
-	@PostMapping("/member/list")
+	@PostMapping("/user/list")
 	@ResponseBody
-	public List<Map<String,Object>> searchMemberList(@RequestBody SearchVO vo){
-		return userService.searchUserInfo(vo);
+	public ResponseEntity<List<Map<String,Object>>> searchUserInfo(@RequestBody SearchVO vo){
+		return ResponseEntityUtil.okOrNotFound(userService.searchUserInfo(vo));
 	}
 
 }

@@ -21,7 +21,7 @@
         WHERE emp_id = #{id}
     </select>
 
-    <select id="tryFindUserIdByEmail" parameterType="com.momo.vo.UserVO" resultType="java.util.Map">
+    <select id="tryFindUserIdByEmail" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         SELECT id,
                regi_dt
         FROM tb_account
@@ -29,7 +29,7 @@
           AND email = #{email}
     </select>
 
-    <select id="tryFindUserIdByTel" parameterType="com.momo.vo.UserVO" resultType="java.util.Map">
+    <select id="tryFindUserIdByTel" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         SELECT id,
                regi_dt
         FROM tb_account
@@ -46,7 +46,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="searchChatInvitableUser" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
+    <select id="searchChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         WITH tb AS (
                        SELECT ac.id   AS user_id,
                               ac.name AS user_nm,
@@ -85,7 +85,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="searchUserInfo" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
+    <select id="searchUserInfo" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         WITH tb AS (
                        SELECT ac.*,
                               cp.corp_bp_no,
@@ -106,7 +106,7 @@
             ${prop}
     </select>
 
-    <select id="selectUserInfo" parameterType="com.momo.vo.UserVO" resultType="java.util.Map">
+    <select id="selectUserInfo" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         with tb as (
         select
         ac.*,
@@ -167,7 +167,7 @@
     </select>
 
     <!--    User-->
-    <select id="selectUser" parameterType="com.momo.vo.UserVO" resultType="java.util.Map">
+    <select id="selectUser" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         select
         *
         from
@@ -201,7 +201,7 @@
         </if>
     </select>
 
-    <select id="searchUser" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
+    <select id="searchUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         SELECT *
         FROM tb_account
         WHERE ${andSelect}
@@ -209,13 +209,13 @@
             ${prop}
     </select>
 
-    <insert id="insertUser" parameterType="com.momo.vo.UserVO">
+    <insert id="insertUser" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_account
             (id, pwd, name, email, tel, terms)
         VALUES (#{id}, #{pwd}, #{name}, #{email}, #{tel}, #{terms})
     </insert>
 
-    <update id="updateUser" parameterType="com.momo.vo.UserVO">
+    <update id="updateUser" parameterType="com.momo.common.vo.UserVO">
         update
         tb_account
         set
@@ -247,13 +247,13 @@
 
     <!--    Employee-->
 
-    <insert id="insertEmp" parameterType="com.momo.vo.UserVO">
+    <insert id="insertEmp" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_emp
             (emp_id, role, corp_id, shop_id, approval_st)
         VALUES (#{empId}, #{role}, #{corpId}, #{shopId}, #{approvalSt})
     </insert>
 
-    <update id="updateEmp" parameterType="com.momo.vo.UserVO">
+    <update id="updateEmp" parameterType="com.momo.common.vo.UserVO">
         update
         tb_emp
         set
@@ -271,7 +271,7 @@
         WHERE emp_id = #{id}
     </delete>
 
-    <select id="selectEmp" parameterType="com.momo.vo.UserVO" resultType="java.util.Map">
+    <select id="selectEmp" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         with tb as (
         select
         em.*,
@@ -311,7 +311,7 @@
         </if>
     </select>
 
-    <select id="searchEmp" parameterType="com.momo.vo.SearchVO" resultType="java.util.Map">
+    <select id="searchEmp" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         WITH tb AS (
                        SELECT em.*,
                               cp.corp_bp_no AS bp_no

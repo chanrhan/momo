@@ -1,11 +1,13 @@
 package com.momo.service;
 
+import com.momo.common.util.IntegerUtil;
+import com.momo.common.vo.MsgCommonVO;
+import com.momo.common.vo.SearchVO;
 import com.momo.generator.MessageGenerator;
 import com.momo.mapper.MsgCommonMapper;
-import com.momo.util.IntegerUtil;
-import com.momo.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class MsgCommonService extends CommonService {
 	private final MsgCommonMapper msgCommonMapper;
 
 	// Message Form
-	public List<Map<String, Object>> selectForm(MsgCommonVO vo) {
+	public List<Map<String, Object>> selectMeesageForm(MsgCommonVO vo) {
 		return msgCommonMapper.selectForm(vo);
 	}
 	public List<Map<String,Object>> getAllDefaultForm(){
@@ -51,8 +53,12 @@ public class MsgCommonService extends CommonService {
 	}
 
 	public List<Map<String, Object>> searchMsg(SearchVO vo) {
-		vo.setOrder("regi_dt");
-		vo.setAsc("desc");
+		if(vo.getOrder() == null){
+			vo.setOrder("regi_dt");
+		}
+		if(vo.getAsc() == null){
+			vo.setAsc("desc");
+		}
 		return msgCommonMapper.searchMsg(vo);
 	}
 
@@ -68,7 +74,7 @@ public class MsgCommonService extends CommonService {
 
 
 	// 코드 너무 지저분하니 나중에 수정할 것
-	public int reserve(MsgCommonVO vo){
+	public ResponseEntity<Boolean> reserve(MsgCommonVO vo){
 		List<MsgCommonVO> list = vo.getMsgList();
 		int result = 0;
 
@@ -77,7 +83,7 @@ public class MsgCommonService extends CommonService {
 			vo.setFormId(list.get(i).getFormId());
 			if(list.get(0).getTypeId() == null || list.get(0).getTypeId() == 0) continue;
 			vo.setTypeId(list.get(i).getTypeId());
-			String _content = selectForm(MsgCommonVO.builder().formId(vo.getFormId()).build()).get(0).get("content").toString();
+			String _content = selectMeesageForm(MsgCommonVO.builder().formId(vo.getFormId()).build()).get(0).get("content").toString();
 			vo.setContent(_content);
 			content = messageGenerator.createContent(vo);
 
@@ -86,10 +92,10 @@ public class MsgCommonService extends CommonService {
 
 			result = insertMsg(vo);
 			if(result == 0){
-				return 0;
+				return ResponseEntity.internalServerError().build();
 			}
 		}
-		return result;
+		return ResponseEntity.ok(result != 0);
 	}
 
 
