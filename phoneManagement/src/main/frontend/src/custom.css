@@ -1,0 +1,11 @@
+
+.preview-bg{
+    height: 400px;
+    background-image: url("../public/img/tmp_momo.png");
+    background-size : cover;
+    background-position : center;
+}
+
+.debug-page{
+    color: green;
+}
