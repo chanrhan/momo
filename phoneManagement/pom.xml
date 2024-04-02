@@ -39,6 +39,24 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
 
+<!--        JWT-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!--		Thymeleaf + 아래 의존성 까지 추가해야 html문에서 layout:decorate가 제대로 동작한다-->
         <!--		버전도 제대로 입력해 주어야 한다!-->
@@ -103,6 +121,10 @@
         </dependency>
 
         <!--		SpringBoot DevTools-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

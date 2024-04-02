@@ -26,6 +26,7 @@ public interface UserMapper {
 	public int updateUser(UserVO vo);
 	public int deleteUser(String id);
 	public List<Map<String,Object>> selectUser(UserVO vo);
+	public List<Map<String,Object>> selectUserById(String id);
 	public List<Map<String,Object>> searchUser(SearchVO vo);
 
 	// Employee

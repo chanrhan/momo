@@ -6,12 +6,13 @@ import {Route, Routes} from "react-router-dom";
 import Preview from "./home/Preview";
 import Login from "./account/Login";
 import Home from "./home/Home";
+import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 function App() {
   return (
     <div className="App">
       <Header/>
-
         <Routes>
             <Route path='/' element={<Preview/>}/>
             <Route path='/account/login' element={<Login/>}/>

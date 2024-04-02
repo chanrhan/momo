@@ -34,11 +34,6 @@ public class AccountController {
 	private final NotificationService notificationService;
 	private final ImageService        imageService;
 
-	@GetMapping("/login")
-	public String login() {
-		return "account/login";
-	}
-
 
 	@GetMapping("/signup")
 	public String signup(Model model, @RequestParam(required = false, defaultValue = "") String email, @RequestParam(value = "shop_id", required = false, defaultValue = "0") int shopId, @RequestParam(value = "corp_id", required = false, defaultValue = "0") int corpId) {

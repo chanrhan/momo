@@ -114,7 +114,7 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 	public Map<String,Object> selectUserById(String id){
-		List<Map<String,Object>> list = selectUser(UserVO.builder().id(id).build());
+		List<Map<String,Object>> list = userMapper.selectUserById(id);
 		if(list == null || list.isEmpty()){
 			return null;
 		}
@@ -199,7 +199,9 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println("[test13] username: "+username);
 		Map<String,Object> user = selectUserById(username);
+		System.out.println("[test13] user: "+user);
 		if(user == null){
 			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
 		}

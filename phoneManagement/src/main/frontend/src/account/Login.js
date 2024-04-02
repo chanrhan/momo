@@ -1,12 +1,17 @@
 import {useState} from "react";
 import {login} from "../utils/api";
+import {useNavigate} from "react-router-dom";
+import axiosInstance from "../axiosInstance";
 
 function Login(){
-    console.log("LOGIN");
+    const navigate = useNavigate();
+
     let [loginInput, setLoginInput] = useState({
         username: "",
         password: ""
     })
+
+    let [error, setError] = useState('');
 
     const handlerInputChange = (e)=>{
         setLoginInput((prev)=>(
@@ -16,12 +21,23 @@ function Login(){
         ));
     }
 
-    const onLogin = async(e)=>{
+    const handleLogin = async (e)=>{
         e.preventDefault();
-        const {data, status, error} = login(loginInput);
-        console.log(data)
-        console.log(status)
-        console.log(error)
+        // const {status, res} = await login(loginInput);
+        // if(status){
+        //     navigate('/home');
+        // }else{
+        //     console.error('Login failed:',error.response ? error.response.data : error.message);
+        //     setError("Invalid username or password");
+        // }
+        try{
+            const reesponse = await axiosInstance.post('/account/login',loginInput);
+            navigate('/home');
+        }catch (error){
+            console.error('Login failed:',error.response ? error.response.data : error.message);
+            setError("Invalid username or password");
+        }
+
     }
 
     return (
@@ -33,7 +49,10 @@ function Login(){
             <br/>
             <input type="password" className='form-control' id='password' name='password' value={loginInput.password} placeholder="PASSWORD" onChange={handlerInputChange} required/>
             <br/>
-            <button type='submit' onClick={onLogin}>LOGIN</button>
+            {
+                error && <p className='text-danger'>{error}</p>
+            }
+            <button type='submit' onClick={handleLogin}>LOGIN</button>
         </div>
     )
 }

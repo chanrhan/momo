@@ -201,6 +201,12 @@
         </if>
     </select>
 
+    <select id="selectUserById">
+        SELECT *
+        FROM tb_account
+        WHERE id=#{id}
+    </select>
+
     <select id="searchUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         SELECT *
         FROM tb_account

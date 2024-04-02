@@ -1,18 +1,15 @@
 import axiosInstance from "../axiosInstance";
+import {Form} from "react-router-dom";
 
-export const login = async (user) => {
+export const login = (user) => {
     const {username, password} = user;
 
-    const body = {
+    axiosInstance.post("/account/login", {
         username: username,
         password: password
-    }
-
-    try {
-        const {data, status} = await axiosInstance.post("/account/login", JSON.stringify(body));
-        return {data, status, error: null};
-    } catch (error) {
-        // const { data: {message}, status} = error.response;
-        return {error};
-    }
+    }).then(res=>{
+        return {status: true, res: res.data}
+    }).catch(e=>{
+        return {status: false, res: e}
+    });
 }
