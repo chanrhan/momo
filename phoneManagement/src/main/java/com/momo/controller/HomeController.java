@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-	@GetMapping("/")
-	public String homePreview(){
-		return "main/preview";
-	}
+//	@GetMapping("/")
+//	public String homePreview(){
+//		return "main/preview";
+//	}
 
 	@GetMapping("/home")
 	@PreAuthorize("isAuthenticated()")

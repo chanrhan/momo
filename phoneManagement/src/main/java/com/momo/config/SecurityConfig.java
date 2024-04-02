@@ -42,7 +42,7 @@ public class SecurityConfig {
 						addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
 				// 로그인 URL 설정
 				.formLogin((formLogin)->formLogin
-						.loginPage("/account/login")
+								   .loginPage("/account/login")
 						.defaultSuccessUrl("/home")
 								   .successHandler(new LoginSuccessHandler(userService))
 						  )
