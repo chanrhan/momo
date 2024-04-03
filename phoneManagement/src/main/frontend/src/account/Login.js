@@ -1,9 +1,15 @@
 import {useState} from "react";
 import {login} from "../utils/api";
 import {useNavigate} from "react-router-dom";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
+import {responsesAreSame} from "workbox-broadcast-update";
+import {loginUser} from "../api/Auth";
+import {useDispatch} from "react-redux";
+import {authActions} from "../store/slices/authSlice";
+import {setRefreshToken} from "../utils/Cookies";
 
 function Login(){
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     let [loginInput, setLoginInput] = useState({
@@ -23,21 +29,31 @@ function Login(){
 
     const handleLogin = async (e)=>{
         e.preventDefault();
-        // const {status, res} = await login(loginInput);
-        // if(status){
-        //     navigate('/home');
-        // }else{
-        //     console.error('Login failed:',error.response ? error.response.data : error.message);
-        //     setError("Invalid username or password");
-        // }
         try{
-            const reesponse = await axiosInstance.post('/account/login',loginInput);
-            navigate('/home');
+            const response = await loginUser(loginInput);
+            if(response.status === 200){
+                // console.log(`response.jwtToken : ${response.jwtToken}`)
+                dispatch(authActions.setAccessToken(response.jwtToken.access_token));
+                setRefreshToken(response.jwtToken.refresh_token);
+                console.log("login success!")
+                navigate('/home');
+            }else{
+                handleLoginError(response.json);
+            }
         }catch (error){
-            console.error('Login failed:',error.response ? error.response.data : error.message);
-            setError("Invalid username or password");
+            handleLoginError('Login failed:',error.response ? error.response.data : error.message);
         }
 
+    }
+
+    const handleLoginError = (error)=>{
+        console.error(error);
+        setError("Invalid username or password");
+        setLoginInput((prev)=>(
+            {
+                ...prev, password: ''
+            }
+        ));
     }
 
     return (

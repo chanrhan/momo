@@ -6,18 +6,24 @@ import {Route, Routes} from "react-router-dom";
 import Preview from "./home/Preview";
 import Login from "./account/Login";
 import Home from "./home/Home";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "./utils/axiosInstance";
 import axios from "axios";
+import AutoRouter from "./Route/AutoRouter";
+
+
+
 
 function App() {
   return (
     <div className="App">
       <Header/>
-        <Routes>
-            <Route path='/' element={<Preview/>}/>
-            <Route path='/account/login' element={<Login/>}/>
-            <Route path='/home' element={<Home/>}/>
-        </Routes>
+
+        <AutoRouter/>
+        {/*<Routes>*/}
+        {/*    <Route path='/' element={<Preview/>}/>*/}
+        {/*    <Route path='/account/login' element={<Login/>}/>*/}
+        {/*    <Route path='/home' element={<Home/>}/>*/}
+        {/*</Routes>*/}
       <Footer/>
     </div>
   );

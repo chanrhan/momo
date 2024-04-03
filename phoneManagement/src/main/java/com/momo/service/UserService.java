@@ -1,12 +1,13 @@
 package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
-import com.momo.mapper.UserMapper;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
+import com.momo.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,7 @@ public class UserService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
 
+	// Authentication
 
 
 	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
@@ -197,6 +199,12 @@ public class UserService extends CommonService implements UserDetailsService{
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
+	public Authentication login(String username, String password){
+		Authentication authentication = authenticate(username, password);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return authentication;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		System.out.println("[test13] username: "+username);
@@ -225,5 +233,20 @@ public class UserService extends CommonService implements UserDetailsService{
 		}
 
 		return userDetails;
+	}
+
+	private Authentication authenticate(String username, String password) {
+		UserDetails userDetails = loadUserByUsername(username);
+
+		if (userDetails == null) {
+			System.out.println("Login details - null " + userDetails);
+			throw new BadCredentialsException("Invalid username and password");
+		}
+
+		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+			System.out.println("Login userDetails - password mismatch" + userDetails);
+			throw new BadCredentialsException("Invalid password");
+		}
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}
 }

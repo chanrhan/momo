@@ -1,61 +1,56 @@
 package com.momo.restcontroller;
 
-import com.momo.common.response.AuthResponse;
-import com.momo.provider.JwtProvider;
+import com.momo.common.response.JwtResponse;
+import com.momo.provider.JwtTokenProvider;
+import com.momo.service.JwtService;
 import com.momo.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/account")
+@RequestMapping("/api/v1/auth")
 public class RestAccountController {
-	private final UserService userService;
+	private final UserService     userService;
+	private final JwtService jwtService;
+	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
 
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> login(@RequestBody Map<String,String> user){
+	public JwtResponse login(HttpServletResponse response, @RequestBody Map<String, String> user) {
 		String username = user.get("username");
 		String password = user.get("password");
 
-		Authentication authentication = authenticate(username, password);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		Authentication authentication = userService.login(username, password);
 
-		String token = JwtProvider.generateToken(authentication);
-		AuthResponse authResponse = new AuthResponse();
+		JwtResponse jwtResponse = jwtTokenProvider.generateToken(authentication);
 
-		authResponse.setMessage("Login Success");
-		authResponse.setJwt(token);
-		authResponse.setStatus(true);
+		jwtTokenProvider.setHeaderJwtToken(response, jwtResponse);
 
-		return new ResponseEntity<>(authResponse, HttpStatus.OK);
+//		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
+		return jwtResponse;
 	}
 
-	private Authentication authenticate(String username, String password){
-		UserDetails userDetails = userService.loadUserByUsername(username);
+	@PostMapping("/refresh")
+	public JwtResponse refresh(HttpServletRequest request,
+							   HttpServletResponse response,
+							   @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
+		JwtResponse jwtResponse = jwtService.refresh(bearerRefreshToken);
 
-		if(userDetails == null){
-			System.out.println("Login details - null "+userDetails);
-			throw new BadCredentialsException("Invalid username and password");
-		}
+		jwtTokenProvider.setHeaderJwtToken(response, jwtResponse);
 
-		if(!passwordEncoder.matches(password, userDetails.getPassword())){
-			System.out.println("Login userDetails - password mismatch"+userDetails);
-			throw new BadCredentialsException("Invalid password");
-		}
-		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
+		return jwtResponse;
 	}
+
+
 }

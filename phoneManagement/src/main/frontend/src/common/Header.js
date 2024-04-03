@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import axios from "axios";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
 import {useNavigate} from "react-router-dom";
 
 function Header(){
@@ -15,11 +15,16 @@ function Header(){
     //         console.log("error"+e)
     //     })
     // },[])
+    const handleLogout = e=>{
+        navigate('/');
+    }
+
     return (
         <div>
             <h1 onClick={()=>{
                 navigate('/');
             }}>MOMO TEST PAGE</h1>
+            <button onClick={handleLogout}>LOGOUT</button>
         </div>
     )
 }

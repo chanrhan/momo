@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "./axiosInstance";
 import {Form} from "react-router-dom";
 
 export const login = (user) => {
