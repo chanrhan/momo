@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import axios from "axios";
 import axiosInstance from "../../utils/axiosInstance";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {authActions, authReducer} from "../../store/slices/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {removeCookieToken} from "../../utils/Cookies";
@@ -19,7 +19,7 @@ function Header(){
     useEffect(()=>{
         const updateUserInfo = async ()=>{
             const {status, userInfo} = await getUserInfo(accessToken);
-            console.log(userInfo)
+            // console.log(userInfo)
             if(status === 200){
                 dispatch(userActions.setUserInfo(userInfo));
             }
@@ -37,9 +37,9 @@ function Header(){
 
     return (
         <div>
-            <h1 onClick={()=>{
-                navigate('/');
-            }}>MOMO TEST PAGE</h1>
+            <h1>
+                <Link to='/'>MOMO TEST PAGE</Link>
+            </h1>
             <button onClick={handleLogout}>LOGOUT</button>
             <p>{userInfo.name}</p>
             <p>{userInfo.role}</p>

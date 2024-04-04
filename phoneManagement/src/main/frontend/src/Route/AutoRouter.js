@@ -14,30 +14,28 @@ const RouterInfo = [
 
 const       AutoRouter = () => {
     return (
-        <div id='auto_router'>
-            <Routes>
-                {
-                    RouterInfo.map((route) => {
-                        return (
-                            <Route key={route.path}
-                                   path={route.path}
-                                   element={
-                                        route.withAuthorization ? (
-                                            <Authorization
-                                                redirectTo='/account/login'
-                                            >
-                                                {route.element}
-                                            </Authorization>
-                                        ) : (
-                                            route.element
-                                        )
-                                   }
-                            />
-                        )
-                    })
-                }
-            </Routes>
-        </div>
+        <>
+            {
+                RouterInfo.map((route) => {
+                    return (
+                        <Route key={route.path}
+                               path={route.path}
+                               element={
+                                   route.withAuthorization ? (
+                                       <Authorization
+                                           redirectTo='/account/login'
+                                       >
+                                           {route.element}
+                                       </Authorization>
+                                   ) : (
+                                       route.element
+                                   )
+                               }
+                        />
+                    )
+                })
+            }
+        </>
     )
 }
 

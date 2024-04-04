@@ -38,7 +38,7 @@ function Login(){
                 setRefreshToken(response.jwtToken.refresh_token);
 
 
-                navigate('/home');
+                navigate('/service');
             }else{
                 handleLoginError(response.json);
             }

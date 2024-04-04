@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link, Route, Routes, useNavigate} from "react-router-dom";
+import {Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
 import Login from "../account/Login";
 import PreviewHeader from "./PreviewHeader";
 
@@ -8,10 +8,8 @@ function Preview(){
 
     return (
         <div>
-            <Routes>
-                <Route path='' element={<PreviewHeader/>}/>
-                <Route path='/account/login' element={<Login/>}/>
-            </Routes>
+            <PreviewHeader/>
+            <Outlet/>
         </div>
     )
 }
