@@ -166,6 +166,20 @@
         </if>
     </select>
 
+    <select id="selectUserSidebarInfo">
+        SELECT ac.name,
+               ac.role,
+               ac.nickname,
+               ac.pfp,
+               cp.corp_nm,
+               sh.shop_nm
+        FROM tb_account ac
+                 LEFT OUTER JOIN tb_emp em ON ac.id = em.emp_id
+                 LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id
+                 LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id
+        WHERE id = #{id}
+    </select>
+
     <!--    User-->
     <select id="selectUser" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         select

@@ -2,7 +2,8 @@ package com.momo.provider;
 
 
 import com.momo.common.JwtConstant;
-import com.momo.common.response.JwtResponse;
+import com.momo.common.UserDetailsImpl;
+import com.momo.common.response.JwtVO;
 import com.momo.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -13,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,25 +27,30 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtProvider {
 	private final UserService userService;
+
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L; // 단위(ms), 1000ms(1초) x 60 x 30 = 30분
+	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
 
 	static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes()); // test
 
-	public JwtResponse generateToken(Authentication auth){
+	public JwtVO generateToken(Authentication auth){
 		String authorities = auth.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
+		String username = ((UserDetailsImpl)auth.getPrincipal()).getUsername();
+
 		String accessToken = Jwts.builder()
+				.setSubject(username)
 				.setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime() + 86400000)) // 86400000 = 1일
-//				.claim("username",auth.getName())
+				.setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_EXPIRE_TIME))
 				.claim("authorities",authorities)
-				.signWith(key)
+				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 		String refreshToken = Jwts.builder()
-				.setExpiration(new Date(new Date().getTime() + 86400000))
+				.setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_EXPIRE_TIME))
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 
@@ -53,26 +58,29 @@ public class JwtTokenProvider {
 		System.out.println("RefreshToken for parsing in JwtProvider: "+refreshToken);
 
 
-		return JwtResponse.builder()
+		return JwtVO.builder()
 				.grantType("Bearer")
 				.accessToken(accessToken)
 				.refreshToken(refreshToken)
+				.username(username)
 				.build();
 	}
 
 	public Authentication getAuthentication(String accessToken){
 		Claims claims = parseClaims(accessToken);
 
-		if(claims.get("auth") == null){
+		if(claims.get("authorities") == null){
 			throw new RuntimeException("Token is not authenticated");
 		}
 
 		Collection<? extends GrantedAuthority> authorities
-											   = Arrays.stream(claims.get("auth").toString().split(","))
+											   = Arrays.stream(claims.get("authorities").toString().split(","))
 				.map(SimpleGrantedAuthority::new)
 				.toList();
 
-		UserDetails principal = new User(claims.getSubject(), "", authorities);
+		log.info("get authentication username : {}", claims.getSubject());
+
+		UserDetails principal = userService.loadUserByUsername(claims.getSubject());
 		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 	}
 
@@ -107,10 +115,10 @@ public class JwtTokenProvider {
 		}
 	}
 
-	public void setHeaderJwtToken(HttpServletResponse response, JwtResponse jwtResponse){
+	public void setHeaderJwtToken(HttpServletResponse response, JwtVO jwtVO){
 		response.setHeader("Access-Control-Expose-Headers","authorization, refreshtoken");
-		response.setHeader("authorization","Bearer "+jwtResponse.getAccessToken());
-		response.setHeader("refreshtoken","Bearer "+jwtResponse.getRefreshToken());
+		response.setHeader("authorization","Bearer "+ jwtVO.getAccessToken());
+		response.setHeader("refreshtoken","Bearer "+ jwtVO.getRefreshToken());
 	}
 
 	public Authentication getAuthenticationByUsername(String username){

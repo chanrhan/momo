@@ -1,4 +1,4 @@
-package com.momo.restcontroller;
+package com.momo.api;
 
 import com.momo.wrapper.RereadableRequestWrapper;
 import jakarta.servlet.http.HttpServletRequest;

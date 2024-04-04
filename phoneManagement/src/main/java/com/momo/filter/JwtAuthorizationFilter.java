@@ -1,6 +1,6 @@
 package com.momo.filter;
 
-import com.momo.provider.JwtTokenProvider;
+import com.momo.provider.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,21 +17,27 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-	private final JwtTokenProvider jwtTokenProvider;
+	private final JwtProvider jwtProvider;
 
+	/**
+	 * Spring Security가 가지고 있는 필터 중 BasicAuthenticationFilter라는 것이 있음
+	 * 권한이나 인증이 필요한 특정 주소를 요청했을 때 위 필터를 무조건 거치게 되어 있음
+	 * 만약에 권한이나 인증이 필요한 주소가 아니라면 해당 필터를 거치지 않음
+	*/
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		log.info("{} - successfulAuthentication -> 인증이나 권한이 필요한 주소 요청이 됨", this.getClass());
+//		log.info("{} - successfulAuthentication -> 인증이나 권한이 필요한 주소 요청이 됨", this.getClass());
 
 		String bearerAccessToken = request.getHeader("X-ACCESS-TOKEN");
-		String accessToken = jwtTokenProvider.getBearerTokenToString(bearerAccessToken);
+		String accessToken = jwtProvider.getBearerTokenToString(bearerAccessToken);
 
-		if(StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)){
-			Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+		if(StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)){
+			Authentication authentication = jwtProvider.getAuthentication(accessToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			log.debug("Security Context에 '{}' 인증 정보를 저장했습니다", authentication.getName());
+			log.info("Security Context에 '{}' 인증 정보를 저장했습니다", authentication.getName());
 		}else{
-			log.debug("유효한 JWT 토큰이 없습니다");
+			log.info("유효한 JWT 토큰이 없습니다");
+//			response.sendError(401,"Token has been expired");
 		}
 
 		filterChain.doFilter(request,response);

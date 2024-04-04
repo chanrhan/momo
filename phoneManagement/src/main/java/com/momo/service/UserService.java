@@ -68,6 +68,10 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.searchUserInfo(vo);
 	}
 
+	public Map<String,Object> getUserSidebarInfo(){
+		String username = SecurityContextUtil.getUsername();
+		return userMapper.selectUserSidebarInfo(username);
+	}
 	// Common
 	public void loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
@@ -202,23 +206,23 @@ public class UserService extends CommonService implements UserDetailsService{
 	public Authentication login(String username, String password){
 		Authentication authentication = authenticate(username, password);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
 		return authentication;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("[test13] username: "+username);
 		Map<String,Object> user = selectUserById(username);
-		System.out.println("[test13] user: "+user);
 		if(user == null){
-			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
+			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
 		}
 
 		String id = user.get("id").toString();
 		String pwd = user.get("pwd").toString();
 		String role = user.get("role").toString();
 
-		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, role);
+		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, "ROLE_"+role);
 
 		if(role.equals("NONE")){
 			return userDetails;
@@ -234,6 +238,7 @@ public class UserService extends CommonService implements UserDetailsService{
 
 		return userDetails;
 	}
+
 
 	private Authentication authenticate(String username, String password) {
 		UserDetails userDetails = loadUserByUsername(username);

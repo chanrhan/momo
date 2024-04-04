@@ -21,6 +21,8 @@ public interface UserMapper {
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
 	public List<Map<String,Object>> selectUserInfo(UserVO vo);
 
+	public Map<String,Object> selectUserSidebarInfo(String id);
+
 	// User Account
 	public int insertUser(UserVO vo);
 	public int updateUser(UserVO vo);

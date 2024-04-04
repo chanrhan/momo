@@ -1,4 +1,5 @@
 import axios from "axios";
+import {useSelector} from "react-redux";
 
 const axiosInstance = axios.create({
     baseURL: "http://localhost:8080",
@@ -6,7 +7,7 @@ const axiosInstance = axios.create({
     headers: {
         "Content-Type": `application/json`,
         "Authorization": localStorage.getItem('access_token'),
-        // "Accept": "application/json",
+        "Accept": "application/json",
         "Access-Control-Allow-Origin": `http://localhost:3000`,
         'Access-Control-Allow-Credentials':"true",
     },

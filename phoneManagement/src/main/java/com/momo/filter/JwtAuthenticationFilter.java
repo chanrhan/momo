@@ -1,7 +1,8 @@
 package com.momo.filter;
 
-import com.momo.common.response.JwtResponse;
-import com.momo.provider.JwtTokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.momo.common.response.JwtVO;
+import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,34 +10,61 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-	private final JwtTokenProvider jwtTokenProvider;
-	private final JwtService jwtService;
-//	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-//		this.jwtTokenProvider = jwtTokenProvider;
-//	}
+	private final AuthenticationManager authenticationManager;
+	private final JwtProvider           jwtProvider;
+	private final JwtService            jwtService;
 
+
+	// loing 요청을 하면 로그인 시도를 위해 실행되는 함수
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-		String token = resolveToken((HttpServletRequest) request);
+		log.info("{} - attemptAuthentication -> 로그인 시도중", this.getClass());
+		ObjectMapper objectMapper = new ObjectMapper();
+		try{
+			Map<String,Object> userMap = objectMapper.readValue(request.getInputStream(), Map.class);
 
-		if(token != null && jwtTokenProvider.validateToken(token)){
-			Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//			SecurityContextHolder.getContext().setAuthentication(authentication);
-			log.info("attempt auth token");
+			String username = userMap.get("username").toString();
+			String password = userMap.get("password").toString();
+
+			log.info("user.getUsername() : {}", username);
+			log.info("user.getPassword() : {}", password);
+
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					username, password
+			);
+
+			Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
 			return authentication;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		log.info("attempt error");
 		return null;
+
+		//		String token = resolveToken((HttpServletRequest) request);
+//
+//		if(token != null && jwtTokenProvider.validateToken(token)){
+//			Authentication authentication = jwtTokenProvider.getAuthentication(token);
+////			SecurityContextHolder.getContext().setAuthentication(authentication);
+//			log.info("attempt auth token");
+//			return authentication;
+//		}
+//		log.info("attempt error");
+//		return null;
 	}
 
 	@Override
@@ -44,11 +72,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		log.info("{} - successfulAuthentication -> 인증 완료", this.getClass());
 
 
-		JwtResponse jwtResponse = jwtTokenProvider.generateToken(authentication);
-//		Long userNo = principalDetails.getUser().getUserNo();
-		jwtService.saveRefreshToken(jwtResponse);
+		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+		jwtService.saveRefreshToken(jwtVO);
 
-		jwtTokenProvider.setHeaderJwtToken(response, jwtResponse);
+		jwtProvider.setHeaderJwtToken(response, jwtVO);
 	}
 
 	private String resolveToken(HttpServletRequest request){

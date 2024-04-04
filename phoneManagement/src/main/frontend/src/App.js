@@ -1,29 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import Header from "./common/Header";
-import Footer from "./common/Footer";
-import {Route, Routes} from "react-router-dom";
-import Preview from "./home/Preview";
-import Login from "./account/Login";
-import Home from "./home/Home";
-import axiosInstance from "./utils/axiosInstance";
-import axios from "axios";
-import AutoRouter from "./Route/AutoRouter";
-
-
-
+import Footer from "./component/common/Footer";
+import {Outlet, Route, Routes} from "react-router-dom";
+import Service from "./component/home/Service";
+import Authorization from "./component/common/Authorization";
+import Login from "./component/account/Login";
+import Preview from "./component/preview/Preview";
+import PreviewHeader from "./component/preview/PreviewHeader";
 
 function App() {
   return (
     <div className="App">
-      <Header/>
-
-        <AutoRouter/>
-        {/*<Routes>*/}
-        {/*    <Route path='/' element={<Preview/>}/>*/}
-        {/*    <Route path='/account/login' element={<Login/>}/>*/}
-        {/*    <Route path='/home' element={<Home/>}/>*/}
-        {/*</Routes>*/}
+        <Routes>
+            <Route path='/' element={<Preview/>}/>
+            <Route path='/service' element={
+                <Authorization redirectTo='/account/login'>
+                    <Service/>
+                </Authorization>
+            }/>
+        </Routes>
       <Footer/>
     </div>
   );

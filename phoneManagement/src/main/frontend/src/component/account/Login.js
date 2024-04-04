@@ -1,12 +1,13 @@
 import {useState} from "react";
-import {login} from "../utils/api";
-import {useNavigate} from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance";
-import {responsesAreSame} from "workbox-broadcast-update";
-import {loginUser} from "../api/Auth";
+import {login} from "../../utils/api";
+import {Link, Route, Routes, useNavigate} from "react-router-dom";
+import {loginUser} from "../../api/Auth";
 import {useDispatch} from "react-redux";
-import {authActions} from "../store/slices/authSlice";
-import {setRefreshToken} from "../utils/Cookies";
+import {authActions} from "../../store/slices/authSlice";
+import {setRefreshToken} from "../../utils/Cookies";
+import Signup from "./Signup";
+import FindUsername from "./FindUsername";
+import FindPassword from "./FindPassword";
 
 function Login(){
     const dispatch = useDispatch();
@@ -35,7 +36,8 @@ function Login(){
                 // console.log(`response.jwtToken : ${response.jwtToken}`)
                 dispatch(authActions.setAccessToken(response.jwtToken.access_token));
                 setRefreshToken(response.jwtToken.refresh_token);
-                console.log("login success!")
+
+
                 navigate('/home');
             }else{
                 handleLoginError(response.json);
@@ -68,7 +70,20 @@ function Login(){
             {
                 error && <p className='text-danger'>{error}</p>
             }
-            <button type='submit' onClick={handleLogin}>LOGIN</button>
+            <button type='submit' onClick={handleLogin}>로그인</button>
+
+            <button>
+                <Link to='/account/find-username'>아이디 찾기</Link>
+            </button>
+            <button>
+                <Link to='/account/find-password'>비밀번호 찾기</Link>
+            </button>
+
+            <Routes>
+                <Route path='/account/signup' element={<Signup/>}/>
+                <Route path='/account/find-username' element={<FindUsername/>}/>
+                <Route path='/account/find-password' element={<FindPassword/>}/>
+            </Routes>
         </div>
     )
 }

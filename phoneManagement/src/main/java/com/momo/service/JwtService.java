@@ -1,8 +1,8 @@
 package com.momo.service;
 
-import com.momo.common.response.JwtResponse;
+import com.momo.common.response.JwtVO;
 import com.momo.mapper.RefreshTokenMapper;
-import com.momo.provider.JwtTokenProvider;
+import com.momo.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,12 +19,12 @@ import java.util.Map;
 @Transactional
 public class JwtService {
 	private final RefreshTokenMapper refreshTokenMapper;
-	private final JwtTokenProvider jwtTokenProvider;
+	private final JwtProvider        jwtProvider;
 
-	public void saveRefreshToken(JwtResponse jwtResponse){
-		log.info("save refresh token: "+jwtResponse);
-		String id = jwtResponse.getUsername();
-		String token = jwtResponse.getRefreshToken();
+	public void saveRefreshToken(JwtVO jwtVO){
+		log.info("save refresh token: "+ jwtVO);
+		String id = jwtVO.getUsername();
+		String token = jwtVO.getRefreshToken();
 		Map<String,Object> refreshToken = refreshTokenMapper.findById(id);
 
 		if(refreshToken == null){
@@ -34,10 +34,10 @@ public class JwtService {
 		}
 	}
 
-	public JwtResponse refresh(String bearerRefreshToken) throws AccessDeniedException {
-		String refreshToken = jwtTokenProvider.getBearerTokenToString(bearerRefreshToken);
+	public JwtVO refresh(String bearerRefreshToken) throws AccessDeniedException {
+		String refreshToken = jwtProvider.getBearerTokenToString(bearerRefreshToken);
 
-		if(!jwtTokenProvider.validateToken(refreshToken)){
+		if(!jwtProvider.validateToken(refreshToken)){
 			throw new AccessDeniedException("AccessDeniedException");
 		}
 
@@ -48,11 +48,11 @@ public class JwtService {
 
 		String username = userRefreshToken.get("user_id").toString();
 
-		Authentication authentication = jwtTokenProvider.getAuthenticationByUsername(username);
-		JwtResponse jwtResponse  = jwtTokenProvider.generateToken(authentication);
+		Authentication authentication = jwtProvider.getAuthenticationByUsername(username);
+		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
 
-		saveRefreshToken(jwtResponse);
+		saveRefreshToken(jwtVO);
 
-		return jwtResponse;
+		return jwtVO;
 	}
 }

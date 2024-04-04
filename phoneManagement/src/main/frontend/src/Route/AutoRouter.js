@@ -1,17 +1,18 @@
 import {Route, Router, Routes} from "react-router-dom";
-import Preview from "../home/Preview";
-import Login from "../account/Login";
-import Home from "../home/Home";
 import React from "react";
-import Authorization from "../common/Authorization";
+import Authorization from "../component/common/Authorization";
+import Sale from "../component/sale/Sale";
+import ManageCustomer from "../component/manage-customer/ManageCustomer";
+import ReserveMessage from "../component/reserve-msg/ReserveMessage";
+
 
 const RouterInfo = [
-    {path: '/', element: <Preview/>, withAuthorization: false},
-    {path: '/account/login', element: <Login/>, withAuthorization: false},
-    {path: '/home', element: <Home/>, withAuthorization: true}
+    {path: '/service/sale', element: <Sale/>, withAuthorization: false},
+    {path: '/service/manage-customer', element: <ManageCustomer/>, withAuthorization: false},
+    {path: '/service/reserve-msg', element: <ReserveMessage/>, withAuthorization: false},
 ];
 
-const AutoRouter = () => {
+const       AutoRouter = () => {
     return (
         <div id='auto_router'>
             <Routes>
