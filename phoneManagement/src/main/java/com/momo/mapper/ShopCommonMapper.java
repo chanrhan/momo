@@ -11,6 +11,8 @@ import java.util.Map;
 @Mapper
 public interface ShopCommonMapper {
 
+	public List<Map<String,Object>> getCorpListForRoleDetail(String keyword);
+
 	// Shop
 	public int insertShop(ShopCommonVO vo);
 	public int updateShop(ShopCommonVO vo);

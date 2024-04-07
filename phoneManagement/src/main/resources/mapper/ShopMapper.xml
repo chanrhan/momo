@@ -4,6 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.ShopCommonMapper">
 
+    <select id="getCorpListForRoleDetail">
+        SELECT corp_id,
+               corp_nm
+        FROM tb_corp
+        WHERE corp_nm LIKE '%${keyword}%' OR
+              corp_id LIKE '%${keyword}%'
+    </select>
+
     <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_shop

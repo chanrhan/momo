@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/profile")
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-public class ProfileController {
+public class ProfileController0 {
 	private final UserService       userService;
 	private final ShopCommonService shopCommonService;
 

@@ -1,0 +1,52 @@
+package com.momo.api;
+
+import com.momo.common.response.JwtVO;
+import com.momo.common.vo.UserVO;
+import com.momo.provider.JwtProvider;
+import com.momo.service.JwtService;
+import com.momo.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/public")
+public class PublicController {
+	private final UserService userService;
+	private final JwtProvider jwtProvider;
+	private final JwtService jwtService;
+
+	@PostMapping("/signup")
+	@Transactional
+	public ResponseEntity<?> signup(HttpServletResponse response, HttpSession session, @RequestBody UserVO vo){
+		int result = userService.insertUser(vo);
+		if (result == 0) {
+			return ResponseEntity.notFound().build();
+		}
+
+		Authentication authentication = userService.loginDirectly(vo.getId(), session);
+		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+
+		jwtService.saveRefreshToken(jwtVO);
+		jwtProvider.setHeaderJwtToken(response, jwtVO);
+
+		return ResponseEntity.ok().body(true);
+	}
+
+	@GetMapping("/test/get")
+	public String publicApiTest(){
+		return "Success";
+	}
+
+	@PostMapping("/test/post")
+	public String publicApiTestPost(@RequestBody String str){
+		return "Success: "+str;
+	}
+}

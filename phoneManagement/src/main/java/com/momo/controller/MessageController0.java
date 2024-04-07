@@ -23,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/msg")
 @PreAuthorize("isAuthenticated()")
-public class MessageController {
+public class MessageController0 {
 	private final UserService      userService;
 	private final MsgCommonService msgCommonService;
 	private final ShopCommonService shopCommonService;

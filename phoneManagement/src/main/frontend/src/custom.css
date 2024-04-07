@@ -1,9 +1,43 @@
 
 .preview-bg{
-    height: 400px;
-    background-image: url("../public/img/tmp_momo.png");
-    background-size : cover;
+    background-image: url("../public/img/tmp/momo_lg.png");
+    background-size : contain;
     background-position : center;
+    background-repeat: no-repeat;
+    height: 289px;
+}
+
+.role-select-card{
+    width: 700px;
+    height: 500px;
+    border: 1px solid gray;
+    background-color: #fff9e7;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.role-manager-lg{
+    background-image: url("../public/img/tmp/manager_lg.png");
+    background-size : contain;
+    background-position : center;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+.role-bm-lg{
+    background-image: url("../public/img/tmp/bm_lg.png");
+    background-size : contain;
+    background-position : center;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+.role-reps-lg{
+    background-image: url("../public/img/tmp/reps_lg.png");
+    background-size : contain;
+    background-position : center;
+    background-repeat: no-repeat;
+    height: 300px;
 }
 
 .debug-page{

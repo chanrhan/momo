@@ -1,9 +1,9 @@
 import {Route, Router, Routes} from "react-router-dom";
 import React from "react";
 import Authorization from "../component/common/Authorization";
-import Sale from "../component/sale/Sale";
-import ManageCustomer from "../component/manage-customer/ManageCustomer";
-import ReserveMessage from "../component/reserve-msg/ReserveMessage";
+import Sale from "../component/service/sale/Sale";
+import ManageCustomer from "../component/service/manage-customer/ManageCustomer";
+import ReserveMessage from "../component/service/reserve-msg/ReserveMessage";
 
 
 const RouterInfo = [

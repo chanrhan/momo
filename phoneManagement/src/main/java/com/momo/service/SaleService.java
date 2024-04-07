@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.mapper.SaleMapper;
 import com.momo.common.util.IntegerUtil;
 import com.momo.common.vo.SaleVO;
@@ -46,6 +47,16 @@ public class SaleService extends CommonService {
 		vo.setCorpId(Integer.parseInt(session.getAttribute("corp_id").toString()));
 
 		return selectSale(vo);
+	}
+
+	public List<Map<String,Object>> getSaleList(SaleVO vo){
+		String userId = SecurityContextUtil.getUsername();
+		if(userId == null){
+			return null;
+		}
+		vo.setUserId(userId);
+		System.out.println("get sale: "+vo);
+		return saleMapper.getSaleList(vo);
 	}
 	
 	public List<Map<String,Object>> selectSale(SaleVO vo) {

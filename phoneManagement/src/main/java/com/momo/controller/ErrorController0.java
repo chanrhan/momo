@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/error")
-public class ErrorController {
+public class ErrorController0 {
 
 	@GetMapping("/common")
 	public String commonError(){

@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
+// OncePerRequestFilter : 매 요청 시 한 번 실행되는 필터
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	private final JwtProvider jwtProvider;
 
@@ -30,6 +31,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 		String bearerAccessToken = request.getHeader("X-ACCESS-TOKEN");
 		String accessToken = jwtProvider.getBearerTokenToString(bearerAccessToken);
+		log.info("access token: {}",accessToken);
 
 		if(StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)){
 			Authentication authentication = jwtProvider.getAuthentication(accessToken);

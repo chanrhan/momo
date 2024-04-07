@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
 @PreAuthorize("isAuthenticated()")
-public class NotificationController {
+public class NotificationController0 {
 	private final NotificationService notificationService;
 
 	@GetMapping("")

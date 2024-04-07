@@ -28,8 +28,8 @@ export function CheckToken(key){
 
                     if (response.status === 200) {
                         // const token = response.jwtToken.access_token;
-                        dispatch(authActions.setAccessToken(response.jwtToken.access_token))
-                        setRefreshToken(response.jwtToken.refresh_token);
+                        dispatch(authActions.setAccessToken(response.jwt.access_token))
+                        setRefreshToken(response.jwt.refresh_token);
                         setIsAuth('Success')
 
                     } else {

@@ -1,17 +1,16 @@
-package com.momo.controller;
+package com.momo.api;
 
 import com.momo.auth.RoleAuth;
-import com.momo.service.*;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.ShopCommonVO;
 import com.momo.common.vo.SupportVO;
+import com.momo.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/sale")
-@PreAuthorize("isAuthenticated()")
+@Slf4j
+@RequestMapping("/api/v1/sale")
 public class SaleController {
 	private final ShopCommonService shopCommonService;
 	private final SaleService       saleService;
@@ -33,28 +32,9 @@ public class SaleController {
 
 	private final ImageService imageService;
 
-	@GetMapping("/home")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String saleHome(HttpSession session, Model model) {
-		// 1. 현재 로그인된 유저의 아이디를 가져옴
-		// 2. 유저가 속한 매장을 찾아 'selected_shop'에 할당
-		// 3. 해당 매장과 같은 회사의 매장들을 'list_shop'에 할당
-		// 4. 해당 매장의 모든 판매일보들을 'list_sale'에 할당
-
-		List<Map<String,Object>> list_shop = shopCommonService.selectShopBySession(session);
-		model.addAttribute("list_shop", list_shop);
-
-		List<Map<String,Object>> list_sale = null;
-		Map<String,Object> shop = null;
-		if(list_shop != null && !list_shop.isEmpty()){
-			shop = list_shop.get(0);
-			list_sale = saleService.selectSaleBySession(session);
-		}
-
-		model.addAttribute("selected_shop", shop);
-		model.addAttribute("list_sale", list_sale);
-
-		return "sale/home";
+	@PostMapping("/list")
+	public ResponseEntity<List<Map<String,Object>>> getSaleList(@RequestBody SaleVO vo){
+		return ResponseEntity.ok(saleService.getSaleList(vo));
 	}
 
 	@GetMapping("/detail")

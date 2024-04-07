@@ -22,7 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 @PreAuthorize("isAuthenticated()")
-public class AdminController {
+public class AdminController0 {
 	private final AdminService      adminService;
 	private final UserService       userService;
 	private final ShopCommonService shopCommonService;

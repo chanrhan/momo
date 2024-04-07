@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/shop")
 @PreAuthorize("isAuthenticated()")
-public class ShopController {
+public class ShopController0 {
 	private final ShopCommonService shopCommonService;
 	private final RegionService     regionService;
 

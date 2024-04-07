@@ -6,8 +6,10 @@ import {Outlet} from "react-router-dom";
 function Service(){
     return (
         <div>
-            <h3 className='debug-page'>Service Page</h3>
-            <Outlet/>
+            <div className='container justify-content-center align-content-center'>
+                <h3 className='debug-page'>Service Page</h3>
+                <Outlet/>
+            </div>
         </div>
     )
 }

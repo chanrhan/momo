@@ -1,22 +1,22 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import React from "react";
 
 function PreviewHeader(){
     const navigate = useNavigate();
     return (
-        <>
-            <h2 className='debug-page'>Preview Page</h2>
+        <div id='preview-header'>
+            <h2 className='debug-page'>Preview Header</h2>
             <div className='row-cols-auto'>
-                <button>
-                    <Link to='/account/login'>로그인</Link>
-                </button>
-                <button>
-                    <Link to='/account/login'>무료로 시작하기</Link>
-                </button>
+                <Link to='/account/login'>
+                    <button className='btn btn-outline-primary ms-2'>로그인</button>
+                </Link>
+                <Link to='/account/signup'>
+                    <button className='btn btn-outline-primary ms-2'>무료로 시작하기</button>
+                </Link>
             </div>
-
-            <div className='preview-bg'></div>
-        </>
+            <hr/>
+            <Outlet/>
+        </div>
     )
 }
 

@@ -38,13 +38,11 @@ public class WebSecurityConfig {
 									.userDetailsService(userService)
 						   );
 		http.authorizeRequests((authorizeHttpRequests)->authorizeHttpRequests
-				.requestMatchers("/api/v1/auth/refresh")
-				.permitAll()
 				.requestMatchers("/api/v1/admin")
-				.access("hasRole('ROLE_ADMIN')")
-				.requestMatchers("/api/v1/user")
-				.access("hasRole('ROLE_ADMIN') or ((hasRole('ROLE_REPS') or hasRole('ROLE_MANAGER')) and hasAuthority('APPROVE'))")
-				.anyRequest().permitAll());
+				.hasRole("ADMIN")
+				.requestMatchers("/api/v1/public/**","/api/v1/auth/**")
+				.permitAll()
+				.anyRequest().authenticated());
 //		http.formLogin(formLogin->formLogin.);
 		// csrf는 토큰을 발행하여 세션으로 등록하는데
 		// h2-console은 이러한 기능들이 없기 떄문에 403 오류가 발생하게 된다.
@@ -74,9 +72,6 @@ public class WebSecurityConfig {
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 						.maximumSessions(1)
 						.maxSessionsPreventsLogin(false)));
-
-		// login 주소가 호출되면 인증 및 토큰 발행 필터 추가
-//		http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider, jwtService), UsernamePasswordAuthenticationFilter.class);
 
 		// jwt 토큰 검사
 		http.addFilterBefore(new JwtAuthorizationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

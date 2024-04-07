@@ -27,7 +27,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-public class ChatController {
+public class ChatController0 {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatService         chatService;
 	private final NotificationService notificationService;

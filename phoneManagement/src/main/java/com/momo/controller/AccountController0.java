@@ -24,7 +24,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController0 {
 	private final UserService userService;
 
 	private final TermService       termService;

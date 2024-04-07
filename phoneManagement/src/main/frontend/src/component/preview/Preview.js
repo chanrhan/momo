@@ -7,9 +7,9 @@ function Preview(){
     const navigate = useNavigate();
 
     return (
-        <div>
-            <PreviewHeader/>
-            <Outlet/>
+        <div id='preview'>
+            <h3 className='debug-page'>Preview Page</h3>
+            <div className='preview-bg'></div>
         </div>
     )
 }

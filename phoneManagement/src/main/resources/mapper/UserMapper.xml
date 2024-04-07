@@ -167,7 +167,8 @@
     </select>
 
     <select id="selectUserSidebarInfo">
-        SELECT ac.name,
+        SELECT ac.id,
+               ac.name,
                ac.role,
                ac.nickname,
                ac.pfp,

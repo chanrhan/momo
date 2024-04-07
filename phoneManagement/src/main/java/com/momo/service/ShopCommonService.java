@@ -45,6 +45,10 @@ public class ShopCommonService extends CommonService {
 		return shopCommonMapper.searchShop(vo);
 	}
 
+	public List<Map<String,Object>> getCorpListForRoleDetail(String keyword){
+		return shopCommonMapper.getCorpListForRoleDetail(keyword);
+	}
+
 	public int getMaxShopId(){
 		Integer code = shopCommonMapper.getMaxShopId();
 		if(code == null){

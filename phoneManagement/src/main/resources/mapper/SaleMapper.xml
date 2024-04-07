@@ -3,6 +3,42 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="getSaleList" parameterType="com.momo.common.vo.SaleVO">
+        SET @shopid := (
+                           SELECT shop_id
+                           FROM tb_emp
+                           WHERE emp_id = #{userId}
+                       );
+
+        SELECT cust_nm,
+               cust_tel,
+               cust_cd,
+               ph_md,
+               seller_id,
+               (
+                   SELECT name
+                   FROM tb_account ac
+                   WHERE ac.id = seller_id
+               ) AS seller_nm,
+               actv_dt
+        FROM tb_sale
+        WHERE shop_id = @shopid
+        <if test="keyword != null and !keyword.equals('')">
+            AND (
+                cust_nm LIKE '%${keyword}%' OR
+                cust_tel LIKE '%${keyword}%' OR
+                cust_cd LIKE '%${keyword}%'
+            )
+        </if>
+        <if test="actvDt != null and !actvDt.equals('')">
+            AND YEAR(actv_dt) = YEAR(#{actvDt})
+            AND MONTH(actv_dt) = MONTH(#{actvDt})
+        </if>
+        <if test="order != null and !order.equals('')">
+            ORDER BY #{order} #{asc}
+        </if>
+    </select>
+
     <select id="getSpecFilePath" resultType="java.lang.String">
         select
             spec

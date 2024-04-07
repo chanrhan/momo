@@ -73,14 +73,16 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.selectUserSidebarInfo(username);
 	}
 	// Common
-	public void loginDirectly(String username, HttpSession session){
+	public Authentication loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
-		Authentication auth = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
+		Authentication authentication  = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
+
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		context.setAuthentication(auth);
+		context.setAuthentication(authentication);
 		SecurityContextHolder.setContext(context);
 		// 수정된 context를 현재 session에 넣어줘야 로그인 상태가 유지된다.
 		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+		return authentication;
 	}
 
 	// User Account

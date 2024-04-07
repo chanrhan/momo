@@ -6,6 +6,7 @@ import Loading from "./Loading";
 export default function Authorization({redirectTo, children}){
     const location = useLocation();
     const {isAuth} = CheckToken(location.key);
+    // const isAuth = 'Success';
 
     if(isAuth === 'Success'){
         return <>{children}</>
