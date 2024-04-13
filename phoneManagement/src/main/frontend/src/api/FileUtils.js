@@ -1,10 +1,10 @@
-import {requestAPIWithAccessToken} from "./ApiCommon";
-import {isEmpty} from "../utils/objectUtil";
+import {requestApiWithAccessToken} from "./ApiCommon";
+import {ObjectUtils} from "../utils/objectUtil";
 
 export const getProfilePicture = async (id, accessToken)=>{
-    const response = await requestAPIWithAccessToken.get(`/api/v1/img/pfp/${id}`, accessToken);
+    const response = await requestApiWithAccessToken.get(`/api/v1/img/pfp/${id}`, accessToken);
     if(response.status === 200){
-        if(!isEmpty(response.data)){
+        if(!ObjectUtils.isEmpty(response.data)){
             return response.data;
         }
     }

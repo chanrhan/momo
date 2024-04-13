@@ -9,6 +9,11 @@ import java.util.Map;
 
 @Mapper
 public interface SaleMapper{
+
+	public List<Map<String,Object>> getSaleListWithCard(SaleVO vo);
+	public List<Map<String,Object>> getSaleListWithGreenPhone(SaleVO vo);
+	public List<Map<String,Object>> getSaleListWithComb(SaleVO vo);
+	public List<Map<String,Object>> getSaleListWithSupport(SaleVO vo);
 	// Sale
 	public int insertSale(SaleVO vo);
 	public int updateSale(SaleVO vo);

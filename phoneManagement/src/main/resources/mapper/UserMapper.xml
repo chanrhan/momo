@@ -3,6 +3,39 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <update id="resetPassword" parameterType="com.momo.common.vo.UserVO">
+        UPDATE tb_account
+        SET     pwd=#{pwd}
+        WHERE id = #{id}
+    </update>
+
+    <select id="existUserId">
+        SELECT (COUNT(*) > 0) as exist
+        FROM tb_account
+        WHERE id = #{id}
+    </select>
+
+    <select id="findTelEmailById">
+        SELECT tel,
+               email
+        FROM tb_account
+        WHERE id=#{id}
+    </select>
+
+    <select id="matchUserIdEmail" parameterType="com.momo.common.vo.UserVO">
+        SELECT IF(count(*) > 0,TRUE,FALSE)
+        FROM tb_account
+        WHERE id = #{id}
+          AND email = #{email}
+    </select>
+
+    <select id="matchUserIdTel" parameterType="com.momo.common.vo.UserVO">
+        SELECT IF(count(*) > 0,TRUE,FALSE)
+        FROM tb_account
+        WHERE id = #{id}
+          AND tel = #{tel}
+    </select>
+
     <select id="getPfpFilePath" resultType="java.lang.String">
         SELECT pfp
         FROM tb_account

@@ -1,12 +1,12 @@
 import {useState} from "react";
 import {Link, Route, Routes, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {authActions} from "../../store/slices/authSlice";
-import {setRefreshToken} from "../../utils/Cookies";
+import {authActions} from "../store/slices/authSlice";
+import {setRefreshToken} from "../utils/Cookies";
 import Signup from "./Signup";
 import FindUsername from "./FindUsername";
 import FindPassword from "./FindPassword";
-import {login} from "../../api/Account";
+import {login} from "../api/AccountApi";
 
 function Login(){
     const dispatch = useDispatch();

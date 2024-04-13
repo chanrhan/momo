@@ -283,7 +283,7 @@
         last_read >= cl.chat_id and
         cl.send_dt > tb_chatroom_user.join_dt
         ) as non_read,
-        cl.send_dt
+        cl.send_dt,
         cl.deleted
         from
         tb_chat_log cl
@@ -304,10 +304,10 @@
         select
         join_dt
         from
-        tb_chatroom_member
+        tb_chatroom_user
         where
-        tb_chatroom_member.room_id=#{roomId} and
-        tb_chatroom_member.user_id=#{userId}
+        tb_chatroom_user.room_id=#{roomId} and
+        tb_chatroom_user.user_id=#{userId}
         )
         <if test='order != null and !order.equals("")'>
             order by
@@ -329,10 +329,10 @@
         select
         last_read
         from
-        tb_chatroom_member
+        tb_chatroom_user
         where
-        tb_chatroom_member.room_id=#{roomId} and
-        tb_chatroom_member.user_id=#{userId}
+        tb_chatroom_user.room_id=#{roomId} and
+        tb_chatroom_user.user_id=#{userId}
         )
         <if test='order != null and !order.equals("")'>
             order by

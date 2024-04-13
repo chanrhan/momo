@@ -1,10 +1,18 @@
 
 .preview-bg{
-    background-image: url("../public/img/tmp/momo_lg.png");
+    background-image: url("../../public/img/tmp/momo_lg.png");
     background-size : contain;
     background-position : center;
     background-repeat: no-repeat;
     height: 289px;
+}
+
+.sidebar-lg{
+    background-image: url("../../public/img/tmp/sidebar_lg.png");
+    background-size : contain;
+    background-position : center;
+    background-repeat: no-repeat;
+    height: 128px;
 }
 
 .role-select-card{
@@ -17,7 +25,7 @@
 }
 
 .role-manager-lg{
-    background-image: url("../public/img/tmp/manager_lg.png");
+    background-image: url("../../public/img/tmp/manager_lg.png");
     background-size : contain;
     background-position : center;
     background-repeat: no-repeat;
@@ -25,7 +33,7 @@
 }
 
 .role-bm-lg{
-    background-image: url("../public/img/tmp/bm_lg.png");
+    background-image: url("../../public/img/tmp/bm_lg.png");
     background-size : contain;
     background-position : center;
     background-repeat: no-repeat;
@@ -33,7 +41,7 @@
 }
 
 .role-reps-lg{
-    background-image: url("../public/img/tmp/reps_lg.png");
+    background-image: url("../../public/img/tmp/reps_lg.png");
     background-size : contain;
     background-position : center;
     background-repeat: no-repeat;
@@ -43,3 +51,6 @@
 .debug-page{
     color: green;
 }
+
+
+

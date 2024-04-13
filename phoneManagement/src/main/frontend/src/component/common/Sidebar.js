@@ -1,9 +1,10 @@
 import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {getProfilePicture} from "../../api/FileUtils";
 
 function Sidebar(){
+    const navigate = useNavigate();
     const userInfo = useSelector(state=>state.userReducer);
     const {accessToken} = useSelector(state=>state.authReducer);
 
@@ -20,11 +21,21 @@ function Sidebar(){
     return (
         <div>
             <p className='debug-page'>Sidebar page</p>
+            <div className='sidebar-lg' onClick={()=>{
+                navigate('/service');
+            }}></div>
             <div id='pfp p-2'>
                 <img src={pfp} alt='pfp'/>
             </div>
             <div>
                 <h4>{userInfo.name}</h4>
+                {
+                    userInfo.role === 'ADMIN' ? (
+                        <Link to='/admin'>
+                            <button className='btn btn-outline-danger'>관리자 페이지</button>
+                        </Link>
+                    ) : null
+                }
             </div>
             <div className='border border-dark p-2'>
                 <p>{userInfo.corp_nm}</p>

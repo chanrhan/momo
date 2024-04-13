@@ -9,6 +9,11 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+	public int resetPassword(UserVO vo);
+	public Map<String,Object> findTelEmailById(String id);
+	public boolean existUserId(String id);
+	public boolean matchUserIdTel(UserVO vo);
+	public boolean matchUserIdEmail(UserVO vo);
 	public String getPfpFilePath(String id);
 	public int updatePfp(UserVO vo);
 	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo);

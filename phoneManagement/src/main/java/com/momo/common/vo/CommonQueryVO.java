@@ -11,9 +11,13 @@ public abstract class CommonQueryVO {
 	protected String keyword;
 	protected String target;
 	protected String order; // 정렬
-	protected String asc = "asc"; // false: asc(오름차순), true: desc(내림차순)
+	protected boolean asc = false; // true: asc(오름차순), false: desc(내림차순)
 	protected Integer offset;
 	protected Integer limit;
+
+	public String getAsc(){
+		return asc ? "asc" : "desc";
+	}
 
 //	protected Integer zeroToNull(Integer value){
 //		return (value == null || value == 0) ? null : value;

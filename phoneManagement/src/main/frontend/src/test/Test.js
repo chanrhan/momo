@@ -2,7 +2,7 @@ import {useState} from "react";
 import axiosInstance from "../utils/axiosInstance";
 import {Modal} from "react-bootstrap";
 import modal from "bootstrap/js/src/modal";
-import DefaultModal from "../component/modal/DefaultModal";
+import DefaultModal from "../modal/DefaultModal";
 
 function Test(){
     const [response, setResponse] = useState(null);
@@ -32,7 +32,7 @@ function Test(){
     }
 
     return (
-        <div>
+        <>
             <p className='debug-page'>Test Page</p>
             <button onClick={()=>{
                 setModalVisible(true)
@@ -45,17 +45,10 @@ function Test(){
                 <button className='btn btn-outline-secondary' onClick={testGetAPI}>GET</button>
                 <button className='btn btn-outline-secondary' onClick={testPostAPI}>POST</button>
             </div>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <p>dsas</p>
-            <DefaultModal open={modalVisible} close={closeModal} element={<ModalContent/>}/>
-        </div>
+            <DefaultModal open={modalVisible} close={closeModal}>
+                <ModalContent/>
+            </DefaultModal>
+        </>
     )
 }
 

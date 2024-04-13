@@ -1,10 +1,8 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
-import com.momo.common.util.BusinessmanApiUtil;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.NotificationVO;
-import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.ShopCommonVO;
 import com.momo.common.vo.UserVO;
 import com.momo.service.*;
@@ -17,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,16 +184,7 @@ public class AccountController0 {
 		return ResponseEntity.ok(result != 0);
 	}
 
-	// 아이디 중복체크 API
-	@GetMapping("/validate/dup/{target}")
-	@ResponseBody
-	public ResponseEntity<Boolean> isDuplicated(@PathVariable String target, @RequestParam String value) {
-		return switch (target) {
-			case "id" -> ResponseEntity.ok(userService.selectUserById(value) == null);
-			case "email" -> ResponseEntity.ok(userService.selectUserByEmail(value) == null);
-			default -> ResponseEntity.badRequest().build();
-		};
-	}
+
 
 	@PostMapping("/pfp/update")
 	@ResponseBody
@@ -205,11 +193,7 @@ public class AccountController0 {
 		return ResponseEntityUtil.okOrNotModified(userService.updatePfp(UserVO.builder().id(userId).pfp(pfpPath).build()));
 	}
 
-	@PostMapping("/validate/bno")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> validateBusinessNumber(@RequestBody Map<String, Object> map) {
-		return ResponseEntityUtil.okOrNotFound(BusinessmanApiUtil.validate(map));
-	}
+
 
 	@PostMapping("/approve")
 	@ResponseBody
@@ -238,28 +222,9 @@ public class AccountController0 {
 		return ResponseEntityUtil.okOrNotModified(notificationService.approve(vo.getAlarmId()));
 	}
 
-	@PostMapping("/list/chat/invitable")
-	@ResponseBody
-	public ResponseEntity<List<Map<String, Object>>> searchChatInvitableUsers(@RequestBody SearchVO vo, HttpSession session) {
-		if (vo.getSelect() == null) {
-			vo.setSelect(new HashMap<>());
-		}
-		vo.getSelect().put("corp_id", session.getAttribute("corp_id").toString());
-		//		System.out.println("invitable chat : "+vo);
-		return ResponseEntityUtil.okOrNotFound(userService.searchChatInvitableUser(vo));
-	}
 
-	@PostMapping("/find/id/tel")
-	@ResponseBody
-	public ResponseEntity<List<Map<String, Object>>> tryFindUserIdByTel(@RequestBody UserVO vo) {
-		return ResponseEntityUtil.okOrNotFound(userService.tryFindUserIdByTel(vo));
-	}
 
-	@PostMapping("/find/id/email")
-	@ResponseBody
-	public ResponseEntity<List<Map<String, Object>>> tryFindUserIdByEmail(@RequestBody UserVO vo) {
-		return ResponseEntityUtil.okOrNotFound(userService.tryFindUserIdByEmail(vo));
-	}
+
 
 
 }

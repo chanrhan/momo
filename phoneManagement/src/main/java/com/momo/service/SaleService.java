@@ -58,14 +58,36 @@ public class SaleService extends CommonService {
 		System.out.println("get sale: "+vo);
 		return saleMapper.getSaleList(vo);
 	}
+
+	public int deleteSales(int[] deletes){
+		int result = 0;
+		for(int saleId: deletes){
+			result += saleMapper.deleteSale(saleId);
+		}
+		return result;
+	}
+
+	public List<Map<String,Object>> getSaleListWithCategory(String category, SaleVO vo){
+		String userId = SecurityContextUtil.getUsername();
+		vo.setUserId(userId);
+		return switch (category) {
+			case "card" -> saleMapper.getSaleListWithCard(vo);
+			case "green" -> saleMapper.getSaleListWithGreenPhone(vo);
+			case "comb" -> saleMapper.getSaleListWithComb(vo);
+			case "support" -> saleMapper.getSaleListWithSupport(vo);
+			default -> null;
+		};
+	}
+
+	// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	
 	public List<Map<String,Object>> selectSale(SaleVO vo) {
 		if(vo.getOrder() == null){
 			vo.setOrder("actv_dt");
 		}
-		if(vo.getAsc() == null){
-			vo.setAsc("desc");
-		}
+//		if(vo.getAsc() == null){
+//			vo.setAsc("desc");
+//		}
 		return saleMapper.selectSale(vo);
 	}
 

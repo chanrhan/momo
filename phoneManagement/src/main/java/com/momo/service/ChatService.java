@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.common.enums.ChatResponseHeader;
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.mapper.ChatMapper;
 import com.momo.mapper.UserMapper;
 import com.momo.common.response.ChatResponse;
@@ -35,6 +36,7 @@ public class ChatService {
 		return chatMapper.createChatRoom(vo);
 	}
 	public ChatResponse connect(String simpSessionId, String userId){
+		log.info("stomp connect put: {}, {}", simpSessionId, userId);
 		connectedUserMap.put(simpSessionId, userId);
 		return ChatResponse.builder()
 				.header(ChatResponseHeader.CONNECT)
@@ -50,6 +52,7 @@ public class ChatService {
 				.build();
 	}
 	public List<String> loadConnectedUser(){
+		log.info("connected user list: {}", connectedUserMap.values().stream().toList());
 		return connectedUserMap.values().stream().toList();
 	}
 	public List<Map<String,Object>> loadChatRoomUser(int roomId){
@@ -70,8 +73,8 @@ public class ChatService {
 		return chatMapper.getChatRoomHeadCount(roomId);
 	}
 	public List<Map<String,Object>> selectChatroom(ChatVO vo){
-		vo.setOrder("regi_dt");
-		vo.setAsc("desc");
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
 		return chatMapper.selectChatRoom(vo);
 	}
 	public Map<String,Object> selectChatroom(int roomId){
@@ -131,7 +134,9 @@ public class ChatService {
 	}
 	public List<Map<String,Object>> selectChatLog(ChatVO vo){
 //		vo.setJoinDt(chatMapper.getChatMemberJoinDate(vo).toString());
-		vo.setOrder("send_dt");
+//		vo.setOrder("send_dt");
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
 		return chatMapper.selectChatLog(vo);
 	}
 	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo){

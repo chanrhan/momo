@@ -1,37 +1,10 @@
-import {useNavigate, useParams} from "react-router-dom";
-import NotFound from "../../common/NotFound";
 import {useState} from "react";
-import {getCorpListForRoleDetail} from "../../../api/ShopApi";
 import {useSelector} from "react-redux";
-import {isEmpty} from "../../../utils/objectUtil";
+import {ObjectUtils} from "../../utils/objectUtil";
+import {getCorpListForRoleDetail} from "../../api/ShopApi";
+import {useParams} from "react-router-dom";
 
-function RoleDetail(){
-    const navigate = useNavigate();
-    const {role} = useParams();
-
-    return (
-        <div>
-            <h3 className='debug-page'>Role Detail Page</h3>
-            <RoleDetailSelector role={role}/>
-        </div>
-    )
-}
-
-function RoleDetailSelector({role}){
-    switch (role){
-        case 'staff':
-            return <StaffDetail/>;
-        case 'bm':
-            return <StaffDetail/>;
-        case 'reps':
-            return <RepsDetail/>;
-        default:
-            return <NotFound/>;
-
-    }
-}
-
-function StaffDetail(){
+function SignupStaff(){
     const [searchResult, setSearchResult] = useState([]);
     const [keyword, setKeyword] = useState('');
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -41,7 +14,7 @@ function StaffDetail(){
     }
 
     const search = async ()=>{
-        if(isEmpty(keyword)){
+        if(ObjectUtils.isEmpty(keyword)){
             return;
         }
 
@@ -101,31 +74,4 @@ function ShopSearchResult({corp}){
     )
 }
 
-function RepsDetail(){
-    return (
-        <div>
-            <h3>사업자 등록</h3>
-            <h5>법인명과 사업자 등록번호 모두 정확하게 입력해주세요</h5>
-            <div className='mt-5'>
-                <h4>사업자 상호명</h4>
-                <input type="text" placeholder='법인명(단체명)'/>
-            </div>
-            <div className='mt-4'>
-                <h4>사업자 등록 번호</h4>
-                <div className='d-flex flex-row justify-content-center'>
-                    <input type="text" className='ms-2 me-2' style={{width: '70px'}}/>-
-                    <input type="text" className='ms-2 me-2' style={{width: '70px'}}/>-
-                    <input type="text" className='ms-2 me-2' style={{width: '70px'}}/>
-                    <button className='btn btn-outline-secondary'>사업자 인증</button>
-                </div>
-                <div className='mt-5'>
-                    <button className='btn btn-outline-primary'>다음</button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-
-
-export default RoleDetail;
+export default SignupStaff;

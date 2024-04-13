@@ -40,8 +40,22 @@ public class JwtProvider {
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
+
 		String username = ((UserDetailsImpl)auth.getPrincipal()).getUsername();
 
+		return buildToken(username, authorities);
+	}
+
+	public JwtVO generateTokenForResetPassword(String username){
+		if(!userService.existUserId(username)){
+			return null;
+		}
+		String authorities = new SimpleGrantedAuthority("RESET_PWD").getAuthority();
+		log.info("generate token auth: {}",authorities);
+		return buildToken(username, authorities);
+	}
+
+	private JwtVO buildToken(String username, String authorities){
 		String accessToken = Jwts.builder()
 				.setSubject(username)
 				.setIssuedAt(new Date())
@@ -54,8 +68,8 @@ public class JwtProvider {
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 
-		System.out.println("AccessToken for parsing in JwtProvider: "+accessToken);
-		System.out.println("RefreshToken for parsing in JwtProvider: "+refreshToken);
+		//		System.out.println("AccessToken for parsing in JwtProvider: "+accessToken);
+		//		System.out.println("RefreshToken for parsing in JwtProvider: "+refreshToken);
 
 
 		return JwtVO.builder()

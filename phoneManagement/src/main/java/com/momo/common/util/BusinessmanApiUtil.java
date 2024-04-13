@@ -14,6 +14,9 @@ import java.util.Map;
 // 대표님 사업자번호
 // -> 5218702490
 
+// 사업자번호만으로 조회하려면 유료 API가 필요한 듯하다
+// 일단 추후에 다시 알아보자
+
 public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 	private static final String serviceUrl = "https://api.odcloud.kr/api/nts-businessman/v1/validate";
 	public static Map<String, Object> validate(Map<String,Object> map){

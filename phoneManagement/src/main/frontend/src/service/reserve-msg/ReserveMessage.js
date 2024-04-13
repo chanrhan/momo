@@ -5,8 +5,8 @@ function ReserveMessage(){
 
     return (
         <div>
-            <p className='debug-page'>Reserve Message Page</p>
-            <p>{`category: ${category}`}</p>
+            <p className='debug-page'>{`Reserve Message:[${category}] Page`}</p>
+            <p></p>
         </div>
     )
 }

@@ -6,7 +6,7 @@ import {authActions, authReducer} from "../../store/slices/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {removeCookieToken} from "../../utils/Cookies";
 import {userActions} from "../../store/slices/userSlice";
-import {getUserInfo} from "../../api/Account";
+import {getUserInfo} from "../../api/AccountApi";
 
 function Header(){
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Header(){
     useEffect(()=>{
         const updateUserInfo = async ()=>{
             const {status, data} = await getUserInfo(accessToken);
-            // console.log(userInfo)
+            // console.log(data)
             if(status === 200){
                 dispatch(userActions.setUserInfo(data));
             }

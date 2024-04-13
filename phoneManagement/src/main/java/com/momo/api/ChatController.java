@@ -1,55 +1,66 @@
-package com.momo.controller;
+package com.momo.api;
 
-import com.momo.common.UserDetailsImpl;
 import com.momo.common.enums.ChatResponseHeader;
-import com.momo.service.ChatService;
-import com.momo.service.NotificationService;
 import com.momo.common.response.ChatResponse;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.ChatVO;
+import com.momo.common.vo.SearchVO;
+import com.momo.provider.JwtProvider;
+import com.momo.service.ChatService;
+import com.momo.service.NotificationService;
+import com.momo.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
-public class ChatController0 {
+@Slf4j
+@RequestMapping("/api/v1/chat")
+public class ChatController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatService         chatService;
+	private final UserService userService;
 	private final NotificationService notificationService;
+	private final JwtProvider jwtProvider;
 
 	// 웹소켓 Connect 콜백함수
 	@EventListener
 	public void handleWebSocketConnectListener(SessionConnectEvent event){
 		System.out.println("WebSocket Connect: "+event);
-		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getMessage().getHeaders().get("simpUser");
-		if(token == null){
-			return;
-		}
-		Object simpSessionId = event.getMessage().getHeaders().get("simpSessionId");
-		Object principal = token.getPrincipal();
-		if(principal == null){
-			return;
-		}
-		UserDetailsImpl userDetails = (UserDetailsImpl)principal;
-		if(simpSessionId != null && userDetails != null){
-			ChatResponse res = chatService.connect(simpSessionId.toString(), userDetails.getUsername());
-			System.out.println("res: "+res);
-			simpMessagingTemplate.convertAndSend("/sub/chat/conn", res);
+		StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+
+		String simpSessionId = headerAccessor.getSessionId();
+		String bearerAccessToken = headerAccessor.getNativeHeader("X-ACCESS-TOKEN").get(0);
+		String accessToken = jwtProvider.getBearerTokenToString(bearerAccessToken);
+
+		log.info("simp Session Id: {}, bear: {}, accessToken: {}", simpSessionId, bearerAccessToken, accessToken);
+
+		if(StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)){
+			Authentication authentication = jwtProvider.getAuthentication(accessToken);
+			if(simpSessionId != null && authentication != null){
+				ChatResponse res = chatService.connect(simpSessionId.toString(), authentication.getName());
+				System.out.println("res: "+res);
+				simpMessagingTemplate.convertAndSend("/sub/chat/conn", res);
+			}
 		}
 	}
 
@@ -92,6 +103,9 @@ public class ChatController0 {
 	@MessageMapping("/chat/send/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
 	public ChatResponse sendChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+//		log.info("send vo: {}", vo);
+//		String username = SecurityContextUtil.getUsername();
+//		vo.setUserId(username);
 		vo.setRoomId(roomId);
 		return chatService.sendChat(vo, ChatResponseHeader.CHAT);
 	}
@@ -121,8 +135,10 @@ public class ChatController0 {
 
 	// 채팅 메시지 읽음 처리 
 	@MessageMapping("/chat/read/{roomId}")
-	public void readChatRoom(@DestinationVariable int roomId, @RequestBody String userId){
-		ChatResponse res = chatService.readChatroom(ChatVO.builder().roomId(roomId).userId(userId).build());
+	public void readChatRoom(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+		vo.setRoomId(roomId);
+		ChatResponse res = chatService.readChatroom(vo);
+		log.info("read response: {}",res);
 		if(res != null){
 			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
 		}
@@ -216,4 +232,15 @@ public class ChatController0 {
 //
 //		return null;
 //	}
+
+	@PostMapping("/list/user/invitable")
+	@ResponseBody
+	public ResponseEntity<List<Map<String, Object>>> searchChatInvitableUsers(@RequestBody SearchVO vo, HttpSession session) {
+		if (vo.getSelect() == null) {
+			vo.setSelect(new HashMap<>());
+		}
+		vo.getSelect().put("corp_id", session.getAttribute("corp_id").toString());
+		//		System.out.println("invitable chat : "+vo);
+		return ResponseEntityUtil.okOrNotFound(userService.searchChatInvitableUser(vo));
+	}
 }

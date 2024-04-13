@@ -3,6 +3,118 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="getSaleListWithCard" parameterType="com.momo.common.vo.SaleVO">
+        SET @shopid := (
+                           SELECT shop_id
+                           FROM tb_emp
+                           WHERE emp_id = #{userId}
+                       );
+        SELECT  card_st,
+                actv_dt,
+                cust_nm,
+                cust_tel,
+                cust_cd,
+                card_div,
+                shop_id,
+                seller_id,
+        (
+        SELECT ac.name
+        FROM tb_account ac
+        WHERE ac.id = seller_id
+        ) AS seller_nm
+        FROM tb_sale
+        WHERE shop_id = @shopid
+          AND card = true
+        <if test="order != null and !order.equals('')">
+            ORDER BY ${order} ${asc}
+        </if>
+    </select>
+
+    <select id="getSaleListWithGreenPhone" parameterType="com.momo.common.vo.SaleVO">
+        SET @shopid := (
+        SELECT shop_id
+        FROM tb_emp
+        WHERE emp_id = #{userId}
+        );
+
+        SELECT sale_id,
+               shop_id,
+               actv_dt,
+               cust_nm,
+               cust_tel,
+                cust_cd,
+            green_st,
+                green_md,
+               ct_cms,
+        (
+        SELECT ac.name
+        FROM tb_account ac
+        WHERE ac.id = seller_id
+        ) AS seller_nm
+        FROM tb_sale
+        WHERE shop_id = @shopid
+        AND green_md is not null AND green_md != ''
+        <if test="order != null and !order.equals('')">
+            ORDER BY ${order} ${asc}
+        </if>
+    </select>
+
+    <select id="getSaleListWithComb" parameterType="com.momo.common.vo.SaleVO">
+        SET @shopid := (
+        SELECT shop_id
+        FROM tb_emp
+        WHERE emp_id = #{userId}
+        );
+
+        SELECT  sale_id,
+                shop_id,
+                actv_dt,
+                cust_nm,
+                cust_tel,
+                cust_cd,
+                comb_st,
+                comb_nm,
+                (
+                SELECT ac.name
+                FROM tb_account ac
+                WHERE ac.id = seller_id
+                ) AS seller_nm
+        FROM tb_sale
+        WHERE shop_id = @shopid
+        AND comb_move = true
+        <if test="order != null and !order.equals('')">
+            ORDER BY ${order} ${asc}
+        </if>
+    </select>
+
+    <select id="getSaleListWithSupport" parameterType="com.momo.common.vo.SaleVO">
+        SET @shopid := (
+        SELECT shop_id
+        FROM tb_emp
+        WHERE emp_id = #{userId}
+        );
+
+        SELECT sale_id,
+                shop_id,
+                actv_dt,
+                cust_nm,
+                cust_tel,
+                cust_cd,
+                sup_st,
+                tot_sup,
+        (
+        SELECT ac.name
+        FROM tb_account ac
+        WHERE ac.id = seller_id
+        ) AS seller_nm
+        FROM tb_sale
+        WHERE shop_id = @shopid
+        AND sup_div is not null AND  sup_div != ''
+        <if test="order != null and !order.equals('')">
+            ORDER BY ${order} ${asc}
+        </if>
+    </select>
+
     <select id="getSaleList" parameterType="com.momo.common.vo.SaleVO">
         SET @shopid := (
                            SELECT shop_id
@@ -10,17 +122,18 @@
                            WHERE emp_id = #{userId}
                        );
 
-        SELECT cust_nm,
-               cust_tel,
-               cust_cd,
-               ph_md,
-               seller_id,
-               (
-                   SELECT name
-                   FROM tb_account ac
-                   WHERE ac.id = seller_id
-               ) AS seller_nm,
-               actv_dt
+        SELECT  cust_nm,
+                cust_tel,
+                cust_cd,
+                ph_md,
+                sale_id,
+                shop_id,
+                seller_id,
+                (
+                    SELECT ac.name
+                    FROM tb_account ac
+                    WHERE ac.id = seller_id
+                ) AS seller_nm
         FROM tb_sale
         WHERE shop_id = @shopid
         <if test="keyword != null and !keyword.equals('')">
@@ -35,7 +148,7 @@
             AND MONTH(actv_dt) = MONTH(#{actvDt})
         </if>
         <if test="order != null and !order.equals('')">
-            ORDER BY #{order} #{asc}
+            ORDER BY ${order} ${asc}
         </if>
     </select>
 

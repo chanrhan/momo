@@ -46,7 +46,7 @@ export const requestAPI = {
     }
 }
 
-export const requestAPIWithAccessToken = {
+export const requestApiWithAccessToken = {
     async post(url, data, accessToken){
         const option = {
             headers: {

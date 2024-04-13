@@ -1,16 +1,17 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
+import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
 import com.momo.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -41,13 +42,36 @@ public class AuthController {
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(HttpServletRequest request,
-						 HttpServletResponse response,
+	public ResponseEntity<?> refresh(HttpServletResponse response,
 						 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
 		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken);
 
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
 		return  ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PostMapping("/token/reset-pwd")
+	public ResponseEntity<?> tokenForResetPassword(@RequestBody UserVO vo){
+		JwtVO jwtVO = jwtProvider.generateTokenForResetPassword(vo.getId());
+		if(jwtVO == null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+		return ResponseEntity.ok("Bearer "+jwtVO.getAccessToken());
+	}
+
+	@PostMapping("/reset/password")
+	public ResponseEntity<?> resetPassword(@RequestHeader(value = "RESET-TOKEN", required = true)String bearerToken, @RequestBody UserVO vo){
+		log.info("reset token: {}",bearerToken);
+		String accessToken = jwtProvider.getBearerTokenToString(bearerToken);
+		Authentication authentication = jwtProvider.getAuthentication(accessToken);
+		log.info("reset auth: {}",authentication);
+		if(!authentication.getAuthorities().contains(new SimpleGrantedAuthority("RESET_PWD"))){
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+
+
+		return ResponseEntity.ok(userService.resetPassword(vo) != 0);
 	}
 }

@@ -1,5 +1,6 @@
 package com.momo.emitter;
 
+import com.momo.common.util.SecurityContextUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +21,13 @@ public class NotificationEmitter {
 	private static final Long DEFAULT_TIMEOUT = 60 * 60 * 1000L; // 1시간마다 타임아웃
 
 	public SseEmitter connect(String lastEventId, HttpSession session){
-		Object _userId = session.getAttribute("user_id");
-		String userId = (_userId != null) ? _userId.toString() : "unknown";
+//		Object _userId = session.getAttribute("user_id");
+//		String userId = (_userId != null) ? _userId.toString() : "unknown";
+		String userId = SecurityContextUtil.getUsername();
 
 		String id = userId + "_" + System.currentTimeMillis();
-//		System.out.println("userId: "+userId+" , id: "+id);
-//		System.out.println("lastEventId: "+lastEventId);
+		System.out.println("userId: "+userId+" , id: "+id);
+		System.out.println("lastEventId: "+lastEventId);
 
 		SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
 		emitter.onCompletion(()->{

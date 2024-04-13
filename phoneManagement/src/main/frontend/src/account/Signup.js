@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../../utils/regex";
-import {convertArrayToString, isAllEmptyInMap, isEmpty} from "../../utils/objectUtil";
-import {signup} from "../../api/Account";
+import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
+import {signup} from "../api/AccountApi";
 import {useNavigate} from "react-router-dom";
-import {authActions} from "../../store/slices/authSlice";
-import {setRefreshToken} from "../../utils/Cookies";
+import {authActions} from "../store/slices/authSlice";
+import {setRefreshToken} from "../utils/Cookies";
 import {useDispatch} from "react-redux";
+import {ObjectUtils} from "../utils/objectUtil";
+import {validateUtils} from "../utils/validateUtils";
 
 const ERR_BORDER_CSS = 'border border-danger';
 
@@ -62,13 +63,13 @@ function SignupStep1(props){
 
     const handleInput = (e)=> {
         let value = e.target.value;
-        if (isEmpty(value)) {
+        if (ObjectUtils.isEmpty(value)) {
             handleError(e.target.name, null);
         } else {
             if(value.length > 32){
                 return;
             }
-            validate(e.target.name, e.target.value, handleError);
+            validateUtils.validate(e.target.name, e.target.value, handleError);
         }
         props.handleInput(e);
     }
@@ -88,12 +89,12 @@ function SignupStep1(props){
 
         let result = 0;
 
-        result += validate('name', name, handleError) ? 0 : 1;
-        result += validate('tel', tel, handleError) ? 0 : 1;
-        result += validate('email', email, handleError) ? 0 : 1;
+        result += validateUtils.validate('name', name, handleError) ? 0 : 1;
+        result += validateUtils.validate('tel', tel, handleError) ? 0 : 1;
+        result += validateUtils.validate('email', email, handleError) ? 0 : 1;
 
-        if(isEmpty(authCodeInput) || authCode !== authCodeInput){
-            let {msg} = getErrorInfo('auth_code');
+        if(ObjectUtils.isEmpty(authCodeInput) || authCode !== authCodeInput){
+            let {msg} = validateUtils.getErrorInfo('auth_code');
             handleError('auth_code', msg)
             result += 1;
         }else{
@@ -164,13 +165,13 @@ function SignupStep2(props){
 
     const handleInput = (e)=> {
         let value = e.target.value;
-        if (isEmpty(value)) {
+        if (ObjectUtils.isEmpty(value)) {
             handleError(e.target.name, null);
         } else {
             if(value.length > 32){
                 return;
             }
-            validate(e.target.name, e.target.value, handleError);
+            validateUtils.validate(e.target.name, e.target.value, handleError);
         }
         props.handleInput(e);
     }
@@ -203,8 +204,9 @@ function SignupStep2(props){
 
         let result = 0;
 
-        result += validate('id', id, handleError) ? 0 : 1;
-        result += validate('pwd', pwd, handleError)  ? 0 : 1;
+
+        result += validateUtils.validate('id', id, handleError) ? 0 : 1;
+        result += validateUtils.validate('pwd', pwd, handleError)  ? 0 : 1;
 
         result += (pwd === checkPwd) ? 0: 1;
 
@@ -280,7 +282,7 @@ function SignupStep3(props){
 
         let body = {
             ...props.signupInput,
-            terms: convertArrayToString(terms)
+            terms: ObjectUtils.convertBooleanArrayToString(terms)
         };
 
         const response = await signup(body);
@@ -340,36 +342,36 @@ function SignupStep3(props){
 
 
 
-const validate = (key, value, handleError)=>{
-    let {name, regex, msg} = getErrorInfo(key);
-    if(isEmpty(value)){
-        handleError(key, `'${name}'은(는) 필수값입니다`);
-    }else{
-        if(value.length === 0 || regex.test(value)){
-            handleError(key, null);
-            return true;
-        }else{
-            handleError(key, msg);
-        }
-    }
-    return false;
-}
-
-const getErrorInfo = (key)=>{
-    switch (key){
-        case 'name':
-            return {name: '이름', regex: scRegex, msg: '이름에 특수문자는 포함될 수 없습니다'};
-        case 'tel':
-            return {name: '전화번호', regex: telRegex, msg: '전화번호를 정확히 입력해주세요'};
-        case 'email':
-            return {name: '이메일', regex: emailRegex, msg: '유효한 이메일 주소를 입력해 주세요'};
-        case 'auth_code':
-            return {name: '인증번호', msg: '인증번호를 다시 확인해주세요'};
-        case 'id':
-            return {name: '아이디', regex: idRegex, msg: '5~32자리의 영문 소문자, 숫자만 입력해 주세요'};
-        case 'pwd':
-            return {name: '비밀번호', regex: pwdRegex, msg: '영문, 숫자, 특수문자가 적어도 1개씩 포함된 8~32자리를 입력해 주세요'};
-    }
-}
+// const validate = (key, value, handleError)=>{
+//     let {name, regex, msg} = getErrorInfo(key);
+//     if(ObjectUtils.isEmpty(value)){
+//         handleError(key, `'${name}'은(는) 필수값입니다`);
+//     }else{
+//         if(value.length === 0 || regex.test(value)){
+//             handleError(key, null);
+//             return true;
+//         }else{
+//             handleError(key, msg);
+//         }
+//     }
+//     return false;
+// }
+//
+// const getErrorInfo = (key)=>{
+//     switch (key){
+//         case 'name':
+//             return {name: '이름', regex: scRegex, msg: '이름에 특수문자는 포함될 수 없습니다'};
+//         case 'tel':
+//             return {name: '전화번호', regex: telRegex, msg: '전화번호를 정확히 입력해주세요'};
+//         case 'email':
+//             return {name: '이메일', regex: emailRegex, msg: '유효한 이메일 주소를 입력해 주세요'};
+//         case 'auth_code':
+//             return {name: '인증번호', msg: '인증번호를 다시 확인해주세요'};
+//         case 'id':
+//             return {name: '아이디', regex: idRegex, msg: '5~32자리의 영문 소문자, 숫자만 입력해 주세요'};
+//         case 'pwd':
+//             return {name: '비밀번호', regex: pwdRegex, msg: '영문, 숫자, 특수문자가 적어도 1개씩 포함된 8~32자리를 입력해 주세요'};
+//     }
+// }
 
 export default Signup;

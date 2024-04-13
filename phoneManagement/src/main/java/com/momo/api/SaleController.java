@@ -37,6 +37,19 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.getSaleList(vo));
 	}
 
+	@PostMapping("/delete")
+	public ResponseEntity<?> deleteSale(@RequestBody int[] deletes){
+		log.info("delete: {}",deletes);
+		return ResponseEntity.ok(saleService.deleteSales(deletes) != 0);
+	}
+
+	@PostMapping("/list/{category}")
+	public ResponseEntity<List<Map<String,Object>>> getSaleListWithType(@PathVariable String category, @RequestBody SaleVO vo){
+		return ResponseEntity.ok(saleService.getSaleListWithCategory(category, vo));
+	}
+
+	// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
 	@GetMapping("/detail")
 	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
 	public String saleDetail(Model model,

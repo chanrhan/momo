@@ -32,6 +32,13 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	// Authentication
 
+	public int resetPassword(UserVO vo){
+		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+		return userMapper.resetPassword(vo);
+	}
+	public boolean existUserId(String id){
+		return userMapper.existUserId(id);
+	}
 
 	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
 		return userMapper.tryFindUserIdByTel(vo);
@@ -47,6 +54,33 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	public void sendAuthNumberByTelForUpdatePassword(String id){
 
+	}
+
+	public Map<String,Object> getTelEmailSecretly(String id){
+		Map<String,Object> map = userMapper.findTelEmailById(id);
+
+		String tel = map.get("tel").toString();
+		String email = map.get("email").toString();
+
+		if(tel == null || email == null){
+			return null;
+		}
+		map.put("tel", tel.substring(0, tel.length()-3) + "****");
+
+		int idx = email.indexOf('@');
+		StringBuilder sb = new StringBuilder(email);
+		sb.replace(Math.max(idx - 4, 0), idx, "****");
+		map.put("email", sb.toString());
+
+		return map;
+	}
+
+	public boolean matchUserIdTel(UserVO vo){
+		return userMapper.matchUserIdTel(vo);
+	}
+
+	public boolean matchUserIdEmail(UserVO vo){
+		return userMapper.matchUserIdEmail(vo);
 	}
 
 	public void loginNow(String id){
