@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import './css/custom.css';
 import './css/chat.css';
+import './css/custom_modal.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';

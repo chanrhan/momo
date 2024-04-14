@@ -1,6 +1,6 @@
 import {useEffect, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {sseActions} from "../../store/slices/sseSlice";
+import {sseActions} from "../store/slices/sseSlice";
 import {EventSourcePolyfill} from 'event-source-polyfill'
 
 function SseHeader(){

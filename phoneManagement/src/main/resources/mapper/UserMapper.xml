@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <update id="updateNickname">
+        UPDATE tb_account
+        SET nickname=#{nickname}
+        WHERE   id=#{id}
+    </update>
+
     <update id="resetPassword" parameterType="com.momo.common.vo.UserVO">
         UPDATE tb_account
         SET     pwd=#{pwd}

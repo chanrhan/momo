@@ -32,6 +32,10 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	// Authentication
 
+	public int updateNickname(String id, String nickname){
+		return userMapper.updateNickname(id, nickname);
+	}
+
 	public int resetPassword(UserVO vo){
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
 		return userMapper.resetPassword(vo);

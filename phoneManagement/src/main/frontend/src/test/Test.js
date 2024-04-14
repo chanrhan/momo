@@ -2,11 +2,11 @@ import {useState} from "react";
 import axiosInstance from "../utils/axiosInstance";
 import {Modal} from "react-bootstrap";
 import modal from "bootstrap/js/src/modal";
-import DefaultModal from "../modal/DefaultModal";
+import {PopupModal} from "../modal/PopupModal";
 
 function Test(){
     const [response, setResponse] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const testGetAPI = ()=>{
         axiosInstance.get('/api/v1/public/test/get')
@@ -28,14 +28,14 @@ function Test(){
     }
 
     const closeModal = ()=>{
-        setModalVisible(false)
+        setModalOpen(false)
     }
 
     return (
         <>
             <p className='debug-page'>Test Page</p>
             <button onClick={()=>{
-                setModalVisible(true)
+                setModalOpen(true)
             }}>POP UP</button>
             <div className='d-flex flex-column' style={{width: '400px'}}>
                 <h3>Public API Test</h3>
@@ -45,9 +45,15 @@ function Test(){
                 <button className='btn btn-outline-secondary' onClick={testGetAPI}>GET</button>
                 <button className='btn btn-outline-secondary' onClick={testPostAPI}>POST</button>
             </div>
-            <DefaultModal open={modalVisible} close={closeModal}>
+            <p>das</p>
+            <p>das</p>
+            <p>das</p>
+            <p>das</p>
+            <p>das</p>
+            <p>das</p>
+            <PopupModal open={modalOpen} close={closeModal} width='20%' height='50%'>
                 <ModalContent/>
-            </DefaultModal>
+            </PopupModal>
         </>
     )
 }

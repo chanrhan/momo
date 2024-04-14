@@ -1,6 +1,6 @@
 import {Route, Router, Routes} from "react-router-dom";
 import React from "react";
-import Authorization from "../component/common/Authorization";
+import Authorization from "../common/Authorization";
 import Sale from "../service/sale/Sale";
 import ManageCustomer from "../service/manage-customer/ManageCustomer";
 import ReserveMessage from "../service/reserve-msg/ReserveMessage";

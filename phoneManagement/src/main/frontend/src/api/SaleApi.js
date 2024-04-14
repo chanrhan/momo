@@ -12,6 +12,8 @@ export const getSaleList = async (data, accessToken)=>{
     return response;
 }
 
+
+
 export const getSaleListWithCategory = async (category, data, accessToken)=>{
     if(data.order === 'state'){
         switch (category){

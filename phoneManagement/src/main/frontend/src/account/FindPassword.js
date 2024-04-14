@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import NotFound from "../component/common/NotFound";
+import NotFound from "../common/NotFound";
 import {existUserId, getResetToken, getTelEmailSecretly, matchUserId, resetPassword} from "../api/AccountApi";
 import {ObjectUtils} from "../utils/objectUtil";
 import {validateUtils} from "../utils/validateUtils";
+import {cssUtils} from "../utils/cssUtils";
 
 function FindPassword(){
 
@@ -50,7 +51,7 @@ function FindPasswordStep1({setStep, setUserId}){
         }
         const response = await existUserId(idInput);
         if(response.status === 200){
-            console.log(response.data)
+            // console.log(response.data)
             if(response.data){
                 setError(null);
                 setUserId(idInput);
@@ -67,7 +68,7 @@ function FindPasswordStep1({setStep, setUserId}){
             <h3>비밀번호 찾기</h3>
             <h6>키즈노트에 가입한 아이디를 입력해 주세요</h6>
             <div>
-                <input type="text" placeholder='아이디' onChange={handleIdInput}/>
+                <input type="text" placeholder='아이디' className={cssUtils.borderDangerIfError(error)} onChange={handleIdInput}/>
                 <div className='d-flex flex-row justify-content-center text-secondary'>
                     <p>아이디가 기억나지 않는다면? </p>
                     <u className='ms-2' onClick={()=>{
@@ -232,13 +233,13 @@ function FindBy({by,error, handleFindInput, sendAuthNumber}){
     return (
         <div className='mt-1'>
             <div className='d-flex flex-row justify-content-center mt-2'>
-                <input type="text" name={by} placeholder={by === 'tel' ? '휴대전화번호':'이메일'} onChange={handleFindInput}/>
+                <input type="text" className={cssUtils.borderDangerIfError(error[by])} name={by} placeholder={by === 'tel' ? '휴대전화번호':'이메일'} onChange={handleFindInput}/>
                 <button className='btn btn-outline-secondary ms-3' onClick={sendAuthNumber}>인증번호 전송</button>
             </div>
             {
                 error[by] && <p className='text-danger'>{error[by]}</p>
             }
-            <input type="text" className='mt-2' name='auth_code' placeholder='인증번호 입력' onChange={handleFindInput}/>
+            <input type="text" className={`mt-2 ${cssUtils.borderDangerIfError(error.auth_code)}`} name='auth_code' placeholder='인증번호 입력' onChange={handleFindInput}/>
             {
                 error.auth_code && <p className='text-danger'>{error.auth_code}</p>
             }
@@ -247,6 +248,7 @@ function FindBy({by,error, handleFindInput, sendAuthNumber}){
 }
 
 function FindPasswordStep3({setStep, userId}){
+    const navigate = useNavigate();
     const [resetToken, setResetToken] = useState(null);
     const [input, setInput] = useState({
         pwd: '',
@@ -258,6 +260,8 @@ function FindPasswordStep3({setStep, userId}){
         pwd2: null
     })
 
+    const [pageTimeout, setPageTimeout] = useState(null);
+
     useEffect(()=>{
         const getToken = async ()=>{
             const response = await getResetToken({
@@ -265,7 +269,7 @@ function FindPasswordStep3({setStep, userId}){
             });
             if(response.status === 200){
                 setResetToken(response.data);
-                console.log(`reset token: ${response.data}`)
+                // console.log(`reset token: ${response.data}`)
             }
         }
         getToken();
@@ -315,7 +319,13 @@ function FindPasswordStep3({setStep, userId}){
                 pwd: input.pwd
             }, resetToken);
             if(response.status === 200 && response.data){
-                alert("비밀번호가 성공적으로 재설정되었습니다")
+                if(window.confirm('비밀번호가 성공적으로 재설정되었습니다. [확인]을 누르시면 로그인 페이지로 이동합니다')){
+                    navigate('/account/login');
+                }else{
+                    setTimeout(()=>{
+                        navigate('/account/login');
+                    }, 2000);
+                }
             }
         }
     }
@@ -328,7 +338,7 @@ function FindPasswordStep3({setStep, userId}){
             <div>
                 <div>
                     <h5>새 비밀번호</h5>
-                    <input type="password" name='pwd' placeholder='비밀번호' onChange={handlePasswordInput}/>
+                    <input type="password" className={cssUtils.borderDangerIfError(error.pwd)} name='pwd' placeholder='비밀번호' onChange={handlePasswordInput}/>
                     <h6>영문자, 숫자, 특수문자를 포함하여 8~32자로 설정해야 합니다</h6>
                 </div>
                 {
@@ -338,7 +348,7 @@ function FindPasswordStep3({setStep, userId}){
             <div>
                 <div>
                     <h5>새 비밀번호 재입력</h5>
-                    <input type="password" name='pwd2' value={input.pwd2} placeholder='비밀번호 재입력' onChange={matchPassword}/>
+                    <input type="password" name='pwd2' className={cssUtils.borderDangerIfError(error.pwd2)} value={input.pwd2} placeholder='비밀번호 재입력' onChange={matchPassword}/>
                 </div>
                 {
                     error.pwd2 && <p className='text-danger'>{error.pwd2}</p>

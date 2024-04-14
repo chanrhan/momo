@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+	public int updateNickname(String id, String nickname);
 	public int resetPassword(UserVO vo);
 	public Map<String,Object> findTelEmailById(String id);
 	public boolean existUserId(String id);
