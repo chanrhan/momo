@@ -7,6 +7,10 @@ export const getCorpListForRoleDetail = async (keyword, accessToken)=>{
     }, accessToken);
 }
 
-export const selectShop = async (shop, accessToken)=>{
-    return await requestApiWithAccessToken.post();
+// export const selectShop = async (shop, accessToken)=>{
+//     return await requestApiWithAccessToken.post();
+// }
+
+export const addShop = async (data, acessToken)=>{
+    return await requestApiWithAccessToken.post('/api/v1/shop/add',data,acessToken);
 }

@@ -19,8 +19,6 @@ export function CheckToken(key){
                 dispatch(authActions.delAccessToken());
                 setIsAuth('Failed');
             } else {
-                // setIsAuth('Success');
-
                 if (authenticated && new Date().getTime() < expireTime) {
                     setIsAuth('Success');
                 } else {
@@ -28,6 +26,7 @@ export function CheckToken(key){
 
                     if (response.status === 200) {
                         // const token = response.jwtToken.access_token;
+                        // console.log(`new access token: ${response.jwt.access_token}`)
                         dispatch(authActions.setAccessToken(response.jwt.access_token))
                         setRefreshToken(response.jwt.refresh_token);
                         setIsAuth('Success')

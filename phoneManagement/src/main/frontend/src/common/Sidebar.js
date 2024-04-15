@@ -3,8 +3,10 @@ import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {getProfilePicture} from "../api/FileUtils";
 import {PopupModal} from "../modal/PopupModal";
-import NicknameSetting from "../user/NicknameSetting";
+import ChangeNicknameModal from "../user/ChangeNicknameModal";
 import PfpSetting from "../user/PfpSetting";
+import AddShopModal from "../shop/AddShopModal";
+import ChangeShopModal from "../shop/ChangeShopModal";
 
 function Sidebar(){
     const navigate = useNavigate();
@@ -15,8 +17,8 @@ function Sidebar(){
 
     const [popupOpen, setPopupOpen] = useState({
         setPfp: false,
-        setNickname: false,
-        setShop: false,
+        changeNickname: false,
+        changeShop: false,
         addShop: false
     })
 
@@ -63,18 +65,26 @@ function Sidebar(){
                     ) : null
                 }
             </div>
-            <div className='border border-dark p-2'>
-                <p>{userInfo.corp_nm}</p>
-                <p>{userInfo.shop_nm}</p>
+            <div className='border border-dark p-2' onClick={()=>{
+                openPopup('changeShop')
+            }}>
+                <h4>{userInfo.corp_nm}</h4>
+                <h5>{userInfo.shop_nm}</h5>
             </div>
             <div className='border border-dark d-flex flex-row p-1 justify-content-around' onClick={()=>{
-                openPopup('setNickname')
+                openPopup('changeNickname')
             }}>
                 <h5 className='p-2 text-muted'>호칭</h5>
                 <h4 className='p-2'>{userInfo.nickname}</h4>
             </div>
             <div className='d-flex flex-row p-2 justify-content-around'>
-                <button className='btn btn-outline-secondary p-2'>매장 추가</button>
+                {
+                    userInfo.role === 'REPS' ? <button className='btn btn-outline-secondary p-2' onClick={()=>{
+                        openPopup('addShop')
+                        }}>매장 추가</button>
+                        :null
+                }
+
                 <button className='btn btn-outline-secondary p-2'>초대하기</button>
             </div>
             <hr/>
@@ -101,12 +111,9 @@ function Sidebar(){
                 <br/>
                 <br/>
             </div>
-            <PopupModal name='setNickname' open={popupOpen.setNickname}>
-                <NicknameSetting name={userInfo.name} role={userInfo.role} close={closePopup}/>
-            </PopupModal>
-            <PopupModal name='setPfp' open={popupOpen.setPfp}>
-                <PfpSetting name={userInfo.name} role={userInfo.role} close={closePopup}/>
-            </PopupModal>
+            <ChangeNicknameModal open={popupOpen.changeNickname} user={userInfo} close={closePopup}/>
+            <AddShopModal open={popupOpen.addShop} close={closePopup}/>
+            <ChangeShopModal open={popupOpen.changeShop} close={closePopup}/>
         </div>
     )
 }

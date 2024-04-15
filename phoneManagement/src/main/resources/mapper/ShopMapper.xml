@@ -14,9 +14,21 @@
 
     <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
+        SET @corpId := (
+                           SELECT corp_id
+                           FROM tb_emp
+                           WHERE emp_id=#{userId}
+                       );
+
+        SET @lastShopId := (
+            SELECT max(shop_id)
+            FROM tb_shop
+            WHERE corp_id=@corpId
+            );
+
         INSERT INTO tb_shop
-            (shop_id, corp_id, shop_bp_no, shop_nm, shop_addr, shop_tel)
-        VALUES (#{shopId}, #{corpId}, #{shopBpNo}, #{shopNm}, #{shopAddr}, #{shopTel})
+            (shop_id, corp_id, shop_nm, shop_addr, shop_tel)
+        VALUES (@lastShopId + 1, @corpId, #{shopNm}, #{shopAddr}, #{shopTel})
     </insert>
 
     <update id="updateShop" parameterType="com.momo.common.vo.UserVO">

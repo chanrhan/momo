@@ -12,24 +12,24 @@ import {getSaleList} from "../api/SaleApi";
 function Header(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const {accessToken} = useSelector(state=>state.authReducer);
 
     const [keywordInput, setKeywordInput] = useState(null);
     const [searchList, setSearchList] = useState([]);
 
     useEffect(()=>{
-        const updateUserInfo = async ()=>{
-            const {status, data} = await getUserInfo(accessToken);
-            // console.log(data)
-            if(status === 200){
-                dispatch(userActions.setUserInfo(data));
-            }
-        };
         if(accessToken != null){
             updateUserInfo();
         }
     }, [accessToken])
+
+    const updateUserInfo = async ()=>{
+        const {status, data} = await getUserInfo(accessToken);
+        if(status === 200){
+            dispatch(userActions.setUserInfo(data));
+        }
+    };
+
 
     const handleLogout = e=>{
         dispatch(authActions.delAccessToken());

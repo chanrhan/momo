@@ -25,5 +25,12 @@ export const ObjectUtils = {
             str += (value) ? '1' : '0';
         })
         return str;
+    },
+    toggleOf
+}
+
+function toggleOf(arr, index){
+    for(let i in arr){
+        arr[i] = (i == index);
     }
 }

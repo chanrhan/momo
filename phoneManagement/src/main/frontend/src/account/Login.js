@@ -31,13 +31,11 @@ function Login(){
         e.preventDefault();
         try{
             const response = await login(loginInput);
-            console.log(response)
+            // console.log(response)
             if(response.status === 200){
-                console.log(`response.jwtToken : ${response.jwt}`)
+                // console.log(`response.jwtToken : ${response.jwt}`)
                 dispatch(authActions.setAccessToken(response.jwt.access_token));
                 setRefreshToken(response.jwt.refresh_token);
-
-
                 navigate('/service');
             }else{
                 handleLoginError(response.json);
