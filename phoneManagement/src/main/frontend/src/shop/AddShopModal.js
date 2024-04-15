@@ -1,12 +1,15 @@
-import {PopupModal} from "../modal/PopupModal";
+import {ShadowModal} from "../modal/ShadowModal";
 import {useState} from "react";
 import {cssUtils} from "../utils/cssUtils";
 import {ObjectUtils} from "../utils/objectUtil";
 import {validateUtils} from "../utils/validateUtils";
 import {useSelector} from "react-redux";
 import {addShop} from "../api/ShopApi";
+import useModal from "../modal/useModal";
+import {MODAL_TYPE} from "../modal/ModalType";
 
-function AddShopModal({open, close}){
+function AddShopModal(props){
+    const modal = useModal();
     const {accessToken} = useSelector(state=>state.authReducer)
 
     const [input, setInput]= useState({
@@ -63,8 +66,12 @@ function AddShopModal({open, close}){
         }
     }
 
+    const close = ()=>{
+        modal.closeModal(MODAL_TYPE.Add_Shop);
+    }
+
     return (
-        <PopupModal open={open}>
+        <ShadowModal>
             <div className='mt-5 d-flex justify-content-center'>
                 <div className='border border-1' style={{width: '70%'}}>
                     <div className='mt-2'>
@@ -97,9 +104,9 @@ function AddShopModal({open, close}){
 
             <div className='d-flex flex-row justify-content-center mt-5'>
                 <button className='btn btn-primary' onClick={submit}>매장 추가</button>
-                <button className='btn btn-outline-primary ms-4' name='addShop' onClick={close}>저장</button>
+                <button className='btn btn-outline-primary ms-4' onClick={close}>저장</button>
             </div>
-        </PopupModal>
+        </ShadowModal>
     )
 }
 

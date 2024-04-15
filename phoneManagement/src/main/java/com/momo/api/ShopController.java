@@ -7,10 +7,7 @@ import com.momo.service.ShopCommonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +30,12 @@ public class ShopController {
 		vo.setUserId(username);
 		log.info("shop info: {}",vo);
 		return ResponseEntity.ok(shopCommonService.insertShop(vo) != 0);
+	}
+
+	@GetMapping("/shop/list")
+	public ResponseEntity<List<Map<String,Object>>> getShopList(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(shopCommonService.getShopListByReps(username));
 	}
 
 

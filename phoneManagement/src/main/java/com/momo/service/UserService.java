@@ -106,9 +106,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.searchUserInfo(vo);
 	}
 
-	public Map<String,Object> getUserSidebarInfo(){
-		String username = SecurityContextUtil.getUsername();
-		return userMapper.selectUserSidebarInfo(username);
+	public Map<String,Object> getUserSidebarInfo(String id){
+		return userMapper.selectUserSidebarInfo(id);
 	}
 	// Common
 	public Authentication loginDirectly(String username, HttpSession session){

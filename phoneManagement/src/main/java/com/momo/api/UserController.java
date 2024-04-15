@@ -20,7 +20,8 @@ public class UserController {
 	private final UserService userService;
 	@GetMapping("/common/info")
 	public ResponseEntity<Map<String,Object>> getUserCommonInfo(){
-		return ResponseEntity.ok(userService.getUserSidebarInfo());
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getUserSidebarInfo(username));
 	}
 
 	@GetMapping("/update/nickname")

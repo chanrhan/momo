@@ -3,9 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateNickname} from "../api/UserApi";
 import {getUserInfo} from "../api/AccountApi";
 import {userActions} from "../store/slices/userSlice";
-import {PopupModal} from "../modal/PopupModal";
-import roleDetail from "../account/role/RoleDetail";
+import {ShadowModal} from "../modal/ShadowModal";
 import {ObjectUtils} from "../utils/objectUtil";
+import useModal from "../modal/useModal";
+import {MODAL_TYPE} from "../modal/ModalType";
 
 const nicknameByRole = {
     REPS: ['매니저','컨설턴트','CS','인턴'],
@@ -13,7 +14,8 @@ const nicknameByRole = {
     STF: ['대표','관리자','팀장','점장'],
 }
 
-function ChangeNicknameModal({open, close, user}){
+function ChangeNicknameModal({user}){
+    const modal = useModal();
     const dispatch = useDispatch();
     const {accessToken} = useSelector(state=>state.authReducer);
 
@@ -28,24 +30,30 @@ function ChangeNicknameModal({open, close, user}){
     useEffect(()=>{
         if(!ObjectUtils.isEmptyMap(user)){
             setNicknameList(nicknameByRole[user.role]);
-            if(ObjectUtils.isEmpty(user.nickname)){
-                setNickname(nicknameList[0])
-            }else{
-                setNickname(user.nickname)
-                const idx = nicknameList.indexOf(user.nickname);
-                let copy = [...defaultChecked];
-                if(idx !== -1){
-                    ObjectUtils.toggleOf(copy, idx);
-                }else{
-                    ObjectUtils.toggleOf(copy, 4);
-                    setBlockCustomInput(false);
-                    setCustomInput(user.nickname)
-                }
-
-                setDefaultChecked(copy);
-            }
         }
-    },[open, user])
+    },[user])
+
+    useEffect(()=>{
+        if(ObjectUtils.isEmpty(nicknameList)){
+           return;
+        }
+        if(ObjectUtils.isEmpty(user.nickname)){
+            setNickname(nicknameList[0])
+        }else{
+            setNickname(user.nickname)
+            const idx = nicknameList.indexOf(user.nickname);
+            let copy = [...defaultChecked];
+            if(idx !== -1){
+                ObjectUtils.toggleOf(copy, idx);
+            }else{
+                ObjectUtils.toggleOf(copy, 4);
+                setBlockCustomInput(false);
+                setCustomInput(user.nickname)
+            }
+
+            setDefaultChecked(copy);
+        }
+    }, [nicknameList])
 
     const handleSetNickname = (e)=>{
         const value = e.target.value;
@@ -79,8 +87,12 @@ function ChangeNicknameModal({open, close, user}){
         }
     }
 
+    const close = ()=>{
+        modal.closeModal(MODAL_TYPE.Change_Nickname);
+    }
+
     return (
-        <PopupModal open={open} width='60%' height='70%'>
+        <ShadowModal width='60%' height='70%'>
             <div className='d-flex flex-column align-items-center mt-5'>
                 <h3>글을 작성할 때 표시되는 호칭을 설정해 주세요</h3>
                 <div className='d-flex flex-row justify-content-center'>
@@ -89,32 +101,28 @@ function ChangeNicknameModal({open, close, user}){
                 </div>
                 <div className='border border-dark p-3 ' style={{width: '60%'}}>
                     <div className='d-flex flex-row justify-content-center '>
-                        <input type="radio" name='nickname' value={nicknameList[0]} onChange={handleSetNickname} defaultChecked={defaultChecked[0]}/>
+                        <input type="radio" name='nickname' value={nicknameList[0]} onChange={handleSetNickname} checked={defaultChecked[0]}/>
                         <h3 className='ms-2'>{nicknameList[0]}</h3>
-                        <input className='ms-5' type="radio" name='nickname' value={nicknameList[1]} onChange={handleSetNickname} defaultChecked={defaultChecked[1]}/>
+                        <input className='ms-5' type="radio" name='nickname' value={nicknameList[1]} onChange={handleSetNickname} checked={defaultChecked[1]}/>
                         <h3 className='ms-2'>{nicknameList[1]}</h3>
                     </div>
                     <div className='d-flex flex-row justify-content-center align-items-center mt-4'>
-                        <input type="radio" name='nickname' value={nicknameList[2]} onChange={handleSetNickname} defaultChecked={defaultChecked[2]}/>
+                        <input type="radio" name='nickname' value={nicknameList[2]} onChange={handleSetNickname} checked={defaultChecked[2]}/>
                         <h3 className='ms-2'>{nicknameList[2]}</h3>
-                        <input className='ms-5' type="radio" name='nickname' value={nicknameList[3]} onChange={handleSetNickname} defaultChecked={defaultChecked[3]}/>
+                        <input className='ms-5' type="radio" name='nickname' value={nicknameList[3]} onChange={handleSetNickname} checked={defaultChecked[3]}/>
                         <h3 className='ms-2'>{nicknameList[3]}</h3>
                     </div>
                     <div className='mt-3 d-flex flex-row justify-content-center'>
-                        <input type="radio" name='nickname' value='custom' onChange={handleSetNickname} defaultChecked={defaultChecked[4]}/>
+                        <input type="radio" name='nickname' value='custom' onChange={handleSetNickname} checked={defaultChecked[4]}/>
                         <input className='ms-3' type="text" value={customInput} placeholder='직접입력' disabled={blockCustomInput} onChange={handleCustomInput} />
                     </div>
                 </div>
-                <div className='d-flex flex-row justify-content-center mt-3'>
-                    <input type="checkbox"/>
-                    <h5 className='ms-2'>해당 호칭을 기본으로 설정</h5>
-                </div>
                 <div className='d-flex flex-row justify-content-center mt-5'>
-                    <button className='btn btn-outline-primary' name='changeNickname' onClick={close}>취소</button>
+                    <button className='btn btn-outline-primary' onClick={close}>취소</button>
                     <button className='btn btn-primary ms-4' onClick={submit}>확인</button>
                 </div>
             </div>
-        </PopupModal>
+        </ShadowModal>
     )
 }
 

@@ -1,5 +1,5 @@
 
-.modal-bg {
+.modal-shadow-bg {
     display: none;
     position: fixed;
     top: 0;
@@ -10,12 +10,35 @@
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-.modal-bg.openModal{
+.modal-shadow-bg.openModal{
     display: flex;
     align-items: center; /* 팝업이 열릴때 스르륵 열리는 효과 */
     /*animation: modal-bg-show 0.3s;*/
 }
-.modal-main{
+
+.modal-popup{
+    display: flex;
+    align-items: center;
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.modal-popup-main{
+    width: 40%;
+    height: 50%;
+    border: 1px solid gray;
+    margin: 0 auto;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-shadow-main{
     width: 60%;
     height: 70%;
     /*max-width: 450px;*/

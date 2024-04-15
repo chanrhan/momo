@@ -212,7 +212,15 @@
                ac.nickname,
                ac.pfp,
                cp.corp_nm,
-               sh.shop_nm
+               IFNULL(sh.shop_nm, (
+                   SELECT sh2.shop_nm
+                   FROM tb_shop sh2
+                   WHERE sh2.shop_id = (
+                       SELECT min(tb_shop.shop_id)
+                       FROM tb_shop
+                       WHERE tb_shop.corp_id = cp.corp_id
+                       )
+                   )) as shop_nm
         FROM tb_account ac
                  LEFT OUTER JOIN tb_emp em ON ac.id = em.emp_id
                  LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id

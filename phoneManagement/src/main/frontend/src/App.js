@@ -23,10 +23,12 @@ import RoleDetail from "./account/role/RoleDetail";
 import Test from "./test/Test";
 import Admin from "./admin/Admin";
 import AdminHeader from "./admin/AdminHeader";
+import ModalContainer from "./modal/ModalContainer";
 
 function App() {
   return (
     <div className="App">
+        <ModalContainer/>
         <Routes>
             <Route path='/test' element={<Test/>}>
 

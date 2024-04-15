@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Mapper
 public interface ShopCommonMapper {
+	public List<Map<String,Object>> getShopListByReps(String userId);
 
 	public List<Map<String,Object>> getCorpListForRoleDetail(String keyword);
 

@@ -25,6 +25,10 @@ public class ShopCommonService extends CommonService {
 		return shopCommonMapper.insertShop(vo);
 	}
 
+	public List<Map<String,Object>> getShopListByReps(String userId){
+		return shopCommonMapper.getShopListByReps(userId);
+	}
+
 	public int updateShop(ShopCommonVO vo) {
 		return shopCommonMapper.updateShop(vo);
 	}
