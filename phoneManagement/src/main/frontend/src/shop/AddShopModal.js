@@ -1,4 +1,4 @@
-import {ShadowModal} from "../modal/ShadowModal";
+import {LayerModal} from "../modal/LayerModal";
 import {useState} from "react";
 import {cssUtils} from "../utils/cssUtils";
 import {ObjectUtils} from "../utils/objectUtil";
@@ -6,7 +6,8 @@ import {validateUtils} from "../utils/validateUtils";
 import {useSelector} from "react-redux";
 import {addShop} from "../api/ShopApi";
 import useModal from "../modal/useModal";
-import {MODAL_TYPE} from "../modal/ModalType";
+import {ModalType} from "../modal/ModalType";
+import {HttpStatusCode} from "axios";
 
 function AddShopModal(props){
     const modal = useModal();
@@ -55,25 +56,26 @@ function AddShopModal(props){
         const vt = validate('shop_tel', '매장 전화번호를 입력해 주세요');
 
         if(vn && vs && vt){
-            const response = await addShop({
+            addShop({
                 shop_nm: input.shop_nm,
                 shop_addr: input.shop_addr + ' ' + input.shop_detail_addr,
                 shop_tel: input.shop_tel
-            }, accessToken)
-            if(response.status === 200){
-                alert("매장을 추가하였습니다.")
-            }
+            }, accessToken).then(({status,data})=>{
+                if(status === HttpStatusCode.Ok){
+                    alert("매장을 추가하였습니다.")
+                }
+            })
         }
     }
 
     const close = ()=>{
-        modal.closeModal(MODAL_TYPE.Add_Shop);
+        modal.closeModal(ModalType.LAYER.Add_Shop);
     }
 
     return (
-        <ShadowModal>
+        <LayerModal>
             <div className='mt-5 d-flex justify-content-center'>
-                <div className='border border-1' style={{width: '70%'}}>
+                <div className='border border-1 d-flex flex-column align-items-center' style={{width: '70%'}}>
                     <div className='mt-2'>
                         <h3><b>매장명</b></h3>
                         <input className={cssUtils.borderDangerIfError(error.shop_nm)} type="text" name='shop_nm' placeholder='매장명' onChange={handleInput}/>
@@ -106,7 +108,7 @@ function AddShopModal(props){
                 <button className='btn btn-primary' onClick={submit}>매장 추가</button>
                 <button className='btn btn-outline-primary ms-4' onClick={close}>저장</button>
             </div>
-        </ShadowModal>
+        </LayerModal>
     )
 }
 

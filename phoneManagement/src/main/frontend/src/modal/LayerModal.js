@@ -1,4 +1,4 @@
-export const ShadowModal = ({children, width, height})=>{
+export const LayerModal = ({children, width, height})=>{
 
     return (
         <div className='openModal modal-shadow-bg'>

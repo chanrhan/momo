@@ -18,3 +18,5 @@ export const addShop = async (data, acessToken)=>{
 export const getShopListByReps = async (accessToken)=>{
     return await requestApiWithAccessToken.get('/api/v1/shop/list',accessToken);
 }
+
+

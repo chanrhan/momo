@@ -2,13 +2,13 @@ import {useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {getProfilePicture} from "../api/FileUtils";
-import {ShadowModal} from "../modal/ShadowModal";
+import {LayerModal} from "../modal/LayerModal";
 import ChangeNicknameModal from "../user/ChangeNicknameModal";
 import PfpSetting from "../user/PfpSetting";
 import AddShopModal from "../shop/AddShopModal";
 import ChangeShopModal from "../shop/ChangeShopModal";
 import useModal from "../modal/useModal";
-import {MODAL_TYPE} from "../modal/ModalType";
+import {ModalType} from "../modal/ModalType";
 
 function Sidebar(){
     const modal = useModal();
@@ -58,14 +58,16 @@ function Sidebar(){
                     ) : null
                 }
             </div>
-            <div className='border border-dark p-2' onClick={()=>{
-                openModal(MODAL_TYPE.Change_Shop);
+            <div className='border border-dark p-2' onClick={(e)=>{
+                openModal(ModalType.LAYER.Change_Shop,{
+                    e
+                });
             }}>
                 <h4>{userInfo.corp_nm}</h4>
                 <h5>{userInfo.shop_nm}</h5>
             </div>
             <div className='border border-dark d-flex flex-row p-1 justify-content-around' onClick={()=>{
-                openModal(MODAL_TYPE.Change_Nickname, {
+                openModal(ModalType.LAYER.Change_Nickname, {
                     user: userInfo
                 });
             }}>
@@ -75,7 +77,7 @@ function Sidebar(){
             <div className='d-flex flex-row p-2 justify-content-around'>
                 {
                     userInfo.role === 'REPS' ? <button className='btn btn-outline-secondary p-2' onClick={()=>{
-                            openModal(MODAL_TYPE.Add_Shop);
+                            openModal(ModalType.LAYER.Add_Shop);
                         }}>매장 추가</button>
                         :null
                 }
@@ -106,9 +108,6 @@ function Sidebar(){
                 <br/>
                 <br/>
             </div>
-            {/*<ChangeNicknameModal open={popupOpen.changeNickname} user={userInfo} close={closeFunc.changeNickname}/>*/}
-            {/*<AddShopModal open={popupOpen.addShop} close={closeFunc.addShop}/>*/}
-            {/*<ChangeShopModal open={popupOpen.changeShop} close={closeFunc.changeShop}/>*/}
         </div>
     )
 }

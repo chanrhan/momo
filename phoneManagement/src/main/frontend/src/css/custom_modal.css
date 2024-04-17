@@ -1,7 +1,7 @@
 
 .modal-shadow-bg {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -28,11 +28,53 @@
     z-index: 99;
 }
 
-.modal-popup-main{
+.modal-menu{
+    position: fixed;
     width: 40%;
     height: 50%;
+    top: 0;
+    left: 0;
+    z-index: 99;
     border: 1px solid gray;
-    margin: 0 auto;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-snackbar{
+    position: fixed;
+    width: 30%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-toast{
+    position: fixed;
+    width: 30%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-tooltip{
+    position: fixed;
+    width: 20%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
     border-radius: 0.3rem;
     background-color: #fff;
     overflow: hidden;
