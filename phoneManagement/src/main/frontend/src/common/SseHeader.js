@@ -1,19 +1,12 @@
-import {useEffect, useMemo} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {sseActions} from "../store/slices/sseSlice";
-import {EventSourcePolyfill} from 'event-source-polyfill'
+import {useEffect} from "react";
+import useEmitter from "../utils/useEmitter";
+import {useDispatch} from "react-redux";
 
 function SseHeader(){
-    const dispatch = useDispatch();
-    const {accessToken} = useSelector(state=>state.authReducer);
+    const emitter = useEmitter();
 
     useEffect(()=>{
-        const evtSrc = new EventSourcePolyfill("http://localhost:8080/sse/connect",{
-            headers:{
-                'X-ACCESS-TOKEN': accessToken
-            }
-        });
-        dispatch(sseActions.setEventSource(evtSrc));
+        emitter.connect();
         addEventListeners();
     },[])
 
@@ -24,18 +17,13 @@ function SseHeader(){
 
     const onNote = (e)=>{
         const { data: receivedConnectData } = e;
-        alert(`메세지가 도착했습니다 ${receivedConnectData}`);
+        // alert(`메세지가 도착했습니다 ${receivedConnectData}`);
+
     }
 
     const addEventListeners =()=>{
-        dispatch(sseActions.addEventListener({
-            type: 'connect',
-            listener: onConnect
-        }));
-        dispatch(sseActions.addEventListener({
-            type: 'note',
-            listener: onNote
-        }))
+        emitter.addEventListener('connect', onConnect);
+        // emitter.addEventListener('note', onNote);
     }
 }
 

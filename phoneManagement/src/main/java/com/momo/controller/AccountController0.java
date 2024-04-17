@@ -219,7 +219,7 @@ public class AccountController0 {
 			notificationService.sendMessage("admin", receiverId, title, content);
 		}
 
-		return ResponseEntityUtil.okOrNotModified(notificationService.approve(vo.getAlarmId()));
+		return ResponseEntityUtil.okOrNotModified(notificationService.approve(vo.getNoteId()));
 	}
 
 

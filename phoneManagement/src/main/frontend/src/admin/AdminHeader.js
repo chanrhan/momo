@@ -1,18 +1,19 @@
 import {Outlet, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {getUserInfo} from "../api/AccountApi";
 import {userActions} from "../store/slices/userSlice";
+import useApi from "../utils/useApi";
 
 function AdminHeader(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {userApi} = useApi();
 
     const {accessToken} = useSelector(state=>state.authReducer);
 
     useEffect(()=>{
         const updateUserInfo = async ()=>{
-            const {status, data} = await getUserInfo(accessToken);
+            const {status, data} = await userApi.getUserInfo();
             // console.log(data)
             if(status === 200){
                 dispatch(userActions.setUserInfo(data));

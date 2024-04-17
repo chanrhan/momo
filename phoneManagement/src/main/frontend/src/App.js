@@ -20,18 +20,19 @@ import Notification from "./common/Notification";
 import Signup from "./account/Signup";
 import RoleSelector from "./account/role/RoleSelector";
 import RoleDetail from "./account/role/RoleDetail";
-import Test from "./test/Test";
+import TestHeader from "./test/TestHeader";
 import Admin from "./admin/Admin";
 import AdminHeader from "./admin/AdminHeader";
 import ModalContainer from "./modal/ModalContainer";
+import NotificationTest from "./test/NotificationTest";
 
 function App() {
   return (
     <div className="App">
         <ModalContainer/>
         <Routes>
-            <Route path='/test' element={<Test/>}>
-
+            <Route path='/test' element={<TestHeader/>}>
+                <Route path='notify' element={<NotificationTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>

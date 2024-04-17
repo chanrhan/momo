@@ -27,7 +27,7 @@ function ChangeShopModal(props){
     }
 
     const handleCheck = async (e)=>{
-        await shopApi.updateCurrentShop(e.target.value).then(({status, data})=>{
+        await userApi.updateCurrentShop(e.target.value).then(({status, data})=>{
             if(status === 200){
                 alert("매장이 변경되었습니다")
                 userApi.getUserInfo().then(({status, data})=>{

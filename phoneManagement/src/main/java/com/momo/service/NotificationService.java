@@ -20,6 +20,20 @@ public class NotificationService extends CommonService {
 	private final NotificationEmitter notificationEmitter;
 	private final NotificationMapper notificationMapper;
 
+	public int readAll(String userId){
+		return notificationMapper.readAll(userId);
+	}
+
+	public int countUnreadNotification(String userId){
+		return notificationMapper.countUnreadNotification(userId);
+	}
+
+	public List<Map<String,Object>> getNotificationList(String userId){
+		return notificationMapper.getNotificationList(userId);
+	}
+
+	//
+
 	public List<Map<String, Object>> searchNotification(SearchVO searchVO) {
 		return notificationMapper.searchNotification(searchVO);
 	}
@@ -85,7 +99,7 @@ public class NotificationService extends CommonService {
 		NotificationVO vo = NotificationVO.builder()
 				.senderId(senderId)
 				.receiverId(receiverId)
-				.alarmTp(alarmTp)
+				.noteTp(alarmTp)
 				.content(content)
 				.build();
 

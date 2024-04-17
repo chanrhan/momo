@@ -9,6 +9,7 @@ function Admin(){
                     <button className='btn btn-outline-success'>기본 설정</button>
                 </Link>
             </div>
+
         </div>
     )
 }

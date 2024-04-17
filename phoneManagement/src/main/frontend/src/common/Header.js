@@ -1,39 +1,45 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import axiosInstance from "../utils/axiosInstance";
+import axios, {HttpStatusCode} from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {authActions, authReducer} from "../store/slices/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {removeCookieToken} from "../utils/Cookies";
 import {userActions} from "../store/slices/userSlice";
-import {getUserInfo} from "../api/AccountApi";
-import {getSaleList} from "../api/SaleApi";
 import useApi from "../utils/useApi";
+import useEmitter from "../utils/useEmitter";
+import {localActions} from "../store/slices/localStorageSlice";
 
 function Header(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {userApi, saleApi} = useApi();
+    const emitter = useEmitter();
+    const {userApi, saleApi, noteApi} = useApi();
     const {accessToken} = useSelector(state=>state.authReducer);
+    const {unreadNote} = useSelector(state=>state.localReducer);
 
     const [keywordInput, setKeywordInput] = useState(null);
     const [searchList, setSearchList] = useState([]);
 
     useEffect(()=>{
+        emitter.addEventListener('note',(e)=>{
+            // const { data: receivedConnectData } = e;
+            noteApi.countUnreadNotification().then(({status,data})=>{
+                if(status === HttpStatusCode.Ok){
+                    dispatch(localActions.updateUnreadNote(data));
+                }
+            })
+        })
+    },[])
+
+    useEffect(()=>{
         if(accessToken != null){
-            updateUserInfo();
+            userApi.getUserInfo().then(({status,data})=>{
+                if(status === HttpStatusCode.Ok){
+                    dispatch(userActions.setUserInfo(data));
+                }
+            })
         }
     }, [accessToken])
-
-    const updateUserInfo = async ()=>{
-        await userApi.getUserInfo().then(({status,data})=>{
-            if(status === 200){
-                dispatch(userActions.setUserInfo(data));
-            }
-        })
-
-    };
-
 
     const handleLogout = e=>{
         dispatch(authActions.delAccessToken());
@@ -84,6 +90,9 @@ function Header(){
                 </div>
                 <Link to='/notification'>
                     <button className='btn btn-outline-dark'>알림</button>
+                    {
+                        unreadNote > 0 && <p className='text-danger'>N: {unreadNote}</p>
+                    }
                 </Link>
                 <Link to='/profile'>
                     <button className='btn btn-outline-dark'>프로필</button>

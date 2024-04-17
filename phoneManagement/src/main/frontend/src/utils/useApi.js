@@ -4,6 +4,8 @@ import ChatApi from "../api/ChatApi";
 import AccountApi from "../api/AccountApi";
 import SaleApi from "../api/SaleApi";
 import ShopApi from "../api/ShopApi";
+import NoteApi from "../api/NoteApi";
+import TestApi from "../api/TestApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -13,8 +15,9 @@ function useApi(){
         chatApi: ChatApi(accessToken),
         accountApi: AccountApi(accessToken),
         saleApi: SaleApi(accessToken),
-        shopApi: ShopApi(accessToken)
-
+        shopApi: ShopApi(accessToken),
+        noteApi: NoteApi(accessToken),
+        testApi: TestApi(accessToken)
     }
 }
 

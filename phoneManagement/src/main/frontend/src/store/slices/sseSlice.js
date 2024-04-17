@@ -6,13 +6,13 @@ export const sseSlice = createSlice({
         sse: null
     },
     reducers:{
-        setEventSource(state, action){
+        setEventSource: (state, action)=>{
             state.sse = action.payload;
         },
-        addEventListener(state, action){
+        addEventListener: (state, action)=>{
             if(state.sse !== null){
-                const {type, listener} = action.payload;
-                state.sse.addEventListener(type, listener);
+                const {type, callback} = action.payload;
+                state.sse.addEventListener(type, callback);
             }
         }
     }

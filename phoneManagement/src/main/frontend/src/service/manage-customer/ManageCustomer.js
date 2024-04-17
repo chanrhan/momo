@@ -1,6 +1,7 @@
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useApi from "../../utils/useApi";
+import {ObjectUtils} from "../../utils/objectUtil";
 
 function ManageCustomer() {
     const {saleApi} = useApi();
@@ -18,7 +19,9 @@ function ManageCustomer() {
             asc: order.asc
         }).then(({status,data})=>{
             if (status === 200) {
-                setSaleList(data);
+                if(!ObjectUtils.isEmpty(data)){
+                    setSaleList(data);
+                }
             }
         })
 

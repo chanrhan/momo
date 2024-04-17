@@ -13,13 +13,13 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class NotificationVO extends CommonQueryVO {
-	private Integer       alarmId;
-	private String        senderId;
-	private String        receiverId;
-	private String        alarmTp;
-	private String        content;
-	private Boolean       readSt;
-	private String sendDt;
+	private Integer noteId;
+	private String  senderId;
+	private String  receiverId;
+	private String  noteTp;
+	private String  content;
+	private Boolean readSt;
+	private String  sendDt;
 
 	private String senderNm;
 	private String shopNm;

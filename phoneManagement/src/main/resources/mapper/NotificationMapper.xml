@@ -3,10 +3,45 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.NotificationMapper">
+    <update id="readAll">
+        UPDATE tb_notification
+        SET read_st = TRUE
+        WHERE receiver_id = #{userId}
+          AND read_st = FALSE
+    </update>
+
+    <select id="countUnreadNotification">
+        SELECT count(*)
+        FROM tb_notification
+        WHERE receiver_id = #{userId}
+          AND read_st = FALSE
+    </select>
+    
+    <select id="getNotificationList">
+        UPDATE tb_notification
+        SET read_st = TRUE
+        WHERE receiver_id=#{userId}
+        AND read_st = FALSE;
+
+        SELECT (
+                SELECT name
+                FROM tb_account
+                WHERE id=sender_id
+                   ) as sender_nm,
+               content,
+               note_id,
+               note_tp,
+               read_st,
+               send_dt
+        FROM tb_notification
+        WHERE receiver_id=#{userId}
+        ORDER BY send_dt DESC
+    </select>
+
     <insert id="insertNotification" parameterType="com.momo.common.vo.NotificationVO">
         insert into
-            tb_push_notification
-        (alarm_id, sender_id, receiver_id, alarm_tp, content)
+            tb_notification
+        (note_id, sender_id, receiver_id, note_tp, content)
         values
             ((
                 select
@@ -14,30 +49,30 @@
                 from
                     (
                         select
-                            max(alarm_id) + 1
+                            IFNULL(max(note_id)+1, 1)
                         from
-                            tb_push_notification
+                            tb_notification
                         where
                             receiver_id=#{receiverId}
                     ) as sub
                 for update
                  )
-            ,#{senderId},#{receiverId},#{alarmTp},#{content})
+            ,#{senderId},#{receiverId},#{noteTp},#{content})
 
     </insert>
 
     <update id="read" >
         update
-        tb_push_notification
+        tb_notification
         set
             read_st=true
         where
-            alarm_id=#{alarmId}
+            note_id=#{id}
     </update>
 
     <update id="readAllByReceiver">
         update
-        tb_push_notification
+        tb_notification
         set
             read_st=1
         where
@@ -46,29 +81,29 @@
 
     <update id="approve">
         update
-            tb_push_notification
+            tb_notification
         set
             content='1'
         where
-            alarm_id=#{alarmId}
+            note_id=#{id}
     </update>
 
     <select id="searchNotification" parameterType="com.momo.common.vo.SearchVO">
         with alarm as (
             select
-                al.alarm_id as alarm_id,
-                al.alarm_tp as alarm_tp,
-                al.receiver_id as receiver_id,
+                nt.note_id,
+                nt.note_tp,
+                nt.receiver_id as receiver_id,
                 ac.id as sender_id,
                 ac.name as sender_nm,
                 s.shop_nm as shop_nm,
-                al.content as content,
-                al.read_st as read_st,
-                al.send_dt as send_dt
+                nt.content as content,
+                nt.read_st as read_st,
+                nt.send_dt as send_dt
             from
-                tb_push_notification as al
-                    left outer join tb_account ac on ac.id=al.sender_id
-                    left outer join tb_emp e on e.emp_id=al.sender_id
+                tb_notification as nt
+                    left outer join tb_account ac on ac.id=nt.sender_id
+                    left outer join tb_emp e on e.emp_id=nt.sender_id
                     left outer join tb_shop s on s.shop_id=e.shop_id
         )
 
@@ -93,19 +128,19 @@
     <select id="selectNotification" parameterType="com.momo.common.vo.NotificationVO">
         with alarm as (
             select
-                al.alarm_id as alarm_id,
-                al.alarm_tp as alarm_tp,
-                al.receiver_id as receiver_id,
+                nt.note_id,
+                nt.note_tp,
+                nt.receiver_id as receiver_id,
                 ac.id as sender_id,
                 ac.name as sender_nm,
                 s.shop_nm as shop_nm,
-                al.content as content,
-                al.read_st as read_st,
-                DATE_FORMAT(al.send_dt, '%Y-%m-%d %H:%i') as send_dt
+                nt.content as content,
+                nt.read_st as read_st,
+                DATE_FORMAT(nt.send_dt, '%Y-%m-%d %H:%i') as send_dt
             from
-                tb_push_notification as al
-                    left outer join tb_account ac on ac.id=al.sender_id
-                    left outer join tb_emp e on e.emp_id=al.sender_id
+                tb_notification as nt
+                    left outer join tb_account ac on ac.id=nt.sender_id
+                    left outer join tb_emp e on e.emp_id=nt.sender_id
                     left outer join tb_shop s on s.shop_id=e.shop_id
         )
 
@@ -115,10 +150,10 @@
             alarm
         where
         <if test='alarmId != null'>
-            alarm_id=#{alarmId} and
+            note_id=#{alarmId} and
         </if>
         <if test='alarmTp != null and !alarmTp.equals("")'>
-            alarm_tp=#{alarmTp} and
+            note_tp=#{alarmTp} and
         </if>
         <if test='receiverId != null and !receiverId.equals("")'>
             receiver_id=#{receiverId} and
