@@ -3,9 +3,15 @@ import {ObjectUtils} from "./objectUtil";
 import {validateUtils} from "./validateUtils";
 import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "./regex";
 
-function useValidation(){
-    const [input, setInput] = useState({});
-    const [error, setError] = useState({});
+function useValidation(initialState){
+    const init = {};
+    for(const i in initialState){
+        init[initialState[i]] = null
+    }
+    const [input, setInput] = useState(init);
+    const [error, setError] = useState(init);
+
+    const [serverError, setServerError] = useState(null);
 
     const handleInput = (e)=>{
         const key = e.target.name;
@@ -69,6 +75,7 @@ function useValidation(){
 
     const matchAuthNumber = (auth)=>{
         const {auth_code} = input;
+        console.log(`auth: ${auth}, auth_code: ${auth_code}`)
         if(ObjectUtils.isEmpty(auth)){
             handleError('auth_code', '먼저 인증번호를 발송해야 합니다')
             return false;
@@ -90,12 +97,21 @@ function useValidation(){
 
     const validateAll = ()=>{
         let result = true;
+        // console.table(input)
         for(const key in input){
+            // console.log(`val: k(${key}) v(${input[key]})`)
             if(!validate(key, input[key])){
                 result = false;
             }
         }
-        result = matchPassword(input.pwd2);
+        const {pwd, pwd2} = input;
+        // console.log(`${pwd} ${pwd2} res: ${result}`)
+        if(pwd !== undefined && pwd2 !== undefined){
+            if(!matchPassword(input.pwd2)){
+                return false;
+            }
+        }
+
         return result;
     }
 
@@ -119,22 +135,39 @@ function useValidation(){
     }
 
     const clearInput = ()=>{
-        setInput({});
+        setInput(init);
     }
 
     const clearError = ()=>{
-        setError({})
+        setError(init)
+        setServerError(null)
     }
 
     const clear = ()=>{
-        setInput({})
-        setError({})
+        setInput(init)
+        setError(init)
+        setServerError(null)
+    }
+
+    const clearOf = (arr)=>{
+        const init2 = {};
+        for(const j in arr){
+            init2[arr[j]] = null
+        }
+        setInput(init2)
+        setError(init2)
+        setServerError(null)
+    }
+
+    const handleServerError = (msg)=>{
+        setServerError(msg);
     }
 
 
     return {
         input,
         error,
+        serverError,
         setInput,
         setError,
         matchPassword,
@@ -143,10 +176,12 @@ function useValidation(){
         handleError,
         handlePassword,
         handleConfirmPassword,
+        handleServerError,
         validateAll,
         clearInput,
         clearError,
-        clear
+        clear,
+        clearOf
     }
 }
 

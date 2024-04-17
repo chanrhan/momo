@@ -4,55 +4,20 @@ import {emailRegex, telRegex} from "../utils/regex";
 import {validateUtils} from "../utils/validateUtils";
 import {findUsernameBy} from "../api/AccountApi";
 import {useSelector} from "react-redux";
+import useValidation from "../utils/useValidation";
+import {useNavigate} from "react-router-dom";
 
 function FindUsername(){
-    const [found, setFound] = useState(false);
     const [findBy, setFindBy] = useState('tel');
 
+    const val = useValidation(['name','tel']);
     const [authNumber, setAuthNumber] = useState(null);
 
     const [foundIds, setFoundIds] = useState([]);
 
-    const [input, setInput] = useState({
-        email: null,
-        tel: null,
-        name: null,
-        auth_code: null
-    })
-
-    const [error, setError] = useState({
-        name: null,
-        email: null,
-        tel: null,
-        auth_code: null
-    })
-
-    const handleInput = (e)=>{
-        const key = e.target.name;
-        const value = e.target.value;
-        if(ObjectUtils.isEmpty(value)){
-           handleError(key, null);
-        }else{
-            validateUtils.validate(key, value, handleError)
-        }
-
-        setInput(prev=>(
-            {
-                ...prev,
-                [key]: value
-            }
-        ))
-    }
-
-    const handleError = (key, msg)=>{
-        setError(prev=>(
-            {
-                ...prev,
-                [key]: msg
-            }
-        ));
-    }
-
+    useEffect(()=>{
+        val.clearOf([findBy, 'name'])
+    },[findBy])
 
     const handleCheck = (by)=>{
         setFindBy(by);
@@ -64,35 +29,21 @@ function FindUsername(){
     }
 
     const validateBeforeSubmit = ()=>{
-        const vn = validateUtils.validate('name',input.name, handleError);
-        const vb = validateUtils.validate(findBy, input[findBy], handleError);
-        let va = false;
+        if(val.validateAll() && val.matchAuthNumber(authNumber)){
+            findUsernameBy(findBy, {
+                'name': val.input.name,
+                [findBy]: val.input[findBy]
+            }).then(({status,data})=>{
+                if(status === 200){
+                    console.log(data)
+                    if(!ObjectUtils.isEmpty(data)){
+                        setFoundIds(data);
+                    }else{
+                        val.handleServerError('입력하신 회원정보와 일치하는 아이디가 존재하지 않습니다');
+                    }
+                }
+            })
 
-        if(ObjectUtils.isEmpty(authNumber)){
-            handleError('auth_code','휴대전화번호 인증이 필요합니다')
-        }
-        else if(ObjectUtils.isEmpty(input.auth_code)){
-            handleError('auth_code','인증번호를 입력해주세요')
-        }else if(input.auth_code != authNumber){
-            handleError('auth_code', '인증번호가 일치하지 않습니다');
-        }else{
-            handleError('auth_code',null);
-            va = true;
-        }
-
-        if(vn && vb && va){
-            findUserId();
-        }
-    }
-
-    const findUserId = async ()=>{
-        const data = {
-            'name': input.name,
-            [findBy]: input[findBy]
-        }
-        const response = await findUsernameBy(findBy, data);
-        if(response.status === 200){
-            setFoundIds(response.data);
         }
     }
 
@@ -111,7 +62,7 @@ function FindUsername(){
                                     handleCheck('tel');
                                 }}/> 휴대전화번호로 찾기
                                 {
-                                    findBy === 'tel' ? <FindBy by='tel' error={error} handleInput={handleInput} sendAuthNumber={sendAuthNumber}/> : null
+                                    findBy === 'tel' ? <FindBy by='tel' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNumber}/> : null
                                 }
                             </div>
                             <div>
@@ -119,9 +70,12 @@ function FindUsername(){
                                     handleCheck('email');
                                 }}/> 이메일로 찾기
                                 {
-                                    findBy === 'email' ? <FindBy by='email' error={error} handleInput={handleInput} sendAuthNumber={sendAuthNumber}/> : null
+                                    findBy === 'email' ? <FindBy by='email' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNumber}/> : null
                                 }
                             </div>
+                            {
+                                val.serverError && <p className='text-danger'>{val.serverError}</p>
+                            }
                             <div>
                                 <button className='btn btn-outline-primary' onClick={validateBeforeSubmit}>다음</button>
                             </div>
@@ -158,7 +112,7 @@ function FindBy({by, error, handleInput, sendAuthNumber}){
     )
 }
 function Found({foundIds}){
-
+    const navigate = useNavigate();
     return (
         <div>
             <h3>아이디 확인</h3>
@@ -171,8 +125,12 @@ function Found({foundIds}){
                 }
             </div>
             <div className='d-flex flex-row mt-3 justify-content-center'>
-                <button className='btn btn-primary'>로그인</button>
-                <button className='btn btn-outline-primary ms-3'>비밀번호 찾기</button>
+                <button className='btn btn-primary' onClick={()=>{
+                    navigate('/account/login')
+                }}>로그인</button>
+                <button className='btn btn-outline-primary ms-3' onClick={()=>{
+                    navigate('/account/find-password')
+                }}>비밀번호 찾기</button>
             </div>
         </div>
     )

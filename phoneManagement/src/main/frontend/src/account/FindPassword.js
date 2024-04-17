@@ -88,7 +88,7 @@ function FindPasswordStep1({setStep, setUserId}){
 }
 
 function FindPasswordStep2({setStep, userId}){
-    const val = useValidation();
+    const val = useValidation(['tel']);
     const [findBy, setFindBy] = useState('tel');
     const [secretInfo, setSecretInfo] = useState({
         tel: null,
@@ -106,7 +106,7 @@ function FindPasswordStep2({setStep, userId}){
     },[])
 
     useEffect(()=>{
-        val.clear();
+        val.clearOf([findBy]);
     }, [findBy])
 
     const sendAuthNuber = ()=>{
@@ -128,7 +128,7 @@ function FindPasswordStep2({setStep, userId}){
     }
 
     const validateBeforeSubmit = ()=>{
-        if(val.matchAuthNumber(authNumber)){
+        if(val.validateAll() && val.matchAuthNumber(authNumber)){
             setStep(3);
         }
     }
@@ -191,7 +191,7 @@ function FindBy({by, error, handleInput, sendAuthNumber}){
 
 function FindPasswordStep3({setStep, userId}){
     const navigate = useNavigate();
-    const val = useValidation();
+    const val = useValidation(['pwd','pwd2']);
     const [resetToken, setResetToken] = useState(null);
 
     // const [pageTimeout, setPageTimeout] = useState(null);
