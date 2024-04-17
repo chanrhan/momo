@@ -1,11 +1,9 @@
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getSaleListWithCategory} from "../../api/SaleApi";
-import {useSelector} from "react-redux";
+import useApi from "../../utils/useApi";
 
 function ManageCustomer() {
-    const {accessToken} = useSelector(state => state.authReducer);
-
+    const {saleApi} = useApi();
     const {category} = useParams();
     const [saleList, setSaleList] = useState([]);
 
@@ -15,15 +13,15 @@ function ManageCustomer() {
     });
 
     const updateSaleWithCategory = async () => {
-        const body = {
+        await saleApi.getSaleListWithCategory(category, {
             order: order.column,
             asc: order.asc
-        }
-        const response = await getSaleListWithCategory(category, body, accessToken)
-        console.log(response)
-        if (response.status === 200) {
-            setSaleList(response.data);
-        }
+        }).then(({status,data})=>{
+            if (status === 200) {
+                setSaleList(data);
+            }
+        })
+
     }
 
     useEffect(() => {

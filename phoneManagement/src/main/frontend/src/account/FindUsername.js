@@ -1,16 +1,14 @@
 import {useEffect, useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
-import {emailRegex, telRegex} from "../utils/regex";
-import {validateUtils} from "../utils/validateUtils";
-import {findUsernameBy} from "../api/AccountApi";
-import {useSelector} from "react-redux";
 import useValidation from "../utils/useValidation";
 import {useNavigate} from "react-router-dom";
+import useApi from "../utils/useApi";
 
 function FindUsername(){
     const [findBy, setFindBy] = useState('tel');
 
     const val = useValidation(['name','tel']);
+    const {accountApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null);
 
     const [foundIds, setFoundIds] = useState([]);
@@ -28,9 +26,9 @@ function FindUsername(){
         setAuthNumber(123);
     }
 
-    const validateBeforeSubmit = ()=>{
+    const submit = async ()=>{
         if(val.validateAll() && val.matchAuthNumber(authNumber)){
-            findUsernameBy(findBy, {
+            await accountApi.findUsernameBy(findBy, {
                 'name': val.input.name,
                 [findBy]: val.input[findBy]
             }).then(({status,data})=>{
@@ -77,7 +75,7 @@ function FindUsername(){
                                 val.serverError && <p className='text-danger'>{val.serverError}</p>
                             }
                             <div>
-                                <button className='btn btn-outline-primary' onClick={validateBeforeSubmit}>다음</button>
+                                <button className='btn btn-outline-primary' onClick={submit}>다음</button>
                             </div>
                         </div>
                     </div>

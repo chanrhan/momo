@@ -8,10 +8,11 @@ import {addShop} from "../api/ShopApi";
 import useModal from "../modal/useModal";
 import {ModalType} from "../modal/ModalType";
 import {HttpStatusCode} from "axios";
+import useApi from "../utils/useApi";
 
 function AddShopModal(props){
     const modal = useModal();
-    const {accessToken} = useSelector(state=>state.authReducer)
+    const {shopApi} = useApi();
 
     const [input, setInput]= useState({
         shop_nm: null,
@@ -56,11 +57,11 @@ function AddShopModal(props){
         const vt = validate('shop_tel', '매장 전화번호를 입력해 주세요');
 
         if(vn && vs && vt){
-            addShop({
+            shopApi.addShop({
                 shop_nm: input.shop_nm,
                 shop_addr: input.shop_addr + ' ' + input.shop_detail_addr,
                 shop_tel: input.shop_tel
-            }, accessToken).then(({status,data})=>{
+            }).then(({status,data})=>{
                 if(status === HttpStatusCode.Ok){
                     alert("매장을 추가하였습니다.")
                 }

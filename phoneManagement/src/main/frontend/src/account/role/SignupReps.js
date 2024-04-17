@@ -1,9 +1,9 @@
 import {useState} from "react";
-import {validateBusinessNumber} from "../../api/AccountApi";
 import {useSelector} from "react-redux";
+import useApi from "../../utils/useApi";
 
 function SignupReps(){
-    const {accessToken} = useSelector(state=>state.authReducer);
+    const {accountApi} = useApi();
     const [bsInput, setBsInput] = useState({});
     const [bno, setBno] = useState([
         '','',''
@@ -24,16 +24,17 @@ function SignupReps(){
     }
 
     const validateBno = async ()=>{
-        const data = {
+        accountApi.validateBusinessNumber({
             ...bsInput,
             'b_no': bno[0]+bno[1]+bno[2],
             'p_nm2': ''
-        }
-        const response = await validateBusinessNumber(data, accessToken);
-        if(response.status === 200){
-            console.table(response.data)
-            alert("성공적으로 인증되었습니다.")
-        }
+        }).then(({status,data})=>{
+            if(status === 200){
+                console.table(data)
+                alert("성공적으로 인증되었습니다.")
+            }
+        })
+
     }
 
     return (

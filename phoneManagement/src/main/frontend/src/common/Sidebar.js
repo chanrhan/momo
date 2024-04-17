@@ -1,33 +1,22 @@
 import {useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {getProfilePicture} from "../api/FileUtils";
-import {LayerModal} from "../modal/LayerModal";
-import ChangeNicknameModal from "../user/ChangeNicknameModal";
-import PfpSetting from "../user/PfpSetting";
-import AddShopModal from "../shop/AddShopModal";
-import ChangeShopModal from "../shop/ChangeShopModal";
 import useModal from "../modal/useModal";
 import {ModalType} from "../modal/ModalType";
+import useApi from "../utils/useApi";
 
 function Sidebar(){
     const modal = useModal();
     const navigate = useNavigate();
+    const {userApi} = useApi();
     const userInfo = useSelector(state=>state.userReducer);
-    const {accessToken} = useSelector(state=>state.authReducer);
 
     const [pfp, setPfp] = useState('');
 
-    const [popupOpen, setPopupOpen] = useState({
-        setPfp: false,
-        changeNickname: false,
-        changeShop: false,
-        addShop: false
-    })
 
     useEffect(()=>{
         const getImage = async ()=>{
-            const img = await getProfilePicture(userInfo.id, accessToken)
+            const img = await userApi.getProfilePicture(userInfo.id)
             setPfp(img);
         }
         getImage();

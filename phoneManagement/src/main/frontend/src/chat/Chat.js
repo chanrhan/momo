@@ -8,8 +8,10 @@ import ChatRoomCard from "./ChatRoomCard";
 import {ChatRoomDetail} from "./ChatRoomDetail";
 import {ObjectUtils} from "../utils/objectUtil";
 import chatLog from "./ChatLog";
+import useApi from "../utils/useApi";
 
 function Chat(){
+    const {chatApi} = useApi();
     const {accessToken} = useSelector(state=>state.authReducer)
     const userInfo = useSelector(state=>state.userReducer);
     const client = useRef({});
@@ -102,16 +104,18 @@ function Chat(){
     }
 
     const loadChatRoom = async ()=>{
-        const response = await getChatRoomList(accessToken);
-        if(response.status === 200 && response.data !== null){
-            setChatRoomList(response.data);
-            if(!isSubscribe.current){
-                response.data.map(room=>{
-                    subscribe(room.room_id);
-                })
-                isSubscribe.current = true;
+        await chatApi.getChatRoomList().then(({status,data})=>{
+            if(status === 200 && data !== null){
+                setChatRoomList(data);
+                if(!isSubscribe.current){
+                    data.map(room=>{
+                        subscribe(room.room_id);
+                    })
+                    isSubscribe.current = true;
+                }
             }
-        }
+        })
+
     }
 
     const updateConnectedUsers = (userIdList)=>{
@@ -131,12 +135,13 @@ function Chat(){
     }
 
     const selectChatRoom = async (roomId)=>{
-        const response = await getChatRoomDetail(roomId, accessToken);
-        if(response.status === 200){
-            setChatRoomDetail(response.data);
-            console.log(`select room id:${response.data.room_id}`)
-            currRoomId.current = response.data.room_id;
-        }
+        await chatApi.getChatRoomDetail(roomId).then(({status,data})=>{
+            if(status === 200){
+                setChatRoomDetail(data);
+                console.log(`select room id:${data.room_id}`)
+                currRoomId.current = data.room_id;
+            }
+        })
     }
 
     const updateChatRoomHeadCount = ()=>{
@@ -186,7 +191,7 @@ function Chat(){
         if(!chat.server_send){
             chatRef.current.onSend(chat.chat_log);
             console.log(`read id: ${userInfo.id}`)
-            readChatRoom(client, roomId, userInfo.id);
+            chatApi.readChatRoom(client, roomId, userInfo.id);
         }
     }
 

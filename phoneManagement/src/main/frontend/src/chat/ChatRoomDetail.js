@@ -6,6 +6,7 @@ import ChatLog from "./ChatLog";
 import chat from "./Chat";
 import {getProfilePicture} from "../api/FileUtils";
 import ChatRoomUserCard from "./ChatRoomUserCard";
+import useApi from "../utils/useApi";
 
 export const ChatRoomDetail = forwardRef((props, ref)=>{
     useImperativeHandle(ref, ()=>(
@@ -18,7 +19,8 @@ export const ChatRoomDetail = forwardRef((props, ref)=>{
 
     const {client, detail} = props;
 
-    const {accessToken} = useSelector(state=>state.authReducer);
+    const {chatApi} = useApi();
+
     const userInfo = useSelector(state=>state.userReducer);
 
     const [roomUserList, setRoomUserList] = useState([]);
@@ -43,11 +45,13 @@ export const ChatRoomDetail = forwardRef((props, ref)=>{
     }, [roomUserList])
 
     const loadAllChat = async ()=>{
-        const response = await getAllChatMessage(detail.room_id, accessToken);
-        if(response.status === 200 && !ObjectUtils.isEmpty(response.data)){
-            // console.log(`chat log: ${response.data}`)
-            setChatLog(response.data);
-        }
+        await chatApi.getAllChatMessage(detail.room_id).then(({status,data})=>{
+            if(status === 200 && !ObjectUtils.isEmpty(data)){
+                // console.log(`chat log: ${response.data}`)
+                setChatLog(data);
+            }
+        })
+
     }
 
     const handleSendInput = (e)=>{
@@ -55,7 +59,7 @@ export const ChatRoomDetail = forwardRef((props, ref)=>{
     }
 
     const send = async ()=>{
-        sendChat(client, detail.room_id, {
+        await chatApi.sendChat(client, detail.room_id, {
             user_id: userInfo.id,
             content: sendInput
         });
@@ -84,22 +88,26 @@ export const ChatRoomDetail = forwardRef((props, ref)=>{
     }
 
     const loadChatRoomUser = async ()=>{
-        const response = await getChatRoomUserList(detail.room_id, accessToken);
-        if(response.status === 200){
-            setRoomUserList(response.data);
-        }
+         await chatApi.getChatRoomUserList(detail.room_id).then(({status,data})=>{
+             if(status === 200){
+                 setRoomUserList(data);
+             }
+         })
+
     }
 
     const loadConnectedUser = async ()=>{
-        const response = await getConnectedUserList(accessToken);
-        if(response.status === 200){
-            let copy = {...onlineList};
-            response.data.map(user=>{
-                copy[user] = true;
-            })
+        await chatApi.getConnectedUserList().then(({status,data})=>{
+            if(status === 200){
+                let copy = {...onlineList};
+                data.map(user=>{
+                    copy[user] = true;
+                })
 
-            setOnlineList(copy)
-        }
+                setOnlineList(copy)
+            }
+        })
+
     }
 
     if(ObjectUtils.isEmpty(detail)){

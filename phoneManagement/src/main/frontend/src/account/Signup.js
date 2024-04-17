@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
 import {signup} from "../api/AccountApi";
 import {useNavigate} from "react-router-dom";
 import {authActions} from "../store/slices/authSlice";
@@ -8,6 +7,7 @@ import {useDispatch} from "react-redux";
 import {ObjectUtils} from "../utils/objectUtil";
 import {validateUtils} from "../utils/validateUtils";
 import useValidation from "../utils/useValidation";
+import useApi from "../utils/useApi";
 
 const ERR_BORDER_CSS = 'border border-danger';
 
@@ -15,15 +15,15 @@ function Signup(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const valid = useValidation(['id','pwd','pwd2','name','tel','email'])
+    const {accountApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null)
 
     const [terms, setTerms] = useState(new Array(4).fill(false));
     const [checkedAgreeAll, setCheckedAgreeAll] = useState(false);
 
     const [termError, setTermError] = useState(false);
-    const [serverError, setServerError] = useState(false);
 
-    const submit = ()=>{
+    const submit = async ()=>{
         if(valid.validateAll() && valid.matchAuthNumber(authNumber)){
             if(!terms[0] || !terms[1]){
                 setTermError(true);
@@ -32,7 +32,7 @@ function Signup(){
                 setTermError(false);
             }
 
-            signup({
+            await accountApi.signup({
                 ...valid.input,
                 terms: ObjectUtils.convertBooleanArrayToString(terms)
             }).then(res=>{

@@ -1,12 +1,10 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import NotFound from "../common/NotFound";
-import {existUserId, getResetToken, getTelEmailSecretly, matchUserId, resetPassword} from "../api/AccountApi";
 import {ObjectUtils} from "../utils/objectUtil";
-import {validateUtils} from "../utils/validateUtils";
 import {cssUtils} from "../utils/cssUtils";
-import useValidate from "../utils/useValidation";
 import useValidation from "../utils/useValidation";
+import useApi from "../utils/useApi";
 
 function FindPassword(){
     return (
@@ -36,6 +34,7 @@ function StepSelector(){
 
 function FindPasswordStep1({setStep, setUserId}){
     const naviagte = useNavigate();
+    const {accountApi} = useApi();
     const [idInput, setIdInput] = useState('');
     const [error, setError] = useState(null);
 
@@ -48,7 +47,7 @@ function FindPasswordStep1({setStep, setUserId}){
             setError('아이디를 입력해주세요');
             return;
         }
-        existUserId(idInput).then(({status,data})=>{
+        await accountApi.existUserId(idInput).then(({status,data})=>{
              if(status === 200){
                  // console.log(response.data)
                  if(data){
@@ -89,6 +88,7 @@ function FindPasswordStep1({setStep, setUserId}){
 
 function FindPasswordStep2({setStep, userId}){
     const val = useValidation(['tel']);
+    const {accountApi} = useApi();
     const [findBy, setFindBy] = useState('tel');
     const [secretInfo, setSecretInfo] = useState({
         tel: null,
@@ -98,7 +98,7 @@ function FindPasswordStep2({setStep, userId}){
     const [authNumber, setAuthNumber] = useState(null);
 
     useEffect(()=>{
-        getTelEmailSecretly(userId).then(({status, data})=>{
+        accountApi.getTelEmailSecretly(userId).then(({status, data})=>{
             if(status === 200){
                 setSecretInfo(data);
             }
@@ -109,8 +109,8 @@ function FindPasswordStep2({setStep, userId}){
         val.clearOf([findBy]);
     }, [findBy])
 
-    const sendAuthNuber = ()=>{
-        matchUserId(findBy, {
+    const sendAuthNuber = async ()=>{
+        await accountApi.matchUserId(findBy, {
             id: userId,
             [findBy]: val.input[findBy]
         }).then(({status,data})=>{
@@ -127,7 +127,7 @@ function FindPasswordStep2({setStep, userId}){
         })
     }
 
-    const validateBeforeSubmit = ()=>{
+    const submit = ()=>{
         if(val.validateAll() && val.matchAuthNumber(authNumber)){
             setStep(3);
         }
@@ -164,7 +164,7 @@ function FindPasswordStep2({setStep, userId}){
                     <button className='btn btn-outline-primary' onClick={()=>{
                         setStep(1);
                     }}>이전</button>
-                    <button className='btn btn-outline-primary ms-2' onClick={validateBeforeSubmit}>다음</button>
+                    <button className='btn btn-outline-primary ms-2' onClick={submit}>다음</button>
                 </div>
             </div>
         </div>
@@ -192,12 +192,13 @@ function FindBy({by, error, handleInput, sendAuthNumber}){
 function FindPasswordStep3({setStep, userId}){
     const navigate = useNavigate();
     const val = useValidation(['pwd','pwd2']);
+    const {accountApi} = useApi();
     const [resetToken, setResetToken] = useState(null);
 
     // const [pageTimeout, setPageTimeout] = useState(null);
 
     useEffect(()=>{
-        getResetToken({
+        accountApi.getResetToken({
             id: userId
         }).then(({status,data})=>{
             if(status === 200){
@@ -206,9 +207,9 @@ function FindPasswordStep3({setStep, userId}){
         })
     }, [])
 
-    const validateBeforeSubmit = async ()=>{
+    const submit = async ()=>{
         if(val.validateAll()){
-            resetPassword({
+            await accountApi.resetPassword({
                 id: userId,
                 pwd: val.input.pwd
             }, resetToken).then(({status,data})=>{
@@ -253,7 +254,7 @@ function FindPasswordStep3({setStep, userId}){
                 <button className='btn btn-outline-primary' onClick={()=>{
                     setStep(2);
                 }}>이전</button>
-                <button className='btn btn-outline-primary ms-2' onClick={validateBeforeSubmit}>다음</button>
+                <button className='btn btn-outline-primary ms-2' onClick={submit}>다음</button>
             </div>
         </div>
     )

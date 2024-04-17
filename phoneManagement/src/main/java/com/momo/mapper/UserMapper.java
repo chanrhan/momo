@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+	public List<Map<String,Object>> getStaffList(String id);
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
 	public int resetPassword(UserVO vo);

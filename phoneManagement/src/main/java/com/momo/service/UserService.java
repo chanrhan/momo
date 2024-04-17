@@ -31,7 +31,9 @@ public class UserService extends CommonService implements UserDetailsService{
 	private final UserMapper       userMapper;
 
 	// Authentication
-
+	public List<Map<String,Object>> getStaffList(String id){
+		return userMapper.getStaffList(id);
+	}
 
 	public int updateCurrentShop(String userId, int shopId){
 		return userMapper.updateCurrentShop(userId, shopId);

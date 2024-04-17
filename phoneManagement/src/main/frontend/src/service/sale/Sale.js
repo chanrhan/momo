@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
-import {deleteSales, getSaleList} from "../../api/SaleApi";
 import {useSelector} from "react-redux";
+import useApi from "../../utils/useApi";
 
 function Sale() {
+    const {saleApi} = useApi();
+
     const [column, setColumn] = useState([
         1, 1, 1, 1, 1, 1
     ])
@@ -18,20 +20,19 @@ function Sale() {
 
     const [deleteList, setDeleteList] = useState([]);
 
-    const {accessToken} = useSelector(state => state.authReducer);
-
     const updateSale = async () => {
-        let data = {
+        await saleApi.getSaleList({
             keyword: keyword,
             actv_dt: keydate,
             order: order.column,
             asc: order.asc
-        };
-        const response = await getSaleList(data, accessToken);
-        if (response.status === 200) {
-            // console.log(response)
-            setSaleList(response.data)
-        }
+        }).then(({status,data})=>{
+            if (status === 200) {
+                // console.log(response)
+                setSaleList(data)
+            }
+        })
+
     }
 
     useEffect(() => {
@@ -58,14 +59,16 @@ function Sale() {
         const selected = document.querySelectorAll('input[name="sale_select_box"]:checked');
         const deleting = Array.from(selected).map(input=>input.getAttribute('sale_id'));
 
-        const response = await deleteSales(deleting, accessToken);
-        if(response.status === 200 && response.data){
-            updateSale();
-            document.querySelectorAll('input[name="sale_select_box"]:checked')
-                .forEach(function (value){
-                    value.checked=false;
-                })
-        }
+        await saleApi.deleteSales(deleting).then(({status,data})=>{
+            if(status === 200 && data){
+                updateSale();
+                document.querySelectorAll('input[name="sale_select_box"]:checked')
+                    .forEach(function (value){
+                        value.checked=false;
+                    })
+            }
+        })
+
     }
 
 

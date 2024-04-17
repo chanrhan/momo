@@ -3,11 +3,12 @@ import {useSelector} from "react-redux";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {getCorpListForRoleDetail} from "../../api/ShopApi";
 import {useParams} from "react-router-dom";
+import useApi from "../../utils/useApi";
 
 function SignupStaff(){
+    const {shopApi} = useApi();
     const [searchResult, setSearchResult] = useState([]);
     const [keyword, setKeyword] = useState('');
-    const {accessToken} = useSelector(state=>state.authReducer);
 
     const handleKeyword = (e)=>{
         setKeyword(e.target.value);
@@ -18,13 +19,14 @@ function SignupStaff(){
             return;
         }
 
-        const response = await getCorpListForRoleDetail(keyword, accessToken);
-        console.log(response)
-        if(response.status === 200){
-            setSearchResult(response.data);
-        }else{
-            console.error(response.json)
-        }
+        shopApi.getCorpListForRoleDetail(keyword).then(({status,data})=>{
+            if(status === 200){
+                setSearchResult(data);
+            }else{
+                // console.error(response.json)
+            }
+        })
+
     }
 
     return (

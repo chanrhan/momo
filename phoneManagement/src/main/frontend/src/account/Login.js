@@ -8,10 +8,12 @@ import FindUsername from "./FindUsername";
 import FindPassword from "./FindPassword";
 import {login} from "../api/AccountApi";
 import useValidation from "../utils/useValidation";
+import useApi from "../utils/useApi";
 
 function Login(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {accountApi} = useApi();
 
     let [loginInput, setLoginInput] = useState({
         username: "",
@@ -31,16 +33,17 @@ function Login(){
     const handleLogin = async (e)=>{
         e.preventDefault();
         try{
-            const response = await login(loginInput);
-            // console.log(response)
-            if(response.status === 200){
-                // console.log(`response.jwtToken : ${response.jwt}`)
-                dispatch(authActions.setAccessToken(response.jwt.access_token));
-                setRefreshToken(response.jwt.refresh_token);
-                navigate('/service');
-            }else{
-                handleLoginError(response.json);
-            }
+            await accountApi.login(loginInput).then(res=>{
+                if(res.status === 200){
+                    // console.log(`response.jwtToken : ${response.jwt}`)
+                    dispatch(authActions.setAccessToken(res.jwt.access_token));
+                    setRefreshToken(res.jwt.refresh_token);
+                    navigate('/service');
+                }else{
+                    handleLoginError(res.json);
+                }
+            })
+
         }catch (error){
             handleLoginError('Login failed:', error.response ? error.response.data : error.message);
         }

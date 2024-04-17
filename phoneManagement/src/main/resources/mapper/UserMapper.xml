@@ -3,6 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <select id="getStaffList">
+        SELECT ac.name,
+               sh.shop_id,
+               sh.shop_nm,
+               ac.role
+        FROM tb_emp em
+        LEFT OUTER JOIN tb_account ac on em.emp_id=ac.id
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=em.shop_id
+        WHERE em.corp_id = (
+            SELECT corp_id
+            FROM tb_emp
+            WHERE emp_id = #{id}
+            ) AND
+            emp_id != #{id}
+    </select>
+
     <update id="updateCurrentShop">
         UPDATE tb_emp
         SET shop_id=#{shopId}

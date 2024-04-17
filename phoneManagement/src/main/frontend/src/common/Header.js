@@ -8,10 +8,12 @@ import {removeCookieToken} from "../utils/Cookies";
 import {userActions} from "../store/slices/userSlice";
 import {getUserInfo} from "../api/AccountApi";
 import {getSaleList} from "../api/SaleApi";
+import useApi from "../utils/useApi";
 
 function Header(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {userApi, saleApi} = useApi();
     const {accessToken} = useSelector(state=>state.authReducer);
 
     const [keywordInput, setKeywordInput] = useState(null);
@@ -24,10 +26,12 @@ function Header(){
     }, [accessToken])
 
     const updateUserInfo = async ()=>{
-        const {status, data} = await getUserInfo(accessToken);
-        if(status === 200){
-            dispatch(userActions.setUserInfo(data));
-        }
+        await userApi.getUserInfo().then(({status,data})=>{
+            if(status === 200){
+                dispatch(userActions.setUserInfo(data));
+            }
+        })
+
     };
 
 
@@ -43,12 +47,13 @@ function Header(){
 
     const search = async (e)=>{
         if(e.keyCode === 13){
-            const response = await getSaleList({
+            await saleApi.getSaleList({
                 keyword: keywordInput
-            }, accessToken);
-            if(response.status === 200){
-                setSearchList(response.data);
-            }
+            }).then(({status,data})=>{
+                if(status === 200){
+                    setSearchList(data);
+                }
+            })
         }
     }
 

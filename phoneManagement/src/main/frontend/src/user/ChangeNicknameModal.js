@@ -8,6 +8,7 @@ import {ObjectUtils} from "../utils/objectUtil";
 import useModal from "../modal/useModal";
 import {ModalType} from "../modal/ModalType";
 import {HttpStatusCode} from "axios";
+import useApi from "../utils/useApi";
 
 const nicknameByRole = {
     REPS: ['매니저','컨설턴트','CS','인턴'],
@@ -16,6 +17,7 @@ const nicknameByRole = {
 }
 
 function ChangeNicknameModal({user}){
+    const {userApi} = useApi();
     const modal = useModal();
     const dispatch = useDispatch();
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -74,7 +76,7 @@ function ChangeNicknameModal({user}){
     }
 
     const submit = async ()=>{
-        updateNickname(nickname, accessToken).then(({status,data})=>{
+        await userApi.updateNickname(nickname).then(({status,data})=>{
             if(status === 200){
                 updateUserInfo();
                 alert("호칭이 변경되었습니다")
@@ -84,7 +86,7 @@ function ChangeNicknameModal({user}){
     }
 
     const updateUserInfo = async ()=>{
-        getUserInfo(accessToken).then(({status, data})=>{
+        await userApi.getUserInfo().then(({status, data})=>{
             if(status === HttpStatusCode.Ok){
                 dispatch(userActions.setUserInfo(data));
             }
