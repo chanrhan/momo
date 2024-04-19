@@ -12,6 +12,7 @@ public interface UserMapper {
 	public List<Map<String,Object>> getStaffList(String id);
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
+	public int updatePassword(UserVO vo);
 	public int resetPassword(UserVO vo);
 	public Map<String,Object> findTelEmailById(String id);
 	public boolean existUserId(String id);
@@ -29,7 +30,7 @@ public interface UserMapper {
 	public List<Map<String,Object>> searchUserInfo(SearchVO vo);
 	public List<Map<String,Object>> selectUserInfo(UserVO vo);
 
-	public Map<String,Object> selectUserSidebarInfo(String id);
+	public Map<String,Object> getUserInfo(String id);
 
 	// User Account
 	public int insertUser(UserVO vo);

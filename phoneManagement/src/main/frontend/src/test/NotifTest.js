@@ -3,12 +3,12 @@ import {useSelector} from "react-redux";
 import useApi from "../utils/useApi";
 import {HttpStatusCode} from "axios";
 
-function NotificationTest(){
+function NotifTest(){
     const {sse} = useSelector(state=>state.sseReducer);
     const {testApi} = useApi();
 
     const [input, setInput] = useState({
-        note_tp: 'message',
+        notif_tp: 'message',
         content: null,
         receiver_id: null
     })
@@ -41,7 +41,7 @@ function NotificationTest(){
         <div className='mt-4'>
             <div>
                 <h4>알림 타입</h4>
-                <select name='note_tp' onChange={handleInput}>
+                <select name='notif_tp' onChange={handleInput}>
                     <option value="message">message</option>
                     <option value="approval">approval</option>
                 </select>
@@ -58,4 +58,4 @@ function NotificationTest(){
     )
 }
 
-export default NotificationTest;
+export default NotifTest;

@@ -27,6 +27,9 @@ function UserApi(accessToken){
         updatePfp : async (data)=>{
             return await requestApiWithAccessToken.post('/api/v1/user/update/pfp',data, accessToken);
         },
+        updatePassword: async (data)=>{
+          return await requestApiWithAccessToken.post('/api/v1/user/update/password',data, accessToken);
+        },
         getStaffList : async ()=>{
             return await requestApiWithAccessToken.get('/api/v1/user/list/staff', accessToken);
         },

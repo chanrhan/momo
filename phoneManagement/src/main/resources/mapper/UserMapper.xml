@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <update id="updatePassword" parameterType="com.momo.common.vo.UserVO">
+        UPDATE tb_account
+        SET pwd = #{updatePwd}
+        WHERE id = #{id}
+          AND pwd = #{pwd}
+    </update>
+
     <select id="getStaffList">
         SELECT ac.name,
                sh.shop_id,
@@ -227,9 +234,11 @@
         </if>
     </select>
 
-    <select id="selectUserSidebarInfo">
+    <select id="getUserInfo">
         SELECT ac.id,
                ac.name,
+               ac.tel,
+               ac.email,
                ac.role,
                ac.nickname,
                ac.pfp,

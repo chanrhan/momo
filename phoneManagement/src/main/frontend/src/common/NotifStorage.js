@@ -6,28 +6,28 @@ import {ObjectUtils} from "../utils/objectUtil";
 import {useDispatch} from "react-redux";
 import {localActions} from "../store/slices/localStorageSlice";
 
-function Notification(){
+function NotifStorage(){
     const dispatch = useDispatch();
-    const {noteApi} = useApi();
+    const {notifApi} = useApi();
     const [noteList, setNoteList] = useState([]);
 
     useEffect(()=>{
-        noteApi.getNotificationList().then(({status,data})=>{
+        notifApi.getNotifList().then(({status,data})=>{
             if(status === HttpStatusCode.Ok && !ObjectUtils.isEmpty(data)){
                 setNoteList(data)
-                dispatch(localActions.updateUnreadNote(0));
+                dispatch(localActions.updateUnreadNotif(0));
             }
         })
     },[])
 
     return (
-        <div>
-            <h3 className='debug-page'>Notification Page</h3>
+        <div className='ms-5 d-flex flex-column justify-content-center'>
+            <h3 className='debug-page'>Notif Storage</h3>
             <h4>알림</h4>
-            <div>
+            <div className='d-flex flex-column justify-content-center'>
                 {
                     noteList.map((value,index)=>{
-                        return <NoteCard key={index} note={value}/>
+                        return <AlertItem key={index} alert={value}/>
                     })
                 }
             </div>
@@ -35,15 +35,15 @@ function Notification(){
     )
 }
 
-function NoteCard({note}){
+function AlertItem({alert}){
     return (
         <div className='border border-1 d-flex flex-column justify-content-center'>
-            <p>{note.sender_nm}</p>
-            <p>{note.content}</p>
-            <p>{note.send_dt}</p>
-            <p>{note.read_st}</p>
+            <p>{alert.sender_nm}</p>
+            <p>{alert.content}</p>
+            <p>{alert.send_dt}</p>
+            <p>{alert.read_st}</p>
         </div>
     )
 }
 
-export default Notification;
+export default NotifStorage;

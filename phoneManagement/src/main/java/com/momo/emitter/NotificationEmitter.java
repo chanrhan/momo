@@ -24,16 +24,24 @@ public class NotificationEmitter {
 //		Object _userId = session.getAttribute("user_id");
 //		String userId = (_userId != null) ? _userId.toString() : "unknown";
 		String userId = SecurityContextUtil.getUsername();
+//		Map<String,SseEmitter> dup = findAllStartById(userId);
+//		if(dup != null && !dup.isEmpty()){
+//			dup.forEach((key, value)->{
+//				emitterMap.remove(key);
+//			});
+//		}
 
 		String id = userId + "_" + System.currentTimeMillis();
-		System.out.println("userId: "+userId+" , id: "+id);
-		System.out.println("lastEventId: "+lastEventId);
+//		System.out.println("userId: "+userId+" , id: "+id);
+//		System.out.println("lastEventId: "+lastEventId);
 
 		SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
 		emitter.onCompletion(()->{
+			log.info("on complete");
 			emitterMap.remove(id);
 		});
 		emitter.onTimeout(()->{
+			log.info("on timeout");
 			emitterMap.remove(id);
 		});
 		emitter.onError((e)->{
@@ -53,6 +61,7 @@ public class NotificationEmitter {
 
 	public void sendToClient(String id, String eventName, Object data){
 		Map<String,SseEmitter> emitters = findAllStartById(id);
+//		log.info("current emitter: {}",emitters);
 		if(emitters != null && !emitters.isEmpty()){
 			emitters.forEach((key, value) -> {
 				try {

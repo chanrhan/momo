@@ -2,7 +2,7 @@ package com.momo.service;
 
 import com.momo.emitter.NotificationEmitter;
 import com.momo.mapper.NotificationMapper;
-import com.momo.common.vo.NotificationVO;
+import com.momo.common.vo.NotifVO;
 import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,34 +16,34 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 public class NotificationService extends CommonService {
-	private final ShopCommonService shopCommonService;
+	private final ShopCommonService   shopCommonService;
 	private final NotificationEmitter notificationEmitter;
-	private final NotificationMapper notificationMapper;
+	private final NotificationMapper  notificationMapper;
 
 	public int readAll(String userId){
 		return notificationMapper.readAll(userId);
 	}
 
-	public int countUnreadNotification(String userId){
-		return notificationMapper.countUnreadNotification(userId);
+	public int countUnreadNotif(String userId){
+		return notificationMapper.countUnreadNotif(userId);
 	}
 
-	public List<Map<String,Object>> getNotificationList(String userId){
-		return notificationMapper.getNotificationList(userId);
+	public List<Map<String,Object>> getNotifList(String userId){
+		return notificationMapper.getNotifList(userId);
 	}
 
 	//
 
-	public List<Map<String, Object>> searchNotification(SearchVO searchVO) {
-		return notificationMapper.searchNotification(searchVO);
+	public List<Map<String, Object>> searchNotif(SearchVO searchVO) {
+		return notificationMapper.searchAlert(searchVO);
 	}
 
-	public List<Map<String, Object>> selectNotification(NotificationVO vo) {
-		return notificationMapper.selectNotification(vo);
+	public List<Map<String, Object>> selectNotif(NotifVO vo) {
+		return notificationMapper.selectAlert(vo);
 	}
-	public List<Map<String, Object>> selectNotificationByReceiver(String id) {
-		NotificationVO vo = NotificationVO.builder().receiverId(id).build();
-		return selectNotification(vo);
+	public List<Map<String, Object>> selectNotifByReceiver(String id) {
+		NotifVO vo = NotifVO.builder().receiverId(id).build();
+		return selectNotif(vo);
 	}
 	public int approve(int alarmId){
 		return notificationMapper.approve(alarmId);
@@ -61,19 +61,19 @@ public class NotificationService extends CommonService {
 		Map<String,Object> data = new HashMap<>();
 		data.put("title", title);
 		data.put("content", content);
-		sendNotification(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, "message", data);
 	}
 
 	public void sendMessage(String senderId, String receiverId, String content){
 		Map<String,Object> data = new HashMap<>();
 		data.put("content", content);
-		sendNotification(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, "message", data);
 	}
 
 	public void approvalRequestToAdmin(String senderId, int corpId){
 		Map<String,Object> data = new HashMap<>();
 		data.put("corp_id", corpId);
-		sendNotification(senderId, "admin", "approval", data);
+		notify(senderId, "admin", "approval", data);
 	}
 
 	public void approvalRequestToReps(String senderId, int corpId, int shopId){
@@ -82,7 +82,7 @@ public class NotificationService extends CommonService {
 
 		Map<String,Object> corp = shopCommonService.selectCorpById(corpId);
 		String repsId = corp.get("reps_id").toString();
-		sendNotification(senderId, repsId, "approval", data);
+		notify(senderId, repsId, "approval", data);
 	}
 
 	public void sendChatInvitation(int roomId, String receiverId){
@@ -90,21 +90,21 @@ public class NotificationService extends CommonService {
 	}
 
 	// Private
-	private void sendNotification(String senderId, String receiverId, String alarmTp, Map<String,Object> data){
+	private void notify(String senderId, String receiverId, String alertTp, Map<String,Object> data){
 		data.put("sender_id", senderId);
-		data.put("type", alarmTp);
+		data.put("type", alertTp);
 
 		String content = data.containsKey("content") ? data.get("content").toString() : null;
 
-		NotificationVO vo = NotificationVO.builder()
+		NotifVO vo = NotifVO.builder()
 				.senderId(senderId)
 				.receiverId(receiverId)
-				.noteTp(alarmTp)
+				.noteTp(alertTp)
 				.content(content)
 				.build();
 
 		if(notificationMapper.insertNotification(vo) != 0){
-			notificationEmitter.sendToClient(receiverId, "note", data);
+			notificationEmitter.sendToClient(receiverId, "notif", data);
 		}
 	}
 }

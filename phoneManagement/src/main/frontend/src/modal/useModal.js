@@ -4,7 +4,7 @@ import {closeModal, openModal} from "../store/slices/modalSlice";
 function useModal(){
     const dispatch = useDispatch();
 
-    const handleOpenModal = ({type,props})=>{
+    const handleOpenModal = (type,props)=>{
         dispatch(openModal({type,props}));
     }
 

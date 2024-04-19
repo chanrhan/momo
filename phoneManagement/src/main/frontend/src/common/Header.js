@@ -8,12 +8,16 @@ import {userActions} from "../store/slices/userSlice";
 import useApi from "../utils/useApi";
 import useEmitter from "../utils/useEmitter";
 import {localActions} from "../store/slices/localStorageSlice";
+import useModal from "../modal/useModal";
+import {ModalType} from "../modal/ModalType";
 
 function Header(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const emitter = useEmitter();
-    const {userApi, saleApi, noteApi} = useApi();
+    const modal = useModal();
+
+    const {userApi, saleApi, notifApi} = useApi();
     const {accessToken} = useSelector(state=>state.authReducer);
     const {unreadNote} = useSelector(state=>state.localReducer);
 
@@ -21,14 +25,7 @@ function Header(){
     const [searchList, setSearchList] = useState([]);
 
     useEffect(()=>{
-        emitter.addEventListener('note',(e)=>{
-            // const { data: receivedConnectData } = e;
-            noteApi.countUnreadNotification().then(({status,data})=>{
-                if(status === HttpStatusCode.Ok){
-                    dispatch(localActions.updateUnreadNote(data));
-                }
-            })
-        })
+        emitter.addEventListener('notif',onNotify)
     },[])
 
     useEffect(()=>{
@@ -40,6 +37,18 @@ function Header(){
             })
         }
     }, [accessToken])
+
+    const onNotify = (e)=>{
+        notifApi.countUnreadNotif().then(({status,data})=>{
+            if(status === HttpStatusCode.Ok){
+                console.log("on notify")
+                dispatch(localActions.updateUnreadNotif(data));
+                modal.openModal(ModalType.SNACKBAR.Alert, {
+                    msg: "새로운 알림이 도착했습니다"
+                });
+            }
+        })
+    }
 
     const handleLogout = e=>{
         dispatch(authActions.delAccessToken());
@@ -89,10 +98,7 @@ function Header(){
                     </datalist>
                 </div>
                 <Link to='/notification'>
-                    <button className='btn btn-outline-dark'>알림</button>
-                    {
-                        unreadNote > 0 && <p className='text-danger'>N: {unreadNote}</p>
-                    }
+                    <button className={`btn ${unreadNote > 0 ? 'btn-outline-danger':'btn-outline-dark'}`}>알림 {unreadNote > 0 && unreadNote}</button>
                 </Link>
                 <Link to='/profile'>
                     <button className='btn btn-outline-dark'>프로필</button>

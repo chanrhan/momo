@@ -16,7 +16,7 @@ import FindUsername from "./account/FindUsername";
 import FindPassword from "./account/FindPassword";
 import PreviewHeader from "./preview/PreviewHeader";
 import Profile from "./common/Profile";
-import Notification from "./common/Notification";
+import NotifStorage from "./common/NotifStorage";
 import Signup from "./account/Signup";
 import RoleSelector from "./account/role/RoleSelector";
 import RoleDetail from "./account/role/RoleDetail";
@@ -24,7 +24,8 @@ import TestHeader from "./test/TestHeader";
 import Admin from "./admin/Admin";
 import AdminHeader from "./admin/AdminHeader";
 import ModalContainer from "./modal/ModalContainer";
-import NotificationTest from "./test/NotificationTest";
+import NotifTest from "./test/NotifTest";
+import ModalTest from "./test/ModalTest";
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
         <ModalContainer/>
         <Routes>
             <Route path='/test' element={<TestHeader/>}>
-                <Route path='notify' element={<NotificationTest/>}/>
+                <Route path='notify' element={<NotifTest/>}/>
+                <Route path='modal' element={<ModalTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>
@@ -61,7 +63,7 @@ function App() {
                 </Authorization>
             }>
                 <Route path='/profile' element={<Profile/>}/>
-                <Route path='/notification' element={<Notification/>}/>
+                <Route path='/notification' element={<NotifStorage/>}/>
                 <Route path='/service' element={<Service/>}>
                     <Route path='sale' element={<Sale/>}></Route>
                     <Route path='manage-customer/:category' element={<ManageCustomer/>}></Route>

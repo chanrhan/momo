@@ -25,7 +25,7 @@ public class TestController {
 		log.info("test send map: {}",map);
 		String receiverId = map.get("receiver_id").toString();
 		String content = map.get("content").toString();
-		String noteTp = map.get("note_tp").toString();
+		String noteTp = map.get("notif_tp").toString();
 		if(noteTp.equals("message")){
 			notificationService.sendMessage(senderId, receiverId, content);
 		}else{

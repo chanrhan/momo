@@ -3,7 +3,7 @@ package com.momo.controller;
 import com.momo.service.NotificationService;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
-import com.momo.common.vo.NotificationVO;
+import com.momo.common.vo.NotifVO;
 import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,20 @@ public class NotificationController0 {
 		String username = SecurityContextUtil.getUsername();
 
 		System.out.println("username: "+username);
-		model.addAttribute("list_alarm", notificationService.selectNotificationByReceiver(username));
+		model.addAttribute("list_alarm", notificationService.selectNotifByReceiver(username));
 		return "layout/alarm";
 	}
 
 	@GetMapping("/list/srch")
 	@ResponseBody
 	public ResponseEntity<List<Map<String,Object>>> searchAlarm(@RequestBody SearchVO vo){
-		return ResponseEntityUtil.okOrNotFound(notificationService.searchNotification(vo));
+		return ResponseEntityUtil.okOrNotFound(notificationService.searchNotif(vo));
 	}
 
 	@PostMapping("/count")
 	@ResponseBody
-	public ResponseEntity<Integer> countAlarm(@RequestBody NotificationVO vo){
-		return ResponseEntityUtil.okOrNotFound(notificationService.selectNotification(vo).size());
+	public ResponseEntity<Integer> countAlarm(@RequestBody NotifVO vo){
+		return ResponseEntityUtil.okOrNotFound(notificationService.selectNotif(vo).size());
 	}
 
 	@GetMapping("/read/all")

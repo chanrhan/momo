@@ -10,8 +10,8 @@ function TestHeader(){
                 <Link to='notify'>
                     <button className='btn btn-outline-success ms-1'>알림 테스트</button>
                 </Link>
-                <Link to=''>
-                    <button className='btn btn-outline-success ms-1'>테스트2</button>
+                <Link to='modal'>
+                    <button className='btn btn-outline-success ms-1'>모달창 테스트</button>
                 </Link>
             </div>
             <Outlet/>

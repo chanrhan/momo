@@ -3,10 +3,10 @@ import {createSlice} from "@reduxjs/toolkit";
 export const localSlice = createSlice({
     name: 'local_storage',
     initialState: {
-        unreadNote: 0
+        unreadNotif: 0
     },
     reducers:{
-        updateUnreadNote: (state, action)=>{
+        updateUnreadNotif: (state, action)=>{
             state.unreadNote = action.payload;
         }
     }

@@ -25,7 +25,7 @@ public class UserController {
 	@GetMapping("/common/info")
 	public ResponseEntity<Map<String,Object>> getUserCommonInfo(){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getUserSidebarInfo(username));
+		return ResponseEntity.ok(userService.getUserInfo(username));
 	}
 
 	@GetMapping("/update/nickname")
@@ -55,6 +55,13 @@ public class UserController {
 			return ResponseEntity.internalServerError().build();
 		}
 		return ResponseEntity.ok(userService.updatePfp(UserVO.builder().id(username).pfp(path).build()) != 0);
+	}
+
+	@PostMapping("/update/password")
+	public ResponseEntity<?> updatePassword(@RequestBody UserVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setId(username);
+		return ResponseEntity.ok(userService.updatePassword(vo) != 0);
 	}
 
 	@GetMapping("/list/staff")

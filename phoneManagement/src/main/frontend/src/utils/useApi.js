@@ -4,7 +4,7 @@ import ChatApi from "../api/ChatApi";
 import AccountApi from "../api/AccountApi";
 import SaleApi from "../api/SaleApi";
 import ShopApi from "../api/ShopApi";
-import NoteApi from "../api/NoteApi";
+import NotificationApi from "../api/NotificationApi";
 import TestApi from "../api/TestApi";
 
 function useApi(){
@@ -16,7 +16,7 @@ function useApi(){
         accountApi: AccountApi(accessToken),
         saleApi: SaleApi(accessToken),
         shopApi: ShopApi(accessToken),
-        noteApi: NoteApi(accessToken),
+        notifApi: NotificationApi(accessToken),
         testApi: TestApi(accessToken)
     }
 }

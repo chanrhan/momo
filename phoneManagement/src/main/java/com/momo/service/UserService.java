@@ -112,8 +112,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.searchUserInfo(vo);
 	}
 
-	public Map<String,Object> getUserSidebarInfo(String id){
-		return userMapper.selectUserSidebarInfo(id);
+	public Map<String,Object> getUserInfo(String id){
+		return userMapper.getUserInfo(id);
 	}
 	// Common
 	public Authentication loginDirectly(String username, HttpSession session){
@@ -139,7 +139,7 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	public int updatePassword(UserVO vo){
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
-		return userMapper.updateUser(vo);
+		return userMapper.updatePassword(vo);
 	}
 	public int updateApproval(String id, boolean state){
 		UserVO vo = UserVO.builder().empId(id).approvalSt(state).build();

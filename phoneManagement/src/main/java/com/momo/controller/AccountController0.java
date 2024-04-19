@@ -2,7 +2,7 @@ package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
 import com.momo.common.util.ResponseEntityUtil;
-import com.momo.common.vo.NotificationVO;
+import com.momo.common.vo.NotifVO;
 import com.momo.common.vo.ShopCommonVO;
 import com.momo.common.vo.UserVO;
 import com.momo.service.*;
@@ -198,7 +198,7 @@ public class AccountController0 {
 	@PostMapping("/approve")
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Boolean> approve(@RequestBody NotificationVO vo) {
+	public ResponseEntity<Boolean> approve(@RequestBody NotifVO vo) {
 		String receiverId = vo.getReceiverId();
 		int    result     = userService.updateApproval(receiverId, true);
 		if (result == 0) {

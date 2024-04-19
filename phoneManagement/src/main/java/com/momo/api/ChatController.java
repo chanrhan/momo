@@ -6,8 +6,8 @@ import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.ChatVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.provider.JwtProvider;
-import com.momo.service.ChatService;
 import com.momo.service.NotificationService;
+import com.momo.service.ChatService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +38,9 @@ import java.util.Map;
 public class ChatController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatService         chatService;
-	private final UserService userService;
+	private final UserService         userService;
 	private final NotificationService notificationService;
-	private final JwtProvider jwtProvider;
+	private final JwtProvider         jwtProvider;
 
 	// 웹소켓 Connect 콜백함수
 	@EventListener

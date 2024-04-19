@@ -23,7 +23,7 @@ function ChangeShopModal(props){
     },[])
 
     const close = ()=>{
-        modal.closeModal(ModalType.LAYER.Change_Shop);
+        modal.closeModal(ModalType.MENU.Change_Shop);
     }
 
     const handleCheck = async (e)=>{

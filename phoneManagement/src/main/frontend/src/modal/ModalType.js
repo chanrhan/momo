@@ -1,14 +1,14 @@
 export const ModalType = {
     LAYER: {
         Change_Nickname: 'ChangeNickname',
-        Change_Shop: 'ChangeShop',
-        Add_Shop: 'AddShop'
+        Add_Shop: 'AddShop',
+        Update_Password: 'UpdatePassword'
     },
     MENU: {
-
+        Change_Shop: 'ChangeShop',
     },
     SNACKBAR: {
-
+        Alert: 'Alert'
     },
     TOAST: {
 

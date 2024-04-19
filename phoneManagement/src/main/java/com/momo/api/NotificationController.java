@@ -13,24 +13,24 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/note")
+@RequestMapping("/api/v1/notif")
 public class NotificationController {
 	private final NotificationService notificationService;
 
 	@GetMapping("/list")
-	public ResponseEntity<List<Map<String,Object>>> getNotificationList(){
+	public ResponseEntity<List<Map<String,Object>>> getNotifList(){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(notificationService.getNotificationList(username));
+		return ResponseEntity.ok(notificationService.getNotifList(username));
 	}
 
 	@GetMapping("/count/unread")
-	public ResponseEntity<Integer> countUnreadNotification(){
+	public ResponseEntity<Integer> countUnreadNotif(){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(notificationService.countUnreadNotification(username));
+		return ResponseEntity.ok(notificationService.countUnreadNotif(username));
 	}
 
 	@GetMapping("/read/all")
-	public ResponseEntity<?> readAllNotification(){
+	public ResponseEntity<?> readAll(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(notificationService.readAll(username) != 0);
 	}
@@ -41,7 +41,7 @@ public class NotificationController {
 		log.info("send map: {}",map);
 		String receiverId = map.get("receiver_id").toString();
 		String content = map.get("content").toString();
-		String noteTp = map.get("note_tp").toString();
+		String noteTp = map.get("alert_tp").toString();
 		if(noteTp.equals("message")){
 			notificationService.sendMessage(senderId, receiverId, content);
 		}else{

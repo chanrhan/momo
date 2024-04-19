@@ -43,15 +43,42 @@
 
 .modal-snackbar{
     position: fixed;
-    width: 30%;
-    height: 10%;
+    width: 25%;
+    height: 5%;
     top: 0;
     left: 0;
     z-index: 99;
-    border: 1px solid gray;
-    border-radius: 0.3rem;
-    background-color: #fff;
+    /*border: 1px solid gray;*/
+    border-radius: 1rem;
+    background-color: #84c2d3;
     overflow: hidden;
+    animation: fade-In 0.3s;
+}
+
+.modal-fade-out{
+    animation: fade-Out 0.5s;
+}
+
+@keyframes fade-In {
+    from{
+        opacity: 0;
+        margin-top: 25px;
+    }
+    to{
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+@keyframes fade-Out {
+    from{
+        opacity: 1;
+        margin-top: 0;
+    }
+    to{
+        opacity: 0;
+        margin-top: 25px;
+    }
 }
 
 .modal-toast{
@@ -80,7 +107,7 @@
     overflow: hidden;
 }
 
-.modal-shadow-main{
+.modal-layer{
     width: 60%;
     height: 70%;
     /*max-width: 450px;*/

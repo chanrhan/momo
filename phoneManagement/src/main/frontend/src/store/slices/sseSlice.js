@@ -14,6 +14,11 @@ export const sseSlice = createSlice({
                 const {type, callback} = action.payload;
                 state.sse.addEventListener(type, callback);
             }
+        },
+        removeEventListener: (state,action)=>{
+            if(state.sse !== null){
+
+            }
         }
     }
 });

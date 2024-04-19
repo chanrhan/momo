@@ -25,7 +25,7 @@ function Sidebar(){
 
 
     const openModal = (type, props)=>{
-        modal.openModal({type, props})
+        modal.openModal(type, props)
     }
 
     return (
@@ -48,7 +48,7 @@ function Sidebar(){
                 }
             </div>
             <div className='border border-dark p-2' onClick={(e)=>{
-                openModal(ModalType.LAYER.Change_Shop,{
+                openModal(ModalType.MENU.Change_Shop,{
                     e
                 });
             }}>
