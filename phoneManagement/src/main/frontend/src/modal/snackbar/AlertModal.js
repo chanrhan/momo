@@ -1,5 +1,5 @@
 import {SnackbarModal} from "../SnackbarModal";
-import useModal from "../useModal";
+import useModal from "../../utils/useModal";
 import {ModalType} from "../ModalType";
 import {useEffect} from "react";
 

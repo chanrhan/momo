@@ -7,15 +7,15 @@ const modalSlice = createSlice({
     initialState,
     reducers: {
         openModal: (state,action)=>{
-            const {type, props} = action.payload;
-            if(state.some(value=>(type === value.type))){
+            const {modalName, type, props} = action.payload;
+            if(state.some(value=>(modalName === value.modalName))){
                 return state;
             }
-            return state.concat({type, props})
+            return state.concat({modalName, type, props})
         },
         closeModal: (state, action)=>{
-            const type = action.payload;
-            return state.filter(value=>(value.type !== type));
+            const modalName = action.payload;
+            return state.filter(value=>(value.modalName !== modalName));
         }
     }
 });

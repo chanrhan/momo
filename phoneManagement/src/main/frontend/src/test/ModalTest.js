@@ -1,4 +1,4 @@
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 
 function ModalTest(){
@@ -8,9 +8,16 @@ function ModalTest(){
         modal.openModal(ModalType.SNACKBAR.Alert)
     }
 
+    const openMenuModal = (e)=>{
+        modal.openModal(ModalType.MENU.Test, {
+            e
+        });
+    }
+
     return (
         <div className='mt-4'>
             <button className='btn btn-outline-secondary' onClick={openNotifModal}>SNACKBAR</button>
+            <button className='btn btn-outline-secondary ms-3' onClick={openMenuModal}>Menu Modal Test</button>
         </div>
     )
 }

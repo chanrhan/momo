@@ -1,15 +1,17 @@
 import {useDispatch} from "react-redux";
 import {closeModal, openModal} from "../store/slices/modalSlice";
+import {ModalType} from "../modal/ModalType";
 
 function useModal(){
     const dispatch = useDispatch();
 
-    const handleOpenModal = (type,props)=>{
-        dispatch(openModal({type,props}));
+    const handleOpenModal = (modalName, props)=>{
+        const type = ModalType.getType(modalName);
+        dispatch(openModal({modalName, type, props}));
     }
 
-    const handleCloseModal = (type)=>{
-        dispatch(closeModal(type));
+    const handleCloseModal = (modalName)=>{
+        dispatch(closeModal(modalName));
     }
 
     return {

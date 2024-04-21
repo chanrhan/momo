@@ -5,7 +5,7 @@ import {ObjectUtils} from "../utils/objectUtil";
 import {validateUtils} from "../utils/validateUtils";
 import {useSelector} from "react-redux";
 import {addShop} from "../api/ShopApi";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 import {HttpStatusCode} from "axios";
 import useApi from "../utils/useApi";
@@ -74,7 +74,7 @@ function AddShopModal(props){
     }
 
     return (
-        <LayerModal>
+        <LayerModal modalRef={props.modalRef}>
             <div className='mt-5 d-flex justify-content-center'>
                 <div className='border border-1 d-flex flex-column align-items-center' style={{width: '70%'}}>
                     <div className='mt-2'>

@@ -1,5 +1,5 @@
 import {LayerModal} from "../modal/LayerModal";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 import useValidation from "../utils/useValidation";
 import ValidationError from "../error/ValidationError";

@@ -8,7 +8,7 @@ import {userActions} from "../store/slices/userSlice";
 import useApi from "../utils/useApi";
 import useEmitter from "../utils/useEmitter";
 import {localActions} from "../store/slices/localStorageSlice";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 
 function Header(){

@@ -55,7 +55,7 @@ public class SaleService extends CommonService {
 			return null;
 		}
 		vo.setUserId(userId);
-		System.out.println("get sale: "+vo);
+//		System.out.println("get sale: "+vo);
 		return saleMapper.getSaleList(vo);
 	}
 

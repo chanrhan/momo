@@ -14,7 +14,6 @@ public class PhoneManagementApplication {
 	public static void main(String[] args) throws SchedulerException {
 		SpringApplication.run(PhoneManagementApplication.class, args);
 	}
-
 }
 
 

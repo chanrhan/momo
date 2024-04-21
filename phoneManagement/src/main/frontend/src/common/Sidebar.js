@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 import useApi from "../utils/useApi";
 

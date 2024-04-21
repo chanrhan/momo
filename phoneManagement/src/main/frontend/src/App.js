@@ -26,6 +26,7 @@ import AdminHeader from "./admin/AdminHeader";
 import ModalContainer from "./modal/ModalContainer";
 import NotifTest from "./test/NotifTest";
 import ModalTest from "./test/ModalTest";
+import RefTest from "./test/RefTest";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path='/test' element={<TestHeader/>}>
                 <Route path='notify' element={<NotifTest/>}/>
                 <Route path='modal' element={<ModalTest/>}/>
+                <Route path='ref' element={<RefTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>

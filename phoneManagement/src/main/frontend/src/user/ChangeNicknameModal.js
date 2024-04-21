@@ -5,7 +5,7 @@ import {getUserInfo} from "../api/AccountApi";
 import {userActions} from "../store/slices/userSlice";
 import {LayerModal} from "../modal/LayerModal";
 import {ObjectUtils} from "../utils/objectUtil";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import {ModalType} from "../modal/ModalType";
 import {HttpStatusCode} from "axios";
 import useApi from "../utils/useApi";

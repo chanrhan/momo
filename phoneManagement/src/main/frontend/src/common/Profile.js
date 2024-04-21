@@ -3,7 +3,7 @@ import useApi from "../utils/useApi";
 import {useSelector} from "react-redux";
 import useUserInfo from "../utils/useUserInfo";
 import { CiLock } from "react-icons/ci";
-import useModal from "../modal/useModal";
+import useModal from "../utils/useModal";
 import ModalTest from "../test/ModalTest";
 import {ModalType} from "../modal/ModalType";
 

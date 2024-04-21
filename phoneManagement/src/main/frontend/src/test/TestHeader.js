@@ -13,6 +13,9 @@ function TestHeader(){
                 <Link to='modal'>
                     <button className='btn btn-outline-success ms-1'>모달창 테스트</button>
                 </Link>
+                <Link to='ref'>
+                    <button className='btn btn-outline-success ms-1'>Ref 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

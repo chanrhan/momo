@@ -1,8 +1,8 @@
-export const LayerModal = ({children, width, height})=>{
+export const LayerModal = ({modalRef, children, width, height})=>{
 
     return (
         <div className='openModal modal-shadow-bg'>
-            <div className='modal-layer' style={{width: width, height: height}}>
+            <div ref={modalRef}  className='modal-layer' style={{width: width, height: height}}>
                 {children}
             </div>
         </div>
