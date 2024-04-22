@@ -5,7 +5,9 @@ function ValidationError({error}){
         return null;
     }
     return (
-        <p className='text-danger'>{error}</p>
+        <>
+            <p className='text-danger'>{error}</p>
+        </>
     )
 }
 

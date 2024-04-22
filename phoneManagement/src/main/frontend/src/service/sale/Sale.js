@@ -1,8 +1,12 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import useApi from "../../utils/useApi";
+import useUserInfo from "../../utils/useUserInfo";
+import useModal from "../../utils/useModal";
+import {ModalType} from "../../modal/ModalType";
 
 function Sale() {
+    const modal = useModal();
     const {saleApi} = useApi();
 
     const [column, setColumn] = useState([
@@ -19,6 +23,8 @@ function Sale() {
     });
 
     const [deleteList, setDeleteList] = useState([]);
+
+    const {user} = useUserInfo();
 
     const updateSale = async () => {
         await saleApi.getSaleList({
@@ -37,7 +43,7 @@ function Sale() {
 
     useEffect(() => {
         updateSale();
-    }, [keyword, keydate, order]);
+    }, [user, keyword, keydate, order]);
 
     const handleInputKeyword = (e) => {
         setKeyword(e.target.value);
@@ -71,11 +77,23 @@ function Sale() {
 
     }
 
+    const addSale = ()=>{
+        modal.openModal(ModalType.LAYER.Add_Sale, {
+            user: user
+        });
+    }
+
+    const showDetail = (saleId)=>{
+        modal.openModal(ModalType.LAYER.Sale_Detail, {
+            sale_id: saleId
+        })
+    }
+
 
     return (
         <div>
             <p className='debug-page'>Sale Page</p>
-            <h3 className='d-flex ms-2'>판매일보</h3>
+            <h3 className='d-flex ms-2'>{user.shop_nm} 판매일보</h3>
             <div className='d-flex flex-row'>
                 <h5><b>총 {saleList.length}개</b></h5>
                 <div className='d-flex flex-row justify-content-center  ms-3'>
@@ -85,7 +103,7 @@ function Sale() {
                 <div className='d-flex flex-row ms-3'>
                     <input type="text" placeholder='이름, 전화번호, 식별번호로 검색할 수 있습니다' onChange={handleInputKeyword}/>
                     <button className='btn btn-outline-secondary ms-3' onClick={deleteAll}>선택삭제</button>
-                    <button className='btn btn-outline-secondary ms-4'>추가하기</button>
+                    <button className='btn btn-outline-secondary ms-4' onClick={addSale}>추가하기</button>
                     <button className='btn btn-outline-secondary ms-2'>정렬</button>
                 </div>
             </div>
@@ -104,8 +122,10 @@ function Sale() {
                     </thead>
                     <tbody>
                     {
-                        saleList.map(function (sale, index) {
-                            return <tr key={index}>
+                        saleList && saleList.map(function (sale, index) {
+                            return <tr key={sale.sale_id} onClick={()=>{
+                                showDetail(sale.sale_id)
+                            }}>
                                 <td><input type='checkbox' name='sale_select_box' sale_id={sale.sale_id}/></td>
                                 { column[0] ?<td>{sale.cust_nm}</td> : null}
                                 { column[1] ?<td>{sale.cust_tel}</td> : null}

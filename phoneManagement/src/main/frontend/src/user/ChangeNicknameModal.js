@@ -56,7 +56,7 @@ function ChangeNicknameModal({user}){
     }, [nicknameList])
 
     useEffect(()=>{
-        console.log(`check: ${check}`)
+        // console.log(`check: ${check}`)
         if(check === 4){
             setNickname(customInput);
             setBlockCustomInput(false);
@@ -79,7 +79,9 @@ function ChangeNicknameModal({user}){
         await userApi.updateNickname(nickname).then(({status,data})=>{
             if(status === 200){
                 updateUserInfo();
-                alert("호칭이 변경되었습니다")
+                modal.openModal(ModalType.SNACKBAR.Alert, {
+                    msg: '호칭이 변경되었습니다'
+                })
             }
         })
 

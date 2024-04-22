@@ -6,6 +6,7 @@ function ChatLog({chat}){
 
     const [isMine, setIsMine] = useState((userInfo.id === chat.user_id));
 
+
     if(chat.server_send){
         return (
             <div className='chat chat-server'>

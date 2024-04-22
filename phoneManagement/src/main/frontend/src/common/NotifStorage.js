@@ -37,7 +37,7 @@ function NotifStorage(){
 
 function AlertItem({alert}){
     return (
-        <div className='border border-1 d-flex flex-column justify-content-center'>
+        <div className={`border border-1 d-flex flex-column justify-content-center ${alert.read_st && 'text-secondary'}`}>
             <p>{alert.sender_nm}</p>
             <p>{alert.content}</p>
             <p>{alert.send_dt}</p>

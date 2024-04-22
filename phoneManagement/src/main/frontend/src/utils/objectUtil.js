@@ -26,11 +26,16 @@ export const ObjectUtils = {
         })
         return str;
     },
-    toggleOf
+    toggleOf,
+    varToString
 }
 
 function toggleOf(arr, index){
     for(let i in arr){
         arr[i] = (i == index);
     }
+}
+
+function varToString(_var){
+    return Object.keys(_var)[0];
 }

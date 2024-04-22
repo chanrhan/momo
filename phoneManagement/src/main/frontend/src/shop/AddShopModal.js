@@ -74,7 +74,7 @@ function AddShopModal(props){
     }
 
     return (
-        <LayerModal modalRef={props.modalRef}>
+        <LayerModal>
             <div className='mt-5 d-flex justify-content-center'>
                 <div className='border border-1 d-flex flex-column align-items-center' style={{width: '70%'}}>
                     <div className='mt-2'>

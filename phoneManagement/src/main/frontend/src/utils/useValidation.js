@@ -27,11 +27,11 @@ function useValidation(initialState) {
     const handleInput = (e) => {
         const key = e.target.name;
         const value = e.target.value;
-        // if (ObjectUtils.isEmpty(value)) {
-        //     handleError(key, null);
-        // } else {
-        // }
-        validate(key, value)
+        if (ObjectUtils.isEmpty(value)) {
+            handleError(key, null);
+        }else{
+            validate(key, value)
+        }
 
         setInput(prev => ({
             ...prev,
@@ -110,7 +110,7 @@ function useValidation(initialState) {
         let result = true;
         // console.table(input)
         for (const key in input) {
-            console.log(`val: k(${key}) v(${input[key]})`)
+            // console.log(`val: k(${key}) v(${input[key]})`)
             if (!validate(key, input[key])) {
                 result = false;
             }
@@ -127,17 +127,19 @@ function useValidation(initialState) {
     }
 
     const validate = (key, value) => {
+        // console.log(`${key} ${value}`)
         if (!errorInfo[key]) {
             return true;
         }
-        console.table(errorInfo[key])
+        // console.table(errorInfo[key])
         const {name, regex, msg, required} = errorInfo[key];
+        // console.log(`validate: ${name} ${regex} ${msg} ${required}`)
         if(required !== false){
-            console.log(`name: ${name}, regex: ${regex}, msg: ${msg}, req: ${required}`)
             if (ObjectUtils.isEmpty(value)) {
                 handleError(key, `'${name}'은(는) 필수값입니다`);
             } else {
-                if(ObjectUtils.isEmpty(regex) || regex.test(value)){
+                // console.log(`${value} ${regex} ${ObjectUtils.isEmpty(regex)} test: ${regex.test(value)}`)
+                if(regex === null || regex === undefined || regex.test(value)){
                     handleError(key, null);
                     return true;
                 } else {

@@ -66,7 +66,8 @@ export const ChatRoomDetail = forwardRef((props, ref)=>{
     }
 
     const onSend = (chatLogs)=>{
-        // console.log(`new chat log: `)
+        console.log(`new chat log: ${chatLogs[0]}`)
+        console.table(chatLogs[0])
         // console.table(chatLogs)
         setChatLog([...chatLog, chatLogs[0]]);
     }

@@ -2,10 +2,12 @@ import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useApi from "../../utils/useApi";
 import {ObjectUtils} from "../../utils/objectUtil";
+import useUserInfo from "../../utils/useUserInfo";
 
 function ManageCustomer() {
     const {saleApi} = useApi();
     const {category} = useParams();
+    const {user} = useUserInfo();
     const [saleList, setSaleList] = useState([]);
 
     const [order, setOrder] = useState({
@@ -29,7 +31,7 @@ function ManageCustomer() {
 
     useEffect(() => {
         updateSaleWithCategory();
-    }, [order, category])
+    }, [user, order, category])
 
     const orderSale = (e) => {
         e.target.asc = !e.target.asc;
@@ -42,6 +44,7 @@ function ManageCustomer() {
     return (
         <div>
             <p className='debug-page'>{`Manage Customer:[${category}] Page`}</p>
+            <h3>{user.shop_nm} 고객 관리</h3>
             <div className='d-flex flex-row justify-content-center'>
                 <Link to='/service/manage-customer/card'>
                     <button className='btn btn-outline-primary ms-2'>카드</button>
