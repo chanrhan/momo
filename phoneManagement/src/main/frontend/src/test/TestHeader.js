@@ -16,6 +16,9 @@ function TestHeader(){
                 <Link to='ref'>
                     <button className='btn btn-outline-success ms-1'>Ref 테스트</button>
                 </Link>
+                <Link to='multipart'>
+                    <button className='btn btn-outline-success ms-1'>Multipart 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

@@ -11,7 +11,7 @@ function AlertModal(props){
     }
 
     return (
-        <SnackbarModal x='800px' y='200px' close={close} timeout='3000'>
+        <SnackbarModal x='50%' y='60%' close={close} timeout='3000'>
             <div className='mt-3 d-flex justify-content-center align-items-center'>
                 <h5>{props.msg}</h5>
             </div>

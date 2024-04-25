@@ -62,7 +62,7 @@ function Header(){
 
     const search = async (e)=>{
         if(e.keyCode === 13){
-            await saleApi.getSaleList({
+            await saleApi.fetchSale({
                 keyword: keywordInput
             }).then(({status,data})=>{
                 if(status === 200){

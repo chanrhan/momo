@@ -5,7 +5,9 @@ function ModalTest(){
     const modal = useModal();
 
     const openNotifModal = ()=>{
-        modal.openModal(ModalType.SNACKBAR.Alert)
+        modal.openModal(ModalType.SNACKBAR.Alert, {
+            msg: '테스트 스낵바입니다'
+        })
     }
 
     const openMenuModal = (e)=>{

@@ -1,5 +1,5 @@
 import button from "bootstrap/js/src/button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import ValidationError from "../../error/ValidationError";
 
@@ -8,12 +8,24 @@ function ChoiceButtonBox({name, items = [], valid, className, btn_class = 'prima
 
     const [value, setValue] = useState(0);
 
+    useEffect(()=>{
+        if(valid != null && valid.setInput != null){
+            valid.setInput(prev=>({
+                ...prev,
+                [name]: 0
+            }))
+        }
+    },[])
+
+
     const selectedStyle = (v)=>{
         return v === Number(value) ? `btn-${btn_class}` : `btn-outline-${btn_class}`;
     }
 
     const handleChange = e=>{
+        // console.log(`e inde: ${e.target.getAttribute('index')}`)
         setValue(e.target.getAttribute('index'));
+        e.target.value = e.target.getAttribute('index');
         valid.handleInput(e);
     }
 

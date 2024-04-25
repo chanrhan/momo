@@ -2,6 +2,7 @@ package com.momo.api;
 
 import com.momo.auth.RoleAuth;
 import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.ShopCommonVO;
@@ -32,9 +33,9 @@ public class SaleController {
 
 	private final ImageService imageService;
 
-	@PostMapping("/list")
-	public ResponseEntity<List<Map<String,Object>>> getSaleList(@RequestBody SaleVO vo){
-		return ResponseEntity.ok(saleService.getSaleList(vo));
+	@PostMapping("/fetch")
+	public ResponseEntity<List<Map<String,Object>>> fetchSale(@RequestBody SaleVO vo){
+		return ResponseEntity.ok(saleService.fetchSale(vo));
 	}
 
 	@PostMapping("/delete")
@@ -104,12 +105,22 @@ public class SaleController {
 		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(id));
 	}
 
-	@PostMapping("/create")
+	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Boolean> createSale(@RequestPart(value = "sale") SaleVO vo,
-							  @RequestPart(value = "spec") MultipartFile file) {
-		vo.setSpec(imageService.upload("spec", file));
-		return ResponseEntityUtil.okOrNotModified(saleService.insertSale(vo));
+												@RequestPart(value = "spec", required = false) MultipartFile spec,
+											  @RequestPart(value = "docs", required = false) MultipartFile docs) {
+		if(spec != null){
+			vo.setSpec(imageService.upload("sale/spec", spec));
+		}
+
+		if(docs != null){
+			vo.setSaleDocs(imageService.upload("sale/docs", docs));
+		}
+
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.insertSale(vo) != 0);
 	}
 
 	@PostMapping("/update")

@@ -8,7 +8,7 @@ function useValidation(initialState) {
     const errorInfo = {...commonErrorInfo};
     for (const i in initialState) {
         const prop = initialState[i];
-        init[prop.key] = null;
+        init[prop.key] = (prop.value) ? prop.value : null;
         if(prop.name){
             errorInfo[prop.key] = {
                 name: prop.name,

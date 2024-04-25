@@ -16,7 +16,7 @@ function ManageCustomer() {
     });
 
     const updateSaleWithCategory = async () => {
-        await saleApi.getSaleListWithCategory(category, {
+        await saleApi.fetchSaleByCategory(category, {
             order: order.column,
             asc: order.asc
         }).then(({status,data})=>{

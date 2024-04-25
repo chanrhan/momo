@@ -49,14 +49,11 @@ public class SaleService extends CommonService {
 		return selectSale(vo);
 	}
 
-	public List<Map<String,Object>> getSaleList(SaleVO vo){
+	public List<Map<String,Object>> fetchSale(SaleVO vo){
 		String userId = SecurityContextUtil.getUsername();
-		if(userId == null){
-			return null;
-		}
 		vo.setUserId(userId);
-//		System.out.println("get sale: "+vo);
-		return saleMapper.getSaleList(vo);
+
+		return saleMapper.fetchSale(vo);
 	}
 
 	public int deleteSales(int[] deletes){
@@ -71,10 +68,10 @@ public class SaleService extends CommonService {
 		String userId = SecurityContextUtil.getUsername();
 		vo.setUserId(userId);
 		return switch (category) {
-			case "card" -> saleMapper.getSaleListWithCard(vo);
-			case "green" -> saleMapper.getSaleListWithGreenPhone(vo);
-			case "comb" -> saleMapper.getSaleListWithComb(vo);
-			case "support" -> saleMapper.getSaleListWithSupport(vo);
+			case "card" -> saleMapper.fetchCardSale(vo);
+			case "green" -> saleMapper.fetchGreenPhoneSale(vo);
+			case "comb" -> saleMapper.fetchCombSale(vo);
+			case "support" -> saleMapper.fetchSupportSale(vo);
 			default -> null;
 		};
 	}

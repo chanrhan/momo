@@ -4,6 +4,7 @@ import useApi from "../../utils/useApi";
 import useUserInfo from "../../utils/useUserInfo";
 import useModal from "../../utils/useModal";
 import {ModalType} from "../../modal/ModalType";
+import useValidation from "../../utils/useValidation";
 
 function Sale() {
     const modal = useModal();
@@ -14,51 +15,45 @@ function Sale() {
     ])
 
     const [saleList, setSaleList] = useState([]);
-    const [keyword, setKeyword] = useState('');
-    const [keydate, setKeydate] = useState('');
 
-    const [order, setOrder] = useState({
-        column: 'actv_dt',
-        asc: false
-    });
+    const valid = useValidation([
+        {
+            key: 'keyword'
+        },{
+            key: 'actv_dt'
+        },{
+            key: 'order',
+            value: 'actv_dt'
+        },{
+            key: 'asc',
+            value: false
+        }
+    ]);
 
-    const [deleteList, setDeleteList] = useState([]);
 
     const {user} = useUserInfo();
 
     const updateSale = async () => {
-        await saleApi.getSaleList({
-            keyword: keyword,
-            actv_dt: keydate,
-            order: order.column,
-            asc: order.asc
-        }).then(({status,data})=>{
+        await saleApi.fetchSale(valid.input).then(({status,data})=>{
             if (status === 200) {
                 // console.log(response)
                 setSaleList(data)
             }
         })
-
     }
 
     useEffect(() => {
+        // console.table(valid.input)
         updateSale();
-    }, [user, keyword, keydate, order]);
-
-    const handleInputKeyword = (e) => {
-        setKeyword(e.target.value);
-    }
-
-    const handleInputKeydate = (e) => {
-        setKeydate(e.target.value);
-    }
+    }, [user, valid.input]);
 
     const orderSale = (e)=>{
         e.target.asc = !e.target.asc;
-        setOrder({
-            column: e.target.getAttribute('name'),
-            asc: e.target.asc
-        })
+        valid.setInput(prev=>({
+            ...prev,
+            'order': e.target.getAttribute('name'),
+            'asc': e.target.asc
+        }))
     }
 
     const deleteAll = async ()=>{
@@ -98,10 +93,10 @@ function Sale() {
                 <h5><b>총 {saleList.length}개</b></h5>
                 <div className='d-flex flex-row justify-content-center  ms-3'>
                     <p>개통년월</p>
-                    <input type="date" className='ms-1' onChange={handleInputKeydate}/>
+                    <input type="date" className='ms-1' name='actv_dt' onChange={valid.handleInput}/>
                 </div>
                 <div className='d-flex flex-row ms-3'>
-                    <input type="text" placeholder='이름, 전화번호, 식별번호로 검색할 수 있습니다' onChange={handleInputKeyword}/>
+                    <input type="text" placeholder='이름, 전화번호, 식별번호로 검색할 수 있습니다' name='keyword' onChange={valid.handleInput}/>
                     <button className='btn btn-outline-secondary ms-3' onClick={deleteAll}>선택삭제</button>
                     <button className='btn btn-outline-secondary ms-4' onClick={addSale}>추가하기</button>
                     <button className='btn btn-outline-secondary ms-2'>정렬</button>

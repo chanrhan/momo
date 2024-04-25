@@ -44,7 +44,7 @@ public class FileServiceUtil {
 	}
 
 	public static String getFileSavePath(String dir){
-		return "C:" + LOCAL_STORAGE_PATH + dir + '/';
+		return LOCAL_STORAGE_PATH + dir + '/';
 	}
 
 	public static UrlResource getFileResource(String dir, String path) throws MalformedURLException {
@@ -52,7 +52,7 @@ public class FileServiceUtil {
 	}
 
 	public static String getSaveFilePath(String fileName){
-		return "C:" + LOCAL_STORAGE_PATH + fileName;
+		return LOCAL_STORAGE_PATH + fileName;
 	}
 
 	// 대충 리사이징한 이미지 비율만큼 용량도 줄어듬

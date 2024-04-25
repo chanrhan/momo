@@ -6,28 +6,67 @@ import useValidation from "../../utils/useValidation";
 import {SALE_INITIAL_STATE} from "./SALE_INITIAL_STATE";
 import useModal from "../../utils/useModal";
 import {ModalType} from "../../modal/ModalType";
+import useApi from "../../utils/useApi";
+import {ObjectUtils} from "../../utils/objectUtil";
 
 function AddSaleModal(props){
     const modal = useModal();
     const valid = useValidation(SALE_INITIAL_STATE);
+    const {saleApi} = useApi();
+
+    const [file, setFile] = useState({
+        spec: null,
+        docs: null
+    });
+
+    const handleFileInput = e=>{
+        setFile(prev=>({
+            ...prev,
+            [e.target.name]: e.target.files
+        }))
+    }
 
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Add_Sale);
     }
 
-    const submit = ()=>{
+    const submit = async ()=>{
         if(valid.validateAll()){
+            const formData = new FormData();
 
+            if(!ObjectUtils.isEmpty(file.spec)){
+                const specFiles = Array.prototype.slice.call(file.spec);
+                specFiles.forEach((file)=>{
+                    formData.append('spec',file);
+                })
+            }
+
+            if(!ObjectUtils.isEmpty(file.docs)){
+                const saleDocs = Array.prototype.slice.call(file.docs);
+                saleDocs.forEach(file=>{
+                    formData.append('docs', file);
+                })
+            }
+
+            console.table(valid.input)
+            formData.append('sale', new Blob([JSON.stringify(valid.input)], {
+                type: 'application/json'
+            }))
+
+            await saleApi.addSale(formData).then(({status,data})=>{
+                modal.openModal(ModalType.SNACKBAR.Alert, {
+                    msg: '판매일보가 추가되었습니다'
+                })
+            })
         }
     }
-
 
     return (
         <LayerModal>
             <div className='d-flex flex-column align-items-center scrollbar mt-3'>
                 <h4>통신사</h4>
                 <div className='mt-2'>
-                    <ChoiceButtonBox name='provider' items={['SKT','KT','LG']} btn_class='success' valid={valid}/>
+                    <ChoiceButtonBox name='provider' items={['SKT', 'KT', 'LG']} btn_class='success' valid={valid}/>
                 </div>
                 <div className='d-flex flex-row align-items-center mt-3'>
                     <div className='d-flex flex-row align-items-baseline'>
@@ -82,7 +121,8 @@ function AddSaleModal(props){
                     </div>
                     <div className='d-flex flex-column mt-2'>
                         <p>할부</p>
-                        <ChoiceButtonBox items={['일시납', '12개월', '18개월','24개월','30개월','36개월','48개월']} btn_class='secondary' name='ct_istm'
+                        <ChoiceButtonBox items={['일시납', '12개월', '18개월', '24개월', '30개월', '36개월', '48개월']}
+                                         btn_class='secondary' name='ct_istm'
                                          valid={valid}/>
                     </div>
                     <div className='d-flex flex-row mt-3'>
@@ -124,6 +164,16 @@ function AddSaleModal(props){
                 <div className='d-flex flex-row mt-2'>
                     <InputBox type='checkbox' subject='중고폰'/>
                     <InputBox type='checkbox' subject='부가서비스'/>
+                </div>
+                <div className='d-flex flex-row justify-content-center align-items-center'>
+                    <div className='d-flex flex-row align-items-baseline'>
+                        <p>파일</p>
+                        <input className='ms-2' type="file" name='docs' onChange={handleFileInput}/>
+                    </div>
+                    <div className='d-flex flex-row align-items-baseline'>
+                        <p>견적서</p>
+                        <input className='ms-2' type="file" name='spec' onChange={handleFileInput}/>
+                    </div>
                 </div>
                 <div className='d-flex flex-row justify-content-center mt-3 mb-5'>
                     <button className='btn btn-outline-primary' onClick={close}>취소</button>

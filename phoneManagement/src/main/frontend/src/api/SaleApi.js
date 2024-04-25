@@ -1,10 +1,19 @@
-import {requestApiWithAccessToken} from "./ApiCommon";
+import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
 import {ObjectUtils} from "../utils/objectUtil";
 
 function SaleApi(accessToken){
     return {
-        getSaleList : async (data)=>{
-            const response = await requestApiWithAccessToken.post(`/api/v1/sale/list`,data, accessToken);
+        addSale: async (data)=>{
+            const option = {
+                headers:{
+                    'X-ACCESS-TOKEN': accessToken,
+                    'Content-Type': "multipart/form-data"
+                }
+            }
+            return await requestAPI.post('/api/v1/sale/add',data,option);
+        },
+        fetchSale : async (data)=>{
+            const response = await requestApiWithAccessToken.post(`/api/v1/sale/fetch`,data, accessToken);
             if(response.status === 200){
                 if(!ObjectUtils.isEmpty(response.data)){
                     return response;
@@ -13,7 +22,7 @@ function SaleApi(accessToken){
             response.data = [];
             return response;
         },
-        getSaleListWithCategory : async (category, data)=>{
+        fetchSaleByCategory : async (category, data)=>{
             if(data.order === 'state'){
                 switch (category){
                     case 'card':

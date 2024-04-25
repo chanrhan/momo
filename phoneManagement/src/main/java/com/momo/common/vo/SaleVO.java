@@ -30,6 +30,7 @@ public class SaleVO extends CommonQueryVO {
 	private String custNm; // 고객 이름
 	private String custGd; // 고객 성별 (Gender)
 	private String custTel; // 고객 전화번호
+	private String custGtel; // 고객 보호자 전화번호
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 
 	// 날씨
@@ -42,10 +43,11 @@ public class SaleVO extends CommonQueryVO {
 	private String    phMd; // 핸드폰 모델명 (Model)
 	private String phColor; //
 	private String  phStor; // 핸드폰 용량 (Storage)
-	private String  istm; // 할부 (Installment)
-	private String  actvDiv; // 개통 구분 (Division)
-	private String  actvTp; // 개통 유형 (Type)
-	private String  actvPlan; // 개통 요금제
+	private String ctIstm; // 무선 할부 (Installment)
+	private String ctActvDiv; // 무선 개통 구분 (Division)
+	private String ctActvTp; // 무선 개통 유형 (Type)
+	private String ctActvPlan; // 무선 개통 요금제
+	private String ctDecPlan; // 무선 하향 요금제
 	private String  movePlan; // 변경 요금제
 	private Integer ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
 
@@ -59,11 +61,11 @@ public class SaleVO extends CommonQueryVO {
 	private Boolean secSt; // 세컨 연결 여부
 
 	// 유선
-	private String  wtTp; // 유선 유형 (Wire Telephone)
-	private String  wtDiv; // 유선 구분
+	private String wtActvTp; // 유선 유형 (Wire Telephone)
+	private String wtActvDiv; // 유선 구분
 	private Integer wtCms; // 유선 판매 수수료
-	private String  netActvPlan; // 인터넷 개통 요금제 (Internet)
-	private String  netDecPlan; // 인터넷 하향 요금제 (Decrement)
+	private String inetActvPlan; // 인터넷 개통 요금제 (Internet)
+	private String inetDecPlan; // 인터넷 하향 요금제 (Decrement)
 	private String  tvActvPlan; // TV 개통 요금제
 	private String  tvDecPlan; // TV 하향 요금제
 
@@ -79,7 +81,7 @@ public class SaleVO extends CommonQueryVO {
 
 	// 체크박스
 	private Boolean friend; // 지인
-	private Boolean exsvc; // 부가 서비스
+	private Integer exsvcId; // 부가 서비스
 	private Boolean combMove; // 결합 변경 예정 (Change)
 	private Boolean combSt; // 결합 변경 여부
 	private Boolean card; // 카드 예정
@@ -99,13 +101,14 @@ public class SaleVO extends CommonQueryVO {
 
 	// 기타 관리
 	private String  spec; // 견적서
+	private String saleDocs;
 //	@DateTimeFormat(pattern = "yyyy-MM-dd")
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
 	private LocalDate  wtExprDt; // 유선 만료 일자 (Wire Telephone Expire Date)
 	private Boolean nonDisc; // 결합중 요금할인 빠짐 (None Discount)
 	private Boolean rsvSt; // 문자 발송 여부
 	private String  actvTime; // 개통 시간
-	private String  etc; // 비고
+	private String saleMemo; // 비고
 
 	// 예약 발송
 	private List<MsgCommonVO> msgRsvList;

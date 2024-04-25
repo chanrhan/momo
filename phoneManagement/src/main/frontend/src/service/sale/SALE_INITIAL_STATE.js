@@ -33,7 +33,8 @@ export const SALE_INITIAL_STATE = [
         key: 'cust_gtel',
         name: '보호자 전화번호',
         regex: telRegex,
-        msg: '전화번호 형식을 올바르게 입력해 주세요'
+        msg: '전화번호 형식을 올바르게 입력해 주세요',
+        required: false
     },
     {
         key: 'cust_cd',
@@ -80,12 +81,6 @@ export const SALE_INITIAL_STATE = [
     },
     {
         key: 'wt_cms'
-    },
-    {
-        key: 'file'
-    },
-    {
-        key: 'spec'
     },
     {
         key: 'sale_memo'

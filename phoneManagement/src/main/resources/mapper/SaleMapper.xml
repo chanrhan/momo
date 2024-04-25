@@ -3,710 +3,229 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="getSaleListWithCard" parameterType="com.momo.common.vo.SaleVO">
-        SET @shopid := (
-                           SELECT shop_id
-                           FROM tb_emp
-                           WHERE emp_id = #{userId}
-                       );
-        SELECT  card_st,
-                actv_dt,
-                cust_nm,
-                cust_tel,
-                cust_cd,
-                card_div,
-                shop_id,
-                seller_id,
-        (
-        SELECT ac.name
-        FROM tb_account ac
-        WHERE ac.id = seller_id
-        ) AS seller_nm
-        FROM tb_sale
-        WHERE shop_id = @shopid
-          AND card = true
-        <if test="order != null and !order.equals('')">
-            ORDER BY ${order} ${asc}
-        </if>
-    </select>
-
-    <select id="getSaleListWithGreenPhone" parameterType="com.momo.common.vo.SaleVO">
-        SET @shopid := (
-        SELECT shop_id
-        FROM tb_emp
-        WHERE emp_id = #{userId}
-        );
-
-        SELECT sale_id,
-               shop_id,
-               actv_dt,
-               cust_nm,
-               cust_tel,
-                cust_cd,
-            green_st,
-                green_md,
-               ct_cms,
-        (
-        SELECT ac.name
-        FROM tb_account ac
-        WHERE ac.id = seller_id
-        ) AS seller_nm
-        FROM tb_sale
-        WHERE shop_id = @shopid
-        AND green_md is not null AND green_md != ''
-        <if test="order != null and !order.equals('')">
-            ORDER BY ${order} ${asc}
-        </if>
-    </select>
-
-    <select id="getSaleListWithComb" parameterType="com.momo.common.vo.SaleVO">
-        SET @shopid := (
-        SELECT shop_id
-        FROM tb_emp
-        WHERE emp_id = #{userId}
-        );
-
-        SELECT  sale_id,
-                shop_id,
-                actv_dt,
-                cust_nm,
-                cust_tel,
-                cust_cd,
-                comb_st,
-                comb_nm,
-                (
-                SELECT ac.name
-                FROM tb_account ac
-                WHERE ac.id = seller_id
-                ) AS seller_nm
-        FROM tb_sale
-        WHERE shop_id = @shopid
-        AND comb_move = true
-        <if test="order != null and !order.equals('')">
-            ORDER BY ${order} ${asc}
-        </if>
-    </select>
-
-    <select id="getSaleListWithSupport" parameterType="com.momo.common.vo.SaleVO">
-        SET @shopid := (
-        SELECT shop_id
-        FROM tb_emp
-        WHERE emp_id = #{userId}
-        );
-
-        SELECT sale_id,
-                shop_id,
-                actv_dt,
-                cust_nm,
-                cust_tel,
-                cust_cd,
-                sup_st,
-                tot_sup,
-        (
-        SELECT ac.name
-        FROM tb_account ac
-        WHERE ac.id = seller_id
-        ) AS seller_nm
-        FROM tb_sale
-        WHERE shop_id = @shopid
-        AND sup_div is not null AND  sup_div != ''
-        <if test="order != null and !order.equals('')">
-            ORDER BY ${order} ${asc}
-        </if>
-    </select>
-
-    <select id="getSaleList" parameterType="com.momo.common.vo.SaleVO">
-        SET @shopid := (
-                           SELECT shop_id
-                           FROM tb_emp
-                           WHERE emp_id = #{userId}
-                       );
-
-        SELECT  cust_nm,
-                cust_tel,
-                cust_cd,
-                ph_md,
-                sale_id,
-                shop_id,
-                seller_id,
-                (
-                    SELECT ac.name
-                    FROM tb_account ac
-                    WHERE ac.id = seller_id
-                ) AS seller_nm
-        FROM tb_sale
-        WHERE shop_id = @shopid
-        <if test="keyword != null and !keyword.equals('')">
-            AND (
-                cust_nm LIKE '%${keyword}%' OR
-                cust_tel LIKE '%${keyword}%' OR
-                cust_cd LIKE '%${keyword}%'
-            )
-        </if>
-        <if test="actvDt != null and !actvDt.equals('')">
-            AND YEAR(actv_dt) = YEAR(#{actvDt})
-            AND MONTH(actv_dt) = MONTH(#{actvDt})
-        </if>
-        <if test="order != null and !order.equals('')">
-            ORDER BY ${order} ${asc}
-        </if>
-    </select>
-
-    <select id="getSpecFilePath" resultType="java.lang.String">
-        select
-            spec
-        from
-            tb_sale
-        where
-            sale_id=#{id}
-    </select>
-
-    <select id="isDuplicatedTel" resultType="java.lang.Boolean">
+    <select id="isDuplicatedTel" parameterType="com.momo.common.vo.SaleVO">
         select IF(count(*) > 0, true, false)
         from tb_sale
-        where
-            shop_id = #{shopId} and
-            cust_tel=#{custTel} and
-            MONTH(actv_dt) = MONTH(#{actvDt}) and
-            YEAR(actv_dt) = YEAR(#{actvDt})
+        where shop_id=#{shopId} and
+              cust_tel=#{custTel} and
+              MONTH(actv_dt) = MONTH(#{actvDt}) and
+              YEAR(actv_dt) = YEAR(#{actvDt})
+    </select>
+
+    <select id="fetchSupportSale" parameterType="com.momo.common.vo.SaleVO">
+        select s.*,
+                sp.sup_div,
+                sp.sup_amount,
+                sp.sup_st
+        from tb_sale_support sp
+        left outer join tb_sale s on s.sale_id=sp.sale_id
+        where s.shop_id=#{shopId} and
+        <if test="saleId != null and !saleId.equals('')">
+            s.sale_id=#{saleId} and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        <if test="sellerId != null and !sellerId.equals('')">
+            s.seller_id=#{sellerId} and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit} ${offset}
+        </if>
+    </select>
+
+    <select id="fetchCombSale" parameterType="com.momo.common.vo.SaleVO">
+        select s.*,
+                scb.comb_id,
+                scb.comb_order_tp,
+                scb.comb_st,
+                scb.comb_doc
+        from tb_sale_comb scb
+        left outer join tb_sale s on s.sale_id=scb.sale_id
+        where s.shop_id=#{shopId} and
+        <if test="saleId != null and !saleId.equals('')">
+            s.sale_id=#{saleId} and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        <if test="sellerId != null and !sellerId.equals('')">
+            s.seller_id=#{sellerId} and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit} ${offset}
+        </if>
+    </select>
+
+    <select id="fetchGreenPhoneSale" parameterType="com.momo.common.vo.SaleVO">
+        select s.*,
+                sg.ph_md,
+                sg.green_st,
+        from tb_sale_green sg
+        left outer join tb_sale s on s.sale_id=sg.sale_id
+        where s.shop_id=#{shopId} and
+        <if test="saleId != null and !saleId.equals('')">
+            s.sale_id=#{saleId} and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        <if test="sellerId != null and !sellerId.equals('')">
+            s.seller_id=#{sellerId} and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit} ${offset}
+        </if>
+    </select>
+
+    <select id="fetchCardSale" parameterType="com.momo.common.vo.SaleVO">
+        select s.*,
+               sc.card_id,
+               sc.card_tp,
+               sc.card_st
+        from tb_sale_card sc
+        left outer join tb_sale s on s.sale_id=sc.sale_id
+        where s.shop_id=#{shopId} and
+        <if test="saleId != null and !saleId.equals('')">
+            s.sale_id=#{saleId} and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        <if test="sellerId != null and !sellerId.equals('')">
+            s.seller_id=#{sellerId} and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit} ${offset}
+        </if>
+    </select>
+
+    <select id="fetchSale" parameterType="com.momo.common.vo.SaleVO">
+        select *
+        from tb_sale s
+        where shop_id=#{shopId} and
+        <if test="saleId != null and !saleId.equals('')">
+            s.sale_id=#{saleId} and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                s.cust_nm like '%${keyword}%' or
+                s.cust_tel like '%${keyword}%' or
+                s.cust_gtel like '%${keyword}%' or
+                s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        <if test="sellerId != null and !sellerId.equals('')">
+            s.seller_id=#{sellerId} and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit} ${offset}
+        </if>
     </select>
 
     <update id="updateSale" parameterType="com.momo.common.vo.SaleVO">
-        update
-        tb_sale
-        set
-        <if test='custNm != null and !custNm.equals("")'>
-            cust_nm=#{custNm},
-        </if>
-
-        <if test='custTel != null and !custTel.equals("")'>
-            cust_tel=#{custTel},
-        </if>
-
-        <if test='custCd != null and !custCd.equals("")'>
-            cust_cd=#{custCd},
-        </if>
-
-        <if test='custGd != null and !custGd.equals("")'>
-            cust_gd=#{custGd},
-        </if>
-        <if test='provider != null and !provider.equals("")'>
-            provider=#{provider},
-        </if>
-
-        <if test='actvDt != null and !actvDt.equals("")'>
-            actv_dt=#{actvDt},
-        </if>
-
-        <if test='phMd != null and !phMd.equals("")'>
-            ph_md=#{phMd},
-        </if>
-
-        <if test='phStor != null and !phStor.equals("")'>
-            ph_stor=#{phStor},
-        </if>
-
-        <if test='istm != null and !istm.equals("")'>
-            istm=#{istm},
-        </if>
-
-        <if test='actvDiv != null and !actvDiv.equals("")'>
-            actv_div=#{actvDiv},
-        </if>
-
-        <if test='actvTp != null and !actvTp.equals("")'>
-            actv_tp=#{actvTp},
-        </if>
-
-        <if test='actvPlan != null and !actvPlan.equals("")'>
-            actv_plan=#{actvPlan},
-        </if>
-        <if test='movePlan != null and !movePlan.equals("")'>
-            move_plan=#{movePlan},
-        </if>
-
-        <if test='ctCms != null'>
-            ct_cms=#{ctCms},
-        </if>
-        <if test='greenMd != null and !greenMd.equals("")'>
-            green_md=#{greenMd},
-        </if>
-        <if test='greenRet != null'>
-            green_ret=#{greenRet},
-        </if>
-        <if test='secMd != null and !secMd.equals("")'>
-            sec_md=#{secMd},
-        </if>
-
-        <if test='secCms != null'>
-            sec_cms=#{secCms},
-        </if>
-        <if test='secSt != null'>
-            sec_st=#{secSt},
-        </if>
-        <if test='wtTp != null and !wtTp.equals("")'>
-            wt_tp=#{wtTp},
-        </if>
-
-        <if test='wtDiv != null and !wtDiv.equals("")'>
-            wt_div=#{wtDiv},
-        </if>
-
-        <if test='wtCms != null'>
-            wt_cms=#{wtCms},
-        </if>
-
-        <if test='netActvPlan != null and !netActvPlan.equals("")'>
-            net_actv_plan=#{netActvPlan},
-        </if>
-
-        <if test='netDecPlan != null and !netDecPlan.equals("")'>
-            net_dec_plan=#{netDecPlan},
-        </if>
-
-        <if test='tvActvPlan != null and !tvActvPlan.equals("")'>
-            tv_actv_plan=#{tvActvPlan},
-        </if>
-
-        <if test='tvDecPlan != null and !tvDecPlan.equals("")'>
-            tv_dec_plan=#{tvDecPlan},
-        </if>
-
-        <if test='addItem != null and !addItem.equals("")'>
-            add_item=#{addItem},
-        </if>
-
-        <if test='addPay != null and !addPay.equals("")'>
-            add_pay=#{addPay},
-        </if>
-
-        <if test='addDt != null and !addDt.equals("")'>
-            add_dt=#{addDt},
-        </if>
-
-        <if test='supDiv != null and !supDiv.equals("")'>
-            sup_div=#{supDiv},
-        </if>
-
-        <if test='supPay != null and !supPay.equals("")'>
-            sup_pay=#{supPay},
-        </if>
-        <if test='friend != null'>
-            friend=#{friend},
-        </if>
-        <if test='exsvc != null'>
-            exsvc=#{exsvc},
-        </if>
-        <if test='combMove != null'>
-            comb_move=#{combMove},
-        </if>
-        <if test='combSt != null'>
-            comb_st=#{combSt},
-        </if>
-        <if test='card != null'>
-            card=#{card},
-        </if>
-        <if test='cardSt != null'>
-            card_st=#{cardSt},
-        </if>
-        <if test='cardDiv != null'>
-            card_div=#{cardDiv},
-        </if>
-
-        <if test='totAddPay != null'>
-            tot_add_pay=#{totAddPay},
-        </if>
-
-        <if test='totRb != null'>
-            tot_rb=#{totRb},
-        </if>
-
-        <if test='totSup != null and !totSup.equals("")'>
-            tot_sup=#{totSup},
-        </if>
-
-        <if test='defPc != null'>
-            def_pc=#{defPc},
-        </if>
-
-        <if test='sellerCms != null'>
-            seller_cms=#{sellerCms},
-        </if>
-
-        <if test='ctPt != null'>
-            ct_pt=#{ctPt},
-        </if>
-
-        <if test='wtPt != null'>
-            wt_pt=#{wtPt},
-        </if>
-
-        <if test='totPt != null'>
-            tot_pt=#{totPt},
-        </if>
-
-        <if test='sellerId != null and !sellerId.equals("")'>
-            seller_id=#{sellerId},
-        </if>
-
-        <if test='spec != null and !spec.equals("")'>
-            spec=#{spec},
-        </if>
-
-        <if test='wtExprDt != null and !wtExprDt.equals("")'>
-            wt_expr_dt=#{wtExprDt},
-        </if>
-        <if test='nonDisc != null'>
-            non_disc=#{nonDisc},
-        </if>
-        <if test='rsvSt != null'>
-            rsv_st=#{rsvSt},
-        </if>
-
-
-        <if test='actvTime != null and !actvTime.equals("")'>
-            actv_time=#{actvTime},
-        </if>
-
-        <if test='etc != null and !etc.equals("")'>
-            etc=#{etc},
-        </if>
-
-        sale_id=#{saleId}
-        where
-        sale_id=#{saleId}
-
+        update tb_sale
+        set cust_nm = #{custNm},
+            cust_tel = #{custTel},
+            cust_gtel = #{custGtel},
+            cust_cd = #{custCd},
+            cust_gd = #{custGd},
+            provider = #{provider},
+            ph_md = #{phMd},
+            ct_istm = #{ctIstm},
+            ct_actv_div = #{ctActvDiv},
+            ct_actv_tp = #{ctActvTp},
+            ct_actv_plan = #{ctActvPlan},
+            ct_dec_plan = #{ctDecPlan},
+            ct_cms = #{ctCms},
+            sec_md = #{secMd},
+            wt_actv_tp = #{wtActvTp},
+            wt_actv_div = #{wtActvDiv},
+            wt_cms = #{wtCms},
+            inet_actv_plan = #{inetActvPlan},
+            inet_dec_plan = #{inetDecPlan},
+            tv_actv_plan = #{tvActvPlan},
+            tv_dec_plan = #{tvDecPlan},
+            exsvc_id = #{exsvcId},
+            seller_id = #{sellerId},
+            spec = #{spec},
+            sale_docs = #{saleDocs},
+            sale_memo = #{saleMemo}
+        where sale_id=#{saleId}
+        and shop_id=#{shopId}
     </update>
 
-    <select id="searchSale" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
-        with tb as (
-            select
-                count(cust_tel) as dup_tel,
-                cust_tel as tel
-            from
-                tb_sale
-            group by
-                cust_tel
-        )
-
-        select
-            tb2.*,
-            tb.dup_tel
-        from
-            (
-                select
-                sl.*,
-                sh.shop_nm as shop_nm,
-                ac.name as seller_nm,
-                sh.corp_id,
-                cp.corp_bp_no
-                from
-                tb_sale sl
-                left outer join tb_shop sh on sl.shop_id = sh.shop_id
-                left outer join tb_account ac on ac.id = sl.seller_id
-                left outer join tb_corp cp on cp.corp_id = sh.corp_id
-            ) tb2
-        left outer join tb on tb.tel=tb2.cust_tel
-        where
-        <if test='target != null and !target.equals("")'>
-            ${target} is not null and
-            ${target} != '' and
-            ${target} != '0' and
-        </if>
-            ${andSelect} and
-            ${orSearch}
-        ${prop}
-    </select>
-
-    <select id="selectSale" parameterType="com.momo.common.vo.SaleVO" resultType="java.util.Map">
-        with tb as (
-        select
-        count(cust_tel) as dup_tel,
-        cust_tel as tel
-        from
-        tb_sale
-        group by
-        cust_tel
-        )
-
-        select
-        tb2.*,
-        tb.dup_tel
-        from
-        (
-        select
-        sl.*,
-        sh.shop_nm as shop_nm,
-        ac.name as seller_nm,
-        sh.corp_id,
-        cp.corp_bp_no
-        from
-        tb_sale sl
-        left outer join tb_shop sh on sl.shop_id = sh.shop_id
-        left outer join tb_account ac on ac.id = sl.seller_id
-        left outer join tb_corp cp on cp.corp_id = sh.corp_id
-        ) tb2
-        left outer join tb on tb.tel=tb2.cust_tel
-        where
-        <if test='dupTel != null'>
-            dup_tel=#{dupTel} and
-        </if>
-        <if test='saleId != null'>
-            sale_id=#{saleId} and
-        </if>
-        <if test='shopId != null and shopId != 0'>
-            shop_id=#{shopId} and
-        </if>
-        <if test='corpId != null'>
-            corp_id=#{corpId} and
-        </if>
-        <if test='corpBpNo != null and !corpBpNo.equals("")'>
-            corp_bp_no=#{corpBpNo} and
-        </if>
-        <if test='custNm != null and !custNm.equals("")'>
-            cust_nm=#{custNm} and
-        </if>
-
-        <if test='custTel != null and !custTel.equals("")'>
-            cust_tel=#{custTel} and
-        </if>
-
-        <if test='custCd != null and !custCd.equals("")'>
-            cust_cd=#{custCd} and
-        </if>
-
-        <if test='custGd != null and !custGd.equals("")'>
-            cust_gd=#{custGd} and
-        </if>
-        <if test='provider != null and !provider.equals("")'>
-            provider=#{provider} and
-        </if>
-        <if test='actvDt != null and !actvDt.equals("")'>
-            actv_dt=#{actvDt} and
-        </if>
-
-        <if test='phMd != null and !phMd.equals("")'>
-            ph_md=#{phMd} and
-        </if>
-
-        <if test='phStor != null and !phStor.equals("")'>
-            ph_stor=#{phStor} and
-        </if>
-
-        <if test='istm != null and !istm.equals("")'>
-            istm=#{istm} and
-        </if>
-
-        <if test='actvDiv != null and !actvDiv.equals("")'>
-            actv_div=#{actvDiv} and
-        </if>
-
-        <if test='actvTp != null and !actvTp.equals("")'>
-            actv_tp=#{actvTp} and
-        </if>
-
-        <if test='actvPlan != null and !actvPlan.equals("")'>
-            actv_plan=#{actvPlan} and
-        </if>
-        <if test='movePlan != null and !movePlan.equals("")'>
-            move_plan=#{movePlan} and
-        </if>
-
-        <if test='ctCms != null'>
-            ct_cms=#{ctCms} and
-        </if>
-        <if test='greenMd != null and !greenMd.equals("")'>
-            green_md=#{greenMd} and
-        </if>
-        <if test='greenRet != null'>
-            green_ret=#{greenRet} and
-        </if>
-
-        <if test='secMd != null and !secMd.equals("")'>
-            sec_md=#{secMd} and
-        </if>
-
-        <if test='secCms != null'>
-            sec_cms=#{secCms} and
-        </if>
-
-        <if test='secSt != secSt'>
-            sec_st=#{secSt} and
-        </if>
-
-        <if test='wtTp != null and !wtTp.equals("")'>
-            wt_tp=#{wtTp} and
-        </if>
-
-        <if test='wtDiv != null and !wtDiv.equals("")'>
-            wt_div=#{wtDiv} and
-        </if>
-
-        <if test='wtCms != null'>
-            wt_cms=#{wtCms} and
-        </if>
-
-        <if test='netActvPlan != null and !netActvPlan.equals("")'>
-            net_actv_plan=#{netActvPlan} and
-        </if>
-
-        <if test='netDecPlan != null and !netDecPlan.equals("")'>
-            net_dec_plan=#{netDecPlan} and
-        </if>
-
-        <if test='tvActvPlan != null and !tvActvPlan.equals("")'>
-            tv_actv_plan=#{tvActvPlan} and
-        </if>
-
-        <if test='tvDecPlan != null and !tvDecPlan.equals("")'>
-            tv_dec_plan=#{tvDecPlan} and
-        </if>
-
-        <if test='addItem != null and !addItem.equals("")'>
-            add_item=#{addItem} and
-        </if>
-
-        <if test='addPay != null and !addPay.equals("")'>
-            add_pay=#{addPay} and
-        </if>
-
-        <if test='addDt != null and !addDt.equals("")'>
-            add_dt=#{addDt} and
-        </if>
-
-        <if test='supDiv != null and !supDiv.equals("")'>
-            sup_div=#{supDiv} and
-        </if>
-
-        <if test='supPay != null and !supPay.equals("")'>
-            sup_pay=#{supPay} and
-        </if>
-
-        <if test='friend != null'>
-            friend=#{friend} and
-        </if>
-        <if test='exsvc != null'>
-            exsvc=#{exsvc} and
-        </if>
-        <if test='combMove != null'>
-            comb_move=#{combMove} and
-        </if>
-        <if test='combSt != null'>
-            comb_st=#{combSt} and
-        </if>
-        <if test='card != null'>
-            card=#{card} and
-        </if>
-        <if test='cardSt != null'>
-            card_st=#{cardSt} and
-        </if>
-        <if test='cardDiv != null'>
-            card_div=#{cardDiv} and
-        </if>
-        <if test='totAddPay != null'>
-            tot_add_pay=#{totAddPay} and
-        </if>
-
-        <if test='totRb != null'>
-            tot_rb=#{totRb} and
-        </if>
-
-        <if test='totSup != null and !totSup.equals("")'>
-            tot_sup=#{totSup} and
-        </if>
-
-        <if test='defPc != null'>
-            def_pc=#{defPc} and
-        </if>
-
-        <if test='sellerCms != null'>
-            seller_cms=#{sellerCms} and
-        </if>
-
-        <if test='ctPt != null'>
-            ct_pt=#{ctPt} and
-        </if>
-
-        <if test='wtPt != null'>
-            wt_pt=#{wtPt} and
-        </if>
-
-        <if test='totPt != null'>
-            tot_pt=#{totPt} and
-        </if>
-
-        <if test='sellerId != null and !sellerId.equals("")'>
-            seller_id=#{sellerId} and
-        </if>
-
-        <if test='spec != null and !spec.equals("")'>
-            spec=#{spec} and
-        </if>
-
-        <if test='wtExprDt != null and !wtExprDt.equals("")'>
-            wt_expr_dt=#{wtExprDt} and
-        </if>
-        <if test='nonDisc != null'>
-            non_disc=#{nonDisc} and
-        </if>
-        <if test='rsvSt != null'>
-            rsv_st=#{rsvSt} and
-        </if>
-
-        <if test='actvTime != null and !actvTime.equals("")'>
-            actv_time=#{actvTime} and
-        </if>
-
-        <if test='etc != null and !etc.equals("")'>
-            etc=#{etc} and
-        </if>
-        <if test='target != null and !target.equals("")'>
-            ${target} is not null and
-            ${target} != '' and
-            ${target} != '0' and
-        </if>
-        1 = 1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
-    </select>
+    <delete id="deleteSale">
+        delete from tb_sale
+        where sale_id=#{saleId}
+        and shop_id=#{shopId}
+    </delete>
 
     <insert id="insertSale" parameterType="com.momo.common.vo.SaleVO">
-        insert into
-            tb_sale
-        (sale_id, shop_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt, ph_md, ph_stor, istm, actv_div, actv_tp, actv_plan,
-         move_plan, ct_cms, green_md, green_ret, sec_md, sec_cms, wt_tp, wt_div, wt_cms, net_actv_plan, net_dec_plan, tv_actv_plan,
-         tv_dec_plan, add_item, add_pay, add_dt, sup_div, sup_pay, friend, exsvc, comb_move, card, card_div, tot_add_pay, tot_rb, tot_sup, def_pc, seller_cms, ct_pt, wt_pt, tot_pt, seller_id,
-         spec, wt_expr_dt, non_disc, actv_time, etc)
-        values
-            ((
-                select
-                    *
-                from
-                    (
-                        select
-                            max(sale_id) + 1
-                        from
-                            tb_sale
-                        where
-                            shop_id=#{shopId}
-                    ) as sub
-                    for update
-             ),#{shopId},#{custNm},#{custTel},#{custCd},#{custGd},#{provider},#{actvDt},#{phMd},#{phStor},#{istm},#{actvDiv},#{actvTp},#{actvPlan},
-             #{movePlan},#{ctCms},#{greenMd},#{greenRet},#{secMd},#{secCms},#{wtTp},#{wtDiv},#{wtCms},#{netActvPlan},#{netDecPlan},#{tvActvPlan},
-             #{tvDecPlan},#{addItem},#{addPay},#{addDt},#{supDiv},#{supPay},#{friend},#{exsvc},#{combMove},#{card},#{cardDiv},#{totAddPay},#{totRb},#{totSup},#{defPc},#{sellerCms},#{ctPt},
-             #{wtPt},#{totPt},#{sellerId},#{spec},#{wtExprDt},#{nonDisc},#{actvTime},#{etc})
-    </insert>
+        set @shopId := (
+            select shop_id
+            from tb_emp
+            where emp_id= #{userId}
+            );
 
-    <delete id="deleteSale">
-        delete from
-            tb_sale
-        where
-            sale_id=#{id}
-    </delete>
+        insert into tb_sale
+        (shop_id, sale_id, cust_nm, cust_tel, cust_gtel, cust_cd, cust_gd,
+         provider, ph_md, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan,
+         ct_dec_plan, ct_cms, sec_md, wt_actv_tp, wt_actv_div, wt_cms,
+         inet_actv_plan, inet_dec_plan, tv_actv_plan, tv_dec_plan, exsvc_id,
+         seller_id, spec, sale_docs, sale_memo)
+        values (@shopId,(
+                select *
+                from (
+                         select IFNULL(max(sale_id), 0)+1
+                         from    tb_sale
+                         where   shop_id=@shopId
+                     ) as sub_sale
+            ), #{custNm},#{custTel},#{custGtel},#{custCd},#{custGd},
+                #{provider},#{phMd},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
+                #{ctDecPlan},#{ctCms},#{secMd},#{wtActvTp},#{wtActvDiv},#{wtCms},
+                #{inetActvPlan},#{inetDecPlan},#{tvActvPlan},#{tvDecPlan},#{exsvcId}
+               ,#{sellerId},#{spec},#{saleDocs},#{saleMemo})
+    </insert>
 
 </mapper>

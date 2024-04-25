@@ -51,8 +51,9 @@
     left: 0;
     z-index: 99;
     /*border: 1px solid gray;*/
+    box-shadow: 0 14px 18px rgba(0,0,0,0.15);
     border-radius: 1rem;
-    background-color: #84c2d3;
+    background-color: #ffffff;
     overflow: hidden;
     animation: fade-In 0.3s;
 }
