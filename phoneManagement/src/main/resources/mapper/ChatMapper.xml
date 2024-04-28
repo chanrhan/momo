@@ -5,10 +5,8 @@
 <mapper namespace="com.momo.mapper.ChatMapper">
     <!--    ChatRoom Info-->
     <select id="createChatRoom" parameterType="com.momo.common.vo.ChatVO" resultType="java.lang.Integer">
-        SET @last_room_id := (
-                                 SELECT IFNULL(MAX(room_id), 0)
-                                 FROM tb_chatroom_info
-                             );
+        SET @last_room_id := (SELECT IFNULL(MAX(room_id), 0)
+                              FROM tb_chatroom_info);
 
         INSERT INTO tb_chatroom_info
             (room_id, room_nm)
@@ -16,11 +14,9 @@
 
         INSERT INTO tb_chatroom_user
             (room_id, user_id, master, last_read)
-        VALUES (@last_room_id + 1, #{userId}, TRUE, (
-                                                        SELECT IFNULL(MAX(chat_id), 0)
-                                                        FROM tb_chat_log
-                                                        WHERE room_id = #{roomId}
-                                                    ));
+        VALUES (@last_room_id + 1, #{userId}, TRUE, (SELECT IFNULL(MAX(chat_id), 0)
+                                                     FROM tb_chat_log
+                                                     WHERE room_id = #{roomId}));
 
         SELECT @last_room_id + 1;
     </select>
@@ -43,7 +39,7 @@
         room_id=#{roomId}
     </update>
 
-    <select id="selectChatRoom" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
+    <select id="getChatRoom">
         select distinct ci.*,
         cl.content as last_content,
         cl.send_dt as last_send_dt,
@@ -67,18 +63,22 @@
         tb_chat_log.server_send = false
         )
         where
-        <if test='userId != null and !userId.equals("")'>
-            cm.user_id=#{userId} and
-        </if>
-        <if test='roomId != null'>
-            cm.room_id=#{roomId} and
+        cm.user_id=#{userId} and
+        <if test='roomNm != null and !roomNm.equals("")'>
+            ci.room_nm=#{roomNm} and
         </if>
         1=1
         order by last_send_dt desc, regi_dt desc
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
+        <!--        <if test='limit != null and offset != null'>-->
+        <!--            limit ${offset} ${limit}-->
+        <!--        </if>-->
 
+    </select>
+
+    <select id="getChatRoomDetail">
+        select *
+        from tb_chatroom_info
+        where room_id = #{roomId}
     </select>
 
     <select id="getMaxChatRoomId" resultType="java.lang.Integer">
@@ -98,22 +98,18 @@
     <insert id="insertChatRoomUser" parameterType="com.momo.common.vo.ChatVO">
         INSERT INTO tb_chatroom_user
             (room_id, user_id, master, last_read)
-        VALUES (#{roomId}, #{userId}, #{master}, (
-                                                     SELECT IFNULL(MAX(chat_id), 0)
-                                                     FROM tb_chat_log
-                                                     WHERE room_id = #{roomId}
-                                                 ));
+        VALUES (#{roomId}, #{userId}, #{master}, (SELECT IFNULL(MAX(chat_id), 0)
+                                                  FROM tb_chat_log
+                                                  WHERE room_id = #{roomId}));
 
         UPDATE tb_chatroom_info
-        SET room_hc = (
-                          SELECT COUNT(*)
-                          FROM tb_chatroom_user
-                          WHERE tb_chatroom_user.room_id = #{roomId}
-                      )
+        SET room_hc = (SELECT COUNT(*)
+                       FROM tb_chatroom_user
+                       WHERE tb_chatroom_user.room_id = #{roomId})
         WHERE room_id = #{roomId}
     </insert>
 
-    <select id="selectChatRoomUser" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
+    <select id="getChatRoomUser">
         with tb as (
         select cm.user_id as user_id,
         cm.room_id,
@@ -126,50 +122,34 @@
 
         select *
         from tb
-        where
-        <if test='roomId != null'>
-            room_id = #{roomId} and
-        </if>
-        <if test='userId != null and !userId.equals("")'>
-            user_id = #{userId} and
-        </if>
-        <!--        <if test='userNm != null and !userNm.equals("")'>-->
-        <!--            user_nm = #{userNm} and-->
+        where room_id = #{roomId}
+        <!--        <if test='order != null and !order.equals("")'>-->
+        <!--            order by-->
+        <!--            ${order} ${asc}-->
         <!--        </if>-->
-        1=1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
+        <!--        <if test='limit != null and offset != null'>-->
+        <!--            limit ${offset} ${limit}-->
+        <!--        </if>-->
     </select>
 
-    <select id="readChatRoom" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
-        SET @last_read := (
-                              SELECT last_read
-                              FROM tb_chatroom_user
-                              WHERE room_id = #{roomId}
-                                AND user_id = #{userId}
-                          );
+    <select id="readChatRoom">
+        SET @last_read := (SELECT last_read
+                           FROM tb_chatroom_user
+                           WHERE room_id = #{roomId}
+                             AND user_id = #{userId});
 
         UPDATE tb_chatroom_user
-        SET last_read = (
-                            SELECT IFNULL(MAX(chat_id), 0)
-                            FROM tb_chat_log
-                            WHERE tb_chat_log.room_id = #{roomId}
-                        )
+        SET last_read = (SELECT IFNULL(MAX(chat_id), 0)
+                         FROM tb_chat_log
+                         WHERE tb_chat_log.room_id = #{roomId})
         WHERE room_id = #{roomId}
           AND user_id = #{userId};
 
         SELECT chat_id,
-               curr_hc - (
-                             SELECT COUNT(*)
-                             FROM tb_chatroom_user cm
-                             WHERE cm.room_id = #{roomId}
-                               AND last_read >= chat_id
-                         ) AS non_read
+               curr_hc - (SELECT COUNT(*)
+                          FROM tb_chatroom_user cm
+                          WHERE cm.room_id = #{roomId}
+                            AND last_read >= chat_id) AS non_read
         FROM tb_chat_log
         WHERE room_id = #{roomId}
           AND chat_id > @last_read
@@ -183,55 +163,45 @@
     </select>
 
     <select id="isEqualsToLastRead" parameterType="com.momo.common.vo.ChatVO" resultType="java.lang.Boolean">
-        SELECT EQUALS(last_read, (
-                                     SELECT MAX(chat_id)
-                                     FROM tb_chat_log
-                                     WHERE tb_chat_log.room_id = #{roomId}
-                                 ))
+        SELECT EQUALS(last_read, (SELECT MAX(chat_id)
+                                  FROM tb_chat_log
+                                  WHERE tb_chat_log.room_id = #{roomId}))
         FROM tb_chatroom_user
         WHERE room_id = #{roomId}
           AND user_id = #{userId}
     </select>
 
     <!--    Chatroom Note-->
-    <select id="insertNote" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
-        SET @last_note_id := (
-                                 SELECT IFNULL(MAX(note_id), 0)
-                                 FROM tb_chatroom_note
-                                 WHERE room_id = #{roomId}
-                             );
+    <select id="insertAnnouncement" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
+        SET @last_ann_id := (SELECT IFNULL(MAX(ann_id), 0)
+                              FROM tb_chatroom_announcement
+                              WHERE room_id = #{roomId});
 
-        INSERT INTO tb_chatroom_note
-            (room_id, note_id, chat_id, user_id, content, file)
-        VALUES (#{roomId}, @last_note_id + 1, #{chatId}, #{userId}, #{content}, #{file});
+        INSERT INTO tb_chatroom_announcement
+            (room_id, ann_id, chat_id, user_id, content, file)
+        VALUES (#{roomId}, @last_ann_id + 1, #{chatId}, #{userId}, #{content}, #{file});
 
         SELECT *,
-               (
-                   SELECT name
-                   FROM tb_account
-                   WHERE id = #{userId}
-               ) AS user_nm
-        FROM tb_chatroom_note
+               (SELECT name
+                FROM tb_account
+                WHERE id = #{userId}) AS user_nm
+        FROM tb_chatroom_announcement
         WHERE room_id = #{roomId}
-          AND note_id = @last_note_id + 1
+          AND ann_id = @last_ann_id + 1
     </select>
 
-    <select id="selectNote" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
-        SET @last_note_id := (
-                                 SELECT IFNULL(MAX(note_id), 0)
-                                 FROM tb_chatroom_note
-                                 WHERE room_id = #{roomId}
-                             );
+    <select id="getAnnouncement">
+        SET @last_note_id := (SELECT IFNULL(MAX(ann_id), 0)
+                              FROM tb_chatroom_announcement
+                              WHERE room_id = #{roomId});
 
         SELECT *,
-               (
-                   SELECT name
-                   FROM tb_account
-                   WHERE id = #{userId}
-               ) AS user_nm
-        FROM tb_chatroom_note
+               (SELECT name
+                FROM tb_account
+                WHERE id = user_id) AS user_nm
+        FROM tb_chatroom_announcement
         WHERE room_id = #{roomId}
-          AND note_id = @last_note_id
+          AND ann_id = @last_note_id
     </select>
     <!--    Chat Log-->
     <select id="insertChat" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
@@ -255,7 +225,7 @@
         where room_id = #{roomId} and
         user_id = #{userId};
 
-        <include refid="chatLog"></include>
+        <include refid="chatLog"/>
         where cl.room_id = #{roomId} and
         cl.chat_id = @last_chat_id + 1;
     </select>
@@ -293,13 +263,10 @@
         ) as emo on cl.chat_id = emo.chat_id and cl.room_id = emo.room_id
     </sql>
 
-    <select id="selectChatLog" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
+    <select id="getChatLog">
         <include refid="chatLog"/>
         where
         cl.room_id=#{roomId} and
-        <if test='chatId != null'>
-            cl.chat_id=#{chatId} and
-        </if>
         send_dt >= (
         select
         join_dt
@@ -308,17 +275,17 @@
         where
         tb_chatroom_user.room_id=#{roomId} and
         tb_chatroom_user.user_id=#{userId}
-        )
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
+        ) and
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                cl.content like '%${keyword}%' or
+                cl.user_nm like '%${keyword}%'
+            ) and
         </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
+        1=1
     </select>
 
-    <select id="selectChatLogFromLastRead" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
+    <select id="fetchChatLogFromLastRead" parameterType="com.momo.common.vo.ChatVO" resultType="java.util.Map">
         <include refid="chatLog"/>
         where
         cl.room_id=#{roomId} and
@@ -343,13 +310,11 @@
         </if>
     </select>
 
-    <select id="getLastChatLog" resultType="java.util.Map">
-        WITH tb AS (
-                       SELECT *
-                       FROM tb_chat_deleted
-                       WHERE user_id = #{userId}
-                          OR to_all = TRUE
-                   )
+    <select id="fetchLastChatLog" resultType="java.util.Map">
+        WITH tb AS (SELECT *
+                    FROM tb_chat_deleted
+                    WHERE user_id = #{userId}
+                       OR to_all = TRUE)
 
         SELECT cl.chat_id,
                cl.user_id,
@@ -358,17 +323,13 @@
         FROM tb_chat_log cl
                  LEFT OUTER JOIN tb cd ON (cl.room_id = cd.room_id AND cl.chat_id = cd.chat_id)
         WHERE cl.room_id = #{roomId}
-          AND cl.chat_id = (
-                               SELECT *
-                               FROM (
-                                        SELECT MAX(chat_id)
-                                        FROM tb_chat_log
-                                        WHERE room_id = #{roomId}
-                                          AND tb_chat_log.server_send = FALSE
-                                    ) AS chat
-                                   FOR
-                               UPDATE
-                           )
+          AND cl.chat_id = (SELECT *
+                            FROM (SELECT MAX(chat_id)
+                                  FROM tb_chat_log
+                                  WHERE room_id = #{roomId}
+                                    AND tb_chat_log.server_send = FALSE) AS chat
+                                FOR
+                            UPDATE)
     </select>
 
     <select id="getStackedChatCount" parameterType="com.momo.common.vo.ChatVO" resultType="java.lang.Integer">
@@ -376,12 +337,10 @@
         FROM tb_chat_log tcl
         WHERE room_id = #{roomId}
           AND server_send = FALSE
-          AND tcl.chat_id > (
-                                SELECT last_read
-                                FROM tb_chatroom_user tcm
-                                WHERE room_id = #{roomId}
-                                  AND user_id = #{userId}
-                            )
+          AND tcl.chat_id > (SELECT last_read
+                             FROM tb_chatroom_user tcm
+                             WHERE room_id = #{roomId}
+                               AND user_id = #{userId})
     </select>
     <!--    Chat Emo-->
     <sql id="chatEmo">
@@ -415,14 +374,14 @@
     </select>
 
     <!--    Chat Deleted-->
-    <insert id="deleteChat" parameterType="com.momo.common.vo.ChatVO">
+    <insert id="deleteChat">
         UPDATE tb_chat_log
         SET deleted = TRUE
         WHERE room_id = #{roomId}
           AND chat_id = #{chatId}
     </insert>
 
-    <select id="canDelete" parameterType="com.momo.common.vo.ChatVO" resultType="java.lang.Boolean">
+    <select id="canDelete">
         SELECT IF(TIMESTAMPDIFF(MINUTE, NOW(), send_dt) > #{deleteLimit}, FALSE, TRUE)
         FROM tb_chat_log
         WHERE room_id = #{roomId}

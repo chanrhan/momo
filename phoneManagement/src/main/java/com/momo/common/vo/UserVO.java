@@ -49,8 +49,8 @@ public class UserVO extends CommonQueryVO {
 //		this.startDt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 //	}
 
-	public ShopCommonVO toShopVO(){
-		return ShopCommonVO.builder()
+	public ShopVO toShopVO(){
+		return ShopVO.builder()
 				.shopId(shopId)
 				.corpId(corpId)
 				.shopBpNo(bpNo)
@@ -60,8 +60,8 @@ public class UserVO extends CommonQueryVO {
 				.build();
 	}
 
-	public ShopCommonVO toCorpVO() {
-		return ShopCommonVO.builder()
+	public ShopVO toCorpVO() {
+		return ShopVO.builder()
 				.corpId(corpId)
 				.repsId(empId)
 				.corpBpNo(bpNo)

@@ -55,8 +55,8 @@ public class ChatService {
 		log.info("connected user list: {}", connectedUserMap.values().stream().toList());
 		return connectedUserMap.values().stream().toList();
 	}
-	public List<Map<String,Object>> loadChatRoomUser(int roomId){
-		return chatMapper.selectChatRoomUser(ChatVO.builder().roomId(roomId).build());
+	public List<Map<String,Object>> getChatRoomUser(int roomId){
+		return chatMapper.getChatRoomUser(roomId);
 	}
 	public ChatResponse joinChatroom(ChatVO vo){
 //		int maxChatId = getMaxChatId(vo.getRoomId());
@@ -72,17 +72,18 @@ public class ChatService {
 	public int getChatRoomHeadCount(int roomId){
 		return chatMapper.getChatRoomHeadCount(roomId);
 	}
-	public List<Map<String,Object>> selectChatroom(ChatVO vo){
-		String username = SecurityContextUtil.getUsername();
-		vo.setUserId(username);
-		return chatMapper.selectChatRoom(vo);
+
+	public List<Map<String,Object>> getChatRoom(String userId, String roomNm){
+		return chatMapper.getChatRoom(userId, roomNm);
 	}
-	public Map<String,Object> selectChatroom(int roomId){
-		return selectChatroom(ChatVO.builder().roomId(roomId).build()).get(0);
+
+	public Map<String,Object> getChatRoomDetail(int roomId){
+		return chatMapper.getChatRoomDetail(roomId);
 	}
-	public ChatResponse readChatroom(ChatVO vo){
+
+	public ChatResponse readChatroom(int roomId, String userId){
 		//		System.out.println("read Chat: "+vo);
-		List<Map<String,Object>> nonReadList = chatMapper.readChatRoom(vo);
+		List<Map<String,Object>> nonReadList = chatMapper.readChatRoom(roomId, userId);
 		if(nonReadList == null || nonReadList.isEmpty()){
 			return null;
 		}
@@ -109,7 +110,7 @@ public class ChatService {
 	private String makeChatContent(String userId, ChatResponseHeader type){
 		String username;
 		try{
-			username = userMapper.selectUser(UserVO.builder().id(userId).build()).get(0).get("name").toString();
+			username = userMapper.getUser(UserVO.builder().id(userId).build()).get(0).get("name").toString();
 		}catch (NullPointerException e){
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -132,20 +133,19 @@ public class ChatService {
 		}
 		return null;
 	}
-	public List<Map<String,Object>> selectChatLog(ChatVO vo){
-//		vo.setJoinDt(chatMapper.getChatMemberJoinDate(vo).toString());
-//		vo.setOrder("send_dt");
+	public List<Map<String,Object>> getChatLog(int roomId, String keyword){
+//		ChatVO vo = ChatVO.builder().roomId(roomId).build();
+//		vo.setUserId(username);
 		String username = SecurityContextUtil.getUsername();
-		vo.setUserId(username);
-		return chatMapper.selectChatLog(vo);
+		return chatMapper.getChatLog(roomId, username, keyword);
 	}
-	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo){
-		vo.setOrder("send_dt");
-		return chatMapper.selectChatLogFromLastRead(vo);
-	}
-	public Map<String,Object> getLastChatLog(ChatVO vo){
-		return chatMapper.getLastChatLog(vo);
-	}
+//	public List<Map<String,Object>> selectChatLogFromLastRead(ChatVO vo){
+//		vo.setOrder("send_dt");
+//		return chatMapper.fetchChatLogFromLastRead(vo);
+//	}
+//	public Map<String,Object> getLastChatLog(ChatVO vo){
+//		return chatMapper.fetchLastChatLog(vo);
+//	}
 
 	// Chat Emo
 	public ChatResponse sendEmoChat(ChatVO vo){
@@ -158,27 +158,28 @@ public class ChatService {
 	}
 
 	// Chat Delete
-	public ChatResponse deleteChat(ChatVO vo){
-		chatMapper.deleteChat(vo);
+	public ChatResponse deleteChat(int roomId, int chatId){
+		chatMapper.deleteChat(roomId, chatId);
 		return ChatResponse.builder()
 				.header(ChatResponseHeader.DELETE)
-				.chatId(vo.getChatId())
+				.chatId(chatId)
 				.build();
 	}
 
-	public boolean canDelete(ChatVO vo){
-		return chatMapper.canDelete(vo);
+	public boolean canDelete(int roomId, int chatId){
+		return chatMapper.canDelete(roomId, chatId, 5);
 	}
 
 	// Chat Note
-	public ChatResponse noteChat(ChatVO vo){
+	public ChatResponse announce(ChatVO vo){
 		return ChatResponse.builder()
 				.header(ChatResponseHeader.NOTE)
-				.note(chatMapper.insertNote(vo))
+				.note(chatMapper.insertAnnouncement(vo))
 				.build();
 	}
-	public Map<String,Object> selectNote(ChatVO vo){
-		return chatMapper.selectNote(vo);
+
+	public Map<String,Object> getAnnouncement(int roomId){
+		return chatMapper.getAnnouncement(roomId);
 	}
 
 	// Chat Quit/Kick

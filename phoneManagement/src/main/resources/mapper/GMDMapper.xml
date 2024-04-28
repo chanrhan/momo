@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.GMDMapper">
+    <select id="getExtraService" parameterType="com.momo.common.vo.GMDVO">
+        select exsvc_id,
+               exsvc_nm
+        from    tb_extra_service
+        where
+<!--        <if test="exsvcId != null and !exsvcId.equals('')">-->
+<!--            exsvc_id = #{exsvcId} and-->
+<!--        </if>-->
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                exsvc_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+<!--        <if test="order != null and !order.equals('')">-->
+<!--            order by ${order} ${asc}-->
+<!--        </if>-->
+    </select>
+
+    <select id="getDevice">
+        select device_md,
+               device_nm
+        from    tb_device
+        where
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                device_md like '%${keyword}%' or
+                device_nm like '%${keyword}%'
+            ) and
+        </if>
+            1=1
+<!--        <if test="order != null and !order.equals('')">-->
+<!--            order by ${order} ${asc}-->
+<!--        </if>-->
+    </select>
+</mapper>

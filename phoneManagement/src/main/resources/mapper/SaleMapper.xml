@@ -12,17 +12,18 @@
               YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
-    <select id="fetchSupportSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsSupport" parameterType="com.momo.common.vo.SaleVO">
         select s.*,
                 sp.sup_div,
                 sp.sup_amount,
                 sp.sup_st
         from tb_sale_support sp
         left outer join tb_sale s on s.sale_id=sp.sale_id
-        where s.shop_id=#{shopId} and
-        <if test="saleId != null and !saleId.equals('')">
-            s.sale_id=#{saleId} and
-        </if>
+        where s.shop_id=(
+            select shop_id
+            from tb_emp
+            where emp_id=#{userId}
+        ) and
         <if test="keyword != null and !keyword.equals('')">
             (
             s.cust_nm like '%${keyword}%' or
@@ -31,19 +32,19 @@
             s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="sellerId != null and !sellerId.equals('')">
-            s.seller_id=#{sellerId} and
-        </if>
+<!--        <if test="sellerId != null and !sellerId.equals('')">-->
+<!--            s.seller_id=#{sellerId} and-->
+<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
-        <if test="limit != null and !limit.equals('')">
-            limit ${limit} ${offset}
-        </if>
+<!--        <if test="limit != null and !limit.equals('')">-->
+<!--            limit ${limit} ${offset}-->
+<!--        </if>-->
     </select>
 
-    <select id="fetchCombSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsCombination" parameterType="com.momo.common.vo.SaleVO">
         select s.*,
                 scb.comb_id,
                 scb.comb_order_tp,
@@ -51,10 +52,11 @@
                 scb.comb_doc
         from tb_sale_comb scb
         left outer join tb_sale s on s.sale_id=scb.sale_id
-        where s.shop_id=#{shopId} and
-        <if test="saleId != null and !saleId.equals('')">
-            s.sale_id=#{saleId} and
-        </if>
+        where s.shop_id=(
+            select shop_id
+            from tb_emp
+            where emp_id=#{userId}
+        ) and
         <if test="keyword != null and !keyword.equals('')">
             (
             s.cust_nm like '%${keyword}%' or
@@ -63,28 +65,29 @@
             s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="sellerId != null and !sellerId.equals('')">
-            s.seller_id=#{sellerId} and
-        </if>
+<!--        <if test="sellerId != null and !sellerId.equals('')">-->
+<!--            s.seller_id=#{sellerId} and-->
+<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
-        <if test="limit != null and !limit.equals('')">
-            limit ${limit} ${offset}
-        </if>
+<!--        <if test="limit != null and !limit.equals('')">-->
+<!--            limit ${limit} ${offset}-->
+<!--        </if>-->
     </select>
 
-    <select id="fetchGreenPhoneSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsUsedDevice" parameterType="com.momo.common.vo.SaleVO">
         select s.*,
                 sg.ph_md,
                 sg.green_st,
         from tb_sale_green sg
         left outer join tb_sale s on s.sale_id=sg.sale_id
-        where s.shop_id=#{shopId} and
-        <if test="saleId != null and !saleId.equals('')">
-            s.sale_id=#{saleId} and
-        </if>
+        where s.shop_id=(
+            select shop_id
+            from tb_emp
+            where emp_id=#{userId}
+        ) and
         <if test="keyword != null and !keyword.equals('')">
             (
             s.cust_nm like '%${keyword}%' or
@@ -93,29 +96,30 @@
             s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="sellerId != null and !sellerId.equals('')">
-            s.seller_id=#{sellerId} and
-        </if>
+<!--        <if test="sellerId != null and !sellerId.equals('')">-->
+<!--            s.seller_id=#{sellerId} and-->
+<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
-        <if test="limit != null and !limit.equals('')">
-            limit ${limit} ${offset}
-        </if>
+<!--        <if test="limit != null and !limit.equals('')">-->
+<!--            limit ${limit} ${offset}-->
+<!--        </if>-->
     </select>
 
-    <select id="fetchCardSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsCard" parameterType="com.momo.common.vo.SaleVO">
         select s.*,
                sc.card_id,
                sc.card_tp,
                sc.card_st
         from tb_sale_card sc
         left outer join tb_sale s on s.sale_id=sc.sale_id
-        where s.shop_id=#{shopId} and
-        <if test="saleId != null and !saleId.equals('')">
-            s.sale_id=#{saleId} and
-        </if>
+        where s.shop_id=(
+            select shop_id
+            from tb_emp
+            where emp_id=#{userId}
+        ) and
         <if test="keyword != null and !keyword.equals('')">
             (
             s.cust_nm like '%${keyword}%' or
@@ -124,25 +128,29 @@
             s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="sellerId != null and !sellerId.equals('')">
-            s.seller_id=#{sellerId} and
-        </if>
+<!--        <if test="sellerId != null and !sellerId.equals('')">-->
+<!--            s.seller_id=#{sellerId} and-->
+<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
-        <if test="limit != null and !limit.equals('')">
-            limit ${limit} ${offset}
-        </if>
+<!--        <if test="limit != null and !limit.equals('')">-->
+<!--            limit ${limit} ${offset}-->
+<!--        </if>-->
     </select>
 
-    <select id="fetchSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSale" parameterType="com.momo.common.vo.SaleVO">
         select *
         from tb_sale s
-        where shop_id=#{shopId} and
-        <if test="saleId != null and !saleId.equals('')">
-            s.sale_id=#{saleId} and
-        </if>
+        where shop_id=(
+            select shop_id
+            from tb_emp
+            where emp_id=#{userId}
+        ) and
+<!--        <if test="saleId != null and !saleId.equals('')">-->
+<!--            s.sale_id=#{saleId} and-->
+<!--        </if>-->
         <if test="keyword != null and !keyword.equals('')">
             (
                 s.cust_nm like '%${keyword}%' or
@@ -151,16 +159,17 @@
                 s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="sellerId != null and !sellerId.equals('')">
-            s.seller_id=#{sellerId} and
-        </if>
+
+<!--        <if test="sellerId != null and !sellerId.equals('')">-->
+<!--            s.seller_id=#{sellerId} and-->
+<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
-        <if test="limit != null and !limit.equals('')">
-            limit ${limit} ${offset}
-        </if>
+<!--        <if test="limit != null and !limit.equals('')">-->
+<!--            limit ${limit} ${offset}-->
+<!--        </if>-->
     </select>
 
     <update id="updateSale" parameterType="com.momo.common.vo.SaleVO">
@@ -171,7 +180,7 @@
             cust_cd = #{custCd},
             cust_gd = #{custGd},
             provider = #{provider},
-            ph_md = #{phMd},
+            device_md = #{deviceMd},
             ct_istm = #{ctIstm},
             ct_actv_div = #{ctActvDiv},
             ct_actv_tp = #{ctActvTp},
@@ -210,7 +219,7 @@
 
         insert into tb_sale
         (shop_id, sale_id, cust_nm, cust_tel, cust_gtel, cust_cd, cust_gd,
-         provider, ph_md, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan,
+         provider, device_md, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan,
          ct_dec_plan, ct_cms, sec_md, wt_actv_tp, wt_actv_div, wt_cms,
          inet_actv_plan, inet_dec_plan, tv_actv_plan, tv_dec_plan, exsvc_id,
          seller_id, spec, sale_docs, sale_memo)
@@ -222,7 +231,7 @@
                          where   shop_id=@shopId
                      ) as sub_sale
             ), #{custNm},#{custTel},#{custGtel},#{custCd},#{custGd},
-                #{provider},#{phMd},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
+                #{provider},#{deviceMd},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
                 #{ctDecPlan},#{ctCms},#{secMd},#{wtActvTp},#{wtActvDiv},#{wtCms},
                 #{inetActvPlan},#{inetDecPlan},#{tvActvPlan},#{tvDecPlan},#{exsvcId}
                ,#{sellerId},#{spec},#{saleDocs},#{saleMemo})

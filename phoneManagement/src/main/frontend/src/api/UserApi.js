@@ -3,11 +3,11 @@ import {ObjectUtils} from "../utils/objectUtil";
 
 function UserApi(accessToken){
     return {
-        getUserInfo : async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/user/common/info', accessToken);
+        getUser : async ()=>{
+            return await requestApiWithAccessToken.get('/api/v1/user/info', accessToken);
         },
         getProfilePicture : async (id)=>{
-            const response = await requestApiWithAccessToken.get(`/api/v1/img/pfp/${id}`, accessToken);
+            const response = await requestApiWithAccessToken.get(`/api/v1/user/pfp/${id}`, accessToken);
             if(response.status === 200){
                 if(!ObjectUtils.isEmpty(response.data)){
                     return response.data;
@@ -30,8 +30,8 @@ function UserApi(accessToken){
         updatePassword: async (data)=>{
           return await requestApiWithAccessToken.post('/api/v1/user/update/password',data, accessToken);
         },
-        getStaffList : async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/user/list/staff', accessToken);
+        getUserAsStaff : async ()=>{
+            return await requestApiWithAccessToken.get('/api/v1/user/staff', accessToken);
         },
     }
 }

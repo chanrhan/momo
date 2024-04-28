@@ -19,6 +19,12 @@ function TestHeader(){
                 <Link to='multipart'>
                     <button className='btn btn-outline-success ms-1'>Multipart 테스트</button>
                 </Link>
+                <Link to='calendar'>
+                    <button className='btn btn-outline-success ms-1'>달력 테스트</button>
+                </Link>
+                <Link to='graph'>
+                    <button className='btn btn-outline-success ms-1'>그래프 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useSelector} from "react-redux";
-import useApi from "../utils/useApi";
+import useApi from "../hook/useApi";
 import {HttpStatusCode} from "axios";
 
 function NotifTest(){

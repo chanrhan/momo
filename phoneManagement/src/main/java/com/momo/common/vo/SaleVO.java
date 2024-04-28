@@ -40,7 +40,7 @@ public class SaleVO extends CommonQueryVO {
 	private String    provider; // 통신사
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
 	private LocalDate actvDt; // 개통일자 (Activate)
-	private String    phMd; // 핸드폰 모델명 (Model)
+	private String deviceMd; // 핸드폰 모델명 (Model)
 	private String phColor; //
 	private String  phStor; // 핸드폰 용량 (Storage)
 	private String ctIstm; // 무선 할부 (Installment)

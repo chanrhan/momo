@@ -18,9 +18,9 @@ public class NotificationController {
 	private final NotificationService notificationService;
 
 	@GetMapping("/list")
-	public ResponseEntity<List<Map<String,Object>>> getNotifList(){
+	public ResponseEntity<List<Map<String,Object>>> getNotification(){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(notificationService.getNotifList(username));
+		return ResponseEntity.ok(notificationService.getNotification(username));
 	}
 
 	@GetMapping("/count/unread")

@@ -1,5 +1,5 @@
 import {MenuModal} from "../modal/MenuModal";
-import useModal from "../utils/useModal";
+import useModal from "../hook/useModal";
 import {ModalType} from "../modal/ModalType";
 import {useEffect} from "react";
 

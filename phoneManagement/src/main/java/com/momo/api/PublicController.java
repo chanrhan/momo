@@ -48,13 +48,13 @@ public class PublicController {
 	@GetMapping("/exist/{target}")
 	public ResponseEntity<Boolean> existsValue(@PathVariable String target, @RequestParam String value) {
 		return switch (target) {
-			case "id" -> ResponseEntity.ok(userService.selectUserById(value) != null);
-			case "email" -> ResponseEntity.ok(userService.selectUserByEmail(value) != null);
+			case "id" -> ResponseEntity.ok(userService.existUserId(value));
+			case "email" -> ResponseEntity.ok(userService.existEmail(value));
 			default -> ResponseEntity.badRequest().build();
 		};
 	}
 
-	@GetMapping("/get/tel-email/secret")
+	@GetMapping("/fetch/tel-email/protected")
 	public ResponseEntity<Map<String,Object>> getTelEmailSecretly(@RequestParam String id){
 		return ResponseEntity.ok(userService.getTelEmailSecretly(id));
 	}

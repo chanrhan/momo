@@ -39,15 +39,5 @@ public class ImageController {
 		return imageService.download("spec",path);
 	}
 
-	@GetMapping("/pfp/{id}")
-	@ResponseBody
-	public ResponseEntity<byte[]> downloadPfpImage(@PathVariable String id) throws IOException {
-		log.info("request pfp : {}", id);
-		String path = userService.getPfpFilePath(id);
-		log.info("pfp path : {}", path);
-		if(!StringUtils.hasText(path)){
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}
-		return imageService.download("pfp",path);
-	}
+
 }

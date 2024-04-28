@@ -3,6 +3,7 @@ package com.momo.api;
 import com.momo.common.enums.ChatResponseHeader;
 import com.momo.common.response.ChatResponse;
 import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.ChatVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.provider.JwtProvider;
@@ -20,7 +21,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/chat")
@@ -73,30 +73,24 @@ public class ChatController {
 	}
 
 	// 접속된 유저 목록 불러오기
-	@GetMapping("/connected")
-	@ResponseBody
+	@GetMapping("/user/online")
 	public ResponseEntity<List<String>> loadConnectedUser(){
 		return ResponseEntityUtil.okOrNotFound(chatService.loadConnectedUser());
 	}
 
-	@GetMapping("/home")
-	public String chatroomHome(){
-		return "chat/home";
-	}
-
 	// 채팅 기록 불러오기 (마지막으로 읽은 곳부터)
-	@PostMapping("/msg/load")
-	@ResponseBody
-	public ResponseEntity<List<Map<String,Object>>> loadChatLog(@RequestBody ChatVO vo){
-//		System.out.println("log: "+vo);
-		return ResponseEntityUtil.okOrNotFound(chatService.selectChatLogFromLastRead(vo));
-	}
+//	@PostMapping("/msg/load")
+//	public ResponseEntity<List<Map<String,Object>>> loadChatLog(@RequestBody ChatVO vo){
+////		System.out.println("log: "+vo);
+//		return ResponseEntityUtil.okOrNotFound(chatService.selectChatLogFromLastRead(vo));
+//	}
 
 	// 채팅 기록 모두 불러오기
-	@PostMapping("/msg/load/all")
+	@GetMapping("/room/{roomId}/log")
 	@ResponseBody
-	public ResponseEntity<List<Map<String,Object>>> loadAllChatLog(@RequestBody ChatVO vo){
-		return ResponseEntityUtil.okOrNotFound(chatService.selectChatLog(vo));
+	public ResponseEntity<List<Map<String,Object>>> getChatLog(@PathVariable int roomId,
+															   @RequestParam(required = false)String keyword){
+		return ResponseEntityUtil.okOrNotFound(chatService.getChatLog(roomId, keyword));
 	}
 
 	// 채팅 메시지 전송
@@ -119,44 +113,42 @@ public class ChatController {
 	}
 
 	// 채팅 메시지 삭제
-	@MessageMapping("/chat/delete/{roomId}")
+	@MessageMapping("/chat/room/{roomId}/log/{chatId}/delete")
 	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse deleteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
-		vo.setRoomId(roomId);
-		return chatService.deleteChat(vo);
+	public ChatResponse deleteChat(@DestinationVariable int roomId, @DestinationVariable int chatId){
+		return chatService.deleteChat(roomId, chatId);
 	}
 
 	// 채팅 메시지 삭제 가능한지 판별 (5분 타임아웃)
-	@PostMapping("/msg/can/delete")
+	@GetMapping("/room/{roomId}/log/{chatId}/enable/delete")
 	@ResponseBody
-	public ResponseEntity<Boolean> canDelete(@RequestBody ChatVO vo){
-		return ResponseEntity.ok(chatService.canDelete(vo));
+	public ResponseEntity<Boolean> canDelete(@PathVariable int roomId, @PathVariable int chatId){
+		return ResponseEntity.ok(chatService.canDelete(roomId, chatId));
 	}
 
 	// 채팅 메시지 읽음 처리 
-	@MessageMapping("/chat/read/{roomId}")
-	public void readChatRoom(@DestinationVariable int roomId, @RequestBody ChatVO vo){
-		vo.setRoomId(roomId);
-		ChatResponse res = chatService.readChatroom(vo);
-		log.info("read response: {}",res);
+	@MessageMapping("/chat/room/{roomId}/read")
+	public void readChatRoom(@DestinationVariable int roomId, @RequestBody Map<String,String> map){
+		ChatResponse res = chatService.readChatroom(roomId, map.get("user_id"));
+//		log.info("read response: {}",res);
 		if(res != null){
 			simpMessagingTemplate.convertAndSend("/sub/chat/room/"+roomId, res);
 		}
 	}
 
 	// 채팅방 유저 목록 불러오기
-	@GetMapping("/room/user/{roomId}")
+	@GetMapping("/room/{roomId}/user")
 	@ResponseBody
 	public ResponseEntity<List<Map<String,Object>>> loadChatRoomUser(@PathVariable int roomId){
-		return ResponseEntityUtil.okOrNotFound(chatService.loadChatRoomUser(roomId));
+		return ResponseEntityUtil.okOrNotFound(chatService.getChatRoomUser(roomId));
 	}
 
 	// 채팅 공지
-	@MessageMapping("/chat/note/{roomId}")
+	@MessageMapping("/chat/room/{roomId}/announce")
 	@SendTo("/sub/chat/room/{roomId}")
-	public ChatResponse noteChat(@DestinationVariable int roomId, @RequestBody ChatVO vo){
+	public ChatResponse announce(@DestinationVariable int roomId, @RequestBody ChatVO vo){
 		vo.setRoomId(roomId);
-		return chatService.noteChat(vo);
+		return chatService.announce(vo);
 	}
 
 	@PostMapping("/room/note/fold")
@@ -165,15 +157,13 @@ public class ChatController {
 		return ResponseEntity.ok(false);
 	}
 
-	@PostMapping("/note")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> selectNote(@RequestBody ChatVO vo){
-		return ResponseEntityUtil.okOrNotFound(chatService.selectNote(vo));
+	@GetMapping("/room/{roomId}/ann")
+	public ResponseEntity<Map<String, Object>> gettNote(@PathVariable int roomId){
+		return ResponseEntityUtil.okOrNotFound(chatService.getAnnouncement(roomId));
 	}
 
 	// 채팅방 생성
-	@PostMapping("/room/create")
-	@ResponseBody
+	@PostMapping("/room")
 	@Transactional
 	public ResponseEntity<Integer> createChatRoom(@RequestBody ChatVO vo){
 		return ResponseEntityUtil.okOrNotFound(chatService.createChatRoom(vo));
@@ -207,21 +197,21 @@ public class ChatController {
 	}
 
 	// 채팅방 정보 불러오기
-	@GetMapping("/room/info/{roomId}")
+	@GetMapping("/room/{roomId}/detail")
 	@ResponseBody
-	public ResponseEntity<Map<String,Object>> loadChatRoomInfo(@PathVariable int roomId){
-		return ResponseEntityUtil.okOrNotFound(chatService.selectChatroom(roomId));
+	public ResponseEntity<Map<String,Object>> getChatRoomDetail(@PathVariable int roomId){
+		return ResponseEntityUtil.okOrNotFound(chatService.getChatRoomDetail(roomId));
 	}
 
 	// 채팅방 목록 불러오기
-	@PostMapping("/room/list")
-	@ResponseBody
-	public ResponseEntity<List<Map<String,Object>>> loadChatRoomList(@RequestBody ChatVO vo){
-		return ResponseEntityUtil.okOrNotFound(chatService.selectChatroom(vo));
+	@GetMapping("/room")
+	public ResponseEntity<List<Map<String,Object>>> getChatRoom(@RequestParam(value = "room_nm", required = false)String roomNm){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntityUtil.okOrNotFound(chatService.getChatRoom(username, roomNm));
 	}
 
 	// 채팅방 인원 수
-	@GetMapping("/room/hc/{roomId}")
+	@GetMapping("/room/{roomId}/headcount")
 	@ResponseBody
 	public ResponseEntity<Integer> getChatRoomHeadCount(@PathVariable int roomId){
 		return ResponseEntityUtil.okOrNotFound(chatService.getChatRoomHeadCount(roomId));

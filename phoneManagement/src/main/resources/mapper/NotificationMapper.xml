@@ -125,7 +125,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="selectAlert" parameterType="com.momo.common.vo.NotifVO">
+    <select id="getNotification" parameterType="com.momo.common.vo.NotifVO">
         with alarm as (
             select
                 al.notif_id,

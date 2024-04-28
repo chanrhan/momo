@@ -12,8 +12,8 @@ function SaleApi(accessToken){
             }
             return await requestAPI.post('/api/v1/sale/add',data,option);
         },
-        fetchSale : async (data)=>{
-            const response = await requestApiWithAccessToken.post(`/api/v1/sale/fetch`,data, accessToken);
+        getSale : async ({keyword,order,asc})=>{
+            const response = await requestApiWithAccessToken.get(`/api/v1/sale?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
             if(response.status === 200){
                 if(!ObjectUtils.isEmpty(response.data)){
                     return response;
@@ -22,7 +22,7 @@ function SaleApi(accessToken){
             response.data = [];
             return response;
         },
-        fetchSaleByCategory : async (category, data)=>{
+        getSaleByCategory : async (category, {keyword, order, asc})=>{
             if(data.order === 'state'){
                 switch (category){
                     case 'card':
@@ -39,7 +39,7 @@ function SaleApi(accessToken){
                         break;
                 }
             }
-            const response = await requestApiWithAccessToken.post(`/api/v1/sale/list/${category}`,data, accessToken);
+            const response = await requestApiWithAccessToken.get(`/api/v1/sale/${category}?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
             if(response.status === 200){
                 response.data.map(function (value){
                     let state = '';

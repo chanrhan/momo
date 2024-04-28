@@ -34,8 +34,8 @@ function AccountApi(accessToken){
                 }
             });
         },
-        getTelEmailSecretly : async(id)=>{
-            return await requestAPI.get(`/api/v1/public/get/tel-email/secret?id=${id}`,{});
+        fetchProtectedTelAndEmail : async(id)=>{
+            return await requestAPI.get(`/api/v1/public/fetch/tel-email/protected?id=${id}`,{});
         }
     }
 }

@@ -10,7 +10,7 @@
           AND pwd = #{pwd}
     </update>
 
-    <select id="getStaffList">
+    <select id="getUserAsStaff">
         SELECT ac.name,
                sh.shop_id,
                sh.shop_nm,
@@ -47,7 +47,13 @@
     <select id="existUserId">
         SELECT (COUNT(*) > 0) as exist
         FROM tb_account
-        WHERE id = #{id}
+        WHERE id = #{userId}
+    </select>
+
+    <select id="existEmail">
+        SELECT (COUNT(*) > 0) as exist
+        FROM tb_account
+        WHERE email = #{email}
     </select>
 
     <select id="findTelEmailById">
@@ -71,7 +77,7 @@
           AND tel = #{tel}
     </select>
 
-    <select id="getPfpFilePath" resultType="java.lang.String">
+    <select id="getProfilePicture" resultType="java.lang.String">
         SELECT pfp
         FROM tb_account
         WHERE id = #{id}
@@ -114,7 +120,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="searchChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
+    <select id="getChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         WITH tb AS (
                        SELECT ac.id   AS user_id,
                               ac.name AS user_nm,
@@ -153,88 +159,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="searchUserInfo" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
-        WITH tb AS (
-                       SELECT ac.*,
-                              cp.corp_bp_no,
-                              cp.corp_id,
-                              cp.corp_nm,
-                              sh.shop_id,
-                              sh.shop_nm
-                       FROM tb_account ac
-                                LEFT OUTER JOIN tb_emp em ON em.emp_id = ac.id
-                                LEFT OUTER JOIN tb_corp cp ON cp.corp_id = em.corp_id
-                                LEFT OUTER JOIN tb_shop sh ON sh.shop_id = em.shop_id
-                   )
-
-        SELECT *
-        FROM tb
-        WHERE ${andSelect}
-          AND ${orSearch}
-            ${prop}
-    </select>
-
-    <select id="selectUserInfo" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
-        with tb as (
-        select
-        ac.*,
-        cp.corp_bp_no,
-        cp.corp_id as corp_id,
-        cp.corp_nm,
-        sh.shop_nm as shop_nm
-        from
-        tb_account ac
-        left outer join tb_emp em on em.emp_id=ac.id
-        left outer join tb_corp cp on cp.corp_id=em.corp_id
-        left outer join tb_shop sh on sh.shop_id=em.shop_id
-        )
-
-        select
-        *
-        from
-        tb
-        where
-        <if test='id != null and !id.equals("")'>
-            id=#{id} and
-        </if>
-        <if test='pwd != null and !pwd.equals("")'>
-            pwd=#{pwd} and
-        </if>
-        <if test='email != null and !email.equals("")'>
-            email=#{email} and
-        </if>
-        <if test='tel != null and !tel.equals("")'>
-            tel=#{tel} and
-        </if>
-        <if test='role != null and !role.equals("")'>
-            role=#{role} and
-        </if>
-        <if test='bpNo != null and !bpNo.equals("")'>
-            corp_bp_no=#{bpNo} and
-        </if>
-        <if test='corpId != null'>
-            corp_id=#{corpId} and
-        </if>
-        <if test='corpNm != null and !corpNm.equals("")'>
-            corp_nm=#{corpNm} and
-        </if>
-        <if test='shopNm != null and !shopNm.equals("")'>
-            shop_nm=#{shopNm} and
-        </if>
-        <if test='regiDt != null and !regiDt.equals("")'>
-            regi_dt=#{regiDt} and
-        </if>
-        1 = 1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
-    </select>
-
-    <select id="getUserInfo">
+    <select id="getUserById">
         SELECT ac.id,
                ac.name,
                ac.tel,
@@ -256,11 +181,11 @@
                  LEFT OUTER JOIN tb_emp em ON ac.id = em.emp_id
                  LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id
                  LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id
-        WHERE id = #{id}
+        WHERE id = #{userId}
     </select>
 
     <!--    User-->
-    <select id="selectUser" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+    <select id="getUser" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         select
         *
         from
@@ -294,11 +219,6 @@
         </if>
     </select>
 
-    <select id="selectUserById">
-        SELECT *
-        FROM tb_account
-        WHERE id=#{id}
-    </select>
 
     <select id="searchUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
         SELECT *
@@ -370,7 +290,7 @@
         WHERE emp_id = #{id}
     </delete>
 
-    <select id="selectEmp" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
+    <select id="getUserAsStaff" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
         with tb as (
         select
         em.*,

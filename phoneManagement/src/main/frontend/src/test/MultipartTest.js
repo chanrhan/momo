@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
-import useApi from "../utils/useApi";
+import useApi from "../hook/useApi";
 import axiosInstance from "../utils/axiosInstance";
-import useModal from "../utils/useModal";
+import useModal from "../hook/useModal";
 import {ModalType} from "../modal/ModalType";
 import axios from "axios";
 

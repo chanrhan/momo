@@ -1,7 +1,7 @@
 package com.momo.controller;
 
 import com.momo.auth.RoleAuth;
-import com.momo.service.ShopCommonService;
+import com.momo.service.ShopService;
 import com.momo.service.UserService;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.UserVO;
@@ -17,25 +17,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/profile")
+@Deprecated
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class ProfileController0 {
 	private final UserService       userService;
-	private final ShopCommonService shopCommonService;
+	private final ShopService shopService;
 
-	@GetMapping("/home")
-	public String profileInfo(Model model){
-		Map<String,Object> user = userService.selectUserByContext();
-		model.addAttribute("userInfo", user);
-		return "profile/home";
-	}
-
-	@GetMapping("/payment")
-	@RoleAuth(role = RoleAuth.Role.EMPLOYEE)
-	public String payment(Model model){
-
-		return "profile/payment";
-	}
 
 	@PostMapping("/update")
 	@ResponseBody
@@ -53,6 +41,6 @@ public class ProfileController0 {
 	@ResponseBody
 	public ResponseEntity<Boolean> chargePoint(HttpSession session, @RequestParam int amount){
 		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-		return ResponseEntityUtil.okOrNotModified(shopCommonService.updateCorpPoint(corpId, amount));
+		return ResponseEntityUtil.okOrNotModified(shopService.updateCorpPoint(corpId, amount));
 	}
 }

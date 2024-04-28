@@ -9,18 +9,16 @@ import java.util.Map;
 
 @Mapper
 public interface SaleMapper{
-	public List<Map<String,Object>> fetchCardSale(SaleVO vo);
-	public List<Map<String,Object>> fetchGreenPhoneSale(SaleVO vo);
-	public List<Map<String,Object>> fetchCombSale(SaleVO vo);
-	public List<Map<String,Object>> fetchSupportSale(SaleVO vo);
+	public List<Map<String,Object>> getSaleAsCard(SaleVO vo);
+	public List<Map<String,Object>> getSaleAsUsedDevice(SaleVO vo);
+	public List<Map<String,Object>> getSaleAsCombination(SaleVO vo);
+	public List<Map<String,Object>> getSaleAsSupport(SaleVO vo);
 	// Sale
 	public int insertSale(SaleVO vo);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int id);
-	public List<Map<String,Object>> selectSale(SaleVO vo);
-	public List<Map<String,Object>> fetchSale(SaleVO vo);
+	public List<Map<String,Object>> getSale(SaleVO vo);
 
-	public List<Map<String,Object>> searchSale(SearchVO vo);
 	public boolean isDuplicatedTel(SaleVO vo);
 	public String getSpecFilePath(int id);
 }

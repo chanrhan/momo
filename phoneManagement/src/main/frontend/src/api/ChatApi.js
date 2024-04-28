@@ -2,25 +2,25 @@ import {requestApiWithAccessToken} from "./ApiCommon";
 
 function ChatApi(accessToken){
     return {
-        getConnectedUserList : async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/chat/connected', accessToken);
+        getOnlineUser : async ()=>{
+            return await requestApiWithAccessToken.get('/api/v1/chat/user/online', accessToken);
         },
         createChatRoom : async (roomName)=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/room/create', {
+            return await requestApiWithAccessToken.post('/api/v1/chat/room', {
                 room_nm: roomName
             }, accessToken);
         },
-        getChatRoomList : async ()=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/room/list',{}, accessToken);
+        getChatRoom : async (roomName)=>{
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room?room_nm=${roomName}`, accessToken);
         },
         getChatRoomDetail : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/info/${roomId}`, accessToken);
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/detail`, accessToken);
         },
         getChatRoomHeadCount : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/hc/${roomId}`,accessToken);
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/headcount`,accessToken);
         },
         getChatRoomUserList : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/user/${roomId}`,accessToken);
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/user`,accessToken);
         },
         getInvitableUserList : async (keyword)=>{
             return await requestApiWithAccessToken.post('/api/v1/chat/list/user/invitable',{
@@ -35,16 +35,14 @@ function ChatApi(accessToken){
                 })
             });
         },
-        noteChat : async (client, roomId, data)=>{
+        announce : async (client, roomId, data)=>{
             client.current.publish({
-                destination: `/pub/chat/note/${roomId}`,
+                destination: `/pub/chat/room/${roomId}/announce`,
                 body: JSON.stringify(data)
             });
         },
-        getChatRoomNote : async (roomId)=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/note', {
-                room_id: roomId
-            }, accessToken);
+        getAnnouncement : async (roomId)=>{
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/ann`, accessToken);
         },
         sendChat : (client, roomId, data)=>{
             client.current.publish({
@@ -54,14 +52,14 @@ function ChatApi(accessToken){
         },
         readChatRoom : (client, roomId, userId)=>{
             client.current.publish({
-                destination: `/pub/chat/read/${roomId}`,
+                destination: `/pub/chat/room/${roomId}/read`,
                 body: JSON.stringify({
                     user_id: userId
                 })
             });
         },
-        getAllChatMessage : async (roomId)=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/msg/load/all', {
+        getChatLog : async (roomId, keyword)=>{
+            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/log?keyword=${keyword}`, {
                 room_id: roomId
             }, accessToken);
         },

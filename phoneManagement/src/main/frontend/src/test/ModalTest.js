@@ -1,4 +1,4 @@
-import useModal from "../utils/useModal";
+import useModal from "../hook/useModal";
 import {ModalType} from "../modal/ModalType";
 
 function ModalTest(){

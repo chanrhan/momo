@@ -1,8 +1,13 @@
 import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 const statusError = {
     status: false,
     error: "연결이 원활하지 않습니다. 잠시 후 다시 시도해 주세요"
+}
+
+const responseResult = (res)=>{
+
 }
 
 export const requestAPI = {
@@ -43,24 +48,43 @@ export const requestAPI = {
         }else{
             return statusError;
         }
+    },
+    async delete(url, option){
+        return await axiosInstance.delete(url, option);
+    },
+    async put(url, data, option){
+        return await axiosInstance.put(url, data, option);
     }
 }
 
 export const requestApiWithAccessToken = {
     async post(url, data, accessToken){
-        const option = {
+        return requestAPI.post(url,data,{
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
-        }
-        return requestAPI.post(url,data,option);
+        });
     },
     async get(url, accessToken){
-        const option = {
+        return requestAPI.get(url, {
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
-        }
-        return requestAPI.get(url, option);
+        });
+    },
+    async delete(url, accessToken, data){
+        return requestAPI.delete(url, {
+            data: data,
+            headers: {
+                "X-ACCESS-TOKEN": accessToken
+            }
+        });
+    },
+    async put(url, data, accessToken){
+        return requestAPI.put(url, data, {
+            headers: {
+                "X-ACCESS-TOKEN": accessToken
+            }
+        });
     }
 }

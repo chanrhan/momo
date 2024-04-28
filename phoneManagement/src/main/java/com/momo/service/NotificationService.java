@@ -3,7 +3,6 @@ package com.momo.service;
 import com.momo.emitter.NotificationEmitter;
 import com.momo.mapper.NotificationMapper;
 import com.momo.common.vo.NotifVO;
-import com.momo.common.vo.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 public class NotificationService extends CommonService {
-	private final ShopCommonService   shopCommonService;
+	private final ShopService shopService;
 	private final NotificationEmitter notificationEmitter;
 	private final NotificationMapper  notificationMapper;
 
@@ -28,23 +27,23 @@ public class NotificationService extends CommonService {
 		return notificationMapper.countUnreadNotif(userId);
 	}
 
-	public List<Map<String,Object>> getNotifList(String userId){
+	public List<Map<String,Object>> getNotification(String userId){
 		return notificationMapper.getNotifList(userId);
 	}
 
 	//
 
-	public List<Map<String, Object>> searchNotif(SearchVO searchVO) {
-		return notificationMapper.searchAlert(searchVO);
-	}
+//	public List<Map<String, Object>> searchNotif(SearchVO searchVO) {
+//		return notificationMapper.searchAlert(searchVO);
+//	}
 
-	public List<Map<String, Object>> selectNotif(NotifVO vo) {
-		return notificationMapper.selectAlert(vo);
-	}
-	public List<Map<String, Object>> selectNotifByReceiver(String id) {
-		NotifVO vo = NotifVO.builder().receiverId(id).build();
-		return selectNotif(vo);
-	}
+//	public List<Map<String, Object>> selectNotif(NotifVO vo) {
+//		return notificationMapper.getNotification(vo);
+//	}
+//	public List<Map<String, Object>> selectNotifByReceiver(String id) {
+//		NotifVO vo = NotifVO.builder().receiverId(id).build();
+//		return selectNotif(vo);
+//	}
 	public int approve(int alarmId){
 		return notificationMapper.approve(alarmId);
 	}
@@ -80,7 +79,7 @@ public class NotificationService extends CommonService {
 		Map<String,Object> data = new HashMap<>();
 		data.put("shop_id", shopId);
 
-		Map<String,Object> corp = shopCommonService.selectCorpById(corpId);
+		Map<String,Object> corp = shopService.getCorporationById(corpId);
 		String repsId = corp.get("reps_id").toString();
 		notify(senderId, repsId, "approval", data);
 	}

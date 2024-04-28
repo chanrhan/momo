@@ -1,7 +1,6 @@
 package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
-import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
 import com.momo.mapper.UserMapper;
@@ -31,8 +30,8 @@ public class UserService extends CommonService implements UserDetailsService{
 	private final UserMapper       userMapper;
 
 	// Authentication
-	public List<Map<String,Object>> getStaffList(String id){
-		return userMapper.getStaffList(id);
+	public List<Map<String,Object>> getUserAsStaff(String id){
+		return userMapper.getUserAsStaff(id);
 	}
 
 	public int updateCurrentShop(String userId, int shopId){
@@ -46,8 +45,12 @@ public class UserService extends CommonService implements UserDetailsService{
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
 		return userMapper.resetPassword(vo);
 	}
-	public boolean existUserId(String id){
-		return userMapper.existUserId(id);
+	public boolean existUserId(String userId){
+		return userMapper.existUserId(userId);
+	}
+
+	public boolean existEmail(String email){
+		return userMapper.existEmail(email);
 	}
 
 	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
@@ -101,20 +104,10 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.updateUserToDormant(date);
 	}
 
-	public List<Map<String,Object>> selectUserInfo(UserVO vo){
-		if(vo.getOrder() == null){
-			vo.setOrder("regi_dt");
-		}
-		return userMapper.selectUserInfo(vo);
+	public Map<String,Object> getUserById(String id){
+		return userMapper.getUserById(id);
 	}
 
-	public List<Map<String,Object>> searchUserInfo(SearchVO vo){
-		return userMapper.searchUserInfo(vo);
-	}
-
-	public Map<String,Object> getUserInfo(String id){
-		return userMapper.getUserInfo(id);
-	}
 	// Common
 	public Authentication loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
@@ -149,43 +142,20 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.updatePfp(vo);
 	}
 	public String getPfpFilePath(String id){
-		return userMapper.getPfpFilePath(id);
+		return userMapper.getProfilePicture(id);
 	}
 	public int deleteUser(String id) {
 		return userMapper.deleteUser(id);
 	}
 
-	public List<Map<String,Object>> selectUser(UserVO vo) {
-		return userMapper.selectUser(vo);
+	public List<Map<String,Object>> getUser(UserVO vo) {
+		return userMapper.getUser(vo);
 	}
 
-	public Map<String,Object> selectUserByContext(){
-		String username = SecurityContextUtil.getUsername();
-		return selectUserById(username);
-	}
 
-	public Map<String,Object> selectUserById(String id){
-		List<Map<String,Object>> list = userMapper.selectUserById(id);
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
-
-	public Map<String,Object> selectUserByEmail(String email){
-		List<Map<String,Object>> list = selectUser(UserVO.builder().email(email).build());
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
-
-	public List<Map<String,Object>> searchUser(SearchVO vo) {
-		return userMapper.searchUser(vo);
-	}
 
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo){
-		return userMapper.searchChatInvitableUser(vo);
+		return userMapper.getChatInvitableUser(vo);
 	}
 
 	public int updateRole(String id, String role){
@@ -214,12 +184,12 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.deleteEmp(id);
 	}
 
-	public List<Map<String,Object>> selectEmp(UserVO vo) {
-		return userMapper.selectEmp(vo);
+	public List<Map<String,Object>> fetchStaff(UserVO vo) {
+		return userMapper.getUserAsStaff(vo);
 	}
-	public Map<String,Object> selectEmpById(String id){
+	public Map<String,Object> fetchStaffById(String id){
 		UserVO                   vo   = UserVO.builder().empId(id).build();
-		List<Map<String,Object>> list = selectEmp(vo);
+		List<Map<String,Object>> list = fetchStaff(vo);
 		if(list == null || list.isEmpty()){
 			return null;
 		}
@@ -258,7 +228,7 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,Object> user = selectUserById(username);
+		Map<String,Object> user = getUserById(username);
 		if(user == null){
 			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
 		}
