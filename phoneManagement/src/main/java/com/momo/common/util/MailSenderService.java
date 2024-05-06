@@ -54,7 +54,7 @@ public class MailSenderService {
 						  corpId +
 						  "'>");
 		if(corpId != 0){
-			Map<String,Object> corp = shopService.getCorporationById(corpId);
+			Map<String,Object> corp = shopService.getCorp(corpId);
 			String corpNm = corp.get("corp_nm").toString();
 			sb.append("<p>" +
 							  "회사명: " + corpNm +

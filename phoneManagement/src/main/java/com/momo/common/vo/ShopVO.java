@@ -13,14 +13,9 @@ import lombok.experimental.SuperBuilder;
 public class ShopVO extends CommonQueryVO {
 	private String userId;
 	private Integer corpId;
-	private String  shopBpNo;
-	private String  corpBpNo;
-	private String  bpKoNm; // 시압지명 한글
-	private String        bpEnNm; // 사업자명 영문
 	private String        corpNm;
-	private String        corpTel;
 	private Integer corpPt;
-	private String startDt;
+	private String bpNo;
 	private String regiDt;
 
 	private Integer shopId;

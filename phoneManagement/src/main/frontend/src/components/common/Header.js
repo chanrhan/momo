@@ -9,7 +9,7 @@ import useApi from "../../hook/useApi";
 import useEmitter from "../../hook/useEmitter";
 import {localActions} from "../../store/slices/localStorageSlice";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../modal/ModalType";
+import {ModalType} from "../modal/ModalType";
 
 function Header(){
     const navigate = useNavigate();

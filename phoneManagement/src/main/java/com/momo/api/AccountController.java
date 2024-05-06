@@ -19,14 +19,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account")
 public class AccountController {
-	private final UserService userService;
-	private final JwtProvider jwtProvider;
 
-	@PostMapping("/validate/bno")
-	public ResponseEntity<Map<String, Object>> validateBusinessNumber(@RequestBody Map<String, Object> map) {
-		log.info("validate bno: {}",map);
-		return ResponseEntityUtil.okOrNotFound(BusinessmanApiUtil.validate(map));
-	}
+
 
 
 

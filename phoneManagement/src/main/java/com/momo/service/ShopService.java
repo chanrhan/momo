@@ -1,6 +1,5 @@
 package com.momo.service;
 
-import com.momo.common.vo.UserVO;
 import com.momo.mapper.ShopMapper;
 import com.momo.common.vo.ShopVO;
 import lombok.RequiredArgsConstructor;
@@ -51,17 +50,17 @@ public class ShopService extends CommonService {
 		return shopMapper.updateCorp(vo);
 	}
 
-	public int deleteCorp(String bNo) {
-		return shopMapper.deleteCorp(bNo);
+	public int deleteCorp(int corpId) {
+		return shopMapper.deleteCorp(corpId);
 	}
 
-	public List<Map<String,Object>> getCorporation(ShopVO vo) {
-		return shopMapper.getCorporation(vo);
+	public List<Map<String,Object>> getCorp(ShopVO vo) {
+		return shopMapper.getCorp(vo);
 	}
 
-	public Map<String,Object> getCorporationById(int id) {
+	public Map<String,Object> getCorp(int id) {
 		ShopVO vo = ShopVO.builder().corpId(id).build();
-		return shopMapper.getCorporation(vo).get(0);
+		return shopMapper.getCorp(vo).get(0);
 	}
 
 

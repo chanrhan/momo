@@ -1,6 +1,5 @@
 package com.momo.config;
 
-import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 	private final RoleAuthInterceptor roleAuthInterceptor;
 	private final HomeInterceptor homeInterceptor;
-	private final CommonInterceptor commonInterceptor;
 
 	// 이거 왜 적용 안했지..?
 	// 나중에 시간 되면 알아보자.

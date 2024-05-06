@@ -10,11 +10,13 @@ export const ModalType = {
         Select_Exsvc: 'SelectExsvc',
         Select_Plan: 'SelectPlan',
         Select_Second: 'SelectSecond',
-        Select_GreenPhone: 'SelectGreen'
+        Select_GreenPhone: 'SelectGreen',
+        Table_Validation: 'TableValidation'
     },
     MENU: {
         Change_Shop: 'ChangeShop',
-        Test: 'MenuModalTest'
+        Test: 'MenuModalTest',
+        Select_Table_Header: 'SelectTableHeader'
     },
     SNACKBAR: {
         Alert: 'Alert'

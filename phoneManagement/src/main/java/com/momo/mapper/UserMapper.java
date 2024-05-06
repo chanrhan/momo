@@ -9,6 +9,8 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+	public String getUserByBpNo(String bpNo);
+
 	public List<Map<String,Object>> getUserAsStaff(String id);
 
 	public int updateCurrentShop(String userId, int shopId);
@@ -22,14 +24,10 @@ public interface UserMapper {
 	public boolean existUserId(String userId);
 	public boolean existEmail(String email);
 
-	public boolean matchUserIdTel(UserVO vo);
-	public boolean matchUserIdEmail(UserVO vo);
+	public boolean matchUserId(UserVO vo);
 
 	public String getProfilePicture(String id);
 	public int updatePfp(UserVO vo);
-
-	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo);
-	public List<Map<String,Object>> tryFindUserIdByEmail(UserVO vo);
 
 	public Map<String,Object> getConnectedUser(String id);
 

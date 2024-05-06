@@ -19,10 +19,10 @@ import java.util.Map;
 
 public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 	private static final String serviceUrl = "https://api.odcloud.kr/api/nts-businessman/v1/validate";
-	public static Map<String, Object> validate(Map<String,Object> map){
+	public static Map<String, Object> validate(Map<String,String> map){
 		Map<String,Object> body = new HashMap<>();
-		List<Map<String,Object>> businesses = new ArrayList<>();
-		map.put("start_dt",map.get("start_dt").toString().replace("-",""));
+		List<Map<String,String>> businesses = new ArrayList<>();
+		map.put("start_dt",map.get("start_dt").replace("-",""));
 		map.put("b_nm","");
 		map.put("corp_no","");
 		map.put("b_sector","");

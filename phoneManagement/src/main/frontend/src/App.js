@@ -5,16 +5,10 @@ import {Outlet, Route, Routes} from "react-router-dom";
 import Service from "./components/home/Service";
 import Authorization from "./components/common/Authorization";
 import Login from "./components/account/Login";
-import Preview from "./preview/Preview";
-import Sale from "./service/sale/Sale";
-import ManageCustomer from "./service/manage-customer/ManageCustomer";
-import ReserveMessage from "./service/reserve-msg/ReserveMessage";
 import AuthenticatedLayout from "./components/common/AuthenticatedLayout";
-import Graph from "./service/graph/Graph";
 import Chat from "./components/chat/Chat";
 import FindUsername from "./components/account/FindUsername";
 import FindPassword from "./components/account/FindPassword";
-import PreviewHeader from "./preview/PreviewHeader";
 import Profile from "./components/common/Profile";
 import NotifStorage from "./components/common/NotifStorage";
 import Signup from "./components/account/Signup";
@@ -23,13 +17,21 @@ import RoleDetail from "./components/account/role/RoleDetail";
 import TestHeader from "./test/TestHeader";
 import Admin from "./components/admin/Admin";
 import AdminHeader from "./components/admin/AdminHeader";
-import ModalContainer from "./modal/ModalContainer";
 import NotifTest from "./test/NotifTest";
 import ModalTest from "./test/ModalTest";
 import RefTest from "./test/RefTest";
 import MultipartTest from "./test/MultipartTest";
 import CalendarTest from "./test/CalendarTest";
 import GraphTest from "./test/GraphTest";
+import ExcelTest from "./test/ExcelTest";
+import ModalContainer from "./components/modal/ModalContainer";
+import PreviewHeader from "./components/preview/PreviewHeader";
+import Preview from "./components/preview/Preview";
+import Sale from "./components/sale/Sale";
+import ManageCustomer from "./components/manage-customer/ManageCustomer";
+import ReserveMessage from "./components/reserve-msg/ReserveMessage";
+import Graph from "./components/graph/Graph";
+import BulkUploadTest from "./test/BulkUploadTest";
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
                 <Route path='multipart' element={<MultipartTest/>}/>
                 <Route path='calendar' element={<CalendarTest/>}/>
                 <Route path='graph' element={<GraphTest/>}/>
+                <Route path='excel' element={<ExcelTest/>}/>
+                <Route path='bulk' element={<BulkUploadTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>

@@ -1,6 +1,5 @@
 package com.momo.api;
 
-import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.ShopVO;
 import com.momo.service.ShopService;
@@ -19,13 +18,11 @@ import java.util.Map;
 public class ShopController {
 	private final ShopService shopService;
 
-	@GetMapping("/corp/search/role-detail")
-	public ResponseEntity<List<Map<String,Object>>> getCorpListForRoleDetail(@RequestParam(required = false)String keyword,
-																			 @RequestParam(required = false)String order,
-																			 @RequestParam(required = false)boolean asc){
+	@GetMapping("/corp")
+	public ResponseEntity<List<Map<String,Object>>> getCorpListForRoleDetail(){
 		String username = SecurityContextUtil.getUsername();
-		ShopVO vo = ShopVO.builder().userId(username).keyword(keyword).order(order).asc(asc).build();
-		return ResponseEntity.ok(shopService.getCorporation(vo));
+		ShopVO vo = ShopVO.builder().userId(username).build();
+		return ResponseEntity.ok(shopService.getCorp(vo));
 	}
 
 	@PostMapping("/shop")
@@ -37,9 +34,10 @@ public class ShopController {
 	}
 
 	@GetMapping("/shop")
-	public ResponseEntity<List<Map<String,Object>>> getShopList(){
+	public ResponseEntity<List<Map<String,Object>>> getShop(@RequestParam(required = false)String keyword){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(shopService.getShop(ShopVO.builder().userId(username).build()));
+		ShopVO vo = ShopVO.builder().userId(username).keyword(keyword).build();
+		return ResponseEntity.ok(shopService.getShop(vo));
 	}
 
 

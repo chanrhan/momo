@@ -1,10 +1,12 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
-import com.momo.common.util.ResponseEntityUtil;
+import com.momo.common.util.BusinessmanApiUtil;
+import com.momo.common.vo.ShopVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
+import com.momo.service.ShopService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/public")
 public class PublicController {
 	private final UserService userService;
+	private final ShopService shopService;
 	private final JwtProvider jwtProvider;
 	private final JwtService jwtService;
 
@@ -45,37 +49,58 @@ public class PublicController {
 	}
 
 	// 아이디 중복체크 API
-	@GetMapping("/exist/{target}")
-	public ResponseEntity<Boolean> existsValue(@PathVariable String target, @RequestParam String value) {
-		return switch (target) {
-			case "id" -> ResponseEntity.ok(userService.existUserId(value));
-			case "email" -> ResponseEntity.ok(userService.existEmail(value));
-			default -> ResponseEntity.badRequest().build();
-		};
+	@GetMapping("/user/id/{userId}/exist")
+	public ResponseEntity<Boolean> existUserId(@PathVariable String userId) {
+		return ResponseEntity.ok(userService.existUserId(userId));
 	}
 
-	@GetMapping("/fetch/tel-email/protected")
-	public ResponseEntity<Map<String,Object>> getTelEmailSecretly(@RequestParam String id){
-		return ResponseEntity.ok(userService.getTelEmailSecretly(id));
+	@GetMapping("/user/email/{email}/exist")
+	public ResponseEntity<Boolean> existEmail(@PathVariable String email) {
+		return  ResponseEntity.ok(userService.existEmail(email));
 	}
 
-	@PostMapping("/match/tel")
-	public ResponseEntity<Boolean> matchUserIdTel(@RequestBody UserVO vo){
-		return ResponseEntity.ok(userService.matchUserIdTel(vo));
+	@GetMapping("/user/tel-email/protected")
+	public ResponseEntity<Map<String,Object>> getProtectedTelAndEmail(@RequestParam String id){
+		return ResponseEntity.ok(userService.getProtectedTelAndEmail(id));
 	}
 
-	@PostMapping("/match/email")
-	public ResponseEntity<Boolean> matchUserIdEmail(@RequestBody UserVO vo){
-		return ResponseEntity.ok(userService.matchUserIdEmail(vo));
+	@GetMapping("/user/{userId}/match")
+	public ResponseEntity<Boolean> matchUserId(@PathVariable String userId,
+												  @RequestParam(required = false)String tel,
+												  @RequestParam(required = false)String email){
+		UserVO vo = UserVO.builder().id(userId).tel(tel).email(email).build();
+		return ResponseEntity.ok(userService.matchUserId(vo));
 	}
 
-	@PostMapping("/find/id/tel")
-	public ResponseEntity<List<Map<String, Object>>> tryFindUserIdByTel(@RequestBody UserVO vo) {
-		return ResponseEntityUtil.okOrNotFound(userService.tryFindUserIdByTel(vo));
+	@GetMapping("/user")
+	public ResponseEntity<Map<String,Object>> findUser(@RequestParam(required = true)String name,
+													   @RequestParam(required = false)String tel,
+													@RequestParam(required = false)String email) {
+		UserVO vo = UserVO.builder().name(name).tel(tel).email(email).build();
+		List<Map<String,Object>> list = userService.getUser(vo);
+		if(list == null || list.isEmpty()){
+			return ResponseEntity.ok(null);
+		}
+		return ResponseEntity.ok(list.get(0));
 	}
 
-	@PostMapping("/find/id/email")
-	public ResponseEntity<List<Map<String, Object>>> tryFindUserIdByEmail(@RequestBody UserVO vo) {
-		return ResponseEntityUtil.okOrNotFound(userService.tryFindUserIdByEmail(vo));
+	@GetMapping("/shop")
+	public ResponseEntity<List<Map<String,Object>>> getShop(@RequestParam(required = false)String keyword){
+		ShopVO vo = ShopVO.builder().keyword(keyword).build();
+		return ResponseEntity.ok(shopService.getShop(vo));
 	}
+
+	@PostMapping("/bpno/validate")
+	public ResponseEntity<?> validateBusinessNumber(@RequestBody Map<String, String> map) {
+//		log.info("validate bno: {}",map);
+		String name = userService.getUserByBpNo(map.get("bp_no"));
+		if(StringUtils.hasText(name)){
+			return ResponseEntity.ok(name);
+		}
+
+
+
+		return ResponseEntity.ok(BusinessmanApiUtil.validate(map) == null ? 0 : 1);
+	}
+
 }

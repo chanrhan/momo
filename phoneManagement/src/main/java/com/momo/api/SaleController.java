@@ -39,7 +39,7 @@ public class SaleController {
 			}
 			return ResponseEntity.ok(list);
 		}else{
-			return ResponseEntity.ok(saleService.getSale(vo));
+			return ResponseEntity.ok(saleService.getSaleByUserId(vo));
 		}
 	}
 

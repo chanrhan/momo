@@ -98,7 +98,7 @@ function FindPasswordStep2({setStep, userId}){
     const [authNumber, setAuthNumber] = useState(null);
 
     useEffect(()=>{
-        accountApi.fetchProtectedTelAndEmail(userId).then(({status, data})=>{
+        accountApi.getProtectedTelAndEmail(userId).then(({status, data})=>{
             if(status === 200){
                 setSecretInfo(data);
             }

@@ -140,7 +140,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSale" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleByUserId" parameterType="com.momo.common.vo.SaleVO">
         select *
         from tb_sale s
         where shop_id=(
@@ -148,9 +148,6 @@
             from tb_emp
             where emp_id=#{userId}
         ) and
-<!--        <if test="saleId != null and !saleId.equals('')">-->
-<!--            s.sale_id=#{saleId} and-->
-<!--        </if>-->
         <if test="keyword != null and !keyword.equals('')">
             (
                 s.cust_nm like '%${keyword}%' or
@@ -159,10 +156,6 @@
                 s.cust_cd like '%${keyword}%'
             ) and
         </if>
-
-<!--        <if test="sellerId != null and !sellerId.equals('')">-->
-<!--            s.seller_id=#{sellerId} and-->
-<!--        </if>-->
         1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
@@ -170,6 +163,27 @@
 <!--        <if test="limit != null and !limit.equals('')">-->
 <!--            limit ${limit} ${offset}-->
 <!--        </if>-->
+    </select>
+
+    <select id="getSaleByShopId" parameterType="com.momo.common.vo.SaleVO">
+        select *
+        from tb_sale s
+        where shop_id=#{shopId} and
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+        <!--        <if test="limit != null and !limit.equals('')">-->
+        <!--            limit ${limit} ${offset}-->
+        <!--        </if>-->
     </select>
 
     <update id="updateSale" parameterType="com.momo.common.vo.SaleVO">

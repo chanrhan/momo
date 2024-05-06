@@ -1,7 +1,6 @@
 package com.momo.mapper;
 
 import com.momo.common.vo.SaleVO;
-import com.momo.common.vo.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,7 +16,8 @@ public interface SaleMapper{
 	public int insertSale(SaleVO vo);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int id);
-	public List<Map<String,Object>> getSale(SaleVO vo);
+	public List<Map<String,Object>> getSaleByUserId(SaleVO vo);
+	public List<Map<String,Object>> getSaleByShopId(SaleVO vo);
 
 	public boolean isDuplicatedTel(SaleVO vo);
 	public String getSpecFilePath(int id);

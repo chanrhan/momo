@@ -4,7 +4,8 @@ function TestHeader(){
     return (
         <div>
             <Link to='/test'>
-                <button className='btn btn-outline-light text-success-emphasis' style={{fontSize: '40px'}}>테스트 페이지</button>
+                <button className='btn btn-outline-light text-success-emphasis' style={{fontSize: '40px'}}>테스트 페이지
+                </button>
             </Link>
             <div className='mt-3 d-flex flex-row justify-content-center'>
                 <Link to='notify'>
@@ -24,6 +25,14 @@ function TestHeader(){
                 </Link>
                 <Link to='graph'>
                     <button className='btn btn-outline-success ms-1'>그래프 테스트</button>
+                </Link>
+            </div>
+            <div className='mt-3 d-flex flex-row justify-content-center'>
+                <Link to='excel'>
+                    <button className='btn btn-outline-success ms-1'>엑셀 다운로드 테스트</button>
+                </Link>
+                <Link to='bulk'>
+                    <button className='btn btn-outline-success ms-1'>대량 업로드 테스트</button>
                 </Link>
             </div>
             <Outlet/>

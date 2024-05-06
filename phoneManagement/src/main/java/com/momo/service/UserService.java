@@ -53,12 +53,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.existEmail(email);
 	}
 
-	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
-		return userMapper.tryFindUserIdByTel(vo);
-	}
-
-	public List<Map<String,Object>> tryFindUserIdByEmail(UserVO vo){
-		return userMapper.tryFindUserIdByEmail(vo);
+	public String getUserByBpNo(String bpNo){
+		return userMapper.getUserByBpNo(bpNo);
 	}
 
 	public void sendAuthNumberByEmailForUpdatePassword(String id){
@@ -69,7 +65,7 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	}
 
-	public Map<String,Object> getTelEmailSecretly(String id){
+	public Map<String,Object> getProtectedTelAndEmail(String id){
 		Map<String,Object> map = userMapper.findTelEmailById(id);
 
 		String tel = map.get("tel").toString();
@@ -88,12 +84,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		return map;
 	}
 
-	public boolean matchUserIdTel(UserVO vo){
-		return userMapper.matchUserIdTel(vo);
-	}
-
-	public boolean matchUserIdEmail(UserVO vo){
-		return userMapper.matchUserIdEmail(vo);
+	public boolean matchUserId(UserVO vo){
+		return userMapper.matchUserId(vo);
 	}
 
 	public void loginNow(String id){

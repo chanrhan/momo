@@ -2,8 +2,8 @@ import {useRef, useState} from "react";
 import useApi from "../hook/useApi";
 import axiosInstance from "../utils/axiosInstance";
 import useModal from "../hook/useModal";
-import {ModalType} from "../modal/ModalType";
 import axios from "axios";
+import {ModalType} from "../components/modal/ModalType";
 
 function MultipartTest(){
     const modal = useModal();

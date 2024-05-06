@@ -2,14 +2,15 @@ package com.momo.api;
 
 import com.momo.common.vo.SaleVO;
 import com.momo.service.NotificationService;
+import com.momo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -19,6 +20,7 @@ import java.util.Map;
 @Slf4j
 public class TestController {
 	private final NotificationService notificationService;
+	private final SaleService saleService;
 
 	@PostMapping("/send")
 	public ResponseEntity<?> sendTest(@RequestBody Map<String,Object> map){
@@ -46,7 +48,11 @@ public class TestController {
 		if(file == null){
 			return ResponseEntity.badRequest().build();
 		}
-
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/sale")
+	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestParam(defaultValue = "1")String  shopId){
+		return ResponseEntity.ok(saleService.getSaleByShopId(SaleVO.builder().shopId(shopId).build()));
 	}
 }
