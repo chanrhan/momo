@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
+@Deprecated
 public class MybatisConfig {
 //	private final ApplicationContext applicationContext;
 //

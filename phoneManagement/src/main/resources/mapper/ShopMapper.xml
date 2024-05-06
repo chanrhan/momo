@@ -2,13 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.momo.mapper.ShopCommonMapper">
-
+<mapper namespace="com.momo.mapper.ShopMapper">
     <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_shop
-            (shop_id, corp_id, shop_bp_no, shop_nm, shop_addr, shop_tel)
-        VALUES (#{shopId}, #{corpId}, #{shopBpNo}, #{shopNm}, #{shopAddr}, #{shopTel})
+            (shop_id, corp_id, shop_nm, shop_addr, shop_tel)
+        VALUES (#{shopId}, (
+            SELECT corp_id
+            FROM tb_emp
+            WHERE emp_id=#{userId}
+        ), #{shopNm}, #{shopAddr}, #{shopTel})
     </insert>
 
     <update id="updateShop" parameterType="com.momo.common.vo.UserVO">
@@ -38,45 +41,19 @@
     <delete id="deleteShop">
         DELETE
         FROM tb_shop
-        WHERE shop_id = #{id}
+        WHERE shop_id = #{shopId}
     </delete>
 
-    <select id="getMaxShopId">
-        SELECT MAX(shop_id)
-        FROM tb_shop
-            FOR
-        UPDATE
-    </select>
-
-    <select id="searchShop" parameterType="com.momo.common.vo.SearchVO">
-        WITH branch AS (
-                           SELECT c.reps_id,
-                                  c.bp_ko_nm,
-                                  c.bp_en_nm,
-                                  c.corp_nm,
-                                  c.corp_bp_no,
-                                  s.*
-                           FROM tb_shop AS s
-                                    LEFT OUTER JOIN tb_corp c ON c.corp_id = s.corp_id
-                       )
-
-        SELECT *
-        FROM branch
-        WHERE ${andSelect}
-          AND ${orSearch}
-            ${prop}
-    </select>
-
-    <select id="selectShop" parameterType="com.momo.common.vo.ShopCommonVO">
+    <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
         with tb as (
-        select
-        sh.*,
-        cp.corp_bp_no,
-        ac.name as reps_nm
-        from
-        tb_shop sh
-        left outer join tb_corp cp on cp.corp_id=sh.corp_id
-        left outer join tb_account ac on ac.id=cp.reps_id
+            select
+            sh.*,
+            cp.bp_no,
+            ac.name as reps_nm
+            from
+            tb_shop sh
+            left outer join tb_corp cp on cp.corp_id=sh.corp_id
+            left outer join tb_account ac on ac.id=cp.reps_id
         )
 
         select
@@ -84,71 +61,48 @@
         from
         tb
         where
-        <if test='corpId != null and !corpId.equals("")'>
-            corp_id=#{corpId} and
+        <if test="userId != null and !userId.equals('')">
+            corp_id=(
+            select tb_emp.corp_id
+            from    tb_emp
+            where emp_id=#{userId}
+            ) and
         </if>
-        <if test='shopId != null and shopId != 0'>
-            shop_id=#{shopId} and
-        </if>
-        <if test='shopBpNo != null and !shopBpNo.equals("")'>
-            shop_bp_no=#{shopBpNo} and
-        </if>
-        <if test='shopNm != null and !shopNm.equals("")'>
-            shop_nm=#{shopNm} and
-        </if>
-        <if test='shopAddr != null and !shopAddr.equals("")'>
-            shop_addr=#{shopAddr} and
-        </if>
-        <if test='shopTel != null and !shopTel.equals("")'>
-            shop_tel=#{shopTel} and
-        </if>
-        <if test='regiDt != null and !regiDt.equals("")'>
-            regi_dt=#{regiDt} and
+        <if test='keyword != null and !keyword.equals("")'>
+            (
+                shop_nm like '%${keyword}%' or
+                shop_cd like '%${keyword}%'
+            ) and
         </if>
         1 = 1
         <if test='order != null and !order.equals("")'>
             order by
             ${order} ${asc}
         </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
+<!--        <if test='limit != null and offset != null'>-->
+<!--            limit ${offset} ${limit}-->
+<!--        </if>-->
     </select>
 
     <!--    Corperation-->
-    <insert id="insertCorp" parameterType="com.momo.common.vo.ShopCommonVO">
+    <insert id="insertCorp" parameterType="com.momo.common.vo.ShopVO">
         INSERT INTO tb_corp
-        (corp_id, reps_id, corp_bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
-        VALUES (#{corpId}, #{repsId}, #{corpBpNo}, #{bpKoNm}, #{bpEnNm}, #{corpNm}, #{corpTel}, #{startDt})
+        (corp_id, bp_no, corp_nm)
+        values ((
+            select *
+            from    (
+                select IFNULL(max(corp_id),0)+1
+                from tb_corp
+                    ) as sub
+            ), #{bpNo},#{corpNm})
     </insert>
 
-    <update id="updateCorp" parameterType="com.momo.common.vo.ShopCommonVO">
+    <update id="updateCorp" parameterType="com.momo.common.vo.ShopVO">
         update
         tb_corp
         set
-        <if test='corpBpNo != null and !corpBpNo.equals("")'>
-            corp_bp_no=#{corpBpNo},
-        </if>
-        <if test='bpKoNm != null and !bpKoNm.equals("")'>
-            bp_ko_nm=#{bpKoNm},
-        </if>
-
-        <if test='bpEnNm != null and !bpEnNm.equals("")'>
-            bp_en_nm=#{bpEnNm},
-        </if>
-
-        <if test='corpNm != null and !corpNm.equals("")'>
-            corp_nm=#{corpNm},
-        </if>
-
-        <if test='corpTel != null and !corpTel.equals("")'>
-            corp_tel=#{corpTel},
-        </if>
-
-        <if test='startDt != null and !startDt.equals("")'>
-            start_dt=#{startDt},
-        </if>
-        reps_id=#{repsId}
+        bp_no=#{bpNo},
+        corp_nm=#{corpNm}
         where
         corp_id=#{corpId}
     </update>
@@ -166,66 +120,22 @@
         WHERE corp_id = #{id}
     </delete>
 
-    <select id="getMaxCorpId">
-        SELECT MAX(corp_id)
-        FROM tb_corp
-            FOR
-        UPDATE
-    </select>
 
-    <select id="selectCorp" parameterType="com.momo.common.vo.ShopCommonVO">
-        select
-        *
-        from
-        tb_corp
-        where
-        <if test='corpId != null'>
-            corp_id=#{corpId} and
-        </if>
-        <if test='repsId != null and !repsId.equals("")'>
-            reps_id=#{repsId} and
-        </if>
-        <if test='corpBpNo != null and !corpBpNo.equals("")'>
-            corp_bp_no=#{corpBpNo} and
-        </if>
-        <if test='bpKoNm != null and !bpKoNm.equals("")'>
-            bp_ko_nm=#{bpKoNm} and
-        </if>
-        <if test='bpEnNm != null and !bpEnNm.equals("")'>
-            bp_en_nm=#{bpEnNm} and
-        </if>
-        <if test='corpNm != null and !corpNm.equals("")'>
-            corp_nm=#{corpNm} and
-        </if>
-        <if test='corpTel != null and !corpTel.equals("")'>
-            corp_tel=#{corpTel} and
-        </if>
-        <if test='startDt != null and !startDt.equals("")'>
-            start_dt=#{startDt} and
-        </if>
-        1 = 1
-        <if test='order != null and !order.equals("")'>
-            order by
-            ${order} ${asc}
-        </if>
-        <if test='limit != null and offset != null'>
-            limit ${offset} ${limit}
-        </if>
-    </select>
-
-    <select id="searchCorp" parameterType="com.momo.common.vo.SearchVO">
+    <select id="getCorp" parameterType="com.momo.common.vo.ShopVO">
         SELECT *
         FROM tb_corp
-        WHERE ${andSelect}
-          AND ${orSearch}
-            ${prop}
+        WHERE
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            corp_nm LIKE '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
     </select>
 
-    <select id="getCorpPoint">
-        SELECT corp_pt
-        FROM tb_corp
-        WHERE corp_id = #{id}
-    </select>
 
 
 </mapper>

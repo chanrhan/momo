@@ -1,12 +1,10 @@
 package com.momo.config;
 
-import com.momo.interceptor.CommonInterceptor;
 import com.momo.interceptor.HomeInterceptor;
 import com.momo.interceptor.RoleAuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -14,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 	private final RoleAuthInterceptor roleAuthInterceptor;
 	private final HomeInterceptor homeInterceptor;
-	private final CommonInterceptor commonInterceptor;
 
 	// 이거 왜 적용 안했지..?
 	// 나중에 시간 되면 알아보자.
@@ -27,7 +24,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:8080") // 안에 해당 주소를 넣어도 됨
+				.allowedOrigins("http://localhost:8080","http://localhost:3000") // 안에 해당 주소를 넣어도 됨
+//				.allowedOriginPatterns("*")
 				.allowedMethods("GET", "POST")
 				.allowedHeaders("*")
 				.allowCredentials(true)
@@ -35,39 +33,41 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		//.allowCredentials(true); // .allowedOriginPatterns("*") 이렇게 와일드 카드로 설정하면 이거 쓰면 에러남 ( 실행 조차  X )
 	}
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(homeInterceptor)
-				.addPathPatterns("/home")
-				.excludePathPatterns("/error-page/**",
-									 "/js/**",
-									 "/css/**",
-									 "/api/**");
-
-		registry.addInterceptor(roleAuthInterceptor)
-				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**",
-									 "/js/**",
-									 "/css/**",
-									 "/api/**",
-									 "/home",
-									 "/",
-									 "/account/login",
-									 "/account/logout",
-									 "/sse/**",
-									 "/webjars/**");
-
-		registry.addInterceptor(commonInterceptor)
-				.addPathPatterns("/**")
-				.excludePathPatterns("/error-page/**",
-									 "/js/**",
-									 "/css/**",
-									 "/api/**",
-									 "/account/**",
-									 "/",
-									 "/admin/**",
-									 "/webjars/**");
-	}
+	// 리액트의 SPA(Single Page Application) 방식으로 가면서
+	// url 인터셉트 라우팅이 일단은 필요 없어짐 (api만 해주면 됨)
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(homeInterceptor)
+//				.addPathPatterns("/home")
+//				.excludePathPatterns("/error-page/**",
+//									 "/js/**",
+//									 "/css/**",
+//									 "/api/**");
+//
+//		registry.addInterceptor(roleAuthInterceptor)
+//				.addPathPatterns("/**")
+//				.excludePathPatterns("/error-page/**",
+//									 "/js/**",
+//									 "/css/**",
+//									 "/api/**",
+//									 "/home",
+//									 "/",
+//									 "/account/login",
+//									 "/account/logout",
+//									 "/sse/**",
+//									 "/webjars/**");
+//
+//		registry.addInterceptor(commonInterceptor)
+//				.addPathPatterns("/**")
+//				.excludePathPatterns("/error-page/**",
+//									 "/js/**",
+//									 "/css/**",
+//									 "/api/**",
+//									 "/account/**",
+//									 "/",
+//									 "/admin/**",
+//									 "/webjars/**");
+//	}
 
 	// 아래의 방식 대신 @WebFilter를 사용해서 필터를 거는 방식도 사용할 수 있음
 //	@Bean

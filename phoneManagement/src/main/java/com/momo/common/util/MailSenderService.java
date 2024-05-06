@@ -3,7 +3,7 @@ package com.momo.common.util;
 import com.momo.common.response.MailCreateResponse;
 import com.momo.common.enums.MailType;
 import com.momo.generator.CommonMailSender;
-import com.momo.service.ShopCommonService;
+import com.momo.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ public class MailSenderService {
 	private String INVITE_ADDRESS;
 
 	private final CommonMailSender  mailSender;
-	private final ShopCommonService shopCommonService;
+	private final ShopService shopService;
 
 	public ResponseEntity<MailCreateResponse> joinEmail(String email, MailType type, HttpSession session){
 		MailCreateResponse response = null;
@@ -54,14 +54,14 @@ public class MailSenderService {
 						  corpId +
 						  "'>");
 		if(corpId != 0){
-			Map<String,Object> corp = shopCommonService.selectCorpById(corpId);
+			Map<String,Object> corp = shopService.getCorp(corpId);
 			String corpNm = corp.get("corp_nm").toString();
 			sb.append("<p>" +
 							  "회사명: " + corpNm +
 							  "</p><br>");
 		}
 		if(shopId != 0 ){
-			Map<String,Object> shop = shopCommonService.selectShopById(shopId);
+			Map<String,Object> shop = shopService.getShopById(shopId);
 			String shopNm = shop.get("shop_nm").toString();
 			sb.append("<p>" +
 							  "매장명: " + shopNm +

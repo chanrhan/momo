@@ -1,0 +1,122 @@
+
+.modal-shadow-bg {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-shadow-bg.openModal{
+    display: flex;
+    align-items: center; /* 팝업이 열릴때 스르륵 열리는 효과 */
+    /*animation: modal-bg-show 0.3s;*/
+}
+
+.modal-popup{
+    display: flex;
+    align-items: center;
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.modal-menu{
+    position: fixed;
+    width: 40%;
+    height: 50%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-snackbar{
+    position: fixed;
+    width: 25%;
+    height: 5%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    /*border: 1px solid gray;*/
+    box-shadow: 0 14px 18px rgba(0,0,0,0.15);
+    border-radius: 1rem;
+    background-color: #ffffff;
+    overflow: hidden;
+    animation: fade-In 0.3s;
+}
+
+.modal-fade-out{
+    animation: fade-Out 0.5s;
+}
+
+@keyframes fade-In {
+    from{
+        opacity: 0;
+        margin-top: 25px;
+    }
+    to{
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+@keyframes fade-Out {
+    from{
+        opacity: 1;
+        margin-top: 0;
+    }
+    to{
+        opacity: 0;
+        margin-top: 25px;
+    }
+}
+
+.modal-toast{
+    position: fixed;
+    width: 30%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-tooltip{
+    position: fixed;
+    width: 20%;
+    height: 10%;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    border: 1px solid gray;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.modal-layer{
+    width: 60%;
+    height: 70%;
+    /*max-width: 450px;*/
+    margin: 0 auto;
+    border-radius: 0.3rem;
+    background-color: #fff; /* 팝업이 열릴때 스르륵 열리는 효과 */
+    /*animation: modal-show 0.3s;*/
+    overflow: hidden;
+}

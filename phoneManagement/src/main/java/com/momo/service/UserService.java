@@ -1,12 +1,12 @@
 package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
-import com.momo.mapper.UserMapper;
-import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
+import com.momo.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,14 +29,32 @@ public class UserService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
 
-
-
-	public List<Map<String,Object>> tryFindUserIdByTel(UserVO vo){
-		return userMapper.tryFindUserIdByTel(vo);
+	// Authentication
+	public List<Map<String,Object>> getUserAsStaff(String id){
+		return userMapper.getUserAsStaff(id);
 	}
 
-	public List<Map<String,Object>> tryFindUserIdByEmail(UserVO vo){
-		return userMapper.tryFindUserIdByEmail(vo);
+	public int updateCurrentShop(String userId, int shopId){
+		return userMapper.updateCurrentShop(userId, shopId);
+	}
+	public int updateNickname(String id, String nickname){
+		return userMapper.updateNickname(id, nickname);
+	}
+
+	public int resetPassword(UserVO vo){
+		vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+		return userMapper.resetPassword(vo);
+	}
+	public boolean existUserId(String userId){
+		return userMapper.existUserId(userId);
+	}
+
+	public boolean existEmail(String email){
+		return userMapper.existEmail(email);
+	}
+
+	public String getUserByBpNo(String bpNo){
+		return userMapper.getUserByBpNo(bpNo);
 	}
 
 	public void sendAuthNumberByEmailForUpdatePassword(String id){
@@ -47,6 +65,29 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	}
 
+	public Map<String,Object> getProtectedTelAndEmail(String id){
+		Map<String,Object> map = userMapper.findTelEmailById(id);
+
+		String tel = map.get("tel").toString();
+		String email = map.get("email").toString();
+
+		if(tel == null || email == null){
+			return null;
+		}
+		map.put("tel", tel.substring(0, tel.length()-3) + "****");
+
+		int idx = email.indexOf('@');
+		StringBuilder sb = new StringBuilder(email);
+		sb.replace(Math.max(idx - 4, 0), idx, "****");
+		map.put("email", sb.toString());
+
+		return map;
+	}
+
+	public boolean matchUserId(UserVO vo){
+		return userMapper.matchUserId(vo);
+	}
+
 	public void loginNow(String id){
 		userMapper.loginNow(id);
 	}
@@ -55,26 +96,21 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.updateUserToDormant(date);
 	}
 
-	public List<Map<String,Object>> selectUserInfo(UserVO vo){
-		if(vo.getOrder() == null){
-			vo.setOrder("regi_dt");
-		}
-		return userMapper.selectUserInfo(vo);
-	}
-
-	public List<Map<String,Object>> searchUserInfo(SearchVO vo){
-		return userMapper.searchUserInfo(vo);
+	public Map<String,Object> getUserById(String id){
+		return userMapper.getUserById(id);
 	}
 
 	// Common
-	public void loginDirectly(String username, HttpSession session){
+	public Authentication loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
-		Authentication auth = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
+		Authentication authentication  = new UsernamePasswordAuthenticationToken(user,"",user.getAuthorities());
+
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		context.setAuthentication(auth);
+		context.setAuthentication(authentication);
 		SecurityContextHolder.setContext(context);
 		// 수정된 context를 현재 session에 넣어줘야 로그인 상태가 유지된다.
 		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+		return authentication;
 	}
 
 	// User Account
@@ -88,7 +124,7 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	public int updatePassword(UserVO vo){
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
-		return userMapper.updateUser(vo);
+		return userMapper.updatePassword(vo);
 	}
 	public int updateApproval(String id, boolean state){
 		UserVO vo = UserVO.builder().empId(id).approvalSt(state).build();
@@ -98,43 +134,20 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.updatePfp(vo);
 	}
 	public String getPfpFilePath(String id){
-		return userMapper.getPfpFilePath(id);
+		return userMapper.getProfilePicture(id);
 	}
 	public int deleteUser(String id) {
 		return userMapper.deleteUser(id);
 	}
 
-	public List<Map<String,Object>> selectUser(UserVO vo) {
-		return userMapper.selectUser(vo);
+	public List<Map<String,Object>> getUser(UserVO vo) {
+		return userMapper.getUser(vo);
 	}
 
-	public Map<String,Object> selectUserByContext(){
-		String username = SecurityContextUtil.getUsername();
-		return selectUserById(username);
-	}
 
-	public Map<String,Object> selectUserById(String id){
-		List<Map<String,Object>> list = selectUser(UserVO.builder().id(id).build());
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
-
-	public Map<String,Object> selectUserByEmail(String email){
-		List<Map<String,Object>> list = selectUser(UserVO.builder().email(email).build());
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
-
-	public List<Map<String,Object>> searchUser(SearchVO vo) {
-		return userMapper.searchUser(vo);
-	}
 
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo){
-		return userMapper.searchChatInvitableUser(vo);
+		return userMapper.getChatInvitableUser(vo);
 	}
 
 	public int updateRole(String id, String role){
@@ -163,12 +176,12 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.deleteEmp(id);
 	}
 
-	public List<Map<String,Object>> selectEmp(UserVO vo) {
-		return userMapper.selectEmp(vo);
+	public List<Map<String,Object>> fetchStaff(UserVO vo) {
+		return userMapper.getUserAsStaff(vo);
 	}
-	public Map<String,Object> selectEmpById(String id){
+	public Map<String,Object> fetchStaffById(String id){
 		UserVO                   vo   = UserVO.builder().empId(id).build();
-		List<Map<String,Object>> list = selectEmp(vo);
+		List<Map<String,Object>> list = fetchStaff(vo);
 		if(list == null || list.isEmpty()){
 			return null;
 		}
@@ -197,18 +210,26 @@ public class UserService extends CommonService implements UserDetailsService{
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
 	}
 
+	public Authentication login(String username, String password){
+		Authentication authentication = authenticate(username, password);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+		return authentication;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,Object> user = selectUserById(username);
+		Map<String,Object> user = getUserById(username);
 		if(user == null){
-			throw new UsernameNotFoundException(String.format("User {%s} Not Founded!",username));
+			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
 		}
 
 		String id = user.get("id").toString();
 		String pwd = user.get("pwd").toString();
 		String role = user.get("role").toString();
 
-		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, role);
+		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, "ROLE_"+role);
 
 		if(role.equals("NONE")){
 			return userDetails;
@@ -223,5 +244,21 @@ public class UserService extends CommonService implements UserDetailsService{
 		}
 
 		return userDetails;
+	}
+
+
+	private Authentication authenticate(String username, String password) {
+		UserDetails userDetails = loadUserByUsername(username);
+
+		if (userDetails == null) {
+			System.out.println("Login details - null " + userDetails);
+			throw new BadCredentialsException("Invalid username and password");
+		}
+
+		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+			System.out.println("Login userDetails - password mismatch" + userDetails);
+			throw new BadCredentialsException("Invalid password");
+		}
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}
 }

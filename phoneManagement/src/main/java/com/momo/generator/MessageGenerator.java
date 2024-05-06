@@ -1,11 +1,10 @@
 package com.momo.generator;
 
 import com.momo.service.ItemCommonService;
-import com.momo.service.ShopCommonService;
+import com.momo.service.ShopService;
 import com.momo.service.UserService;
 import com.momo.common.vo.ItemCommonVO;
 import com.momo.common.vo.MsgCommonVO;
-import com.momo.common.vo.ShopCommonVO;
 import com.momo.common.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class MessageGenerator {
 	private final ItemCommonService itemCommonService;
 	private final UserService       userService;
-	private final ShopCommonService shopCommonService;
+	private final ShopService shopService;
 
 	public String createContent(MsgCommonVO vo) {
 		int    formId  = vo.getFormId();
@@ -25,8 +24,8 @@ public class MessageGenerator {
 //		String content = selectForm(MsgCommonVO.builder().formId(formId).build()).get(0).get("content").toString();
 		String content = vo.getContent();
 
-		Map<String, Object> seller = userService.selectUser(UserVO.builder().id(vo.getSellerId()).build()).get(0);
-		Map<String, Object> shop   = shopCommonService.selectShop(ShopCommonVO.builder().shopId(vo.getShopId()).build()).get(0);
+		Map<String, Object> seller = userService.getUser(UserVO.builder().id(vo.getSellerId()).build()).get(0);
+		Map<String, Object> shop   = shopService.getShopById(vo.getShopId());
 		content = content.replace("#{seller_nm}", seller.get("name").toString())
 				.replace("#{cust_nm}", vo.getCustNm())
 				.replace("#{shop_nm}]", shop.get("shop_nm").toString());
