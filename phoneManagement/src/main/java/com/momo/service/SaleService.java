@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.mapper.SaleMapper;
 import com.momo.common.vo.SaleVO;
 import lombok.RequiredArgsConstructor;
@@ -25,21 +26,16 @@ public class SaleService extends CommonService {
 	public int insertSale(SaleVO vo) {
 		return saleMapper.insertSale(vo);
 	}
-
 	public int updateSale(SaleVO vo) {
 		return saleMapper.updateSale(vo);
 	}
-
 	public int deleteSale(int id) {
 		return saleMapper.deleteSale(id);
 	}
 
-	public List<Map<String,Object>> getSaleByUserId(SaleVO vo){
-		return saleMapper.getSaleByUserId(vo);
-	}
 
-	public List<Map<String,Object>> getSaleByShopId(SaleVO vo){
-		return saleMapper.getSaleByShopId(vo);
+	public List<Map<String,Object>> getSale(SaleVO vo){
+		return saleMapper.getSale(vo);
 	}
 
 	public int deleteSales(int[] deletes){

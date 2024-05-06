@@ -5,7 +5,7 @@ import useUserInfo from "../../hook/useUserInfo";
 import { CiLock } from "react-icons/ci";
 import useModal from "../../hook/useModal";
 import ModalTest from "../../test/ModalTest";
-import {ModalType} from "../modal/ModalType";
+import {ModalType} from "../../modal/ModalType";
 
 function Profile(){
     const val = useValidation();

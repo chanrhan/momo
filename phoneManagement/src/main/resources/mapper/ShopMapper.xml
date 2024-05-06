@@ -5,13 +5,21 @@
 <mapper namespace="com.momo.mapper.ShopMapper">
     <!--    Shop-->
     <insert id="insertShop" parameterType="com.momo.common.vo.UserVO">
+        SET @corpId := (
+                           SELECT corp_id
+                           FROM tb_emp
+                           WHERE emp_id=#{userId}
+                       );
+
+        SET @lastShopId := (
+            SELECT max(shop_id)
+            FROM tb_shop
+            WHERE corp_id=@corpId
+            );
+
         INSERT INTO tb_shop
             (shop_id, corp_id, shop_nm, shop_addr, shop_tel)
-        VALUES (#{shopId}, (
-            SELECT corp_id
-            FROM tb_emp
-            WHERE emp_id=#{userId}
-        ), #{shopNm}, #{shopAddr}, #{shopTel})
+        VALUES (@lastShopId + 1, @corpId, #{shopNm}, #{shopAddr}, #{shopTel})
     </insert>
 
     <update id="updateShop" parameterType="com.momo.common.vo.UserVO">
@@ -41,14 +49,14 @@
     <delete id="deleteShop">
         DELETE
         FROM tb_shop
-        WHERE shop_id = #{shopId}
+        WHERE shop_id = #{id}
     </delete>
 
     <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
         with tb as (
             select
             sh.*,
-            cp.bp_no,
+            cp.corp_bp_no,
             ac.name as reps_nm
             from
             tb_shop sh
@@ -60,18 +68,15 @@
         *
         from
         tb
-        where
-        <if test="userId != null and !userId.equals('')">
-            corp_id=(
+        where corp_id=(
             select tb_emp.corp_id
             from    tb_emp
             where emp_id=#{userId}
-            ) and
-        </if>
+        ) and
         <if test='keyword != null and !keyword.equals("")'>
             (
                 shop_nm like '%${keyword}%' or
-                shop_cd like '%${keyword}%'
+                reps_nm like '%${keyword}%'
             ) and
         </if>
         1 = 1
@@ -87,22 +92,37 @@
     <!--    Corperation-->
     <insert id="insertCorp" parameterType="com.momo.common.vo.ShopVO">
         INSERT INTO tb_corp
-        (corp_id, bp_no, corp_nm)
-        values ((
-            select *
-            from    (
-                select IFNULL(max(corp_id),0)+1
-                from tb_corp
-                    ) as sub
-            ), #{bpNo},#{corpNm})
+        (corp_id, reps_id, corp_bp_no, bp_ko_nm, bp_en_nm, corp_nm, corp_tel, start_dt)
+        VALUES (#{corpId}, #{repsId}, #{corpBpNo}, #{bpKoNm}, #{bpEnNm}, #{corpNm}, #{corpTel}, #{startDt})
     </insert>
 
     <update id="updateCorp" parameterType="com.momo.common.vo.ShopVO">
         update
         tb_corp
         set
-        bp_no=#{bpNo},
-        corp_nm=#{corpNm}
+        <if test='corpBpNo != null and !corpBpNo.equals("")'>
+            corp_bp_no=#{corpBpNo},
+        </if>
+        <if test='bpKoNm != null and !bpKoNm.equals("")'>
+            bp_ko_nm=#{bpKoNm},
+        </if>
+
+        <if test='bpEnNm != null and !bpEnNm.equals("")'>
+            bp_en_nm=#{bpEnNm},
+        </if>
+
+        <if test='corpNm != null and !corpNm.equals("")'>
+            corp_nm=#{corpNm},
+        </if>
+
+        <if test='corpTel != null and !corpTel.equals("")'>
+            corp_tel=#{corpTel},
+        </if>
+
+        <if test='startDt != null and !startDt.equals("")'>
+            start_dt=#{startDt},
+        </if>
+        reps_id=#{repsId}
         where
         corp_id=#{corpId}
     </update>
@@ -120,14 +140,21 @@
         WHERE corp_id = #{id}
     </delete>
 
+    <select id="getMaxCorpId">
+        SELECT MAX(corp_id)
+        FROM tb_corp
+            FOR
+        UPDATE
+    </select>
 
-    <select id="getCorp" parameterType="com.momo.common.vo.ShopVO">
+    <select id="getCorporation" parameterType="com.momo.common.vo.ShopVO">
         SELECT *
         FROM tb_corp
         WHERE
         <if test="keyword != null and !keyword.equals('')">
             (
-            corp_nm LIKE '%${keyword}%'
+            corp_nm LIKE '%${keyword}%' OR
+            corp_id LIKE '%${keyword}%'
             ) and
         </if>
         1=1

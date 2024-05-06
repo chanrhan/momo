@@ -13,14 +13,14 @@ function AccountApi(accessToken){
         validateBusinessNumber : async (data)=>{
             return await requestApiWithAccessToken.post('/api/v1/account/validate/bno', data, accessToken);
         },
-        findUser : async ({name, tel, email})=>{
-            return await requestAPI.get(`/api/v1/public/user?name=${name}&tel=${tel}&email=${email}`, {});
+        findUsernameBy : async (findBy, data)=>{
+            return await requestAPI.post(`/api/v1/public/find/id/${findBy}`, data, {});
         },
         existUserId : async(id)=>{
-            return await requestAPI.get(`/api/v1/public/user/id/${id}/exist`,{});
+            return await requestAPI.get(`/api/v1/public/exist/id?value=${id}`,{});
         },
-        matchUserId : async(findBy, {id, tel, email})=>{
-            return await requestAPI.get(`/api/v1/public/user/${id}/match?tel=${tel}&email=${email}`, {});
+        matchUserId : async(findBy, data)=>{
+            return await requestAPI.post(`/api/v1/public/match/${findBy}`, data, {});
         },
         getResetToken : async (data)=>{
             return await requestAPI.post('/api/v1/auth/token/reset-pwd', data, {});
@@ -34,8 +34,8 @@ function AccountApi(accessToken){
                 }
             });
         },
-        getProtectedTelAndEmail : async(id)=>{
-            return await requestAPI.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
+        fetchProtectedTelAndEmail : async(id)=>{
+            return await requestAPI.get(`/api/v1/public/fetch/tel-email/protected?id=${id}`,{});
         }
     }
 }

@@ -23,19 +23,19 @@ function SaleApi(accessToken){
             return response;
         },
         getSaleByCategory : async (category, {keyword, order, asc})=>{
-            if(ObjectUtils.isEmpty(order)){
+            if(data.order === 'state'){
                 switch (category){
                     case 'card':
-                        order = 'card_st';
+                        data.order = 'card_st';
                         break;
                     case 'green':
-                        order = 'green_st';
+                        data.order = 'green_st';
                         break;
                     case 'comb':
-                        order = 'comb_st';
+                        data.order = 'comb_st';
                         break;
                     case 'support':
-                        order = 'support_st';
+                        data.order = 'support_st';
                         break;
                 }
             }

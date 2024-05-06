@@ -22,7 +22,9 @@ public class SaleVO extends CommonQueryVO {
 	private Integer corpId;
 	private Integer dupTel; // 중복된 전화번호 개수
 	private Integer saleId; // 판매일보 번호
-	private String shopId; // 매장 코드
+	private Integer shopId; // 매장 코드
+	private String  corpBpNo; // 회사 사업자등록번호
+	private String  shopBpNo; // 매장 사업자등록번호
 
 	// 고객 정보
 	private String custNm; // 고객 이름
@@ -111,31 +113,31 @@ public class SaleVO extends CommonQueryVO {
 	// 예약 발송
 	private List<MsgCommonVO> msgRsvList;
 
-//	public Integer getShopId(){
-//		return IntegerUtil.zeroToNull(shopId);
-//	}
+	public Integer getShopId(){
+		return IntegerUtil.zeroToNull(shopId);
+	}
 
-//	public String getSupDiv() {
-//		if(supDiv == null) return null;
-//		StringBuilder sb = new StringBuilder();
-//		for(int i=0;i<supDiv.size();++i){
-//			sb.append(supDiv.get(i));
-//			if(i < supDiv.size() - 1){
-//				sb.append(",");
-//			}
-//		}
-//		return sb.toString();
-//	}
-//
-//	public String getSupPay() {
-//		if(supPay == null) return null;
-//		StringBuilder sb = new StringBuilder();
-//		for(int i=0;i<supPay.size();++i){
-//			sb.append(supPay.get(i));
-//			if(i < supPay.size() - 1){
-//				sb.append(",");
-//			}
-//		}
-//		return sb.toString();
-//	}
+	public String getSupDiv() {
+		if(supDiv == null) return null;
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<supDiv.size();++i){
+			sb.append(supDiv.get(i));
+			if(i < supDiv.size() - 1){
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getSupPay() {
+		if(supPay == null) return null;
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<supPay.size();++i){
+			sb.append(supPay.get(i));
+			if(i < supPay.size() - 1){
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
 }

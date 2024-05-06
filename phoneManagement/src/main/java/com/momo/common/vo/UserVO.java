@@ -53,7 +53,7 @@ public class UserVO extends CommonQueryVO {
 		return ShopVO.builder()
 				.shopId(shopId)
 				.corpId(corpId)
-				.bpNo(bpNo)
+				.shopBpNo(bpNo)
 				.shopNm(shopNm)
 				.shopAddr(shopAddr)
 				.shopTel(shopTel)
@@ -64,9 +64,12 @@ public class UserVO extends CommonQueryVO {
 		return ShopVO.builder()
 				.corpId(corpId)
 				.repsId(empId)
-				.bpNo(bpNo)
+				.corpBpNo(bpNo)
+				.bpKoNm(bpKoNm)
+				.bpEnNm(bpEnNm)
 				.corpNm(corpNm)
-				.regiDt(startDt)
+				.corpTel(corpTel)
+				.startDt(startDt)
 				.build();
 	}
 

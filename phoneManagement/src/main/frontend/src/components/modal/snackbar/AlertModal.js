@@ -1,6 +1,7 @@
 import {SnackbarModal} from "../SnackbarModal";
+import useModal from "../../hook/useModal";
 import {ModalType} from "../ModalType";
-import useModal from "../../../hook/useModal";
+import {useEffect} from "react";
 
 function AlertModal(props){
     const modal = useModal();

@@ -1,7 +1,7 @@
+import {MenuModal} from "../modal/MenuModal";
 import useModal from "../hook/useModal";
+import {ModalType} from "../modal/ModalType";
 import {useEffect} from "react";
-import {ModalType} from "../components/modal/ModalType";
-import {MenuModal} from "../components/modal/MenuModal";
 
 function MenuModalTest(props){
     const modal = useModal();

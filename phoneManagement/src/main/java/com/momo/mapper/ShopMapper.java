@@ -12,13 +12,18 @@ public interface ShopMapper {
 	// Shop
 	public int insertShop(ShopVO vo);
 	public int updateShop(ShopVO vo);
-	public int deleteShop(int shopId);
+	public int deleteShop(int id);
 	public List<Map<String,Object>> getShop(ShopVO vo);
+//	public List<Map<String,Object>> searchShop(SearchVO vo);
+//	public Integer getMaxShopId();
 
 	// Corperation
 	public int insertCorp(ShopVO vo);
 	public int updateCorp(ShopVO vo);
 	public int updateCorpPoint(int id, int amount);
-	public int deleteCorp(int id);
-	public List<Map<String,Object>> getCorp(ShopVO vo);
+	public int deleteCorp(String bNo);
+	public List<Map<String,Object>> getCorporation(ShopVO vo);
+//	public List<Map<String,Object>> searchCorp(SearchVO vo);
+//	public Integer getMaxCorpId();
+//	public Integer getCorpPoint(int id);
 }

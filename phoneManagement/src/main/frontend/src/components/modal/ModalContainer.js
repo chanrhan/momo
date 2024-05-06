@@ -7,7 +7,10 @@ import AlertModal from "./snackbar/AlertModal";
 import UpdatePasswordModal from "../user/UpdatePasswordModal";
 import {ModalType} from "./ModalType";
 import {useEffect, useRef} from "react";
+import useModal from "../hook/useModal";
 import {MenuModal} from "./MenuModal";
+import MenuModalTest from "../test/MenuModalTest";
+import {ObjectUtils} from "../utils/objectUtil";
 import SaleDetailModal from "../sale/SaleDetailModal";
 import AddSaleModal from "../sale/AddSaleModal";
 import SelectSecondModal from "../sale/SelectSecondModal";
@@ -16,11 +19,6 @@ import SelectCombMainModal from "../sale/SelectCombMainModal";
 import SelectExsvcModel from "../sale/SelectExsvcModel";
 import SelectPlanModal from "../sale/SelectPlanModal";
 import SelectGreenPhoneModal from "../sale/SelectGreenPhoneModal";
-import MenuModalTest from "../../test/MenuModalTest";
-import useModal from "../../hook/useModal";
-import {ObjectUtils} from "../../utils/objectUtil";
-import TableHeaderSelectModal from "../../test/TableHeaderSelectModal";
-import TableValidationModal from "../../test/TableValidationModal";
 
 const MODAL_COMPONENTS = {
     ChangeNickname: ChangeNicknameModal,
@@ -36,9 +34,7 @@ const MODAL_COMPONENTS = {
     SelectComb: SelectCombMainModal,
     SelectExsvc: SelectExsvcModel,
     SelectPlan: SelectPlanModal,
-    SelectGreen: SelectGreenPhoneModal,
-    SelectTableHeader: TableHeaderSelectModal,
-    TableValidation: TableValidationModal
+    SelectGreen: SelectGreenPhoneModal
 }
 
 function ModalContainer(){

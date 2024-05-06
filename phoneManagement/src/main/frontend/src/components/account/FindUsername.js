@@ -28,7 +28,7 @@ function FindUsername(){
 
     const submit = async ()=>{
         if(val.validateAll() && val.matchAuthNumber(authNumber)){
-            await accountApi.findUser(findBy, {
+            await accountApi.findUsernameBy(findBy, {
                 'name': val.input.name,
                 [findBy]: val.input[findBy]
             }).then(({status,data})=>{
