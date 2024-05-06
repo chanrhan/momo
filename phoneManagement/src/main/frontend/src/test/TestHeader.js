@@ -34,6 +34,9 @@ function TestHeader(){
                 <Link to='bulk'>
                     <button className='btn btn-outline-success ms-1'>대량 업로드 테스트</button>
                 </Link>
+                <Link to='regex'>
+                    <button className='btn btn-outline-success ms-1'>정규식 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

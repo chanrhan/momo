@@ -32,6 +32,7 @@ import ManageCustomer from "./components/manage-customer/ManageCustomer";
 import ReserveMessage from "./components/reserve-msg/ReserveMessage";
 import Graph from "./components/graph/Graph";
 import BulkUploadTest from "./test/BulkUploadTest";
+import {RegexTest} from "./test/RegexTest";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
                 <Route path='graph' element={<GraphTest/>}/>
                 <Route path='excel' element={<ExcelTest/>}/>
                 <Route path='bulk' element={<BulkUploadTest/>}/>
+                <Route path='regex' element={<RegexTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>

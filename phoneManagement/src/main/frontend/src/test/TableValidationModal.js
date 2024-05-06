@@ -3,7 +3,7 @@ import useModal from "../hook/useModal";
 import {ModalType} from "../components/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
 import {useEffect, useState} from "react";
-import {useMatcher} from "../utils/useMatcher";
+import {useMapper} from "../utils/useMapper";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import {ObjectUtils} from "../utils/objectUtil";
 
@@ -14,8 +14,8 @@ const GENDER = [
 ]
 
 function TableValidationModal({headerIndex, headerType, data, fails= [], onCancel = null, onConfirm = null}){
-    const matcher = useMatcher(headerType);
-    const types = matcher.types(headerType);
+    const mapper = useMapper(headerType);
+    const types = mapper.types(headerType);
 
     const modal = useModal();
     const [defaultValue, setDefaultValue] = useState(0);
@@ -37,7 +37,7 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
         setResult(prev=>{
             const copy = {...prev};
             fails.map(index=>{
-                const matchedValue = matcher.match(data[index]);
+                const matchedValue = mapper.matchMap(data[index]);
                 // console.log(`from: ${data[index]}, to: ${matchedValue}`)
                 if(matchedValue === null){
                     copy['fail'].push(index)
@@ -75,7 +75,7 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
 
     return (
         <LayerModal>
-            <div className='mt-5 d-flex flex-column justify-content-center align-items-center'>
+            <div className='mt-3 d-flex flex-column justify-content-center align-items-center scrollbar'>
                 <div>
                     <h1 className='text-black'><b className='text-primary'>[{DEFAULT_HEADERS.get(headerType)}]</b> 에 대한 유효성 검사</h1>
                     <h2 className='mt-4 text-black'>데이터 유형과 일치하지 않는 값이 <b className='text-danger'>{fails.length}</b>개 발견되었습니다</h2>

@@ -4,6 +4,7 @@ import useModal from "../hook/useModal";
 import {ModalType} from "../components/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
 import '../css/table.css'
+import {RegexUtils} from "../utils/regex";
 
 
 const SAMPLE_SALE = [
@@ -196,10 +197,17 @@ function CustomTable({}){
                 break;
             case 'cust_tel':
                 cols.map((col,index)=>{
-
+                    if(!/^(0[0-9]{2,3})?[0-9]{3,4}[0-9]{3,4}$/.test(col)){
+                        fails.push(index)
+                    }
                 })
                 break;
             case 'cust_cd':
+                cols.map((col,index)=>{
+                    if(!/^[0-9]{7,11}$/.test(col)){
+                        fails.push(index)
+                    }
+                })
                 break;
             case 'ph_md':
                 break;
