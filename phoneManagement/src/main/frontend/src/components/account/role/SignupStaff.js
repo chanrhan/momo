@@ -19,7 +19,7 @@ function SignupStaff(){
             return;
         }
 
-        shopApi.getCorp({keyword}).then(({status,data})=>{
+        shopApi.getCorpListForRoleDetail({keyword}).then(({status,data})=>{
             if(status === 200){
                 setSearchResult(data);
             }else{

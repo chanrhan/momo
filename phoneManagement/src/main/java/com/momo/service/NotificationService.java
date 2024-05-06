@@ -79,7 +79,7 @@ public class NotificationService extends CommonService {
 		Map<String,Object> data = new HashMap<>();
 		data.put("shop_id", shopId);
 
-		Map<String,Object> corp = shopService.getCorp(corpId);
+		Map<String,Object> corp = shopService.getCorporationById(corpId);
 		String repsId = corp.get("reps_id").toString();
 		notify(senderId, repsId, "approval", data);
 	}

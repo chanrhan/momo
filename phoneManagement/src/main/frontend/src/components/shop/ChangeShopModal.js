@@ -15,7 +15,7 @@ function ChangeShopModal(props){
     const [shopList,setShopList] = useState([]);
 
     useEffect(()=>{
-        shopApi.getShop().then(({status, data})=>{
+        shopApi.getShopListByReps().then(({status, data})=>{
             if(status === 200 && !ObjectUtils.isEmpty(data)){
                 setShopList(data);
             }

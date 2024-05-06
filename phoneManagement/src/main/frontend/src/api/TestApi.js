@@ -7,9 +7,6 @@ function TestApi(accessToken){
         },
         sendMultipartFile: async (data, option)=>{
             return await requestAPI.post('/api/v1/test/multipart', data, option);
-        },
-        getSale: async (shopId)=>{
-            return await requestAPI.get(`/api/v1/test/sale?shopId=${shopId}`);
         }
     }
 }

@@ -1,5 +1,5 @@
 import useModal from "../hook/useModal";
-import {ModalType} from "../components/modal/ModalType";
+import {ModalType} from "../modal/ModalType";
 
 function ModalTest(){
     const modal = useModal();
