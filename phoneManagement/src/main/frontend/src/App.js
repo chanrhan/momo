@@ -33,6 +33,7 @@ import ReserveMessage from "./components/reserve-msg/ReserveMessage";
 import Graph from "./components/graph/Graph";
 import BulkUploadTest from "./test/BulkUploadTest";
 import {RegexTest} from "./test/RegexTest";
+import GMDSetting from "./components/admin/GMDSetting";
 
 function App() {
   return (
@@ -92,7 +93,7 @@ function App() {
                 </Authorization>
             }>
                 <Route path='/admin' element={<Admin/>}>
-                    <Route path='setting'></Route>
+                    <Route path='setting' element={<GMDSetting/>}></Route>
                 </Route>
             </Route>
         </Routes>

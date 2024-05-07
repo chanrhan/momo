@@ -20,36 +20,43 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
     const modal = useModal();
     const [defaultValue, setDefaultValue] = useState(0);
     const [result, setResult] = useState({
-        fail: []
+
     })
+    const [mappedFails, setMappedFails] = useState([])
     // { froms, to }
 
     useEffect(() => {
-        validate()
+        validate();
         return ()=>{
             setResult({
-                fail: []
             })
         }
     }, []);
 
     const validate = ()=>{
+        const mapfail = [];
         setResult(prev=>{
             const copy = {...prev};
             fails.map(index=>{
-                const matchedValue = mapper.matchMap(data[index]);
-                // console.log(`from: ${data[index]}, to: ${matchedValue}`)
-                if(matchedValue === null){
-                    copy['fail'].push(index)
+                const mappedValue = mapper.matchMap(data[index]);
+                // console.log(`mapped: ${matchedValue}`)
+                if(mappedValue === null){
+                    // copy['fail'].push(index)
+                    mapfail.push(index)
                     return;
                 }
-                if(!copy[matchedValue]){
-                    copy[matchedValue] = [];
+                if(!copy[mappedValue]){
+                    copy[mappedValue] = [];
                 }
-                copy[matchedValue].push(index);
+                if(!copy[mappedValue][data[index]]){
+                    copy[mappedValue][data[index]] = [];
+                }
+                copy[mappedValue][data[index]].push(index);
             })
+            // console.table(copy)
             return copy;
-        })
+        });
+        setMappedFails(mapfail);
     }
 
     const cancel = ()=>{
@@ -62,11 +69,19 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
     const confirm = ()=>{
         if(onConfirm !== null){
             const modifyData = {}
-            // console.table(result)
-            Object.keys(result).map(k=>{
-                return result[k].map(v=>{
-                    modifyData[v] = (k === 'fail') ? types[defaultValue] : k;
-                })
+
+            for(const mappedValue in result){
+                for(const k in result[mappedValue]){
+                    for(const i in result[mappedValue][k]){
+                        // console.log(`i: ${i}, r: ${result[mappedValue][k][i]}`)
+                        modifyData[result[mappedValue][k][i]] = mappedValue
+                    }
+                }
+            }
+            // console.table(modifyData)
+
+            mappedFails.map(f=>{
+                modifyData[f] = types[defaultValue];
             })
             onConfirm(modifyData);
         }
@@ -81,26 +96,32 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
                     <h2 className='mt-4 text-black'>데이터 유형과 일치하지 않는 값이 <b className='text-danger'>{fails.length}</b>개 발견되었습니다</h2>
                     <hr/>
                     <div className='mt-4'>
-                        <h3 className='text-black'>임의로 변경한 데이터 <b className='text-danger'>{fails.length - result.fail.length}</b>개</h3>
+                        <h3 className='text-black'>임의로 변경한 데이터 <b className='text-danger'>{fails.length - mappedFails.length}</b>개</h3>
                         {
                             result && Object.keys(result).map(key => {
-                                if (key === 'fail') {
-                                    return null;
-                                }
+                                // if (key === 'fail') {
+                                //     return null;
+                                // }
                                 const failResults = result[key];
+                                // console.table(failResults)
+                                let failCount = 0;
                                 return <div className='d-flex flex-row align-items-center mt-4'>
                                     <div className='d-flex flex-row'>
                                         {
-                                            failResults && failResults.map((val, index) => {
+                                            failResults && Object.keys(failResults).map((val, index) => {
+                                                failCount += failResults[val].length;
                                                 if (index > 5) return;
-                                                return <h3 className='me-2'>{data[val]}</h3>;
+                                                return <div className='d-flex flex-column align-items-center justify-content-center'>
+                                                    <h6 className='text-danger'>{failResults[val].length}개</h6>
+                                                    <h3 className='fail-value'>{val}</h3>
+                                                </div>;
                                             })
                                         }
                                         {
                                             failResults.length > 5 ? <h3>...</h3> : null
                                         }
                                     </div>
-                                    <h4 className='ms-4'>| <b className='text-danger'>{failResults.length}</b>개의 데이터</h4>
+                                    <h4 className='ms-4'>| <b className='text-danger'>{failCount}</b>개의 데이터</h4>
                                     <MdKeyboardDoubleArrowRight size='50px'/>
                                     <h3><b className='text-primary'>{key}</b></h3>
                                 </div>
@@ -111,9 +132,9 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
                     <div className='mt-5'>
                         {
                             result && (
-                                result.fail.length > 0 && (
+                                mappedFails.length > 0 && (
                                     <>
-                                        <h3 className='text-black'>변경하지 못한 데이터 <b className='text-danger'>{result.fail.length}</b>개
+                                        <h3 className='text-black'>변경하지 못한 데이터 <b className='text-danger'>{mappedFails.length}</b>개
                                         </h3>
                                         <h4>이 데이터들은 자동으로 <select className='text-success' value={defaultValue} onChange={e=>{
                                             console.log(types[e.target.value])

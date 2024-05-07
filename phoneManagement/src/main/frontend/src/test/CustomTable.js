@@ -5,6 +5,7 @@ import {ModalType} from "../components/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
 import '../css/table.css'
 import {RegexUtils} from "../utils/regex";
+import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
 
 
 const SAMPLE_SALE = [
@@ -210,6 +211,9 @@ function CustomTable({}){
                 })
                 break;
             case 'ph_md':
+                for(let i=0;i<cols.length;++i){
+                    fails.push(i);
+                }
                 break;
             case 'sec_md':
                 break;
@@ -272,7 +276,7 @@ function CustomTable({}){
                                                style={{
                                                    cursor: 'pointer',
                                                    background: selectedCell && selectedCell.row === rowIdx && selectedCell.col === colIdx ? 'lightblue' : 'white'
-                                               }}><input value={c} onChange={(e) => {
+                                               }}><input value={(header[colIdx] === 'ph_md') ? (SAMPLE_PHONE_MODEL[c] ? SAMPLE_PHONE_MODEL[c].product_nm : c) : c} onChange={(e) => {
                                         handleInputData(e, rowIdx, colIdx)
                                     }}/></td>
                                 })

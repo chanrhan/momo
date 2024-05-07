@@ -1,5 +1,6 @@
 import {fuzzyMatcher} from "./fuzzyMatcher";
 import {RegexUtils} from "./regex";
+import {SAMPLE_PHONE_MODEL, SAMPLE_TAG} from "../test/SAMPLE_DATA";
 
 export const useMapper = (type)=> {
     return {
@@ -34,8 +35,10 @@ export const useMapper = (type)=> {
                     return [
                         '000000000'
                     ]
-                // case 'ph_md':
-                //     return matchPhoneModel(data);
+                case 'ph_md':
+                    return [
+                        'null'
+                    ]
                 // case 'sec_md':
                 //     return matchSecondModel(data);
             }
@@ -85,7 +88,56 @@ const mappingToIdentifyCode = (data)=>{
 }
 
 const matchPhoneModel = (data)=>{
+    const target = data.toString().replaceAll(/[\s-()~`!@#$%^&*=]/g, '')
+    const result = {
+        // '~/t': -999
+    };
 
+    const PHONE_MODELS = Object.entries(SAMPLE_PHONE_MODEL);
+
+    // of: 열거 가능한 요소들 그냥 순서대로 반복
+    // in: 객체의 열거 가능한 속성을 반복, key를 출력
+    for(const [key, value] of PHONE_MODELS){
+        const modelName = key.replaceAll(/[\s-]/g, '')
+        if(modelName && target.toUpperCase().includes(modelName)){
+            return key;
+        }
+        const tags = value.replaceAll(/[()]/g,'').split(' ');
+        tags.map(tag=>{
+            const finds = [tag];
+            let isFind = false;
+            if(SAMPLE_TAG[tag]){
+                finds.push(...SAMPLE_TAG[tag])
+            }
+            for(const i in finds){
+                if(target.toUpperCase().includes(finds[i].toString())){
+                    // console.log(`found -> ${finds[i]}`)
+                    isFind = true;
+                    break;
+                }
+            }
+            if(!result[key]){
+                result[key] = 0;
+            }
+            result[key] += (isFind) ? 2 : 0;
+        })
+    }
+    // console.log(`target: ${target}`)
+    // console.table(result)
+
+    const resultArray = Object.entries(result);
+    const values = resultArray.map(([key, value])=>value);
+    const maxCount = Math.max(...values);
+    if(maxCount <= 0){
+        return null;
+    }
+    const maxIndex = values.indexOf(maxCount);
+
+    const maxKey = resultArray.map(([key, value])=>key)[maxIndex];
+
+    if(!maxKey) return null;
+    const closestValue = SAMPLE_PHONE_MODEL[maxKey];
+    return closestValue ? closestValue : null;
 }
 
 const matchSecondModel = (data)=>{
