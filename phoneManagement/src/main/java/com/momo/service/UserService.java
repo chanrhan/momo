@@ -100,6 +100,10 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.getUserById(id);
 	}
 
+	public Map<String,String> getUserAsAuthorization(String id){
+		return userMapper.getUserAsAuthorization(id);
+	}
+
 	// Common
 	public Authentication loginDirectly(String username, HttpSession session){
 		UserDetails user = loadUserByUsername(username);
@@ -220,14 +224,14 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,Object> user = getUserById(username);
+		Map<String,String > user = getUserAsAuthorization(username);
 		if(user == null){
 			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
 		}
 
-		String id = user.get("id").toString();
-		String pwd = user.get("pwd").toString();
-		String role = user.get("role").toString();
+		String id = user.get("id");
+		String pwd = user.get("pwd");
+		String role = user.get("role");
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, "ROLE_"+role);
 

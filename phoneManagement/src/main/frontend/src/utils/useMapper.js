@@ -1,8 +1,33 @@
 import {fuzzyMatcher} from "./fuzzyMatcher";
 import {RegexUtils} from "./regex";
 import {SAMPLE_PHONE_MODEL, SAMPLE_TAG} from "../test/SAMPLE_DATA";
+import {useEffect} from "react";
+import useApi from "../hook/useApi";
+import {HttpStatusCode} from "axios";
+import {gmdActions} from "../store/slices/gmdSlice";
+import {useSelector} from "react-redux";
+import {ObjectUtils} from "./objectUtil";
 
 export const useMapper = (type)=> {
+    const {gmdApi} = useApi();
+    const gmdData = useSelector(state=>state.gmdReducer);
+
+    // useEffect(() => {
+    //     console.table(gmdData)
+    // }, [gmdData]);
+    //
+    // useEffect(() => {
+    //     gmdApi.getPhoneModel().then(({status,data})=>{
+    //         if(status === HttpStatusCode.Ok){
+    //             // console.table(data)
+    //             gmdActions.setData({
+    //                 key: 'phone',
+    //                 data: data
+    //             });
+    //         }
+    //     })
+    // }, []);
+
     return {
         matchMap: (data)=>{
             let result;
@@ -136,8 +161,9 @@ const matchPhoneModel = (data)=>{
     const maxKey = resultArray.map(([key, value])=>key)[maxIndex];
 
     if(!maxKey) return null;
-    const closestValue = SAMPLE_PHONE_MODEL[maxKey];
-    return closestValue ? closestValue : null;
+    return maxKey;
+    // const closestValue = SAMPLE_PHONE_MODEL[maxKey];
+    // return closestValue ? closestValue : null;
 }
 
 const matchSecondModel = (data)=>{

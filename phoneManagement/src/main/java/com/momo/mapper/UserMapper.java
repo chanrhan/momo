@@ -40,6 +40,7 @@ public interface UserMapper {
 	public int insertUser(UserVO vo);
 	public int updateUser(UserVO vo);
 	public int deleteUser(String id);
+	public Map<String,String> getUserAsAuthorization(String userId);
 	public Map<String,Object> getUserById(String userId);
 	public List<Map<String,Object>> getUser(UserVO vo);
 

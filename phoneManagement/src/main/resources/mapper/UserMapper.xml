@@ -163,6 +163,12 @@
         WHERE id = #{id}
     </update>
 
+    <select id="getUserAsAuthorization">
+        SELECT *
+        from tb_account
+        where id=#{userId}
+    </select>
+
     <select id="getUserById">
         SELECT ac.id,
                ac.name,

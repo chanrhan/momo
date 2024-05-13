@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {useMapper} from "../utils/useMapper";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import {ObjectUtils} from "../utils/objectUtil";
+import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
 
 const GENDER = [
     '남',
@@ -90,9 +91,9 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
 
     return (
         <LayerModal>
-            <div className='mt-3 d-flex flex-column justify-content-center align-items-center scrollbar'>
-                <div>
-                    <h1 className='text-black'><b className='text-primary'>[{DEFAULT_HEADERS.get(headerType)}]</b> 에 대한 유효성 검사</h1>
+            <div className='d-flex flex-column justify-content-center align-items-center scrollbar'>
+                <div className='mt-5'>
+                    <h1 className='mt-5 text-black'><b className='text-primary'>[{DEFAULT_HEADERS.get(headerType)}]</b> 에 대한 유효성 검사</h1>
                     <h2 className='mt-4 text-black'>데이터 유형과 일치하지 않는 값이 <b className='text-danger'>{fails.length}</b>개 발견되었습니다</h2>
                     <hr/>
                     <div className='mt-4'>
@@ -123,7 +124,8 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
                                     </div>
                                     <h4 className='ms-4'>| <b className='text-danger'>{failCount}</b>개의 데이터</h4>
                                     <MdKeyboardDoubleArrowRight size='50px'/>
-                                    <h3><b className='text-primary'>{key}</b></h3>
+                                    <h3><b className='text-primary'><ValueSelector type={headerType} value={key}/></b></h3>
+
                                 </div>
                             })
                         }
@@ -153,13 +155,23 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
 
                     </div>
                 </div>
-                <div className='d-flex flex-row align-items-center mt-3'>
+                <div className='d-flex flex-row align-items-center mt-3 mb-5'>
                     <button className='btn btn-danger' onClick={cancel}>취소</button>
                     <button className='btn btn-primary ms-2' onClick={confirm}>확인</button>
                 </div>
             </div>
         </LayerModal>
     )
+}
+
+function ValueSelector({type, value}){
+    // console.log(`type: ${type}`)
+    switch (type){
+        case 'ph_md':
+            return SAMPLE_PHONE_MODEL[value];
+        default:
+            return value;
+    }
 }
 
 export default TableValidationModal;
