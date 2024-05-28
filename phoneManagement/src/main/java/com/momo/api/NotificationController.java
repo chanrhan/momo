@@ -17,7 +17,14 @@ import java.util.Map;
 public class NotificationController {
 	private final NotificationService notificationService;
 
-	@GetMapping("/list")
+	/**
+	 * 알림 목록 불러오기
+	 * @return {
+	 *     날짜
+	 *     알림 내용
+	 * }
+	 */
+	@GetMapping("/")
 	public ResponseEntity<List<Map<String,Object>>> getNotification(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(notificationService.getNotification(username));

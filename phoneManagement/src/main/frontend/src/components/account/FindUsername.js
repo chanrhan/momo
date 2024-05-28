@@ -8,7 +8,7 @@ function FindUsername(){
     const [findBy, setFindBy] = useState('tel');
 
     const val = useValidation(['name','tel']);
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null);
 
     const [foundIds, setFoundIds] = useState([]);
@@ -28,7 +28,7 @@ function FindUsername(){
 
     const submit = async ()=>{
         if(val.validateAll() && val.matchAuthNumber(authNumber)){
-            await accountApi.findUser(findBy, {
+            await publicApi.findUser(findBy, {
                 'name': val.input.name,
                 [findBy]: val.input[findBy]
             }).then(({status,data})=>{

@@ -10,6 +10,9 @@ function ShopApi(accessToken){
         },
         getShop : async ()=>{
             return await requestApiWithAccessToken.get('/api/v1/shop',accessToken);
+        },
+        getShopAll : async ()=>{
+            return await requestApiWithAccessToken.get('/api/v1/shop/all',accessToken);
         }
     }
 }

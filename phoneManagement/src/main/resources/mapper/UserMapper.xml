@@ -3,8 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <select id="findUserByTelEmail">
+        select id,
+               regi_dt
+        from tb_account
+        where
+        <if test="tel != null and !tel.equals('')">
+            tel = #{tel} and
+        </if>
+        <if test="email != null and !email.equals('')">
+            email = #{email} and
+        </if>
+            1=1
+    </select>
+
     <select id="getUserByBpNo">
-        select ac.name
+        select ac.id
         from    tb_corp cp
         left outer join tb_emp em on em.corp_id=cp.corp_id
         left outer join tb_account ac on ac.id=em.emp_id
@@ -22,7 +36,8 @@
         SELECT ac.name,
                sh.shop_id,
                sh.shop_nm,
-               ac.role
+               ac.role,
+               em.approval_st
         FROM tb_emp em
         LEFT OUTER JOIN tb_account ac on em.emp_id=ac.id
         LEFT OUTER JOIN tb_shop sh on sh.shop_id=em.shop_id
@@ -172,11 +187,7 @@
     <select id="getUserById">
         SELECT ac.id,
                ac.name,
-               ac.tel,
-               ac.email,
                ac.role,
-               ac.nickname,
-               ac.pfp,
                cp.corp_nm,
                IFNULL(sh.shop_nm, (
                    SELECT sh2.shop_nm

@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import useApi from "../../../hook/useApi";
 
 function SignupReps(){
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [bsInput, setBsInput] = useState({});
     const [bno, setBno] = useState([
         '','',''
@@ -24,7 +24,7 @@ function SignupReps(){
     }
 
     const validateBno = async ()=>{
-        accountApi.validateBusinessNumber({
+        publicApi.checkBpnoStatus({
             ...bsInput,
             'b_no': bno[0]+bno[1]+bno[2],
             'p_nm2': ''

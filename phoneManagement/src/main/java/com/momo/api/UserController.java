@@ -6,13 +6,11 @@ import com.momo.service.ImageService;
 import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,53 +22,78 @@ public class UserController {
 	private final UserService userService;
 	private final ImageService imageService;
 
+	/**
+	 * 사용자 정보 불러오기
+	 * @return {
+	 * 		아이디
+	 *		이름
+	 *		역할
+	 *		회사명
+	 *		매장명
+	 * }
+	 */
 	@GetMapping("/info")
 	public ResponseEntity<Map<String,Object>> fetchUserInfo(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(userService.getUserById(username));
 	}
 
+	/**
+	 * 사용자 정보 수정하기
+	 * @param user UserVO
+	 * @param file MultipartFile
+	 * @return Boolean
+	 */
 	@PutMapping("/info")
-	public ResponseEntity<?> updateUserInfo(@RequestBody UserVO vo){
+	public ResponseEntity<?> updateUserInfo(@RequestPart UserVO user,
+											@RequestPart MultipartFile file){
 		String username = SecurityContextUtil.getUsername();
-		vo.setId(username);
-		return ResponseEntity.ok(userService.updateUser(vo));
+		user.setId(username);
+		return ResponseEntity.ok(userService.updateUser(user));
 	}
 
+	/**
+	 * 호칭 변경하기
+	 * @param nickname string
+	 * @return Boolean
+	 */
 	@PutMapping("/nickname")
 	public ResponseEntity<?> updateNickname(@RequestParam String nickname){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(userService.updateNickname(username, nickname));
 	}
 
-	@PutMapping("/shop")
-	public ResponseEntity<?> updateCurrentShop(@RequestParam int id) {
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.updateCurrentShop(username, id) != 0);
-	}
-
-	@GetMapping("/pfp/{id}")
-	@ResponseBody
-	public ResponseEntity<byte[]> downloadPfpImage(@PathVariable String id) throws IOException {
-//		log.info("request pfp : {}", id);
-		String path = userService.getPfpFilePath(id);
-//		log.info("pfp path : {}", path);
-		if(!StringUtils.hasText(path)){
-			return ResponseEntity.status(HttpStatus.OK).body(null);
+	/**
+	 * (대표 권한) 매장 변경
+	 * @param id string
+	 * @return Boolean
+	 */
+	@PutMapping("/{userId}/shop")
+	public ResponseEntity<?> updateCurrentShop(@PathVariable(required = false) String userId,
+											   @RequestParam int shopId) {
+		if(userId == null){
+			userId = SecurityContextUtil.getUsername();
 		}
-		return imageService.download("pfp",path);
+		return ResponseEntity.ok(userService.updateCurrentShop(userId, shopId) != 0);
 	}
 
-	@PutMapping("/pfp")
-	public ResponseEntity<?> updatePfp(@RequestPart MultipartFile file) {
-		String username = SecurityContextUtil.getUsername();
-		String path = imageService.upload("pfp", file);
-		if(!StringUtils.hasText(path)){
-			return ResponseEntity.internalServerError().build();
-		}
-		return ResponseEntity.ok(userService.updatePfp(UserVO.builder().id(username).pfp(path).build()) != 0);
-	}
 
+
+//	사용자 정보 수정할때 함께 데이터 받을 예정
+//	@PutMapping("/pfp")
+//	public ResponseEntity<?> updatePfp(@RequestPart MultipartFile file) {
+//		String username = SecurityContextUtil.getUsername();
+//		String path = imageService.upload("pfp", file);
+//		if(!StringUtils.hasText(path)){
+//			return ResponseEntity.internalServerError().build();
+//		}
+//		return ResponseEntity.ok(userService.updatePfp(UserVO.builder().id(username).pfp(path).build()) != 0);
+//	}
+
+	/**
+	 * 비밀번호 변경
+	 * @return Boolean
+	 */
 	@PutMapping("/password")
 	public ResponseEntity<?> updatePassword(@RequestBody UserVO vo){
 		String username = SecurityContextUtil.getUsername();
@@ -78,10 +101,78 @@ public class UserController {
 		return ResponseEntity.ok(userService.updatePassword(vo) != 0);
 	}
 
+	/**
+	 * (대표 권한)직원 검색
+	 * @return {
+	 *     이름
+	 *     소속 매장
+	 *     역할
+	 *     승인 여부
+	 * }
+	 */
 	@GetMapping("/staff")
 	public ResponseEntity<List<Map<String,Object>>> getStaffList(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(userService.getUserAsStaff(username));
 	}
+
+	/**
+	 * (관리자 권한) 모든 유저 불러오기
+	 * @param keyword string
+	 * @param keydate string
+	 * @return {
+	 *     가입채널
+	 *     이름
+	 *     이메일
+	 *     휴대폰번호
+	 *     사입자 등록 여부
+	 *     가입일
+	 *     마지막 로그인 일자
+	 *     역할
+	 * }
+	 */
+	@GetMapping("/all")
+	public ResponseEntity<List<Map<String,Object>>> getUserAll(@RequestParam(required = false) String keyword,
+															   @RequestParam(required = false) LocalDate keydate){
+
+		return null;
+	}
+
+	/**
+	 * 매장 가입 요청
+	 * @param shopId integer
+	 * @return Boolean
+	 */
+	@PostMapping("/shop/request")
+	public ResponseEntity<Boolean> reqeustShop(@RequestParam Integer shopId){
+
+		return null;
+	}
+
+	/**
+	 * 사용자 매장 가입 요청 승인
+	 * @param userId string
+	 * @param shopId integer
+	 * @return Boolean
+	 */
+	@PutMapping("/{userId}/approve")
+	public ResponseEntity<Boolean> approveUser(@PathVariable String userId,
+											   @RequestParam Integer shopId){
+
+		return null;
+	}
+
+	/**
+	 * 사용자 역할 변경
+	 * @param userId string
+	 * @param role string
+	 * @return Boolean
+	 */
+	@PutMapping("/{userId}/role")
+	public ResponseEntity<Boolean> updateRole(@PathVariable String userId,
+											  @RequestParam String role){
+		return null;
+	}
+
 
 }

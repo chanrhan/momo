@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,19 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.existEmail(email);
 	}
 
+	public List<Map<String,Object>> findUserByTelEmail(String tel, String email){
+		return userMapper.findUserByTelEmail(tel, email);
+	}
+
 	public String getUserByBpNo(String bpNo){
-		return userMapper.getUserByBpNo(bpNo);
+		String userId = userMapper.getUserByBpNo(bpNo);
+		if(!StringUtils.hasText(userId)){
+			return null;
+		}
+		int length = userId.length();
+		StringBuilder sb = new StringBuilder(userId);
+		sb.replace(length-5, length-1, "****");
+		return sb.toString();
 	}
 
 	public void sendAuthNumberByEmailForUpdatePassword(String id){
@@ -147,8 +159,6 @@ public class UserService extends CommonService implements UserDetailsService{
 	public List<Map<String,Object>> getUser(UserVO vo) {
 		return userMapper.getUser(vo);
 	}
-
-
 
 	public List<Map<String,Object>> searchChatInvitableUser(SearchVO vo){
 		return userMapper.getChatInvitableUser(vo);

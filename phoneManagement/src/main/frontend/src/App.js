@@ -34,6 +34,7 @@ import Graph from "./components/graph/Graph";
 import BulkUploadTest from "./test/BulkUploadTest";
 import {RegexTest} from "./test/RegexTest";
 import GMDSetting from "./components/admin/GMDSetting";
+import ApiTest from "./test/ApiTest";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
                 <Route path='excel' element={<ExcelTest/>}/>
                 <Route path='bulk' element={<BulkUploadTest/>}/>
                 <Route path='regex' element={<RegexTest/>}/>
+                <Route path='api' element={<ApiTest/>}/>
             </Route>
 
             <Route element={<PreviewHeader/>}>

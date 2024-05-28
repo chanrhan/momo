@@ -22,24 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-	private final UserService     userService;
 	private final JwtService  jwtService;
 	private final JwtProvider jwtProvider;
 
-	@PostMapping("/login")
-	public ResponseEntity<?> login(HttpServletResponse response, @RequestBody Map<String, String> user) {
-		String username = user.get("username");
-		String password = user.get("password");
-
-		Authentication authentication = userService.login(username, password);
-
-		JwtVO jwtVO = jwtProvider.generateToken(authentication);
-
-		jwtService.saveRefreshToken(jwtVO);
-		jwtProvider.setHeaderJwtToken(response, jwtVO);
-
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
 
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(HttpServletResponse response,
@@ -61,17 +46,5 @@ public class AuthController {
 		return ResponseEntity.ok("Bearer "+jwtVO.getAccessToken());
 	}
 
-	@PostMapping("/reset/password")
-	public ResponseEntity<?> resetPassword(@RequestHeader(value = "RESET-TOKEN", required = true)String bearerToken, @RequestBody UserVO vo){
-		log.info("reset token: {}",bearerToken);
-		String accessToken = jwtProvider.getBearerTokenToString(bearerToken);
-		Authentication authentication = jwtProvider.getAuthentication(accessToken);
-		log.info("reset auth: {}",authentication);
-		if(!authentication.getAuthorities().contains(new SimpleGrantedAuthority("RESET_PWD"))){
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-		}
 
-
-		return ResponseEntity.ok(userService.resetPassword(vo) != 0);
-	}
 }

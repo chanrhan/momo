@@ -12,7 +12,7 @@
               YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
-    <select id="getSaleAsSupport" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsSupport" parameterType="com.momo.common.vo.SaleSearchVO">
         select s.*,
                 sp.sup_div,
                 sp.sup_amount,
@@ -44,7 +44,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSaleAsCombination" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsCombination" parameterType="com.momo.common.vo.SaleSearchVO">
         select s.*,
                 scb.comb_id,
                 scb.comb_order_tp,
@@ -77,7 +77,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSaleAsUsedDevice" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsUsedDevice" parameterType="com.momo.common.vo.SaleSearchVO">
         select s.*,
                 sg.ph_md,
                 sg.green_st,
@@ -108,7 +108,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSaleAsCard" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleAsCard" parameterType="com.momo.common.vo.SaleSearchVO">
         select s.*,
                sc.card_id,
                sc.card_tp,
@@ -140,7 +140,7 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSaleByUserId" parameterType="com.momo.common.vo.SaleVO">
+    <select id="getSaleByUserId" parameterType="com.momo.common.vo.SaleSearchVO">
         select *
         from tb_sale s
         where shop_id=(
@@ -150,13 +150,18 @@
         ) and
         <if test="keyword != null and !keyword.equals('')">
             (
-                s.cust_nm like '%${keyword}%' or
-                s.cust_tel like '%${keyword}%' or
-                s.cust_gtel like '%${keyword}%' or
-                s.cust_cd like '%${keyword}%'
+            s.cust_nm like '%${keyword}%' or
+            s.cust_tel like '%${keyword}%' or
+            s.cust_gtel like '%${keyword}%' or
+            s.cust_cd like '%${keyword}%'
             ) and
         </if>
-        1=1
+        <if test="fromDate != null">
+            (
+                s.actv_dt between #{fromDate} and #{toDate}
+            ) and
+        </if>
+        ${filters}
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>

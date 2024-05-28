@@ -2,7 +2,6 @@ package com.momo.api;
 
 import com.momo.common.response.JwtVO;
 import com.momo.common.util.BusinessmanApiUtil;
-import com.momo.common.vo.ShopVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
@@ -12,12 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +33,31 @@ public class PublicController {
 	private final JwtProvider jwtProvider;
 	private final JwtService jwtService;
 
+	/**
+	 * 로그인
+	 * @param user map
+	 * @return ResponseEntity
+	 */
+	@PostMapping("/login")
+	public ResponseEntity<?> login(HttpServletResponse response, @RequestBody Map<String, String> user) {
+		String username = user.get("username");
+		String password = user.get("password");
+
+		Authentication authentication = userService.login(username, password);
+
+		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+
+		jwtService.saveRefreshToken(jwtVO);
+		jwtProvider.setHeaderJwtToken(response, jwtVO);
+
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	/**
+	 * 회원가입
+	 * @param vo UserVO
+	 * @return ResponseEntity
+	 */
 	@PostMapping("/signup")
 	@Transactional
 	public ResponseEntity<?> signup(HttpServletResponse response, HttpSession session, @RequestBody UserVO vo){
@@ -48,22 +75,54 @@ public class PublicController {
 		return ResponseEntity.ok().body(true);
 	}
 
-	// 아이디 중복체크 API
+	/**
+	 * 휴대폰 인증번호 전송
+	 * @param tel string
+	 * @return authNumber
+	 */
+	@GetMapping("/auth/send")
+	public ResponseEntity<Integer> sendAuthNumber(@RequestParam String tel){
+		// 휴대폰 인증번호 보내는 api
+		return null;
+	}
+
+	/**
+	 * 아이디 존재 여부 검사
+	 * @param userId string
+	 * @return Boolean
+	 */
 	@GetMapping("/user/id/{userId}/exist")
 	public ResponseEntity<Boolean> existUserId(@PathVariable String userId) {
 		return ResponseEntity.ok(userService.existUserId(userId));
 	}
 
+	/**
+	 * 이메일 존재 여부 검사
+	 * @param email string
+	 * @return Boolean
+	 */
 	@GetMapping("/user/email/{email}/exist")
 	public ResponseEntity<Boolean> existEmail(@PathVariable String email) {
 		return  ResponseEntity.ok(userService.existEmail(email));
 	}
 
+	/**
+	 * 전화번호, 이메일 보호된 상태로 가져오기
+	 * @param id string
+	 * @return protected tel, email
+	 */
 	@GetMapping("/user/tel-email/protected")
 	public ResponseEntity<Map<String,Object>> getProtectedTelAndEmail(@RequestParam String id){
 		return ResponseEntity.ok(userService.getProtectedTelAndEmail(id));
 	}
 
+	/**
+	 * 아이디와 휴대폰번호 또는 이메일 일치 여부 검사
+	 * @param userId string
+	 * @param tel string
+	 * @param email string
+	 * @return Boolean
+	 */
 	@GetMapping("/user/{userId}/match")
 	public ResponseEntity<Boolean> matchUserId(@PathVariable String userId,
 												  @RequestParam(required = false)String tel,
@@ -72,35 +131,63 @@ public class PublicController {
 		return ResponseEntity.ok(userService.matchUserId(vo));
 	}
 
-	@GetMapping("/user")
-	public ResponseEntity<Map<String,Object>> findUser(@RequestParam(required = true)String name,
-													   @RequestParam(required = false)String tel,
-													@RequestParam(required = false)String email) {
-		UserVO vo = UserVO.builder().name(name).tel(tel).email(email).build();
-		List<Map<String,Object>> list = userService.getUser(vo);
-		if(list == null || list.isEmpty()){
-			return ResponseEntity.ok(null);
-		}
-		return ResponseEntity.ok(list.get(0));
+	/**
+	 * 휴대폰번호 또는 이메일로 아이디 찾기
+	 * @param tel string
+	 * @param email string
+	 * @return {
+	 *     아이디
+	 *     가입일자
+	 * }
+	 */
+	@GetMapping("/user/find")
+	public ResponseEntity<List<Map<String,Object>>> findUser(@RequestParam(required = false) String tel,
+										   @RequestParam(required = false) String email){
+		return ResponseEntity.ok(userService.findUserByTelEmail(tel, email));
 	}
 
-	@GetMapping("/shop")
-	public ResponseEntity<List<Map<String,Object>>> getShop(@RequestParam(required = false)String keyword){
-		ShopVO vo = ShopVO.builder().keyword(keyword).build();
-		return ResponseEntity.ok(shopService.getShop(vo));
+
+
+
+	/**
+	 * 사업자 인증
+	 * @param bpNo string
+	 * @return boolean
+	 */
+	@GetMapping("/bpno/status")
+	public ResponseEntity<?> checkBpNoStatus(@RequestParam String bpNo) {
+//		log.info("validate bno: {}", bpNo);
+		Map<String,Object> res = new HashMap<>();
+
+		String userId = userService.getUserByBpNo(bpNo);
+		if(StringUtils.hasText(userId)){
+			res.put("matched", false);
+			res.put("id", userId);
+		}else{
+			res.put("matched", BusinessmanApiUtil.status(bpNo));
+		}
+
+		return ResponseEntity.ok(res);
 	}
 
-	@PostMapping("/bpno/validate")
-	public ResponseEntity<?> validateBusinessNumber(@RequestBody Map<String, String> map) {
-//		log.info("validate bno: {}",map);
-		String name = userService.getUserByBpNo(map.get("bp_no"));
-		if(StringUtils.hasText(name)){
-			return ResponseEntity.ok(name);
+	/**
+	 * 비밀번호 재설정
+	 * @param bearerToken string
+	 * @param vo UserVO
+	 * @return Boolean
+	 */
+	@PostMapping("/reset/password")
+	public ResponseEntity<?> resetPassword(@RequestHeader(value = "RESET-TOKEN", required = true)String bearerToken, @RequestBody UserVO vo){
+		log.info("reset token: {}",bearerToken);
+		String accessToken = jwtProvider.getBearerTokenToString(bearerToken);
+		Authentication authentication = jwtProvider.getAuthentication(accessToken);
+		log.info("reset auth: {}",authentication);
+		if(!authentication.getAuthorities().contains(new SimpleGrantedAuthority("RESET_PWD"))){
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 
 
-
-		return ResponseEntity.ok(BusinessmanApiUtil.validate(map) == null ? 0 : 1);
+		return ResponseEntity.ok(userService.resetPassword(vo) != 0);
 	}
 
 }

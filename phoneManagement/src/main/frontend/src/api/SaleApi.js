@@ -12,8 +12,15 @@ function SaleApi(accessToken){
             }
             return await requestAPI.post('/api/v1/sale/add',data,option);
         },
-        getSale : async ({keyword,order,asc})=>{
-            const response = await requestApiWithAccessToken.get(`/api/v1/sale?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
+        getSale : async (keyword, fromDate, toDate, order, asc, filters)=>{
+            const response = await requestApiWithAccessToken.post(`/api/v1/sale`, {
+                keyword: keyword,
+                order: order,
+                asc: asc,
+                fromDate: fromDate,
+                toDate: toDate,
+                filters: filters
+            }, accessToken);
             if(response.status === 200){
                 if(!ObjectUtils.isEmpty(response.data)){
                     return response;
@@ -22,24 +29,28 @@ function SaleApi(accessToken){
             response.data = [];
             return response;
         },
-        getSaleByCategory : async (category, {keyword, order, asc})=>{
-            if(ObjectUtils.isEmpty(order)){
-                switch (category){
-                    case 'card':
-                        order = 'card_st';
-                        break;
-                    case 'green':
-                        order = 'green_st';
-                        break;
-                    case 'comb':
-                        order = 'comb_st';
-                        break;
-                    case 'support':
-                        order = 'support_st';
-                        break;
-                }
-            }
-            const response = await requestApiWithAccessToken.get(`/api/v1/sale/${category}?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
+        getSaleByCategory : async (category, keyword, order, asc)=>{
+            // if(ObjectUtils.isEmpty(order)){
+            //     switch (category){
+            //         case 'card':
+            //             order = 'card_st';
+            //             break;
+            //         case 'green':
+            //             order = 'green_st';
+            //             break;
+            //         case 'comb':
+            //             order = 'comb_st';
+            //             break;
+            //         case 'support':
+            //             order = 'support_st';
+            //             break;
+            //     }
+            // }
+            const response = await requestApiWithAccessToken.post(`/api/v1/sale/${category}`, {
+                keyword: keyword,
+                order: order,
+                asc: asc
+            }, accessToken);
             if(response.status === 200){
                 response.data.map(function (value){
                     let state = '';
@@ -100,7 +111,7 @@ function SaleApi(accessToken){
             }
         },
         deleteSales : async (data)=>{
-            return await requestApiWithAccessToken.post('/api/v1/sale/delete', data, accessToken);
+            return await requestApiWithAccessToken.delete('/api/v1/sale/delete', data, accessToken);
         }
     }
 }

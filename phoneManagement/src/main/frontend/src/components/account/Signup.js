@@ -13,7 +13,7 @@ function Signup(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const valid = useValidation(['id','pwd','pwd2','name','tel','email'])
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null)
 
     const [terms, setTerms] = useState(new Array(4).fill(false));
@@ -30,7 +30,7 @@ function Signup(){
                 setTermError(false);
             }
 
-            await accountApi.signup({
+            await publicApi.signup({
                 ...valid.input,
                 terms: ObjectUtils.convertBooleanArrayToString(terms)
             }).then(res=>{

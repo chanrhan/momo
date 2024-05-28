@@ -37,6 +37,9 @@ function TestHeader(){
                 <Link to='regex'>
                     <button className='btn btn-outline-success ms-1'>정규식 테스트</button>
                 </Link>
+                <Link to='api'>
+                    <button className='btn btn-outline-success ms-1'>API 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

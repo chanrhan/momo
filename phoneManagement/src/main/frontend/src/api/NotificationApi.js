@@ -9,7 +9,7 @@ function NotificationApi(accessToken){
             return await requestApiWithAccessToken.get('/api/v1/notif/read/all', accessToken);
         },
         getNotifList: async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/notif/list', accessToken);
+            return await requestApiWithAccessToken.get('/api/v1/notif', accessToken);
         }
     }
 }

@@ -34,7 +34,7 @@ function StepSelector(){
 
 function FindPasswordStep1({setStep, setUserId}){
     const naviagte = useNavigate();
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [idInput, setIdInput] = useState('');
     const [error, setError] = useState(null);
 
@@ -47,7 +47,7 @@ function FindPasswordStep1({setStep, setUserId}){
             setError('아이디를 입력해주세요');
             return;
         }
-        await accountApi.existUserId(idInput).then(({status,data})=>{
+        await publicApi.existUserId(idInput).then(({status,data})=>{
              if(status === 200){
                  // console.log(response.data)
                  if(data){
@@ -88,7 +88,7 @@ function FindPasswordStep1({setStep, setUserId}){
 
 function FindPasswordStep2({setStep, userId}){
     const val = useValidation(['tel']);
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [findBy, setFindBy] = useState('tel');
     const [secretInfo, setSecretInfo] = useState({
         tel: null,
@@ -98,7 +98,7 @@ function FindPasswordStep2({setStep, userId}){
     const [authNumber, setAuthNumber] = useState(null);
 
     useEffect(()=>{
-        accountApi.getProtectedTelAndEmail(userId).then(({status, data})=>{
+        publicApi.getProtectedTelAndEmail(userId).then(({status, data})=>{
             if(status === 200){
                 setSecretInfo(data);
             }
@@ -110,7 +110,7 @@ function FindPasswordStep2({setStep, userId}){
     }, [findBy])
 
     const sendAuthNuber = async ()=>{
-        await accountApi.matchUserId(findBy, {
+        await publicApi.matchUserId(findBy, {
             id: userId,
             [findBy]: val.input[findBy]
         }).then(({status,data})=>{
@@ -192,13 +192,13 @@ function FindBy({by, error, handleInput, sendAuthNumber}){
 function FindPasswordStep3({setStep, userId}){
     const navigate = useNavigate();
     const val = useValidation(['pwd','pwd2']);
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
     const [resetToken, setResetToken] = useState(null);
 
     // const [pageTimeout, setPageTimeout] = useState(null);
 
     useEffect(()=>{
-        accountApi.getResetToken({
+        publicApi.getResetToken({
             id: userId
         }).then(({status,data})=>{
             if(status === 200){
@@ -209,7 +209,7 @@ function FindPasswordStep3({setStep, userId}){
 
     const submit = async ()=>{
         if(val.validateAll()){
-            await accountApi.resetPassword({
+            await publicApi.resetPassword({
                 id: userId,
                 pwd: val.input.pwd
             }, resetToken).then(({status,data})=>{

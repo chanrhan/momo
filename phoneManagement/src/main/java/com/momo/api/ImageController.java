@@ -29,6 +29,12 @@ public class ImageController {
 		return ResponseEntity.ok(imageService.upload("spec", file));
 	}
 
+	/**
+	 * 견적서 사진 불러오기
+	 * @param id integer
+	 * @return Image Binary
+	 * @throws IOException
+	 */
 	@GetMapping("/spec/{id}")
 	@ResponseBody
 	public ResponseEntity<byte[]> downloadSpecImage(@PathVariable int id) throws IOException {
@@ -39,5 +45,22 @@ public class ImageController {
 		return imageService.download("spec",path);
 	}
 
+	/**
+	 * 프로필 사진 불러오기
+	 * @param id string
+	 * @return Image Binary
+	 * @throws IOException
+	 */
+	@GetMapping("/pfp/{id}")
+	@ResponseBody
+	public ResponseEntity<byte[]> downloadPfpImage(@PathVariable String id) throws IOException {
+//		log.info("request pfp : {}", id);
+		String path = userService.getPfpFilePath(id);
+//		log.info("pfp path : {}", path);
+		if(!StringUtils.hasText(path)){
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		return imageService.download("pfp",path);
+	}
 
 }
