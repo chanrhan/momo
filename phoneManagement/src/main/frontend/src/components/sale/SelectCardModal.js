@@ -2,7 +2,7 @@ import {LayerModal} from "../modal/LayerModal";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../modal/ModalType";
 import ChoiceButtonBox from "../common/inputbox/ChoiceButtonBox";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 
 function SelectCardModal(props){
     const modal = useModal();

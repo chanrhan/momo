@@ -2,12 +2,13 @@ import {useEffect, useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
 import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
 
-function useValidation(initialState) {
+function useInputField(initialState) {
     const init = {};
     const errorInfo = {...commonErrorInfo};
     for (const i in initialState) {
         const prop = initialState[i];
         init[prop.key] = (prop.value) ? prop.value : null;
+        // console.log(init[prop.key])
         if(prop.name){
             errorInfo[prop.key] = {
                 name: prop.name,
@@ -19,7 +20,7 @@ function useValidation(initialState) {
     }
 
     const [input, setInput] = useState(init);
-    const [error, setError] = useState(init);
+    const [error, setError] = useState({});
 
     const [serverError, setServerError] = useState(null);
 
@@ -238,4 +239,4 @@ const commonErrorInfo = {
 }
 
 
-export default useValidation;
+export default useInputField;

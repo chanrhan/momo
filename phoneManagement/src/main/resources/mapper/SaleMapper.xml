@@ -45,6 +45,7 @@
     </select>
 
     <select id="getSaleAsCombination" parameterType="com.momo.common.vo.SaleSearchVO">
+
         select s.*,
                 scb.comb_id,
                 scb.comb_order_tp,

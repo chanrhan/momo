@@ -1,4 +1,4 @@
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 import useApi from "../../hook/useApi";
 import {useSelector} from "react-redux";
 import useUserInfo from "../../hook/useUserInfo";
@@ -8,7 +8,7 @@ import ModalTest from "../../test/ModalTest";
 import {ModalType} from "../modal/ModalType";
 
 function Profile(){
-    const val = useValidation();
+    const inputField = useInputField();
     const modal = useModal();
     const {userApi} = useApi();
     const {user} = useUserInfo();

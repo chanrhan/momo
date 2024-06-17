@@ -29,6 +29,7 @@ public class WebSecurityConfig {
 	private final UserService userService;
 	private final JwtProvider jwtProvider;
 	private final JwtService  jwtService;
+
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.rememberMe(rememberMe -> rememberMe

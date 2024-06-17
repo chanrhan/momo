@@ -7,7 +7,7 @@ import Signup from "./Signup";
 import FindUsername from "./FindUsername";
 import FindPassword from "./FindPassword";
 import {login} from "../../api/PublicApi";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 import useApi from "../../hook/useApi";
 
 function Login(){

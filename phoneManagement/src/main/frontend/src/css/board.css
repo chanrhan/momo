@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+/* board */
+.board{}
+.board .board_list{}
+.board .board_head{}
+.board .board_head form{}
+.board .board_head .board_head_group{}
+.board .board_head .board_head_group + .board_head_group{}
+.board .board_head .board_count{}
+.board .board_head .board_count .count_text{}
+.board .board_head .board_count .count_text + .count_text{}
+.board .board_head .board_count .count_text + .count_text:before{}
+.board .board_head .board_count .count_text em{}
+.board .board_head .board_search{}
+.board .board_head .board_search input{}
+.board .board_head .board_search button{}
+.board .board_body{}
+.board .td_board{}
+.board .td_board thead{}
+.board .td_board thead th{}
+.board .td_board thead .check_box{}
+.board .td_board tbody{}
+.board .td_board tbody .check_box{}
+.board .td_board tbody .select_box .board_profile{}
+.board .td_board tbody .select_box .board_profile .profile_name{}
+.board .td_board tbody .select_box .board_profile .profile_name img{}
+.board .td_board tbody .select_box .board_profile .profile_name img{}
+.board .td_board tbody .select_box .board_profile .select_list.profile_list{}
+.board .td_board tbody .select_box .board_profile .select_list.profile_list{}
+.board .board_more{}
+.board .board_more .board_more_btn{}

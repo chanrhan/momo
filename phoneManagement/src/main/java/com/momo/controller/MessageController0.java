@@ -28,7 +28,6 @@ public class MessageController0 {
 	private final MsgCommonService msgCommonService;
 	private final ShopService shopService;
 
-
 	@PostMapping("/form/create")
 	@ResponseBody
 	public boolean createMessageForm(@RequestBody MsgCommonVO vo){

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import NotFound from "../common/NotFound";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {cssUtils} from "../../utils/cssUtils";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 import useApi from "../../hook/useApi";
 
 function FindPassword(){
@@ -87,7 +87,7 @@ function FindPasswordStep1({setStep, setUserId}){
 }
 
 function FindPasswordStep2({setStep, userId}){
-    const val = useValidation(['tel']);
+    const inputField = useInputField(['tel']);
     const {publicApi} = useApi();
     const [findBy, setFindBy] = useState('tel');
     const [secretInfo, setSecretInfo] = useState({
@@ -106,29 +106,29 @@ function FindPasswordStep2({setStep, userId}){
     },[])
 
     useEffect(()=>{
-        val.clearOf([findBy]);
+        inputField.clearOf([findBy]);
     }, [findBy])
 
     const sendAuthNuber = async ()=>{
         await publicApi.matchUserId(findBy, {
             id: userId,
-            [findBy]: val.input[findBy]
+            [findBy]: inputField.input[findBy]
         }).then(({status,data})=>{
             if(status === 200){
                 if(data){
-                    val.handleError(findBy, null);
+                    inputField.handleError(findBy, null);
                     // 인증번호 보내는 API
                     setAuthNumber(123);
                     alert('인증번호가 발송되었습니다')
                 }else{
-                    val.handleError(findBy, '입력하신 정보와 일치하는 회원 정보가 없습니다');
+                    inputField.handleError(findBy, '입력하신 정보와 일치하는 회원 정보가 없습니다');
                 }
             }
         })
     }
 
     const submit = ()=>{
-        if(val.validateAll() && val.matchAuthNumber(authNumber)){
+        if(inputField.validateAll() && inputField.matchAuthNumber(authNumber)){
             setStep(3);
         }
     }
@@ -147,7 +147,7 @@ function FindPasswordStep2({setStep, userId}){
                     </div>
 
                     {
-                        findBy === 'tel' ? <FindBy by='tel' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNuber}/> : null
+                        findBy === 'tel' ? <FindBy by='tel' error={inputField.error} handleInput={inputField.handleInput} sendAuthNumber={sendAuthNuber}/> : null
                     }
                 </div>
                 <div>
@@ -157,7 +157,7 @@ function FindPasswordStep2({setStep, userId}){
                         }}/> <p>이메일로 찾기 ({secretInfo.email})</p>
                     </div>
                     {
-                        findBy === 'email' ? <FindBy by='email' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNuber}/> : null
+                        findBy === 'email' ? <FindBy by='email' error={inputField.error} handleInput={inputField.handleInput} sendAuthNumber={sendAuthNuber}/> : null
                     }
                 </div>
                 <div className='d-flex flex-row justify-content-center mt-3'>
@@ -191,7 +191,7 @@ function FindBy({by, error, handleInput, sendAuthNumber}){
 
 function FindPasswordStep3({setStep, userId}){
     const navigate = useNavigate();
-    const val = useValidation(['pwd','pwd2']);
+    const inputField = useInputField(['pwd','pwd2']);
     const {publicApi} = useApi();
     const [resetToken, setResetToken] = useState(null);
 
@@ -208,10 +208,10 @@ function FindPasswordStep3({setStep, userId}){
     }, [])
 
     const submit = async ()=>{
-        if(val.validateAll()){
+        if(inputField.validateAll()){
             await publicApi.resetPassword({
                 id: userId,
-                pwd: val.input.pwd
+                pwd: inputField.input.pwd
             }, resetToken).then(({status,data})=>{
                 if(status === 200 && data){
                     if(window.confirm('비밀번호가 성공적으로 재설정되었습니다. [확인]을 누르시면 로그인 페이지로 이동합니다')){
@@ -234,20 +234,20 @@ function FindPasswordStep3({setStep, userId}){
             <div>
                 <div>
                     <h5>새 비밀번호</h5>
-                    <input type="password" className={cssUtils.borderDangerIfError(val.error.pwd)} name='pwd' placeholder='비밀번호' onChange={val.handlePassword}/>
+                    <input type="password" className={cssUtils.borderDangerIfError(inputField.error.pwd)} name='pwd' placeholder='비밀번호' onChange={inputField.handlePassword}/>
                     <h6>영문자, 숫자, 특수문자를 포함하여 8~32자로 설정해야 합니다</h6>
                 </div>
                 {
-                    val.error.pwd && <p className='text-danger'>{val.error.pwd}</p>
+                    inputField.error.pwd && <p className='text-danger'>{inputField.error.pwd}</p>
                 }
             </div>
             <div>
                 <div>
                     <h5>새 비밀번호 재입력</h5>
-                    <input type="password" name='pwd2' className={cssUtils.borderDangerIfError(val.error.pwd2)} value={val.input.pwd2} placeholder='비밀번호 재입력' onChange={val.handleConfirmPassword}/>
+                    <input type="password" name='pwd2' className={cssUtils.borderDangerIfError(inputField.error.pwd2)} value={inputField.input.pwd2} placeholder='비밀번호 재입력' onChange={inputField.handleConfirmPassword}/>
                 </div>
                 {
-                    val.error.pwd2 && <p className='text-danger'>{val.error.pwd2}</p>
+                    inputField.error.pwd2 && <p className='text-danger'>{inputField.error.pwd2}</p>
                 }
             </div>
             <div className='d-flex flex-row justify-content-center mt-3'>

@@ -1,9 +1,4 @@
 import CustomTable from "./CustomTable";
-import FileUpload from "./FileUpload";
-import {useCallback, useEffect, useState} from "react";
-import button from "bootstrap/js/src/button";
-import * as XLSX from "xlsx"
-import {ObjectUtils} from "../utils/objectUtil";
 
 
 function BulkUploadTest(){

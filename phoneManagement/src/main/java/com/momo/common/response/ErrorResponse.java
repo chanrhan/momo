@@ -11,7 +11,9 @@ import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
@@ -65,6 +67,12 @@ public class ErrorResponse {
 		return ResponseEntity.status(e.getErrorCode().getStatus()).body(of(e.getErrorCode()));
 	}
 
+	public Map<String,Object> getBody(){
+		Map<String,Object> body = new HashMap<>();
+		body.put("code", code);
+		body.put("message", message);
+		return body;
+	}
 
 	@Getter
 	public static class FieldError{

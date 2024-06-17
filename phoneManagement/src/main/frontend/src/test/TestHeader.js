@@ -40,6 +40,17 @@ function TestHeader(){
                 <Link to='api'>
                     <button className='btn btn-outline-success ms-1'>API 테스트</button>
                 </Link>
+                <Link to='exception'>
+                    <button className='btn btn-outline-success ms-1'>예외 테스트</button>
+                </Link>
+            </div>
+            <div className='mt-3 d-flex flex-row justify-content-center'>
+                <Link to='file'>
+                    <button className='btn btn-outline-success ms-1'>파일 업로드 테스트</button>
+                </Link>
+                <Link to='alimtalk'>
+                    <button className='btn btn-outline-success ms-1'>알림톡 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

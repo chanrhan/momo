@@ -167,7 +167,9 @@
         SET user_st=2
         WHERE role != 'ADMIN'
           AND user_st = 1
-          AND DATEDIFF(CURRENT_DATE, last_login_dt) > #{date}
+          AND DATEDIFF(CURRENT_DATE, last_login_dt) > #{date};
+
+
     </update>
 
     <update id="loginNow">
