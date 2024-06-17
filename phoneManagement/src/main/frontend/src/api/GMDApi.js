@@ -1,4 +1,4 @@
-import {requestApiWithAccessToken} from "./ApiCommon";
+import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
 import {keyboard} from "@testing-library/user-event/dist/keyboard";
 
 function GMDApi(accessToken){
@@ -8,6 +8,9 @@ function GMDApi(accessToken){
         },
         getExtraService: async (keyword)=>{
             return await requestApiWithAccessToken.post(`/api/v1/gmd/exsvc?keyword=${keyword}`, accessToken);
+        },
+        getPhoneModel: async ()=>{
+            return await requestAPI.get('/api/v1/gmd/phone');
         }
     }
 }

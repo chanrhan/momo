@@ -1,16 +1,22 @@
 package com.momo.api;
 
+import com.momo.common.enums.codes.ErrorCode;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.SearchVO;
+import com.momo.exception.RestApiException;
 import com.momo.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -25,24 +31,47 @@ public class SaleController {
 
 	private final ImageService imageService;
 
-	@GetMapping("/{category}")
-	public ResponseEntity<List<Map<String,Object>>> getSale(@PathVariable(required = false)String category,
-															@RequestParam(required = false)String keyword,
-															@RequestParam(required = false)String order,
-															@RequestParam(required = false)boolean asc){
+	/**
+	 * 판매일보 검색
+	 * @param vo SaleSearchVO
+	 * @return {
+	 *     판매일보 모든 컬럼
+	 * }
+	 */
+	@PostMapping("/")
+	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestBody SaleSearchVO vo){
 		String username = SecurityContextUtil.getUsername();
-		SaleVO vo = SaleVO.builder().userId(username).keyword(keyword).order(order).asc(asc).build();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getSaleByUserId(vo));
+	}
+
+	/**
+	 * 판매일보 카테고리 검색
+	 * @param category string
+	 * @return {
+	 *
+	 * }
+	 */
+	@PostMapping("/{category}")
+	public ResponseEntity<List<Map<String,Object>>> getSale(@PathVariable String category,@RequestBody SaleSearchVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
 		if(category != null){
 			List<Map<String,Object>> list = saleService.getSaleByCategory(category, vo);
 			if(list == null){
 				return ResponseEntity.notFound().build();
 			}
 			return ResponseEntity.ok(list);
-		}else{
-			return ResponseEntity.ok(saleService.getSaleByUserId(vo));
 		}
+//		throw new RestApiException();
+		return ResponseEntity.badRequest().build();
 	}
 
+	/**
+	 * 판매일보 다중 삭제
+	 * @param deletes int[]
+	 * @return Boolean
+	 */
 	@DeleteMapping("/delete")
 	public ResponseEntity<?> deleteSale(@RequestBody int[] deletes){
 		log.info("delete: {}",deletes);
@@ -56,6 +85,13 @@ public class SaleController {
 		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(id));
 	}
 
+	/**
+	 * 판매일보 추가
+	 * @param vo
+	 * @param spec
+	 * @param docs
+	 * @return
+	 */
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Boolean> createSale(@RequestPart(value = "sale") SaleVO vo,
@@ -73,6 +109,7 @@ public class SaleController {
 		vo.setUserId(username);
 		return ResponseEntity.ok(saleService.insertSale(vo) != 0);
 	}
+
 
 	@PostMapping("/update")
 	@ResponseBody

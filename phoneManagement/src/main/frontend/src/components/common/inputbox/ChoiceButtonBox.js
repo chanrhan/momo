@@ -3,14 +3,14 @@ import {useEffect, useState} from "react";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import ValidationError from "../../error/ValidationError";
 
-function ChoiceButtonBox({name, items = [], valid, className, btn_class = 'primary'}){
+function ChoiceButtonBox({name, items = [], inputField, className, btn_class = 'primary'}){
 
 
-    const [value, setValue] = useState((valid.input[name] != null ? valid.input[name] : 0));
+    const [value, setValue] = useState((inputField.input[name] != null ? inputField.input[name] : 0));
 
     useEffect(()=>{
-        if(valid != null && valid.setInput != null && !valid.input[name]){
-            valid.setInput(prev=>({
+        if(inputField != null && inputField.setInput != null && !inputField.input[name]){
+            inputField.setInput(prev=>({
                 ...prev,
                 [name]: value
             }))
@@ -26,7 +26,7 @@ function ChoiceButtonBox({name, items = [], valid, className, btn_class = 'prima
         // console.log(`e inde: ${e.target.getAttribute('index')}`)
         setValue(e.target.getAttribute('index'));
         e.target.value = e.target.getAttribute('index');
-        valid.handleInput(e);
+        inputField.handleInput(e);
     }
 
     if(typeof valid !== 'object'){
@@ -45,7 +45,7 @@ function ChoiceButtonBox({name, items = [], valid, className, btn_class = 'prima
                     })
                 }
             </div>
-            <ValidationError error={valid.error[name]}/>
+            <ValidationError error={inputField.error[name]}/>
         </div>
 
     )

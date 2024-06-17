@@ -1,20 +1,20 @@
 import {useEffect, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 import {useNavigate} from "react-router-dom";
 import useApi from "../../hook/useApi";
 
 function FindUsername(){
     const [findBy, setFindBy] = useState('tel');
 
-    const val = useValidation(['name','tel']);
-    const {accountApi} = useApi();
+    const inputField = useInputField(['name','tel']);
+    const {publicApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null);
 
     const [foundIds, setFoundIds] = useState([]);
 
     useEffect(()=>{
-        val.clearOf([findBy, 'name'])
+        inputField.clearOf([findBy, 'name'])
     },[findBy])
 
     const handleCheck = (by)=>{
@@ -27,17 +27,17 @@ function FindUsername(){
     }
 
     const submit = async ()=>{
-        if(val.validateAll() && val.matchAuthNumber(authNumber)){
-            await accountApi.findUser(findBy, {
-                'name': val.input.name,
-                [findBy]: val.input[findBy]
+        if(inputField.validateAll() && inputField.matchAuthNumber(authNumber)){
+            await publicApi.findUser(findBy, {
+                'name': inputField.input.name,
+                [findBy]: inputField.input[findBy]
             }).then(({status,data})=>{
                 if(status === 200){
                     console.log(data)
                     if(!ObjectUtils.isEmpty(data)){
                         setFoundIds(data);
                     }else{
-                        val.handleServerError('입력하신 회원정보와 일치하는 아이디가 존재하지 않습니다');
+                        inputField.handleServerError('입력하신 회원정보와 일치하는 아이디가 존재하지 않습니다');
                     }
                 }
             })
@@ -60,7 +60,7 @@ function FindUsername(){
                                     handleCheck('tel');
                                 }}/> 휴대전화번호로 찾기
                                 {
-                                    findBy === 'tel' ? <FindBy by='tel' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNumber}/> : null
+                                    findBy === 'tel' ? <FindBy by='tel' error={inputField.error} handleInput={inputField.handleInput} sendAuthNumber={sendAuthNumber}/> : null
                                 }
                             </div>
                             <div>
@@ -68,11 +68,11 @@ function FindUsername(){
                                     handleCheck('email');
                                 }}/> 이메일로 찾기
                                 {
-                                    findBy === 'email' ? <FindBy by='email' error={val.error} handleInput={val.handleInput} sendAuthNumber={sendAuthNumber}/> : null
+                                    findBy === 'email' ? <FindBy by='email' error={inputField.error} handleInput={inputField.handleInput} sendAuthNumber={sendAuthNumber}/> : null
                                 }
                             </div>
                             {
-                                val.serverError && <p className='text-danger'>{val.serverError}</p>
+                                inputField.serverError && <p className='text-danger'>{inputField.serverError}</p>
                             }
                             <div>
                                 <button className='btn btn-outline-primary' onClick={submit}>다음</button>

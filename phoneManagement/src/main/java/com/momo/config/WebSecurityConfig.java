@@ -29,6 +29,7 @@ public class WebSecurityConfig {
 	private final UserService userService;
 	private final JwtProvider jwtProvider;
 	private final JwtService  jwtService;
+
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.rememberMe(rememberMe -> rememberMe
@@ -42,7 +43,9 @@ public class WebSecurityConfig {
 				.hasRole("ADMIN")
 				// 웹소켓, SSE 모두 이거 url 허용 안해주면 에러가 발생한다
 				// Stomp는 아예 에러 메시지 조차 뜨지 않아서 힘들었다..
-				.requestMatchers("/api/v1/public/**","/api/v1/auth/**","/api/v1/test/**","/sse/**","/ws/**")
+				.requestMatchers("/api/v1/public/**","/api/v1/auth/**","/api/v1/test/**",
+						"/api/v1/gmd/**",
+						"/sse/**","/ws/**")
 				.permitAll()
 				.anyRequest().authenticated());
 //		http.formLogin(formLogin->formLogin.);

@@ -5,6 +5,7 @@ import {ModalType} from "../components/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
 import '../css/table.css'
 import {RegexUtils} from "../utils/regex";
+import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
 
 
 const SAMPLE_SALE = [
@@ -210,6 +211,9 @@ function CustomTable({}){
                 })
                 break;
             case 'ph_md':
+                for(let i=0;i<cols.length;++i){
+                    fails.push(i);
+                }
                 break;
             case 'sec_md':
                 break;
@@ -272,9 +276,9 @@ function CustomTable({}){
                                                style={{
                                                    cursor: 'pointer',
                                                    background: selectedCell && selectedCell.row === rowIdx && selectedCell.col === colIdx ? 'lightblue' : 'white'
-                                               }}><input value={c} onChange={(e) => {
-                                        handleInputData(e, rowIdx, colIdx)
-                                    }}/></td>
+                                               }}>
+                                        <ValueSelector type={header[colIdx]} col={c} rowIndex={rowIdx} colIndex={colIdx} handleInput={handleInputData}/>
+                                        </td>
                                 })
                             }
                         </tr>
@@ -285,6 +289,29 @@ function CustomTable({}){
         </div>
 
     )
+}
+
+function ValueSelector({type, col, rowIndex, colIndex, handleInput}){
+
+    switch (type) {
+        case 'ph_md':
+            // console.log(`col: ${col}, v: ${SAMPLE_PHONE_MODEL[col]}`)
+            return <select className='form-select-sm' value={col} onChange={e=>{
+                handleInput(e, rowIndex, colIndex);
+            }}>
+                {
+                    Object.entries(SAMPLE_PHONE_MODEL).map(([key,value])=>{
+                        return <option value={key}>{value}</option>
+                    })
+                }
+            </select>
+        default:
+            return <input
+                value={col}
+                onChange={(e) => {
+                    handleInput(e, rowIndex, colIndex)
+                }}/>
+    }
 }
 
 export default CustomTable;

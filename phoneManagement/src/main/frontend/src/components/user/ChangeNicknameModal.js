@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {updateNickname} from "../../api/UserApi";
-import {getUserInfo} from "../../api/AccountApi";
+import {getUserInfo} from "../../api/PublicApi";
 import {userActions} from "../../store/slices/userSlice";
 import {LayerModal} from "../modal/LayerModal";
 import {ObjectUtils} from "../../utils/objectUtil";

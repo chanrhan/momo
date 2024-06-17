@@ -4,7 +4,7 @@ import useApi from "../../hook/useApi";
 import useUserInfo from "../../hook/useUserInfo";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../modal/ModalType";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 
 function Sale() {
     const modal = useModal();
@@ -16,7 +16,7 @@ function Sale() {
 
     const [saleList, setSaleList] = useState([]);
 
-    const valid = useValidation([
+    const inputField = useInputField([
         {
             key: 'keyword'
         },{
@@ -34,7 +34,7 @@ function Sale() {
     const {user} = useUserInfo();
 
     const updateSale = async () => {
-        await saleApi.getSale(valid.input).then(({status,data})=>{
+        await saleApi.getSale(inputField.input).then(({status,data})=>{
             if (status === 200) {
                 // console.log(response)
                 setSaleList(data)
@@ -45,11 +45,11 @@ function Sale() {
     useEffect(() => {
         // console.table(valid.input)
         updateSale();
-    }, [user, valid.input]);
+    }, [user, inputField.input]);
 
     const orderSale = (e)=>{
         e.target.asc = !e.target.asc;
-        valid.setInput(prev=>({
+        inputField.setInput(prev=>({
             ...prev,
             'order': e.target.getAttribute('name'),
             'asc': e.target.asc
@@ -93,10 +93,10 @@ function Sale() {
                 <h5><b>총 {saleList.length}개</b></h5>
                 <div className='d-flex flex-row justify-content-center  ms-3'>
                     <p>개통년월</p>
-                    <input type="date" className='ms-1' name='actv_dt' onChange={valid.handleInput}/>
+                    <input type="date" className='ms-1' name='actv_dt' onChange={inputField.handleInput}/>
                 </div>
                 <div className='d-flex flex-row ms-3'>
-                    <input type="text" placeholder='이름, 전화번호, 식별번호로 검색할 수 있습니다' name='keyword' onChange={valid.handleInput}/>
+                    <input type="text" placeholder='이름, 전화번호, 식별번호로 검색할 수 있습니다' name='keyword' onChange={inputField.handleInput}/>
                     <button className='btn btn-outline-secondary ms-3' onClick={deleteAll}>선택삭제</button>
                     <button className='btn btn-outline-secondary ms-4' onClick={addSale}>추가하기</button>
                     <button className='btn btn-outline-secondary ms-2'>정렬</button>

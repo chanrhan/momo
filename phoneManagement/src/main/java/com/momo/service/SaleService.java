@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.common.vo.SaleSearchVO;
 import com.momo.mapper.SaleMapper;
 import com.momo.common.vo.SaleVO;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class SaleService extends CommonService {
 		return saleMapper.deleteSale(id);
 	}
 
-	public List<Map<String,Object>> getSaleByUserId(SaleVO vo){
+	public List<Map<String,Object>> getSaleByUserId(SaleSearchVO vo){
 		return saleMapper.getSaleByUserId(vo);
 	}
 
@@ -50,7 +51,7 @@ public class SaleService extends CommonService {
 		return result;
 	}
 
-	public List<Map<String,Object>> getSaleByCategory(String category, SaleVO vo){
+	public List<Map<String,Object>> getSaleByCategory(String category, SaleSearchVO vo){
 		return switch (category) {
 			case "card" -> saleMapper.getSaleAsCard(vo);
 			case "green" -> saleMapper.getSaleAsUsedDevice(vo);

@@ -30,7 +30,6 @@
                    ) as sender_nm,
                content,
                notif_id,
-               notif_tp,
                read_st,
                send_dt
         FROM tb_notification

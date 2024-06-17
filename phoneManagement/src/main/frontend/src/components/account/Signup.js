@@ -4,7 +4,7 @@ import {authActions} from "../../store/slices/authSlice";
 import {setRefreshToken} from "../../utils/Cookies";
 import {useDispatch} from "react-redux";
 import {ObjectUtils} from "../../utils/objectUtil";
-import useValidation from "../../hook/useValidation";
+import useInputField from "../../hook/useInputField";
 import useApi from "../../hook/useApi";
 
 const ERR_BORDER_CSS = 'border border-danger';
@@ -12,8 +12,8 @@ const ERR_BORDER_CSS = 'border border-danger';
 function Signup(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const valid = useValidation(['id','pwd','pwd2','name','tel','email'])
-    const {accountApi} = useApi();
+    const inputField = useInputField(['id','pwd','pwd2','name','tel','email'])
+    const {publicApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null)
 
     const [terms, setTerms] = useState(new Array(4).fill(false));
@@ -22,7 +22,7 @@ function Signup(){
     const [termError, setTermError] = useState(false);
 
     const submit = async ()=>{
-        if(valid.validateAll() && valid.matchAuthNumber(authNumber)){
+        if(inputField.validateAll() && inputField.matchAuthNumber(authNumber)){
             if(!terms[0] || !terms[1]){
                 setTermError(true);
                 return;
@@ -30,8 +30,8 @@ function Signup(){
                 setTermError(false);
             }
 
-            await accountApi.signup({
-                ...valid.input,
+            await publicApi.signup({
+                ...inputField.input,
                 terms: ObjectUtils.convertBooleanArrayToString(terms)
             }).then(res=>{
                 if(res.status === 200){
@@ -41,7 +41,7 @@ function Signup(){
                     navigate('/account/login');
                     // navigate('/account/role');
                 }else{
-                    valid.handleServerError("서버 연결에 실패하였습니다. 다시 시도해주세요")
+                    inputField.handleServerError("서버 연결에 실패하였습니다. 다시 시도해주세요")
                 }
             })
 
@@ -78,53 +78,53 @@ function Signup(){
             {/*<SignupStepSelector/>*/}
             <div className='mt-2'>
                 <h5 className='text-dark'>이름</h5>
-                <input type="text" className={valid.error.name && ERR_BORDER_CSS} name='name' value={valid.input.name} onChange={valid.handleInput} placeholder='이름'/>
+                <input type="text" className={inputField.error.name && ERR_BORDER_CSS} name='name' value={inputField.input.name} onChange={inputField.handleInput} placeholder='이름'/>
                 {
-                    valid.error.name && <p className='text-danger'>{valid.error.name}</p>
+                    inputField.error.name && <p className='text-danger'>{inputField.error.name}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>이메일</h5>
-                <input type="text" className={valid.error.email && ERR_BORDER_CSS} name='email' value={valid.input.email} onChange={valid.handleInput} placeholder='이메일'/>
+                <input type="text" className={inputField.error.email && ERR_BORDER_CSS} name='email' value={inputField.input.email} onChange={inputField.handleInput} placeholder='이메일'/>
                 {
-                    valid.error.email && <p className='text-danger'>{valid.error.email}</p>
+                    inputField.error.email && <p className='text-danger'>{inputField.error.email}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>전화번호</h5>
-                <input type="text" className={valid.error.tel && ERR_BORDER_CSS} name='tel' value={valid.input.tel} onChange={valid.handleInput} placeholder='휴대전화번호'/>
+                <input type="text" className={inputField.error.tel && ERR_BORDER_CSS} name='tel' value={inputField.input.tel} onChange={inputField.handleInput} placeholder='휴대전화번호'/>
                 {
-                    valid.error.tel && <p className='text-danger'>{valid.error.tel}</p>
+                    inputField.error.tel && <p className='text-danger'>{inputField.error.tel}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>인증번호</h5>
                 <button className='btn btn-outline-secondary' onClick={sendAuthCode}>인증번호 전송</button>
                 <br/>
-                <input className={`mt-1 ${valid.error.auth_code && ERR_BORDER_CSS}`} name='auth_code' type="text" onChange={valid.handleInput} placeholder='인증번호 입력'/>
+                <input className={`mt-1 ${inputField.error.auth_code && ERR_BORDER_CSS}`} name='auth_code' type="text" onChange={inputField.handleInput} placeholder='인증번호 입력'/>
                 {
-                    valid.error.auth_code && <p className='text-danger'>{valid.error.auth_code}</p>
+                    inputField.error.auth_code && <p className='text-danger'>{inputField.error.auth_code}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>아이디</h5>
-                <input type="text" name='id' value={valid.input.id} onChange={valid.handleInput} placeholder='아이디'/>
+                <input type="text" name='id' value={inputField.input.id} onChange={inputField.handleInput} placeholder='아이디'/>
                 {
-                    valid.error.id && <p className='text-danger'>{valid.error.id}</p>
+                    inputField.error.id && <p className='text-danger'>{inputField.error.id}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>비밀번호</h5>
-                <input type="password" name='pwd' onChange={valid.handlePassword} placeholder='비밀번호'/>
+                <input type="password" name='pwd' onChange={inputField.handlePassword} placeholder='비밀번호'/>
                 {
-                    valid.error.pwd && <p className='text-danger'>{valid.error.pwd}</p>
+                    inputField.error.pwd && <p className='text-danger'>{inputField.error.pwd}</p>
                 }
             </div>
             <div className='mt-2'>
                 <h5 className='text-dark'>비밀번호 확인</h5>
-                <input type="password" name='pwd2' value={valid.input.pwd2} onChange={valid.handleConfirmPassword} placeholder='비밀번호 확인'/>
+                <input type="password" name='pwd2' value={inputField.input.pwd2} onChange={inputField.handleConfirmPassword} placeholder='비밀번호 확인'/>
                 {
-                    valid.error.pwd2 && <p className='text-danger'>{valid.error.pwd2}</p>
+                    inputField.error.pwd2 && <p className='text-danger'>{inputField.error.pwd2}</p>
                 }
             </div>
             <div className='mt-2 d-flex justify-content-center'>
@@ -158,7 +158,7 @@ function Signup(){
                 termError && <p className='text-danger'><b>(필수)</b>이용약관에 모두 동의해야 합니다</p>
             }
             {
-                valid.serverError && <h5 className='text-danger'>{valid.serverError}</h5>
+                inputField.serverError && <h5 className='text-danger'>{inputField.serverError}</h5>
             }
             <div>
                 <button className='btn btn-primary' onClick={submit}>가입하기</button>

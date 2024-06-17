@@ -10,6 +10,7 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 	public String getUserByBpNo(String bpNo);
+	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);
 
 	public List<Map<String,Object>> getUserAsStaff(String id);
 
@@ -40,6 +41,19 @@ public interface UserMapper {
 	public int insertUser(UserVO vo);
 	public int updateUser(UserVO vo);
 	public int deleteUser(String id);
+	public Map<String,String> getUserAsAuthorization(String userId);
+
+	/**
+	 *
+	 * @param userId string
+	 * @return {
+	 * 	   아이디
+	 *     이름
+	 *     역할
+	 *     회사명
+	 *     매장명
+	 * }
+	 */
 	public Map<String,Object> getUserById(String userId);
 	public List<Map<String,Object>> getUser(UserVO vo);
 

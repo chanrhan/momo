@@ -19,8 +19,6 @@ import java.util.List;
 public class SaleVO extends CommonQueryVO {
 	private String category;
 	private String userId;
-	private Integer corpId;
-	private Integer dupTel; // 중복된 전화번호 개수
 	private Integer saleId; // 판매일보 번호
 	private String shopId; // 매장 코드
 
@@ -30,9 +28,6 @@ public class SaleVO extends CommonQueryVO {
 	private String custTel; // 고객 전화번호
 	private String custGtel; // 고객 보호자 전화번호
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
-
-	// 날씨
-	private int weather; // 날씨 코드
 
 	// 개통 정보
 	private String    provider; // 통신사

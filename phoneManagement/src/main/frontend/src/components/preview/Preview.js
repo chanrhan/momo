@@ -7,8 +7,15 @@ function Preview(){
 
     return (
         <div id='preview'>
-            <h3 className='debug-page'>Preview Page</h3>
-            <div className='preview-bg'></div>
+            <h3>Preview Page</h3>
+            <div className='row-cols-auto'>
+                <Link to='/account/login'>
+                    <button className='btn btn-outline-primary ms-2'>로그인</button>
+                </Link>
+                <Link to='/account/signup'>
+                    <button className='btn btn-outline-primary ms-2'>무료로 시작하기</button>
+                </Link>
+            </div>
         </div>
     )
 }

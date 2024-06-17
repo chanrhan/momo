@@ -34,14 +34,15 @@ public class ImageService {
 		long fileSize = mf.getSize();
 		String savePath = FileServiceUtil.getFileSavePath(dir);
 
-//		if(!new File(savePath).exists()){
-//			log.info(savePath+" is not existed");
-//			try {
-//				new File(savePath).mkdir();
-//			}catch (Exception e){
-//				throw new IllegalArgumentException("디렉토리 생성에 실패하였습니다.");
-//			}
-//		}
+		if(!new File(savePath).exists()){
+			log.info(savePath+" is not existed..");
+			log.info("Try to create a new directory: {}", savePath);
+			try {
+				new File(savePath).mkdir();
+			}catch (Exception e){
+				throw new IllegalArgumentException("디렉토리 생성에 실패하였습니다.");
+			}
+		}
 
 		String filePath = savePath + "/" + fileName;
 

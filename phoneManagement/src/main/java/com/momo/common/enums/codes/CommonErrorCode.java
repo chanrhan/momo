@@ -71,4 +71,14 @@ public enum CommonErrorCode implements ErrorCode {
 		this.status  = status;
 		this.message = message;
 	}
+
+	public static CommonErrorCode fromInt(int i) {
+		for (CommonErrorCode e : CommonErrorCode.values()) {
+//			System.out.println("e ordinal: "+e.getStatus());
+			if (e.getStatus() == i) {
+				return e;
+			}
+		}
+		throw new IllegalArgumentException("No enum constant with value " + i);
+	}
 }

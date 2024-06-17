@@ -24,7 +24,7 @@ public class AddressAreaApiUtil extends PublicDataOpenApiUtil{
 	public static Map<String, AddressAreaApiResponse> getAddressArea(String srchwrd, String countPerPage, String currentPage) {
 		StringBuilder urlBuilder = new StringBuilder(serviceUrl);
 		try {
-			urlBuilder.append("?" + URLEncoder.encode("serviceKey", UTF_8) + "=" + serviceKey);
+			urlBuilder.append("?" + URLEncoder.encode("serviceKey", UTF_8) + "=" + SERVICE_KEY);
 			urlBuilder.append("&" + URLEncoder.encode("srchwrd", UTF_8) + "=" + URLEncoder.encode(srchwrd, UTF_8));
 			urlBuilder.append("&" + URLEncoder.encode("countPerPage", UTF_8) + "=" + URLEncoder.encode(countPerPage, UTF_8));
 			urlBuilder.append("&" + URLEncoder.encode("currentPage", UTF_8) + "=" + URLEncoder.encode(currentPage, UTF_8));

@@ -17,9 +17,9 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated
 @RequestMapping("/api/v1/account")
 public class AccountController {
-
 
 
 

@@ -12,95 +12,25 @@ function SaleApi(accessToken){
             }
             return await requestAPI.post('/api/v1/sale/add',data,option);
         },
-        getSale : async ({keyword,order,asc})=>{
-            const response = await requestApiWithAccessToken.get(`/api/v1/sale?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
-            if(response.status === 200){
-                if(!ObjectUtils.isEmpty(response.data)){
-                    return response;
-                }
-            }
-            response.data = [];
-            return response;
+        getSale : async (keyword, fromDate, toDate, order, asc, filters)=>{
+            return await requestApiWithAccessToken.post(`/api/v1/sale`, {
+                keyword: keyword,
+                order: order,
+                asc: asc,
+                fromDate: fromDate,
+                toDate: toDate,
+                filters: filters
+            }, accessToken);
         },
-        getSaleByCategory : async (category, {keyword, order, asc})=>{
-            if(ObjectUtils.isEmpty(order)){
-                switch (category){
-                    case 'card':
-                        order = 'card_st';
-                        break;
-                    case 'green':
-                        order = 'green_st';
-                        break;
-                    case 'comb':
-                        order = 'comb_st';
-                        break;
-                    case 'support':
-                        order = 'support_st';
-                        break;
-                }
-            }
-            const response = await requestApiWithAccessToken.get(`/api/v1/sale/${category}?keyword=${keyword}&order=${order}&asc=${asc}`, accessToken);
-            if(response.status === 200){
-                response.data.map(function (value){
-                    let state = '';
-                    let stateColor = '';
-                    switch (category){
-                        case 'card':
-                            let card_st = value.card_st;
-                            console.log(`card_st: ${card_st}`)
-                            if(card_st === null || card_st === undefined || card_st === 0){
-                                state = '등록전'
-                                stateColor = '#fff29b'
-                            }else if(card_st === 1){
-                                state = '등록완료'
-                                stateColor = '#99fa8a'
-                            }else if(card_st === 2){
-                                state = '패스'
-                                stateColor = '#8cf8ff'
-                            }
-                            break;
-                        case 'green':
-                            let green_st = value.green_st;
-                            if(green_st === null || green_st === undefined || green_st === 0){
-                                state = '반납전'
-                                stateColor = '#fff29b'
-                            }else{
-                                state = '반납완료'
-                                stateColor = '#99fa8a'
-                            }
-                            break;
-                        case 'comb':
-                            let comb_st = value.comb_st;
-                            if(comb_st === null || comb_st === undefined || comb_st === 0){
-                                state = '등록전'
-                                stateColor = '#fff29b'
-                            }else{
-                                state = '등록완료'
-                                stateColor = '#99fa8a'
-                            }
-                            break;
-                        case 'support':
-                            let sup_st = value.sup_st;
-                            if(sup_st === null || sup_st === undefined || sup_st === 0){
-                                state = '지원전'
-                                stateColor = '#fff29b'
-                            }else{
-                                state = '지원완료'
-                                stateColor = '#99fa8a'
-                            }
-                            break;
-                    }
-                    value['state'] = state;
-                    value['state_color'] = stateColor;
-                })
-
-                return response;
-            }else{
-                return response;
-            }
+        getSaleByCategory : async (category, keyword, order, asc)=>{
+            return await requestApiWithAccessToken.post(`/api/v1/sale/${category}`, {
+                keyword: keyword,
+                order: order,
+                asc: asc
+            }, accessToken);
         },
         deleteSales : async (data)=>{
-            return await requestApiWithAccessToken.post('/api/v1/sale/delete', data, accessToken);
+            return await requestApiWithAccessToken.delete('/api/v1/sale/delete', data, accessToken);
         }
     }
 }

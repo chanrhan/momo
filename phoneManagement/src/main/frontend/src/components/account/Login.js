@@ -6,14 +6,14 @@ import {setRefreshToken} from "../../utils/Cookies";
 import Signup from "./Signup";
 import FindUsername from "./FindUsername";
 import FindPassword from "./FindPassword";
-import {login} from "../../api/AccountApi";
-import useValidation from "../../hook/useValidation";
+import {login} from "../../api/PublicApi";
+import useInputField from "../../hook/useInputField";
 import useApi from "../../hook/useApi";
 
 function Login(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {accountApi} = useApi();
+    const {publicApi} = useApi();
 
     let [loginInput, setLoginInput] = useState({
         username: "",
@@ -33,7 +33,7 @@ function Login(){
     const handleLogin = async (e)=>{
         e.preventDefault();
         try{
-            await accountApi.login(loginInput).then(res=>{
+            await publicApi.login(loginInput).then(res=>{
                 if(res.status === 200){
                     // console.log(`response.jwtToken : ${response.jwt}`)
                     dispatch(authActions.setAccessToken(res.jwt.access_token));

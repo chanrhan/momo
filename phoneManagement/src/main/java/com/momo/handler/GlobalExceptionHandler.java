@@ -14,8 +14,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(RestApiException.class)
 	public ResponseEntity<ErrorResponse> handleRestApiException(RestApiException e){
-		log.error("RestApiException", e);
-		return new ResponseEntity<>(ErrorResponse.of(e), HttpStatus.OK);
+//		log.info("RestApiException code: {}, reason: {}", e.getErrorCode(), e.getReason());
+		ErrorResponse res = ErrorResponse.of(e);
+		return ResponseEntity.ok(res);
 	}
 
 //	@ExceptionHandler(MethodArgumentNotValidException.class)
