@@ -39,7 +39,7 @@ import ExceptionTest from "./test/ExceptionTest";
 import FileUploadTest from "./test/FileUploadTest";
 import AlimTalkTest from "./test/AlimTalkTest";
 
-function App() {
+function App_backup() {
   return (
     <div className="App">
         <ModalContainer/>
