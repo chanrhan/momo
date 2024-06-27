@@ -1,4 +1,4 @@
-import {LayerModal} from "../../../src/js/modal/common/LayerModal";
+import {LayerModal} from "../../../src/js/common/modal/LayerModal";
 
 function SaleDetailModal(props){
     return (

@@ -1,11 +1,11 @@
-import {LayerModal} from "../../../src/js/modal/common/LayerModal";
+import {LayerModal} from "../../../src/js/common/modal/LayerModal";
 import {useEffect, useState} from "react";
-import InputBox from "../common/inputbox/InputBox";
-import ChoiceButtonBox from "../common/inputbox/ChoiceButtonBox";
+import InputBox from "../../../src/js/common/inputbox/InputBox";
+import ChoiceButtonBox from "../../../src/js/common/inputbox/ChoiceButtonBox";
 import useInputField from "../../hook/useInputField";
 import {SALE_INITIAL_STATE} from "./SALE_INITIAL_STATE";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 import useApi from "../../hook/useApi";
 import {ObjectUtils} from "../../utils/objectUtil";
 

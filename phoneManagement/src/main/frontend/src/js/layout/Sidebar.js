@@ -1,21 +1,48 @@
-import "../../css/layout.module.css"
-import "../../css/user.module.css"
+import Layout from "../../css/layout.module.css"
+import {Link, useNavigate} from "react-router-dom";
+import {useTabs} from "../hook/useTabs";
+import {useState} from "react";
+
+// import "../../css/user.module.css"
 
 
-export function Sidebar(){
+export function Sidebar() {
+    const [tab, setTab] = useState(0)
+
     return (
-        <div className="lnb">
-            <nav className="menu">
-                <ul className="menu_list">
-                    <li className="menu_item menu_customer active"><a href="#">고객</a></li>
-                    {/*활성화시 active 추가*/}
-                    <li className="menu_item menu_work"><a href="#">업무</a></li>
-                    <li className="menu_item menu_communication"><a href="#">연락</a></li>
-                    <li className="menu_item menu_data"><a href="#">데이터</a></li>
-                    <li className="menu_item menu_chat"><a href="#">팀 채팅</a></li>
+        <div className={Layout.lnb}>
+            <nav className={Layout.menu}>
+                <ul className={Layout.menu_list}>
+                    <li className={`${Layout.menu_item} ${tab === -1 && Layout.active}`}>
+                        <Link className={Layout.a} to='/service' onClick={() => {
+                            setTab(-1)
+                        }}>홈</Link>
+                    </li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_customer} ${tab === 0 && Layout.active}`}>
+                        <Link className={Layout.a} to='/service/sale' onClick={() => {
+                            setTab(0)
+                        }}>고객</Link>
+                    </li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_work} ${tab === 1 && Layout.active}`}><Link
+                        className={Layout.a} to='/service/task' onClick={() => {
+                        setTab(1)
+                    }}>업무</Link></li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 2 && Layout.active}`}>
+                        <Link className={Layout.a} to='/service/communication' onClick={() => {
+                            setTab(2)
+                        }}>연락</Link></li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_data} ${tab === 3 && Layout.active}`}><Link
+                        className={Layout.a} to='/service/analysis' onClick={() => {
+                        setTab(3)
+                    }}>데이터</Link></li>
+                    {/*<li className={`${Layout.menu_item} ${Layout.menu_chat} ${tab === 4 && Layout.active}`}><Link*/}
+                    {/*    className={Layout.a} to='/service/chat' onClick={() => {*/}
+                    {/*    setTab(4)*/}
+                    {/*}}>팀 채팅</Link></li>*/}
                 </ul>
-                <ul className="menu_list">
-                    <li className="menu_item menu_set"><a href="#">설정</a></li>
+                <ul className={Layout.menu_list}>
+                    <li className={`${Layout.menu_item} ${Layout.menu_set}`}><Link className={Layout.a}
+                                                                                   to='/setting'>설정</Link></li>
                 </ul>
             </nav>
         </div>

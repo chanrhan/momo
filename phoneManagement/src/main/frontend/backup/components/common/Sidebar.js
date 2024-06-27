@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import useModal from "../../hook/useModal";
 import useApi from "../../hook/useApi";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 
 function Sidebar(){
     const modal = useModal();

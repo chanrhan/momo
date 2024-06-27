@@ -5,7 +5,7 @@ import useUserInfo from "../../hook/useUserInfo";
 import { CiLock } from "react-icons/ci";
 import useModal from "../../hook/useModal";
 import ModalTest from "../../test/ModalTest";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 
 function Profile(){
     const inputField = useInputField();

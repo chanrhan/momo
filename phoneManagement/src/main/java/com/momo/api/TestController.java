@@ -75,6 +75,7 @@ public class TestController {
 	@PostMapping("/img")
 	@ResponseBody
 	public ResponseEntity<String> upload(@RequestParam String dir, @RequestPart(value = "file") MultipartFile file) {
+		log.info("dir: {}, file: {}", dir, file.getName());
 		return ResponseEntity.ok(imageService.upload(dir, file));
 	}
 

@@ -2,7 +2,7 @@ import {useState} from "react";
 import {RegexUtils} from "../utils/regex";
 import useModal from "../hook/useModal";
 import ModalTest from "./ModalTest";
-import {ModalType} from "../../src/js/modal/ModalType";
+import {ModalType} from "../common/modal/ModalType";
 
 export const RegexTest = ()=>{
     const modal = useModal()

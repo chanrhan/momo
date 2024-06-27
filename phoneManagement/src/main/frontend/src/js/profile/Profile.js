@@ -1,65 +1,50 @@
-import "../../css/user.module.css"
+import User from "../../css/user.module.css"
+import logoImg from "../../images/user/logo.png"
+import profileImg1 from "../../images/profile_img1.jpg"
+import {cm} from "../utils/cm";
+import {UserFormInput} from "../account/module/UserFormInput";
+import {UserFormItem} from "../account/module/UserFormItem";
 
 export function Profile(){
     return (
-        <div id="contents">
-            <form className="user_form form_set">
-                <div className="user_logo"><img src={require("../../images/user/logo.png")} alt="momo"/></div>
+        <form className={cm(User.user_form, User.form_set)}>
+            <div className={cm(User.user_logo)}><img src={logoImg} alt="momo"/></div>
 
-                <h2 className="user_title">내 정보 설정</h2>
+            <h2 className={cm(User.user_title)}>내 정보 설정</h2>
 
-                <div className="user_profile">
-                    <div className="profile_img">
-                        <img src={require("../../images/profile_img1.jpg")} alt="프로필 이미지"/>
-                    </div>
-
-                    <button type="button" className="profile_upload">프로필 업로드</button>
+            <div className={cm(User.user_profile)}>
+                <div className={cm(User.profile_img)}>
+                    <img className={cm(User.img)} src={profileImg1} alt="프로필 이미지"/>
                 </div>
 
-                <button type="button" className="profile_view btn btn_blue btn_medium">내 명함 보기</button>
+                <button type="button" className={cm(User.profile_upload)}>프로필 업로드</button>
+            </div>
 
-                <ul className="form_list">
-                    <li className="form_item">
-                        <label htmlFor="id" className="form_label">아이디</label>
-                        <div className="form_inp">
-                            <input type="text" id="id" className="inp" value="kimmomo" readOnly/>
-                        </div>
-                    </li>
-                    <li className="form_item">
-                        <label htmlFor="name" className="form_label">비밀번호</label>
-                        <div className="form_inp">
-                            <input type="text" id="name" className="inp" value="김모모"/>
-                        </div>
-                    </li>
-                    <li className="form_item">
-                        <label htmlFor="birth" className="form_label">생년월일</label>
-                        <div className="form_inp">
-                            <input type="password" id="birth" className="inp" value="2020.01.01"/>
-                        </div>
-                    </li>
-                    <li className="form_item">
-                        <label htmlFor="phoneNum" className="form_label">휴대폰 번호</label>
-                        <div className="form_inp">
-                            <input type="tel" id="phoneNum" className="inp" value="010-1234-5678"/>
-                        </div>
-                    </li>
-                    <li className="form_item">
-                        <label htmlFor="phoneCode" className="form_label">비밀번호</label>
-                        <div className="form_inp">
-                            <input type="password" id="phoneCode" className="inp bg"/>
-                                {/*<input type="password" title="비밀번호" id="phoneCode" className="inp" readonly> 입력 불가시-->*/}
-                                <button type="button" className="form_btn btn_grey">재설정</button>
-                        </div>
-                    </li>
-                </ul>
+            <button type="button" className={`${User.profile_view} btn btn_blue btn_medium`}>내 명함 보기</button>
 
-                <div className="form_btn_box">
-                    <button type="submit" className="btn btn_blue">저장</button>
-                </div>
+            <ul className={cm(User.form_list)}>
+                <UserFormItem>
+                    <UserFormInput subject='아이디' varName='id'/>
+                </UserFormItem>
+                <UserFormItem>
+                    <UserFormInput subject='생년월일' varName='birth'/>
+                </UserFormItem>
+                <UserFormItem>
+                    <UserFormInput subject='휴대폰번호' varName='tel'/>
+                </UserFormItem>
+                <UserFormItem>
+                    <UserFormInput type='password' subject='비밀번호 변경' varName='pwd' bg readOnly>
+                        <button type="button" className={cm(User.form_btn, User.btn_grey)}>재설정</button>
+                    </UserFormInput>
+                </UserFormItem>
+            </ul>
 
-                <div className="user_copyright">COPYRIGHT(C) MOMO, INC. ALL RIGHTS RESERVED.</div>
+            <div className={cm(User.form_btn_box)}>
+                <button type="submit" className={`btn btn_blue ${User.btn}`}>저장</button>
+            </div>
 
-            </form>
-        </div>
+            <div className={cm(User.user_copyright)}>COPYRIGHT(C) MOMO, INC. ALL RIGHTS RESERVED.</div>
+
+        </form>
     )
 }

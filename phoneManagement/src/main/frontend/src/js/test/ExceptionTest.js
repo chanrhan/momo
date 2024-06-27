@@ -3,7 +3,7 @@ import useApi from "../hook/useApi";
 import {useStore} from "react-redux";
 import {useState} from "react";
 import useInputField from "../hook/useInputField";
-import InputBox from "../components/common/inputbox/InputBox";
+import InputBox from "../common/inputbox/InputBox";
 
 function ExceptionTest(){
     const {testApi} = useApi();

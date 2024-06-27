@@ -44,7 +44,7 @@ public class ImageService {
 			}
 		}
 
-		String filePath = savePath + "/" + fileName;
+		String filePath = savePath + fileName;
 
 		try{
 			FileServiceUtil.resizeImageAndSave(mf, filePath, formatName);
@@ -57,6 +57,8 @@ public class ImageService {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		log.info("파일 저장에 성공하였습니다: {}", filePath);
 		return fileName;
 	}
 }

@@ -1,0 +1,18 @@
+.main{
+    font-size: 32px;
+}
+
+.main .body .test + .test{
+    margin-top: 50px;
+}
+
+.main .body .test.blue{
+    color: blue;
+}
+
+.main .body .test.pink{
+    color: pink;
+}
+
+
+

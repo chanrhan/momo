@@ -1,45 +1,32 @@
 @charset "UTF-8";
 
 /* graph */
-.graph{}
 
-.graph .graph_head{}
-.graph .graph_head .tab.type1{}
 .graph .graph_head .tab.type2{margin-top:32px; border-bottom:1px solid #f8f8f9;}
 .graph .graph_head .graph_head_group{margin-top:23px; text-align:right;}
 .graph .graph_head .graph_head_group .tab.type3{display:inline-block; float:left; vertical-align:top;}
-.graph .graph_head .graph_head_group .inp.date{}
-.graph .graph_head .graph_head_group .btn_all{}
 
 .graph .graph_panel{margin-top:24px;}
-.graph .graph1{}
-.graph .graph1 .graph_scroll{}
 .graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;}
 .graph .graph1 .graph_item{display:inline-block; overflow:hidden; position:relative; width:242px; padding:16px 24px 15px 24px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
 .graph .graph1 .graph_item + .graph_item{margin-left:16px;}
 .graph .graph1 .graph_item .graph_title{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph1 .graph_item .graph_count{margin-top:10px; font-size:18px; font-weight:500; line-height:20px;}
-.graph .graph1 .graph_item .graph_count span{font-weight:600;}
+.graph .graph1 .graph_item .graph_count .span{font-weight:600;}
 .graph .graph1 .graph_item .graph_per{margin-top:10px; font-size:14px; line-height:16px;}
-.graph .graph1 .graph_item .graph_per span{margin-right:2px; font-size:12px; vertical-align:middle;}
+.graph .graph1 .graph_item .graph_per .span{margin-right:2px; font-size:12px; vertical-align:middle;}
 .graph .graph1 .graph_item .graph_box{position:absolute; top:16px; right:24px; width:62px; height:72px;}
-.graph .graph1 .graph_item .graph_box img{}
 .graph .graph1 .graph_item.up{background-color:#fef0ef;}
-.graph .graph1 .graph_item.up .graph_count{}
 .graph .graph1 .graph_item.up .graph_per{color:#f34432;}
 .graph .graph1 .graph_item.down{background-color:#f0f5ff;}
-.graph .graph1 .graph_item.down .graph_count{}
 .graph .graph1 .graph_item.down .graph_per{color:#4781ff;}
 
 .graph .graph_group{font-size:0; line-height:0;}
-.graph .graph_group + .graph_group{}
 .graph .graph1 + .graph_group{margin-top:40px;}
 
-.graph_group > div{display:inline-block; overflow:hidden; padding:32px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
+.graph_group > .div{display:inline-block; overflow:hidden; padding:32px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
 .graph .graph2{position:relative; width:calc(100% - 424px); height:289px;}
 .graph .graph2 .graph_top{position:relative;}
-.graph .graph2 .graph_top .graph_area{}
-.graph .graph2 .graph_top .tab.type1{}
 .graph .graph2 .graph_top .tab.type4{position:absolute; top:0; right:0;}
 .graph .graph2 .graph_box{height:111px; margin-top:14px; font-size:14px; line-height:16px;}
 .graph .graph2 .tab.type5{position:absolute; left:-10px; right:-10px; bottom:32px;}
@@ -53,37 +40,31 @@
 
 .graph .graph4_group{margin:32px -12px 0 -12px;}
 .graph .graph4{width:calc(33.33% - 24px); margin:0 12px;}
-.graph .graph4 + .graph4{}
-.graph .graph4 .graph_top{}
 .graph .graph4 .graph_top .graph_title{display:inline-block; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
-.graph .graph4 .graph_bar{}
-.graph .graph4 .graph_bar .bar_list{}
 .graph .graph4 .graph_bar .bar_item{margin-top:24px;}
 .graph .graph4 .graph_bar .bar_item .bar_text{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph4 .graph_bar .bar_item .bar_text .bar_per{float:right; color:#91939f;}
 .graph .graph4 .graph_bar .bar_item .bar{position:relative; height:16px; margin-top:8px; border-radius:8px; background-color:#dde1e8;}
-.graph .graph4 .graph_bar .bar_item .bar span{position:absolute; top:0; left:0; bottom:0; border-radius:8px;}
-.graph .graph4 .graph_bar .bar_item:nth-child(1) .bar span,
-.graph .graph4 .graph_bar .bar_item:nth-child(5) .bar span{background-color:#4781ff;}
-.graph .graph4 .graph_bar .bar_item:nth-child(2) .bar span,
-.graph .graph4 .graph_bar .bar_item:nth-child(6) .bar span{background-color:#4a5bcf;}
-.graph .graph4 .graph_bar .bar_item:nth-child(3) .bar span,
-.graph .graph4 .graph_bar .bar_item:nth-child(7) .bar span{background-color:#5a8ff7;}
-.graph .graph4 .graph_bar .bar_item:nth-child(4) .bar span,
-.graph .graph4 .graph_bar .bar_item:nth-child(8) .bar span{background-color:#7eb1fa;}
+.graph .graph4 .graph_bar .bar_item .bar .span{position:absolute; top:0; left:0; bottom:0; border-radius:8px;}
+.graph .graph4 .graph_bar .bar_item:nth-child(1) .bar .span,
+.graph .graph4 .graph_bar .bar_item:nth-child(5) .bar .span{background-color:#4781ff;}
+.graph .graph4 .graph_bar .bar_item:nth-child(2) .bar .span,
+.graph .graph4 .graph_bar .bar_item:nth-child(6) .bar .span{background-color:#4a5bcf;}
+.graph .graph4 .graph_bar .bar_item:nth-child(3) .bar .span,
+.graph .graph4 .graph_bar .bar_item:nth-child(7) .bar .span{background-color:#5a8ff7;}
+.graph .graph4 .graph_bar .bar_item:nth-child(4) .bar .span,
+.graph .graph4 .graph_bar .bar_item:nth-child(8) .bar .span{background-color:#7eb1fa;}
 
 .graph .graph_table{margin-top:17px;}
 .graph .graph_table .tb_calender{text-align:right;}
-.graph .graph_table .tb_calender thead th{padding:10px; border-right:1px solid #f4f4f5; background-color:#f8f8f9; font-size:14px; font-weight:400; line-height:16px;}
-.graph .graph_table .tb_calender thead th:last-child{border-right:0;}
-.graph .graph_table .tb_calender thead th span{display:block; margin-top:4px;}
-.graph .graph_table .tb_calender tbody{}
-.graph .graph_table .tb_calender tbody th{padding:16px 10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; font-weight:400; text-align:left; line-height:16px;}
-.graph .graph_table .tb_calender tbody th.blue{background-color:#e8f2fe; color:#4781ff;}
-.graph .graph_table .tb_calender tbody th.red{background-color:#fef0ef; color:#f34432;}
-.graph .graph_table .tb_calender tbody th.grey{background-color:#f8f8f9;}
-.graph .graph_table .tb_calender tbody td{padding:16px 10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; line-height:16px;}
-.graph .graph_table .tb_calender tbody td span{font-weight:500;}
-.graph .graph_table .tb_calender tbody td:last-child{}
-.graph .graph_table .tb_calender tbody tr.bb th,
-.graph .graph_table .tb_calender tbody tr.bb td{border-bottom:1px solid #707070;}
+.graph .graph_table .tb_calender .thead .th{padding:10px; border-right:1px solid #f4f4f5; background-color:#f8f8f9; font-size:14px; font-weight:400; line-height:16px;}
+.graph .graph_table .tb_calender .thead .th:last-child{border-right:0;}
+.graph .graph_table .tb_calender .thead .th .span{display:block; margin-top:4px;}
+.graph .graph_table .tb_calender .tbody .th{padding:16px 10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; font-weight:400; text-align:left; line-height:16px;}
+.graph .graph_table .tb_calender .tbody .th.blue{background-color:#e8f2fe; color:#4781ff;}
+.graph .graph_table .tb_calender .tbody .th.red{background-color:#fef0ef; color:#f34432;}
+.graph .graph_table .tb_calender .tbody .th.grey{background-color:#f8f8f9;}
+.graph .graph_table .tb_calender .tbody .td{padding:16px 10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; line-height:16px;}
+.graph .graph_table .tb_calender .tbody .td .span{font-weight:500;}
+.graph .graph_table .tb_calender .tbody .tr.bb .th,
+.graph .graph_table .tb_calender .tbody .tr.bb .td{border-bottom:1px solid #707070;}

@@ -1,8 +1,8 @@
-import {LayerModal} from "../../../src/js/modal/common/LayerModal";
+import {LayerModal} from "../../../src/js/common/modal/LayerModal";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 import useInputField from "../../hook/useInputField";
-import ValidationError from "../error/ValidationError";
+import ValidationError from "../../../src/js/error/ValidationError";
 import useApi from "../../hook/useApi";
 
 function UpdatePasswordModal() {

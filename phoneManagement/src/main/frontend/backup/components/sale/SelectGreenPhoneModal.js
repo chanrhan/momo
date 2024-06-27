@@ -1,7 +1,7 @@
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
-import {LayerModal} from "../../../src/js/modal/common/LayerModal";
-import SearchBox from "../common/inputbox/SearchBox";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
+import {LayerModal} from "../../../src/js/common/modal/LayerModal";
+import SearchBox from "../../../src/js/common/inputbox/SearchBox";
 
 function SelectGreenPhoneModal(props){
     const modal = useModal();

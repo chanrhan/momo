@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import useApi from "../../hook/useApi";
 import useUserInfo from "../../hook/useUserInfo";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 import useInputField from "../../hook/useInputField";
 
 function Sale() {

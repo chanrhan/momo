@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {MenuModal} from "../../../src/js/modal/common/MenuModal";
+import {MenuModal} from "../../../src/js/common/modal/MenuModal";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {HttpStatusCode} from "axios";
 import {userActions} from "../../store/slices/userSlice";

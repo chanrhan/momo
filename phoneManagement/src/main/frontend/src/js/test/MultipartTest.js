@@ -3,7 +3,7 @@ import useApi from "../hook/useApi";
 import axiosInstance from "../utils/axiosInstance";
 import useModal from "../hook/useModal";
 import axios from "axios";
-import {ModalType} from "../../src/js/modal/ModalType";
+import {ModalType} from "../common/modal/ModalType";
 
 function MultipartTest(){
     const modal = useModal();

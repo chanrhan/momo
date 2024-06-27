@@ -3,10 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateNickname} from "../../api/UserApi";
 import {getUserInfo} from "../../api/PublicApi";
 import {userActions} from "../../store/slices/userSlice";
-import {LayerModal} from "../../../src/js/modal/common/LayerModal";
+import {LayerModal} from "../../../src/js/common/modal/LayerModal";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/modal/common/ModalType";
+import {ModalType} from "../../../src/js/common/modal/ModalType";
 import {HttpStatusCode} from "axios";
 import useApi from "../../hook/useApi";
 

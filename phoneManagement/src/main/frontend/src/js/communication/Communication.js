@@ -1,0 +1,35 @@
+import Layout from "../../css/layout.module.css"
+import Calender from "../../css/calendar.module.css"
+import {cm} from "../utils/cm";
+import {CalendarTable} from "./module/CalendarTable";
+import {CalendarMonthPopup} from "./modal/CalendarMonthPopup";
+
+export function Communication(){
+    const today = new Date();
+    return (
+        <div className={Layout.sub}>
+            <div className={Layout.sub_head}>
+                <h2 className={Layout.sub_title}>예약전송함</h2>
+            </div>
+
+            <div className={Calender.calender}>
+                <div className={Calender.calender_head}>
+                    <div className={cm(Calender.calender_date, Calender.div)}>
+                        <span className={Calender.date_text}>{today.getFullYear()}년 {today.getMonth()+1}월</span>
+                        <div className={Calender.date_box}>                 <button type="button" className={Calender.date_btn}>달력</button>
+                            <CalendarMonthPopup/>
+                        </div>
+                    </div>
+
+                    <div className={cm(Calender.calender_control, Calender.div)}>
+                        <button type="button" className={cm(Calender.calender_btn, Calender.btn_arrow, Calender.btn_prev)} disabled>이전</button>
+                        <button type="button" className={cm(Calender.calender_btn, Calender.btn_month)}>이번달</button>
+                        <button type="button" className={cm(Calender.calender_btn, Calender.btn_arrow, Calender.btn_next)}>다음</button>
+                    </div>
+                </div>
+
+                <CalendarTable today={today}/>
+            </div>
+        </div>
+    )
+}

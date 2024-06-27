@@ -1,5 +1,6 @@
 import {Link, Outlet} from "react-router-dom";
 
+
 function TestHeader(){
     return (
         <div>
@@ -50,6 +51,9 @@ function TestHeader(){
                 </Link>
                 <Link to='alimtalk'>
                     <button className='btn btn-outline-success ms-1'>알림톡 테스트</button>
+                </Link>
+                <Link to='css'>
+                    <button className='btn btn-outline-success ms-1'>CSS 테스트</button>
                 </Link>
             </div>
             <Outlet/>

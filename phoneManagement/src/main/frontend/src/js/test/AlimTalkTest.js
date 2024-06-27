@@ -1,6 +1,6 @@
 import useApi from "../hook/useApi";
-import InputBox from "../components/common/inputbox/InputBox";
 import useInputField from "../hook/useInputField";
+import InputBox from "../common/inputbox/InputBox";
 
 function AlimTalkTest(){
     const {testApi} = useApi();

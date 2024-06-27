@@ -1,21 +1,24 @@
 import {Link, Outlet} from "react-router-dom";
-import "../../css/user.module.css"
+import User from "../../css/user.module.css"
 import logo from "../../images/user/logo.png"
 
 export function AccountLayout(){
+
     return (
-        <div className='user'>
-            <div className='container'>
-                <header>
-                    <h1 className="logo">
-                        <Link to='/'><img src={logo} alt="momo"/></Link>
-                    </h1>
-                </header>
-                <Outlet/>
-                <footer>
-                    <p className="copyright">COPYRIGHT(C) MOMO, INC. ALL RIGHTS RESERVED.</p>
-                </footer>
+        <body>
+            <div className={User.user}>
+                <div className={`container `+ User.container}>
+                    <header className={User.header}>
+                        <h1 className={User.logo}>
+                            <Link to='/' className={User.a}><img src={logo} alt="momo" className={User.img}/></Link>
+                        </h1>
+                    </header>
+                    <Outlet/>
+                    <footer className={User.footer}>
+                        <p className={User.user_copyright}>COPYRIGHT(C) MOMO, INC. ALL RIGHTS RESERVED.</p>
+                    </footer>
+                </div>
             </div>
-        </div>
+        </body>
     )
 }

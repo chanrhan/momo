@@ -1,11 +1,13 @@
 import {useRef} from "react";
-import FileInput from "../components/common/inputbox/FileInput";
 import useInputField from "../hook/useInputField";
 import useApi from "../hook/useApi";
 import {ObjectUtils} from "../utils/objectUtil";
+import FileInput from "../common/inputbox/FileInput";
 
 function FileUploadTest(){
-    const inputField = useInputField();
+    const inputField = useInputField({
+        dir: 'heic'
+    });
     const {testApi} = useApi();
 
     const handleUpload = ()=>{

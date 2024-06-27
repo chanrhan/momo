@@ -1,10 +1,12 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import "../../css/user.module.css"
+import User from "../../css/user.module.css"
 import useApi from "../hook/useApi";
 import {authActions} from "../store/slices/authSlice";
 import {setRefreshToken} from "../utils/Cookies";
+import {UserFormBox} from "./module/UserFormBox";
+import {UserFormBtnBox} from "./module/UserFormBtnBox";
 
 function Login(){
     const dispatch = useDispatch();
@@ -57,57 +59,49 @@ function Login(){
     }
 
     return (
-        <main>
-            <div id="contents">
-                <form className="user_box user_form">
-                    <h2 className="user_title">로그인</h2>
-
-                    <ul className="form_list">
-                        <li className="form_item">
-                            <label htmlFor="id" className="form_label">아이디</label>
-                            <div className="form_inp">
-                                <input type="text" id="id" className="inp"/>
-                            </div>
-                            <p className="error_text">아이디를 입력해주세요.</p>
-                        </li>
-                        <li className="form_item">
-                            <label htmlFor="pw" className="form_label">비밀번호</label>
-                            <div className="form_inp">
-                                <input type="password" id="pw" className="inp"/>
-                            </div>
-                            <p className="error_text">비밀번호를 입력해주세요.</p>
-                        </li>
-                    </ul>
-
-                    <div className="form_auto">
-                        <input type="checkbox" id="auto" checked/>
-                        <label htmlFor="auto">자동로그인</label>
+        <UserFormBox title='로그인'>
+            <ul className={User.form_list}>
+                <li className={`${User.form_item} ${User.li}`}>
+                    <label htmlFor="id" className={`${User.form_label} ${User.label}`}>아이디</label>
+                    <div className={User.form_inp}>
+                        <input type="text" id="id" className={`inp ` + User.inp}/>
                     </div>
-
-                    <div className="form_btn_box">
-                        <button type="submit" className="btn btn_blue">로그인</button>
+                    <p className="error_text">아이디를 입력해주세요.</p>
+                </li>
+                <li className={User.form_item}>
+                    <label htmlFor="pw" className={User.form_label}>비밀번호</label>
+                    <div className={User.form_inp}>
+                        <input type="password" id="pw" className={`inp ` + User.inp}/>
                     </div>
+                    <p className="error_text">비밀번호를 입력해주세요.</p>
+                </li>
+            </ul>
 
-                    <ul className="user_link link_find">
-                        <li>
-                            <Link to='/account/signup'>
-                                회원가입
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to='/account/find-username'>
-                                아이디 찾기
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to='/account/find-password'>
-                                비밀번호 찾기
-                            </Link>
-                        </li>
-                    </ul>
-                </form>
+            <div className={User.form_auto}>
+                <input type="checkbox" id="auto" className={User.input} checked/>
+                <label htmlFor="auto" className={User.label}>자동로그인</label>
             </div>
-        </main>
+
+            <UserFormBtnBox value='로그인'/>
+
+            <ul className={`${User.user_link} ${User.link_find}`}>
+                <li className={User.li}>
+                    <Link to='/account/signup' className={User.a}>
+                        회원가입
+                    </Link>
+                </li>
+                <li className={User.li}>
+                    <Link to='/account/find-username' className={User.a}>
+                        아이디 찾기
+                    </Link>
+                </li>
+                <li className={User.li}>
+                    <Link to='/account/find-password' className={User.a}>
+                        비밀번호 찾기
+                    </Link>
+                </li>
+            </ul>
+        </UserFormBox>
         // <div>
         //     <h3 className='debug-page'>Login Page</h3>
         //

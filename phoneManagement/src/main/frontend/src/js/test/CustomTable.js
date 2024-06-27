@@ -1,11 +1,9 @@
 import {useEffect, useState} from "react";
 import * as XLSX from "xlsx";
 import useModal from "../hook/useModal";
-import {ModalType} from "../../src/js/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
-import '../../css/table.css'
-import {RegexUtils} from "../utils/regex";
 import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
+import {ModalType} from "../common/modal/ModalType";
 
 
 const SAMPLE_SALE = [
