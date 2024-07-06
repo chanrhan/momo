@@ -7,7 +7,7 @@ import {useState} from "react";
 
 
 export function Sidebar() {
-    const [tab, setTab] = useState(0)
+    const [tab, setTab] = useState(-1)
 
     return (
         <div className={Layout.lnb}>

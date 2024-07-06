@@ -1,7 +1,10 @@
-import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 import {ObjectUtils} from "../utils/objectUtil";
 
 function SaleApi(accessToken){
+    const axiosApiWithAccessToken = AxiosApiWithAccessToken();
+    // const axiosApi = AxiosApi();
+
     return {
         addSale: async (data)=>{
             const option = {
@@ -10,10 +13,10 @@ function SaleApi(accessToken){
                     'Content-Type': "multipart/form-data"
                 }
             }
-            return await requestAPI.post('/api/v1/sale/add',data,option);
+            return await axiosApiWithAccessToken.post('/api/v1/sale/add',data,option);
         },
         getSale : async (keyword, fromDate, toDate, order, asc, filters)=>{
-            return await requestApiWithAccessToken.post(`/api/v1/sale`, {
+            return await axiosApiWithAccessToken.post(`/api/v1/sale`, {
                 keyword: keyword,
                 order: order,
                 asc: asc,
@@ -23,14 +26,14 @@ function SaleApi(accessToken){
             }, accessToken);
         },
         getSaleByCategory : async (category, keyword, order, asc)=>{
-            return await requestApiWithAccessToken.post(`/api/v1/sale/${category}`, {
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/${category}`, {
                 keyword: keyword,
                 order: order,
                 asc: asc
             }, accessToken);
         },
         deleteSales : async (data)=>{
-            return await requestApiWithAccessToken.delete('/api/v1/sale/delete', data, accessToken);
+            return await axiosApiWithAccessToken.del('/api/v1/sale/delete', data, accessToken);
         }
     }
 }

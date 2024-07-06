@@ -1,9 +1,9 @@
-import {LayerModal} from "../../../src/js/common/modal/LayerModal";
+import {LayerModal} from "../../common/modal/LayerModal";
 import {useState} from "react";
 import {cssUtils} from "../../utils/cssUtils";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/common/modal/ModalType";
+import {ModalType} from "../../common/modal/ModalType";
 import {HttpStatusCode} from "axios";
 import useApi from "../../hook/useApi";
 

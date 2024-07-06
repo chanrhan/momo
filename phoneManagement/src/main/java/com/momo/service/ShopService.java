@@ -1,10 +1,13 @@
 package com.momo.service;
 
+import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.exception.RestApiException;
 import com.momo.mapper.ShopMapper;
 import com.momo.common.vo.ShopVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +38,17 @@ public class ShopService extends CommonService {
 		return shopMapper.getShop(vo);
 	}
 
+	public List<Map<String ,String>> getShopItems(String userId){
+		return shopMapper.getShopItems(userId);
+//		List<Map<String,String>> items = shopMapper.getShopItems(userId);
+//		System.out.println("items: "+items);
+//		Map<String ,String> result = new HashMap<>();
+//		for(Map<?,?> item : items){
+//			result.put(item.get("shop_id").toString(),item.get("item_nm").toString());
+//		}
+//		return result;
+	}
+
 	public Map<String,Object> getShopById(int id){
 		ShopVO vo = ShopVO.builder().shopId(id).build();
 		return shopMapper.getShop(vo).get(0);
@@ -42,8 +56,9 @@ public class ShopService extends CommonService {
 
 	// Corperation
 	public int insertCorp(ShopVO vo) {
-		Integer result = transactionTemplate.executeRepeatedly(status -> shopMapper.insertCorp(vo));
-		return (result != null) ? result : 0;
+		return shopMapper.insertCorp(vo);
+//		Integer result = transactionTemplate.executeRepeatedly(status -> shopMapper.insertCorp(vo));
+//		return (result != null) ? result : 0;
 	}
 
 	public int updateCorp(ShopVO vo) {

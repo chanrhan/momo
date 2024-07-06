@@ -18,6 +18,9 @@
 .user_form .form_inp + .form_inp{margin-top:12px;}
 .user_form .form_label + .form_inp{margin-top:12px;}
 .user_form .form_inp .form_btn{min-width:88px; height:60px; margin-left:8px; padding:0 16px; border-radius:8px; background-color:#62626e; color:#fff; font-size:16px; text-align:center; line-height:60px; transition:background-color .25s ease-in-out;}
+.user_form .form_inp .form_btn.auth{min-width: 120px;}
+.user_form .form_inp .form_btn.auth.resend{background-color: #84848c}
+.user_form .form_inp .form_btn.auth.resend:hover{background-color: #4e4e5b}
 .user_form .form_inp .form_btn:hover{background-color:#4e4e5b;}
 .user_form .form_inp .form_btn.btn_grey{background-color:#f4f5f9; color:#28272c;}
 .user_form .form_inp .form_btn.btn_grey:hover{background-color:#ebecf1;}
@@ -137,7 +140,7 @@
 .form_confirm .form_item .radio_box .input:checked + .form_label:before{background-color:#f4f5f9;}
 .form_confirm .form_item .radio_box .form_label:after{display:block; position:absolute; top:0; left:0; right:0; bottom:0; z-index:-1; border-radius:8px; background-color:#fff;}
 .form_confirm .form_item .radio_box .input:checked + .form_label:after{background-color:#f4f5f9;}
-.form_confirm .form_item .radio_box .form_label span{display:block; margin-bottom:-6px; font-size:18px; font-weight:500;}
+.form_confirm .form_item .radio_box .form_label .span{display:block; margin-bottom:-6px; font-size:18px; font-weight:500;}
 
 /* 내 정보 설정 */
 .user_form.form_set{padding:0 100px 60px 100px; text-align:center;}

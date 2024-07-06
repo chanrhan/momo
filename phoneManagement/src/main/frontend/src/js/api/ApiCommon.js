@@ -1,90 +1,114 @@
-import axiosInstance from "../utils/axiosInstance";
+// import axiosInstance from "../utils/axiosInstance";
 import axios from "axios";
+import useModal from "../hook/useModal";
+import {ModalType} from "../common/modal/ModalType";
+import {errorMonitor} from "form-data";
+import axiosInstance from "../utils/axiosInstance";
 
-const statusError = {
-    status: false,
-    error: "연결이 원활하지 않습니다. 잠시 후 다시 시도해 주세요"
-}
+export const AxiosApi = ()=> {
+    const modal = useModal();
 
-const responseResult = (res)=>{
+    // const axiosInstance = axios.create({
+    //     baseURL: "http://localhost:8080",
+    //     timeout: 10000,
+    //     headers: {
+    //         "Content-Type": `application/json`,
+    //         "Accept": "application/json",
+    //         "Access-Control-Allow-Origin": `http://localhost:3000`,
+    //         'Access-Control-Allow-Credentials':"true",
+    //     },
+    //     withCredentials: true,
+    // });
 
-}
-
-export const requestAPI = {
-    async post(url, data, option){
-        const response = await axiosInstance.post(url, data, option)
-            .catch(()=>{
-                return statusError;
-            });
-
-        if(response.status === 200){
-            return {
-                status: response.status,
-                data: response.data,
-                jwt: {
-                    access_token: response.headers.get('authorization'),
-                    refresh_token: response.headers.get('refreshtoken')
-                }
-            }
-        }else{
-            return statusError;
+    axiosInstance.interceptors.response.use((response)=>{
+        return {
+            status: response.status,
+            data: response.data,
+            headers: response.headers
         }
-    },
-    async get(url, option){
-        const response = await axiosInstance.get(url, option)
-            .catch(()=>{
-                return statusError;
-            });
-
-        if(response.status === 200){
+    }, (error)=>{
+        // console.table(error)
+        if(error.code === 'ERR_NETWORK'){
+            modal.openModal(ModalType.SNACKBAR.Alert, {
+                msg: '서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.'
+            })
             return {
-                status: response.status,
-                data: response.data,
-                jwt: {
-                    access_token: response.headers.get('authorization'),
-                    refresh_token: response.headers.get('refreshtoken')
-                }
+                status: false,
+                message: error.message
             }
-        }else{
-            return statusError;
         }
-    },
-    async delete(url, option){
+        return  {
+            status: error.response.status,
+            data: error.response.data,
+            message: error.message
+        }
+    })
+
+    const post = async(url, data, option)=>{
+
+        return await axiosInstance.post(url, data, option);
+    }
+
+    const get = async(url, option)=>{
+        return  await axiosInstance.get(url, option)
+    }
+
+    const del = async(url, option)=>{
         return await axiosInstance.delete(url, option);
-    },
-    async put(url, data, option){
+    }
+
+    const put = async (url, data, option)=>{
         return await axiosInstance.put(url, data, option);
+    }
+
+    return {
+        post,
+        get,
+        del,
+        put
     }
 }
 
-export const requestApiWithAccessToken = {
-    async post(url, data, accessToken){
-        return requestAPI.post(url,data,{
+export const AxiosApiWithAccessToken = ()=> {
+    const axiosApi = AxiosApi();
+
+    const post = async(url, data, accessToken)=>{
+        return axiosApi.post(url,data,{
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
         });
-    },
-    async get(url, accessToken){
-        return requestAPI.get(url, {
+    }
+
+    const get=(url, accessToken)=>{
+        return axiosApi.get(url, {
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
         });
-    },
-    async delete(url, accessToken, data){
-        return requestAPI.delete(url, {
+    }
+
+    const del = async(url, accessToken, data)=>{
+        return axiosApi.delete(url, {
             data: data,
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
         });
-    },
-    async put(url, data, accessToken){
-        return requestAPI.put(url, data, {
+    }
+
+    const put = async (url, data, accessToken) => {
+        return axiosApi.put(url, data, {
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
         });
+    }
+
+    return {
+        post,
+        get,
+        del,
+        put
     }
 }

@@ -49,11 +49,10 @@
             select
             sh.*,
             cp.bp_no,
-            ac.name as reps_nm
+            cp.corp_nm
             from
             tb_shop sh
             left outer join tb_corp cp on cp.corp_id=sh.corp_id
-            left outer join tb_account ac on ac.id=cp.reps_id
         )
 
         select
@@ -84,7 +83,25 @@
 <!--        </if>-->
     </select>
 
+    <select id="getShopItems">
+        select sh.shop_id,
+               concat_ws(' ', corp_nm, shop_nm) as item_nm
+        from tb_shop sh
+        left outer join tb_corp cp on cp.corp_id=sh.corp_id
+        where cp.corp_id=(
+            select tb_emp.corp_id
+            from    tb_emp
+            where emp_id=#{userId}
+        )
+    </select>
+
     <!--    Corperation-->
+    <select id="existBpNo">
+        select count(*) > 0
+        from tb_corp
+        where bp_no=${bpNo}
+    </select>
+
     <insert id="insertCorp" parameterType="com.momo.common.vo.ShopVO">
         INSERT INTO tb_corp
         (corp_id, bp_no, corp_nm)

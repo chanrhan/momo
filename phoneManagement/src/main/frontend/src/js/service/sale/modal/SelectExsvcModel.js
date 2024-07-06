@@ -1,8 +1,8 @@
-import {LayerModal} from "../../../src/js/common/modal/LayerModal";
-import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/common/modal/ModalType";
-import SearchBox from "../../../src/js/common/inputbox/SearchBox";
-import useApi from "../../hook/useApi";
+import {LayerModal} from "../../../common/modal/LayerModal";
+import useModal from "../../../hook/useModal";
+import {ModalType} from "../../../common/modal/ModalType";
+import SearchBox from "../../../common/inputbox/SearchBox";
+import useApi from "../../../hook/useApi";
 
 function SelectExsvcModel(props){
     const modal = useModal();

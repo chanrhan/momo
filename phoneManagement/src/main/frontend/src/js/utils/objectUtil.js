@@ -2,7 +2,7 @@ import {getType} from "@reduxjs/toolkit";
 
 export const ObjectUtils = {
     isEmpty(value){
-        const result = value === null || value === undefined || value.length === 0;
+        const result = value === null || value === undefined || value === '' || value.length === 0;
         if(result){
             return true;
         }

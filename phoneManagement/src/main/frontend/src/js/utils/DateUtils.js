@@ -18,9 +18,29 @@ export const DateUtils = {
 
         const totalDays = getDaysInMonth(date);
 
+        const totalWeek = Math.ceil((startDay + totalDays) / 7);
+
         return {
             startDay,
-            totalDays
+            totalDays,
+            totalWeek
         }
+    },
+    hasNextMonth : (year, month)=>{
+        const today = new Date();
+        if(year < today.getFullYear()){
+            return true;
+        }
+        if(month === 12 && year === today.getFullYear()){
+            return false;
+        }
+        return month <= today.getMonth();
+    },
+    hasPrevMonth : (year)=>{
+        return year >= 2000;
+    },
+    isToday: (year, month, day)=>{
+        const today = new Date();
+        return year === today.getFullYear() && month === today.getMonth()+1 && day === today.getDay();
     }
 }

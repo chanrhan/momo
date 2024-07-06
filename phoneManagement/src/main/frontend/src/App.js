@@ -10,7 +10,7 @@ import {SelectShop} from "./js/account/SelectShop";
 import MainLayout from "./js/layout/MainLayout";
 import Authorization from "./common/Authorization";
 import {RegisterCorp} from "./js/account/RegisterCorp";
-import {RegisterShop} from "./js/account/RegisterShop";
+import {RegisterShop} from "./js/shop/RegisterShop";
 import {FindUsername} from "./js/account/FindUsername";
 import {FindPassword} from "./js/account/FindPassword";
 import {ManageStaff} from "./js/service/sale/ManageStaff";
@@ -49,7 +49,7 @@ function App() {
               <title>모모</title>
               <meta name='viewport' content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
           </Helmet>
-          {/*<ModalContainer/>*/}
+          <ModalContainer/>
           <Routes>
               <Route path='/test' element={<TestHeader/>}>
                   <Route path='notify' element={<NotifTest/>}/>
@@ -84,10 +84,9 @@ function App() {
                   <Route path='/role' element={<Role/>}/>
 
                   <Route element={
-                      <AccountLayout/>
-                      // <Authorization redirectTo='/account/login'>
-                      //     <AccountLayout/>
-                      // </Authorization>
+                      <Authorization redirectTo='/account/login'>
+                          <AccountLayout/>
+                      </Authorization>
                   }>
                       <Route path='/role/staff' element={<SelectShop/>}/>
                       <Route path='/role/reps' element={<RegisterCorp/>}/>
@@ -98,10 +97,9 @@ function App() {
 
 
                   <Route element={
-                      <MainLayout/>
-                      // <Authorization redirectTo='/account/login'>
-                      //     <ServiceLayout/>
-                      // </Authorization>
+                      <Authorization redirectTo='/account/login'>
+                          <MainLayout/>
+                      </Authorization>
                   }>
                       <Route path='/service'>
                           <Route path='' element={<DashboardMain/>}/>

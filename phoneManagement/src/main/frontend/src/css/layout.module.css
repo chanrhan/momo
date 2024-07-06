@@ -84,3 +84,13 @@
 .contents .sub_tab .tab_item + .tab_item{margin-left:8px;}
 .contents .sub_tab .tab_item .tab_btn{padding:10px 16px; border-radius:8px; background-color:#f4f5f9; color:#62626e; font-size:14px; line-height:16px;}
 .contents .sub_tab .tab_item.active .tab_btn{background-color:#4781ff; color:#fff; font-weight:500;}
+
+.select_layer{
+    /*position: absolute !important;*/
+    /*display: block;*/
+    /*top: 45px !important;*/
+    /*left: -110px !important;*/
+    /*!*top: 20px;*!*/
+    /*!*margin-top: 5px;*!*/
+    /*width: 150px;*/
+}

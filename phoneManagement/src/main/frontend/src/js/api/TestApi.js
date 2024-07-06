@@ -1,18 +1,20 @@
-import {requestAPI} from "./ApiCommon";
+import {AxiosApi} from "./ApiCommon";
 
 function TestApi(accessToken){
+    const axiosApi = AxiosApi();
+
     return {
         note: async (data)=>{
-            return await requestAPI.post('/api/v1/test/send', data);
+            return await axiosApi.post('/api/v1/test/send', data);
         },
         sendMultipartFile: async (data, option)=>{
-            return await requestAPI.post('/api/v1/test/multipart', data, option);
+            return await axiosApi.post('/api/v1/test/multipart', data, option);
         },
         getSale: async (shopId)=>{
-            return await requestAPI.get(`/api/v1/test/sale?shopId=${shopId}`);
+            return await axiosApi.get(`/api/v1/test/sale?shopId=${shopId}`);
         },
         getException: async ({code, reason})=>{
-            return await requestAPI.get(`/api/v1/test/exception?code=${code}&reason=${reason}`)
+            return await axiosApi.get(`/api/v1/test/exception?code=${code}&reason=${reason}`)
         },
         uploadFile: async (dir, data)=>{
             const option = {
@@ -20,10 +22,10 @@ function TestApi(accessToken){
                     'Content-Type': "multipart/form-data"
                 }
             }
-            return await requestAPI.post(`/api/v1/test/img?dir=${dir}`, data, option);
+            return await axiosApi.post(`/api/v1/test/img?dir=${dir}`, data, option);
         },
         sendAlimTalk: async (body)=>{
-            return await requestAPI.post('/api/v1/test/alimtalk', body);
+            return await axiosApi.post('/api/v1/test/alimtalk', body);
         }
     }
 }

@@ -1,38 +1,40 @@
-import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 
 
-function PublicApi(accessToken){
+function PublicApi(){
+    const axiosApi = AxiosApi();
+
     return {
         login: async (data)=>{
-          return await requestAPI.post('/api/v1/public/login',data);
+          return await axiosApi.post('/api/v1/public/login',data);
         },
         signup : async (data)=>{
-            return await requestAPI.post('/api/v1/public/signup', data);
+            return await axiosApi.post('/api/v1/public/signup', data);
         },
-        checkBpnoStatus : async (bpNo)=>{
-            // console.table(array)
-            return await requestAPI.get(`/api/v1/public/bpno/status?bpNo=${bpNo}`, {});
-        },
-        findUser : async ({name, tel, email})=>{
-            return await requestAPI.get(`/api/v1/public/user/find?tel=${tel}&email=${email}`, {});
+
+        findUser : async (findBy, value)=>{
+            return await axiosApi.get(`/api/v1/public/user/find?${findBy}=${value}`, {});
         },
         existUserId : async(id)=>{
-            return await requestAPI.get(`/api/v1/public/user/id/${id}/exist`,{});
+            return await axiosApi.get(`/api/v1/public/user/id/${id}/exist`,{});
         },
-        matchUserId : async(findBy, {id, tel, email})=>{
-            return await requestAPI.get(`/api/v1/public/user/${id}/match?tel=${tel}&email=${email}`, {});
+        matchUserId : async(id, findBy, value)=>{
+            return await axiosApi.get(`/api/v1/public/user/${id}/match?${findBy}=${value}`, {});
         },
         // 비밀번호 재설정
         // 보안**
-        resetPassword : async (data)=>{
-            return await requestAPI.post('/api/v1/public/reset/password', data, {
+        resetPassword : async (data, resetToken)=>{
+            return await AxiosApi.post('/api/v1/public/reset/password', data, {
                 headers:{
-                    "RESET-TOKEN": accessToken
+                    "RESET-TOKEN": resetToken
                 }
             });
         },
+        getResetToken : async (data)=>{
+            return await AxiosApi.post('/api/v1/auth/token/reset-pwd', data, {});
+        },
         getProtectedTelAndEmail : async(id)=>{
-            return await requestAPI.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
+            return await AxiosApi.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
         }
     }
 }

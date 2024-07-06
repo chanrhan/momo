@@ -22,7 +22,8 @@
         from    tb_corp cp
         left outer join tb_emp em on em.corp_id=cp.corp_id
         left outer join tb_account ac on ac.id=em.emp_id
-        where bp_no=#{bpNo}
+        where bp_no=#{bpNo} and
+              em.role = 'REPS'
     </select>
 
     <update id="updatePassword" parameterType="com.momo.common.vo.UserVO">
@@ -189,6 +190,7 @@
     <select id="getUserById">
         SELECT ac.id,
                ac.name,
+               ac.tel,
                ac.role,
                cp.corp_nm,
                IFNULL(sh.shop_nm, (

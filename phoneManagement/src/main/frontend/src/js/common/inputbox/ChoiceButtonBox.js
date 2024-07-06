@@ -1,6 +1,5 @@
 import button from "bootstrap/js/src/button";
 import {useEffect, useState} from "react";
-import {ObjectUtils} from "../../../utils/objectUtil";
 import ValidationError from "../../error/ValidationError";
 
 function ChoiceButtonBox({name, items = [], inputField, className, btn_class = 'primary'}){

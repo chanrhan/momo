@@ -3,8 +3,51 @@ import Layout from "../../../css/layout.module.css"
 import {cm, cmc} from "../../utils/cm";
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../board/BoardTable";
 import {SaleTableData} from "./module/SaleTableData";
+import useInputField from "../../hook/useInputField";
+import {useEffect, useState} from "react";
+import useApi from "../../hook/useApi";
+import useModal from "../../hook/useModal";
+import {ModalType} from "../../common/modal/ModalType";
+import {useSelector} from "react-redux";
 
 export function Sale(){
+    const modal = useModal();
+    const {saleApi} = useApi();
+    const inputField = useInputField();
+    const user = useSelector(state=>state.userReducer)
+
+    const [saleItems, setSaleItems] = useState([])
+
+    const getSale = async ()=>{
+        const {keyword, fromDate, toDate, order, asc, filters} = inputField.input;
+        await saleApi.getSale(keyword, fromDate,toDate,order,asc,filters).then(({status,data})=>{
+            if(status === 200){
+                console.log(data)
+                setSaleItems(data)
+            }
+        })
+    }
+
+    useEffect(() => {
+        getSale();
+    }, []);
+
+    const getSaleCount = ()=>{
+        return saleItems ? saleItems.length : 0;
+    }
+
+    const addSale = ()=>{
+        modal.openModal(ModalType.LAYER.Add_Sale, {
+            user: user
+        });
+    }
+
+
+    const search = ()=>{
+
+    }
+
+
     return (
         <div className={cm(Layout.sub)}>
             <div className={cm(Layout.sub_head)}>
@@ -15,14 +58,14 @@ export function Sale(){
                 <div className={cm(Board.board_head)}>
                     <form>
                         <div className={cm(Board.board_head_group)}>
-                            <input type="text" className="inp date" placeholder="날짜 선택"/>
+                            <input type="text" className="inp date" placeholder="날짜 선택" readOnly/>
                             <button type="button" className="btn_all">전체 보기</button>
                         </div>
                         <div className={cm(Board.board_head_group)}>
                             <div className={cm(Board.board_count)}>
                                 <span className={cm(Board.count_text)}>전체 <em
-                                    className={cm(Board.em)}>1,123</em>건</span>
-                                <span className={cm(Board.count_text)}><em className={cm(Board.em)}>3</em>건</span>
+                                    className={cm(Board.em)}>{getSaleCount()}</em>건</span>
+                                <span className={cm(Board.count_text)}><em className={cm(Board.em)}>{getSaleCount()}</em>건</span>
                             </div>
 
                             <button type="button" className={cm(Board.board_filter_btn)}>필터</button>
@@ -41,8 +84,7 @@ export function Sale(){
                                 <button type="button" className={cm(Board.board_btn, Board.board_more)}>더보기</button>
                             </div>
 
-                            <button type="button"
-                                    className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>고객 추가
+                            <button onClick={addSale} type="button" className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>판매일보 추가
                             </button>
                         </div>
                     </form>
@@ -69,8 +111,11 @@ export function Sale(){
                         <Bth>예약</Bth>
                     </Bthead>
                     <Btbody br>
-                        <SaleTableData/>
-                        <SaleTableData/>
+                        {
+                            typeof saleItems === 'object' && saleItems.map((v,i)=>{
+                                return <SaleTableData key={i} data={v}/>
+                            })
+                        }
                     </Btbody>
                 </BoardTable>
 

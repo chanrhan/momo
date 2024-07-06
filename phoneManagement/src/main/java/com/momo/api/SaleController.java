@@ -38,8 +38,9 @@ public class SaleController {
 	 *     판매일보 모든 컬럼
 	 * }
 	 */
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestBody SaleSearchVO vo){
+		System.out.println("get sale: "+vo);
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
 		return ResponseEntity.ok(saleService.getSaleByUserId(vo));

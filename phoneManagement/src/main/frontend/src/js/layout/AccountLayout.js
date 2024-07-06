@@ -5,7 +5,7 @@ import logo from "../../images/user/logo.png"
 export function AccountLayout(){
 
     return (
-        <body>
+        <div>
             <div className={User.user}>
                 <div className={`container `+ User.container}>
                     <header className={User.header}>
@@ -19,6 +19,6 @@ export function AccountLayout(){
                     </footer>
                 </div>
             </div>
-        </body>
+        </div>
     )
 }

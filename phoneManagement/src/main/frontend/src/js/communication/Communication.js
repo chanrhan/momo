@@ -2,7 +2,7 @@ import Layout from "../../css/layout.module.css"
 import Calender from "../../css/calendar.module.css"
 import {cm} from "../utils/cm";
 import {CalendarTable} from "./module/CalendarTable";
-import {CalendarMonthPopup} from "./modal/CalendarMonthPopup";
+import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 
 export function Communication(){
     const today = new Date();
@@ -17,7 +17,7 @@ export function Communication(){
                     <div className={cm(Calender.calender_date, Calender.div)}>
                         <span className={Calender.date_text}>{today.getFullYear()}년 {today.getMonth()+1}월</span>
                         <div className={Calender.date_box}>                 <button type="button" className={Calender.date_btn}>달력</button>
-                            <CalendarMonthPopup/>
+                            <MonthSelectModal/>
                         </div>
                     </div>
 

@@ -1,5 +1,6 @@
 package com.momo.api;
 
+import com.momo.common.util.BusinessmanApiUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.service.ImageService;
@@ -7,10 +8,12 @@ import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +47,7 @@ public class UserController {
 	 * @param file MultipartFile
 	 * @return Boolean
 	 */
-	@PutMapping("/info")
+	@PostMapping("/info")
 	public ResponseEntity<?> updateUserInfo(@RequestPart UserVO user,
 											@RequestPart MultipartFile file){
 		String username = SecurityContextUtil.getUsername();
@@ -75,6 +78,27 @@ public class UserController {
 			userId = SecurityContextUtil.getUsername();
 		}
 		return ResponseEntity.ok(userService.updateCurrentShop(userId, shopId) != 0);
+	}
+
+	/**
+	 * 사업자 인증
+	 * @param bpNo string
+	 * @return boolean
+	 */
+	@GetMapping("/bpno/status")
+	public ResponseEntity<?> checkBpNoStatus(@RequestParam String bpNo) {
+//		log.info("validate bno: {}", bpNo);
+		Map<String,Object> res = new HashMap<>();
+
+		String userId = userService.getUserByBpNo(bpNo);
+		if(StringUtils.hasText(userId)){
+			res.put("matched", false);
+			res.put("id", userId);
+		}else{
+			res.put("matched", BusinessmanApiUtil.status(bpNo));
+		}
+
+		return ResponseEntity.ok(res);
 	}
 
 

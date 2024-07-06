@@ -66,3 +66,4 @@ export const idRegex = /^[a-z0-9]{5,32}$/;
 // 영문, 숫자, 특수문자가 적어도 1개씩 포함
 export const pwdRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()-=_+|;':",.<>?]).{8,32}$/
 
+export const bpNoRegex = /^[0-9]{10}$/

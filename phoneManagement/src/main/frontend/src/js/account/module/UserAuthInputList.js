@@ -1,11 +1,11 @@
 import User from "../../../css/user.module.css"
 
-export function UserAuthInputList({subject, varName, error, errorText, inputField}){
+export function UserAuthInputList({subject, name, error, errorText, inputField}){
     return (
-        <li className={`${User.form_item} ${error && `error ${User.error}`}`}>
-            <label htmlFor={varName} className={User.form_label}>{subject}</label>
+        <li className={`${User.form_item} ${errorText && `error ${User.error}`}`}>
+            <label htmlFor={name} className={User.form_label}>{subject}</label>
             <div className={User.form_inp}>
-                <input type="tel" id={varName} className={`inp bg ${User.inp}`}/>
+                <input type="tel" id={name} className={`inp bg ${User.inp}`}/>
                 {/*<input type="tel" id="phoneNum" className="inp" readonly>*/}
             </div>
             <div className={User.form_inp}>
@@ -16,7 +16,7 @@ export function UserAuthInputList({subject, varName, error, errorText, inputFiel
                 <span className={User.timer_text}>유효시간 <span className={User.timer_num}>05:00</span></span>
                 <button type="button" className={User.timer_btn}>재발송</button>
             </div>
-            <p className={User.error_text}>인증번호를 입력해주세요.</p>
+            <p className={User.error_text}>{errorText}</p>
         </li>
     )
 }

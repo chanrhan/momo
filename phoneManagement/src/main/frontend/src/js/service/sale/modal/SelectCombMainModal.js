@@ -1,8 +1,8 @@
-import ChoiceButtonBox from "../../../src/js/common/inputbox/ChoiceButtonBox";
-import {LayerModal} from "../../../src/js/common/modal/LayerModal";
-import InputBox from "../../../src/js/common/inputbox/InputBox";
-import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/common/modal/ModalType";
+import ChoiceButtonBox from "../../../common/inputbox/ChoiceButtonBox";
+import {LayerModal} from "../../../common/modal/LayerModal";
+import InputBox from "../../../common/inputbox/InputBox";
+import useModal from "../../../hook/useModal";
+import {ModalType} from "../../../common/modal/ModalType";
 
 function SelectCombMainModal(props){
     const modal = useModal();

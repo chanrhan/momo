@@ -1,15 +1,17 @@
-import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 
 function NotificationApi(accessToken){
+    const axiosApiWithAccessToken = AxiosApiWithAccessToken();
+
     return {
         countUnreadNotif: async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/notif/count/unread', accessToken);
+            return await axiosApiWithAccessToken.get('/api/v1/notif/count/unread', accessToken);
         },
         readAll: async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/notif/read/all', accessToken);
+            return await axiosApiWithAccessToken.get('/api/v1/notif/read/all', accessToken);
         },
         getNotifList: async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/notif', accessToken);
+            return await axiosApiWithAccessToken.get('/api/v1/notif', accessToken);
         }
     }
 }

@@ -31,8 +31,10 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .select_box.active{z-index:1;}
 .select_box .select_btn{position:relative; height:36px; padding:10px 32px 10px 12px; border:1px solid #dde1e8; border-radius:4px; color:#141218; font-size:14px; text-align:left; line-height:16px;}
 .select_box .select_btn:disabled{color:#91939f;}
-.select_box .select_btn:before{display:block; position:absolute; top:10px; right:12px; width:16px; height:16px; background:url(../../images/select_arrow.png) no-repeat center / 100%}
-.select_box .select_layer{opacity:0; visibility:hidden; position:absolute; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
+.select_box .select_btn:before{display:block; position:absolute; top:10px; right:12px; width:14px; height:16px; background:url(../../images/select_arrow.png) no-repeat center / 100%}
+.select_box .select_layer{
+    z-index: 99; /* chan: select layer가 사라질 때 다른 컴포넌트 뒤로 숨는 문제 해결하기 위해 추가 */
+    opacity:0; visibility:hidden; position:fixed; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
 .select_box .select_layer.active{opacity:1; visibility:inherit; top:calc(100% + 8px); z-index:1;}
 .select_box .select_item button{width:100%; padding:10px; font-size:14px; text-align:left; line-height:16px;}
 .select_box .select_item.active button,
@@ -111,7 +113,7 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 /* alert */
 .alert{display:inline-block; opacity:0; visibility:hidden; position:fixed; top:90px; left:50%; z-index:50; padding:18px 16px; border-radius:16px; background-color:#fff; box-shadow:0 16px 24px rgba(40, 39, 44, 0.14); color:#50505c; font-size:18px; text-align:center; line-height:24px; white-space:nowrap; transform:translateX(-50%); transition:all .25s ease-in-out;}
 .alert.active{opacity:1; visibility:inherit; top:100px;}
-.alert.alert_warning:before{display:inline-block; width:24px; height:24px; margin-right:8px; background:url(../../images/alert_warning_icon.png) no-repeat left top / 24px auto; vertical-align:top;}
+.alert.warning:before{display:inline-block; width:24px; height:24px; margin-right:8px; background:url(../../images/alert_warning_icon.png) no-repeat left top / 24px auto; vertical-align:top;}
 
 .view_more{margin-top:40px; text-align:center;}
 .view_more .view_more_btn{width:128px; background:url(../../images/view_more_arrow.png) no-repeat right center / 16px; font-size:14px;}
@@ -141,3 +143,8 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .tab.type5 .tab_list{display:block;}
 .tab.type5 .tab_item .tab_btn{min-width:52px; padding:0 8px; border-radius:4px; color:#62626e; font-size:14px; line-height:32px;}
 .tab.type5 .tab_item.active .tab_btn{background-color:rgba(221, 225, 232, 0.3); color:#141218; font-weight:500;}
+
+/*custom*/
+.border_error{
+    border:2px solid rgba(236, 92, 77, 0.84) !important;
+}

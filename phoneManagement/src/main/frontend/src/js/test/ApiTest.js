@@ -2,7 +2,7 @@ import useApi from "../hook/useApi";
 import {useState} from "react";
 
 function ApiTest(){
-    const {publicApi} = useApi();
+    const {userApi} = useApi();
     const [input, setInput] = useState("5218702490");
     const [result, setResult] = useState(null)
 
@@ -11,7 +11,7 @@ function ApiTest(){
     }
 
     const status = async ()=>{
-        publicApi.checkBpnoStatus(input).then(({status,data})=>{
+        userApi.checkBpnoStatus(input).then(({status,data})=>{
             if(status === 200){
                 console.log(data);
                 setResult(data)

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import NotFound from "../../../src/js/layout/NotFound";
+import NotFound from "../../../src/js/common/module/NotFound";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {cssUtils} from "../../utils/cssUtils";
 import useInputField from "../../hook/useInputField";

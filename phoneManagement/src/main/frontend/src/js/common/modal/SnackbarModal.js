@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
+import Modal from "../../../css/modal.module.css"
 
-export const SnackbarModal = ({children, x, y, width, height, close, timeout})=>{
+
+export const SnackbarModal = ({children, x, y, width, height, className, close, timeout})=>{
 
     const [fadeout, setFadeOut] = useState(null)
 
     useEffect(()=>{
         const timer = setTimeout(()=>{
-            setFadeOut('modal-fade-out')
+            setFadeOut(Modal.fade_out)
         }, timeout)
 
         return ()=>{
@@ -25,8 +27,8 @@ export const SnackbarModal = ({children, x, y, width, height, close, timeout})=>
     },[fadeout])
 
     return (
-        <div>
-            <div className={`modal-snackbar ${fadeout}`} style={{top: y, left: x, width: width, height: height}}>
+        <div >
+            <div className={`${Modal.modal_snakbar} ${className} ${Modal.active} ${fadeout}`} style={{top: y, left: x, width: width, height: height}}>
                 {children}
             </div>
         </div>

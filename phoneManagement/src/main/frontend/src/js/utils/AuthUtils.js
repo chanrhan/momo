@@ -11,34 +11,36 @@ export function CheckToken(key){
     const refreshToken = getCookieToken();
     const dispatch = useDispatch();
 
+    const checkAuthToken = async ()=> {
+        if (refreshToken === undefined) {
+            dispatch(authActions.delAccessToken());
+            setIsAuth('Failed');
+        } else {
+            if (authenticated && new Date().getTime() < expireTime) {
+                setIsAuth('Success');
+            } else {
+                const response = await requestRefreshToken(refreshToken);
+
+                if (response.status === 200) {
+                    // const token = response.jwtToken.access_token;
+                    // console.log(`new access token: ${response.jwt.access_token}`)
+                    dispatch(authActions.setAccessToken(response.jwt.access_token))
+                    setRefreshToken(response.jwt.refresh_token);
+                    setIsAuth('Success')
+
+                } else {
+                    dispatch(authActions.delAccessToken());
+                    removeCookieToken();
+                    setIsAuth('Failed');
+                }
+            }
+        }
+    };
+
     useEffect(()=>{
         // console.log(`Check Token -> ${key}`)
         // console.log(`authenticated ${authenticated}, expireTime: ${expireTime}`)
-        const checkAuthToken = async ()=> {
-            if (refreshToken === undefined) {
-                dispatch(authActions.delAccessToken());
-                setIsAuth('Failed');
-            } else {
-                if (authenticated && new Date().getTime() < expireTime) {
-                    setIsAuth('Success');
-                } else {
-                    const response = await requestRefreshToken(refreshToken);
 
-                    if (response.status === 200) {
-                        // const token = response.jwtToken.access_token;
-                        // console.log(`new access token: ${response.jwt.access_token}`)
-                        dispatch(authActions.setAccessToken(response.jwt.access_token))
-                        setRefreshToken(response.jwt.refresh_token);
-                        setIsAuth('Success')
-
-                    } else {
-                        dispatch(authActions.delAccessToken());
-                        removeCookieToken();
-                        setIsAuth('Failed');
-                    }
-                }
-            }
-        };
         checkAuthToken();
     }, [refreshToken, dispatch, key]);
 

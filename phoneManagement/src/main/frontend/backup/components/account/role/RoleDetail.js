@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import NotFound from "../../../../src/js/layout/NotFound";
+import NotFound from "../../../../src/js/common/module/NotFound";
 import {useState} from "react";
 import {getCorpListForRoleDetail} from "../../../api/ShopApi";
 import {useSelector} from "react-redux";

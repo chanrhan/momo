@@ -46,11 +46,13 @@ public class PublicController {
 		Authentication authentication = userService.login(username, password);
 
 		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+		System.out.println(jwtVO);
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
+		System.out.println("test");
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -66,11 +68,12 @@ public class PublicController {
 			return ResponseEntity.notFound().build();
 		}
 
-		Authentication authentication = userService.loginDirectly(vo.getId(), session);
-		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
-
-		jwtService.saveRefreshToken(jwtVO);
-		jwtProvider.setHeaderJwtToken(response, jwtVO);
+		//
+//		Authentication authentication = userService.loginDirectly(vo.getId(), session);
+//		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+//
+//		jwtService.saveRefreshToken(jwtVO);
+//		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
 		return ResponseEntity.ok().body(true);
 	}
@@ -149,26 +152,7 @@ public class PublicController {
 
 
 
-	/**
-	 * 사업자 인증
-	 * @param bpNo string
-	 * @return boolean
-	 */
-	@GetMapping("/bpno/status")
-	public ResponseEntity<?> checkBpNoStatus(@RequestParam String bpNo) {
-//		log.info("validate bno: {}", bpNo);
-		Map<String,Object> res = new HashMap<>();
 
-		String userId = userService.getUserByBpNo(bpNo);
-		if(StringUtils.hasText(userId)){
-			res.put("matched", false);
-			res.put("id", userId);
-		}else{
-			res.put("matched", BusinessmanApiUtil.status(bpNo));
-		}
-
-		return ResponseEntity.ok(res);
-	}
 
 	/**
 	 * 비밀번호 재설정

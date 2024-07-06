@@ -50,6 +50,8 @@ public enum CommonErrorCode implements ErrorCode {
 	// @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
 	NOT_VALID_HEADER_ERROR(404,  "Header에 데이터가 존재하지 않는 경우 "),
 
+	//
+	ALREADY_EXISTED(405, "이미 존재하는 데이터"),
 	// 서버가 처리 할 방법을 모르는 경우 발생
 	INTERNAL_SERVER_ERROR(500,  "Internal Server Error Exception"),
 

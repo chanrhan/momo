@@ -53,7 +53,7 @@ public class SaleSearchVO extends CommonQueryVO{
     }
 
     public String getOrder(){
-        return COLUMNS[order];
+        return order != null ? COLUMNS[order] : null;
     }
 
     public String getFilters(){

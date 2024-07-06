@@ -12,9 +12,9 @@ function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
 
     return {
+        publicApi: PublicApi(),
         userApi: UserApi(accessToken),
         chatApi: ChatApi(accessToken),
-        publicApi: PublicApi(accessToken),
         saleApi: SaleApi(accessToken),
         shopApi: ShopApi(accessToken),
         notifApi: NotificationApi(accessToken),

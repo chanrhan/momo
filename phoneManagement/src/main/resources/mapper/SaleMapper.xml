@@ -142,7 +142,12 @@
     </select>
 
     <select id="getSaleByUserId" parameterType="com.momo.common.vo.SaleSearchVO">
-        select *
+        select s.*,
+               (
+                   select ac.name
+                   from tb_account ac
+                   where ac.id = s.seller_id
+                ) as seller_nm
         from tb_sale s
         where shop_id=(
             select shop_id
@@ -151,10 +156,10 @@
         ) and
         <if test="keyword != null and !keyword.equals('')">
             (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
+                s.cust_nm like '%${keyword}%' or
+                s.cust_tel like '%${keyword}%' or
+                s.cust_gtel like '%${keyword}%' or
+                s.cust_cd like '%${keyword}%'
             ) and
         </if>
         <if test="fromDate != null">
@@ -163,6 +168,7 @@
             ) and
         </if>
         ${filters}
+        1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
@@ -196,7 +202,6 @@
         update tb_sale
         set cust_nm = #{custNm},
             cust_tel = #{custTel},
-            cust_gtel = #{custGtel},
             cust_cd = #{custCd},
             cust_gd = #{custGd},
             provider = #{provider},

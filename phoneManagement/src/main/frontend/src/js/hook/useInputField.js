@@ -1,20 +1,22 @@
 import {useEffect, useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
 import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
+import {KoreanUtils} from "../utils/KoreanUtils";
 
 function useInputField(initialState) {
     const init = {};
     const errorInfo = {...commonErrorInfo};
     for (const i in initialState) {
         const prop = initialState[i];
-        init[prop.key] = (prop.value) ? prop.value : null;
+        init[prop.key] = prop.value ?? null;
         // console.log(init[prop.key])
-        if(prop.name){
+        if(prop.name || prop.msg || prop.required){
             errorInfo[prop.key] = {
                 name: prop.name,
                 regex: prop.regex,
                 msg: prop.msg,
-                required: prop.required
+                required: prop.required,
+                validateError: prop.validateError
             }
         }
     }
@@ -22,11 +24,29 @@ function useInputField(initialState) {
     const [input, setInput] = useState(init);
     const [error, setError] = useState({});
 
-    const [serverError, setServerError] = useState(null);
+    const setValues = (values)=>{
+        setInput(prev=>({
+            ...prev,
+            ...values
+        }))
+    }
+
+
+    const getInput = (key)=>{
+        return input[key] ?? ''
+    }
+
+    const put = (key, value)=>{
+        setInput(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }
 
     const handleInput = (e) => {
         const key = e.target.name;
         const value = e.target.value;
+        // console.log(`key: ${key} value: ${value}`)
         if (ObjectUtils.isEmpty(value)) {
             handleError(key, null);
         }else{
@@ -40,6 +60,7 @@ function useInputField(initialState) {
     }
 
     const handleError = (key, msg) => {
+        // console.log(`error: ${msg}`)
         setError(prev => ({
             ...prev,
             [key]: msg
@@ -64,10 +85,13 @@ function useInputField(initialState) {
     }
 
     const matchPassword = (pwd2) => {
+        if(ObjectUtils.isEmpty(pwd2)){
+            pwd2 = input.pwd2;
+        }
         const {pwd} = input;
 
-        if (ObjectUtils.isEmpty(pwd2)) {
-            handleError('pwd2', '비밀번호 재입력은 필수입니다')
+        if (!ObjectUtils.isEmpty(input['pwd']) && ObjectUtils.isEmpty(pwd2)) {
+            handleError('pwd2', '비밀번호를 다시 입력해 주세요')
             return false;
         }
 
@@ -86,22 +110,22 @@ function useInputField(initialState) {
 
     const matchAuthNumber = (auth) => {
         const {auth_code} = input;
-        console.log(`auth: ${auth}, auth_code: ${auth_code}`)
+        // console.log(`auth: ${auth}, auth_code: ${auth_code}`)
         if (ObjectUtils.isEmpty(auth)) {
-            handleError('auth_code', '먼저 인증번호를 발송해야 합니다')
+            handleError('tel', '먼저 인증번호를 발송해야 합니다')
             return false;
         }
 
         if (ObjectUtils.isEmpty(auth_code)) {
-            handleError('auth_code', '인증번호를 입력해 주세요')
+            handleError('tel', '인증번호를 입력해 주세요')
             return false;
         }
 
         if (auth != auth_code) {
-            handleError('auth_code', '인증번호가 일치하지 않습니다');
+            handleError('tel', '인증번호가 일치하지 않습니다');
             return false;
         } else {
-            handleError('auth_code', null);
+            handleError('tel', null);
             return true;
         }
     }
@@ -126,24 +150,30 @@ function useInputField(initialState) {
         return result;
     }
 
+    const validateOne = (key)=>{
+        return validate(key, input[key])
+    }
+
     const validate = (key, value) => {
-        // console.log(`${key} ${value}`)
+        // console.log(`validate: ${key} ${value}`)
         if (!errorInfo[key]) {
             return true;
         }
         // console.table(errorInfo[key])
-        const {name, regex, msg, required} = errorInfo[key];
+        const {name, regex, msg, required, validateError} = errorInfo[key];
         // console.log(`validate: ${name} ${regex} ${msg} ${required}`)
         if(required !== false){
             if (ObjectUtils.isEmpty(value)) {
-                handleError(key, `'${name}'은(는) 필수값입니다`);
+                if(validateError !== false){
+                    handleError(key, `${name}${KoreanUtils.eun_neun(name)} 입력해주세요`);
+                }
             } else {
                 // console.log(`${value} ${regex} ${ObjectUtils.isEmpty(regex)} test: ${regex.test(value)}`)
                 if(regex === null || regex === undefined || regex.test(value)){
-                    handleError(key, null);
+                    if(validateError !== false) handleError(key, null);
                     return true;
                 } else {
-                    handleError(key, msg);
+                    if(validateError !== false) handleError(key, msg);
                 }
             }
         }else{
@@ -159,27 +189,29 @@ function useInputField(initialState) {
 
     const clearError = () => {
         setError(init)
-        setServerError(null)
+    }
+
+    const clearErrorOf = (...values)=>{
+        const arr = {...error}
+        for (const j in values) {
+            arr[values[j]] = null;
+        }
+        setError(arr)
     }
 
     const clear = () => {
         setInput(init)
         setError(init)
-        setServerError(null)
     }
 
-    const clearOf = (arr) => {
-        const init2 = {};
-        for (const j in arr) {
-            init2[arr[j]] = null
+    const clearOf = (...values) => {
+        const init2 = {...input}
+        for (const j in values) {
+            init2[values[j]] = init[values[j]] ?? '';
         }
+        // console.table(init2)
+        // console.table(input)
         setInput(init2)
-        setError(init2)
-        setServerError(null)
-    }
-
-    const handleServerError = (msg) => {
-        setServerError(msg);
     }
 
 
@@ -187,19 +219,22 @@ function useInputField(initialState) {
     return {
         input,
         error,
-        serverError,
         setInput,
         setError,
+        setValues,
+        getInput,
+        put,
         matchPassword,
         matchAuthNumber,
         handleInput,
         handleError,
         handlePassword,
         handleConfirmPassword,
-        handleServerError,
+        validateOne,
         validateAll,
         clearInput,
         clearError,
+        clearErrorOf,
         clear,
         clearOf
     }

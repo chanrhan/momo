@@ -42,7 +42,6 @@ public class AuthController {
 		if(jwtVO == null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-
 		return ResponseEntity.ok("Bearer "+jwtVO.getAccessToken());
 	}
 

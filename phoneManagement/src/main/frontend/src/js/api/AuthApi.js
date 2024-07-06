@@ -1,10 +1,10 @@
-import {requestAPI, requestApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 
 
 function AuthApi(accessToken){
     return {
         getResetToken : async (data)=>{
-            return await requestAPI.post('/api/v1/auth/token/reset-pwd', data, {});
+            return await AxiosApi.post('/api/v1/auth/token/reset-pwd', data, {});
         }
     }
 }

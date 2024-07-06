@@ -71,7 +71,7 @@ export function LandingPage(){
                         <div className={Landing.gnb_link}>
                             <ul className="link_list">
                                 <li className={Landing.link_item}>
-                                    <Link className={Landing.a} to=''>로그인</Link>
+                                    <Link className={Landing.a} to='/account/login'>로그인</Link>
                                 </li>
                                 <li className={Landing.link_item}>
                                     <Link to='' className={cm(Landing.a, Landing.section_btn)}>무료로 시작하기</Link>

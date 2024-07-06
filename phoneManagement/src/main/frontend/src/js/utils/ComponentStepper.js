@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-export function ComponentStepper({initStep=1,components=[], inputField}){
+export function ComponentStepper({initStep=1, components=[], inputField}){
     const [step, setStep] = useState(initStep);
 
     const COMPONENT = components[step-1]

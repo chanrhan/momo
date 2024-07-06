@@ -1,8 +1,8 @@
-import {LayerModal} from "../../../src/js/common/modal/LayerModal";
-import useModal from "../../hook/useModal";
-import {ModalType} from "../../../src/js/common/modal/ModalType";
-import ChoiceButtonBox from "../../../src/js/common/inputbox/ChoiceButtonBox";
-import useInputField from "../../hook/useInputField";
+import {LayerModal} from "../../../common/modal/LayerModal";
+import useModal from "../../../hook/useModal";
+import {ModalType} from "../../../common/modal/ModalType";
+import ChoiceButtonBox from "../../../common/inputbox/ChoiceButtonBox";
+import useInputField from "../../../hook/useInputField";
 
 function SelectCardModal(props){
     const modal = useModal();

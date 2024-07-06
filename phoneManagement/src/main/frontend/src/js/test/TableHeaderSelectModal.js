@@ -1,7 +1,7 @@
-import {MenuModal} from "../../src/js/modal/MenuModal";
 import useModal from "../hook/useModal";
-import {ModalType} from "../../src/js/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
+import {ModalType} from "../common/modal/ModalType";
+import {MenuModal} from "../common/modal/MenuModal";
 
 function TableHeaderSelectModal(props){
     const modal = useModal();

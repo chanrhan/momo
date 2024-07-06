@@ -16,10 +16,14 @@ export const ModalType = {
     MENU: {
         Change_Shop: 'ChangeShop',
         Test: 'MenuModalTest',
-        Select_Table_Header: 'SelectTableHeader'
+        Select_Table_Header: 'SelectTableHeader',
+        Select_Month: 'SelectMonth',
+        Select_Date: 'SelectDate'
     },
     SNACKBAR: {
-        Alert: 'Alert'
+        Alert: 'Alert',
+        Warning: 'Warning',
+        Info: 'Info'
     },
     TOAST: {
 

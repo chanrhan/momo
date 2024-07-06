@@ -1,29 +1,30 @@
-import {requestApiWithAccessToken} from "./ApiCommon";
+import {AxiosApiWithAccessToken} from "./ApiCommon";
 
 function ChatApi(accessToken){
+    const axiosApiWithAccessToken = AxiosApiWithAccessToken();
     return {
         getOnlineUser : async ()=>{
-            return await requestApiWithAccessToken.get('/api/v1/chat/user/online', accessToken);
+            return await axiosApiWithAccessToken.get('/api/v1/chat/user/online', accessToken);
         },
         createChatRoom : async (roomName)=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/room', {
+            return await axiosApiWithAccessToken.post('/api/v1/chat/room', {
                 room_nm: roomName
             }, accessToken);
         },
         getChatRoom : async (roomName)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room?room_nm=${roomName}`, accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room?room_nm=${roomName}`, accessToken);
         },
         getChatRoomDetail : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/detail`, accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/detail`, accessToken);
         },
         getChatRoomHeadCount : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/headcount`,accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/headcount`,accessToken);
         },
         getChatRoomUserList : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/user`,accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/user`,accessToken);
         },
         getInvitableUserList : async (keyword)=>{
-            return await requestApiWithAccessToken.post('/api/v1/chat/list/user/invitable',{
+            return await axiosApiWithAccessToken.post('/api/v1/chat/list/user/invitable',{
                 keyword: keyword
             }, accessToken);
         },
@@ -42,7 +43,7 @@ function ChatApi(accessToken){
             });
         },
         getAnnouncement : async (roomId)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/ann`, accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/ann`, accessToken);
         },
         sendChat : (client, roomId, data)=>{
             client.current.publish({
@@ -59,7 +60,7 @@ function ChatApi(accessToken){
             });
         },
         getChatLog : async (roomId, keyword)=>{
-            return await requestApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/log?keyword=${keyword}`, {
+            return await axiosApiWithAccessToken.get(`/api/v1/chat/room/${roomId}/log?keyword=${keyword}`, {
                 room_id: roomId
             }, accessToken);
         },

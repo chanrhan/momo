@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,11 +32,37 @@ public class ShopController {
 	 * @return Boolean
 	 */
 	@PostMapping("/shop")
-	public ResponseEntity<?> addShop(@RequestBody ShopVO vo){
+	public ResponseEntity<?> addShopOne(@RequestBody ShopVO vo){
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
-		log.info("shop info: {}",vo);
+		log.info("add shop one info: {}",vo);
 		return ResponseEntity.ok(shopService.insertShop(vo) != 0);
+	}
+
+	@PostMapping("/shop/bulk")
+	public ResponseEntity<?> addShopBulk(@RequestBody List<ShopVO> list){
+		int count = 0;
+		String username = SecurityContextUtil.getUsername();
+		for(ShopVO vo : list){
+			vo.setUserId(username);
+			vo.setShopId(new Date().hashCode());
+			log.info("add shop bulk info: {}",vo);
+			count += shopService.insertShop(vo);
+		}
+		return ResponseEntity.ok(count != 0);
+	}
+
+	/**
+	 * 회사 등록
+	 * @param vo ShopVO
+	 * @return Boolean
+	 */
+	@PostMapping("/corp")
+	public ResponseEntity<?> addCorp(@RequestBody ShopVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		log.info("corp info: {}",vo);
+		return ResponseEntity.ok(shopService.insertCorp(vo) != 0);
 	}
 
 	/**
@@ -64,10 +91,9 @@ public class ShopController {
 	 * }
 	 */
 	@GetMapping("/shop/all")
-	public ResponseEntity<List<Map<String,Object>>> getShopAll(){
+	public ResponseEntity<List<Map<String,String>>> getShopAll(){
 		String username = SecurityContextUtil.getUsername();
-		ShopVO vo = ShopVO.builder().userId(username).build();
-		return ResponseEntity.ok(shopService.getShop(vo));
+		return ResponseEntity.ok(shopService.getShopItems(username));
 	}
 
 }

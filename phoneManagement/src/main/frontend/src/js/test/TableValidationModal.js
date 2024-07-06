@@ -1,12 +1,12 @@
-import {LayerModal} from "../../src/js/modal/LayerModal";
 import useModal from "../hook/useModal";
-import {ModalType} from "../../src/js/modal/ModalType";
 import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
 import {useEffect, useState} from "react";
 import {useMapper} from "../utils/useMapper";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import {ObjectUtils} from "../utils/objectUtil";
 import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
+import {ModalType} from "../common/modal/ModalType";
+import {LayerModal} from "../common/modal/LayerModal";
 
 const GENDER = [
     '남',
