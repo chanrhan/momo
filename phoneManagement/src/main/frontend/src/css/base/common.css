@@ -29,16 +29,26 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .select_box{position:relative;}
 .select_box + .select_box{margin-top:10px;}
 .select_box.active{z-index:1;}
-.select_box .select_btn{position:relative; height:36px; padding:10px 32px 10px 12px; border:1px solid #dde1e8; border-radius:4px; color:#141218; font-size:14px; text-align:left; line-height:16px;}
+/*.select_box .select_btn{position:relative; height:36px; padding:10px 32px 10px 12px; border:1px solid #dde1e8; border-radius:4px; color:#141218; font-size:14px; text-align:left; line-height:16px;}*/
+.select_box .select_btn{position:relative;
+    align-items: flex-start;
+    cursor: pointer;
+    background-color: rgb(0,0,0,0);
+    height:36px; padding:10px 32px 10px 12px;
+    border:1px solid #dde1e8; border-radius:4px; color:#141218; font-size:14px; text-align:left;
+    line-height:16px;}
 .select_box .select_btn:disabled{color:#91939f;}
 .select_box .select_btn:before{display:block; position:absolute; top:10px; right:12px; width:14px; height:16px; background:url(../../images/select_arrow.png) no-repeat center / 100%}
 .select_box .select_layer{
     z-index: 99; /* chan: select layer가 사라질 때 다른 컴포넌트 뒤로 숨는 문제 해결하기 위해 추가 */
     opacity:0; visibility:hidden; position:fixed; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
 .select_box .select_layer.active{opacity:1; visibility:inherit; top:calc(100% + 8px); z-index:1;}
-.select_box .select_item button{width:100%; padding:10px; font-size:14px; text-align:left; line-height:16px;}
-.select_box .select_item.active button,
-.select_box .select_item button:hover{border-radius:8px; background-color:#f4f5f9; color:#4781ff;}
+/*.select_box .select_item button{width:100%; padding:10px; font-size:14px; text-align:left; line-height:16px;}*/
+.select_box .select_btn option{width:100%; padding:10px; font-size:14px; text-align:left; line-height:16px;}
+/*.select_box .select_item.active button,*/
+/*.select_box .select_item button:hover{border-radius:8px; background-color:#f4f5f9; color:#4781ff;}*/
+.select_box .select_btn option:hover{border-radius:8px; background-color:#f4f5f9; color:#4781ff;}
+
 .select_box .select_layer.add_icon{right:auto; width:232px;}
 .select_box .select_layer.add_icon .select_item button{position:relative; padding:16px 12px 16px 48px; color:#62626e; font-size:14px; font-weight:500;}
 .select_box .select_layer.add_icon .select_item button:before{display:block; position:absolute; top:12px; left:16px; width:24px; height:24px; background:url(../../images/select_add_icon.png) no-repeat center / 100%;}
@@ -46,6 +56,9 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .select_box .select_layer.add_icon .select_item button:hover:before{background-image:url(../../images/select_add_icon_blue.png);}
 .select_box .select_layer.add_icon .select_item.red button{color:#f34432;}
 .select_box .select_layer.add_icon .select_item.red button:before{background-image:url(../../images/select_add_icon_red.png);}
+
+/* select custom*/
+
 
 /* radio */
 .radio_box{position:relative; font-size:0; line-height:0;}

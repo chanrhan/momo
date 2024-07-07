@@ -51,8 +51,6 @@ export function DateSelectModal(props){
         }
     }
 
-    // console.log(`pos: ${props.top} ${props.left}`)
-
     return (
         <MenuModal modalRef={props.modalRef} close={close} top={props.top} left={props.left}>
             <div className={`${cm(Popup.date_popup, Popup.solo, Popup.active)}`}>

@@ -1,12 +1,12 @@
 import Board from "../../css/board.module.css"
 import Layout from "../../css/layout.module.css"
 import {TabList} from "../common/module/TabList";
-import {useTabs} from "../hook/useTabs";
 import {BoardTable, Btbody, Bth, Bthead} from "../service/board/BoardTable";
 import {AdminTableData} from "./module/AdminTableData";
+import useInputField from "../hook/useInputField";
 
 export function Administrator(){
-    const tab = useTabs();
+    const inputField = useInputField();
 
     return (
         <div className={Layout.sub}>
@@ -15,7 +15,7 @@ export function Administrator(){
             </div>
 
             <div className={Layout.sub_tab}>
-                <TabList tab={tab} theme={Layout} itemNames={
+                <TabList name='user_st' inputField={inputField} theme={Layout} values={
                     ['일반회원','정지회원','탈퇴회원']
                 }/>
             </div>

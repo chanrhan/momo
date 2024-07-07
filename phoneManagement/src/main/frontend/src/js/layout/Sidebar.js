@@ -1,6 +1,5 @@
 import Layout from "../../css/layout.module.css"
 import {Link, useNavigate} from "react-router-dom";
-import {useTabs} from "../hook/useTabs";
 import {useState} from "react";
 
 // import "../../css/user.module.css"

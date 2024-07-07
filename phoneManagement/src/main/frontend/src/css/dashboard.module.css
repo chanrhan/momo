@@ -86,6 +86,7 @@
 .dashboard .info_company .company_profile .profile_btn{float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:14px;}
 .dashboard .info_company .company_select{margin-top:24px;}
 .dashboard .info_company .company_select .select_box .select_btn{width:100%;}
+/*.dashboard .info_company .company_select .select_box .select_btn{width:100%;}*/
 .dashboard .info_company .company_add{margin-top:12px; color:#62626e; font-size:12px; line-height:14px;}
 
 .dashboard .info_schedule{min-height:644px; margin-top:23px;}

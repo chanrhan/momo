@@ -6,7 +6,7 @@ import {cm, cmc} from "../../utils/cm";
 import {SelectItem, SelectLayer} from "../../common/module/SelectLayer";
 import {forwardRef, useImperativeHandle, useState} from "react";
 import useInputField from "../../hook/useInputField";
-import {SelectOptionLayer} from "../../common/module/SelectOptionLayer";
+import {SelectModal} from "../../common/modal/menu/SelectModal";
 import {RegexUtils} from "../../utils/regex";
 import {ObjectUtils} from "../../utils/objectUtil";
 
@@ -51,7 +51,7 @@ export function UserCompanyItem_backup2({index, onSelect, onDelete, close, input
                         <div className={User.form_inp}>
                             <div className={`select_box ${User.select_box}`}>
                                 <input type="hidden" id="shop_tp"/>
-                                <SelectOptionLayer name='provider' values={['SKT','KT','LG','판매점']} inputField={inputField}/>
+                                <SelectModal name='provider' values={['SKT','KT','LG','판매점']} inputField={inputField}/>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,8 @@
 import Popup from "../../../css/popup.module.css"
 import {cm} from "../../utils/cm";
 
-export const MenuModal = ({modalRef, children, top, left, width, height, close}) => {
+export const MenuModal = ({modalRef, children, top, left}) => {
+    // console.log(`menu modal pos: ${top} ${left}`)
     return (
         <div ref={modalRef} className={cm(Popup.popup, Popup.menu)}
              style={{

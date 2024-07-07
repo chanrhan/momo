@@ -9,10 +9,10 @@ import {useState} from "react";
 import {TaskBoardTable} from "./module/TaskBoardTable";
 import {PromiseBoardTable} from "./PromiseBoardTable";
 import {TabList} from "../../common/module/TabList";
-import {useTabs} from "../../hook/useTabs";
+import useInputField from "../../hook/useInputField";
 
 export function Task(){
-    const tab = useTabs();
+    const inputField = useInputField();
 
     return (
         <div className={Layout.sub}>
@@ -21,11 +21,11 @@ export function Task(){
             </div>
 
             <div className={Layout.sub_tab}>
-                <TabList tab={tab} theme={Layout} itemNames={
+                <TabList name='category' inputField={inputField} theme={Layout} values={
                     ['중고폰','카드','결합','지원','고객약속']
                 }/>
                 {
-                    tab.get(0) === 4 && (
+                    inputField.getInput('category') === 4 && (
                         <button className={`btn_blue ${cm(Board.btn_medium, Board.btn)} btn_add`}>약속 추가</button>
                     )
                 }
@@ -57,8 +57,8 @@ export function Task(){
 
                 <div className="board_body">
                     {
-                        tab.get(0) >= 0 && tab.get(0) < 4 ? (
-                            <TaskBoardTable tab={tab}/>
+                        inputField.getInput('category') >= 0 && inputField.getInput('category') < 4 ? (
+                            <TaskBoardTable category={inputField.getInput('category')}/>
                         ) : <PromiseBoardTable/>
                     }
 

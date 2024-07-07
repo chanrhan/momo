@@ -4,30 +4,31 @@ import {DashboardChartTabItem} from "./DashboardChartTabItem";
 import {DashboardChartPannel} from "./DashboardChartPannel";
 import {TabList} from "../../../common/module/TabList";
 import {useState} from "react";
-import {useTabs} from "../../../hook/useTabs";
+import useInputField from "../../../hook/useInputField";
 
 export function DashboardChart(){
-    const tab = useTabs(2);
+    // const tab = useTabs(2);
+    const inputField = useInputField();
 
     return (
         <div className={cm(Dashboard.panel_chart)}>
             <p className={cm(Dashboard.chart_text)}>3월 1일 ~ 3월 11일 실적 대비<br/>121,000원 늘었어요.</p>
 
             <div className={cm(Dashboard.chart_tab)}>
-                <TabList tab={tab}
-                         index={0}
+                <TabList name='tab1'
+                         inputField={inputField}
                          theme={Dashboard}
-                         itemNames={
+                         values={
                     ['무선','인터넷','TV','총이익','평균이익']
                 }/>
             </div>
 
             <div className={cm(Dashboard.chart_panel_wrap)}>
                 <DashboardChartPannel title='차트' active>
-                    <TabList tab={tab}
-                             index={1}
+                    <TabList name='tab2'
+                             inputField={inputField}
                              theme={Dashboard}
-                             itemNames={
+                             values={
                         ['일별','주별','월별']
                              }
                     />

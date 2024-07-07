@@ -6,7 +6,7 @@ import {cm, cmc} from "../../utils/cm";
 import {SelectItem, SelectLayer} from "../../common/module/SelectLayer";
 import {forwardRef, useImperativeHandle, useMemo, useState} from "react";
 import useInputField from "../../hook/useInputField";
-import {SelectOptionLayer} from "../../common/module/SelectOptionLayer";
+import {SelectModal} from "../../common/modal/menu/SelectModal";
 import {telRegex} from "../../utils/regex";
 
 // 함수형 컴포넌트에서는 ref를 prop으로 받을 수 없음
@@ -71,7 +71,7 @@ export const UserCompanyItem_backup1 = forwardRef(({init, index, onDelete, onSel
                         <div className={User.form_inp}>
                             <div className={`select_box ${User.select_box}`}>
                                 <input type="hidden" id="shop_tp"/>
-                                <SelectOptionLayer name='provider' values={['SKT','KT','LG','판매점']} inputField={inputField}/>
+                                <SelectModal name='provider' values={['SKT','KT','LG','판매점']} inputField={inputField}/>
                             </div>
                         </div>
                     </div>

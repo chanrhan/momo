@@ -15,6 +15,8 @@ import {AddSaleTabItem} from "../module/AddSaleTabItem";
 import {AddSaleSelectOptionLayer} from "../module/AddSaleSelectOptionLayer";
 import {AddSaleCheckItem} from "../module/AddSaleCheckItem";
 import {AddSaleInput} from "../module/AddSaleInput";
+import {TabList} from "../../../common/module/TabList";
+import {ElementUtils} from "../../../utils/ElementUtils";
 
 function AddSaleModal(props){
     const modal = useModal();
@@ -46,11 +48,11 @@ function AddSaleModal(props){
         inputField.put('actv_dt', `${year}-${month}-${day}`)
     }
 
-    const selectDate = (e)=>{
-        const rect = e.target.getBoundingClientRect();
+    const openDateSelectModal = (e)=>{
+        const pos = ElementUtils.getAbsolutePos(e, 1.1);
         modal.openModal(ModalType.MENU.Select_Date, {
-            top: `${rect.top-10}px`,
-            left: `${rect.left-800}px`,
+            top: `${pos.top}px`,
+            left: `${pos.left}px`,
             onSelect: setDate
         })
     }
@@ -94,23 +96,15 @@ function AddSaleModal(props){
                     <div className={Popup.popup_cont}>
                         <div className={Popup.customer_head}>
                             <div className={Popup.head_box}>
-                                <input type="text" className={`date ${cmc(Popup.inp)}`} value={inputField.input.actv_dt} placeholder="개통 날짜" readOnly onClick={selectDate}/>
+                                <input type="text" className={`date ${cmc(Popup.inp)}`} value={inputField.input.actv_dt} placeholder="개통 날짜" readOnly onClick={openDateSelectModal}/>
 
                                 <AddSaleSelectOptionLayer name='actv_div' inputField={inputField} itemNames={['개통 유형','2','3']}/>
                             </div>
 
                             <div className={cmc(Popup.tab, Popup.type2)}>
-                                <ul className={cmc(Popup.tab_list)}>
-                                    <li className={`${cmc(Popup.tab_item, Popup.active)}`}>
-                                        <button type="button" className={cmc(Popup.tab_btn)}>SKT</button>
-                                    </li>
-                                    <li className={`${cmc(Popup.tab_item)}`}>
-                                        <button type="button" className={cmc(Popup.tab_btn)}>KT</button>
-                                    </li>
-                                    <li className={`${cmc(Popup.tab_item)}`}>
-                                        <button type="button" className={cmc(Popup.tab_btn)}>LG</button>
-                                    </li>
-                                </ul>
+                                <TabList name='provider' inputField={inputField} theme={Popup} values={
+                                    ['SKT','KT','LG']
+                                }/>
                             </div>
 
                             <div className={cm(Popup.head_box, Popup.fr)}>
@@ -123,14 +117,14 @@ function AddSaleModal(props){
                                 <div className={Popup.customer_box}>
                                     <ul className={Popup.customer_list}>
                                         <AddSaleItem>
-                                            <AddSaleInput name='name' subject='이름'/>
+                                            <AddSaleInput inputField={inputField} name='name' subject='이름'/>
                                         </AddSaleItem>
-                                        <AddSaleTabItem name='cust_gd' subject='성별 / 법인' depth={3} values={['남자','여자','법인']}/>
+                                        <AddSaleTabItem inputField={inputField} name='cust_gd' subject='성별 / 법인' depth={3} values={['남자','여자','법인']}/>
                                         <AddSaleItem>
-                                            <AddSaleInput name='cust_tel' subject='휴대폰 번호'/>
+                                            <AddSaleInput inputField={inputField} name='cust_tel' subject='휴대폰 번호'/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput name='cust_cd' subject='생년월일 / 사업자번호'/>
+                                            <AddSaleInput inputField={inputField} name='cust_cd' subject='생년월일 / 사업자번호'/>
                                         </AddSaleItem>
                                     </ul>
 
@@ -141,15 +135,15 @@ function AddSaleModal(props){
                                     <div className={cm(Popup.customer_title, Popup.n1)}>무선</div>
 
                                     <ul className={Popup.customer_list}>
-                                        <AddSaleTabItem name='actv_div' subject='개통 구분' depth={2} values={['선택약정','공시지원금']}/>
+                                        <AddSaleTabItem inputField={inputField} name='actv_div' subject='개통 구분' depth={2} values={['선택약정','공시지원금']}/>
                                         <AddSaleItem>
-                                            <AddSaleInput name='device_md' subject='모델명' search/>
+                                            <AddSaleInput inputField={inputField} name='device_md' subject='모델명' search/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput name='wt_actv_plan' subject='개통 요금제' search/>
+                                            <AddSaleInput inputField={inputField} name='wt_actv_plan' subject='개통 요금제' search/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput name='wt_dec_plan' subject='하향 요금제' search/>
+                                            <AddSaleInput inputField={inputField} name='wt_dec_plan' subject='하향 요금제' search/>
                                         </AddSaleItem>
                                     </ul>
 
@@ -164,7 +158,7 @@ function AddSaleModal(props){
                                             <AddSaleSelectOptionLayer inputField={inputField} name='istm' subject='할부' itemNames={ISTM_ITEMS}/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput className='ta_r' name='wt_cmd' subject='판매 수수료(정책)' readOnly/>
+                                            <AddSaleInput inputField={inputField} className='ta_r' name='wt_cmd' subject='판매 수수료(정책)' readOnly/>
                                         </AddSaleItem>
                                     </ul>
                                 </div>

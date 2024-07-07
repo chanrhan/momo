@@ -6,10 +6,10 @@ import {GraphSummaryCard} from "./module/GraphSummaryCard";
 import graphImg1 from "../../images/graph_img1.png";
 import {GraphBarCard} from "./module/GraphBarCard";
 import {GraphBarItem} from "./module/GraphBarItem";
-import {useTabs} from "../hook/useTabs";
+import useInputField from "../hook/useInputField";
 
 export function DataGraph(){
-    const tab = useTabs(4);
+    const inputField = useInputField()
 
     return (
         <div className={Graph.graph_panel}>
@@ -29,12 +29,12 @@ export function DataGraph(){
                 <div className={cm(Graph.graph2, Graph.div)}>
                     <div className={Graph.graph_top}>
                         <div className={`${cmc(Graph.tab)} type1`}>
-                            <TabList tab={tab} index={0} itemNames={
+                            <TabList name='tab1' inputField={inputField} values={
                                 ['개별', '합산']
                             }/>
                         </div>
                         <div className={cmc(Graph.tab, Graph.type4)}>
-                            <TabList tab={tab} index={1} itemNames={
+                            <TabList name='tab2' inputField={inputField} values={
                                 ['무선', '인터넷', 'TV', '총이익', '평균마진']
                             }/>
                         </div>
@@ -43,7 +43,7 @@ export function DataGraph(){
                     <div className={Graph.graph_box}>그래프 영역</div>
 
                     <div className={cmc(Graph.tab, Graph.type5)}>
-                        <TabList tab={tab} index={2} theme={Graph} itemNames={
+                        <TabList name='tab3' inputField={inputField} theme={Graph} values={
                             ['1일', '1주', '1개월', '3개월', '6개월', '1년']
                         }/>
                     </div>
@@ -53,7 +53,7 @@ export function DataGraph(){
                     <div className={Graph.graph_top}>
                         <div className={Graph.graph_title}>평균 마진</div>
                         <div className={cmc(Graph.tab, Graph.type4)}>
-                            <TabList tab={tab} index={3} itemNames={
+                            <TabList name='tab4' inputField={inputField} values={
                                 ['나이', '성별', '제조자', '개통구분', '할부']
                             }/>
                         </div>

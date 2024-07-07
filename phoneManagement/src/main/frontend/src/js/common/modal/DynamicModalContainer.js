@@ -23,6 +23,7 @@ import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
 import {MonthSelectModal} from "./menu/MonthSelectModal";
 import {DateSelectModal} from "./menu/DateSelectModal";
+import {SelectModal} from "./menu/SelectModal";
 
 const MODAL_COMPONENTS = {
     ChangeNickname: ChangeNicknameModal,
@@ -41,6 +42,7 @@ const MODAL_COMPONENTS = {
     SelectGreen: SelectGreenPhoneModal,
     SelectTableHeader: TableHeaderSelectModal,
     TableValidation: TableValidationModal,
+    Select: SelectModal,
     SelectMonth: MonthSelectModal,
     SelectDate: DateSelectModal,
     // error
@@ -48,7 +50,7 @@ const MODAL_COMPONENTS = {
     Info: InfoModal
 }
 
-function ModalContainer(){
+function DynamicModalContainer(){
     const modal = useModal();
     const modalList = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
@@ -104,4 +106,4 @@ function ModalContainer(){
     )
 }
 
-export default ModalContainer;
+export default DynamicModalContainer;

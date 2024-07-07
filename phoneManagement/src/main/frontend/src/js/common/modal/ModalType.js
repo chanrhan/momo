@@ -18,7 +18,8 @@ export const ModalType = {
         Test: 'MenuModalTest',
         Select_Table_Header: 'SelectTableHeader',
         Select_Month: 'SelectMonth',
-        Select_Date: 'SelectDate'
+        Select_Date: 'SelectDate',
+        Select: 'Select'
     },
     SNACKBAR: {
         Alert: 'Alert',

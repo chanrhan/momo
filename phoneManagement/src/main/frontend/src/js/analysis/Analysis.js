@@ -7,12 +7,25 @@ import {TabList} from "../common/module/TabList";
 import {useState} from "react";
 import {GraphBarItem} from "./module/GraphBarItem";
 import {GraphBarCard} from "./module/GraphBarCard";
-import {useTabs} from "../hook/useTabs";
 import {DataGraph} from "./DataGraph";
 import {Statistics} from "./Statistics";
+import useInputField from "../hook/useInputField";
 
 export function Analysis(){
-    const tab = useTabs(3);
+    const inputField = useInputField([
+        {
+            key: 'menu',
+            value: 0
+        },
+        {
+            key: 'range',
+            value: 0
+        },
+        {
+            key: 'user',
+            value: 0
+        }
+    ]);
 
     return (
         <div className={Layout.sub}>
@@ -20,14 +33,14 @@ export function Analysis(){
             <div className={Graph.graph}>
                 <div className={Graph.graph_head}>
                     <div className={`${cmc(Graph.tab)} type1`}>
-                        <TabList tab={tab} index={0} itemNames={
+                        <TabList name='menu' inputField={inputField} values={
                             ['그래프', '통계']
                         }/>
                     </div>
 
                     {
-                        tab.get(0) === 0 && <div className={cmc(Graph.tab, Graph.type2)}>
-                            <TabList tab={tab} index={1} itemNames={
+                        inputField.getInput('menu') === 0 && <div className={cmc(Graph.tab, Graph.type2)}>
+                            <TabList name='range' inputField={inputField} values={
                                 ['개인', '매장', '회사']
                             }/>
                         </div>
@@ -36,8 +49,8 @@ export function Analysis(){
 
                     <div className={Graph.graph_head_group}>
                         {
-                            tab.get(0) === 0 && <div className={cmc(Graph.tab, Graph.type3)}>
-                                <TabList tab={tab} index={2} itemNames={
+                            inputField.getInput('menu') === 0 && <div className={cmc(Graph.tab, Graph.type3)}>
+                                <TabList name='user' inputField={inputField} values={
                                     ['김모모', '나모모', '다모모']
                                 }/>
                             </div>
@@ -49,7 +62,7 @@ export function Analysis(){
                 </div>
 
                 {
-                    tab.get(0) === 0 ? <DataGraph/> : <Statistics/>
+                    inputField.getInput('menu') === 0 ? <DataGraph/> : <Statistics/>
                 }
             </div>
 
