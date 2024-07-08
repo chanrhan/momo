@@ -24,6 +24,7 @@ import {InfoModal} from "./snackbar/InfoModal";
 import {MonthSelectModal} from "./menu/MonthSelectModal";
 import {DateSelectModal} from "./menu/DateSelectModal";
 import {SelectModal} from "./menu/SelectModal";
+import {useClickaway} from "../useClickaway";
 
 const MODAL_COMPONENTS = {
     ChangeNickname: ChangeNicknameModal,
@@ -51,8 +52,10 @@ const MODAL_COMPONENTS = {
 }
 
 function DynamicModalContainer(){
+    const clickaway = useClickaway();
     const modal = useModal();
     const modalList = useSelector(state=>state.modalReducer);
+
     const topComponentRef = useRef(null);
 
     useEffect(()=>{
