@@ -1,15 +1,18 @@
 import {useDispatch, useSelector} from "react-redux";
 import {clickawayActions, clickawayReducer} from "../store/slices/clickawaySlice";
 
-export function useClickaway({}){
+export function useClickaway(){
     const dispatch = useDispatch();
 
-    const push = (value)=>{
-        dispatch(clickawayActions.push(value))
+    const push = (componentRef, onClose)=>{
+        dispatch(clickawayActions.push({
+            componentRef: componentRef,
+            onClose: onClose
+        }))
     }
 
     const pop = ()=>{
-        dispatch(clickawayActions.pop())
+        return dispatch(clickawayActions.pop())
     }
 
     return {

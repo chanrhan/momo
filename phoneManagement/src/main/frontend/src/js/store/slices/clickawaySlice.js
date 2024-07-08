@@ -8,13 +8,11 @@ const clickawaySlice = createSlice({
     reducers: {
         push: (state,action)=>{
             state.push(action.payload)
-            return state;
         },
         pop: (state)=>{
-            if(state.length > 0){
+            if(state && state.length > 0){
                 state.splice(state.length-1,1);
             }
-            return state;
         }
     }
 });

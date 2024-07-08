@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {createPortal} from "react-dom";
-import {useEffect, useRef} from "react";
+import {useEffect, useMemo, useRef} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
@@ -55,32 +55,47 @@ function DynamicModalContainer(){
     const clickaway = useClickaway();
     const modal = useModal();
     const modalList = useSelector(state=>state.modalReducer);
+    const stack = useSelector(state=>state.clickawayReducer)
 
     const topComponentRef = useRef(null);
+
+    useMemo(() => {
+        let timer = null;
+        if(window.onclick == null){
+            timer = setTimeout(()=>{
+                // onclick 함수를 추가하자마자, 이게 호출된다
+                // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
+                // Timeout 으로 해결
+                window.onclick = e=>{
+                    console.table(stack)
+                    const {componentRef, onClose} = clickaway.pop();
+                    console.log(`ref: ${componentRef}`)
+                    console.log(`onClose: ${onClose}`)
+
+                    if(componentRef && !componentRef.contains(e.target)){
+                        if(onClose){
+                            onClose();
+                        }
+                    }
+                }
+            }, 10);
+        }
+        return ()=>{
+            clearTimeout(timer);
+            window.onclick = null;
+        }
+    }, []);
 
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList)){
             return;
         }
-        let timer = null;
+
         const {type, modalName} = modalList[modalList.length-1];
         if(type === 'MENU' || type === 'LAYER'){
-            if(window.onclick == null){
-                timer = setTimeout(()=>{
-                    // onclick 함수를 추가하자마자, 이게 호출된다
-                    // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
-                    // Timeout 으로 해결
-                    window.onclick = e=>{
-                        if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                            modal.closeModal(modalName);
-                        }
-                    }
-                }, 10);
-            }
-        }
-        return ()=>{
-            clearTimeout(timer);
-            window.onclick = null;
+            clickaway.push(topComponentRef.current, ()=>{
+                modal.closeModal(modalName);
+            });
         }
     },[modalList])
 
