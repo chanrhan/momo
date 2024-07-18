@@ -12,15 +12,16 @@ import lombok.experimental.SuperBuilder;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ShopVO extends CommonQueryVO {
 	private String userId;
-	private Integer corpId;
-	private String        corpNm;
-	private Integer corpPt;
-	private String bpNo;
+//	private Integer corpId;
+	private Integer provider;
+	private String brNm;
+	private String brNo;
+	//	private Integer corpPt;
 	private String regiDt;
 
 	private Integer shopId;
-	private String  repsId;
-	private String  repsNm;
+//	private String  repsId;
+//	private String  repsNm;
 	private String  shopNm;
 	private String  shopTel;
 	private String  sendTel;

@@ -5,7 +5,7 @@ import {UserFormInput} from "../../account/module/UserFormInput";
 import {cm, cmc} from "../../utils/cm";
 import {SelectItem, SelectLayer} from "../../common/module/SelectLayer";
 import {forwardRef, useImperativeHandle, useState} from "react";
-import useInputField from "../../hook/useInputField";
+import useValidateInputField from "../../hook/useValidateInputField";
 import {SelectModal} from "../../common/modal/menu/SelectModal";
 import {RegexUtils} from "../../utils/regex";
 import {ObjectUtils} from "../../utils/objectUtil";

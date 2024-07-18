@@ -8,7 +8,7 @@ import {ObjectUtils} from "../../utils/objectUtil";
 export function TabList({name, inputField, className, theme, values}){
     // const [selected, setSelected] = useState(0);
     useMemo(() => {
-        if(ObjectUtils.isEmpty(inputField.getInput(name))){
+        if(inputField && ObjectUtils.isEmpty(inputField.getInput(name))){
             inputField.put(name, 0);
         }
     }, []);

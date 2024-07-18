@@ -3,10 +3,10 @@ import Layout from "../../css/layout.module.css"
 import {TabList} from "../common/module/TabList";
 import {BoardTable, Btbody, Bth, Bthead} from "../service/board/BoardTable";
 import {AdminTableData} from "./module/AdminTableData";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 
 export function Administrator(){
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
 
     return (
         <div className={Layout.sub}>

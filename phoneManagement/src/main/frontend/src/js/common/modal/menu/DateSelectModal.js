@@ -3,28 +3,60 @@ import Popup from "../../../../css/popup.module.css"
 import User from "../../../../css/user.module.css"
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../ModalType";
-import {cm} from "../../../utils/cm";
+import {cm, cmc} from "../../../utils/cm";
 import {DateUtils} from "../../../utils/DateUtils";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
-export function DateSelectModal(props){
-    const modal = useModal();
+export function DateSelectModal({rootClassName, onSelect, children}){
+    const [active, setActive] = useState(false)
+    const componentRef = useRef(null)
+    const onClickRef = useRef()
 
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth()+1);
     const [year, setYear] = useState(today.getFullYear());
-
     const [monthInfo, setMonthInfo] = useState(DateUtils.getMonthInfo(today.getFullYear(), today.getMonth()+1))
 
+    useEffect(() => {
+        if(active){
+            attachOnClick();
+        }else{
+            detachOnClick()
+        }
+    }, [active]);
 
-    const close = ()=>{
-        modal.closeModal(ModalType.MENU.Select_Date)
+    const attachOnClick = ()=>{
+        if(window.onclick){
+            onClickRef.current = window.onclick;
+        }
+        const timer = setTimeout(()=>{
+            window.onclick = e=>{
+                // e.preventDefault()
+                if(componentRef.current && !componentRef.current.contains(e.target)){
+                    setActive(false)
+                    // detachOnClick();
+                }
+            }
+            clearTimeout(timer);
+        }, 10)
+
     }
+
+    const detachOnClick = ()=>{
+        if(window.onclick){
+            const timer = setTimeout(()=>{
+                window.onclick = onClickRef.current;
+                onClickRef.current = null;
+                clearTimeout(timer)
+            }, 10)
+        }
+    }
+
 
     const handleDate = (day)=>{
         // console.log(day)
-        props.onSelect(year, month, day);
-        close();
+        if(onSelect) onSelect(year, month, day)
+        setActive(false)
     }
 
 
@@ -51,21 +83,37 @@ export function DateSelectModal(props){
         }
     }
 
+    const handleActive = (e)=>{
+        if(!active){
+            setActive(true)
+        }else{
+            if(componentRef.current && !componentRef.current.contains(e.target)){
+                setActive(false)
+            }
+        }
+    }
+
     return (
-        <MenuModal modalRef={props.modalRef} close={close} top={props.top} left={props.left}>
-            <div className={`${cm(Popup.date_popup, Popup.solo, Popup.active)}`}>
-                {/*활성화시 active 추가 -->*/}
+        <div onClick={handleActive} className={rootClassName} style={{
+            position: 'relative'
+        }}>
+            {children}
+            <div className={`${cm(Popup.date_popup, Popup.solo, `${active && Popup.active}`)}`} ref={componentRef}>
                 <div className={Popup.date_head}>
                     <span className={Popup.span}>{year}년 {month}월</span>
-                    <button type="button" className={cm(Popup.date_btn2, Popup.btn_prev2)} onClick={setMonthPrev} disabled={!DateUtils.hasPrevMonth(year)}>이전</button>
-                    <button type="button" className={cm(Popup.date_btn2, Popup.btn_next2)} onClick={setMonthNext} disabled={!DateUtils.hasNextMonth(year, month)}>다음</button>
+                    <button type="button" className={cm(Popup.date_btn2, Popup.btn_prev2)} onClick={setMonthPrev}
+                            disabled={!DateUtils.hasPrevMonth(year)}>이전
+                    </button>
+                    <button type="button" className={cm(Popup.date_btn2, Popup.btn_next2)} onClick={setMonthNext}
+                            disabled={!DateUtils.hasNextMonth(year, month)}>다음
+                    </button>
                 </div>
 
                 <div className={Popup.date_body}>
                     <table className={Popup.tb_date}>
                         <caption>달력</caption>
                         <colgroup>
-                            <col span="6" style={{width:'calc(100% / 7)'}}/>
+                            <col span="6" style={{width: 'calc(100% / 7)'}}/>
                             <col/>
                         </colgroup>
                         <thead className={Popup.thead}>
@@ -81,12 +129,12 @@ export function DateSelectModal(props){
                         </thead>
                         <tbody className={Popup.tbody}>
                         {
-                            new Array(monthInfo.totalWeek).fill(0).map((v, week)=>{
+                            new Array(monthInfo.totalWeek).fill(0).map((v, week) => {
                                 return <tr>
                                     {
-                                        new Array(7).fill(0).map((v,day)=>{
-                                            const d = (week*7) + day - monthInfo.startDay + 1;
-                                            return <DateItem today={DateUtils.isToday(year,month,d)}
+                                        new Array(7).fill(0).map((v, day) => {
+                                            const d = (week * 7) + day - monthInfo.startDay + 1;
+                                            return <DateItem key={day} today={DateUtils.isToday(year, month, d)}
                                                              day={(d > 0 && d <= monthInfo.totalDays) && d}
                                                              onClick={handleDate}>
                                                 {/*do something*/}
@@ -99,21 +147,16 @@ export function DateSelectModal(props){
                         }
                         </tbody>
                     </table>
-
-                    {/*<div className="date_btn_box">*/}
-                    {/*    <button type="button" className="btn btn_small btn_grey">취소</button>*/}
-                    {/*    <button type="button" className="btn btn_small btn_blue">적용</button>*/}
-                    {/*</div>*/}
                 </div>
             </div>
-        </MenuModal>
+        </div>
     )
 }
 
-function DateItem({day, today, onClick}){
+function DateItem({key, day, today, onClick}) {
     return (
-        <td className={cm(Popup.td, `${today && Popup.today}`)}>
-            <button type='button' className={Popup.button} onClick={()=>{
+        <td key={key} className={cm(Popup.td, `${today && Popup.today}`)}>
+            <button type='button' className={Popup.button} onClick={() => {
                 onClick(day)
             }}>{day}</button>
         </td>

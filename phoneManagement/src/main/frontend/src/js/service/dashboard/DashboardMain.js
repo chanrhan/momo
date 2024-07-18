@@ -6,7 +6,7 @@ import {DashboardChart} from "./module/DashboardChart";
 import {DashboardPannelItem4} from "./module/DashboardPannelItem4";
 import {DashboardPannelItem5} from "./module/DashboardPannelItem5";
 import {DashboardInfo} from "./module/DashboardInfo";
-import {WaitingApproval} from "../../account/WaitingApproval";
+import {WaitingApproval} from "../../layout/WaitingApproval";
 
 export function DashboardMain(){
 

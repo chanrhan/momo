@@ -11,7 +11,7 @@ function ApiTest(){
     }
 
     const status = async ()=>{
-        userApi.checkBpnoStatus(input).then(({status,data})=>{
+        userApi.checkBrNoStatus(input).then(({status,data})=>{
             if(status === 200){
                 console.log(data);
                 setResult(data)

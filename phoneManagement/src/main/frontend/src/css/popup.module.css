@@ -66,7 +66,7 @@
 .popup .user_form.inp_type2 .inp:focus{padding:0 11px; line-height:48px;}
 
 /* 달력 */
-.date_popup.solo{opacity:0; visibility:hidden; position:absolute; top:0px; left:0; right:0; width:320px; margin:0; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
+.date_popup.solo{opacity:0; visibility:hidden; position:absolute; top:50px; left:0; right:0; width:320px; margin:0; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
 .date_popup.solo.active{opacity:1; visibility:inherit;}
 .date_popup .date_head{padding:6px 16px; background-color:#f4f5f9; text-align:center;}
 .date_popup .date_head .span{color:#62626e; font-size:14px; font-weight:600; line-height:24px;}
@@ -127,6 +127,7 @@
 .popup .schedule_regist .schedule_color_box .schedule_color_list .li + .li{margin-left:22px;}
 
 /* 판매일보 추가 */
+.popup .customer .sale_hint{text-align: center; font-size: 20px; color: #5a8ff7}
 .popup .customer .customer_head{font-size:0; line-height:0;}
 .popup .customer .customer_head .head_box{display:inline-block; vertical-align:top;}
 .popup .customer .customer_head .head_box.fr{float:right;}
@@ -147,6 +148,8 @@
 .popup .customer .customer_body .customer_box .customer_item + .customer_item{margin-left:12px;}
 .popup .customer .customer_body .customer_box .customer_item .customer_label{color:#50505c; font-size:14px; line-height:16px;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp_box{margin-top:12px;}
+.popup .customer .customer_body .customer_box .customer_item .customer_inp_box .inp_search{padding:0 16px; background:url(../images/search_icon.png) #fff no-repeat right 12px center / 34px;}
+.popup .customer .customer_body .customer_box .customer_item .customer_inp_box .inp_search:focus{padding:0 15px;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp{width:100%; padding:0 16px; border:1px solid #dde1e8; border-radius:8px; font-size:16px; line-height:50px; transition:border-color .25s ease-in-out;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp:focus{padding:0 15px; border:2px solid #4781ff; line-height:48px;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp:read-only{background-color:#f8f8f9;}
@@ -164,6 +167,13 @@
 .popup .popup_check_list > .li .check_label{position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px;}
 .popup .popup_check_list > .li .check_label:before{display:block; position:absolute; top:0; left:0; width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 24px;}
 .popup .popup_check_list > .li .check_inp:checked + .check_label:before{background-image:url(../images/check_icon_on.png);}
+.popup .popup_check_list > .li .inp{
+    display: inline-block;
+    visibility: inherit;
+    width: 100%;
+    /*height: 20px;*/
+    /*line-height: 16px;*/
+}
 .popup .popup_check_list.type2{margin:18px -6px 18px -6px;}
 .popup .popup_check_list.type2 .customer_item{display:inline-block; width:calc(25% - 12px); margin:6px !important; border-radius:8px; background-color:#fff;}
 .popup .popup_check_list.type2 .customer_item .input{top:21px; left:21px;}
@@ -202,7 +212,10 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box.n2{width:calc(32% - 12px); margin-left:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box.n2 .data_area{height:100px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload{position:absolute; top:0; left:0; right:0; bottom:0;}
-.popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload .upload_btn{width:100%; height:100%; background:url(../images/popup/upload_icon.png) no-repeat center / 48px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload .upload_btn{
+    width:100%;
+    height:100%;
+    background:url(../images/popup/upload_icon.png) no-repeat center / 48px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3{margin-top:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3 .data_area .data_textarea{width:100%; height:110px; font-size:16px; line-height:20px; resize:none;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .data_area{height:300px;}
@@ -216,7 +229,7 @@
 .popup .transfer .popup_check_list{margin-top:36px;}
 .popup .transfer .popup_check_list .li + .li{margin-top:28px;}
 .popup .transfer .popup_check_list .li .check_label{max-width:calc(100% - 174px); font-weight:600;}
-.popup .transfer .popup_check_list .li .transfer_box{position:absolute; top:0; right:0; font-size:0; line-height:0;}
+.popup .transfer .popup_check_list .li .transfer_box{position:absolute; top:-3px; right:0; font-size:0; line-height:0;}
 .popup .transfer .popup_check_list .li .transfer_box .btn{display:inline-block; border:1px solid #dde1e8; border-radius:8px; font-size:14px; line-height:24px;}
 .popup .transfer .popup_check_list .li .transfer_box .inp{width:95px; margin-left:8px; padding:0 12px; font-size:14px; line-height:30px; vertical-align:top;}
 .popup .transfer .popup_check_list .li .transfer_box .inp:focus{padding:0 11px; line-height:28px;}
@@ -338,3 +351,9 @@
 .popup .business_card .card_info .li{color:#91939f; font-size:11px; line-height:20px;}
 .popup .business_card .card_company{color:#91939f; font-size:11px; text-align:right; line-height:20px;}
 
+
+/*커스텀*/
+.list_title{margin-bottom: 10px}
+.list_title .form_label + .form_label{margin-left: 150px;}
+
+.card_form .check_del{position:relative; top:13px; left:10px; width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}

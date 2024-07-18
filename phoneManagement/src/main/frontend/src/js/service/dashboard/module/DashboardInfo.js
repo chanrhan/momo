@@ -9,20 +9,21 @@ import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
 import {SelectItem, SelectLayer} from "../../../common/module/SelectLayer";
 import {SelectModal} from "../../../common/modal/menu/SelectModal";
-import useInputField from "../../../hook/useInputField";
+import useValidateInputField from "../../../hook/useValidateInputField";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {ElementUtils} from "../../../utils/ElementUtils";
-import {SelectOptionLayer} from "../../../common/module/SelectOptionLayer";
+import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
+import {SelectOptionInputLayer} from "../../../common/module/SelectOptionInputLayer";
 
 export function DashboardInfo({}){
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
     const modal = useModal();
     const userInfo = useSelector(state=>state.userReducer)
     const [profileImg, setProfileImg] = useState(null)
     const {userApi, shopApi} = useApi();
 
-    const [shopItems, setShopItems] = useState(null);
+    const [shopItems, setShopItems] = useState([]);
 
     const getPfp = async ()=>{
         await userApi.getProfilePicture(userInfo.id).then((data)=>{
@@ -33,31 +34,45 @@ export function DashboardInfo({}){
     const getShopAll = async ()=>{
         await shopApi.getShopAll().then(({status,data})=>{
             if(status === 200){
-                // console.log(data)
+                console.log(data)
                 setShopItems(data)
+                // inputField.put('shop_nm',0)
             }
         })
     }
+
+    useEffect(() => {
+        if(userInfo){
+            // console.table(userInfo)
+            inputField.put('nickname',userInfo.nickname)
+        }
+    }, [userInfo]);
 
     useEffect(()=> {
         getPfp();
         getShopAll();
     },[])
 
-
-    const openShopSelectModal = (e)=>{
-        const pos = ElementUtils.getAbsolutePos(e, 1.1)
-        modal.openModal(ModalType.MENU.Select, {
-            name: 'shop',
-            inputField: inputField,
-            theme: Dashboard,
-            top: `${pos.top}px`,
-            left: `${pos.left}px`,
-            values: shopItems && shopItems.map((v,_)=>{
-                    return v.item_nm;
-                })
-        })
+    const getShopItems = ()=>{
+        return shopItems ? shopItems.map((v,i)=>{
+            return v.shop_nm
+        }) : null;
     }
+
+
+    // const openShopSelectModal = (e)=>{
+    //     const pos = ElementUtils.getAbsolutePos(e, 1.1)
+    //     modal.openModal(ModalType.MENU.Select, {
+    //         name: 'shop',
+    //         inputField: inputField,
+    //         theme: Dashboard,
+    //         top: `${pos.top}px`,
+    //         left: `${pos.left}px`,
+    //         values: shopItems && shopItems.map((v,_)=>{
+    //                 return v.item_nm;
+    //             })
+    //     })
+    // }
 
 
     return (
@@ -72,32 +87,15 @@ export function DashboardInfo({}){
                 </div>
 
                 <div className={cm(Dashboard.company_select)}>
-                    {
-                        shopItems && (
-                            <div className={cmc(Dashboard.select_box)}>
-                                <input type="hidden" id=""/>
-                                {/*<button type="button" className={`${cmc(Dashboard.select_btn)}`}*/}
-                                {/*        onClick={openShopSelectModal}>{inputField.getInput('shop')}</button>*/}
-                                <SelectOptionLayer cm={Dashboard} values={['울타리 평촌점','울타리 안양점','울타리 백석점']}/>
-
-                                {/*// <SelectModal name='shop_id'*/}
-                                {/*//                           className={Dashboard.select_btn}*/}
-                                {/*//                           inputField={inputField}*/}
-                                {/*//                           values={shopItems.map((v,_)=>{*/}
-                                {/*//                                     return v.item_nm;*/}
-                                {/*//                                 }*/}
-                                {/*// )}/>*/
-                                }
-                            </div>
-                        )
-                    }
+                    <div className={cmc(Dashboard.select_box)}>
+                        <input type="hidden" id=""/>
+                        <SelectIndexLayer cssModules={Dashboard} inputField={inputField} values={getShopItems()} name='shop_nm'/>
+                    </div>
 
                     <div className={cmc(Dashboard.select_box)}>
                         <input type="hidden" id=""/>
-                        {/*<SelectModal name='role'*/}
-                        {/*             inputField={inputField}*/}
-                        {/*             className={Dashboard.select_btn}*/}
-                        {/*             values={['대표', '점장', '직원']}/>*/}
+
+                        <SelectOptionInputLayer cssModules={Dashboard} inputField={inputField} values={['대표','점장']} name='nickname'/>
                     </div>
                 </div>
 

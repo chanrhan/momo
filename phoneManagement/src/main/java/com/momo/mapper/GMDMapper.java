@@ -9,7 +9,10 @@ import java.util.Map;
 // Global Master Data
 @Mapper
 public interface GMDMapper {
-    public List<Map<String,String >> getPhoneModel();
     public List<Map<String,Object>> getDevice(String keyword);
+    public List<Map<String,Object>> getSecondDevice(String keyword);
     public List<Map<String,Object>> getExtraService(String keyword);
+    public List<Map<String,Object>> getInternetPlan(String keyword);
+    public List<Map<String,Object>> getTvPlan(String keyword);
+    public List<Map<String,Object>> getCtPlan(String keyword);
 }

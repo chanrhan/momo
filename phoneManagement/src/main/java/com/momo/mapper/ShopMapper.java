@@ -18,9 +18,9 @@ public interface ShopMapper {
 
 	// Corperation
 //	public boolean existBpNo(String bpNo);
-	public int insertCorp(ShopVO vo);
-	public int updateCorp(ShopVO vo);
-	public int updateCorpPoint(int id, int amount);
-	public int deleteCorp(int id);
-	public List<Map<String,Object>> getCorp(ShopVO vo);
+//	public int insertCorp(ShopVO vo);
+//	public int updateCorp(ShopVO vo);
+//	public int updateCorpPoint(int id, int amount);
+//	public int deleteCorp(int id);
+//	public List<Map<String,Object>> getCorp(ShopVO vo);
 }

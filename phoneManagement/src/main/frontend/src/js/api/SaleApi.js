@@ -3,7 +3,7 @@ import {ObjectUtils} from "../utils/objectUtil";
 
 function SaleApi(accessToken){
     const axiosApiWithAccessToken = AxiosApiWithAccessToken();
-    // const axiosApi = AxiosApi();
+    const axiosApi = AxiosApi();
 
     return {
         addSale: async (data)=>{
@@ -13,27 +13,31 @@ function SaleApi(accessToken){
                     'Content-Type': "multipart/form-data"
                 }
             }
-            return await axiosApiWithAccessToken.post('/api/v1/sale/add',data,option);
+            return await axiosApi.post('/api/v1/sale/add',data,option);
         },
-        getSale : async (keyword, fromDate, toDate, order, asc, filters)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale`, {
-                keyword: keyword,
-                order: order,
-                asc: asc,
-                fromDate: fromDate,
-                toDate: toDate,
-                filters: filters
-            }, accessToken);
+        getSaleAll : async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/all`, body, accessToken);
         },
-        getSaleByCategory : async (category, keyword, order, asc)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/${category}`, {
-                keyword: keyword,
-                order: order,
-                asc: asc
-            }, accessToken);
+        getSaleDetail: async (saleId)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/detail/${saleId}`,accessToken);
+        },
+        getSaleTotalCount: async ()=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/count/total`, accessToken);
+        },
+        getSaleByCategory : async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/category`, body, accessToken);
+        },
+        updateSale: async (body)=>{
+            const option = {
+                headers:{
+                    'X-ACCESS-TOKEN': accessToken,
+                    'Content-Type': "multipart/form-data"
+                }
+            }
+            return await axiosApi.post(`/api/v1/sale/update`,body, option);
         },
         deleteSales : async (data)=>{
-            return await axiosApiWithAccessToken.del('/api/v1/sale/delete', data, accessToken);
+            return await axiosApiWithAccessToken.post('/api/v1/sale/delete', data, accessToken);
         }
     }
 }

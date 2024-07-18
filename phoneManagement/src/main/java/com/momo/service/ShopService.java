@@ -55,35 +55,35 @@ public class ShopService extends CommonService {
 	}
 
 	// Corperation
-	public int insertCorp(ShopVO vo) {
-		return shopMapper.insertCorp(vo);
-//		Integer result = transactionTemplate.executeRepeatedly(status -> shopMapper.insertCorp(vo));
-//		return (result != null) ? result : 0;
-	}
-
-	public int updateCorp(ShopVO vo) {
-		return shopMapper.updateCorp(vo);
-	}
-
-	public int deleteCorp(int corpId) {
-		return shopMapper.deleteCorp(corpId);
-	}
-
-	public List<Map<String,Object>> getCorp(ShopVO vo) {
-		return shopMapper.getCorp(vo);
-	}
-
-	public Map<String,Object> getCorp(int id) {
-		ShopVO vo = ShopVO.builder().corpId(id).build();
-		return shopMapper.getCorp(vo).get(0);
-	}
-
-
-	public int updateCorpPoint(int corpId, int amount){
-		if(amount == 0){
-			return 0;
-		}
-		return shopMapper.updateCorpPoint(corpId, amount);
-	}
+//	public int insertCorp(ShopVO vo) {
+//		return shopMapper.insertCorp(vo);
+////		Integer result = transactionTemplate.executeRepeatedly(status -> shopMapper.insertCorp(vo));
+////		return (result != null) ? result : 0;
+//	}
+//
+//	public int updateCorp(ShopVO vo) {
+//		return shopMapper.updateCorp(vo);
+//	}
+//
+//	public int deleteCorp(int corpId) {
+//		return shopMapper.deleteCorp(corpId);
+//	}
+//
+//	public List<Map<String,Object>> getCorp(ShopVO vo) {
+//		return shopMapper.getCorp(vo);
+//	}
+//
+//	public Map<String,Object> getCorp(int id) {
+//		ShopVO vo = ShopVO.builder().corpId(id).build();
+//		return shopMapper.getCorp(vo).get(0);
+//	}
+//
+//
+//	public int updateCorpPoint(int corpId, int amount){
+//		if(amount == 0){
+//			return 0;
+//		}
+//		return shopMapper.updateCorpPoint(corpId, amount);
+//	}
 
 }

@@ -4,7 +4,7 @@ import profileImg1 from "../../images/profile_img1.jpg"
 import {cm} from "../utils/cm";
 import {UserFormInput} from "../account/module/UserFormInput";
 import {UserFormItem} from "../account/module/UserFormItem";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import useApi from "../hook/useApi";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
@@ -12,7 +12,7 @@ import {useSelector} from "react-redux";
 export function Profile(){
     const {userApi} = useApi();
     const user = useSelector(state=>state.userReducer)
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
 
     useEffect(() => {
         inputField.setInput({

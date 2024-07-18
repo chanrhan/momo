@@ -20,18 +20,24 @@ public class GMDService {
         return gmdMapper.getDevice(keyword);
     }
 
+    public List<Map<String,Object>> getSecondDevice(String keyword){
+        return gmdMapper.getSecondDevice(keyword);
+    }
+
     public List<Map<String,Object>> getExtraService(String keyword){
         return gmdMapper.getExtraService(keyword);
     }
 
-    public Map<String,String> getPhoneModel(){
-        List<Map<String,String >> data = gmdMapper.getPhoneModel();
-        Map<String,String> newMap = new HashMap<>();
-
-        for(Map<String,String> map : data){
-            newMap.put(map.get("ph_id"), map.get("ph_nm"));
-        }
-
-        return newMap;
+    public List<Map<String,Object>> getInternetPlan(String keyword){
+        return gmdMapper.getInternetPlan(keyword);
     }
+
+    public List<Map<String,Object>> getTvPlan(String keyword){
+        return gmdMapper.getTvPlan(keyword);
+    }
+
+    public List<Map<String,Object>> getCtPlan(String keyword){
+        return gmdMapper.getCtPlan(keyword);
+    }
+
 }

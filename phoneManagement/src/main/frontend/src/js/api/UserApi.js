@@ -19,9 +19,9 @@ function UserApi(accessToken){
             // }
             return '/img/tmp/default_pfp.png';
         },
-        checkBpnoStatus : async (bpNo)=>{
+        checkBrNoStatus : async (brNo)=>{
             // console.table(array)
-            return await axiosApiWithAccessToken.get(`/api/v1/user/bpno/status?bpNo=${bpNo}`, accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/user/brno/status?brNo=${brNo}`, accessToken);
         },
         updateNickname : async (nickname)=>{
             return await axiosApiWithAccessToken.put(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
@@ -43,6 +43,9 @@ function UserApi(accessToken){
         },
         getUserAsStaff : async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/user/staff', accessToken);
+        },
+        getInnerStaff: async ()=>{
+            return await axiosApiWithAccessToken.get('/api/v1/user/staff/inner', accessToken);
         },
         getUserAll: async (keyword, keydate)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/all?keyword=${keyword}&keydate=${keydate}`, accessToken);

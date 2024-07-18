@@ -2,12 +2,12 @@ import userApi from "../api/UserApi";
 import useApi from "../hook/useApi";
 import {useStore} from "react-redux";
 import {useState} from "react";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import InputBox from "../common/inputbox/InputBox";
 
 function ExceptionTest(){
     const {testApi} = useApi();
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
 
     const [result, setResult] = useState({
 

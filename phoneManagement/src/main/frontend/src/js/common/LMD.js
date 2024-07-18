@@ -1,0 +1,62 @@
+
+export const LMD = {
+    // user
+    role: [
+        '직원','점장','관리자'
+    ],
+
+    // common
+    provier: [
+      'SKT','KT','LG'
+    ],
+    provier2: [
+        'SKT','KT','LG','판매점'
+    ],
+
+    gender: [
+        '남자','여자','법인'
+    ],
+
+    // sale
+    saleOrder: [
+        "actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
+    ],
+    ct_actv_div: [
+        '선택약정','공시지원금'
+    ],
+    ct_actv_tp: [
+        '신규','번호이동','기기변경'
+    ],
+    storage: [
+        '32G', '64G', '128G', '256G', '512G', '1T'
+    ],
+    istm: [
+        '일시납', '12개월', '24개월', '30개월', '36개월', '48개월'
+    ],
+
+    // task (sale)
+    sale_category: [
+      'used_device','card','comb','sup','apm'
+    ],
+
+    // wt
+    wt_actv_div: [
+        '신규','번호이동'
+    ],
+
+    // card
+    card_nm: [
+      '현대카드','국민카드','신한카드','우리카드','현대카드'
+    ],
+    card_tp: [
+        'DC','AC'
+    ],
+
+    // Reservation
+    rsv_d_day: [
+        '즉시발송'
+    ],
+    rsv_msg_tp: [
+        '개통 감사','견적서','담당자 명함','요금제 변경 날짜 안내','요금제 변경','부가 서비스 해지','카드 할인 만료'
+    ]
+}

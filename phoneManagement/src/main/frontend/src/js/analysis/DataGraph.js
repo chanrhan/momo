@@ -6,10 +6,10 @@ import {GraphSummaryCard} from "./module/GraphSummaryCard";
 import graphImg1 from "../../images/graph_img1.png";
 import {GraphBarCard} from "./module/GraphBarCard";
 import {GraphBarItem} from "./module/GraphBarItem";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 
 export function DataGraph(){
-    const inputField = useInputField()
+    const inputField = useValidateInputField()
 
     return (
         <div className={Graph.graph_panel}>

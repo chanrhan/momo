@@ -12,159 +12,42 @@
               YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
-    <select id="getSaleAsSupport" parameterType="com.momo.common.vo.SaleSearchVO">
-        select s.*,
-                sp.sup_div,
-                sp.sup_amount,
-                sp.sup_st
-        from tb_sale_support sp
-        left outer join tb_sale s on s.sale_id=sp.sale_id
-        where s.shop_id=(
-            select shop_id
-            from tb_emp
-            where emp_id=#{userId}
-        ) and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
-            ) and
-        </if>
-<!--        <if test="sellerId != null and !sellerId.equals('')">-->
-<!--            s.seller_id=#{sellerId} and-->
-<!--        </if>-->
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
-<!--        <if test="limit != null and !limit.equals('')">-->
-<!--            limit ${limit} ${offset}-->
-<!--        </if>-->
-    </select>
 
-    <select id="getSaleAsCombination" parameterType="com.momo.common.vo.SaleSearchVO">
 
-        select s.*,
-                scb.comb_id,
-                scb.comb_order_tp,
-                scb.comb_st,
-                scb.comb_doc
-        from tb_sale_comb scb
-        left outer join tb_sale s on s.sale_id=scb.sale_id
-        where s.shop_id=(
-            select shop_id
-            from tb_emp
-            where emp_id=#{userId}
-        ) and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
-            ) and
-        </if>
-<!--        <if test="sellerId != null and !sellerId.equals('')">-->
-<!--            s.seller_id=#{sellerId} and-->
-<!--        </if>-->
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
-<!--        <if test="limit != null and !limit.equals('')">-->
-<!--            limit ${limit} ${offset}-->
-<!--        </if>-->
-    </select>
-
-    <select id="getSaleAsUsedDevice" parameterType="com.momo.common.vo.SaleSearchVO">
-        select s.*,
-                sg.ph_md,
-                sg.green_st,
-        from tb_sale_green sg
-        left outer join tb_sale s on s.sale_id=sg.sale_id
-        where s.shop_id=(
-            select shop_id
-            from tb_emp
-            where emp_id=#{userId}
-        ) and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
-            ) and
-        </if>
-<!--        <if test="sellerId != null and !sellerId.equals('')">-->
-<!--            s.seller_id=#{sellerId} and-->
-<!--        </if>-->
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
-<!--        <if test="limit != null and !limit.equals('')">-->
-<!--            limit ${limit} ${offset}-->
-<!--        </if>-->
-    </select>
-
-    <select id="getSaleAsCard" parameterType="com.momo.common.vo.SaleSearchVO">
-        select s.*,
-               sc.card_id,
-               sc.card_tp,
-               sc.card_st
-        from tb_sale_card sc
-        left outer join tb_sale s on s.sale_id=sc.sale_id
-        where s.shop_id=(
-            select shop_id
-            from tb_emp
-            where emp_id=#{userId}
-        ) and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
-            ) and
-        </if>
-<!--        <if test="sellerId != null and !sellerId.equals('')">-->
-<!--            s.seller_id=#{sellerId} and-->
-<!--        </if>-->
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
-<!--        <if test="limit != null and !limit.equals('')">-->
-<!--            limit ${limit} ${offset}-->
-<!--        </if>-->
-    </select>
-
-    <select id="getSaleByUserId" parameterType="com.momo.common.vo.SaleSearchVO">
-        select s.*,
-               (
-                   select ac.name
-                   from tb_account ac
-                   where ac.id = s.seller_id
+    <select id="getSaleAll" parameterType="com.momo.common.vo.SaleSearchVO">
+        with tb as (
+            select s.*,
+                (
+                    select device_nm
+                    from tb_device
+                    where device_id=s.device_id
+                    ) as device_nm,
+                (
+                    select ac.name
+                    from tb_account ac
+                    where ac.id = s.seller_id
                 ) as seller_nm
-        from tb_sale s
-        where shop_id=(
-            select shop_id
-            from tb_emp
-            where emp_id=#{userId}
-        ) and
+            from tb_sale s
+            where shop_id=(
+                select ac2.curr_shop_id
+                from tb_account ac2
+                where ac2.id = #{userId}
+                )
+            )
+
+        select *
+        from tb
+        where
         <if test="keyword != null and !keyword.equals('')">
             (
-                s.cust_nm like '%${keyword}%' or
-                s.cust_tel like '%${keyword}%' or
-                s.cust_gtel like '%${keyword}%' or
-                s.cust_cd like '%${keyword}%'
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                cust_cd like '%${keyword}%'
             ) and
         </if>
-        <if test="fromDate != null">
+        <if test="keydate != null">
             (
-                s.actv_dt between #{fromDate} and #{toDate}
+                actv_dt like '%${keydate}%'
             ) and
         </if>
         ${filters}
@@ -177,89 +60,548 @@
 <!--        </if>-->
     </select>
 
-    <select id="getSaleByShopId" parameterType="com.momo.common.vo.SaleVO">
-        select *
-        from tb_sale s
-        where shop_id=#{shopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            s.cust_nm like '%${keyword}%' or
-            s.cust_tel like '%${keyword}%' or
-            s.cust_gtel like '%${keyword}%' or
-            s.cust_cd like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
-        <!--        <if test="limit != null and !limit.equals('')">-->
-        <!--            limit ${limit} ${offset}-->
-        <!--        </if>-->
+    <select id="getSaleTotalCount">
+        select count(sale_id)
+        from tb_sale
+        where shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            )
     </select>
 
+    <select id="getSaleOne">
+        select s.*,
+               (
+                   select device_nm
+                   from tb_device
+                   where device_id=s.device_id
+               ) as device_nm,
+               (
+                   select ac.name
+                   from tb_account ac
+                   where ac.id = s.seller_id
+               ) as seller_nm,
+                (
+                select cp.ct_plan_nm
+                from tb_ct_plan cp
+                where cp.ct_plan_id=s.ct_actv_plan
+               ) as ct_actv_plan_nm,
+               (
+                   select cp.ct_plan_nm
+                   from tb_ct_plan cp
+                   where cp.ct_plan_id=s.ct_dec_plan
+               ) as ct_dec_plan_nm
+        from tb_sale s
+        where shop_id=(
+            select ac2.curr_shop_id
+            from tb_account ac2
+            where ac2.id = #{userId}
+        ) and sale_id=#{saleId}
+    </select>
+
+    <select id="getSaleAsUsedDevice">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            from tb_account
+            WHERE id=#{userId}
+            );
+
+        WITH tb as (
+            SELECT sud.state,
+                   sl.actv_dt,
+                   sl.cust_nm,
+                   sl.cust_tel,
+                   sl.cust_cd,
+                   (
+                       SELECT device_nm
+                       from tb_device
+                       WHERE tb_device.device_id=sud.used_device_id
+                       ) as device_nm,
+                   sud.cms,
+                   sl.total_cms,
+                   (
+                       SELECT name
+                       from tb_account
+                       where id=#{userId}
+                       ) as seller_nm
+            from tb_sale sl
+            left outer join tb_sale_used_device sud on sud.sale_id=sl.sale_id
+            WHERE sl.shop_id=@curr_shop_id
+        )
+
+        SELECT *
+        from tb
+    </select>
+
+
+<!--    update-->
+
     <update id="updateSale" parameterType="com.momo.common.vo.SaleVO">
-        update tb_sale
-        set cust_nm = #{custNm},
+        UPDATE tb_sale
+        SET actv_dt = #{actvDt},
+            provider = #{provider},
+            seller_id = #{sellerId},
+            cust_nm = #{custNm},
+            cust_gd = #{custGd},
             cust_tel = #{custTel},
             cust_cd = #{custCd},
-            cust_gd = #{custGd},
-            provider = #{provider},
-            device_md = #{deviceMd},
-            ct_istm = #{ctIstm},
             ct_actv_div = #{ctActvDiv},
-            ct_actv_tp = #{ctActvTp},
+            device_id = #{deviceId},
             ct_actv_plan = #{ctActvPlan},
             ct_dec_plan = #{ctDecPlan},
+            ct_actv_tp = #{ctActvTp},
+            device_stor = #{deviceStor},
+            ct_istm = #{ctIstm},
             ct_cms = #{ctCms},
-            sec_md = #{secMd},
             wt_actv_tp = #{wtActvTp},
-            wt_actv_div = #{wtActvDiv},
             wt_cms = #{wtCms},
-            inet_actv_plan = #{inetActvPlan},
-            inet_dec_plan = #{inetDecPlan},
-            tv_actv_plan = #{tvActvPlan},
-            tv_dec_plan = #{tvDecPlan},
+            internet_plan = #{internetPlan},
+            tv_plan = #{tvPlan},
+            sec_device_id = #{secDeviceId},
             exsvc_id = #{exsvcId},
-            seller_id = #{sellerId},
-            spec = #{spec},
-            sale_docs = #{saleDocs},
-            sale_memo = #{saleMemo}
+            comb_tp = #{combTp},
+            comb_memo = #{combMemo},
+            family = #{family},
+            friend = #{friend},
+            sale_memo=#{saleMemo},
+            estimate=#{estimate},
+            docs=#{docs}
         where sale_id=#{saleId}
-        and shop_id=#{shopId}
     </update>
 
     <delete id="deleteSale">
         delete from tb_sale
         where sale_id=#{saleId}
-        and shop_id=#{shopId}
+        and shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            )
     </delete>
 
     <insert id="insertSale" parameterType="com.momo.common.vo.SaleVO">
-        set @shopId := (
-            select shop_id
-            from tb_emp
-            where emp_id= #{userId}
+        set @shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id= #{userId}
             );
 
-        insert into tb_sale
-        (shop_id, sale_id, cust_nm, cust_tel, cust_gtel, cust_cd, cust_gd,
-         provider, device_md, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan,
-         ct_dec_plan, ct_cms, sec_md, wt_actv_tp, wt_actv_div, wt_cms,
-         inet_actv_plan, inet_dec_plan, tv_actv_plan, tv_dec_plan, exsvc_id,
-         seller_id, spec, sale_docs, sale_memo)
-        values (@shopId,(
-                select *
-                from (
-                         select IFNULL(max(sale_id), 0)+1
-                         from    tb_sale
-                         where   shop_id=@shopId
-                     ) as sub_sale
-            ), #{custNm},#{custTel},#{custGtel},#{custCd},#{custGd},
-                #{provider},#{deviceMd},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
-                #{ctDecPlan},#{ctCms},#{secMd},#{wtActvTp},#{wtActvDiv},#{wtCms},
-                #{inetActvPlan},#{inetDecPlan},#{tvActvPlan},#{tvDecPlan},#{exsvcId}
-               ,#{sellerId},#{spec},#{saleDocs},#{saleMemo})
+        SET @next_sale_id := (
+            select IFNULL(max(sale_id)+1,1)
+            from tb_sale
+            );
+
+        INSERT INTO tb_sale
+        (shop_id, sale_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt,
+         device_id, device_stor, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
+         ct_cms, sec_device_id, comb_tp, comb_memo,
+         wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
+         friend, seller_id, estimate, docs, sale_memo, total_cms)
+        VALUES (@shop_id,@next_sale_id, #{custNm},#{custTel},#{custCd},#{custGd},
+                #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
+                #{ctDecPlan},#{ctCms},#{secDeviceId},#{combTp},
+                #{combMemo},#{wtActvTp},#{wtCms},#{internetPlan},#{tvPlan},
+                #{exsvcId},#{family},#{friend},#{sellerId},#{estimate},#{docs},#{saleMemo},#{totalCms})
     </insert>
+
+<!--    고객약속, 추가, 지원, 카드, 중고폰  -->
+
+    <select id="getMaxSaleId">
+        SELECT IFNULL(max(sale_id),0)
+        from tb_sale
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            )
+    </select>
+
+<!--    get-->
+    <select id="getSaleAppointment">
+        SELECT checked,
+               content
+        from tb_appointment
+        where sale_id=#{saleId} and
+            shop_id = (
+                select curr_shop_id
+                from tb_account
+                where id=#{userId}
+            )
+    </select>
+
+    <select id="getSaleSupport">
+        SELECT sup_div,
+               sup_amount
+        from tb_sale_support
+        where sale_id=#{saleId} and
+              shop_id = (
+                  select curr_shop_id
+                  from tb_account
+                  where id=#{userId}
+                  )
+    </select>
+
+    <select id="getSaleAdd">
+        SELECT add_div,
+               add_amount
+        from tb_sale_add
+        where sale_id=#{saleId} and
+            shop_id = (
+                select curr_shop_id
+                from tb_account
+                where id=#{userId}
+            )
+    </select>
+
+    <select id="getSaleCard">
+        SELECT card_tp,
+               card_nm
+        from tb_sale_card
+        where sale_id=#{saleId} and
+            shop_id = (
+                select curr_shop_id
+                from tb_account
+                where id=#{userId}
+            )
+    </select>
+
+    <select id="getSaleUsedDevice">
+        SELECT used_device_nm,
+               used_device_stor
+        from tb_sale_used_device
+        where sale_id=#{saleId} and
+            shop_id = (
+                select curr_shop_id
+                from tb_account
+                where id=#{userId}
+            )
+    </select>
+
+<!--    insert-->
+    <insert id="insertSaleAppointment" parameterType="com.momo.common.vo.SaleAppointmentVO">
+        set @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        );
+
+        INSERT INTO tb_appointment
+            (shop_id, sale_id, apm_id, checked, content)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ),#{saleId},#{index}+1,#{item.checked},#{item.content}
+        </foreach>
+    </insert>
+
+    <insert id="insertSaleSupport" parameterType="com.momo.common.vo.SaleSupportVO">
+        set @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        );
+
+
+        INSERT INTO tb_sale_support
+        (shop_id, sale_id, sup_id, sup_div, sup_amount)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ),#{saleId},#{index}+1,#{item.supDiv},#{item.supAmount}
+        </foreach>
+    </insert>
+
+    <insert id="insertSaleAdd" parameterType="com.momo.common.vo.SaleAddVO">
+        set @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        );
+
+        INSERT INTO tb_sale_add
+            (shop_id, sale_id, add_id, add_div, add_amount)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ),#{saleId},#{index}+1,#{item.addDiv},#{item.addAmount}
+        </foreach>
+    </insert>
+
+    <insert id="insertSaleCard" parameterType="com.momo.common.vo.SaleCardVO">
+        set @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        );
+
+        INSERT INTO tb_sale_card
+            (shop_id, sale_id, card_id, card_nm, card_tp)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ),#{saleId},#{index}+1,#{item.cardNm},#{item.cardTp}
+        </foreach>
+    </insert>
+
+    <insert id="insertSaleUsedDevice" parameterType="com.momo.common.vo.SaleUsedDeviceVO">
+        set @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        );
+
+        INSERT INTO tb_sale_used_device
+            (shop_id, sale_id, used_device_id, used_device_nm, used_device_stor)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ),#{saleId},#{index}+1,#{item.usedDeviceNm},#{item.usedDeviceStor}
+        </foreach>
+    </insert>
+
+<!--    update-->
+    <update id="updateSaleAppointment">
+        UPDATE tb_appointment
+        SET checked=#{checked},
+            content=#{content}
+        WHERE shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            apm_id=#{apmId}
+    </update>
+
+    <update id="updateSaleSupport">
+        UPDATE tb_sale_support
+        SET sup_div=#{div},
+            sup_amount=#{amount}
+        WHERE shop_id = (
+                            select curr_shop_id
+                            from tb_account
+                            where id=#{userId}
+                        ) and
+              sale_id=#{saleId} and
+              sup_id=#{supId}
+    </update>
+
+    <update id="updateSaleAdd">
+        UPDATE tb_sale_add
+        SET add_div=#{div},
+            add_amount=#{amount}
+        WHERE shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            add_id=#{addId}
+    </update>
+
+    <update id="updateSaleCard">
+        UPDATE tb_sale_card
+        SET card_nm=#{cardNm},
+            card_tp=#{cardTp}
+        WHERE shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            card_id=#{cardId}
+    </update>
+
+    <update id="updateSaleUsedDevice">
+        UPDATE tb_sale_used_device
+        SET used_device_nm=#{usedDeviceNm},
+            used_device_stor=#{usedDeviceStor}
+        WHERE shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            used_device_id=#{usedDeviceId}
+    </update>
+
+<!--    count-->
+    <select id="getSaleAppointmentCount">
+        SELECT count(*)
+        from tb_appointment
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ) and
+            sale_id=#{saleId}
+    </select>
+
+    <select id="getSaleSupportCount">
+        SELECT count(*)
+        from tb_sale_support
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </select>
+
+    <select id="getSaleAddCount">
+        SELECT count(*)
+        from tb_sale_add
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </select>
+
+    <select id="getSaleCardCount">
+        SELECT count(*)
+        from tb_sale_card
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </select>
+
+    <select id="getSaleUsedDeviceCount">
+        SELECT count(*)
+        from tb_sale_used_device
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </select>
+
+<!--    delete-->
+    <delete id="deleteSaleAppointment">
+        DELETE FROM tb_appointment
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            ) and
+            sale_id=#{saleId} and
+            apm_id=#{apmId}
+    </delete>
+
+    <delete id="deleteSaleSupport">
+        DELETE FROM tb_sale_support
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            sup_id=#{supId}
+    </delete>
+
+    <delete id="deleteSaleAdd">
+        DELETE FROM tb_sale_add
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            add_id=#{addId}
+    </delete>
+
+    <delete id="deleteSaleCard">
+        DELETE FROM tb_sale_card
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            card_id=#{cardId}
+    </delete>
+
+    <delete id="deleteSaleUsedDevice">
+        DELETE FROM tb_sale_used_device
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            used_device_id=#{usedDeviceId}
+    </delete>
+
+<!--    delete all-->
+    <delete id="deleteAllSaleAppointment">
+        DELETE FROM tb_appointment
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </delete>
+
+    <delete id="deleteAllSaleSupport">
+        DELETE FROM tb_sale_support
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </delete>
+
+    <delete id="deleteAllSaleAdd">
+        DELETE FROM tb_sale_add
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </delete>
+
+    <delete id="deleteAllSaleCard">
+        DELETE FROM tb_sale_card
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </delete>
+
+    <delete id="deleteAllSaleUsedDevice">
+        DELETE FROM tb_sale_used_device
+        WHERE shop_id=(
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </delete>
 
 </mapper>

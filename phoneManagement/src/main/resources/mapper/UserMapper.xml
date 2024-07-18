@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+
+
     <select id="findUserByTelEmail">
         select id,
                regi_dt
@@ -17,14 +19,11 @@
             1=1
     </select>
 
-    <select id="getUserByBpNo">
-        select ac.id
-        from    tb_corp cp
-        left outer join tb_emp em on em.corp_id=cp.corp_id
-        left outer join tb_account ac on ac.id=em.emp_id
-        where bp_no=#{bpNo} and
-              em.role = 'REPS'
-    </select>
+<!--    <select id="getUserByBrNo">-->
+<!--        select id-->
+<!--        from tb_account-->
+<!--        where br_no = #{brNo}-->
+<!--    </select>-->
 
     <update id="updatePassword" parameterType="com.momo.common.vo.UserVO">
         UPDATE tb_account
@@ -33,28 +32,27 @@
           AND pwd = #{pwd}
     </update>
 
-    <select id="getUserAsStaff">
-        SELECT ac.name,
-               sh.shop_id,
-               sh.shop_nm,
-               ac.role,
-               em.approval_st
-        FROM tb_emp em
-        LEFT OUTER JOIN tb_account ac on em.emp_id=ac.id
-        LEFT OUTER JOIN tb_shop sh on sh.shop_id=em.shop_id
-        WHERE em.corp_id = (
-            SELECT corp_id
-            FROM tb_emp
-            WHERE emp_id = #{id}
-            ) AND
-            emp_id != #{id}
+    <select id="getInnerStaff">
+        SELECT sf.staff_id as id,
+               ac.name
+        from tb_staff sf
+                 left outer join tb_account ac on ac.id = sf.staff_id
+        where shop_id = (
+            select ac2.curr_shop_id
+            from tb_account ac2
+            where ac2.id = #{userId}
+            )
     </select>
 
-    <update id="updateCurrentShop">
-        UPDATE tb_emp
-        SET shop_id=#{shopId}
-        WHERE emp_id=#{userId}
-    </update>
+    <select id="getStaffByShopID">
+        SELECT ac.name,
+               ac.user_st,
+               sf.role,
+               sf.approval_st
+        from tb_staff sf
+        left outer join tb_account ac on ac.id = sf.staff_id
+        where shop_id = #{shopId}
+    </select>
 
     <update id="updateNickname">
         UPDATE tb_account
@@ -110,9 +108,14 @@
     </update>
 
     <select id="isApproved" resultType="java.lang.Boolean">
-        SELECT approval_st
-        FROM tb_emp
-        WHERE emp_id = #{id}
+        SELECT (
+            select IFNULL(sf.approval_st, false)
+            from tb_staff sf
+            where sf.staff_id = id and
+                  sf.shop_id = curr_shop_id
+                   ) as approval_st
+        FROM tb_account
+        where id=#{id}
     </select>
 
     <select id="tryFindUserIdByEmail" parameterType="com.momo.common.vo.UserVO" resultType="java.util.Map">
@@ -134,40 +137,39 @@
     <select id="getConnectedUser" resultType="java.util.Map">
         SELECT id   AS user_id,
                name AS user_nm,
-               role,
                pfp
         FROM tb_account
         WHERE id = #{id}
     </select>
 
-    <select id="getChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
-        WITH tb AS (
-                       SELECT ac.id   AS user_id,
-                              ac.name AS user_nm,
-                              em.role,
-                              em.shop_id,
-                              em.corp_id,
-                              sh.shop_nm,
-                              cp.corp_nm
-                       FROM tb_emp em
-                                LEFT OUTER JOIN tb_account ac ON ac.id = em.emp_id
-                                LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id
-                                LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id
-                   )
+<!--    추후 채팅 기능 추가되면 수정할 것-->
+<!--    <select id="getChatInvitableUser" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">-->
+<!--        WITH tb AS (-->
+<!--                       SELECT ac.id   AS user_id,-->
+<!--                              ac.name AS user_nm,-->
+<!--                              em.role,-->
+<!--                              em.shop_id,-->
+<!--                              em.corp_id,-->
+<!--                              sh.shop_nm,-->
+<!--                              cp.corp_nm-->
+<!--                       FROM tb_staff em-->
+<!--                                LEFT OUTER JOIN tb_account ac ON ac.id = em.emp_id-->
+<!--                                LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id-->
+<!--                                LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id-->
+<!--                   )-->
 
-        SELECT *
-        FROM tb
-        WHERE ${andSelect}
-          AND ${orSearch}
-            ${prop}
-    </select>
+<!--        SELECT *-->
+<!--        FROM tb-->
+<!--        WHERE ${andSelect}-->
+<!--          AND ${orSearch}-->
+<!--            ${prop}-->
+<!--    </select>-->
 
     <update id="updateUserToDormant">
         UPDATE
             tb_account
         SET user_st=2
-        WHERE role != 'ADMIN'
-          AND user_st = 1
+        WHERE user_st = 1
           AND DATEDIFF(CURRENT_DATE, last_login_dt) > #{date};
 
 
@@ -182,30 +184,40 @@
     </update>
 
     <select id="getUserAsAuthorization">
-        SELECT *
-        from tb_account
+        SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
         where id=#{userId}
     </select>
 
-    <select id="getUserById">
+    <select id="getUserByUserAndShop">
         SELECT ac.id,
                ac.name,
                ac.tel,
-               ac.role,
-               cp.corp_nm,
-               IFNULL(sh.shop_nm, (
-                   SELECT sh2.shop_nm
-                   FROM tb_shop sh2
-                   WHERE sh2.shop_id = (
-                       SELECT min(tb_shop.shop_id)
-                       FROM tb_shop
-                       WHERE tb_shop.corp_id = cp.corp_id
-                       )
-                   )) as shop_nm
+               ac.nickname,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role
+#                IFNULL(sh.shop_nm, (
+#                    SELECT sh2.shop_nm
+#                    FROM tb_shop sh2
+#                    WHERE sh2.shop_id = (
+#                        SELECT min(tb_shop.shop_id)
+#                        FROM tb_shop
+#                        WHERE tb_shop.corp_id = cp.corp_id
+#                        )
+#                    )) as shop_nm
         FROM tb_account ac
-                 LEFT OUTER JOIN tb_emp em ON ac.id = em.emp_id
-                 LEFT OUTER JOIN tb_shop sh ON em.shop_id = sh.shop_id
-                 LEFT OUTER JOIN tb_corp cp ON em.corp_id = cp.corp_id
+#                  LEFT OUTER JOIN tb_shop sh ON sf.shop_id = sh.shop_id
         WHERE id = #{userId}
     </select>
 
@@ -227,9 +239,6 @@
         </if>
         <if test='tel != null and !tel.equals("")'>
             tel=#{tel} and
-        </if>
-        <if test='role != null and !role.equals("")'>
-            role=#{role} and
         </if>
         <if test='regiDt != null and !regiDt.equals("")'>
             regi_dt=#{regiDt} and
@@ -272,9 +281,6 @@
         <if test='tel != null and !tel.equals("")'>
             tel=#{tel},
         </if>
-        <if test='role != null and !role.equals("")'>
-            role=#{role},
-        </if>
         <if test='terms != null and !terms.equals("")'>
             terms=#{terms},
         </if>
@@ -289,46 +295,46 @@
         WHERE id = #{id}
     </delete>
 
-    <!--    Employee-->
+    <!--    Staff -->
 
-    <insert id="insertEmp" parameterType="com.momo.common.vo.UserVO">
-        INSERT INTO tb_emp
-            (emp_id, role, corp_id, shop_id, approval_st)
-        VALUES (#{empId}, #{role}, #{corpId}, #{shopId}, #{approvalSt})
+    <insert id="insertStaff" parameterType="com.momo.common.vo.UserVO">
+        INSERT INTO tb_staff
+            (shop_id, staff_id, role)
+        VALUES (#{shopId},#{staffId}, #{role})
     </insert>
 
-    <update id="updateEmp" parameterType="com.momo.common.vo.UserVO">
+    <update id="updateStaff" parameterType="com.momo.common.vo.UserVO">
         update
-        tb_emp
+        tb_staff
         set
         <if test='shopId != null'>
             shop_id=#{shopId},
         </if>
         approval_st=#{approvalSt}
         where
-        emp_id=#{empId}
+        user_id=#{staffId}
     </update>
 
-    <delete id="deleteEmp">
+    <delete id="deleteStaff">
         DELETE
-        FROM tb_emp
-        WHERE emp_id = #{id}
+        FROM tb_staff
+        WHERE staff_id = #{id}
     </delete>
 
-    <select id="searchEmp" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">
-        WITH tb AS (
-                       SELECT em.*,
-                              cp.corp_bp_no AS bp_no
-                       FROM tb_emp em
-                                LEFT OUTER JOIN tb_corp cp ON cp.reps_id = em.emp_id
-                   )
+<!--    <select id="searchEmp" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">-->
+<!--        WITH tb AS (-->
+<!--                       SELECT em.*,-->
+<!--                              cp.corp_bp_no AS bp_no-->
+<!--                       FROM tb_emp em-->
+<!--                                LEFT OUTER JOIN tb_corp cp ON cp.reps_id = em.emp_id-->
+<!--                   )-->
 
-        SELECT *
-        FROM tb
-        WHERE ${andSelect}
-          AND ${orSearch}
-            ${prop}
-    </select>
+<!--        SELECT *-->
+<!--        FROM tb-->
+<!--        WHERE ${andSelect}-->
+<!--          AND ${orSearch}-->
+<!--            ${prop}-->
+<!--    </select>-->
 
 
 </mapper>

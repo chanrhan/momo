@@ -9,12 +9,13 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
-	public String getUserByBpNo(String bpNo);
+	public List<Map<String,String>> getInnerStaff(String userId);
+//	public String getUserByBrNo(String brNo);
 	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);
 
-	public List<Map<String,Object>> getUserAsStaff(String id);
+	public List<Map<String,Object>> getStaffByShopID(String shopId);
 
-	public int updateCurrentShop(String userId, int shopId);
+//	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
 
 	public int updatePassword(UserVO vo);
@@ -41,7 +42,7 @@ public interface UserMapper {
 	public int insertUser(UserVO vo);
 	public int updateUser(UserVO vo);
 	public int deleteUser(String id);
-	public Map<String,String> getUserAsAuthorization(String userId);
+	public Map<String,Object> getUserAsAuthorization(String userId);
 
 	/**
 	 *
@@ -54,14 +55,14 @@ public interface UserMapper {
 	 *     매장명
 	 * }
 	 */
-	public Map<String,Object> getUserById(String userId);
+	public Map<String,Object> getUserByUserAndShop(String userId);
 	public List<Map<String,Object>> getUser(UserVO vo);
 
-	// Employee
-	public int insertEmp(UserVO vo);
-	public int updateEmp(UserVO vo);
-	public int deleteEmp(String id);
-	public List<Map<String,Object>> getUserAsStaff(UserVO vo);
-	public List<Map<String,Object>> searchEmp(SearchVO vo);
+	// Staff
+	public int insertStaff(UserVO vo);
+	public int updateStaff(UserVO vo);
+	public int deleteStaff(String id);
+//	public List<Map<String,Object>> getUserAsStaff(UserVO vo);
+//	public List<Map<String,Object>> searchEmp(SearchVO vo);
 	public boolean isApproved(String id);
 }

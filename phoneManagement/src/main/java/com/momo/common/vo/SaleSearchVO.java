@@ -19,10 +19,9 @@ import java.util.Arrays;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleSearchVO extends CommonQueryVO{
     private String userId;
-    private String category;
+    private Integer category;
     private String keyword;
-    private LocalDate fromDate;
-    private LocalDate toDate;
+    private String keydate;
     private Integer order;
     private boolean asc = false;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
@@ -36,7 +35,7 @@ public class SaleSearchVO extends CommonQueryVO{
     }
 
     private static String[] COLUMNS = {
-
+        "actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
     };
 
     private static String[] CONDITIONS = {
@@ -45,6 +44,9 @@ public class SaleSearchVO extends CommonQueryVO{
             " is null ",
             " is not null "
     };
+    public String getAsc(){
+        return asc ? "asc":"desc";
+    }
 
     private String generateClause(SaleSearchFilter filter){
         StringBuilder sb = new StringBuilder();

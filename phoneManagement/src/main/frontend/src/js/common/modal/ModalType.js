@@ -3,15 +3,23 @@ export const ModalType = {
         Change_Nickname: 'ChangeNickname',
         Add_Shop: 'AddShop',
         Update_Password: 'UpdatePassword',
-        Add_Sale: 'AddSale',
+        // sale
         Sale_Detail: 'SaleDetail',
-        Select_Card: 'SelectCard',
-        Select_Comb: 'SelectComb',
-        Select_Exsvc: 'SelectExsvc',
-        Select_Plan: 'SelectPlan',
-        Select_Second: 'SelectSecond',
-        Select_GreenPhone: 'SelectGreen',
-        Table_Validation: 'TableValidation'
+        Sale_Card: 'SaleCard',
+        Sale_Comb: 'SaleComb',
+        Sale_Exsvc: 'SaleExsvc',
+        Sale_Wt_Plan: 'SaleWtPlan',
+        Sale_Second: 'SaleSecond',
+        Sale_Used_Phone: 'SaleUsedPhone',
+
+        // sale common
+        Device_Search: 'DeviceSearch',
+        Plan_Search: 'PlanSearch',
+
+        Table_Validation: 'TableValidation',
+        Sale_Filter: 'SaleFilter',
+        Reserve_Message: 'ReserveMessage',
+        Reserve_Date: 'ReserveDate'
     },
     MENU: {
         Change_Shop: 'ChangeShop',
@@ -19,7 +27,8 @@ export const ModalType = {
         Select_Table_Header: 'SelectTableHeader',
         Select_Month: 'SelectMonth',
         Select_Date: 'SelectDate',
-        Select: 'Select'
+        Select: 'Select',
+
     },
     SNACKBAR: {
         Alert: 'Alert',

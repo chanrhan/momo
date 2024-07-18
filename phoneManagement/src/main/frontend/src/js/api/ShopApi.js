@@ -11,14 +11,14 @@ function ShopApi(accessToken){
         addShop : async (data)=>{
             return await axiosApiWithAccessToken.post('/api/v1/shop',data,accessToken);
         },
-        addShopBulk: async (data)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/shop/bulk`, data, accessToken);
-        },
-        addCorp: async(data)=>{
-          return await axiosApiWithAccessToken.post('api/v1/corp',data,accessToken)
-        },
-        getShop : async ()=>{
-            return await axiosApiWithAccessToken.get('/api/v1/shop',accessToken);
+        // addShopBulk: async (data)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/shop/bulk`, data, accessToken);
+        // },
+        // addCorp: async(data)=>{
+        //   return await axiosApiWithAccessToken.post('api/v1/corp',data,accessToken)
+        // },
+        getShop : async (keyword)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/shop?keyword=${keyword}`,accessToken);
         },
         getShopAll : async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/shop/all',accessToken);

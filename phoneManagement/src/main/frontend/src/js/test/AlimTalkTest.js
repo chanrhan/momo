@@ -1,10 +1,10 @@
 import useApi from "../hook/useApi";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import InputBox from "../common/inputbox/InputBox";
 
 function AlimTalkTest(){
     const {testApi} = useApi();
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: "corp_name",
             value: "라인탁송"

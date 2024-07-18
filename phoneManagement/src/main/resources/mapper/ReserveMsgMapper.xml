@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.momo.mapper.ReserveMsgMapper">
+    <insert id="insertMsg" parameterType="com.momo.common.vo.ReserveMessageVO">
+        SET @curr_shop_id := (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+            );
+
+        SET @next_msg_id := (
+            select IFNULL(max(msg_id),0)+1
+            from tb_rsv_msg
+            where shop_id=@curr_shop_id and
+                  sale_id=#{saleId}
+            );
+
+        INSERT INTO tb_rsv_msg
+        (shop_id, sale_id, msg_id, msg_tp, content, rsv_dt)
+        VALUES (@curr_shop_id, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt})
+    </insert>
+</mapper>

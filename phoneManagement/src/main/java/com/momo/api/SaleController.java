@@ -1,22 +1,18 @@
 package com.momo.api;
 
-import com.momo.common.enums.codes.ErrorCode;
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.SearchVO;
-import com.momo.exception.RestApiException;
 import com.momo.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.time.LocalDate;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +22,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/sale")
 public class SaleController {
 	private final SaleService       saleService;
+	private final ReserveMsgService reserveMsgService;
 
 	private final ItemCommonService itemCommonService;
 
@@ -38,12 +35,27 @@ public class SaleController {
 	 *     판매일보 모든 컬럼
 	 * }
 	 */
-	@PostMapping("")
-	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestBody SaleSearchVO vo){
-		System.out.println("get sale: "+vo);
+	@PostMapping("/all")
+	public ResponseEntity<List<Map<String,Object>>> getSaleAll(@RequestBody(required = false) SaleSearchVO vo){
+//		System.out.println("get sale: "+vo);
+		if(vo == null){
+			vo = new SaleSearchVO();
+		}
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
-		return ResponseEntity.ok(saleService.getSaleByUserId(vo));
+		return ResponseEntity.ok(saleService.getSaleAll(vo));
+	}
+
+	@GetMapping("/detail/{saleId}")
+	public ResponseEntity<Map<String,Object>> getSale(@PathVariable int saleId){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.getSaleOne(username, saleId));
+	}
+
+	@GetMapping("/count/total")
+	public ResponseEntity<Integer> getSaleTotalCount(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.getSaleTotalCount(username));
 	}
 
 	/**
@@ -53,18 +65,30 @@ public class SaleController {
 	 *
 	 * }
 	 */
-	@PostMapping("/{category}")
-	public ResponseEntity<List<Map<String,Object>>> getSale(@PathVariable String category,@RequestBody SaleSearchVO vo){
+	@PostMapping("/category")
+	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestBody SaleSearchVO vo){
+		int category = vo.getCategory();
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
-		if(category != null){
-			List<Map<String,Object>> list = saleService.getSaleByCategory(category, vo);
-			if(list == null){
-				return ResponseEntity.notFound().build();
+
+
+		switch (category){
+			case 0 -> {
+				return ResponseEntity.ok(saleService.getSaleAsUsedDevice(vo));
 			}
-			return ResponseEntity.ok(list);
+			case 1 -> {
+				return ResponseEntity.ok(saleService.getSaleAsCard(vo));
+			}
+			case 2 -> {
+				return ResponseEntity.ok(saleService.getSaleAsComb(vo));
+			}
+			case 3 -> {
+				return ResponseEntity.ok(saleService.getSaleAsSupport(vo));
+			}
+			case 4 -> {
+				return ResponseEntity.ok(saleService.getAppointment(vo));
+			}
 		}
-//		throw new RestApiException();
 		return ResponseEntity.badRequest().build();
 	}
 
@@ -73,77 +97,75 @@ public class SaleController {
 	 * @param deletes int[]
 	 * @return Boolean
 	 */
-	@DeleteMapping("/delete")
+	@PostMapping("/delete")
 	public ResponseEntity<?> deleteSale(@RequestBody int[] deletes){
 		log.info("delete: {}",deletes);
-		return ResponseEntity.ok(saleService.deleteSales(deletes) != 0);
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.deleteSales(username, deletes) != 0);
 	}
 
 
 	@GetMapping("/delete/{id}")
 	@ResponseBody
 	public ResponseEntity<Boolean> deleteSale(@PathVariable int id) {
-		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(id));
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(username, id));
 	}
 
 	/**
 	 * 판매일보 추가
 	 * @param vo
-	 * @param spec
+	 * @param estimate
 	 * @param docs
 	 * @return
 	 */
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Boolean> createSale(@RequestPart(value = "sale") SaleVO vo,
-												@RequestPart(value = "spec", required = false) MultipartFile spec,
+												@RequestPart(value = "estimate", required = false) MultipartFile estimate,
 											  @RequestPart(value = "docs", required = false) MultipartFile docs) {
-		if(spec != null){
-			vo.setSpec(imageService.upload("sale/spec", spec));
+		log.info("sale add vo: {}", vo);
+		log.info("sale add estimate: {}", estimate);
+		log.info("sale add docs: {}", docs);
+		if(estimate != null){
+			vo.setEstimate(imageService.upload("sale/spec", estimate));
 		}
 
 		if(docs != null){
-			vo.setSaleDocs(imageService.upload("sale/docs", docs));
+			vo.setDocs(imageService.upload("sale/docs", docs));
 		}
 
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
-		return ResponseEntity.ok(saleService.insertSale(vo) != 0);
+
+		int maxSaleId = saleService.insertSale(vo);
+		reserveMsgService.insertMsgList(username, maxSaleId, vo.getRsvMsgList());
+		return ResponseEntity.ok(true);
 	}
 
 
 	@PostMapping("/update")
 	@ResponseBody
 	public ResponseEntity<Boolean> updateSale(@RequestPart(value = "sale") SaleVO vo,
-							   @RequestPart(value = "spec") MultipartFile file) {
-		vo.setSpec(imageService.upload("spec", file));
-		return ResponseEntityUtil.okOrNotModified(saleService.updateSale(vo));
+							   				  @RequestPart(value = "estimate",required = false) MultipartFile estimate,
+											  @RequestPart(value = "docs",required = false) MultipartFile docs) {
+		log.info("update sale vo: {}", vo);
+		if(estimate != null){
+			vo.setEstimate(imageService.upload("sale/spec", estimate));
+		}
+
+		if(docs != null){
+			vo.setDocs(imageService.upload("sale/docs", docs));
+		}
+
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+
+		return ResponseEntity.ok(saleService.updateSale(vo) > 0);
 	}
 
 
-	@PostMapping("/plan/srch")
-	@ResponseBody
-	public ResponseEntity<List<Map<String,Object>>> searchPlan(@RequestBody SearchVO searchVO) {
-		return ResponseEntityUtil.okOrNotFound(itemCommonService.searchPlan(searchVO));
-	}
 
-
-	@PostMapping("/exsvc/srch")
-	@ResponseBody
-	public ResponseEntity<List<Map<String,Object>>> searchExsvc(@RequestBody SearchVO searchVO) {
-		return ResponseEntityUtil.okOrNotFound(itemCommonService.searchExsvc(searchVO));
-	}
-
-	@GetMapping("/msg/form/func")
-	@ResponseBody
-	public ResponseEntity<String> msgFormFunction(@RequestParam int formId) {
-		return switch (formId) {
-			case -2 -> ResponseEntity.ok("/sale/plan/list");
-			case -3 -> ResponseEntity.ok("/sale/exsvc/list");
-			default -> ResponseEntity.badRequest().build();
-		};
-	}
-	
 	// 매장 관리
 
 	@PostMapping("/dup/tel")

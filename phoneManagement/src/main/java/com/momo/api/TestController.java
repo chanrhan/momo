@@ -43,7 +43,7 @@ public class TestController {
 		if(noteTp.equals("message")){
 			notificationService.sendMessage(senderId, receiverId, content);
 		}else{
-			notificationService.approvalRequestToReps(senderId, 1, 1);
+//			notificationService.approvalRequestToReps(senderId, 1, 1);
 		}
 		return ResponseEntity.ok().build();
 	}
@@ -62,10 +62,10 @@ public class TestController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/sale")
-	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestParam(defaultValue = "1")String  shopId){
-		return ResponseEntity.ok(saleService.getSaleByShopId(SaleVO.builder().shopId(shopId).build()));
-	}
+//	@GetMapping("/sale")
+//	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestParam(defaultValue = "1")Integer  shopId){
+//		return ResponseEntity.ok(saleService.getSaleByShopId(SaleVO.builder().shopId(shopId).build()));
+//	}
 
 	@GetMapping("/exception")
 	public ResponseEntity<?> getException(@RequestParam int code, @RequestParam String reason){

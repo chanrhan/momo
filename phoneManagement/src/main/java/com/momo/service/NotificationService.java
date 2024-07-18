@@ -75,14 +75,14 @@ public class NotificationService extends CommonService {
 		notify(senderId, "admin", "approval", data);
 	}
 
-	public void approvalRequestToReps(String senderId, int corpId, int shopId){
-		Map<String,Object> data = new HashMap<>();
-		data.put("shop_id", shopId);
-
-		Map<String,Object> corp = shopService.getCorp(corpId);
-		String repsId = corp.get("reps_id").toString();
-		notify(senderId, repsId, "approval", data);
-	}
+//	public void approvalRequestToReps(String senderId, int corpId, int shopId){
+//		Map<String,Object> data = new HashMap<>();
+//		data.put("shop_id", shopId);
+//
+//		Map<String,Object> corp = shopService.getCorp(corpId);
+//		String repsId = corp.get("reps_id").toString();
+//		notify(senderId, repsId, "approval", data);
+//	}
 
 	public void sendChatInvitation(int roomId, String receiverId){
 		notificationEmitter.sendToClient(receiverId, "chat/invite", roomId);

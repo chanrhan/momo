@@ -5,7 +5,7 @@ import {UserFormInput} from "../../account/module/UserFormInput";
 import {cm, cmc} from "../../utils/cm";
 import {SelectItem, SelectLayer} from "../../common/module/SelectLayer";
 import {forwardRef, useImperativeHandle, useMemo, useState} from "react";
-import useInputField from "../../hook/useInputField";
+import useValidateInputField from "../../hook/useValidateInputField";
 import {SelectModal} from "../../common/modal/menu/SelectModal";
 import {telRegex} from "../../utils/regex";
 
@@ -15,7 +15,7 @@ import {telRegex} from "../../utils/regex";
 * @deprecated
 */
 export const UserCompanyItem_backup1 = forwardRef(({init, index, onDelete, onSelect, close}, ref)=>{
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: 'provider',
             name: '통신사',

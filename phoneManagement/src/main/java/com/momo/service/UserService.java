@@ -20,9 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +29,25 @@ public class UserService extends CommonService implements UserDetailsService{
 	private final UserMapper       userMapper;
 
 	// Authentication
-	public List<Map<String,Object>> getUserAsStaff(String id){
-		return userMapper.getUserAsStaff(id);
+	public Map<String,String> getInnerStaff(String userId){
+		List<Map<String,String>> list = userMapper.getInnerStaff(userId);
+		Map<String,String> map = new HashMap<>();
+
+		for(Map<String,String> m : list){
+			map.put(m.get("id"), m.get("name"));
+		}
+
+		return map;
 	}
 
-	public int updateCurrentShop(String userId, int shopId){
-		return userMapper.updateCurrentShop(userId, shopId);
+	@Deprecated
+	public List<Map<String,Object>> getStaffByShopId(String shopId){
+		return userMapper.getStaffByShopID(shopId);
 	}
+
+//	public int updateCurrentShop(String userId, int shopId){
+//		return userMapper.updateCurrentShop(userId, shopId);
+//	}
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);
 	}
@@ -58,16 +68,16 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.findUserByTelEmail(tel, email);
 	}
 
-	public String getUserByBpNo(String bpNo){
-		String userId = userMapper.getUserByBpNo(bpNo);
-		if(!StringUtils.hasText(userId)){
-			return null;
-		}
-		int length = userId.length();
-		StringBuilder sb = new StringBuilder(userId);
-		sb.replace(length-5, length-1, "****");
-		return sb.toString();
-	}
+//	public String getUserByBpNo(String bpNo){
+//		String userId = userMapper.getUserByBrNo(bpNo);
+//		if(!StringUtils.hasText(userId)){
+//			return null;
+//		}
+//		int length = userId.length();
+//		StringBuilder sb = new StringBuilder(userId);
+//		sb.replace(length-5, length-1, "****");
+//		return sb.toString();
+//	}
 
 	public void sendAuthNumberByEmailForUpdatePassword(String id){
 
@@ -109,10 +119,10 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 	public Map<String,Object> getUserById(String id){
-		return userMapper.getUserById(id);
+		return userMapper.getUserByUserAndShop(id);
 	}
 
-	public Map<String,String> getUserAsAuthorization(String id){
+	public Map<String,Object> getUserAsAuthorization(String id){
 		return userMapper.getUserAsAuthorization(id);
 	}
 
@@ -143,7 +153,7 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.updatePassword(vo);
 	}
 	public int updateApproval(String id, boolean state){
-		UserVO vo = UserVO.builder().empId(id).approvalSt(state).build();
+		UserVO vo = UserVO.builder().staffId(id).approvalSt(state).build();
 		return updateEmp(vo);
 	}
 	public int updatePfp(UserVO vo){
@@ -180,31 +190,31 @@ public class UserService extends CommonService implements UserDetailsService{
 			vo.setShopId(0);
 		}
 
-		return userMapper.insertEmp(vo);
+		return userMapper.insertStaff(vo);
 	}
 	public int updateEmp(UserVO vo){
-		return userMapper.updateEmp(vo);
+		return userMapper.updateStaff(vo);
 	}
 
 	public int deleteEmp(String id) {
-		return userMapper.deleteEmp(id);
+		return userMapper.deleteStaff(id);
 	}
 
-	public List<Map<String,Object>> fetchStaff(UserVO vo) {
-		return userMapper.getUserAsStaff(vo);
-	}
-	public Map<String,Object> fetchStaffById(String id){
-		UserVO                   vo   = UserVO.builder().empId(id).build();
-		List<Map<String,Object>> list = fetchStaff(vo);
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
+//	public List<Map<String,Object>> fetchStaff(UserVO vo) {
+//		return userMapper.getUserAsStaff(vo);
+//	}
+//	public Map<String,Object> fetchStaffById(String id){
+//		UserVO                   vo   = UserVO.builder().empId(id).build();
+//		List<Map<String,Object>> list = fetchStaff(vo);
+//		if(list == null || list.isEmpty()){
+//			return null;
+//		}
+//		return list.get(0);
+//	}
 
-	public List<Map<String,Object>> searchEmp(SearchVO vo) {
-		return userMapper.searchEmp(vo);
-	}
+//	public List<Map<String,Object>> searchEmp(SearchVO vo) {
+//		return userMapper.searchEmp(vo);
+//	}
 
 	public void replaceAuthority(String role){
 		replaceAuthority(role, false);
@@ -234,22 +244,35 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,String > user = getUserAsAuthorization(username);
+		Map<String,Object> user = getUserAsAuthorization(username);
 		if(user == null){
 			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
 		}
 
-		String id = user.get("id");
-		String pwd = user.get("pwd");
-		String role = user.get("role");
+		String id = user.get("id").toString();
+		String pwd = user.get("pwd").toString();
+//		System.out.println("role: "+Integer.parseInt(user.get("role")));
+
+		String role = null;
+		try {
+			role = switch (Integer.parseInt(user.get("role").toString())) {
+				case 1 -> "STF";
+				case 2 -> "BM";
+				case 3 -> "ADMIN";
+				default -> "NONE";
+			};
+		}catch (NullPointerException e){
+			role = "NONE";
+		}
+
+
+		if(Objects.equals(role, "NONE")){
+			return new UserDetailsImpl(id, pwd, "ROLE_NONE");
+		}
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, "ROLE_"+role);
 
-		if(role.equals("NONE")){
-			return userDetails;
-		}
-
-		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
+		if(!Objects.equals(role, "ADMIN")){
 //			Map<String,Object> emp = selectEmp(UserVO.builder().empId(id).build()).get(0);
 			if(userMapper.isApproved(id)){
 //				System.out.println("success!");

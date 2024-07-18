@@ -52,7 +52,7 @@ public class NotificationController {
 		if(noteTp.equals("message")){
 			notificationService.sendMessage(senderId, receiverId, content);
 		}else{
-			notificationService.approvalRequestToReps(senderId, 1, 1);
+//			notificationService.approvalRequestToReps(senderId, 1, 1);
 		}
 		return ResponseEntity.ok().build();
 	}

@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {UserFormItem} from "./module/UserFormItem";
 import {UserTermList} from "./module/UserTermList";
 import {UserFormInput} from "./module/UserFormInput";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
 import {useEffect, useState} from "react";
 import useApi from "../hook/useApi";
@@ -15,7 +15,7 @@ import {cm} from "../utils/cm";
 export function Signup(){
     const {publicApi} = useApi();
     const navigate = useNavigate();
-    const inputField = useInputField(SIGNUP_INPUTFIELD);
+    const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
     let auth = null;
 
     const [termList, setTermList] = useState(new Array(2).fill(false));
@@ -124,7 +124,10 @@ export function Signup(){
     )
 }
 
-const SIGNUP_INPUTFIELD = [
+const SIGNUP_INPUTFIELD =
+
+
+    [
     {
         key: 'id',
     },

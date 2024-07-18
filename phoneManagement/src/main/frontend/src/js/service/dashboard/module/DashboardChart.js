@@ -4,11 +4,11 @@ import {DashboardChartTabItem} from "./DashboardChartTabItem";
 import {DashboardChartPannel} from "./DashboardChartPannel";
 import {TabList} from "../../../common/module/TabList";
 import {useState} from "react";
-import useInputField from "../../../hook/useInputField";
+import useValidateInputField from "../../../hook/useValidateInputField";
 
 export function DashboardChart(){
     // const tab = useTabs(2);
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
 
     return (
         <div className={cm(Dashboard.panel_chart)}>

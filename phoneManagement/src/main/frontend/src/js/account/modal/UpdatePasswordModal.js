@@ -1,13 +1,13 @@
 import {LayerModal} from "../../common/modal/LayerModal";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
-import useInputField from "../../hook/useInputField";
+import useValidateInputField from "../../hook/useValidateInputField";
 import ValidationError from "../../error/ValidationError";
 import useApi from "../../hook/useApi";
 
 function UpdatePasswordModal() {
     const modal = useModal();
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: 'pwd'
         }, {

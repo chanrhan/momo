@@ -6,10 +6,10 @@ import {AccountLayout} from "./js/layout/AccountLayout";
 import Login from "./js/account/Login";
 import {Signup} from "./js/account/Signup";
 import {Role} from "./js/account/Role";
-import {SelectShop} from "./js/account/SelectShop";
+import {SelectShop} from "./js/shop/SelectShop";
 import MainLayout from "./js/layout/MainLayout";
 import Authorization from "./common/Authorization";
-import {RegisterCorp} from "./js/account/RegisterCorp";
+import {RegisterCorp} from "./js/shop/RegisterCorp";
 import {RegisterShop} from "./js/shop/RegisterShop";
 import {FindUsername} from "./js/account/FindUsername";
 import {FindPassword} from "./js/account/FindPassword";
@@ -29,7 +29,7 @@ import NotifTest from "./js/test/NotifTest";
 import ModalTest from "./js/test/ModalTest";
 import RefTest from "./js/test/RefTest";
 import MultipartTest from "./js/test/MultipartTest";
-import GraphTest from "./js/test/GraphTest";
+import ChartJsTest from "./js/test/ChartJsTest";
 import ExcelTest from "./js/test/ExcelTest";
 import BulkUploadTest from "./js/test/BulkUploadTest";
 import {RegexTest} from "./js/test/RegexTest";
@@ -41,6 +41,7 @@ import AlimTalkTest from "./js/test/AlimTalkTest";
 import {CssTest} from "./js/test/CssTest";
 import {LandingPage} from "./js/landing/LandingPage";
 import {ChatBotButton} from "./js/common/module/ChatBotButton";
+import {GraphTest} from "./js/test/GraphTest";
 
 function App() {
   return (
@@ -88,10 +89,11 @@ function App() {
                           <AccountLayout/>
                       </Authorization>
                   }>
-                      <Route path='/role/staff' element={<SelectShop/>}/>
-                      <Route path='/role/reps' element={<RegisterCorp/>}/>
+                      {/*<Route path='/role/staff' element={<SelectShop/>}/>*/}
+                      {/*<Route path='/role/reps' element={<RegisterCorp/>}/>*/}
                       <Route path='/shop'>
                           <Route path='register' element={<RegisterShop/>}/>
+                          <Route path='list' element={<SelectShop/>}/>
                       </Route>
                   </Route>
 

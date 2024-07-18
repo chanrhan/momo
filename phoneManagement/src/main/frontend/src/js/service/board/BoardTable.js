@@ -34,14 +34,14 @@ export function Btbody({br, children}){
     )
 }
 
-export function Bth({children, className, checkbox, varName, sort}){
+export function Bth({children, className, checked, checkbox, name, sort, onClick, onCheck}){
     return (
-        <th className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`} scope='col'>
+        <th className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`} scope='col' onClick={onClick}>
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>
-                        <input type="checkbox" id={varName}/>
-                        <label htmlFor={varName} className={cm(Board.label)}>선택</label>
+                        <input type="checkbox" id={name} onChange={onCheck} checked={checked}/>
+                        <label htmlFor={name} className={cm(Board.label)}>선택</label>
                     </div>
                 )
             }
@@ -50,14 +50,14 @@ export function Bth({children, className, checkbox, varName, sort}){
     )
 }
 
-export function Btd({children, className, checkbox, varName}) {
+export function Btd({children, className, checkbox, onCheck, checked, name}) {
     return (
         <td className={`${Board.td} ${checkbox && 'ta_c'} ${className ? className : ''}`}>
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>
-                        <input type="checkbox" id={varName} className={cm(Board.input)}/>
-                        <label htmlFor={varName} className={cm(Board.label)}>선택</label>
+                        <input type="checkbox" id={name} className={cm(Board.input)} onChange={onCheck} checked={checked}/>
+                        <label htmlFor={name} className={cm(Board.label)}>선택</label>
                     </div>
                 )
             }

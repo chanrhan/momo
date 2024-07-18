@@ -53,13 +53,13 @@ public class MailSenderService {
 						  "<input type='hidden' name='corp_id' value='" +
 						  corpId +
 						  "'>");
-		if(corpId != 0){
-			Map<String,Object> corp = shopService.getCorp(corpId);
-			String corpNm = corp.get("corp_nm").toString();
-			sb.append("<p>" +
-							  "회사명: " + corpNm +
-							  "</p><br>");
-		}
+//		if(corpId != 0){
+//			Map<String,Object> corp = shopService.getCorp(corpId);
+//			String corpNm = corp.get("corp_nm").toString();
+//			sb.append("<p>" +
+//							  "회사명: " + corpNm +
+//							  "</p><br>");
+//		}
 		if(shopId != 0 ){
 			Map<String,Object> shop = shopService.getShopById(shopId);
 			String shopNm = shop.get("shop_nm").toString();

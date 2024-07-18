@@ -6,7 +6,7 @@ import {useState} from "react";
 import {cm, cmc} from "../utils/cm";
 import {UserFormItem} from "./module/UserFormItem";
 import {UserFormInput} from "./module/UserFormInput";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import {ObjectUtils} from "../utils/objectUtil";
 import useApi from "../hook/useApi";
 import {Link} from "react-router-dom";
@@ -17,7 +17,7 @@ export function FindUsername(){
     const {publicApi} = useApi();
     const modal = useModal();
 
-    const inputField = useInputField([{key:'tel'},{key:'email'}]);
+    const inputField = useValidateInputField([{key:'tel'},{key:'email'}]);
     const [byTel, setByTel] = useState(true)
     const [isSent, setIsSent] = useState(false)
     const [auth, setAuth] = useState(null)

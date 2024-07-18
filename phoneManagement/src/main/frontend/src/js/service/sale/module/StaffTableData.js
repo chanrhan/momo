@@ -7,7 +7,7 @@ import {ProfileTableColumn} from "./ProfileTableColumn";
 export function StaffTableData({checkVarName, src, name}){
     return (
         <tr>
-            <Btd checkbox varName='check1'/>
+            <Btd checkbox name='check1'/>
             <ProfileTableColumn src={profileImg1} name='나모모'/>
             <Btd>
                 <div className="select_box">

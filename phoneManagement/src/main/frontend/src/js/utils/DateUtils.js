@@ -1,11 +1,11 @@
 import {getDaysInMonth, startOfMonth} from "date-fns";
 
 export const DateUtils = {
-    formatDate: date=>{
-        const year = date.getFullYear();
-        const month = (date.getMonth()+1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0')
-        return `${year}-${month}-${day}`
+    formatYYMMdd: (year, month: number, day:number)=>{
+        return `${year}-${month.toString().padStart(2, 0)}-${day.toString().padStart(2,0)}`
+    },
+    formatYYMM: (year:number, month:number)=>{
+        return `${year}-${month.toString().padStart(2, 0)}`
     },
     getMonthInfo: (year, month)=>{
         const date = new Date(year, month-1);
@@ -38,6 +38,10 @@ export const DateUtils = {
     },
     hasPrevMonth : (year)=>{
         return year >= 2000;
+    },
+    hasNextYear: (year)=>{
+        const today = new Date();
+        return year < today.getFullYear();
     },
     isToday: (year, month, day)=>{
         const today = new Date();

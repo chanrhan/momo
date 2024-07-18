@@ -19,7 +19,7 @@ function useApi(){
         shopApi: ShopApi(accessToken),
         notifApi: NotificationApi(accessToken),
         testApi: TestApi(accessToken),
-        gmdApi: GMDApi(accessToken)
+        gmdApi: GMDApi()
     }
 }
 

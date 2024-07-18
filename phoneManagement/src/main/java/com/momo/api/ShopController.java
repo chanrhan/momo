@@ -19,12 +19,12 @@ import java.util.Map;
 public class ShopController {
 	private final ShopService shopService;
 
-	@GetMapping("/corp")
-	public ResponseEntity<List<Map<String,Object>>> getCorpListForRoleDetail(){
-		String username = SecurityContextUtil.getUsername();
-		ShopVO vo = ShopVO.builder().userId(username).build();
-		return ResponseEntity.ok(shopService.getCorp(vo));
-	}
+//	@GetMapping("/corp")
+//	public ResponseEntity<List<Map<String,Object>>> getCorpListForRoleDetail(){
+//		String username = SecurityContextUtil.getUsername();
+//		ShopVO vo = ShopVO.builder().userId(username).build();
+//		return ResponseEntity.ok(shopService.getCorp(vo));
+//	}
 
 	/**
 	 * 매장 등록
@@ -35,35 +35,38 @@ public class ShopController {
 	public ResponseEntity<?> addShopOne(@RequestBody ShopVO vo){
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
-		log.info("add shop one info: {}",vo);
-		return ResponseEntity.ok(shopService.insertShop(vo) != 0);
+//		log.info("add shop one info: {}",vo);
+		int rst = shopService.insertShop(vo);
+//		log.info("insert count: {}", rst);
+		return ResponseEntity.ok(true);
 	}
 
-	@PostMapping("/shop/bulk")
-	public ResponseEntity<?> addShopBulk(@RequestBody List<ShopVO> list){
-		int count = 0;
-		String username = SecurityContextUtil.getUsername();
-		for(ShopVO vo : list){
-			vo.setUserId(username);
-			vo.setShopId(new Date().hashCode());
-			log.info("add shop bulk info: {}",vo);
-			count += shopService.insertShop(vo);
-		}
-		return ResponseEntity.ok(count != 0);
-	}
+	// 개발 중 필요없어서 제외한 기능
+//	@PostMapping("/shop/bulk")
+//	public ResponseEntity<?> addShopBulk(@RequestBody List<ShopVO> list){
+//		int count = 0;
+//		String username = SecurityContextUtil.getUsername();
+//		for(ShopVO vo : list){
+//			vo.setUserId(username);
+//			vo.setShopId(new Date().hashCode());
+//			log.info("add shop bulk info: {}",vo);
+//			count += shopService.insertShop(vo);
+//		}
+//		return ResponseEntity.ok(count != 0);
+//	}
 
 	/**
 	 * 회사 등록
 	 * @param vo ShopVO
 	 * @return Boolean
 	 */
-	@PostMapping("/corp")
-	public ResponseEntity<?> addCorp(@RequestBody ShopVO vo){
-		String username = SecurityContextUtil.getUsername();
-		vo.setUserId(username);
-		log.info("corp info: {}",vo);
-		return ResponseEntity.ok(shopService.insertCorp(vo) != 0);
-	}
+//	@PostMapping("/corp")
+//	public ResponseEntity<?> addCorp(@RequestBody ShopVO vo){
+//		String username = SecurityContextUtil.getUsername();
+//		vo.setUserId(username);
+//		log.info("corp info: {}",vo);
+//		return ResponseEntity.ok(shopService.insertCorp(vo) != 0);
+//	}
 
 	/**
 	 *  매장 검색

@@ -51,13 +51,16 @@ export function MainHeader(){
                         </li>
                         <li className={`${cm(Layout.link_item, Layout.my)} select_box`}>
                             <button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>
-                            <SelectLayer width='150px' top='45px' left='-110px' active={active}>
+                            <SelectLayer width='150px' top='45px' left='-110px' active={active} setActive={setActive}>
                                 <SelectItem onClick={()=>{
                                     setActive(false)
                                     nav('/profile')
                                 }}>개인정보 보기</SelectItem>
                                 <SelectItem>회원 관리</SelectItem>
-                                <SelectItem>로그아웃</SelectItem>
+                                <SelectItem onClick={()=>{
+                                    setActive(false)
+                                    nav('/')
+                                }}>로그아웃</SelectItem>
                             </SelectLayer>
                         </li>
                     </ul>

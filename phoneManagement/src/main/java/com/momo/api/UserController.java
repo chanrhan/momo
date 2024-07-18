@@ -8,12 +8,10 @@ import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,39 +64,39 @@ public class UserController {
 		return ResponseEntity.ok(userService.updateNickname(username, nickname));
 	}
 
-	/**
-	 * (대표 권한) 매장 변경
-	 * @param id string
-	 * @return Boolean
-	 */
-	@PutMapping("/{userId}/shop")
-	public ResponseEntity<?> updateCurrentShop(@PathVariable(required = false) String userId,
-											   @RequestParam int shopId) {
-		if(userId == null){
-			userId = SecurityContextUtil.getUsername();
-		}
-		return ResponseEntity.ok(userService.updateCurrentShop(userId, shopId) != 0);
-	}
+//	/**
+//	 * (대표 권한) 매장 변경
+//	 * @param id string
+//	 * @return Boolean
+//	 */
+//	@PutMapping("/{userId}/shop")
+//	public ResponseEntity<?> updateCurrentShop(@PathVariable(required = false) String userId,
+//											   @RequestParam int shopId) {
+//		if(userId == null){
+//			userId = SecurityContextUtil.getUsername();
+//		}
+//		return ResponseEntity.ok(userService.updateCurrentShop(userId, shopId) != 0);
+//	}
 
 	/**
 	 * 사업자 인증
-	 * @param bpNo string
+	 * @param brNo string
 	 * @return boolean
 	 */
-	@GetMapping("/bpno/status")
-	public ResponseEntity<?> checkBpNoStatus(@RequestParam String bpNo) {
+	@GetMapping("/brno/status")
+	public ResponseEntity<?> checkBpNoStatus(@RequestParam String brNo) {
 //		log.info("validate bno: {}", bpNo);
-		Map<String,Object> res = new HashMap<>();
+//		Map<String,Object> res = new HashMap<>();
+//
+//		String userId = userService.getUserByBpNo(bpNo);
+//		if(StringUtils.hasText(userId)){
+//			res.put("matched", false);
+//			res.put("id", userId);
+//		}else{
+//			res.put("matched", );
+//		}
 
-		String userId = userService.getUserByBpNo(bpNo);
-		if(StringUtils.hasText(userId)){
-			res.put("matched", false);
-			res.put("id", userId);
-		}else{
-			res.put("matched", BusinessmanApiUtil.status(bpNo));
-		}
-
-		return ResponseEntity.ok(res);
+		return ResponseEntity.ok(BusinessmanApiUtil.status(brNo));
 	}
 
 
@@ -134,10 +132,11 @@ public class UserController {
 	 *     승인 여부
 	 * }
 	 */
+	@Deprecated
 	@GetMapping("/staff")
 	public ResponseEntity<List<Map<String,Object>>> getStaffList(){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getUserAsStaff(username));
+		return ResponseEntity.ok(userService.getStaffByShopId(username));
 	}
 
 	/**
@@ -196,6 +195,12 @@ public class UserController {
 	public ResponseEntity<Boolean> updateRole(@PathVariable String userId,
 											  @RequestParam String role){
 		return null;
+	}
+
+	@GetMapping("/staff/inner")
+	public ResponseEntity<Map<String,String>> getInnerStaff(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getInnerStaff(username));
 	}
 
 

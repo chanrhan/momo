@@ -1,7 +1,7 @@
 import {BoardTable, Btbody, Bth, Bthead} from "../../board/BoardTable";
 import {TaskTableData} from "./TaskTableData";
 
-export function TaskBoardTable({category}){
+export function TaskSupportBoardTable({data}){
     return (
         <BoardTable caption='고객관리 테이블 - 선택, 진행 사항, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 중고폰, 판매 금액, 총 이익, 담당자, 전송 정보 제공'>
             <Bthead>
@@ -18,8 +18,11 @@ export function TaskBoardTable({category}){
                 <Bth className="ta_c">전송</Bth>
             </Bthead>
             <Btbody br>
-                <TaskTableData/>
-                <TaskTableData/>
+                {
+                    data && data.map((v,i)=>{
+                        return <TaskTableData key={i} data={v}/>
+                    })
+                }
             </Btbody>
         </BoardTable>
     )

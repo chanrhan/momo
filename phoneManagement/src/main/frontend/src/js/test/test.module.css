@@ -1,18 +1,8 @@
-.main{
-    font-size: 32px;
+.chart_wrap{
+    display: block;
 }
 
-.main .body .test + .test{
-    margin-top: 50px;
+.chart_wrap .chart_inner{
+    max-width: 900px;
+    width: 90vw;
 }
-
-.main .body .test.blue{
-    color: blue;
-}
-
-.main .body .test.pink{
-    color: pink;
-}
-
-
-

@@ -3,13 +3,19 @@ import {ObjectUtils} from "../utils/objectUtil";
 import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
 import {KoreanUtils} from "../utils/KoreanUtils";
 
-function useInputField(initialState) {
+function useValidateInputField(initialState) {
     const init = {};
     const errorInfo = {...commonErrorInfo};
+    // const errorInfo = {...commonErrorInfo, initialState};
+    //
+    // for(const key in initialState){
+    //     init[key] = initialState[key]['value'] ?? null;
+    // }
+
     for (const i in initialState) {
         const prop = initialState[i];
         init[prop.key] = prop.value ?? null;
-        // console.log(init[prop.key])
+        // console.log(`${prop.key}: ${init[prop.key]}`)
         if(prop.name || prop.msg || prop.required){
             errorInfo[prop.key] = {
                 name: prop.name,
@@ -23,6 +29,10 @@ function useInputField(initialState) {
 
     const [input, setInput] = useState(init);
     const [error, setError] = useState({});
+
+    const putAll = (map)=>{
+        setInput(map)
+    }
 
     const setValues = (values)=>{
         setInput(prev=>({
@@ -221,6 +231,7 @@ function useInputField(initialState) {
         error,
         setInput,
         setError,
+        putAll,
         setValues,
         getInput,
         put,
@@ -274,4 +285,4 @@ const commonErrorInfo = {
 }
 
 
-export default useInputField;
+export default useValidateInputField;

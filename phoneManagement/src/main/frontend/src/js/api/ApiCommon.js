@@ -45,7 +45,6 @@ export const AxiosApi = ()=> {
     })
 
     const post = async(url, data, option)=>{
-
         return await axiosInstance.post(url, data, option);
     }
 
@@ -73,12 +72,13 @@ export const AxiosApiWithAccessToken = ()=> {
     const axiosApi = AxiosApi();
 
     const post = async(url, data, accessToken)=>{
-        return axiosApi.post(url,data,{
+        return axiosApi.post(url,data, {
             headers: {
                 "X-ACCESS-TOKEN": accessToken
             }
         });
     }
+
 
     const get=(url, accessToken)=>{
         return axiosApi.get(url, {
@@ -109,6 +109,6 @@ export const AxiosApiWithAccessToken = ()=> {
         post,
         get,
         del,
-        put
+        put,
     }
 }

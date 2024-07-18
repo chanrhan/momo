@@ -5,9 +5,9 @@ import {cm} from "../../../utils/cm";
 import {ProfileTableColumn} from "../../sale/module/ProfileTableColumn";
 import profileImg1 from "../../../../images/profile_img1.jpg"
 
-export function TaskTableData({img}){
+export function TaskTableData({key, data, img}){
     return (
-        <tr>
+        <tr key={key}>
             <Btd checkbox/>
             <Btd>
                 <SelectBox items={['판매 완료','판매 중']}/>

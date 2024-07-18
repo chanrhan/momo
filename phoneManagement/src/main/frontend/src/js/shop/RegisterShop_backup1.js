@@ -65,11 +65,11 @@ export function RegisterShop_backup1(){
             return;
         }
 
-        await shopApi.addShopBulk(body).then(({status,data})=>{
-            if(status === 200 && data){
-                alert("success")
-            }
-        })
+        // await shopApi.addShopBulk(body).then(({status,data})=>{
+        //     if(status === 200 && data){
+        //         alert("success")
+        //     }
+        // })
     }
 
 

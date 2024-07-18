@@ -7,7 +7,7 @@ import {authActions} from "../store/slices/authSlice";
 import {setRefreshToken} from "../utils/Cookies";
 import {UserFormBox} from "./module/UserFormBox";
 import {UserFormBtnBox} from "./module/UserFormBtnBox";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import {cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
@@ -20,7 +20,7 @@ function Login(){
 
     const [rememberMe, setRememberMe] = useState(false)
 
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: 'username',
             required: true,

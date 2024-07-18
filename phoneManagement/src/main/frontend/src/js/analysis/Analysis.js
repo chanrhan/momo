@@ -9,10 +9,10 @@ import {GraphBarItem} from "./module/GraphBarItem";
 import {GraphBarCard} from "./module/GraphBarCard";
 import {DataGraph} from "./DataGraph";
 import {Statistics} from "./Statistics";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 
 export function Analysis(){
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: 'menu',
             value: 0

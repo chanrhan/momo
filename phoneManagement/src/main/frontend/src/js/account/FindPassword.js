@@ -6,7 +6,7 @@ import {UserFormItem} from "./module/UserFormItem";
 import {UserFormList} from "./module/UserFormList";
 import {UserFormInput} from "./module/UserFormInput";
 import {cm, cmc} from "../utils/cm";
-import useInputField from "../hook/useInputField";
+import useValidateInputField from "../hook/useValidateInputField";
 import useApi from "../hook/useApi";
 import {ObjectUtils} from "../utils/objectUtil";
 import {useEffect, useState} from "react";
@@ -14,7 +14,7 @@ import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 
 export function FindPassword(){
-    const inputField = useInputField();
+    const inputField = useValidateInputField();
 
     return (
         <ComponentStepper inputField={inputField} components={[

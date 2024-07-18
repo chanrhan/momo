@@ -1,10 +1,10 @@
 import User from "../../css/user.module.css"
-import {UserFormBox} from "./module/UserFormBox";
-import {UserFormList} from "./module/UserFormList";
+import {UserFormBox} from "../account/module/UserFormBox";
+import {UserFormList} from "../account/module/UserFormList";
 import {Link, useNavigate} from "react-router-dom";
-import {UserFormItem} from "./module/UserFormItem";
-import {UserFormInput} from "./module/UserFormInput";
-import useInputField from "../hook/useInputField";
+import {UserFormItem} from "../account/module/UserFormItem";
+import {UserFormInput} from "../account/module/UserFormInput";
+import useValidateInputField from "../hook/useValidateInputField";
 import {bpNoRegex} from "../utils/regex";
 import useApi from "../hook/useApi";
 import {cmc} from "../utils/cm";
@@ -19,7 +19,7 @@ export function RegisterCorp(){
     const {userApi, shopApi} = useApi();
     const [bpNoChecked, setBpNoChecked] = useState(false)
 
-    const inputField = useInputField([
+    const inputField = useValidateInputField([
         {
             key: 'corp_nm',
             name: '상호명'
@@ -35,7 +35,7 @@ export function RegisterCorp(){
 
     const checkBpNoStatus = async ()=>{
         if(inputField.validateOne('bp_no')){
-            await userApi.checkBpnoStatus(inputField.input.bp_no).then(({status,data})=>{
+            await userApi.checkBrNoStatus(inputField.input.bp_no).then(({status,data})=>{
                 if(status === 200){
                     let msg = null;
                     if(data.matched === true){

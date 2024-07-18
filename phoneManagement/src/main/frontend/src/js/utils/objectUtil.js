@@ -1,7 +1,7 @@
 import {getType} from "@reduxjs/toolkit";
 
 export const ObjectUtils = {
-    isEmpty(value){
+    isEmpty: (value)=>{
         const result = value === null || value === undefined || value === '' || value.length === 0;
         if(result){
             return true;
@@ -10,6 +10,9 @@ export const ObjectUtils = {
             return  Object.keys(value).length === 0;
         }
         return false;
+    },
+    isEmptyArray: (array)=>{
+        return !array || typeof array !== "object" || array.length === 0
     },
     isEmptyMap(map){
         for(const key in map){

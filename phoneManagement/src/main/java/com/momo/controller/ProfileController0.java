@@ -37,10 +37,10 @@ public class ProfileController0 {
 		return ResponseEntityUtil.okOrNotModified(userService.updatePassword(vo));
 	}
 
-	@GetMapping("/payment/charge")
-	@ResponseBody
-	public ResponseEntity<Boolean> chargePoint(HttpSession session, @RequestParam int amount){
-		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
-		return ResponseEntityUtil.okOrNotModified(shopService.updateCorpPoint(corpId, amount));
-	}
+//	@GetMapping("/payment/charge")
+//	@ResponseBody
+//	public ResponseEntity<Boolean> chargePoint(HttpSession session, @RequestParam int amount){
+//		int corpId = Integer.parseInt(session.getAttribute("corp_id").toString());
+//		return ResponseEntityUtil.okOrNotModified(shopService.updateCorpPoint(corpId, amount));
+//	}
 }

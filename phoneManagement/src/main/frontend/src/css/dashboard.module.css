@@ -48,7 +48,9 @@
 .dashboard .panel_body .panel.n3 .chart_panel_wrap{height:100%;}
 .dashboard .panel_body .panel.n3 .chart_panel{display:none; height:100%; padding:110px 20px 60px 20px;}
 .dashboard .panel_body .panel.n3 .chart_panel.active{display:block;}
-.dashboard .panel_body .panel.n3 .chart_panel .chart_map{font-size:14px; text-align:center; line-height:16px;}
+.dashboard .panel_body .panel.n3 .chart_panel .chart_map{
+    font-size:14px; text-align:center; line-height:16px;
+}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab{position:absolute; left:0; right:0; bottom:16px; text-align:center;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item{display:inline-block; vertical-align:top;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item + .tab_item{margin-left:6px;}

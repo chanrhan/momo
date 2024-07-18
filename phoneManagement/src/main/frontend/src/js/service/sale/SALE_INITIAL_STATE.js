@@ -5,14 +5,13 @@ export const SALE_INITIAL_STATE = [
         key: 'provider'
     },
     {
-        key: 'provider_fix',
-        required: false
-    },
-    {
       key: 'actv_dt'
     },
     {
-        key: 'stf_id'
+        key: 'actv_div'
+    },
+    {
+        key: 'seller_id'
     },
     {
         key: 'cust_nm',
@@ -30,30 +29,23 @@ export const SALE_INITIAL_STATE = [
         msg: '전화번호 형식을 올바르게 입력해 주세요'
     },
     {
-        key: 'cust_gtel',
-        name: '보호자 전화번호',
-        regex: telRegex,
-        msg: '전화번호 형식을 올바르게 입력해 주세요',
-        required: false
-    },
-    {
         key: 'cust_cd',
         name: '고객 식별번호'
     },
     {
-        key: 'ph_md'
+        key: 'device_md'
     },
     {
-        key: 'ct_actv_plan'
+        key: 'actv_plan'
     },
     {
-        key: 'ct_dec_plan'
+        key: 'dec_plan'
     },
     {
-        key: 'ct_actv_tp'
+        key: 'actv_tp'
     },
     {
-        key: 'ct_actv_div'
+        key: 'actv_div'
     },
     {
         key: 'ct_istm'
