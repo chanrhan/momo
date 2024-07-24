@@ -3,7 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
-
+    <select id="getBMIdByShop">
+        SELECT sf.staff_id as id
+        FROM tb_staff sf
+        WHERE sf.role=1 and
+              shop_id=#{shopId}
+    </select>
 
     <select id="findUserByTelEmail">
         select id,
@@ -32,6 +37,36 @@
           AND pwd = #{pwd}
     </update>
 
+    <select id="getInnerStaffAll">
+        WITH tb as (
+            SELECT sf.staff_id as id,
+                    sf.role,
+                    ac.name,
+                    ac.tel,
+                    sf.start_dt,
+                    ac.curr_shop_id as shop_id,
+                    sf.approval_st
+            from tb_staff sf
+            left outer join tb_account ac on ac.id = sf.staff_id
+            where shop_id = (
+                        select ac2.curr_shop_id
+                        from tb_account ac2
+                        where ac2.id = #{userId}
+                        )
+        )
+
+        SELECT *
+        from tb
+        WHERE
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                name like '%${keyword}%' or
+                tel like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+    </select>
+
     <select id="getInnerStaff">
         SELECT sf.staff_id as id,
                ac.name
@@ -41,10 +76,41 @@
             select ac2.curr_shop_id
             from tb_account ac2
             where ac2.id = #{userId}
-            )
+        )
     </select>
 
-    <select id="getStaffByShopID">
+    <select id="getName">
+        SELECT name
+        FROM tb_account
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateApprovalState">
+        UPDATE tb_staff
+        SET approval_st=#{state}
+        WHERE staff_id=#{staffId} and
+              shop_id=(
+                  SELECT curr_shop_id
+                  FROM tb_account
+                  WHERE id=#{userId}
+                  )
+    </update>
+
+    <select id="getInnerStaffName">
+        SELECT (
+                SELECT name
+                FROM tb_account
+                WHERE id=staff_id
+                   ) as name
+        from tb_staff
+        where shop_id = (
+            select ac2.curr_shop_id
+            from tb_account ac2
+            where ac2.id = #{userId}
+        ) and approval_st=1
+    </select>
+
+    <select id="getStaffByShopId">
         SELECT ac.name,
                ac.user_st,
                sf.role,
@@ -321,20 +387,14 @@
         WHERE staff_id = #{id}
     </delete>
 
-<!--    <select id="searchEmp" parameterType="com.momo.common.vo.SearchVO" resultType="java.util.Map">-->
-<!--        WITH tb AS (-->
-<!--                       SELECT em.*,-->
-<!--                              cp.corp_bp_no AS bp_no-->
-<!--                       FROM tb_emp em-->
-<!--                                LEFT OUTER JOIN tb_corp cp ON cp.reps_id = em.emp_id-->
-<!--                   )-->
-
-<!--        SELECT *-->
-<!--        FROM tb-->
-<!--        WHERE ${andSelect}-->
-<!--          AND ${orSearch}-->
-<!--            ${prop}-->
-<!--    </select>-->
-
+    <select id="getInnerStaffTotalCount">
+        SELECT count(*)
+        FROM tb_staff
+        WHERE shop_id=(
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+            )
+    </select>
 
 </mapper>

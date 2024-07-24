@@ -19,7 +19,10 @@ public class ReserveMessageVO extends CommonQueryVO{
 
     private String content;
 
+    private Integer dday;
+
     private Integer msgTp;
     private Integer rsvTp;
     private String rsvDt;
+    private String regiDt;
 }

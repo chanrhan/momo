@@ -25,21 +25,23 @@
 .header .gnb .gnb_link .link_item .link_btn{width:32px; height:32px;}
 .header .gnb .gnb_link .link_item.alarm .link_btn{position:relative; background:url(../images/alarm_icon.png) no-repeat center / 24px;}
 .header .gnb .gnb_link .link_item.alarm.has .link_btn:before{display:block; position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background-color:#4781ff;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup{opacity:0; visibility:hidden; position:absolute; top:100%; right:0; z-index:1; width:100%; max-width:392px; padding:12px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); text-align:left; transition:all .25s ease-in-out;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup.active{opacity:1; visibility:inherit; top:calc(100% + 6px);}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup{opacity:0; visibility:hidden; position:absolute; z-index:1; width:100%; max-width:392px; padding:12px 6px; border-radius:8px;
+    background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); text-align:left;
+    transition: opacity .25s ease-in-out;
+}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup.active{opacity:1; visibility:inherit; top:calc(100% + 8px); right: calc(100%/20); transition: opacity .25s ease-in-out;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_title{padding:0 10px; color:#91939f; font-size:14px; line-height:16px;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_list{margin-top:10px;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item + .alarm_item{margin-top:12px;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .a{display:block; position:relative; padding:14px 16px 14px 66px; border-radius:8px;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_img{position:absolute; top:12px; left:16px; width:40px; height:40px;}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_img{position:absolute; top:5px; left:16px; width:40px; height:40px;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_img:before{display:block;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_text{color:#62626e; font-size:16px; line-height:20px;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_date{color:#b2b4c0; font-size:12px; line-height:16px;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_today .a{background-color:#f4f5f9;}
-.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_today .alarm_img:before{position:absolute; top:8px; right:8px; width:5px; height:5px; border-radius:50%; background-color:#4781ff;}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_date{margin-left: 7px; color:#b2b4c0; font-size:12px; line-height:16px;}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .a:hover{background-color: rgba(244, 245, 249, 0.84);}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item.new .alarm_img:before{position:absolute; top:8px; right:8px; width:5px; height:5px; border-radius:50%; background-color:#4781ff;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_today .alarm_title{color:#4781ff;}
 .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_history{margin-top:16px;}
-.header .gnb .gnb_link .link_item.alam
 .header .gnb .gnb_link .link_item.my{position:relative; margin-left:24px;}
 .header .gnb .gnb_link .link_item.my:before{display:block; position:absolute; top:0; left:-15px; bottom:0; width:1px; height:24px; margin:auto 0; background-color:#dde1e8;}
 .header .gnb .gnb_link .link_item.my .link_btn{border-radius:50%; background:#e8f2fe url(../images/my_icon.png) no-repeat center / 24px;}
@@ -93,4 +95,48 @@
     /*!*top: 20px;*!*/
     /*!*margin-top: 5px;*!*/
     /*width: 150px;*/
+}
+
+/*반응형*/
+.header .gnb .gnb_link .link_item.my{position:relative; margin-left:24px;}
+.header .gnb .gnb_link .link_item.alarm .alarm_popup{right:10px;}
+@media all and (max-width:1000px){
+    .header{height:50px; padding:7px 10px 7px 50px;}
+    .header:before{left:48px; width:calc(100% - 48px);}
+    .header .logo{width:48px; height:50px;}
+    .header .logo .a{padding-top:20px;}
+    .header .logo .a .img{height:12px;}
+    .header .gnb .gnb_search{width:250px; height:36px; padding:6px 6px 6px 12px;}
+    .header .gnb .gnb_search .form .input{font-size:12px;}
+    .header .gnb .gnb_link{margin:4px 0 0 8px;}
+    .header .gnb .gnb_link .link_item.alarm .link_btn{width:28px; height:28px; background-size:20px;}
+    .header .gnb .gnb_link .link_item.alarm.has .link_btn:before{top:3px; right:3px; width:4px; height:4px;}
+    .header .gnb .gnb_link .link_item.my{margin-left:8px;}
+    .header .gnb .gnb_link .link_item.my:before{display:none;}
+    .header .gnb .gnb_link .link_item.my .link_btn{width:28px; height:28px; background-size:20px;}
+    .lnb{top:50px; z-index:20; padding:4px 4px 0 4px;}
+    .menu .menu_item + .menu_item{margin-top:8px;}
+    .menu .menu_list + .menu_list{bottom:10px;}
+    .menu .menu_item .a{width:40px; height:auto; padding-top:26px; font-size:12px;}
+    .menu .menu_list + .menu_list .menu_item a{height:40px;}
+    .menu .menu_item .a:before{width:40px; height:40px;}
+    #contents{min-height:calc(100vh - 50px); margin:50px 0 0 49px;}
+    #contents .sub{padding:10px 10px 30px 10px;}
+    #contents .sub .sub_head .sub_title{font-size:18px;}
+    #contents .sub_tab{margin-top:10px;}
+    #contents .sub_tab .tab_item + .tab_item{margin-left:4px;}
+    #contents .sub_tab .tab_item .tab_btn{padding:10px 8px; border-radius:5px; font-size:13px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup{max-width:300px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_title{font-size:13px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item + .alarm_item{margin-top:4px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .a{padding:8px 8px 8px 60px; border-radius:5px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_img{top:6px; width:34px; height:34px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_today .alarm_img:before{top:6px; right:6px; width:4px; height:4px;}
+    .header .gnb .gnb_link .link_item.alarm .alarm_popup .alarm_item .alarm_text{font-size:13px; line-height:16px;}
+    .header .gnb .gnb_search .search_result{left:-40px; right:-72px; width:auto;}
+    .header .gnb .gnb_search .search_result .tb_result .tbody .td{padding:4px 2px; font-size:12px;}
+}
+@media all and (max-width:480px){
+    .header .gnb .gnb_search{width:180px;}
+    .header .gnb .gnb_search .form .input::placeholder{color:transparent;}
 }

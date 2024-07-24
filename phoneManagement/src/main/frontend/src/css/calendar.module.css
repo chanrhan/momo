@@ -60,6 +60,9 @@
 .calender .tb_calender .thead .th:first-child{color:#f34432;}
 .calender .tb_calender .thead .th:last-child{border-right:0; color:#4781ff;}
 .calender .tb_calender .tbody .td{position:relative; height:133px; padding:10px 8px; border-top:1px solid #dde1e8; border-right:1px solid #dde1e8; vertical-align:top;}
+.calender .tb_calender .tbody .td.out{background-color: rgba(206, 206, 206, 0.59)
+}
+
 .calender .tb_calender .tbody .td:first-child{color:#f34432;}
 .calender .tb_calender .tbody .td:last-child{border-right:0;}
 .calender .tb_calender .tbody .td .num{display:block; margin-bottom:8px; color:#141218; font-size:14px; line-height:16px;}
@@ -79,6 +82,7 @@
 .calender .calender_detail .detail_head .detail_arrow{position:absolute; top:0; bottom:0; width:32px; height:32px; margin:auto; background:url(../images/calender_arrow.png) no-repeat center / 32px;}
 .calender .calender_detail .detail_head .detail_prev{left:20px; transform:rotate(180deg);}
 .calender .calender_detail .detail_head .detail_next{right:20px;}
+.calender .calender_detail .detail_head .detail_next:disabled{opacity:.3;}
 .calender .calender_detail .detail_tab{border-bottom:1px solid #dde1e8;}
 .calender .calender_detail .detail_tab .tab_item{display:inline-block; width:33.33%; vertical-align:top;}
 .calender .calender_detail .detail_tab .tab_item .tab_btn{position:relative; width:100%; color:#62626e; font-size:14px; line-height:44px;}
@@ -92,3 +96,32 @@
 .calender .calender_detail .detail_body .tb_calender2 .td .stat{width:8px; height:8px; margin-right:12px; border-radius:50%; background-color:#62626e; font-size:0;}
 .calender .calender_detail .detail_body .tb_calender2 .td .stat.red{background-color:#f34432;}
 .calender .calender_detail .detail_body .tb_calender2 .td .stat.blue{background-color:#4781ff;}
+
+/*반응형*/
+@media all and (max-width:1423px){
+    .calender .calender_body{padding-right:320px;}
+    .calender .calender_detail{width:310px; margin-left:0;}
+    .calender .calender_detail .detail_body{padding:20px 10px;}
+    .calender .calender_detail .detail_body .tb_calender2 .td{font-size:13px;}
+    .calender .calender_detail .detail_body .tb_calender2 .td .stat{margin-right:4px;}
+}
+@media all and (max-width:1000px){
+    .calender{margin-top:10px;}
+    .calender .calender_date .date_text{font-size:16px;}
+    .calender .calender_control{margin-left:10px;}
+    .calender .calender_body{margin-top:10px; padding-right:0;}
+    .calender .calender_detail{position:relative; top:auto; right:auto; bottom:auto; width:100%; margin-top:10px;}
+    .calender .calender_detail .detail_body{}
+    .calender .calender_detail .detail_body .tb_calender2 .td{}
+    .calender .calender_detail .detail_body .tb_calender2 .td .stat{}
+}
+@media all and (max-width:640px){
+    .calender .tb_calender .thead .th{padding:8px 4px; font-size:12px;}
+    .calender .tb_calender .tbody .td{height:80px; padding:4px;}
+    .calender .tb_calender .tbody .td.today:before{display:none;}
+    .calender .tb_calender .tbody .td .num{font-size:10px;}
+    .calender .tb_calender .tbody .td .stat{padding:8px 0 0 0; font-size:11px; line-height:13px;}
+    .calender .tb_calender .tbody .td .stat:before{top:0; width:4px; height:4px;}
+    .calender .calender_date .date_popup{left:calc(50% - 102px); width:260px; border-radius:5px;}
+    .calender .calender_date .date_popup .popup_item .popup_btn{border-radius:5px; font-size:13px; line-height:49px;}
+}

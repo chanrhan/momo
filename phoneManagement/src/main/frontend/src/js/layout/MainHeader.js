@@ -2,11 +2,13 @@ import logo from "../../images/logo.png"
 import Layout from "../../css/layout.module.css"
 import {Link, useNavigate} from "react-router-dom";
 import useApi from "../hook/useApi";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import {cm, cmc} from "../utils/cm";
 import {Last} from "react-bootstrap/PageItem";
 import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
+import alarmIcon1 from "../../images/alarm_icon.png"
+import alarmIcon2 from "../../images/alarm_icon2.png"
 // import "../../css/user.module.css"
 
 export function MainHeader(){
@@ -14,6 +16,8 @@ export function MainHeader(){
     const {notifApi} = useApi();
     const [count, setCount] = useState(0)
     const [active, setActive] = useState(false)
+
+
 
     const countUnreadNotif = async ()=>{
         await notifApi.countUnreadNotif().then(({status,data})=>{
@@ -47,17 +51,20 @@ export function MainHeader(){
                     <ul className="link_list">
                         <li className={cm(Layout.link_item, Layout.alarm, `${count > 0 && Layout.has}`)}>
                              {/*알람 있을 경우 has 추가 */}
-                            <button type="button" className={Layout.link_btn}>알람</button>
+                            <NotificationListLayer/>
                         </li>
                         <li className={`${cm(Layout.link_item, Layout.my)} select_box`}>
                             <button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>
                             <SelectLayer width='150px' top='45px' left='-110px' active={active} setActive={setActive}>
-                                <SelectItem onClick={()=>{
+                                <SelectItem onClick={() => {
                                     setActive(false)
                                     nav('/profile')
                                 }}>개인정보 보기</SelectItem>
-                                <SelectItem>회원 관리</SelectItem>
-                                <SelectItem onClick={()=>{
+                                <SelectItem onClick={() => {
+                                    setActive(false)
+                                    nav('/staff')
+                                }}>회원 관리</SelectItem>
+                                <SelectItem onClick={() => {
                                     setActive(false)
                                     nav('/')
                                 }}>로그아웃</SelectItem>
@@ -67,5 +74,125 @@ export function MainHeader(){
                 </div>
             </div>
         </header>
+    )
+}
+
+function NotificationListLayer({}){
+    const {notifApi} = useApi()
+    const [items, setItems] = useState(null)
+
+    const [active, setActive ] = useState(false)
+    const componentRef = useRef(null)
+    const onclickRef = useRef()
+
+    useEffect(() => {
+        if(active){
+            attachOnClick();
+            getNotif()
+            readAll();
+        }else{
+            detachOnClick()
+        }
+    }, [active]);
+
+    const attachOnClick = ()=>{
+        if(window.onclick){
+            onclickRef.current = window.onclick;
+        }
+        const timer = setTimeout(()=>{
+            window.onclick = e=>{
+                if(componentRef.current && !componentRef.current.contains(e.target)){
+                    setActive(false)
+                    // detachOnClick();
+                }
+            }
+            clearTimeout(timer);
+        }, 10)
+
+    }
+
+    const detachOnClick = ()=>{
+        if(window.onclick){
+            const timer = setTimeout(()=>{
+                window.onclick = onclickRef.current;
+                onclickRef.current = null;
+                clearTimeout(timer)
+            }, 10)
+        }
+    }
+
+    const readAll = async ()=>{
+        await notifApi.readAll();
+    }
+
+    const getNotif = async ()=>{
+        await notifApi.getNotifList().then(({status,data})=>{
+            console.log(status)
+            if(status === 200 && data){
+                console.table(data)
+                setItems(data)
+            }
+        })
+    }
+
+    const getTimeAgo = (minute)=>{
+        if(minute < 1){
+            return '방금'
+        }
+        if(minute < 60){
+            return `${minute}분`
+        }
+        const hour = Math.floor(minute / 60);
+        if(hour < 24){
+            return `${hour}시간`
+        }
+        const day = Math.floor(hour / 24);
+        return `${day}일`
+    }
+
+    return (
+        <>
+            <button type="button" className={Layout.link_btn} onClick={()=>{
+                setActive(!active)
+            }}>알람</button>
+            <div className={cm(Layout.alarm_popup, `${active && Layout.active}`)} ref={componentRef}>
+                {/*활성화시 active 추가 -->*/}
+                <div className={Layout.alarm_today}>
+                    <div className={Layout.alarm_title}>오늘알림</div>
+                    <ul className={Layout.alarm_list}>
+                        {
+                            items && items.filter(v=>v.today).map((v,i)=> {
+                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}>
+                                    <Link to="" className={Layout.a}>
+                                        <span className={Layout.alarm_img}><img src={alarmIcon2} alt=""/></span>
+                                        <span className={Layout.alarm_text}>{v.content}</span>
+                                        <span className={Layout.alarm_date}>{getTimeAgo(v.ago)} 전</span>
+                                    </Link>
+                                </li>
+                            })
+                        }
+
+                    </ul>
+                </div>
+
+                <div className={Layout.alarm_history}>
+                    <div className={Layout.alarm_title}>이전알림</div>
+                    <ul className={Layout.alarm_list}>
+                        {
+                            items && items.filter(v=>!v.today).map((v, i) => {
+                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}>
+                                <Link to="" className={Layout.a}>
+                                        <span className={Layout.alarm_img}><img src={alarmIcon2} alt=""/></span>
+                                        <span className={Layout.alarm_text}>{v.content}</span>
+                                        <span className={Layout.alarm_date}>{getTimeAgo(v.ago)} 전</span>
+                                    </Link>
+                                </li>
+                            })
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </>
     )
 }

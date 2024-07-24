@@ -24,7 +24,7 @@ function UserApi(accessToken){
             return await axiosApiWithAccessToken.get(`/api/v1/user/brno/status?brNo=${brNo}`, accessToken);
         },
         updateNickname : async (nickname)=>{
-            return await axiosApiWithAccessToken.put(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
         },
         updateCurrentShop : async (shopId, userId)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/user/${userId}/shop?shopId=${shopId}`, accessToken);
@@ -41,20 +41,29 @@ function UserApi(accessToken){
         updatePassword: async (data)=>{
           return await axiosApiWithAccessToken.put('/api/v1/user/password',data, accessToken);
         },
-        getUserAsStaff : async ()=>{
-            return await axiosApiWithAccessToken.get('/api/v1/user/staff', accessToken);
-        },
-        getInnerStaff: async ()=>{
+        // getUserAsStaff : async ()=>{
+        //     return await axiosApiWithAccessToken.get('/api/v1/user/staff', accessToken);
+        // },
+        getInnerStaffAsIdNameMap: async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/user/staff/inner', accessToken);
+        },
+        getInnerStaffAll: async (keyword)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/all?keyword=${keyword}`, accessToken);
+        },
+        getInnerStaffTotalCount: async ()=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/count`, accessToken);
+        },
+        getInnerStaffName: async ()=>{
+            return await axiosApiWithAccessToken.get('/api/v1/user/staff/name/inner', accessToken);
         },
         getUserAll: async (keyword, keydate)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/all?keyword=${keyword}&keydate=${keydate}`, accessToken);
         },
-        sendShopRequest: async (shopId)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/user/shop/request?shopId=${shopId}`,accessToken)
-        },
-        approveShopRequest: async (userId, shopId)=>{
-            return await axiosApiWithAccessToken.put(`/api/v1/user/${userId}/approve?shopId=${shopId}`, accessToken);
+        // sendShopRequest: async (shopId)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/user/shop/request?shopId=${shopId}`,accessToken)
+        // },
+        updateApprovalState: async (staffId, state)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/user/${staffId}/approval-st`, state, accessToken);
         }
     }
 }

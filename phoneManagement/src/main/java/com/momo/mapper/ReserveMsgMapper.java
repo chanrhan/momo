@@ -12,6 +12,8 @@ import java.util.Map;
 public interface ReserveMsgMapper {
 	// Message Reserve
 	public int insertMsg(ReserveMessageVO vo);
-	public int updateMsg(ReserveMessageVO vo);
-	public int deleteMsg(int id);
+
+	public List<Map<String,Integer>> getReserveMsgForCalendar(String userId, String date);
+
+	public List<Map<String,Object>> getReserveMsgDetail(String userId, String date,int state);
 }

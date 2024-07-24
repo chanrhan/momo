@@ -19,11 +19,13 @@ import java.util.Arrays;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleSearchVO extends CommonQueryVO{
     private String userId;
+    private Integer saleId;
     private Integer category;
     private String keyword;
     private String keydate;
     private Integer order;
     private boolean asc = false;
+    private Boolean completed;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
     private SaleSearchFilter[] filters;
 

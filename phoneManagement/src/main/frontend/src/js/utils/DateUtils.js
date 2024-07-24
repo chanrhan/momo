@@ -45,6 +45,31 @@ export const DateUtils = {
     },
     isToday: (year, month, day)=>{
         const today = new Date();
-        return year === today.getFullYear() && month === today.getMonth()+1 && day === today.getDay();
-    }
+        return year === today.getFullYear() && month === today.getMonth()+1 && day === today.getDate();
+    },
+    dateDiff: (date1, date2)=>{
+        console.log(`date diff: *${date1} *${date2}`)
+        const before_date = Math.floor(new Date(date1).getTime() / 1000);
+        const after_date = Math.floor(new Date(date2).getTime() / 1000);
+
+        const tmp = after_date - before_date;
+        if(tmp <= 0){
+            throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
+        }
+
+        return Math.floor(tmp / (60 * 60 * 24));
+    },
+    dateDiffFromToday: (date)=>{
+        const d_date = Math.floor(new Date(date).getTime() / 1000);
+        const now_date = Math.floor(new Date().getTime() / 1000);
+        const tmp = d_date - now_date;
+        if(tmp <= 0){
+            throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
+        }
+        return Math.floor(tmp / (60 * 60 * 24));
+    },
+    // dateAdd: (date, add)=>{
+    //     const before_date = Math.floor(new Date(date).getTime() / 1000);
+    //     before_date
+    // }
 }

@@ -42,7 +42,7 @@ function useValidateInputField(initialState) {
     }
 
 
-    const getInput = (key)=>{
+    const get = (key)=>{
         return input[key] ?? ''
     }
 
@@ -233,7 +233,7 @@ function useValidateInputField(initialState) {
         setError,
         putAll,
         setValues,
-        getInput,
+        get,
         put,
         matchPassword,
         matchAuthNumber,

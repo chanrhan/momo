@@ -40,10 +40,10 @@ public class SaleVO extends CommonQueryVO {
 	private Integer ctCms; // 무선 판매 수수료 (Cordless Telephone Commission)
 
 	// 중고폰
-	private List<SaleUsedDeviceVO> usedDeviceList;
+	private List<SaleUsedDeviceVO> udList;
 
 	// 세컨
-	private Integer secDeviceId; // 세컨 모델
+	private Integer sdId; // 세컨 모델
 
 	// 유선
 	private Integer wtActvTp; // 유선 구분
@@ -55,6 +55,7 @@ public class SaleVO extends CommonQueryVO {
 	private Integer exsvcId; // 부가서비스 아이디
 
 	// 결합
+	private Integer combSt; // 결합 진행현황
 	private Integer combTp; // 결합 유형
 	private String combMemo; // 결합 관련 메모
 
@@ -84,7 +85,7 @@ public class SaleVO extends CommonQueryVO {
 	private List<SaleAddVO> addList;
 
 	// 고객 약속
-	private List<SaleAppointmentVO> apmList;
+	private List<SalePromiseVO> pmList;
 
 	// 예약 문자
 	private List<ReserveMessageVO> rsvMsgList;

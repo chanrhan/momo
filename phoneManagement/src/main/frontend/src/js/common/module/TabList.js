@@ -5,20 +5,31 @@ import Layout from "../../../css/layout.module.css";
 import {Link} from "react-router-dom";
 import {ObjectUtils} from "../../utils/objectUtil";
 
-export function TabList({name, inputField, className, theme, values}){
+export function TabList({name, inputField, className, value, onChange, theme, values}){
     // const [selected, setSelected] = useState(0);
     useMemo(() => {
-        if(inputField && ObjectUtils.isEmpty(inputField.getInput(name))){
+        if(inputField && ObjectUtils.isEmpty(inputField.get(name))){
             inputField.put(name, 0);
         }
     }, []);
 
     const select = (i)=>{
-        inputField.put(name, i);
+        if(onChange){
+            onChange(i)
+        }else if(inputField){
+            inputField.put(name, i);
+        }
         // setSelected(i);
     }
 
-    if(typeof inputField !== "object"){
+    const getSelectedItem = ()=>{
+        if(inputField){
+            return inputField.get(name);
+        }
+        return value;
+    }
+
+    if(ObjectUtils.isEmptyArray(values)){
         return null;
     }
 
@@ -26,7 +37,7 @@ export function TabList({name, inputField, className, theme, values}){
         <ul className={`tab_list ${theme && theme['tab_list']} ${className}`}>
             {
                 values && values.map((v,i)=> {
-                    return <li key={i} className={`tab_item ${theme && theme['tab_item']} ${inputField.getInput(name) === i && `active ${theme && theme['active']}`}`}>
+                    return <li key={i} className={`tab_item ${theme && theme['tab_item']} ${getSelectedItem() === i && `active ${theme && theme['active']}`}`}>
                         <button type="button" className={`tab_btn ${theme && theme['tab_btn']}`} onClick={()=>{
                             select(i)
                         }}>{v}</button>

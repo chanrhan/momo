@@ -24,8 +24,17 @@ function SaleApi(accessToken){
         getSaleTotalCount: async ()=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/count/total`, accessToken);
         },
+        getSaleTotalCountByCategory: async (category)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/task/count/total?category=${category}`, accessToken);
+        },
         getSaleByCategory : async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/category`, body, accessToken);
+        },
+        // getPromise: async (body)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/sale/promise`, body, accessToken);
+        // },
+        updatePromise: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/promise`, body, accessToken);
         },
         updateSale: async (body)=>{
             const option = {
@@ -38,6 +47,9 @@ function SaleApi(accessToken){
         },
         deleteSales : async (data)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/delete', data, accessToken);
+        },
+        changeSaleState: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/state', body, accessToken);
         }
     }
 }

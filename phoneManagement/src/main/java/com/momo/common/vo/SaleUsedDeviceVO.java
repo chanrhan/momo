@@ -17,8 +17,9 @@ public class SaleUsedDeviceVO extends CommonQueryVO {
     private Integer shopId;
     private Integer saleId;
 
-    private Integer usedDeviceId;
+    private Integer udId;
+    private Integer udSt;
 
-    private String usedDeviceNm;
-    private Integer usedDeviceStor;
+    private String udNm;
+    private Integer udStor;
 }

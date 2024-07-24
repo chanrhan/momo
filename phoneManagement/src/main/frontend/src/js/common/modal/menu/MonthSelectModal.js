@@ -5,8 +5,9 @@ import useModal from "../../../hook/useModal";
 import {ModalType} from "../ModalType";
 import {useEffect, useRef, useState} from "react";
 import {DateUtils} from "../../../utils/DateUtils";
+import {ObjectUtils} from "../../../utils/objectUtil";
 
-export function MonthSelectModal({onSelect, inputField, name}){
+export function MonthSelectModal({onSelect, children}){
     const [active, setActive] = useState(false)
     const componentRef = useRef(null)
     const onClickRef = useRef()
@@ -54,19 +55,21 @@ export function MonthSelectModal({onSelect, inputField, name}){
         setActive(false)
     }
 
-    const nextYear = ()=>{
+    const nextYear = (e)=>{
         setYear(year+1)
     }
 
-    const prevYear = ()=>{
+    const prevYear = (e)=>{
         setYear(year-1)
     }
 
     return (
-        <>
-            <input type="text" className="inp date" value={inputField.getInput(name)} placeholder="날짜 선택" readOnly onClick={()=>{
+        <div style={{display: "inline-block"}}  onClick={(e)=>{
+            if(componentRef.current && !componentRef.current.contains(e.target)){
                 setActive(!active)
-            }}/>
+            }
+        }}>
+            {children}
             <div className={cm(Calender.date_popup, `${active && Calender.active}`)} ref={componentRef}>
                 <div className={Calender.popup_control}>
                     <span className={Calender.popup_year}>{year}년</span>
@@ -85,6 +88,6 @@ export function MonthSelectModal({onSelect, inputField, name}){
                     }
                 </ul>
             </div>
-        </>
+        </div>
     )
 }

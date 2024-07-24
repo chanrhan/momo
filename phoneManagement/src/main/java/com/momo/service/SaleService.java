@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class SaleService extends CommonService {
 	}
 
 	// Common
-	@Transactional
+
 	public int insertSale(SaleVO vo) {
 		saleMapper.insertSale(vo);
 		int maxSaleId = saleMapper.getMaxSaleId(vo.getUserId());
@@ -39,11 +38,11 @@ public class SaleService extends CommonService {
 	}
 
 	public void insertAppointmentList(SaleVO vo){
-		List<SaleAppointmentVO> apmList = vo.getApmList();
+		List<SalePromiseVO> apmList = vo.getPmList();
 		if(apmList == null || apmList.isEmpty()){
 			return;
 		}
-		saleMapper.insertSaleAppointment(vo.getUserId(), vo.getSaleId(), apmList);
+		saleMapper.insertSalePromise(vo.getUserId(), vo.getSaleId(), apmList);
 
 	}
 
@@ -75,7 +74,7 @@ public class SaleService extends CommonService {
 	}
 
 	public void insertUsedDeviceList(SaleVO vo){
-		List<SaleUsedDeviceVO> usedDeviceList = vo.getUsedDeviceList();
+		List<SaleUsedDeviceVO> usedDeviceList = vo.getUdList();
 
 		if(usedDeviceList == null || usedDeviceList.isEmpty()){
 			return;
@@ -95,7 +94,7 @@ public class SaleService extends CommonService {
 	}
 
 	public int updateSaleAppointment(SaleVO vo){
-		List<SaleAppointmentVO> apmList = vo.getApmList();
+		List<SalePromiseVO> apmList = vo.getPmList();
 
 		if(apmList == null || apmList.isEmpty()){
 			return 0;
@@ -104,8 +103,8 @@ public class SaleService extends CommonService {
 		String userId = vo.getUserId();
 		int saleId = vo.getSaleId();
 
-		int rst = saleMapper.deleteAllSaleAppointment(userId, saleId);
-		saleMapper.insertSaleAppointment(userId, saleId, apmList);
+		int rst = saleMapper.deleteAllSalePromise(userId, saleId);
+		saleMapper.insertSalePromise(userId, saleId, apmList);
 
 		return rst;
 	}
@@ -156,7 +155,7 @@ public class SaleService extends CommonService {
 	}
 
 	public int updateSaleUsedDevice(SaleVO vo){
-		List<SaleUsedDeviceVO> usedDeviceList = vo.getUsedDeviceList();
+		List<SaleUsedDeviceVO> usedDeviceList = vo.getUdList();
 
 		if(usedDeviceList == null || usedDeviceList.isEmpty()){
 			return 0;
@@ -184,21 +183,18 @@ public class SaleService extends CommonService {
 		Map<String,Object> sale = new HashMap<>();
 		sale.put("sale", saleMapper.getSaleOne(userId,saleId));
 
-		sale.put("apm_list", saleMapper.getSaleAppointment(userId, saleId));
-		sale.put("sup_list", saleMapper.getSaleSupport(userId, saleId));
-		sale.put("add_list", saleMapper.getSaleAdd(userId, saleId));
-		sale.put("card_list", saleMapper.getSaleCard(userId, saleId));
-		sale.put("used_device_list", saleMapper.getSaleUsedDevice(userId, saleId));
+		sale.put("pm_list", saleMapper.getSalePromiseDetail(userId, saleId));
+		sale.put("sup_list", saleMapper.getSaleSupportDetail(userId, saleId));
+		sale.put("add_list", saleMapper.getSaleAddDetail(userId, saleId));
+		sale.put("card_list", saleMapper.getSaleCardDetail(userId, saleId));
+		sale.put("ud_list", saleMapper.getSaleUsedDeviceDetail(userId, saleId));
 
 		return sale;
 	}
 
 
-	public Integer getSaleTotalCount(String userId){
-		return saleMapper.getSaleTotalCount(userId);
-	}
 
-	public int deleteSales(String userId, int[] deletes){
+	public int deleteBulkSale(String userId, int[] deletes){
 		int result = 0;
 		for(int saleId: deletes){
 			result += saleMapper.deleteSale(userId, saleId);
@@ -223,9 +219,66 @@ public class SaleService extends CommonService {
 		return saleMapper.getSaleAsSupport(vo);
 	}
 
-	public List<Map<String,Object>> getAppointment(SaleSearchVO vo){
-		return saleMapper.getAppointment(vo);
+//	public List<Integer> getSaleAsPromise(SaleSearchVO vo){
+//		return saleMapper.getSaleAsPromise(vo);
+//	}
+
+
+	// promise
+
+	public List<Map<String, Object>> getPromise(SaleSearchVO vo){
+		String userId = vo.getUserId();
+		List<Map<String,Object>> sale = saleMapper.getSaleAsPromise(vo);
+
+		for(int i=0;i<sale.size();++i){
+			int saleId = Integer.parseInt(sale.get(i).get("sale_id").toString());
+			List<Map<String,Object>> promise = saleMapper.getSalePromiseDetail(userId, saleId);
+			sale.get(i).put("pm_list", promise);
+		}
+
+		return sale;
 	}
 
+
+
+	// total count
+	public Integer getSaleTotalCount(String userId){
+		return saleMapper.getSaleTotalCount(userId);
+	}
+
+	public Integer getSaleTotalUsedDeviceCount(String userId){
+		return saleMapper.getSaleTotalUsedDeviceCount(userId);
+	}
+	public Integer getSaleTotalCardCount(String userId){
+		return saleMapper.getSaleTotalCardCount(userId);
+	}
+	public Integer getSaleTotalCombCount(String userId){
+		return saleMapper.getSaleTotalCombCount(userId);
+	}
+	public Integer getSaleTotalSupportCount(String userId){
+		return saleMapper.getSaleTotalSupportCount(userId);
+	}
+	public Integer getSaleTotalPromiseCount(String userId){
+		return saleMapper.getSaleTotalPromiseCount(userId);
+	}
+
+
+	// 진행현황 관리
+
+	public int changeUsedDeviceState(String usedId, int saleId, int udId, int state){
+		return saleMapper.changeUsedDeviceState(usedId, saleId, udId, state);
+	}
+	public int changeCardState(String usedId, int saleId, int cardId, int state){
+		return saleMapper.changeCardState(usedId, saleId, cardId, state);
+	}
+	public int changeCombState(String usedId, int saleId, int state){
+		return saleMapper.changeCombState(usedId, saleId, state);
+	}
+	public int changeSupportState(String usedId, int saleId, int supId, int state){
+		return saleMapper.changeSupportState(usedId, saleId, supId, state);
+	}
+	public int changePromiseState(String userId, int saleId, int pmId, int checked){
+		return saleMapper.changePromiseState(userId, saleId, pmId, checked);
+	}
 
 }

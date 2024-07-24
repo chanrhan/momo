@@ -5,9 +5,14 @@ import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LMD} from "../../../common/LMD";
+import {ObjectUtils} from "../../../utils/objectUtil";
 
 export function ReserveMessageModal(props){
-    const arrayInputField = useObjectArrayInputField(RESERVE_INPUT)
+    const arrayInputField = useObjectArrayInputField({
+        checked: false,
+        msg_tp: null
+    }, RESERVE_INPUT)
+    // console.table(arrayInputField.input)
     const modal = useModal()
 
     const close = ()=>{
@@ -16,11 +21,15 @@ export function ReserveMessageModal(props){
 
 
     const openReserveDateModal =(index)=>{
+        console.log(props.actv_dt)
         modal.openModal(ModalType.LAYER.Reserve_Date, {
             subject: arrayInputField.get(index, 'subject'),
-            onSubmit: (type, date)=>{
-                arrayInputField.put(index, 'reserve_type', type)
-                arrayInputField.put(index, 'reserve_date', date)
+            actv_dt: props.actv_dt,
+            onSubmit: ({dday, rsv_tp, rsv_dt})=>{
+                console.log(`dday: ${dday} rsv_tp: ${rsv_tp} rsv_dt: ${rsv_dt}`)
+                arrayInputField.put(index, 'dday', dday)
+                arrayInputField.put(index, 'rsv_tp', rsv_tp)
+                arrayInputField.put(index, 'rsv_dt', rsv_dt)
             }
         })
     }
@@ -30,6 +39,7 @@ export function ReserveMessageModal(props){
             const body = arrayInputField.input.filter(v=>v.checked).map(v=>{
                 return {
                     msg_tp: v.msg_tp,
+                    dday: v.dday,
                     rsv_tp: v.rsv_tp,
                     rsv_dt: v.rsv_dt
                 }
@@ -64,7 +74,7 @@ export function ReserveMessageModal(props){
                         <ul className={Popup.popup_check_list}>
                             {
                                 arrayInputField.length() > 0 && arrayInputField.input.map((v,i)=>{
-                                    return <ReserveItem index={i} arrayInputField={arrayInputField} onDateClick={()=>{
+                                    return <ReserveItem index={i} inputField={arrayInputField} onDateClick={()=>{
                                         openReserveDateModal(i)
                                     }}/>
                                 })
@@ -85,18 +95,21 @@ export function ReserveMessageModal(props){
     )
 }
 
-function ReserveItem({index, arrayInputField, onDateClick}){
+function ReserveItem({index, inputField, onDateClick}){
     const toggleCheck = ()=>{
-        arrayInputField.put(index, 'checked', !arrayInputField.input[index].checked ?? false)
+        inputField.put(index, 'checked', !inputField.input[index].checked ?? false)
     }
+
+    const value = inputField.get(index, 'rsv_dt')
 
     return (
         <li className={Popup.li}>
-            <input type="checkbox" name={`rsv_check${index}`} className={Popup.check_inp}  checked={arrayInputField.get(index, 'checked')}/>
-            <label htmlFor={`rsv_check${index}`} className={Popup.check_label} onClick={toggleCheck}>{LMD.rsv_msg_tp[arrayInputField.get(index, 'msg_tp')]}</label>
+            <input type="checkbox" name={`rsv_check${index}`} className={Popup.check_inp}  checked={inputField.get(index, 'checked')}/>
+            <label htmlFor={`rsv_check${index}`} className={Popup.check_label} onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
             <div className={Popup.transfer_box}>
                 <button type="button" className={cmc(Popup.btn, Popup.btn_small)}>미리보기</button>
-                <input type="text" className={`inp ${cm(Popup.inp)} transfer_inp`} value={arrayInputField.get(index, 'reserve_date')} placeholder='날짜 설정' readOnly
+                <input type="text" className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered}`)} transfer_inp`}
+                       value={value} placeholder='날짜 설정' readOnly
                        onClick={onDateClick}/>
                 {/*value 있을 경우 entered 추가 -->*/}
             </div>
@@ -109,24 +122,24 @@ const RESERVE_INPUT = [
         checked: false,
         msg_tp: 0,
         rsv_tp: 0,
-        rsv_dt: '2024-07-01'
+        rsv_dt: '2021-12-11'
     },
     {
         checked: false,
         msg_tp: 1,
         rsv_tp: 1,
-        rsv_dt: '2021-12-11'
+        rsv_dt: ''
     },
     {
         checked: false,
         msg_tp: 2,
         rsv_tp: 0,
-        rsv_dt: '2023-11-04'
+        rsv_dt: ''
     },
     {
         checked: false,
         msg_tp: 3,
         rsv_tp: 0,
-        rsv_dt: '2024-07-15'
+        rsv_dt: ''
     }
 ]

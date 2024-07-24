@@ -65,8 +65,32 @@
 .popup .user_form.inp_type2 .inp{padding:0 12px; line-height:50px;}
 .popup .user_form.inp_type2 .inp:focus{padding:0 11px; line-height:48px;}
 
+/*20240723 chan*/
+.dynamic_btn{
+    position:relative;
+    padding:10px 32px 10px 12px; border:1px solid #dde1e8;
+    border-radius:5px;
+    color:#141218;
+    background-color: rgba(223, 237, 255, 0.32);
+    font-size: 14px;
+    text-align: left;
+    line-height: 16px;
+    width: 100%;
+}
+.td .select_box .dynamic_btn{
+    height: 41px !important;
+}
+
+.form_item .select_box .dynamic_btn{
+    height: 52px !important;
+}
+
+
+
 /* 달력 */
-.date_popup.solo{opacity:0; visibility:hidden; position:absolute; top:50px; left:0; right:0; width:320px; margin:0; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
+.date_popup.solo{opacity:0; visibility:hidden;
+    z-index: 99;
+    position:absolute; top:50px; left:0; right:0; width:320px; margin:0; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
 .date_popup.solo.active{opacity:1; visibility:inherit;}
 .date_popup .date_head{padding:6px 16px; background-color:#f4f5f9; text-align:center;}
 .date_popup .date_head .span{color:#62626e; font-size:14px; font-weight:600; line-height:24px;}
@@ -160,12 +184,14 @@
 .popup .customer .customer_body .customer_box .customer_title.n3{background-image:url(../images/popup/customer_icon3.png);}
 .popup .customer .customer_body .customer_box .customer_title.n4{background-image:url(../images/popup/customer_icon4.png);}
 .popup .customer .customer_body .customer_box .select_btn{background-color:#fff;}
-.popup .customer .customer_body .customer_box .select_btn:before{top:4px; background-size:34px;}
+/*.popup .customer .customer_body .customer_box .select_btn:before{top:4px; background-size:34px;}*/
+.popup .customer .customer_body .customer_box .select_btn:before{top:9px; background-size:34px;}
 .popup .popup_check_list > .li{display:block; position:relative; width:100%; margin:0;}
 .popup .popup_check_list > .li + .li{margin-top:15px;}
 .popup .popup_check_list > .li .check_inp{position:absolute; top:5px; left:5px;}
-.popup .popup_check_list > .li .check_label{position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px;}
+.popup .popup_check_list > .li .check_label{position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;}
 .popup .popup_check_list > .li .check_label:before{display:block; position:absolute; top:0; left:0; width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 24px;}
+.popup .popup_check_list > .li .check_text{display:inline-block; width:calc(100% - 32px); height:24px; border:0; color:#28272c; font-size:16px; font-weight:500; vertical-align:top;}
 .popup .popup_check_list > .li .check_inp:checked + .check_label:before{background-image:url(../images/check_icon_on.png);}
 .popup .popup_check_list > .li .inp{
     display: inline-block;
@@ -188,7 +214,7 @@
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td{padding:8px 4px; background-color:#fff; text-align:center;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td:first-child{padding-left:12px;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .select_box .select_btn{height:42px; padding:12px 24px 12px 12px;}
-.popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .select_box .select_btn:before{top:-2px; right:0;}
+.popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .select_box .select_btn:before{top:4px; right:0;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .inp{line-height:40px;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .inp:focus{line-height:38px;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .btn_del{width:24px; height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
@@ -223,6 +249,23 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .check_del{position:absolute; top:0; right:0; width:24px; height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon{margin-top:18px; padding:0; color:#4781ff; font-size:16px; text-align:left;}
 
+/*CUSTOM*/
+.popup_cont .org_head_box .button{
+    width:100%;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #edf2fd;
+    color: #5a8ff7;
+    font-size: 16px; text-align:left; line-height:52px;
+    border: 2px #5a8ff7 solid;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.popup_cont .org_head_box .button .span{
+    float: right;
+}
+
 /* 예약전송 */
 .popup .transfer .popup_cont{margin-top:24px;}
 .popup .transfer .ta_r .check_box{display:inline-block; vertical-align:top;}
@@ -231,14 +274,29 @@
 .popup .transfer .popup_check_list .li .check_label{max-width:calc(100% - 174px); font-weight:600;}
 .popup .transfer .popup_check_list .li .transfer_box{position:absolute; top:-3px; right:0; font-size:0; line-height:0;}
 .popup .transfer .popup_check_list .li .transfer_box .btn{display:inline-block; border:1px solid #dde1e8; border-radius:8px; font-size:14px; line-height:24px;}
-.popup .transfer .popup_check_list .li .transfer_box .inp{width:95px; margin-left:8px; padding:0 12px; font-size:14px; line-height:30px; vertical-align:top;}
+.popup .transfer .popup_check_list .li .transfer_box .inp{width:103px; margin-left:8px; padding:0 12px; font-size:14px; line-height:30px; vertical-align:top;}
 .popup .transfer .popup_check_list .li .transfer_box .inp:focus{padding:0 11px; line-height:28px;}
 .popup .transfer .popup_check_list .li .transfer_box .inp.entered{border-color:transparent; background-color:#f0f5ff; color:#4781ff;}
 .popup .transfer .popup_check_list .li .check_add_btn{padding-left:32px; background:url(../images/popup/check_add_icon.png) no-repeat left top / 24px; color:#28272c; font-size:16px; font-weight:600; line-height:24px;}
 
-/* 예약전송 날짜선택 */
+/* 예약전송 날짜선택 (구) */
+/*.popup .reservation .popup_cont{margin-bottom:-32px;}*/
+/*.popup .reservation .reservation_item{border-bottom:1px solid #dde1e8;}*/
+/*.popup .reservation .reservation_item:first-child,*/
+/*.popup .reservation .reservation_item:last-child{border-bottom:0;}*/
+/*.popup .reservation .reservation_item .reservation_date{position:relative;}*/
+/*.popup .reservation .reservation_item .reservation_date .inp{padding-right:60px;}*/
+/*.popup .reservation .reservation_item .reservation_date .date_btn{position:absolute; top:4px; right:16px; width:44px; height:44px; background:url(../images/popup/date_icon.png) no-repeat center / 44px; font-size:0;}*/
+/*.popup .reservation .reservation_item.reservation_text{padding:10px 20px;}*/
+/*.popup .reservation .reservation_item.reservation_text .inp{display:inline-block; width:50px; margin:0 4px 0 8px; padding:0 8px; text-align:center; line-height:30px;}*/
+/*.popup .reservation .reservation_item.reservation_text .inp:focus{padding:0 7px; line-height:28px;}*/
+/*.popup .reservation .reservation_item.reservation_button .reservation_btn{width:100%; height:52px; padding:0 20px; color:#62626e; font-size:14px; text-align:left;}*/
+/*.popup .reservation .reservation_item.reservation_button.active .reservation_btn,*/
+/*.popup .reservation .reservation_item.reservation_button .reservation_btn:hover{background-color:#f4f5f9;}*/
+
+/* 예약전송 날짜선택 (20240724) */
 .popup .reservation .popup_cont{margin-bottom:-32px;}
-.popup .reservation .reservation_item{border-bottom:1px solid #dde1e8;}
+.popup .reservation .reservation_item{position:relative; margin-left:36px; border-bottom:1px solid #dde1e8;}
 .popup .reservation .reservation_item:first-child,
 .popup .reservation .reservation_item:last-child{border-bottom:0;}
 .popup .reservation .reservation_item .reservation_date{position:relative;}
@@ -250,6 +308,56 @@
 .popup .reservation .reservation_item.reservation_button .reservation_btn{width:100%; height:52px; padding:0 20px; color:#62626e; font-size:14px; text-align:left;}
 .popup .reservation .reservation_item.reservation_button.active .reservation_btn,
 .popup .reservation .reservation_item.reservation_button .reservation_btn:hover{background-color:#f4f5f9;}
+.popup .reservation .reservation_radio{position:absolute; top:14px; left:-36px; width:24px; height:24px;}
+.popup .reservation .reservation_radio .input{position:absolute; top:6px; left:5px;}
+.popup .reservation .reservation_radio .label{display:block; position:relative; z-index:1; width:100%; height:100%; background-color:#fff; font-size:0;}
+.popup .reservation .reservation_radio .label:before{display:block; position:absolute; top:0; left:0; bottom:0; width:24px; height:24px; margin:auto 0; background:url(../images/check_icon.png) no-repeat center / 24px;}
+.popup .reservation .reservation_radio .input:checked + label:before{background-image:url(../images/check_icon_on.png);}
+
+/*20240724*/
+.popup .popup_cont .popup_head_box{
+    display:block;
+    margin-left: 230px;
+    /*left: 50px;*/
+    min-height:36px; font-size:0; line-height:0; vertical-align:top;
+    width: 120px;
+    margin-bottom: 15px;
+}
+/*예약전송 날짜선택 스위치 (현재날짜 / 개통날짜)*/
+.popup .popup_cont .popup_head_box .today_switch{position:relative; width:120px; height:36px; vertical-align:top;}
+.popup .popup_cont .popup_head_box .today_switch .input{position:absolute; top:11px; left:11px;}
+.popup .popup_cont .popup_head_box .today_switch .label{position:relative;}
+.popup .popup_cont .popup_head_box .today_switch .label:before,
+.popup .popup_cont .popup_head_box .today_switch .label:after{display:block;}
+.popup .popup_cont .popup_head_box .today_switch .label:before{width:120px; height:36px; border-radius:18px; background-color:#f4f5f9; transition:background-color .25s ease-in-out;}
+.popup .popup_cont .popup_head_box .today_switch .label:after{position:absolute; top:4px; left:4px; width:28px; height:28px; border-radius:50%; background-color:#fff; box-shadow:0 3px 6px rgba(0, 0, 0, 0.16); transition:left .25s ease-in-out;}
+.popup .popup_cont .popup_head_box .today_switch .input:checked + .label:before{background-color:#4781ff;}
+.popup .popup_cont .popup_head_box .today_switch .input:checked + .label:after{left:calc(100% - 32px);}
+.popup .popup_cont .popup_head_box .today_switch .label .span{position:absolute; top:0; left:0; right:0; bottom:0;}
+.popup .popup_cont .popup_head_box .today_switch .label .span:before,
+.popup .popup_cont .popup_head_box .today_switch .label .span:after{display:block; opacity:0; visibility:hidden; position:absolute; top:0; bottom:0; height:14px; margin:auto 0; font-size:12px; font-weight:500; line-height:14px; transition:all .25s ease-in-out;}
+.popup .popup_cont .popup_head_box .today_switch .label .span:before{left:11px; content:'현재날짜 기준'; color:#fff;}
+.popup .popup_cont .popup_head_box .today_switch .label .span:after{opacity:1; visibility:inherit; right:10px; content:'개통날짜 기준'; color:#28272c;}
+.popup .popup_cont .popup_head_box .today_switch .input:checked + .label .span:before{opacity:1; visibility:inherit;}
+.popup .popup_cont .popup_head_box .today_switch .input:checked + .label .span:after{opacity:0; visibility:hidden;}
+
+
+/*.popup .reservation .popup_cont .tab{*/
+/*    !*background-color: red;*!*/
+/*    !*display:inline-block;*!*/
+/*    margin-left:100px;*/
+/*    margin-bottom: 15px;*/
+/*    !*vertical-align:top;*!*/
+/*}*/
+/*.popup .reservation .popup_cont .tab .tab_list .tab_item{*/
+
+/*}*/
+/*.popup .reservation .popup_cont .tab .tab_list .tab_item + .tab_item{*/
+/*    margin-left:10px;*/
+/*}*/
+/*.popup .reservation .popup_cont .tab .tab_list .tab_item .tab_btn{*/
+/*    width:120px; line-height:38px;font-size: 16px;*/
+/*}*/
 
 /* service */
 .popup .service .service_search .form_label + .inp_search{margin-top:8px;}
@@ -275,10 +383,19 @@
 
 /* 동적 목록 */
 /* select */
-.select_box2{display:inline-block; position:relative; font-size:0; line-height:0;}
-.select_box2.active{z-index:1;}
+.select_box2{display:inline-block;
+    position: absolute; font-size:0; line-height:0;opacity: 0;
+    /*margin-left: 2px;*/
+    width: 100%;
+    /*min-width: 140px;*/
+    /*max-width: 300px;*/
+    /*!*width: 300px;*!*/
+}
+.select_box2.active{opacity: 1;z-index: 199}
 .select_box2 + .select_box2{margin-top:20px;}
-.select_box2 .select_inp{position:relative; padding:0 16px; border:1px solid #dde1e8; border-radius:8px; color:#141218; font-size:14px; text-align:left; line-height:52px;}
+.select_box2 .select_inp{position:relative;
+    width: 100%;
+    padding:0 16px; border:1px solid #dde1e8; border-radius:8px; color:#141218; font-size:14px; text-align:left; line-height:52px;}
 .select_box2 .select_inp:disabled{color:#91939f;}
 .select_box2 .select_inp:before{display:block; position:absolute; top:10px; right:12px; width:16px; height:16px; background:url(../images/select_arrow.png) no-repeat center / 100%}
 .select_box2 .select_layer{opacity:0; visibility:hidden; position:absolute; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
@@ -288,7 +405,26 @@
 .select_box2 .select_layer .layer_item.active,
 .select_box2 .select_layer .layer_item:hover{background-color:#f4f5f9;}
 .select_box2 .select_layer .layer_item .layer_type{position:absolute; top:6px; left:10px; width:24px; height:24px; background:url(../images/select2_type.png) no-repeat center / 100%;}
-.select_box2 .select_layer .layer_item .layer_btn{display:block; width:100%; padding:10px 0; color:#62626e; font-size:14px; text-align:left; line-height:16px;}
+.select_box2 .select_layer .layer_item .layer_btn{display:block;
+    width:100%;
+    padding:10px 0; color:#62626e; font-size:14px; text-align:left; line-height:16px;}
+
+/*20240723 chan */
+.select_box2 .select_layer .add_item{
+    background-color: rgba(71, 129, 255, 0.24);
+    border-radius: 10px;
+
+}
+.select_box2 .select_layer .add_item .layer_btn{
+    display:block;
+    width:100%;
+    text-align: center;
+    padding:10px 0;
+    color: #ffffff;
+    font-size:14px; line-height:16px;
+}
+
+
 .select_box2 .select_layer .layer_item.active .layer_btn{color:#4781ff;}
 .select_box2 .select_layer .layer_item .layer_more_btn{position:absolute; top:6px; right:10px; width:24px; height:24px; background:url(../images/select2_more.png) no-repeat center / 100%;}
 .select_box2 .select_layer .layer_item .layer_more{opacity:0; visibility:hidden; position:absolute; left:-50%; z-index:1; width:232px; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
@@ -357,3 +493,110 @@
 .list_title .form_label + .form_label{margin-left: 150px;}
 
 .card_form .check_del{position:relative; top:13px; left:10px; width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
+
+/*반응형*/
+.popup .customer .customer_head .head_box .select_box .select_btn:before{right:8px;}
+.popup .customer .customer_body{margin:14px -24px -32px -24px; border-radius:0 0 20px 20px;}
+.popup .customer .customer_body .customer_box.price .price_total .price_item{position:relative;}
+.popup .service .service_search .inp_search:focus{background-position:right 11px center;}
+@media all and (max-width:1000px){
+    .popup{width:calc(100% - 40px); padding:18px; border-radius:10px;}
+    .popup .popup_title{font-size:15px;}
+    .popup .popup_cont{margin-top:15px;}
+    .popup .popup_authority .authority_list{padding-left:30px;}
+    .popup .popup_authority .authority_list .li{font-size:16px;}
+    .popup .popup_cont .popup_text{font-size:16px; line-height:26px;}
+    .popup .popup_btn_box{margin-top:20px;}
+    .popup .popup_close{right:12px;}
+    .popup .form:not(.user_form) .popup_cont .inp{line-height:42px;}
+    .popup .form:not(.user_form) .popup_cont .inp:focus{line-height:40px;}
+    .popup .schedule_regist .schedule_color_box{top:6px;}
+    .popup .schedule_regist .schedule_color_box .schedule_color_list{padding:8px 10px;}
+    .popup .schedule_regist .schedule_color_box .schedule_color_list .li + .li{margin-left:10px;}
+    .popup .form_right_btn .btn{min-width:auto;}
+    .popup .customer .customer_head .head_box .inp{border-radius:5px; font-size:14px; line-height:32px;}
+    .popup .customer .customer_head .head_box .inp:focus{line-height:30px;}
+    .popup .customer .customer_head .tab.type2{margin-left:8px;}
+    .popup .customer .customer_head .head_box .select_box .select_btn{height:34px; padding:8px 24px 8px 8px; border-radius:5px; font-size:14px;}
+    .popup .customer .customer_head .head_box .select_box .select_btn:before{top:8px;}
+    .popup .customer .customer_head .tab.type2 .tab_item .tab_btn{width:50px; line-height:32px;}
+    .popup .customer .customer_body{margin:14px -18px -18px -18px; padding:18px 18px 18px 18px; border-radius:0 0 10px 10px;}
+    .popup .customer .customer_body .customer_box .customer_title{font-size:16px;}
+    .popup .customer .customer_body .customer_box .customer_item .customer_inp_box{margin-top:8px;}
+    .popup .customer .customer_body .customer_box .customer_item .customer_label{font-size:13px;}
+    .popup .customer .customer_body .customer_box .customer_item .customer_inp{padding:0 12px; border-radius:5px; font-size:14px; line-height:42px;}
+    .popup .customer .customer_body .customer_box .customer_item .customer_inp:focus{padding:0 11px; line-height:40px;}
+    .popup .popup_tab .tab_list .tab_item .tab_btn{border-radius:5px; font-size:14px; line-height:42px;}
+    .popup .customer .customer_body .customer_box .customer_text{font-size:11px;}
+    .popup .select_box .select_btn{height:42px; padding:10px 24px 10px 12px; border-radius:5px; font-size:14px;}
+    .popup .customer .customer_body .customer_box .select_btn:before{top:4px; background-size:24px;}
+    .popup .popup_check_list.type2 .customer_item{border-radius:5px;}
+    .popup .popup_check_list > .li .check_label{font-size:14px;}
+    .popup .customer .customer_body .customer_box.price .price_data .data_title{font-size:15px;}
+    .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon{font-size:15px;}
+    .popup .customer .customer_body .customer_box .customer_item{display:block; width:100%;}
+    .popup .customer .customer_body .customer_box .customer_item + .customer_item{margin-left:0;}
+    .popup .customer .customer_body .customer_box.price .half_box{display:block; width:100%;}
+    .popup .customer .customer_body .customer_box.price .half_box + .half_box{margin:30px 0 0 0;}
+    .popup .customer .customer_body .customer_box.price .price_total{padding:4px 10px 12px 10px;}
+    .popup .customer .customer_body .customer_box.price .price_total .price_item{margin-top:8px;}
+    .popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item{margin-left:31px;}
+    .popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item:before{left:-20px; font-size:16px;}
+    .popup .customer .customer_body .customer_box.price .price_total .price_item .price_num{font-size:18px;}
+    .popup .customer .customer_body .customer_box.price .price_total .price_item .price_text{position:relative; right:auto; bottom:auto; line-height:18px;}
+    .popup .customer .customer_body .customer_box.price .price_data{margin-top:30px;}
+    .popup .customer .customer_body .customer_box.price .price_data .data_half{display:block; width:100%;}
+    .popup .customer .customer_body .customer_box.price .price_data .data_half + .data_half{margin:12px 0 0 0;}
+    .popup .transfer .popup_cont{margin-top:15px;}
+    .popup .transfer .popup_check_list{margin-top:20px;}
+    .popup .reservation .popup_cont{margin-bottom:-20px;}
+    .popup .reservation .reservation_item .reservation_date .inp{padding-right:40px;}
+    .popup .reservation .reservation_item .reservation_date .date_btn{right:8px; width:34px; height:34px;}
+    .popup .reservation .reservation_item.reservation_text{padding:8px 12px; font-size:14px;}
+    .popup .reservation .reservation_item.reservation_button .reservation_btn{padding:0 12px;}
+    .date_popup.solo{width:290px;}
+    .date_popup .tb_date .thead .th{font-size:13px;}
+    .date_popup .tb_date .tbody .td .button{width:35px; height:35px; font-size:13px;}
+    .popup .user_form.inp_type2 .select_btn:before{top:4px; width:32px; height:32px; background-size:32px;}
+    .popup .user_form.inp_type2 .inp{line-height:40px;}
+    .popup .popup_cont .ta_r .btn.btn_small{border-radius:5px; font-size:14px;}
+    .popup .service .service_search .inp_search{padding:0 12px; background-size:33px;}
+    .popup .service .service_scroll{max-height:210px;}
+    .popup .service .service_scroll .service_item .button{padding:0 12px; line-height:42px;}
+    .popup .user_form .popup_text + .form_list{margin-top:20px;}
+    .popup .user_form .form_list + .form_list{margin-top:20px;}
+    .popup .user_form .form_list.half .form_item{display:block; width:100%;}
+    .popup .user_form .form_list.half .form_item + .form_item{margin:20px 0 0 0;}
+    .select_box2 .select_inp{padding:0 12px; border-radius:5px; line-height:42px;}
+    .popup > .popup_text{margin-top:12px; font-size:12px; line-height:18px; word-break:keep-all;}
+    .popup .form.card .card_info .card_title{font-size:13px;}
+    .popup .form.card .card_info .card_info_item .card_info_title{font-size:14px; line-height:16px;}
+    .popup .form.card .card_info .card_info_item.price .card_info_title + span{font-size:16px;}
+    .popup .form.card .card_info .card_info_item.auto .switch{margin-top:-3px;}
+    .popup .form.card .card_info .card_info_item.registered .card_text{display:block; margin:4px 0 0 0; font-size:14px;}
+    .popup .form.card .card_info .card_info_item.registered{position:relative;}
+    .popup .form.card .card_info .card_info_item.registered .btn{position:absolute; right:0; bottom:-7px;}
+    .popup .filter .filter_list{margin-top:20px;}
+    .popup .filter .filter_item .select_box{display:block; width:100% !important;}
+    .popup .filter .filter_item .select_box + .select_box{margin:8px 0 0 0;}
+    .popup .filter .filter_item .select_box.del{text-align:right;}
+    .popup .filter .filter_list.type2 .filter_item:first-child{display:none;}
+    .popup .business_card .card_address{word-break:keep-all;}
+}
+@media all and (max-width:660px){
+    .popup .customer .customer_head .head_box{display:block;}
+    .popup .customer .customer_head .tab.type2{display:block; margin:4px 0 0 0; text-align:center;}
+    .popup .customer .customer_head .head_box .inp.date + .select_box{width:calc(100% - 128px);}
+    .popup .customer .customer_head .head_box.fr{display:block; float:none; margin-top:8px;}
+    .popup .customer .customer_head .head_box.fr .select_box{display:block; width:100%;}
+    .popup .customer .customer_head .head_box.fr .select_btn{}
+}
+@media all and (max-width:420px){
+    .popup .transfer .popup_check_list > .li{overflow:hidden;}
+    .popup .transfer .popup_check_list .li + .li{margin-top:18px;}
+    .popup .transfer .popup_check_list .li .check_label{max-width:calc(100% - 95px);}
+    .popup .transfer .popup_check_list .li .transfer_box{float:right; position:relative; top:auto; right:auto;}
+    .popup .transfer .popup_check_list .li .transfer_box .btn{display:block; width:95px;}
+    .popup .transfer .popup_check_list .li .transfer_box .inp{margin:4px 0 0 0;}
+    .popup .form.card .card_info .card_info_item.registered .btn{float:none; position:relative; left:auto; bottom:auto; margin-top:6px;}
+}

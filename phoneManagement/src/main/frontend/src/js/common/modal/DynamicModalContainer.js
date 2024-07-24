@@ -28,8 +28,12 @@ import {ReserveDateModal} from "../../service/sale/modal/ReserveDateModal";
 import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
+import {DynamicSelectLayer} from "../module/DynamicSelectLayer";
 
 const MODAL_COMPONENTS = {
+    // common
+    // DynamicSelect: DynamicSelectLayer,
+
     ChangeNickname: ChangeNicknameModal,
     ChangeShop: ChangeShopModal,
     AddShop: AddShopModal,

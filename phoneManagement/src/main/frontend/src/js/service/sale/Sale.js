@@ -149,7 +149,10 @@ export function Sale(){
                 <div className={cm(Board.board_head)}>
                     <form>
                         <div className={cm(Board.board_head_group)} >
-                            <MonthSelectModal name='keydate' inputField={inputField} onSelect={setMonth}/>
+                            <MonthSelectModal onSelect={setMonth}>
+                                <input type="text" className="inp date" value={inputField.get('keydate')} placeholder="날짜 선택"
+                                       readOnly/>
+                            </MonthSelectModal>
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                         </div>
                         <div className={cm(Board.board_head_group)}>
@@ -163,7 +166,7 @@ export function Sale(){
                             {/*<SaleFilterModal/>*/}
 
                             <div className={cm(Board.board_search)}>
-                                <input type="search" name='keyword' onChange={inputField.handleInput} value={inputField.getInput('keyword')} className={cm(Board.input)}
+                                <input type="search" name='keyword' onChange={inputField.handleInput} value={inputField.get('keyword')} className={cm(Board.input)}
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
                                 <button type="button" className={cm(Board.button)} onClick={search}>검색</button>
                             </div>

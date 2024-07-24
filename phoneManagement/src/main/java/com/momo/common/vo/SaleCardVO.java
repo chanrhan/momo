@@ -20,6 +20,7 @@ public class SaleCardVO extends CommonQueryVO {
     private Integer saleId;
 
     private Integer cardId;
+    private Integer cardSt;
 
     private Integer cardNm; // 카드 회사명 (국민카드, 현대카드, ...)
     private Integer cardTp; // 카드 유형

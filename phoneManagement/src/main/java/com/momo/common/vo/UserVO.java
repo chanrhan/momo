@@ -25,7 +25,7 @@ public class UserVO extends CommonQueryVO {
 	private int userSt = 1; // 유저 상태 (0: 탈퇴, 1: 정상, 2: 유령)
 
 	private String  role;
-	private Boolean approvalSt; // 승인 여부
+	private Integer approvalSt; // 승인 여부
 
 	private String pfp;
 

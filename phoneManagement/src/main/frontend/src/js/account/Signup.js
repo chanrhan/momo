@@ -4,16 +4,17 @@ import {UserFormItem} from "./module/UserFormItem";
 import {UserTermList} from "./module/UserTermList";
 import {UserFormInput} from "./module/UserFormInput";
 import useValidateInputField from "../hook/useValidateInputField";
-import {emailRegex, idRegex, pwdRegex, scRegex, telRegex} from "../utils/regex";
 import {useEffect, useState} from "react";
 import useApi from "../hook/useApi";
 import {setRefreshToken} from "../utils/Cookies";
 import {authActions} from "../store/slices/authSlice";
 import {ObjectUtils} from "../utils/objectUtil";
 import {cm} from "../utils/cm";
+import {useDispatch} from "react-redux";
 
 export function Signup(){
     const {publicApi} = useApi();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
     let auth = null;
@@ -58,9 +59,11 @@ export function Signup(){
                 ...inputField.input,
                 tel: telFormat(inputField.input.tel),
                 terms: ObjectUtils.convertBooleanArrayToString(termList)
-            }).then(({status,data})=>{
-                if(status === 200){
-                    navigate('/account/login')
+            }).then((res)=>{
+                if(res.status === 200){
+                    dispatch(authActions.setAccessToken(res.headers.get('authorization')));
+                    setRefreshToken(res.headers.get('refreshtoken'));
+                    navigate('/shop/list')
                 }
             })
         }

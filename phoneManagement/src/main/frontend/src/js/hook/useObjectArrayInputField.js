@@ -49,6 +49,7 @@ export function useObjectArrayInputField(init, arr){
 
     return {
         input,
+        setInput,
         length,
         get,
         put,

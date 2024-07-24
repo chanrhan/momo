@@ -68,12 +68,12 @@ public class PublicController {
 			return ResponseEntity.notFound().build();
 		}
 
-		//
-//		Authentication authentication = userService.loginDirectly(vo.getId(), session);
-//		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
-//
-//		jwtService.saveRefreshToken(jwtVO);
-//		jwtProvider.setHeaderJwtToken(response, jwtVO);
+		// 즉시 로그인
+		Authentication authentication = userService.loginDirectly(vo.getId(), session);
+		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+
+		jwtService.saveRefreshToken(jwtVO);
+		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
 		return ResponseEntity.ok().body(true);
 	}

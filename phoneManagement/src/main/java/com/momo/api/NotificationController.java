@@ -24,7 +24,7 @@ public class NotificationController {
 	 *     알림 내용
 	 * }
 	 */
-	@GetMapping("/")
+	@GetMapping("/all")
 	public ResponseEntity<List<Map<String,Object>>> getNotification(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(notificationService.getNotification(username));

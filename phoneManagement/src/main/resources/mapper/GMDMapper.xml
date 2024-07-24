@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.GMDMapper">
+<!--    정적 목록-->
     <select id="getDevice">
         select device_id,
         device_nm,
@@ -23,15 +24,15 @@
     </select>
 
     <select id="getSecondDevice">
-        select sec_device_id,
-               sec_device_nm,
-               sec_device_cd
+        select sd_id,
+               sd_nm,
+               sd_cd
         from    tb_second_device
         where
         <if test="keyword != null and !keyword.equals('')">
             (
-            sec_device_cd like '%${keyword}%' or
-            sec_device_nm like '%${keyword}%'
+            sd_cd like '%${keyword}%' or
+            sd_nm like '%${keyword}%'
             ) and
         </if>
         1=1
@@ -41,9 +42,34 @@
         limit 20
     </select>
 
+    <select id="getSecondDeviceById">
+        select sd_nm,
+                sd_cd
+        from    tb_second_device
+        where sd_id=#{id}
+    </select>
+
+    <select id="getCtPlan">
+        select ct_plan_id,
+        ct_plan_nm
+        from    tb_ct_plan
+        where
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            ct_plan_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <!--        <if test="order != null and !order.equals('')">-->
+        <!--            order by ${order} ${asc}-->
+        <!--        </if>-->
+        limit 20
+    </select>
+
+<!--    동적 목록-->
     <select id="getExtraService" parameterType="com.momo.common.vo.GMDVO">
-        select exsvc_id,
-               exsvc_nm
+        select exsvc_id as id,
+               exsvc_nm as name
         from    tb_extra_service
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -59,8 +85,8 @@
     </select>
 
     <select id="getInternetPlan">
-        select internet_plan_id,
-               internet_plan_nm
+        select internet_plan_id as id,
+               internet_plan_nm as name
         from    tb_internet_plan
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -76,8 +102,8 @@
     </select>
 
     <select id="getTvPlan">
-        select tv_plan_id,
-                tv_plan_nm
+        select tv_plan_id as id,
+                tv_plan_nm as name
         from    tb_tv_plan
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -92,14 +118,48 @@
         limit 20
     </select>
 
-    <select id="getCtPlan">
-        select ct_plan_id,
-                ct_plan_nm
-        from    tb_ct_plan
+    <select id="getComb">
+        select comb_tp_id as id,
+               comb_tp_nm as name
+        from    tb_comb_tp
         where
         <if test="keyword != null and !keyword.equals('')">
             (
-            ct_plan_nm like '%${keyword}%'
+            comb_tp_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <!--        <if test="order != null and !order.equals('')">-->
+        <!--            order by ${order} ${asc}-->
+        <!--        </if>-->
+        limit 20
+    </select>
+
+    <select id="getSupportDiv">
+        select sup_div_id as id,
+               sup_div_nm as name
+        from    tb_sup_div
+        where
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            sup_div_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <!--        <if test="order != null and !order.equals('')">-->
+        <!--            order by ${order} ${asc}-->
+        <!--        </if>-->
+        limit 20
+    </select>
+
+    <select id="getAddDiv">
+        select add_div_id as id,
+               add_div_nm as name
+        from    tb_add_div
+        where
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            add_div_nm like '%${keyword}%'
             ) and
         </if>
         1=1

@@ -64,17 +64,17 @@
 .chat .chat_wrap .chat_body .chat_area .chat_item.reverse.chat_message .chat_box{padding-right:78px; padding-left:6px;}
 .chat .chat_wrap .chat_body .chat_area .chat_item.reverse.chat_message .chat_box .chat_img{left:auto; right:0;}
 .chat .chat_wrap .chat_write{position:absolute; left:10px; right:10px; bottom:20px;}
-.chat .chat_wrap .chat_write form .chat_textarea{width:100%; height:120px; padding:12px 16px 42px 16px; border:1px solid #dde1e8; border-radius:8px; background-color:#fff; font-size:14px; line-height:18px; transition:border-color .25s ease-in-out; resize:none;}
-.chat .chat_wrap .chat_write form .chat_textarea:focus{padding:11px 15px 41px 15px; border:2px solid #4781ff; outline:none;}
-.chat .chat_wrap .chat_write form .chat_btn_box{position:absolute; left:10px; right:10px; bottom:2px; height:42px; border-radius:0 0 4px 4px; background-color:#fff;}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn{transform:translateY(2px);}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_icon{width:36px; height:36px; background-repeat:no-repeat; background-position:center; background-size:100%; vertical-align:top;}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_icon + .btn_icon{}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_appending{background-image:url(../images/appending_icon.png);}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_tag{background-image:url(../images/tag_icon.png);}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_emoji{background-image:url(../images/emoji_icon2.png);}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_send{float:right; padding:0 12px; border-radius:4px; background-color:#e8f2fe; color:#4781ff; font-size:14px; line-height:32px; vertical-align:top; transition:all .25s ease-in-out;}
-.chat .chat_wrap .chat_write form .chat_btn_box .chat_btn.btn_send:hover{background-color:#c5dcfc;}
+.chat .chat_wrap .chat_write .form .chat_textarea{width:100%; height:120px; padding:12px 16px 42px 16px; border:1px solid #dde1e8; border-radius:8px; background-color:#fff; font-size:14px; line-height:18px; transition:border-color .25s ease-in-out; resize:none;}
+.chat .chat_wrap .chat_write .form .chat_textarea:focus{padding:11px 15px 41px 15px; border:2px solid #4781ff; outline:none;}
+.chat .chat_wrap .chat_write .form .chat_btn_box{position:absolute; left:10px; right:10px; bottom:2px; height:42px; border-radius:0 0 4px 4px; background-color:#fff;}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn{transform:translateY(2px);}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_icon{width:36px; height:36px; background-repeat:no-repeat; background-position:center; background-size:100%; vertical-align:top;}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_icon + .btn_icon{}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_appending{background-image:url(../images/appending_icon.png);}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_tag{background-image:url(../images/tag_icon.png);}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_emoji{background-image:url(../images/emoji_icon2.png);}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_send{float:right; padding:0 12px; border-radius:4px; background-color:#e8f2fe; color:#4781ff; font-size:14px; line-height:32px; vertical-align:top; transition:all .25s ease-in-out;}
+.chat .chat_wrap .chat_write .form .chat_btn_box .chat_btn.btn_send:hover{background-color:#c5dcfc;}
 
 .chat .chat_info{width:412px; padding:40px 46px 20px 46px; text-align:left;}
 .chat .chat_info .info_box{border-radius:8px; background-color:#fff;}
@@ -101,3 +101,36 @@
 .chat .chat_info .info_reservation .reservation_panel{margin-top:4px; padding:0 14px 14px 14px;}
 .chat .chat_info .info_reservation .reservation_panel .reservation_list{border-top:1px solid #91939f; border-left:1px solid #91939f;}
 .chat .chat_info .info_reservation .reservation_panel .reservation_item{display:inline-block; width:25%; height:72px; border-right:1px solid #91939f; border-bottom:1px solid #91939f; vertical-align:top;}
+
+/*반응형*/
+.write_btn{display:none;}
+@media all and (max-width:1423px){
+    .chat .chat_wrap{right:295px; padding:20px;}
+    .chat .chat_info{width:315px; padding:20px;}
+    .chat .chat_info .info_reservation .reservation_panel .reservation_item{height:61px;}
+}
+@media all and (max-width:1000px){
+    .chat{min-height:calc(100vh - 50px);}
+    .chat .chat_member{left:-260px; z-index:10;}
+    .chat .chat_member.active{opacity:1; visibility:inherit; left:0;}
+    .chat .chat_member .member_panel_wrap .chat_list{max-height:calc(100vh - 199px); overflow-x:hidden; overflow-y:auto;}
+    .chat .chat_wrap{top:0; left:0; right:0; width:100%; padding:10px;}
+    .chat .chat_wrap .chat_head{overflow:hidden; margin-bottom:10px;}
+    .chat .chat_wrap .chat_head .chat_title{display:inline-block; font-size:18px;}
+    .chat .chat_wrap .chat_head .chat_invite{float:right; margin-top:4px; padding:0 8px; border-radius:5px; font-size:13px; line-height:30px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_date{font-size:13px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item + .chat_item{margin-top:20px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box{max-width:calc(100% - 50px); padding:0 6px 6px 60px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box .chat_img{width:48px; height:48px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box .chat_name{font-size:15px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box .chat_name span{font-size:12px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box .chat_text{margin-top:4px; font-size:14px; line-height:18px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.reverse.chat_message .chat_box{padding-right:60px;}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.reverse.chat_message .chat_box .chat_img{}
+    .chat .chat_wrap .chat_body .chat_area .chat_item.chat_message .chat_box .select_layer{left:60px;}
+    .chat .chat_wrap .chat_write{bottom:0;}
+    .write_btn{display:block; padding-bottom:8px;}
+    .write_btn .btn + .btn{margin-left:4px;}
+    .chat .chat_info{opacity:0; visibility:hidden; position:absolute; top:0; right:-315px; bottom:0; z-index:10; background-color:#f7f7f7; transition:all .5s ease-in-out; overflow-x:hidden; overflow-y:auto;}
+    .chat .chat_info.active{opacity:1; visibility:inherit; right:0;}
+}

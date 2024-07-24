@@ -18,20 +18,13 @@
     </select>
     
     <select id="getNotifList">
-        UPDATE tb_notification
-        SET read_st = TRUE
-        WHERE receiver_id=#{userId}
-        AND read_st = FALSE;
-
-        SELECT (
-                SELECT name
-                FROM tb_account
-                WHERE id=sender_id
-                   ) as sender_nm,
-               content,
+        SELECT content,
                notif_id,
                read_st,
-               send_dt
+               IF(date(send_dt) = current_date,true,false) as today,
+            (
+               TIMESTAMPDIFF(MINUTE, send_dt, current_timestamp)
+            ) as ago
         FROM tb_notification
         WHERE receiver_id=#{userId}
         ORDER BY send_dt DESC

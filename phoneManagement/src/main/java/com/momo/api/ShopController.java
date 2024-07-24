@@ -36,7 +36,7 @@ public class ShopController {
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
 //		log.info("add shop one info: {}",vo);
-		int rst = shopService.insertShop(vo);
+		shopService.insertShop(vo);
 //		log.info("insert count: {}", rst);
 		return ResponseEntity.ok(true);
 	}
@@ -97,6 +97,13 @@ public class ShopController {
 	public ResponseEntity<List<Map<String,String>>> getShopAll(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(shopService.getShopItems(username));
+	}
+
+	@GetMapping("/shop/join")
+	public ResponseEntity<Boolean> joinShop(@RequestParam int shopId){
+		String username = SecurityContextUtil.getUsername();
+
+		return ResponseEntity.ok(shopService.joinShop(username, shopId));
 	}
 
 }

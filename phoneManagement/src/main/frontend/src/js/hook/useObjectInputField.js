@@ -9,7 +9,7 @@ export function useObjectInputField(init){
         put(key, value);
     }
 
-    const getInput = (key)=>{
+    const get = (key)=>{
         return input[key] ?? ''
     }
 
@@ -30,7 +30,8 @@ export function useObjectInputField(init){
 
     return {
         input,
-        getInput,
+        setInput,
+        get,
         put,
         handleInput,
         clear,

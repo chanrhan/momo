@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import User from "../../css/user.module.css"
 import {UserFormBox} from "../account/module/UserFormBox";
 import {UserFormList} from "../account/module/UserFormList";
@@ -7,20 +7,30 @@ import {UserFormItem} from "../account/module/UserFormItem";
 import {UserFormInput} from "../account/module/UserFormInput";
 import useValidateInputField from "../hook/useValidateInputField";
 import useApi from "../hook/useApi";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export function SelectShop(){
-    const inputField = useValidateInputField();
     const {shopApi} = useApi();
-
     const [shopItems, setShopItems] = useState([])
+    const nav = useNavigate()
 
-    const select = (shopId)=>{
+    const [keyword, setKeyword] = useState('')
 
+    useEffect(() => {
+        getShop();
+    }, [keyword]);
+
+    const select = async (shopId)=>{
+        await shopApi.joinShop(shopId).then(({status,data})=>{
+            if(status === 200 && data){
+                nav('/service')
+            }
+        })
     }
 
-    const search = async ()=>{
-        await shopApi.getShop(inputField.input.keyword).then(({status,data})=>{
+
+    const getShop = async ()=>{
+        await shopApi.getShop(keyword).then(({status,data})=>{
             if(status === 200){
                 // console.table(data)
                 setShopItems(data)
@@ -33,9 +43,12 @@ export function SelectShop(){
             <div>
                 <UserFormBox title='매장 검색하기'>
                     <UserFormList>
-                        <UserFormItem errorText={inputField.error.keyword}>
-                            <UserFormInput name='keyword' inputField={inputField} subject='매장 검색' varName='company' search placeholder="매장명을 검색해주세요."
-                                           onSearch={search}/>
+                        <UserFormItem>
+                            <UserFormInput value={keyword}
+                                           onChange={e=>{
+                                               setKeyword(e.target.value)
+                                           }}
+                                           subject='매장 검색' varName='company' search placeholder="매장명을 검색해주세요."/>
 
                         </UserFormItem>
                         <div className={User.form_company_request}>
@@ -43,8 +56,8 @@ export function SelectShop(){
                                 {
                                     shopItems && shopItems.map((v,i)=> {
                                         return <li key={i} className={User.li}>
-                                            <span className={User.company_text}><span
-                                                className={User.company_name}>{v.shop_nm}</span>(회사 코드, 추후 추가)</span>
+                                            <span className={User.company_text}><span className={User.company_name}>{v.shop_nm}
+                                            </span>({v.shop_addr})</span>
                                             <button type="button"
                                                     className={`btn btn_medium btn_line ${User.company_btn}`} onClick={()=>{
                                                         select(v.shop_id);

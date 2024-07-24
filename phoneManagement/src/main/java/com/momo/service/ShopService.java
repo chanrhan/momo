@@ -1,13 +1,12 @@
 package com.momo.service;
 
-import com.momo.common.enums.codes.CommonErrorCode;
-import com.momo.exception.RestApiException;
 import com.momo.mapper.ShopMapper;
 import com.momo.common.vo.ShopVO;
+import com.momo.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ShopService extends CommonService {
 	private final ShopMapper shopMapper;
+	private final UserMapper userMapper;
+	private final NotificationService notificationService;
 
 	public int updateSendTel(ShopVO vo){
 		return shopMapper.updateShop(vo);
@@ -22,8 +23,8 @@ public class ShopService extends CommonService {
 
 	// Common
 	// Shop
-	public int insertShop(ShopVO vo) {
-		return shopMapper.insertShop(vo);
+	public void insertShop(ShopVO vo) {
+		shopMapper.insertShop(vo);
 	}
 
 	public int updateShop(ShopVO vo) {
@@ -40,13 +41,6 @@ public class ShopService extends CommonService {
 
 	public List<Map<String ,String>> getShopItems(String userId){
 		return shopMapper.getShopItems(userId);
-//		List<Map<String,String>> items = shopMapper.getShopItems(userId);
-//		System.out.println("items: "+items);
-//		Map<String ,String> result = new HashMap<>();
-//		for(Map<?,?> item : items){
-//			result.put(item.get("shop_id").toString(),item.get("item_nm").toString());
-//		}
-//		return result;
 	}
 
 	public Map<String,Object> getShopById(int id){
@@ -54,36 +48,16 @@ public class ShopService extends CommonService {
 		return shopMapper.getShop(vo).get(0);
 	}
 
-	// Corperation
-//	public int insertCorp(ShopVO vo) {
-//		return shopMapper.insertCorp(vo);
-////		Integer result = transactionTemplate.executeRepeatedly(status -> shopMapper.insertCorp(vo));
-////		return (result != null) ? result : 0;
-//	}
-//
-//	public int updateCorp(ShopVO vo) {
-//		return shopMapper.updateCorp(vo);
-//	}
-//
-//	public int deleteCorp(int corpId) {
-//		return shopMapper.deleteCorp(corpId);
-//	}
-//
-//	public List<Map<String,Object>> getCorp(ShopVO vo) {
-//		return shopMapper.getCorp(vo);
-//	}
-//
-//	public Map<String,Object> getCorp(int id) {
-//		ShopVO vo = ShopVO.builder().corpId(id).build();
-//		return shopMapper.getCorp(vo).get(0);
-//	}
-//
-//
-//	public int updateCorpPoint(int corpId, int amount){
-//		if(amount == 0){
-//			return 0;
-//		}
-//		return shopMapper.updateCorpPoint(corpId, amount);
-//	}
+	@Transactional
+	public boolean joinShop(String userId, int shopId){
+		shopMapper.joinShop(userId, shopId);
+		String receiverId = userMapper.getBMIdByShop(shopId);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(userId).append("님의 매장 가입 요청입니다.");
+
+		notificationService.sendMessage(userId, receiverId, sb.toString());
+		return true;
+	}
 
 }

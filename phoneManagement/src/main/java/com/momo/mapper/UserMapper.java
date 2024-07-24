@@ -9,11 +9,19 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
+	public String getName(String id);
+
+	public String getBMIdByShop(int shopId);
+
 	public List<Map<String,String>> getInnerStaff(String userId);
+	public List<Map<String,Object>> getInnerStaffAll(String userId, String keyword);
+	public List<String> getInnerStaffName(String userId);
 //	public String getUserByBrNo(String brNo);
 	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);
 
-	public List<Map<String,Object>> getStaffByShopID(String shopId);
+	public List<Map<String,Object>> getStaffByShopId(String shopId);
+
+	public int updateApprovalState(String userId, String staffId, int state);
 
 //	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
@@ -62,6 +70,9 @@ public interface UserMapper {
 	public int insertStaff(UserVO vo);
 	public int updateStaff(UserVO vo);
 	public int deleteStaff(String id);
+
+	public Integer getInnerStaffTotalCount(String userId);
+
 //	public List<Map<String,Object>> getUserAsStaff(UserVO vo);
 //	public List<Map<String,Object>> searchEmp(SearchVO vo);
 	public boolean isApproved(String id);

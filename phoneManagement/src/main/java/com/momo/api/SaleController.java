@@ -2,17 +2,17 @@ package com.momo.api;
 
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.SalePromiseVO;
 import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
-import com.momo.common.vo.SearchVO;
 import com.momo.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -58,15 +58,39 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.getSaleTotalCount(username));
 	}
 
+	@GetMapping("/task/count/total")
+	public ResponseEntity<Integer> getSaleTotalCountByCategory(@RequestParam Integer category){
+		String username = SecurityContextUtil.getUsername();
+
+		switch (category){
+			case 0 -> {
+				return ResponseEntity.ok(saleService.getSaleTotalUsedDeviceCount(username));
+			}
+			case 1 -> {
+				return ResponseEntity.ok(saleService.getSaleTotalCardCount(username));
+			}
+			case 2 -> {
+				return ResponseEntity.ok(saleService.getSaleTotalCombCount(username));
+			}
+			case 3 -> {
+				return ResponseEntity.ok(saleService.getSaleTotalSupportCount(username));
+			}
+			case 4 -> {
+				return ResponseEntity.ok(saleService.getSaleTotalPromiseCount(username));
+			}
+		}
+		return ResponseEntity.badRequest().build();
+	}
+
 	/**
 	 * 판매일보 카테고리 검색
-	 * @param category string
+//	 * @param category string
 	 * @return {
 	 *
 	 * }
 	 */
 	@PostMapping("/category")
-	public ResponseEntity<List<Map<String,Object>>> getSale(@RequestBody SaleSearchVO vo){
+	public ResponseEntity<List<?>> getSale(@RequestBody SaleSearchVO vo){
 		int category = vo.getCategory();
 		String username = SecurityContextUtil.getUsername();
 		vo.setUserId(username);
@@ -86,11 +110,25 @@ public class SaleController {
 				return ResponseEntity.ok(saleService.getSaleAsSupport(vo));
 			}
 			case 4 -> {
-				return ResponseEntity.ok(saleService.getAppointment(vo));
+				return ResponseEntity.ok(saleService.getPromise(vo));
 			}
 		}
 		return ResponseEntity.badRequest().build();
 	}
+
+//	@PostMapping("/promise")
+//	public ResponseEntity<List<Map<String,Object> >> getPromise(@RequestBody SaleSearchVO vo){
+//		String username = SecurityContextUtil.getUsername();
+//		vo.setUserId(username);
+//		return ResponseEntity.ok(saleService.getPromise(vo));
+//	}
+
+//	@PostMapping("/promise")
+//	public ResponseEntity<Boolean> updatePromise(@RequestBody SalePromiseVO vo){
+//		String username = SecurityContextUtil.getUsername();
+//		vo.setUserId(username);
+//		return ResponseEntity.ok(saleService.changePromiseState(vo) > 0);
+//	}
 
 	/**
 	 * 판매일보 다중 삭제
@@ -98,10 +136,10 @@ public class SaleController {
 	 * @return Boolean
 	 */
 	@PostMapping("/delete")
-	public ResponseEntity<?> deleteSale(@RequestBody int[] deletes){
+	public ResponseEntity<?> deleteBulkSale(@RequestBody int[] deletes){
 		log.info("delete: {}",deletes);
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(saleService.deleteSales(username, deletes) != 0);
+		return ResponseEntity.ok(saleService.deleteBulkSale(username, deletes) != 0);
 	}
 
 
@@ -121,6 +159,7 @@ public class SaleController {
 	 */
 	@PostMapping("/add")
 	@ResponseBody
+	@Transactional
 	public ResponseEntity<Boolean> createSale(@RequestPart(value = "sale") SaleVO vo,
 												@RequestPart(value = "estimate", required = false) MultipartFile estimate,
 											  @RequestPart(value = "docs", required = false) MultipartFile docs) {
@@ -175,5 +214,37 @@ public class SaleController {
 //			return null;
 //		}
 		return ResponseEntity.ok(saleService.isDuplicatedTel(vo));
+	}
+
+	// 진행현황 관리
+
+	@PostMapping("/state")
+	@ResponseBody
+	public ResponseEntity<Boolean> changeSaleState(@RequestBody Map<String , Integer> body){
+		String username = SecurityContextUtil.getUsername();
+
+		int category = body.get("category");
+		int saleId = body.get("sale_id");
+
+		int state = body.get("state");
+
+		switch (category){
+			case 0 -> {
+				return ResponseEntity.ok(saleService.changeUsedDeviceState(username, saleId, body.get("item_id"), state) > 0);
+			}
+			case 1 -> {
+				return ResponseEntity.ok(saleService.changeCardState(username, saleId,body.get("item_id"), state) > 0);
+			}
+			case 2 -> {
+				return ResponseEntity.ok(saleService.changeCombState(username, saleId, state) > 0);
+			}
+			case 3 -> {
+				return ResponseEntity.ok(saleService.changeSupportState(username, saleId, body.get("item_id"),state) > 0);
+			}
+			case 4 -> {
+				return ResponseEntity.ok(saleService.changePromiseState(username, saleId, body.get("item_id"), state) > 0);
+			}
+		}
+		return ResponseEntity.badRequest().build();
 	}
 }

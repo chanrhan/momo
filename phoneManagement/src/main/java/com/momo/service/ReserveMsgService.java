@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,5 +19,13 @@ public class ReserveMsgService extends CommonService {
 			vo.setSaleId(saleId);
 			reserveMsgMapper.insertMsg(vo);
 		}
+	}
+
+	public List<Map<String,Integer>> getReserveMsgForCalendar(String userId, String date){
+		return reserveMsgMapper.getReserveMsgForCalendar(userId,date);
+	}
+
+	public List<Map<String ,Object>> getReserveMsgDetail(String userId, String date, int state){
+		return reserveMsgMapper.getReserveMsgDetail(userId, date, state);
 	}
 }

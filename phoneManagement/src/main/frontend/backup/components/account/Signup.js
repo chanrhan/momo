@@ -1,18 +1,18 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {authActions} from "../../store/slices/authSlice";
-import {setRefreshToken} from "../../utils/Cookies";
 import {useDispatch} from "react-redux";
-import {ObjectUtils} from "../../utils/objectUtil";
-import useInputField from "../../hook/useInputField";
-import useApi from "../../hook/useApi";
+import {authActions} from "../../../src/js/store/slices/authSlice";
+import {setRefreshToken} from "../../../src/js/utils/Cookies";
+import useValidateInputField from "../../../src/js/hook/useValidateInputField";
+import useApi from "../../../src/js/hook/useApi";
+import {ObjectUtils} from "../../../src/js/utils/objectUtil";
 
 const ERR_BORDER_CSS = 'border border-danger';
 
 function Signup(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const inputField = useInputField(['id','pwd','pwd2','name','tel','email'])
+    const inputField = useValidateInputField()
     const {publicApi} = useApi();
     const [authNumber, setAuthNumber] = useState(null)
 
@@ -37,11 +37,11 @@ function Signup(){
                 if(res.status === 200){
                     dispatch(authActions.setAccessToken(res.jwt.access_token));
                     setRefreshToken(res.jwt.refresh_token);
-                    alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다")
-                    navigate('/account/login');
+                    alert("회원가입이 완료되었습니다.")
+                    navigate('/shop/list');
                     // navigate('/account/role');
                 }else{
-                    inputField.handleServerError("서버 연결에 실패하였습니다. 다시 시도해주세요")
+                    // inputField.handleServerError("서버 연결에 실패하였습니다. 다시 시도해주세요")
                 }
             })
 

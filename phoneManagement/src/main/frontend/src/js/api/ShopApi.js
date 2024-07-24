@@ -22,7 +22,10 @@ function ShopApi(accessToken){
         },
         getShopAll : async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/shop/all',accessToken);
-        }
+        },
+        joinShop: async (shopId)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/shop/join?shopId=${shopId}`, accessToken);
+    }
     }
 }
 

@@ -70,6 +70,7 @@
             )
     </select>
 
+<!--    get sale-->
     <select id="getSaleOne">
         select s.*,
                (
@@ -100,6 +101,7 @@
         ) and sale_id=#{saleId}
     </select>
 
+<!--    get sale category-->
     <select id="getSaleAsUsedDevice">
         SET @curr_shop_id := (
             SELECT curr_shop_id
@@ -108,31 +110,292 @@
             );
 
         WITH tb as (
-            SELECT sud.state,
+            SELECT sl.sale_id,
+                   sud.ud_id,
+                    sud.ud_st,
                    sl.actv_dt,
                    sl.cust_nm,
                    sl.cust_tel,
                    sl.cust_cd,
-                   (
-                       SELECT device_nm
-                       from tb_device
-                       WHERE tb_device.device_id=sud.used_device_id
-                       ) as device_nm,
-                   sud.cms,
+                    sud.ud_nm,
+                   sud.ud_cms,
                    sl.total_cms,
                    (
                        SELECT name
                        from tb_account
                        where id=#{userId}
                        ) as seller_nm
-            from tb_sale sl
-            left outer join tb_sale_used_device sud on sud.sale_id=sl.sale_id
-            WHERE sl.shop_id=@curr_shop_id
+            from tb_sale_used_device sud
+            left outer join tb_sale sl on sud.sale_id=sl.sale_id
+            WHERE sud.shop_id=@curr_shop_id
         )
 
         SELECT *
         from tb
+        WHERE
+        <if test="completed != null and completed == true">
+            ud_st = 2 and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                device_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
     </select>
+
+    <select id="getSaleAsCard">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            from tb_account
+            WHERE id=#{userId}
+        );
+
+        WITH tb as (
+            SELECT sl.sale_id,
+                   sc.card_id,
+                   sc.card_st,
+                   sl.actv_dt,
+                   sl.cust_nm,
+                   sl.cust_tel,
+                   sl.cust_cd,
+                   sc.card_nm,
+                   sc.card_tp,
+                   (
+                       SELECT name
+                       from tb_account
+                       where id=#{userId}
+                   ) as seller_nm
+            from tb_sale_card sc
+                     left outer join tb_sale sl on sc.sale_id=sl.sale_id
+            WHERE sc.shop_id=@curr_shop_id
+        )
+
+        SELECT *
+        from tb
+        WHERE
+        <if test="completed != null and completed == true">
+            card_st = 2 and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            cust_nm like '%${keyword}%' or
+            cust_tel like '%${keyword}%' or
+            cust_cd like '%${keyword}%' or
+            seller_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+    </select>
+
+    <select id="getSaleAsComb">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            from tb_account
+            WHERE id=#{userId}
+        );
+
+        WITH tb as (
+            SELECT sl.sale_id,
+                   sl.comb_st,
+                   sl.actv_dt,
+                   sl.cust_nm,
+                   sl.cust_tel,
+                   sl.cust_cd,
+                   sl.comb_tp,
+                   sl.comb_memo,
+                   (
+                       SELECT name
+                       from tb_account
+                       where id=#{userId}
+                   ) as seller_nm
+            from tb_sale sl
+            WHERE sl.shop_id=@curr_shop_id and
+                  sl.comb_tp is not null
+        )
+
+        SELECT *
+        from tb
+        WHERE
+        <if test="completed != null and completed == true">
+            comb_st = 1 and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+                (
+                    cust_nm like '%${keyword}%' or
+                    cust_tel like '%${keyword}%' or
+                    cust_cd like '%${keyword}%' or
+                    seller_nm like '%${keyword}%' or
+                    comb_memo like '%${keyword}%' or
+                    comb_tp like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+    </select>
+
+    <select id="getSaleAsSupport">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            from tb_account
+            WHERE id=#{userId}
+        );
+
+        WITH tb as (
+            SELECT sl.sale_id,
+                   ss.sup_id,
+                   ss.sup_st,
+                   sl.actv_dt,
+                   sl.cust_nm,
+                   sl.cust_tel,
+                   sl.cust_cd,
+                   ss.sup_div,
+                   ss.sup_amount,
+                   (
+                       SELECT name
+                       from tb_account
+                       where id=#{userId}
+                   ) as seller_nm
+            from tb_sale_support ss
+                     left outer join tb_sale sl on ss.sale_id=sl.sale_id
+            WHERE ss.shop_id=@curr_shop_id
+        )
+
+        SELECT *
+        from tb
+        WHERE
+        <if test="completed != null and completed == true">
+            sup_st = 1 and
+        </if>
+        <if test="keyword != null and !keyword.equals('')">
+            (
+            cust_nm like '%${keyword}%' or
+            cust_tel like '%${keyword}%' or
+            cust_cd like '%${keyword}%' or
+            seller_nm like '%${keyword}%'
+            ) and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+    </select>
+
+    <select id="getSaleAsPromise">
+        SET @curr_shop_id := (
+        SELECT curr_shop_id
+        from tb_account
+        WHERE id=#{userId}
+        );
+
+        WITH tb as (
+                SELECT distinct sl.sale_id,
+                        sl.cust_nm,
+                        sl.cust_tel,
+                        sl.cust_cd,
+                        sl.actv_dt
+                from tb_promise pm
+                left outer join tb_sale sl on pm.sale_id=sl.sale_id
+                WHERE pm.shop_id=@curr_shop_id
+        )
+
+        SELECT *
+        from tb
+        WHERE
+<!--        <if test="completed != null and completed == true">-->
+<!--            card_st = 2 and-->
+<!--        </if>-->
+        <if test="keyword != null and !keyword.equals('')">
+            (
+                (
+                select IFNULL(count(*),0)
+                from tb_promise apm
+                where apm.shop_id=@curr_shop_id and
+                apm.sale_id=tb.sale_id and
+                apm.content like '%${keyword}%'
+                ) > 0 or
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%'
+            )
+          and
+        </if>
+        1=1
+        <if test="order != null and !order.equals('')">
+            order by ${order} ${asc}
+        </if>
+    </select>
+
+<!--    promise-->
+    <update id="changePromiseState">
+        UPDATE tb_promise
+        SET checked=#{checked}
+        WHERE shop_id=(
+            SELECT curr_shop_id
+            from tb_account
+            WHERE id=#{userId}
+            ) and
+            sale_id=#{saleId} and
+            pm_id=#{pmId}
+    </update>
+
+
+    <!--    진행현황 관리-->
+    <update id="changeUsedDeviceState">
+        UPDATE tb_sale_used_device
+        SET ud_st=#{state}
+        WHERE shop_id=(
+            SELECT  curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            ud_id=#{udId}
+    </update>
+
+    <update id="changeCardState">
+        UPDATE tb_sale_card
+        SET card_st=#{state}
+        WHERE shop_id=(
+            SELECT  curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            card_id=#{cardId}
+    </update>
+
+    <update id="changeCombState">
+        UPDATE tb_sale
+        SET comb_st=#{state}
+        WHERE shop_id=(
+            SELECT  curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        ) and
+            sale_id=#{saleId}
+    </update>
+
+    <update id="changeSupportState">
+        UPDATE tb_sale_support
+        SET sup_st=#{state}
+        WHERE shop_id=(
+            SELECT  curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        ) and
+            sale_id=#{saleId} and
+            sup_id=#{supId}
+    </update>
 
 
 <!--    update-->
@@ -158,7 +421,7 @@
             wt_cms = #{wtCms},
             internet_plan = #{internetPlan},
             tv_plan = #{tvPlan},
-            sec_device_id = #{secDeviceId},
+            sd_id = #{sdId},
             exsvc_id = #{exsvcId},
             comb_tp = #{combTp},
             comb_memo = #{combMemo},
@@ -195,12 +458,12 @@
         INSERT INTO tb_sale
         (shop_id, sale_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt,
          device_id, device_stor, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
-         ct_cms, sec_device_id, comb_tp, comb_memo,
+         ct_cms, sd_id, comb_tp, comb_memo,
          wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
          friend, seller_id, estimate, docs, sale_memo, total_cms)
         VALUES (@shop_id,@next_sale_id, #{custNm},#{custTel},#{custCd},#{custGd},
                 #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
-                #{ctDecPlan},#{ctCms},#{secDeviceId},#{combTp},
+                #{ctDecPlan},#{ctCms},#{sdId},#{combTp},
                 #{combMemo},#{wtActvTp},#{wtCms},#{internetPlan},#{tvPlan},
                 #{exsvcId},#{family},#{friend},#{sellerId},#{estimate},#{docs},#{saleMemo},#{totalCms})
     </insert>
@@ -218,10 +481,11 @@
     </select>
 
 <!--    get-->
-    <select id="getSaleAppointment">
-        SELECT checked,
+    <select id="getSalePromiseDetail">
+        SELECT pm_id,
+               checked,
                content
-        from tb_appointment
+        from tb_promise
         where sale_id=#{saleId} and
             shop_id = (
                 select curr_shop_id
@@ -230,7 +494,7 @@
             )
     </select>
 
-    <select id="getSaleSupport">
+    <select id="getSaleSupportDetail">
         SELECT sup_div,
                sup_amount
         from tb_sale_support
@@ -242,7 +506,7 @@
                   )
     </select>
 
-    <select id="getSaleAdd">
+    <select id="getSaleAddDetail">
         SELECT add_div,
                add_amount
         from tb_sale_add
@@ -254,7 +518,7 @@
             )
     </select>
 
-    <select id="getSaleCard">
+    <select id="getSaleCardDetail">
         SELECT card_tp,
                card_nm
         from tb_sale_card
@@ -266,9 +530,9 @@
             )
     </select>
 
-    <select id="getSaleUsedDevice">
-        SELECT used_device_nm,
-               used_device_stor
+    <select id="getSaleUsedDeviceDetail">
+        SELECT ud_nm,
+               ud_stor
         from tb_sale_used_device
         where sale_id=#{saleId} and
             shop_id = (
@@ -278,16 +542,17 @@
             )
     </select>
 
+
 <!--    insert-->
-    <insert id="insertSaleAppointment" parameterType="com.momo.common.vo.SaleAppointmentVO">
+    <insert id="insertSalePromise" parameterType="com.momo.common.vo.SalePromiseVO">
         set @curr_shop_id := (
             select curr_shop_id
             from tb_account
             where id=#{userId}
         );
 
-        INSERT INTO tb_appointment
-            (shop_id, sale_id, apm_id, checked, content)
+        INSERT INTO tb_promise
+            (shop_id, sale_id, pm_id, checked, content)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
             (
@@ -364,20 +629,20 @@
         );
 
         INSERT INTO tb_sale_used_device
-            (shop_id, sale_id, used_device_id, used_device_nm, used_device_stor)
+            (shop_id, sale_id, ud_id, ud_nm, ud_stor)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
             (
             select curr_shop_id
             from tb_account
             where id=#{userId}
-            ),#{saleId},#{index}+1,#{item.usedDeviceNm},#{item.usedDeviceStor}
+            ),#{saleId},#{index}+1,#{item.udNm},#{item.udStor}
         </foreach>
     </insert>
 
 <!--    update-->
-    <update id="updateSaleAppointment">
-        UPDATE tb_appointment
+    <update id="updateSaleAsPromise">
+        UPDATE tb_promise
         SET checked=#{checked},
             content=#{content}
         WHERE shop_id = (
@@ -386,7 +651,7 @@
             where id=#{userId}
         ) and
             sale_id=#{saleId} and
-            apm_id=#{apmId}
+            pm_id=#{pmId}
     </update>
 
     <update id="updateSaleSupport">
@@ -430,83 +695,91 @@
 
     <update id="updateSaleUsedDevice">
         UPDATE tb_sale_used_device
-        SET used_device_nm=#{usedDeviceNm},
-            used_device_stor=#{usedDeviceStor}
+        SET ud_nm=#{udNm},
+            ud_stor=#{udStor}
         WHERE shop_id = (
             select curr_shop_id
             from tb_account
             where id=#{userId}
         ) and
             sale_id=#{saleId} and
-            used_device_id=#{usedDeviceId}
+            ud_id=#{udId}
     </update>
 
 <!--    count-->
-    <select id="getSaleAppointmentCount">
+    <select id="getSaleTotalPromiseCount">
         SELECT count(*)
-        from tb_appointment
+        from tb_promise
         where shop_id = (
             select curr_shop_id
             from tb_account
             where id=#{userId}
-            ) and
-            sale_id=#{saleId}
+            )
+        group by sale_id
     </select>
 
-    <select id="getSaleSupportCount">
+    <select id="getSaleTotalSupportCount">
         SELECT count(*)
         from tb_sale_support
         where shop_id = (
             select curr_shop_id
             from tb_account
             where id=#{userId}
-        ) and
-            sale_id=#{saleId}
+        )
     </select>
 
-    <select id="getSaleAddCount">
-        SELECT count(*)
-        from tb_sale_add
-        where shop_id = (
-            select curr_shop_id
-            from tb_account
-            where id=#{userId}
-        ) and
-            sale_id=#{saleId}
-    </select>
+<!--    <select id="getSaleAddCount">-->
+<!--        SELECT count(*)-->
+<!--        from tb_sale_add-->
+<!--        where shop_id = (-->
+<!--            select curr_shop_id-->
+<!--            from tb_account-->
+<!--            where id=#{userId}-->
+<!--        ) and-->
+<!--            sale_id=#{saleId}-->
+<!--    </select>-->
 
-    <select id="getSaleCardCount">
+    <select id="getSaleTotalCardCount">
         SELECT count(*)
         from tb_sale_card
         where shop_id = (
             select curr_shop_id
             from tb_account
             where id=#{userId}
-        ) and
-            sale_id=#{saleId}
+        )
     </select>
 
-    <select id="getSaleUsedDeviceCount">
+    <select id="getSaleTotalCombCount">
+        SELECT count(*)
+        from tb_sale
+        where shop_id = (
+            select curr_shop_id
+            from tb_account
+            where id=#{userId}
+        ) and
+            comb_tp is not null
+    </select>
+
+    <select id="getSaleTotalUsedDeviceCount">
         SELECT count(*)
         from tb_sale_used_device
         where shop_id = (
             select curr_shop_id
             from tb_account
             where id=#{userId}
-        ) and
-            sale_id=#{saleId}
+        )
     </select>
 
 <!--    delete-->
-    <delete id="deleteSaleAppointment">
-        DELETE FROM tb_appointment
+    <delete id="deleteSalePromise">
+        DELETE FROM tb_promise
         WHERE shop_id=(
             select curr_shop_id
             from tb_account
             where id=#{userId}
             ) and
             sale_id=#{saleId} and
-            apm_id=#{apmId}
+            pm_id=#{pmId}
     </delete>
 
     <delete id="deleteSaleSupport">
@@ -550,12 +823,12 @@
             where id=#{userId}
         ) and
             sale_id=#{saleId} and
-            used_device_id=#{usedDeviceId}
+            ud_id=#{udId}
     </delete>
 
 <!--    delete all-->
-    <delete id="deleteAllSaleAppointment">
-        DELETE FROM tb_appointment
+    <delete id="deleteAllSalePromise">
+        DELETE FROM tb_promise
         WHERE shop_id=(
             select curr_shop_id
             from tb_account
@@ -603,5 +876,7 @@
         ) and
             sale_id=#{saleId}
     </delete>
+
+
 
 </mapper>

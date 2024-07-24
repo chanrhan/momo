@@ -7,6 +7,7 @@ import ShopApi from "../api/ShopApi";
 import NotificationApi from "../api/NotificationApi";
 import TestApi from "../api/TestApi";
 import GMDApi from "../api/GMDApi";
+import RsvMsgApi from "../api/RsvMsgApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -16,10 +17,11 @@ function useApi(){
         userApi: UserApi(accessToken),
         chatApi: ChatApi(accessToken),
         saleApi: SaleApi(accessToken),
+        rsvMsgApi: RsvMsgApi(accessToken),
         shopApi: ShopApi(accessToken),
         notifApi: NotificationApi(accessToken),
         testApi: TestApi(accessToken),
-        gmdApi: GMDApi()
+        gmdApi: GMDApi(accessToken)
     }
 }
 

@@ -18,7 +18,37 @@
             );
 
         INSERT INTO tb_rsv_msg
-        (shop_id, sale_id, msg_id, msg_tp, content, rsv_dt)
-        VALUES (@curr_shop_id, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt})
+        (shop_id, sale_id, msg_id, msg_tp, content, rsv_dt, rsv_tp, dday)
+        VALUES (@curr_shop_id, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt}, #{rsvTp}, #{dday})
     </insert>
+
+    <select id="getReserveMsgForCalendar">
+        SELECT rsv_dt,
+               msg_st,
+               COUNT(msg_tp) as cnt
+        FROM tb_rsv_msg
+        WHERE shop_id=(
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+            ) and
+            rsv_dt like '%${date}%'
+        GROUP BY rsv_dt, msg_st
+    </select>
+
+    <select id="getReserveMsgDetail">
+        SELECT sl.cust_nm,
+               msg_tp,
+               IF(rm.rsv_tp != 2, 'D', 'M') as dday_tp,
+               dday
+        FROM tb_rsv_msg rm
+        LEFT OUTER JOIN tb_sale sl on sl.sale_id= rm.sale_id
+        WHERE rm.shop_id=(
+                            SELECT curr_shop_id
+                            FROM tb_account
+                            WHERE id=#{userId}
+                        ) and
+            rsv_dt=#{date} and
+            msg_st=#{state}
+    </select>
 </mapper>

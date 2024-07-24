@@ -73,6 +73,15 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
     border-radius: 5px;
 }
 
+/* select 20240708 추가 */
+.select{position:relative; padding:0 32px 0 12px; border:1px solid #dde1e8; border-radius:4px; background:url(../../images/select_arrow.png) no-repeat right 11px center / 16px; color:#141218; font-size:14px; text-align:left; line-height:34px; vertical-align:top; -webkit-appearance:none;}
+.select:disabled{background-color:#fff;}
+.select_box .select{width:100%;}
+
+/* select 20240718 추가 */
+.select_box .select_layer .select_inp{width:100%; margin-bottom:8px; padding:10px; border-radius:8px; background-color:#f9f9f9; font-size:14px; text-align:left; line-height:16px;}
+
+
 /* select custom 20240709 */
 .select_box .select_layer .select_inp_box{
     width:100%; padding:5px;
@@ -137,6 +146,7 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .btn.btn_small{display:inline-block; width:inherit; padding:3px 10px; border-radius:4px; font-size:12px; line-height:20px;}
 .btn.btn_line{padding:19px 11px; border:1px solid #dde1e8; background-color:#fff; color:#141218; font-weight:400;}
 .btn.btn_line.btn_blue{border-color:#4781ff; color:#4781ff; font-weight:500;}
+.btn.btn_line.btn_red{border-color: #ff1b1b; color:#ff1b1b; font-weight:500;}
 .btn.btn_line.btn_small{padding:1px 9px;}
 .btn.btn_line:hover{background-color:#f4f5f9;}
 .btn.btn_medium.btn_line{padding:7px 11px}

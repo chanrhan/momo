@@ -8,6 +8,7 @@ import {ModalType} from "../../../common/modal/ModalType";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {LMD} from "../../../common/LMD";
+import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
 
 export function SaleWtPlanModal(props){
     const inputField = useObjectInputField(props.data ?? {
@@ -53,7 +54,7 @@ export function SaleWtPlanModal(props){
                                 <label htmlFor="wt_cms" className={cm(Popup.form_label, User.form_label)}>유선 판매 수수료(정책)</label>
                                 <div className={User.form_inp}>
                                     <input type="text" name="wt_cms" className={cmc(Popup.inp, Popup.ta_r)}
-                                           value={inputField.getInput('wt_cms')}
+                                           value={inputField.get('wt_cms')}
                                            onChange={inputField.handleInput} />
                                 </div>
                             </li>
@@ -64,8 +65,9 @@ export function SaleWtPlanModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id="net"/>
-                                        <SelectIndexLayer name='internet_plan' inputField={inputField} values={[1, 2, 3]}
-                                                          cssModules={toCssModules(Popup, User)}/>
+                                        <DynamicSelectLayer type={DYNAMIC_TYPE.internet}/>
+                                        {/*<SelectIndexLayer name='internet_plan' inputField={inputField} values={[1, 2, 3]}*/}
+                                        {/*                  cssModules={toCssModules(Popup, User)}/>*/}
                                     </div>
                                 </div>
                             </li>
@@ -74,8 +76,9 @@ export function SaleWtPlanModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id="net"/>
-                                        <SelectIndexLayer name='tv_plan' inputField={inputField} values={[1, 2, 3]}
-                                                          cssModules={toCssModules(Popup, User)}/>
+                                        <DynamicSelectLayer type={DYNAMIC_TYPE.tv}/>
+                                        {/*<SelectIndexLayer name='tv_plan' inputField={inputField} values={[1, 2, 3]}*/}
+                                        {/*                  cssModules={toCssModules(Popup, User)}/>*/}
                                     </div>
                                 </div>
                             </li>

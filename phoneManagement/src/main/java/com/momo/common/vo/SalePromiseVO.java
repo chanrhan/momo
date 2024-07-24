@@ -12,12 +12,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class SaleAppointmentVO extends CommonQueryVO {
+public class SalePromiseVO extends CommonQueryVO {
     private String userId;
     private Integer shopId;
     private Integer saleId;
 
-    private Integer apmId;
+    private Integer pmId;
 
     private boolean checked = false;
     private String content;

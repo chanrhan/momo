@@ -15,7 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 public class NotificationService extends CommonService {
-	private final ShopService shopService;
 	private final NotificationEmitter notificationEmitter;
 	private final NotificationMapper  notificationMapper;
 
@@ -69,12 +68,6 @@ public class NotificationService extends CommonService {
 		notify(senderId, receiverId, "message", data);
 	}
 
-	public void approvalRequestToAdmin(String senderId, int corpId){
-		Map<String,Object> data = new HashMap<>();
-		data.put("corp_id", corpId);
-		notify(senderId, "admin", "approval", data);
-	}
-
 //	public void approvalRequestToReps(String senderId, int corpId, int shopId){
 //		Map<String,Object> data = new HashMap<>();
 //		data.put("shop_id", shopId);
@@ -102,8 +95,7 @@ public class NotificationService extends CommonService {
 				.content(content)
 				.build();
 
-		if(notificationMapper.insertNotification(vo) != 0){
-			notificationEmitter.sendToClient(receiverId, "notif", data);
-		}
+		notificationMapper.insertNotification(vo);
+		notificationEmitter.sendToClient(receiverId, "notif", data);
 	}
 }

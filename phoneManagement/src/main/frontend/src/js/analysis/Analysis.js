@@ -4,14 +4,19 @@ import {cm, cmc} from "../utils/cm";
 import {GraphSummaryCard} from "./module/GraphSummaryCard";
 import graphImg1 from "../../images/graph_img1.png"
 import {TabList} from "../common/module/TabList";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {GraphBarItem} from "./module/GraphBarItem";
 import {GraphBarCard} from "./module/GraphBarCard";
 import {DataGraph} from "./DataGraph";
 import {Statistics} from "./Statistics";
 import useValidateInputField from "../hook/useValidateInputField";
+import useApi from "../hook/useApi";
+import {useSelector} from "react-redux";
 
 export function Analysis(){
+    const {userApi} = useApi();
+    const userInfo = useSelector(state=>state.userReducer)
+
     const inputField = useValidateInputField([
         {
             key: 'menu',
@@ -27,6 +32,26 @@ export function Analysis(){
         }
     ]);
 
+    const [staffList, setStaffList] = useState([])
+
+    useEffect(() => {
+        getInnerStaff();
+    }, []);
+
+    const getInnerStaff = async ()=>{
+        const {role} = userInfo;
+        if(role === 1){
+            await userApi.getInnerStaffName().then(({status,data})=>{
+                if(status === 200 && data){
+                    setStaffList(data)
+                }
+            })
+        }else{
+            setStaffList([userInfo.name])
+        }
+
+    }
+
     return (
         <div className={Layout.sub}>
 
@@ -39,9 +64,9 @@ export function Analysis(){
                     </div>
 
                     {
-                        inputField.getInput('menu') === 0 && <div className={cmc(Graph.tab, Graph.type2)}>
+                        inputField.get('menu') === 0 && <div className={cmc(Graph.tab, Graph.type2)}>
                             <TabList name='range' inputField={inputField} values={
-                                ['개인', '매장', '회사']
+                                (userInfo.role === 1) ? ['개인', '매장'] : ['개인']
                             }/>
                         </div>
                     }
@@ -49,10 +74,8 @@ export function Analysis(){
 
                     <div className={Graph.graph_head_group}>
                         {
-                            inputField.getInput('menu') === 0 && <div className={cmc(Graph.tab, Graph.type3)}>
-                                <TabList name='user' inputField={inputField} values={
-                                    ['김모모', '나모모', '다모모']
-                                }/>
+                            inputField.get('menu') === 0 && <div className={cmc(Graph.tab, Graph.type3)}>
+                                <TabList name='user' inputField={inputField} values={staffList}/>
                             </div>
                         }
 
@@ -62,7 +85,7 @@ export function Analysis(){
                 </div>
 
                 {
-                    inputField.getInput('menu') === 0 ? <DataGraph/> : <Statistics/>
+                    inputField.get('menu') === 0 ? <DataGraph/> : <Statistics/>
                 }
             </div>
 

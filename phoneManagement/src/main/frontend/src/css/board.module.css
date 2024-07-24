@@ -83,3 +83,27 @@
 .board .promise .promise_option .option_add .inp{width:calc(100% - 32px); padding:0 8px; border-radius:4px; font-size:14px; line-height:30px;}
 .board .promise .promise_option .option_add .inp:focus{padding:0 7px; line-height:28px;}
 .board .promise .btn_promise{width:100%; margin-top:24px; border-radius:8px;}
+
+/*반응형*/
+@media all and (max-width:1423px){
+    .board .promise .promise_item{width:calc(50% - 16px);}
+}
+@media all and (max-width:1000px){
+    .board{padding-top:10px;}
+    .board .board_head .board_head_group{margin-right:8px;}
+    .board .board_head .board_head_group + .board_head_group{float:none; margin-right:0;}
+    .board .board_body{padding-bottom:80px; overflow-x:auto; overflow-y:hidden;}
+    .board .td_board{width:931px;}
+    .board .board_head .board_count .count_text{font-size:13px;}
+    .board .td_board .thead .th{padding:8px 5px; font-size:13px; word-break:keep-all;}
+    .board .td_board .tbody .td{padding:8px 5px; font-size:13px;}
+    .board .promise{margin-top:0;}
+    .board .promise .promise_profile .profile_text .profile_name{font-size:15px;}
+}
+@media all and (max-width:640px){
+    .board .board_head .board_search{width:170px;}
+    .board .board_head .board_search .input{font-size:13px;}
+    .board .board_head .board_search .input::placeholder{color:transparent;}
+    .board .promise .promise_item{width:calc(100% - 16px); margin:4px 8px;}
+    .btn.btn_medium.btn_add{display:block; float:none; width:100%; margin-top:8px;}
+}

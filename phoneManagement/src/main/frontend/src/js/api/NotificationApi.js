@@ -11,7 +11,7 @@ function NotificationApi(accessToken){
             return await axiosApiWithAccessToken.get('/api/v1/notif/read/all', accessToken);
         },
         getNotifList: async ()=>{
-            return await axiosApiWithAccessToken.get('/api/v1/notif', accessToken);
+            return await axiosApiWithAccessToken.get('/api/v1/notif/all', accessToken);
         }
     }
 }

@@ -20,7 +20,8 @@ public interface SaleMapper{
 	public List<Map<String,Object>> getSaleAsCard(SaleSearchVO vo);
 	public List<Map<String,Object>> getSaleAsComb(SaleSearchVO vo);
 	public List<Map<String,Object>> getSaleAsSupport(SaleSearchVO vo);
-	public List<Map<String,Object>> getAppointment(SaleSearchVO vo);
+	public List<Map<String,Object>> getSaleAsPromise(SaleSearchVO vo);
+
 
 
 	public Integer getMaxSaleId(String userId);
@@ -31,39 +32,48 @@ public interface SaleMapper{
 	public boolean isDuplicatedTel(SaleVO vo);
 	public String getSpecFilePath(int id);
 
-	public List<Map<String,Object>> getSaleAppointment(String userId, int saleId);
-	public List<Map<String,Integer>> getSaleSupport(String userId, int saleId);
-	public List<Map<String,Integer>> getSaleAdd(String userId, int saleId);
-	public List<Map<String,Object>> getSaleCard(String userId, int saleId);
-	public List<Map<String,Object>> getSaleUsedDevice(String userId, int saleId);
+	public List<Map<String,Object>> getSalePromiseDetail(String userId, int saleId);
+	public List<Map<String,Integer>> getSaleSupportDetail(String userId, int saleId);
+	public List<Map<String,Integer>> getSaleAddDetail(String userId, int saleId);
+	public List<Map<String,Object>> getSaleCardDetail(String userId, int saleId);
+	public List<Map<String,Object>> getSaleUsedDeviceDetail(String userId, int saleId);
 
-	public int insertSaleAppointment(String userId, int saleId, List<SaleAppointmentVO> list);
+	public int insertSalePromise(String userId, int saleId, List<SalePromiseVO> list);
 	public int insertSaleSupport(String userId, int saleId, List<SaleSupportVO> list);
 	public int insertSaleAdd(String userId, int saleId, List<SaleAddVO> list);
 	public int insertSaleCard(String userId, int saleId, List<SaleCardVO> list);
 	public int insertSaleUsedDevice(String userId, int saleId, List<SaleUsedDeviceVO> list);
 
-	public int updateSaleAppointment(String userId, int saleId, int apmId, boolean checked, String content);
+	public int updateSaleAsPromise(String userId, int saleId, int pmId, boolean checked, String content);
 	public int updateSaleSupport(String userId, int saleId, int supId, int div, int amount);
 	public int updateSaleAdd(String userId, int saleId, int addId, int div, int amount);
 	public int updateSaleCard(String userId, int saleId, int cardId, int cardNm, int cardTp);
 	public int updateSaleUsedDevice(String userId, int saleId, int usedDeviceId, String usedDeviceNm, int usedDeviceStor);
 
-	public Integer getSaleAppointmentCount(String userId, int saleId);
-	public Integer getSaleSupportCount(String userId, int saleId);
-	public Integer getSaleAddCount(String userId, int saleId);
-	public Integer getSaleCardCount(String userId, int saleId);
-	public Integer getSaleUsedDeviceCount(String userId, int saleId);
+	public Integer getSaleTotalPromiseCount(String userId);
+	public Integer getSaleTotalSupportCount(String userId);
+//	public Integer getSaleAddCount(String userId, int saleId);
+	public Integer getSaleTotalCardCount(String userId);
+	public Integer getSaleTotalCombCount(String userId);
+	public Integer getSaleTotalUsedDeviceCount(String userId);
 
-	public int deleteSaleAppointment(String userId, int saleId, int apmId);
+	public int deleteSalePromise(String userId, int saleId, int pmId);
 	public int deleteSaleSupport(String userId, int saleId, int supId);
 	public int deleteSaleAdd(String userId, int saleId, int addId);
 	public int deleteSaleCard(String userId, int saleId, int cardId);
 	public int deleteSaleUsedDevice(String userId, int saleId, int usedDeviceId);
 
-	public int deleteAllSaleAppointment(String userId, int saleId);
+	public int deleteAllSalePromise(String userId, int saleId);
 	public int deleteAllSaleSupport(String userId, int saleId);
 	public int deleteAllSaleAdd(String userId, int saleId);
 	public int deleteAllSaleCard(String userId, int saleId);
 	public int deleteAllSaleUsedDevice(String userId, int saleId);
+
+	// 진행현황 관리
+	public int changeUsedDeviceState(String userId, int saleId, int udId, int state);
+	public int changeCardState(String userId, int saleId, int cardId, int state);
+	public int changeCombState(String userId, int saleId, int state);
+	public int changeSupportState(String userId, int saleId, int supId, int state);
+	public int changePromiseState(String userId, int saleId, int pmId, int checked);
+
 }

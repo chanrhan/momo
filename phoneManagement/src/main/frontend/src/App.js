@@ -13,7 +13,7 @@ import {RegisterCorp} from "./js/shop/RegisterCorp";
 import {RegisterShop} from "./js/shop/RegisterShop";
 import {FindUsername} from "./js/account/FindUsername";
 import {FindPassword} from "./js/account/FindPassword";
-import {ManageStaff} from "./js/service/sale/ManageStaff";
+import {ManageStaff} from "./js/staff/ManageStaff";
 import {Profile} from "./js/profile/Profile";
 import {Sale} from "./js/service/sale/Sale";
 import {Task} from "./js/service/task/Task";

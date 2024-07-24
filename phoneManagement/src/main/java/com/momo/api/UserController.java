@@ -58,10 +58,10 @@ public class UserController {
 	 * @param nickname string
 	 * @return Boolean
 	 */
-	@PutMapping("/nickname")
-	public ResponseEntity<?> updateNickname(@RequestParam String nickname){
+	@GetMapping("/nickname")
+	public ResponseEntity<Boolean> updateNickname(@RequestParam String nickname){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.updateNickname(username, nickname));
+		return ResponseEntity.ok(userService.updateNickname(username, nickname) > 0);
 	}
 
 //	/**
@@ -174,15 +174,13 @@ public class UserController {
 
 	/**
 	 * 사용자 매장 가입 요청 승인
-	 * @param userId string
-	 * @param shopId integer
 	 * @return Boolean
 	 */
-	@PutMapping("/{userId}/approve")
-	public ResponseEntity<Boolean> approveUser(@PathVariable String userId,
-											   @RequestParam Integer shopId){
-
-		return null;
+	@PostMapping("/{staffId}/approval-st")
+	public ResponseEntity<Boolean> updateApprovalState(@PathVariable String staffId,
+													   @RequestBody Integer state){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.updateApprovalState(username,staffId,state)> 0);
 	}
 
 	/**
@@ -203,5 +201,23 @@ public class UserController {
 		return ResponseEntity.ok(userService.getInnerStaff(username));
 	}
 
+	@GetMapping("/staff/inner/all")
+	public ResponseEntity<List<Map<String,Object>>> getInnerStaffAll(@RequestParam(required = false) String keyword){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getInnerStaffAll(username, keyword));
+	}
+
+	@GetMapping("/staff/inner/count")
+	public ResponseEntity<Integer> getInnerStaffTotalCount(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getInnerStaffTotalCount(username));
+	}
+
+
+	@GetMapping("/staff/name/inner")
+	public ResponseEntity<List<String>> getInnerStaffName(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getInnerStaffName(username));
+	}
 
 }

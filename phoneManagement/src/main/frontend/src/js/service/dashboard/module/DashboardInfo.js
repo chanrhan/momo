@@ -4,21 +4,20 @@ import ProfileImg1 from "../../../../images/profile_img1.jpg"
 import {DashboardSchedule} from "./DashboardSchedule";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {userReducer, userSlice} from "../../../store/slices/userSlice";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
-import {SelectItem, SelectLayer} from "../../../common/module/SelectLayer";
-import {SelectModal} from "../../../common/modal/menu/SelectModal";
 import useValidateInputField from "../../../hook/useValidateInputField";
 import useModal from "../../../hook/useModal";
-import {ModalType} from "../../../common/modal/ModalType";
-import {ElementUtils} from "../../../utils/ElementUtils";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
-import {SelectOptionInputLayer} from "../../../common/module/SelectOptionInputLayer";
+import {ChangeNicknameLayer} from "../../../common/module/ChangeNicknameLayer";
+import {useObjectInputField} from "../../../hook/useObjectInputField";
+import {ModalType} from "../../../common/modal/ModalType";
 
 export function DashboardInfo({}){
-    const inputField = useValidateInputField();
     const modal = useModal();
+
+    const inputField = useObjectInputField();
+    const [nickname, setNickname] = useState(null)
     const userInfo = useSelector(state=>state.userReducer)
     const [profileImg, setProfileImg] = useState(null)
     const {userApi, shopApi} = useApi();
@@ -43,8 +42,7 @@ export function DashboardInfo({}){
 
     useEffect(() => {
         if(userInfo){
-            // console.table(userInfo)
-            inputField.put('nickname',userInfo.nickname)
+            setNickname(userInfo.nickname)
         }
     }, [userInfo]);
 
@@ -59,21 +57,17 @@ export function DashboardInfo({}){
         }) : null;
     }
 
-
-    // const openShopSelectModal = (e)=>{
-    //     const pos = ElementUtils.getAbsolutePos(e, 1.1)
-    //     modal.openModal(ModalType.MENU.Select, {
-    //         name: 'shop',
-    //         inputField: inputField,
-    //         theme: Dashboard,
-    //         top: `${pos.top}px`,
-    //         left: `${pos.left}px`,
-    //         values: shopItems && shopItems.map((v,_)=>{
-    //                 return v.item_nm;
-    //             })
-    //     })
-    // }
-
+    const updateNickname = (v)=>{
+        setNickname(v);
+        console.log(`update: ${v}`)
+        userApi.updateNickname(v).then(({status,data})=>{
+            if(status === 200 && data){
+                modal.openModal(ModalType.SNACKBAR.Info, {
+                    msg: '호칭이 변경되었습니다'
+                })
+            }
+        })
+    }
 
     return (
         <div className={cm(Dashboard.dashboard_info, Dashboard.div)}>
@@ -88,14 +82,14 @@ export function DashboardInfo({}){
 
                 <div className={cm(Dashboard.company_select)}>
                     <div className={cmc(Dashboard.select_box)}>
-                        <input type="hidden" id=""/>
+                        {/*<input type="hidden" id=""/>*/}
                         <SelectIndexLayer cssModules={Dashboard} inputField={inputField} values={getShopItems()} name='shop_nm'/>
                     </div>
 
                     <div className={cmc(Dashboard.select_box)}>
-                        <input type="hidden" id=""/>
-
-                        <SelectOptionInputLayer cssModules={Dashboard} inputField={inputField} values={['대표','점장']} name='nickname'/>
+                        {/*<input type="hidden" id=""/>*/}
+                        <ChangeNicknameLayer value={nickname} values={['대표','점장']}
+                                             onChange={updateNickname}/>
                     </div>
                 </div>
 

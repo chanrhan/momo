@@ -11,7 +11,7 @@
             );
 
         INSERT INTO tb_shop
-            (shop_id, shop_nm, shop_addr, shop_tel,provider, br_nm, br_no)
+            (shop_id, shop_nm, shop_addr, shop_tel, provider, br_nm, br_no)
         VALUES (@next_shopId, #{shopNm}, #{shopAddr}, #{shopTel},#{provider},#{brNm},#{brNo});
 
         UPDATE tb_account
@@ -55,51 +55,15 @@
 
     <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
         SELECT shop_id,
-               shop_nm
+               shop_nm,
+               shop_addr
         from tb_shop
         where
         <if test="keyword != null and !keyword.equals('')">
-            shop_nm like '%${keyword}%'
+            shop_nm like '%${keyword}%' and
         </if>
-
         1=1
-
-<!--        with tb as (-->
-<!--            select-->
-<!--            sh.*,-->
-<!--            cp.bp_no,-->
-<!--            cp.corp_nm-->
-<!--            from-->
-<!--            tb_shop sh-->
-<!--            left outer join tb_corp cp on cp.corp_id=sh.corp_id-->
-<!--        )-->
-
-<!--        select-->
-<!--        *-->
-<!--        from-->
-<!--        tb-->
-<!--        where-->
-<!--        <if test="userId != null and !userId.equals('')">-->
-<!--            corp_id=(-->
-<!--            select tb_emp.corp_id-->
-<!--            from    tb_emp-->
-<!--            where emp_id=#{userId}-->
-<!--            ) and-->
-<!--        </if>-->
-<!--        <if test='keyword != null and !keyword.equals("")'>-->
-<!--            (-->
-<!--                shop_nm like '%${keyword}%' or-->
-<!--                shop_cd like '%${keyword}%'-->
-<!--            ) and-->
-<!--        </if>-->
-<!--        1 = 1-->
-<!--        <if test='order != null and !order.equals("")'>-->
-<!--            order by-->
-<!--            ${order} ${asc}-->
-<!--        </if>-->
-<!--        <if test='limit != null and offset != null'>-->
-<!--            limit ${offset} ${limit}-->
-<!--        </if>-->
+        limit 20
     </select>
 
     <select id="getShopItems">
@@ -109,6 +73,12 @@
         left outer join tb_staff sf on sf.shop_id = sh.shop_id
         where sf.staff_id = #{userId}
     </select>
+
+    <insert id="joinShop">
+        INSERT INTO tb_staff
+            (shop_id, staff_id, role, approval_st)
+        VALUES (#{shopId}, #{userId}, 0, 0);
+    </insert>
 
 
 </mapper>

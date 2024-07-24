@@ -34,6 +34,19 @@ export const LMD = {
         '일시납', '12개월', '24개월', '30개월', '36개월', '48개월'
     ],
 
+    ud_st: [
+      '반납 예정','반납 완료','판매 완료','취소'
+    ],
+    card_st: [
+        '신청 예정','신청 완료','등록 완료','취소'
+    ],
+    comb_st: [
+        '변경 예정','변경 완료','취소'
+    ],
+    sup_st: [
+        '지원 전','지원 완료'
+    ],
+
     // task (sale)
     sale_category: [
       'used_device','card','comb','sup','apm'
@@ -53,6 +66,9 @@ export const LMD = {
     ],
 
     // Reservation
+    msg_st: [
+      '예약 안됨','전송 예정','전송 완료'
+    ],
     rsv_d_day: [
         '즉시발송'
     ],

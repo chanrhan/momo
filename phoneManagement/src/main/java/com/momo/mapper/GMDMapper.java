@@ -9,10 +9,18 @@ import java.util.Map;
 // Global Master Data
 @Mapper
 public interface GMDMapper {
+    // 정적 목록
     public List<Map<String,Object>> getDevice(String keyword);
     public List<Map<String,Object>> getSecondDevice(String keyword);
-    public List<Map<String,Object>> getExtraService(String keyword);
-    public List<Map<String,Object>> getInternetPlan(String keyword);
-    public List<Map<String,Object>> getTvPlan(String keyword);
     public List<Map<String,Object>> getCtPlan(String keyword);
+
+    // 동적 목록
+    public List<Map<String,Object>> getExtraService(String userId, String keyword);
+    public List<Map<String,Object>> getInternetPlan(String userId, String keyword);
+    public List<Map<String,Object>> getTvPlan(String userId, String keyword);
+    public List<Map<String,Object>> getComb(String userId, String keyword);
+    public List<Map<String,Object>> getSupportDiv(String userId, String keyword);
+    public List<Map<String,Object>> getAddDiv(String userId, String keyword);
+
+    public Map<String,Object> getSecondDeviceById(int id);
 }

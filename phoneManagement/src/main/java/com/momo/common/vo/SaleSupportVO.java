@@ -20,6 +20,7 @@ public class SaleSupportVO extends CommonQueryVO {
     private Integer saleId;
 
     private Integer supId;
+    private Integer supSt;
 
     private Integer supDiv;
     private Integer supAmount;

@@ -88,6 +88,17 @@
 .dashboard .info_company .company_profile .profile_btn{float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:14px;}
 .dashboard .info_company .company_select{margin-top:24px;}
 .dashboard .info_company .company_select .select_box .select_btn{width:100%;}
+
+/*20240724 nickname change */
+/*.dashboard .info_company .company_select .select_box .select_layer .select_inp:before{*/
+/*    !*display:inline-block;*!*/
+/*    position:absolute;*/
+/*    !*top:10px; *!*/
+/*    !*right:12px; *!*/
+/*    width:16px; height:16px;*/
+/*    background:url(../images/all_icon.png) no-repeat center / 100%;*/
+/*}*/
+
 /*.dashboard .info_company .company_select .select_box .select_btn{width:100%;}*/
 .dashboard .info_company .company_add{margin-top:12px; color:#62626e; font-size:12px; line-height:14px;}
 
@@ -124,3 +135,63 @@
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_text{font-size:14px; line-height:24px;}
 .dashboard .info_schedule .schedule_body .schedule_item.active .schedule_text{color:#141218; font-weight:500;}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_del{position:absolute; top:8px; right:-4px; width:24px; height:24px; background:url(../images/del_icon.png) no-repeat center / 24px;}
+
+/*반응형*/
+
+@media all and (max-width:1600px){
+    .dashboard .dashboard_panel{width:calc(100% - 350px); padding-right:30px; padding-left:30px; border-right:1px solid #dde1e8;}
+    .dashboard .dashboard_info{width:350px; padding-right:30px; padding-left:30px; border-left:0;}
+}
+@media all and (max-width:1480px){
+    .dashboard .panel_body .panel{display:block; width:100% !important; margin:10px 0 0 0 !important;}
+    .dashboard .panel_body .panel.n1 .panel_list{margin:0 -5px;}
+    .dashboard .panel_body .panel.n1 .panel_item{width:calc(20% - 10px); margin:0 5px;}
+    .dashboard .panel_body .panel.n1 .panel_item .panel_title{font-size:16px; line-height:18px;}
+    .dashboard .panel_body .panel.n1 .panel_item .panel_num{margin-top:12px; font-size:22px; line-height:24px;}
+    .dashboard .panel_body .panel.n1 .panel_item .panel_per{margin-top:12px; padding-left:15px;}
+    .dashboard .panel_body .panel.n1 .panel_item .panel_per .per_arrow{font-size:12px;}
+    .dashboard .panel_body .panel.n2 .panel_item + .panel_item{margin-top:12px;}
+    .dashboard .panel_body .panel.n2 .panel_item .panel_title{font-size:14px;}
+    .dashboard .panel_body .panel.n2 .panel_item .panel_num{font-size:14px;}
+    .dashboard .panel_body .panel.n2 .panel_item .panel_per{font-size:12px;}
+    .dashboard .panel_body .panel.n2 .panel_item .panel_per span{font-size:18px;}
+    .dashboard .panel_body .panel_group:nth-child(2){margin-top:10px;}
+    .dashboard .panel_body .panel.n3 .chart_text{top:12px; left:12px; padding-left:48px; font-size:14px; line-height:20px;}
+    .dashboard .panel_body .panel.n3 .chart_text:before{width:40px; height:40px;}
+    .dashboard .panel_body .panel.n3 .chart_tab{top:15px; right:10px;}
+    .dashboard .panel_body .panel.n3 .chart_tab .tab_item + .tab_item{margin-left:0;}
+    .dashboard .panel_body .panel.n3 .chart_panel{padding:69px 10px 50px 10px;}
+    .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab{bottom:10px;}
+    .dashboard .panel_body .panel_group:nth-child(3){}
+    .dashboard .panel_body .panel.n4 .panel_list{margin-top:20px; padding:0;}
+    .dashboard .panel_body .panel.n4 .panel_item + .panel_item{margin-top:12px; padding-top:12px;}
+    .dashboard .panel_body .panel.n4 .panel_item .panel_title{font-size:14px;}
+    .dashboard .panel_body .panel.n4 .panel_item .panel_num{font-size:14px;}
+    .dashboard .panel_body .panel.n4 .panel_item .panel_per{font-size:12px;}
+    .dashboard .panel_body .panel.n4 .panel_item .panel_per .span{font-size:18px;}
+    .btn.btn_small.btn_add_icon{width:auto;}
+    .dashboard .panel_body .panel.n5 .panel_list{margin:10px -5px 0 -5px;}
+    .dashboard .panel_body .panel.n5 .panel_item{width:calc(50% - 10px); margin:0 5px 10px 5px;}
+    .dashboard .panel_body .panel.n5 .panel_item_head .panel_item_text{font-size:14px;}
+    .dashboard .dashboard_info > .div{padding:20px;}
+    .dashboard .info_schedule{min-height:auto; margin-top:10px;}
+}
+@media all and (max-width:1000px){
+    .dashboard .dashboard_panel{display:block; width:100%; padding:10px;}
+    .dashboard .dashboard_info{display:block; width:100%; padding:10px;}
+    .dashboard .panel_head .panel_greeting{font-size:18px;}
+    .dashboard .panel_head .panel_standard{font-size:14px;}
+    .dashboard .panel_body{margin-top:10px;}
+}
+@media all and (max-width:640px){
+    .dashboard .panel_head .panel_greeting{font-size:14px;}
+    .dashboard .panel_head .panel_standard{font-size:12px;}
+    .dashboard .panel_body .panel.n1 .panel_item{width:calc(50% - 10px); margin-bottom:9px;}
+    .dashboard .panel_body .panel.n1 .panel_item:last-child{width:calc(100% - 10px); margin-bottom:0;}
+    .dashboard .panel_body .panel.n3 .chart_text{top:10px; left:10px;}
+    .dashboard .panel_body .panel.n3 .chart_tab{top:60px; left:10px; text-align:center;}
+    .dashboard .panel_body .panel.n3 .chart_panel{padding-top:110px;}
+    .dashboard .panel_body .panel.n4 .panel_name{font-size:16px;}
+    .dashboard .panel_body .panel.n5 .panel_item_body{height:131px;}
+
+}

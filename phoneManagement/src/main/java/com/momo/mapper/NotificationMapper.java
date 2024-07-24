@@ -10,7 +10,7 @@ public interface NotificationMapper {
 	public int countUnreadNotif(String userId);
 	public List<Map<String,Object>> getNotifList(String userId);
 	// Notification
-	public int insertNotification(NotifVO vo);
+	public void insertNotification(NotifVO vo);
 //	public List<Map<String,Object>> getNotification(NotifVO vo);
 //	public List<Map<String,Object>> searchAlert(SearchVO vo);
 	public int read(int id);

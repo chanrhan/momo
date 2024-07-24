@@ -3,6 +3,7 @@ package com.momo.service;
 import com.momo.common.UserDetailsImpl;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
+import com.momo.mapper.RefreshTokenMapper;
 import com.momo.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -27,6 +27,7 @@ import java.util.*;
 public class UserService extends CommonService implements UserDetailsService{
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
+	private final RefreshTokenMapper refreshTokenMapper;
 
 	// Authentication
 	public Map<String,String> getInnerStaff(String userId){
@@ -40,9 +41,21 @@ public class UserService extends CommonService implements UserDetailsService{
 		return map;
 	}
 
+	public List<Map<String,Object>> getInnerStaffAll(String userId, String keyword){
+		return userMapper.getInnerStaffAll(userId, keyword);
+	}
+
+	public Integer getInnerStaffTotalCount(String userId){
+		return userMapper.getInnerStaffTotalCount(userId);
+	}
+
+	public List<String> getInnerStaffName(String userId){
+		return userMapper.getInnerStaffName(userId);
+	}
+
 	@Deprecated
 	public List<Map<String,Object>> getStaffByShopId(String shopId){
-		return userMapper.getStaffByShopID(shopId);
+		return userMapper.getStaffByShopId(shopId);
 	}
 
 //	public int updateCurrentShop(String userId, int shopId){
@@ -85,6 +98,10 @@ public class UserService extends CommonService implements UserDetailsService{
 
 	public void sendAuthNumberByTelForUpdatePassword(String id){
 
+	}
+
+	public String getMyName(String userId){
+		return userMapper.getName(userId);
 	}
 
 	public Map<String,Object> getProtectedTelAndEmail(String id){
@@ -152,9 +169,8 @@ public class UserService extends CommonService implements UserDetailsService{
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
 		return userMapper.updatePassword(vo);
 	}
-	public int updateApproval(String id, boolean state){
-		UserVO vo = UserVO.builder().staffId(id).approvalSt(state).build();
-		return updateEmp(vo);
+	public int updateApprovalState(String userId, String staffId, int state){
+		return userMapper.updateApprovalState(userId,staffId,state);
 	}
 	public int updatePfp(UserVO vo){
 		return userMapper.updatePfp(vo);
@@ -181,24 +197,24 @@ public class UserService extends CommonService implements UserDetailsService{
 
 
 	// Employee
-	public int insertEmp(UserVO vo){
-		if(vo.getApprovalSt() == null){
-			vo.setApprovalSt(false);
-		}
-		// 이거 임시 코드임. 나중에 수정
-		if(vo.getShopId() == null){
-			vo.setShopId(0);
-		}
-
-		return userMapper.insertStaff(vo);
-	}
-	public int updateEmp(UserVO vo){
-		return userMapper.updateStaff(vo);
-	}
-
-	public int deleteEmp(String id) {
-		return userMapper.deleteStaff(id);
-	}
+//	public int insertEmp(UserVO vo){
+//		if(vo.getApprovalSt() == null){
+//			vo.setApprovalSt(false);
+//		}
+//		// 이거 임시 코드임. 나중에 수정
+//		if(vo.getShopId() == null){
+//			vo.setShopId(0);
+//		}
+//
+//		return userMapper.insertStaff(vo);
+//	}
+//	public int updateEmp(UserVO vo){
+//		return userMapper.updateStaff(vo);
+//	}
+//
+//	public int deleteEmp(String id) {
+//		return userMapper.deleteStaff(id);
+//	}
 
 //	public List<Map<String,Object>> fetchStaff(UserVO vo) {
 //		return userMapper.getUserAsStaff(vo);

@@ -69,14 +69,14 @@ export function SelectMapLayer({initValue, inputField, cssModule, cssModules=[],
         return cssModules.map(cm=>cm[key]).join(' ');
     }
 
-    // console.log(inputField.getInput(name))
+    // console.log(inputField.get(name))
     // console.log(`value: ${value}`)
 
     const getButtonName = ()=>{
         if(!ObjectUtils.isEmpty(value)){
             return value;
         }else if(!ObjectUtils.isEmpty(inputField)) {
-            const getValue = inputField.getInput(name);
+            const getValue = inputField.get(name);
             // console.log(`g v : ${getValue}`)
             return !ObjectUtils.isEmpty(getValue) ? values[getValue] : (initValue ?? 'NULL')
         }

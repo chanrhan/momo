@@ -29,6 +29,7 @@ import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {useBitArray} from "../../../hook/useBitArray";
 import {SelectMapLayer} from "../../../common/module/SelectMapLayer";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
+import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
 
 
 const DYNAMIC_ITEMS = [
@@ -49,7 +50,7 @@ function SaleDetailModal(props){
         add_amount: 0
     })
 
-    const apmInputField = useObjectArrayInputField({
+    const promiseInputField = useObjectArrayInputField({
         checked: false,
         content: ''
     })
@@ -84,7 +85,7 @@ function SaleDetailModal(props){
     }
 
     const getInnerStaff = async ()=>{
-        await userApi.getInnerStaff().then(({status,data})=>{
+        await userApi.getInnerStaffAsIdNameMap().then(({status,data})=>{
             if(status === 200 && data){
                 setStaff(data)
             }
@@ -95,7 +96,7 @@ function SaleDetailModal(props){
         await saleApi.getSaleDetail(saleId).then(({status,data})=>{
             if(status === 200 && data){
                 console.table(data)
-                const {sale, apm_list, sup_list, add_list, card_list, used_device_list} = data;
+                const {sale, pm_list, sup_list, add_list, card_list, ud_list} = data;
                 let bit = 0;
                 if(sale){
                     if(sale.wt_cms){
@@ -112,8 +113,8 @@ function SaleDetailModal(props){
                     }
                     inputField.putAll(sale);
                 }
-                if(!ObjectUtils.isEmptyArray(apm_list)){
-                    apmInputField.putAll(apm_list);
+                if(!ObjectUtils.isEmptyArray(pm_list)){
+                    promiseInputField.putAll(pm_list);
                 }
                 if(!ObjectUtils.isEmptyArray(sup_list)){
                     supportInputField.putAll(sup_list);
@@ -125,9 +126,9 @@ function SaleDetailModal(props){
                     bit = bit | (1 << 2)
                     checkListInputField.put('card_list', card_list);
                 }
-                if(!ObjectUtils.isEmptyArray(used_device_list)){
+                if(!ObjectUtils.isEmptyArray(ud_list)){
                     bit = bit | (1 << 3)
-                    checkListInputField.put('used_device_list', used_device_list);
+                    checkListInputField.put('ud_list', ud_list);
                 }
                 checkBit.setAll(bit);
             }
@@ -194,10 +195,10 @@ function SaleDetailModal(props){
 
     const openSecondModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Second, {
-            data: checkListInputField.input.sec_device_id,
+            data: checkListInputField.input.sd_id,
             onSubmit: (id)=>{
-                console.log(`sec: ${id}`)
-                checkListInputField.put('sec_device_id',id)
+                // console.log(`sec: ${id}`)
+                checkListInputField.put('sd_id',id)
                 if(id !== 0){
                     checkBit.on(1)
                 }else{
@@ -209,7 +210,7 @@ function SaleDetailModal(props){
 
     const openCardModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Card, {
-            data: checkListInputField.getInput('card_list'),
+            data: checkListInputField.get('card_list'),
             onSubmit: (list)=>{
                 console.log(`card: `)
                 console.table(list)
@@ -225,11 +226,10 @@ function SaleDetailModal(props){
 
     const openUsedPhoneModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Used_Phone, {
-            data: checkListInputField.getInput('used_device_list'),
+            data: checkListInputField.get('ud_list'),
             onSubmit: (list)=>{
-                console.log(`used_device: `)
                 console.table(list)
-                checkListInputField.put('used_device_list',list)
+                checkListInputField.put('ud_list',list)
                 if(!ObjectUtils.isEmpty(list)){
                     checkBit.on(3)
                 }else{
@@ -304,6 +304,7 @@ function SaleDetailModal(props){
             return;
         }
         modal.openModal(ModalType.LAYER.Reserve_Message, {
+            actv_dt: inputField.get('actv_dt'),
             onSubmit: submit
         })
     }
@@ -338,10 +339,10 @@ function SaleDetailModal(props){
                 seller_id: userInfo.user.id,
                 sup_list: supportInputField.input,
                 add_list: addInputField.input,
-                total_cms: inputField.getInput('ct_cms') +
+                total_cms: inputField.get('ct_cms') +
                     sumAdd() -
                     sumSup(),
-                apm_list: apmInputField.input,
+                pm_list: promiseInputField.input,
                 rsv_msg_list: rsvMsgList
             }
 
@@ -399,7 +400,7 @@ function SaleDetailModal(props){
                             <div className={Popup.head_box} >
                                 <DateSelectModal rootClassName={Popup.head_box} onSelect={setDate}>
                                     <input type="text" className={`date ${cmc(Popup.inp)}`}
-                                           value={inputField.getInput('actv_dt')}
+                                           value={inputField.get('actv_dt')}
                                            placeholder='개통 날짜' readOnly/>
                                 </DateSelectModal>
                                 <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
@@ -453,15 +454,15 @@ function SaleDetailModal(props){
                                         <AddSaleTabItem inputField={inputField} name='ct_actv_div' subject='개통 구분'
                                                         depth={2} values={LMD.ct_actv_div}/>
                                         <AddSaleItem>
-                                            <AddSaleInput value={inputField.getInput('device_nm')} inputField={inputField} name='device_id' subject='모델명'
+                                            <AddSaleInput value={inputField.get('device_nm')} inputField={inputField} name='device_id' subject='모델명'
                                                           search readOnly onClick={openDeviceSearchModal}/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput value={inputField.getInput('ct_actv_plan_nm')} inputField={inputField} name='ct_actv_plan' subject='개통 요금제'
+                                            <AddSaleInput value={inputField.get('ct_actv_plan_nm')} inputField={inputField} name='ct_actv_plan' subject='개통 요금제'
                                                           search readOnly onClick={openActvPlanSearchModal}/>
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleInput value={inputField.getInput('ct_dec_plan_nm')} inputField={inputField} name='ct_dec_plan' subject='하향 요금제'
+                                            <AddSaleInput value={inputField.get('ct_dec_plan_nm')} inputField={inputField} name='ct_dec_plan' subject='하향 요금제'
                                                           search readOnly onClick={openDecPlanSearchModal}/>
                                         </AddSaleItem>
                                     </ul>
@@ -536,7 +537,7 @@ function SaleDetailModal(props){
                                         <ul className='price_list'>
                                             <li className={Popup.price_item}>
                                                 <div
-                                                    className={Popup.price_num}>{NumberUtils.format(inputField.getInput('ct_cms'))}원
+                                                    className={Popup.price_num}>{NumberUtils.format(inputField.get('ct_cms'))}원
                                                 </div>
                                                 <div className={Popup.price_text}>유/무선 판매 수수료</div>
                                             </li>
@@ -559,7 +560,7 @@ function SaleDetailModal(props){
                                             <li className={cm(Popup.price_item, Popup.sum)}>
                                                 <div className={Popup.price_num}>{
                                                     NumberUtils.format(
-                                                        inputField.getInput('ct_cms') +
+                                                        inputField.get('ct_cms') +
                                                         sumAdd() -
                                                         sumSup()
                                                     )
@@ -603,7 +604,7 @@ function SaleDetailModal(props){
                                                 <div className={Popup.data_title}>비고</div>
                                                 <div className={Popup.data_area}>
                                                     <textarea className={Popup.data_textarea} name='memo'
-                                                              value={inputField.getInput('memo')}
+                                                              value={inputField.get('memo')}
                                                               onChange={inputField.handleInput}></textarea>
                                                 </div>
                                             </div>
@@ -615,23 +616,28 @@ function SaleDetailModal(props){
                                                 <div className={Popup.data_area}>
                                                     <ul className={Popup.popup_check_list}>
                                                         {
-                                                            apmInputField.length() > 0 && apmInputField.input.map((v, i) => {
+                                                            promiseInputField.length() > 0 && promiseInputField.input.map((v, i) => {
                                                                 return <li key={i} className={Popup.li}>
                                                                     <input type="checkbox" name={`apm${i}`}
                                                                            className={Popup.check_inp}
-                                                                           checked={apmInputField.get(i, 'checked')} readOnly/>
+                                                                           checked={promiseInputField.get(i, 'checked')} readOnly/>
                                                                     <label htmlFor={`apm${i}`} className={Popup.check_label}
                                                                            onClick={() => {
-                                                                               apmInputField.put(i, 'checked', !apmInputField.get(i, 'checked'))
+                                                                               promiseInputField.put(i, 'checked', !promiseInputField.get(i, 'checked'))
                                                                            }}>
-                                                                        테스트 테스트
                                                                     </label>
+                                                                    <input type="text" className={Popup.check_text}
+                                                                           value={promiseInputField.get(i,'content')}
+                                                                           onChange={e=>{
+                                                                               promiseInputField.put(i, 'content', e.target.value)
+                                                                           }}
+                                                                           placeholder='내용을 입력해주세요'/>
                                                                     {/*<input type="text" className={Popup.inp} value={apmInputField.contents[i]} onChange={e=>{*/}
                                                                     {/*    apmInputField.putContent(i, e.target.value)*/}
                                                                     {/*}}/>*/}
                                                                     <button type="button" className={Popup.check_del}
                                                                             onClick={() => {
-                                                                                apmInputField.removeItem(i)
+                                                                                promiseInputField.removeItem(i)
                                                                             }}>삭제
                                                                     </button>
                                                                 </li>
@@ -640,7 +646,7 @@ function SaleDetailModal(props){
                                                     </ul>
                                                     <button type="button"
                                                             className={`${cmc(Popup.btn, Popup.btn_add_icon)}`}
-                                                            onClick={apmInputField.addItem}>추가하기
+                                                            onClick={promiseInputField.addItem}>추가하기
                                                     </button>
                                                 </div>
                                             </div>
@@ -666,6 +672,8 @@ function SaleDetailModal(props){
 
 function PriceHalfBox({type=0, inputField}){
     const subject = (type === 0) ? 'sup' : 'add';
+
+
     return (
         <div className={Popup.half_box}>
             <div className={cm(Popup.customer_title, Popup[`n${type+3}`])}>{type === 0 ? '지원':'추가'}
@@ -693,12 +701,15 @@ function PriceHalfBox({type=0, inputField}){
                     inputField.length() > 0 && inputField.input.map((v, i) => {
                         return <tr key={i}>
                             <td className={Popup.td}>
-                                <div className={`${cmc(User.select_box,Popup.select_box)}`}>
-                                    {/*<input type="hidden" id=""/>*/}
-                                    <SelectIndexLayer value={DYNAMIC_ITEMS[inputField.get(i,`${subject}_div`) ?? 0]} onChange={(v) => {
-                                        inputField.put(i, `${subject}_div` , v)
-                                    }} cssModules={toCssModules(Popup, User)} values={DYNAMIC_ITEMS}/>
-                                </div>
+                                <DivSelectItem type={type} value={inputField.get(i, `${subject}_div`)} onClick={(v)=>{
+                                    inputField.put(i, `${subject}_div`, v);
+                                }}/>
+                                {/*<div className={`${cmc(User.select_box, Popup.select_box)}`}>*/}
+                                {/*    <input type="hidden" id=""/>*/}
+                                {/*    <SelectIndexLayer value={DYNAMIC_ITEMS[inputField.get(i,`${subject}_div`) ?? 0]} onChange={(v) => {*/}
+                                {/*        inputField.put(i, `${subject}_div` , v)*/}
+                                {/*    }} cssModules={toCssModules(Popup, User)} values={DYNAMIC_ITEMS}/>*/}
+                                {/*</div>*/}
                             </td>
                             <td className={Popup.td}>
                                 <input type="text" className={`ta_r ${cmc(Popup.inp)}`}
@@ -717,6 +728,14 @@ function PriceHalfBox({type=0, inputField}){
                 }
                 </tbody>
             </table>
+        </div>
+    )
+}
+
+function DivSelectItem({onClick, value, type=0}){
+    return (
+        <div className={`${cmc(User.select_box, Popup.select_box)}`}>
+            <DynamicSelectLayer value={value} type={DYNAMIC_TYPE.sup_div+type} onClick={onClick}/>
         </div>
     )
 }
