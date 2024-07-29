@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class TermVO extends CommonQueryVO {
+public class TermVO extends BaseVO {
 	private String        userId;
 	private String        role;
 	private Boolean       checked;

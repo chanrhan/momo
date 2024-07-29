@@ -22,10 +22,7 @@ public interface SaleMapper{
 	public List<Map<String,Object>> getSaleAsSupport(SaleSearchVO vo);
 	public List<Map<String,Object>> getSaleAsPromise(SaleSearchVO vo);
 
-
-
 	public Integer getMaxSaleId(String userId);
-
 
 	public Integer getSaleTotalCount(String userId);
 
@@ -76,4 +73,39 @@ public interface SaleMapper{
 	public int changeSupportState(String userId, int saleId, int supId, int state);
 	public int changePromiseState(String userId, int saleId, int pmId, int checked);
 
+
+	// 메인 페이지 (Dashboard)
+	//  각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )
+	public List<Map<String,Object>> getSummary(String userId, String prevDate, String currDate);
+
+	// 판매일보 대비 항목(카드/세컨/부가서비스) 비율 (항목 개수)
+	public List<Map<String, Object>> getSaleRatio(String userId, String date);
+
+	// 각 항목별 진행 현황 (완료 개수, 총 개수)
+	public List<Map<String,Object>> getWorkInProcess(String userId, String date);
+
+	// 각 항목별 전월 대비 증가/감소량
+	public Integer getCtChangeAmount(CommonVO vo);
+	public Integer getInternetChangeAmount(CommonVO vo);
+	public Integer getTvChangeAmount(CommonVO vo);
+	public Float getTotalCmsChangeAmount(CommonVO vo);
+	public Float getAvgCmsChangeAmount(CommonVO vo);
+
+	// 그래프(Graph) 페이지
+	// 그래프 요약
+	public List<Map<String,Object>> getGraphSummary(CommonVO vo);
+
+	public Map<String,String> getCtGraphByDateType(CommonVO vo);
+	public Map<String,String> getInternetGraphByDateType(CommonVO vo);
+	public Map<String,String> getTvGraphByDateType(CommonVO vo);
+	public Map<String,String> getMarginGraphByDateType(CommonVO vo);
+	public Map<String,String> getAvgMarginGraphByDateType(CommonVO vo);
+
+	// 기준별 평균 마진
+	public List<Integer> getAvgMarginBySelectType(CommonVO vo);
+
+	// 모델명, 요금제 통계
+	public List<Map<String,Object>> getDeviceStat(CommonVO vo);
+	public List<Map<String,Object>> getPlanStat(CommonVO vo);
+	public List<Map<String,Object>> getSecondDeviceStat(CommonVO vo);
 }

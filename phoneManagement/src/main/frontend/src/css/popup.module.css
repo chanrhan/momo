@@ -23,6 +23,18 @@
     margin: 0;
     padding: 0;
 }
+.tooltip{
+    opacity:1; visibility:inherit;
+    position:absolute;
+    /*overflow: hidden;*/
+    /*top:20px; left:0; right:0; */
+    z-index:99;
+    /*width:100%; max-width:400px; */
+    /*margin:0 auto;*/
+    border-radius:20px; background-color:#fff; transition:all .5s ease-in-out;
+    margin: 0;
+    padding: 0;
+}
 /*.popup.active{opacity:1; visibility:inherit;}*/
 .popup .popup_title{color:#141218; font-size:16px; line-height:20px;}
 .popup > .popup_text{margin-top:18px; color:#50505c; font-size:14px; line-height:20px;}
@@ -85,6 +97,13 @@
     height: 52px !important;
 }
 
+/*20240726 chan todo color select modal*/
+.todo_box{
+    background-color: red;
+    top: 10px;
+    width: 250px;
+    height: 50px;
+}
 
 
 /* 달력 */
@@ -145,7 +164,13 @@
 .popup .schedule_regist .schedule_color_box .schedule_color.yellow{background-color:#ffd700;}
 .popup .schedule_regist .schedule_color_box .schedule_color.green{background-color:#00bb35;}
 .popup .schedule_regist .schedule_color_box .schedule_color.blue{background-color:#4781ff;}
-.popup .schedule_regist .schedule_color_box .schedule_color_list{opacity:0; visibility:hidden; position:absolute; top:42px; right:-14px; padding:12px 13px; border:1px solid #707070; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); text-align:center; white-space:nowrap; transition:all .25s ease-in-out;}
+.popup .schedule_regist .schedule_color_box .schedule_color_list{
+    opacity:0; visibility:hidden; position:absolute; top:42px; right:-14px; padding:12px 13px;
+    border: .5em solid #707070;
+    border-radius:8px; background-color:#fff;
+    box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16);
+    text-align:center; white-space:nowrap;
+    transition:all .25s ease-in-out;}
 .popup .schedule_regist .schedule_color_box .schedule_color_list.active{opacity:1; visibility:inherit;}
 .popup .schedule_regist .schedule_color_box .schedule_color_list .li{display:inline-block; vertical-align:top;}
 .popup .schedule_regist .schedule_color_box .schedule_color_list .li + .li{margin-left:22px;}

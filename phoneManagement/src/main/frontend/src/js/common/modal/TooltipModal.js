@@ -1,19 +1,32 @@
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
+import {cm} from "../../utils/cm";
+import Popup from "../../../css/popup.module.css";
 
-export const TooltipModal = ({children, x, y, width, height, close, timeout})=>{
+export const TooltipModal = ({children, top, left, close})=>{
+    const componentRef = useRef(null)
 
-    useEffect(()=>{
-        const timer = setTimeout(close, timeout)
+    useEffect(() => {
+        let timer = null;
+        if(window.onclick == null){
+            timer = setTimeout(()=>{
+                window.onmouseover = e=>{
+                    if(componentRef.current && !componentRef.current.contains(e.target)){
+                        close();
+                    }
+                }
+            }, 10);
+        }
         return ()=>{
             clearTimeout(timer);
+            window.onmouseover = null;
         }
-    },[])
+    }, []);
 
     return (
-        <div className='modal-tooltip' style={{top: y, left: x, width: width, height: height}}>
-            <div>
-                <button className='btn btn-outline-danger' onClick={close}>임시 닫기 버튼</button>
-            </div>
+        <div className={cm(Popup.tooltip)} style={{top: top, left: left}} ref={componentRef}>
+            {/*<div>*/}
+            {/*    <button className='btn btn-outline-danger' onClick={close}>임시 닫기 버튼</button>*/}
+            {/*</div>*/}
             {children}
         </div>
     )

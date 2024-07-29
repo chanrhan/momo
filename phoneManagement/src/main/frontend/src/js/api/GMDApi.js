@@ -6,26 +6,26 @@ function GMDApi(accessToken){
     // const axiosApiWithAccessToken = AxiosApiWithAccessToken();
 
     return {
-        getDevice: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/device?keyword=${keyword}`, accessToken);
+        getDevice: async (keyword, provider = '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/device?keyword=${keyword}&provider=${provider}`, accessToken);
         },
-        getSecondDevice: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device?keyword=${keyword}`, accessToken);
+        getSecondDevice: async (keyword, provider = '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device?keyword=${keyword}&provider=${provider}`, accessToken);
         },
         getSecondDeviceById: async (id)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
         },
-        getExtraService: async (keyword)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/exsvc?keyword=${keyword}`, accessToken);
+        getExtraService: async (keyword, provider= '')=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/exsvc?keyword=${keyword}&provider=${provider}`, accessToken);
         },
-        getInternetPlan: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/internet-plan?keyword=${keyword}`, accessToken);
+        getInternetPlan: async (keyword, provider= '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/internet-plan?keyword=${keyword}&provider=${provider}`, accessToken);
         },
-        getTvPlan: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/tv-plan?keyword=${keyword}`, accessToken);
+        getTvPlan: async (keyword, provider= '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/tv-plan?keyword=${keyword}&provider=${provider}`, accessToken);
         },
-        getCtPlan: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/ct-plan?keyword=${keyword}`, accessToken);
+        getCtPlan: async (keyword, provider= '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/ct-plan?keyword=${keyword}&provider=${provider}`, accessToken);
         },
         getSupportDiv: async (keyword)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/sup-div?keyword=${keyword}`, accessToken);

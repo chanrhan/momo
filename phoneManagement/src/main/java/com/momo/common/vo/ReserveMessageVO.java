@@ -12,10 +12,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ReserveMessageVO extends CommonQueryVO{
+public class ReserveMessageVO extends BaseVO {
     private String userId;
     private Integer saleId;
     private Integer msgId;
+    private String rsvDt;
 
     private String content;
 
@@ -23,6 +24,5 @@ public class ReserveMessageVO extends CommonQueryVO{
 
     private Integer msgTp;
     private Integer rsvTp;
-    private String rsvDt;
     private String regiDt;
 }

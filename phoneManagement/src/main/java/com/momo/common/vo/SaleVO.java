@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class SaleVO extends CommonQueryVO {
+public class SaleVO extends BaseVO {
 	private String userId;
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드
@@ -23,7 +23,7 @@ public class SaleVO extends CommonQueryVO {
 
 	// 고객 정보
 	private String custNm; // 고객 이름
-	private String custGd; // 고객 성별 (Gender)
+	private Integer custGd; // 고객 성별 (Gender)
 	private String custTel; // 고객 전화번호
 	private String custCd; // 고객 식별번호 (개인: 생년월일, 법인: 사업자번호)
 

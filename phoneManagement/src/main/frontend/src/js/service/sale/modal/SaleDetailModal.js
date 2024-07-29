@@ -537,7 +537,7 @@ function SaleDetailModal(props){
                                         <ul className='price_list'>
                                             <li className={Popup.price_item}>
                                                 <div
-                                                    className={Popup.price_num}>{NumberUtils.format(inputField.get('ct_cms'))}원
+                                                    className={Popup.price_num}>{NumberUtils.toPrice(inputField.get('ct_cms'))}원
                                                 </div>
                                                 <div className={Popup.price_text}>유/무선 판매 수수료</div>
                                             </li>
@@ -547,19 +547,19 @@ function SaleDetailModal(props){
                                             </li>
                                             <li className={cm(Popup.price_item, Popup.plus)}>
                                                 <div
-                                                    className={Popup.price_num}>{NumberUtils.format(sumAdd())}원
+                                                    className={Popup.price_num}>{NumberUtils.toPrice(sumAdd())}원
                                                 </div>
                                                 <div className={Popup.price_text}>추가</div>
                                             </li>
                                             <li className={cm(Popup.price_item, Popup.minus)}>
                                                 <div
-                                                    className={Popup.price_num}>{NumberUtils.format(sumSup())}원
+                                                    className={Popup.price_num}>{NumberUtils.toPrice(sumSup())}원
                                                 </div>
                                                 <div className={Popup.price_text}>지원</div>
                                             </li>
                                             <li className={cm(Popup.price_item, Popup.sum)}>
                                                 <div className={Popup.price_num}>{
-                                                    NumberUtils.format(
+                                                    NumberUtils.toPrice(
                                                         inputField.get('ct_cms') +
                                                         sumAdd() -
                                                         sumSup()

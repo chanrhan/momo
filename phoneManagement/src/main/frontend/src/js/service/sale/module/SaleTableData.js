@@ -21,7 +21,7 @@ export function SaleTableData({data, checked, onCheck, onClick}){
             <Btd className="ta_c">{data.cust_tel}</Btd>
             <Btd className="ta_r">{data.cust_cd}</Btd>
             <Btd className="ta_r">{data.device_nm}</Btd>
-            <Btd className="ta_r">{NumberUtils.format(data.total_cms)} 원</Btd>
+            <Btd className="ta_r">{NumberUtils.toPrice(data.total_cms)} 원</Btd>
             <ProfileTableColumn src={profileImg1} name={data.seller_nm}/>
             <Btd className="ta_c">
                 <button type="button" className="btn btn_grey btn_small btn_line">예약 확인</button>

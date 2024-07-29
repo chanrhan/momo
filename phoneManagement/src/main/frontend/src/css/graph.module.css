@@ -7,7 +7,7 @@
 .graph .graph_head .graph_head_group .tab.type3{display:inline-block; float:left; vertical-align:top;}
 
 .graph .graph_panel{margin-top:24px;}
-.graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;}
+.graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;overflow-x: auto}
 .graph .graph1 .graph_item{display:inline-block; overflow:hidden; position:relative; width:242px; padding:16px 24px 15px 24px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
 .graph .graph1 .graph_item + .graph_item{margin-left:16px;}
 .graph .graph1 .graph_item .graph_title{color:#141218; font-size:14px; line-height:16px;}

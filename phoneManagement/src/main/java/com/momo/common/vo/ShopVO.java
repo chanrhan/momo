@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ShopVO extends CommonQueryVO {
+public class ShopVO extends BaseVO {
 	private String userId;
 //	private Integer corpId;
 	private Integer provider;

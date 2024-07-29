@@ -29,10 +29,16 @@ import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {DynamicSelectLayer} from "../module/DynamicSelectLayer";
+import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
+import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
 
 const MODAL_COMPONENTS = {
     // common
     // DynamicSelect: DynamicSelectLayer,
+    BulkUpload: BulkUploadModal,
+
+    // todo
+    TodoAdd: TodoAddModal,
 
     ChangeNickname: ChangeNicknameModal,
     ChangeShop: ChangeShopModal,

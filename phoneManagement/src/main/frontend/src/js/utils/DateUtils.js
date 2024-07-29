@@ -7,6 +7,9 @@ export const DateUtils = {
     formatYYMM: (year:number, month:number)=>{
         return `${year}-${month.toString().padStart(2, 0)}`
     },
+    dateToStringYYMMdd: (date: Date)=>{
+        return DateUtils.formatYYMMdd(date.getFullYear(), date.getMonth()+1,date.getDate())
+    },
     getMonthInfo: (year, month)=>{
         const date = new Date(year, month-1);
 
@@ -72,4 +75,8 @@ export const DateUtils = {
     //     const before_date = Math.floor(new Date(date).getTime() / 1000);
     //     before_date
     // }
+    getYearWeek: (date) => {
+        const onejan = new Date(date.getFullYear(),0,1);
+        return Math.ceil((((date - onejan) / 86400000) + onejan.getDay()+1)/7);
+    }
 }

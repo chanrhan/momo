@@ -2,7 +2,7 @@ package com.momo.api;
 
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.util.SecurityContextUtil;
-import com.momo.common.vo.SalePromiseVO;
+import com.momo.common.vo.CommonVO;
 import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.service.*;
@@ -246,5 +246,126 @@ public class SaleController {
 			}
 		}
 		return ResponseEntity.badRequest().build();
+	}
+
+	@GetMapping("/summary")
+	public ResponseEntity<List<Map<String,Object>>> getSummary(@RequestParam String prevMonth,
+																 @RequestParam String month){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.getSummary(username, prevMonth,month));
+	}
+
+	@GetMapping("/ratio")
+	public ResponseEntity<List<Map<String,Object>>> getSaleRatio(@RequestParam String date){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.getSaleRatio(username, date));
+	}
+
+	@GetMapping("/wip")
+	public ResponseEntity<List<Map<String,Object>>> getWorkInProcess(@RequestParam String date){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(saleService.getWorkInProcess(username, date));
+	}
+
+	@PostMapping("/change/ct")
+	public ResponseEntity<Integer> getCtChangeAmount(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getCtChangeAmount(vo));
+	}
+
+	@PostMapping("/change/internet")
+	public ResponseEntity<Integer> getInternetChangeAmount(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getInternetChangeAmount(vo));
+	}
+
+	@PostMapping("/change/tv")
+	public ResponseEntity<Integer> getTvChangeAmount(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getTvChangeAmount(vo));
+	}
+
+	@PostMapping("/change/total-cms")
+	public ResponseEntity<Float> getTotalCmsChangeAmount(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getTotalCmsChangeAmount(vo));
+	}
+
+	@PostMapping("/change/avg-cms")
+	public ResponseEntity<Float> getAvgCmsChangeAmount(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getAvgCmsChangeAmount(vo));
+	}
+
+
+	// 그래프 페이지
+	// 그래프 요약
+	@PostMapping("/graph/summary")
+	public ResponseEntity<List<Map<String,Object>>> getGraphSummary(@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		return ResponseEntity.ok(saleService.getGraphSummary(vo));
+	}
+
+	@PostMapping("/graph/ct/{dateType}")
+	public ResponseEntity<Map<String,String> > getCtGraphByDateType(@PathVariable Character dateType,
+														  @RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setDateType(dateType);
+		return ResponseEntity.ok(saleService.getCtGraphByDateType(vo));
+	}
+
+	@PostMapping("/graph/internet/{dateType}")
+	public ResponseEntity<Map<String,String> > getInternetGraphByDateType(@PathVariable Character dateType,
+																	@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setDateType(dateType);
+		return ResponseEntity.ok(saleService.getInternetGraphByDateType(vo));
+	}
+
+	@PostMapping("/graph/tv/{dateType}")
+	public ResponseEntity<Map<String,String> > getTvGraphByDateType(@PathVariable Character dateType,
+																	@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setDateType(dateType);
+		return ResponseEntity.ok(saleService.getTvGraphByDateType(vo));
+	}
+
+	@PostMapping("/graph/margin/{dateType}")
+	public ResponseEntity<Map<String,String> > getMarginGraphByDateType(@PathVariable Character dateType,
+																	@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setDateType(dateType);
+		return ResponseEntity.ok(saleService.getMarginGraphByDateType(vo));
+	}
+
+	@PostMapping("/graph/avg-margin/date/{dateType}")
+	public ResponseEntity<Map<String,String> > getAvgMarginGraphByDateType(@PathVariable Character dateType,
+																	@RequestBody CommonVO vo){
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setDateType(dateType);
+		return ResponseEntity.ok(saleService.getAvgMarginGraphByDateType(vo));
+	}
+
+	@PostMapping("/graph/avg-margin/select/{selectType}")
+	public ResponseEntity<List<Integer> > getAvgMarginBySelectType(@PathVariable Integer selectType,
+																		   @RequestBody CommonVO vo){
+		if (selectType == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		String username = SecurityContextUtil.getUsername();
+		vo.setUserId(username);
+		vo.setSelectType(selectType);
+		return ResponseEntity.ok(saleService.getAvgMarginBySelectType(vo));
 	}
 }

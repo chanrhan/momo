@@ -42,6 +42,7 @@ import {CssTest} from "./js/test/CssTest";
 import {LandingPage} from "./js/landing/LandingPage";
 import {ChatBotButton} from "./js/common/module/ChatBotButton";
 import {GraphTest} from "./js/test/GraphTest";
+import {MasterData} from "./js/admin/MasterData";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
                   <Route path='css' element={<CssTest/>}/>
                   <Route path='alimtalk' element={<AlimTalkTest/>}/>
               </Route>
+
 
               <Route path='/' element={<LandingPage/>}/>
 
@@ -110,7 +112,8 @@ function App() {
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>
                           <Route path='statistics' element={<Statistics/>}/>
-                          <Route path='admin' element={<Administrator/>}/>
+                          <Route path='admin' element={<Administrator/>}></Route>
+                          <Route path='admin/gmd' element={<MasterData/>}></Route>
                       </Route>
 
                       <Route path='/staff' element={<ManageStaff/>}>

@@ -50,7 +50,54 @@ function SaleApi(accessToken){
         },
         changeSaleState: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/state', body, accessToken);
-        }
+        },
+        getSummary: async (prevMonth, month)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/summary?prevMonth=${prevMonth}&month=${month}`, accessToken);
+        },
+        getSaleRatio: async (date)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/ratio?date=${date}`, accessToken);
+        },
+        getWorkInProcess: async (date)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/wip?date=${date}`, accessToken);
+        },
+        getCtChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/ct`, body, accessToken);
+        },
+        getInternetChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/internet`, body, accessToken);
+        },
+        getTvChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/tv`, body, accessToken);
+        },
+        getTotalCmsChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/total-cms`, body, accessToken);
+        },
+        getAvgCmsChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/avg-cms`, body, accessToken);
+        },
+        // 그래프 페이지
+        // 그래프 요약
+        getGraphSummary: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/summary`, body, accessToken);
+        },
+        getCtGraphByDateType: async (dateType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/ct/${dateType}`, body, accessToken);
+        },
+        getInternetGraphByDateType: async (dateType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/internet/${dateType}`, body, accessToken);
+        },
+        getTvGraphByDateType: async (dateType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/tv/${dateType}`, body, accessToken);
+        },
+        getMarginGraphByDateType: async (dateType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/margin/${dateType}`, body, accessToken);
+        },
+        getAvgMarginGraphByDateType: async (dateType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/date/${dateType}`, body, accessToken);
+        },
+        getAvgMarginGraphBySelectType: async (selectType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/select/${selectType}`, body, accessToken);
+        },
     }
 }
 

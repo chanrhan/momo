@@ -1,7 +1,7 @@
 import {ObjectUtils} from "./objectUtil";
 
 export const NumberUtils = {
-    format: (value: number)=>{
+    toPrice: (value: number)=>{
         if(ObjectUtils.isEmpty(value)){
             return '0';
         }

@@ -7,14 +7,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class SaleSupportVO extends CommonQueryVO {
+public class SaleSupportVO extends BaseVO {
     private String userId;
     private Integer shopId;
     private Integer saleId;

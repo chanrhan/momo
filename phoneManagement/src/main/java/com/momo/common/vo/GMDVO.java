@@ -7,27 +7,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class GMDVO extends CommonQueryVO{
-    // Device
-    private String deviceMd;
-    private String deviceNm;
-
-
-    // Extra Service
-    private Integer exsvcId;
-    private String exsvcNm;
-
-    // Plan
-    private Integer planId;
-    private Integer planNm;
-
-
-    private LocalDate regiDt;
+public class GMDVO extends BaseVO {
+    private Integer provider;
 }

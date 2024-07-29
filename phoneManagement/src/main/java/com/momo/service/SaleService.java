@@ -281,4 +281,68 @@ public class SaleService extends CommonService {
 		return saleMapper.changePromiseState(userId, saleId, pmId, checked);
 	}
 
+	// 메인 페이지 (Dashboard)
+	//  각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )
+	public List<Map<String,Object>> getSummary(String userId, String prevMonth, String currMonth){
+		return saleMapper.getSummary(userId, prevMonth, currMonth);
+	}
+
+	// 판매일보 대비 항목(카드/세컨/부가서비스) 비율 (항목 개수)
+	public List<Map<String, Object>> getSaleRatio(String userId, String date){
+		return saleMapper.getSaleRatio(userId, date);
+	}
+
+	// 각 항목별 진행 현황 (완료 개수, 총 개수)
+	public List<Map<String,Object>> getWorkInProcess(String userId, String date){
+		return saleMapper.getWorkInProcess(userId, date);
+	}
+
+	// 각 항목별 전월 대비 증가/감소량
+	public Integer getCtChangeAmount(CommonVO vo){
+		return saleMapper.getCtChangeAmount(vo);
+	}
+	public Integer getInternetChangeAmount(CommonVO vo){
+		return saleMapper.getInternetChangeAmount(vo);
+	}
+	public Integer getTvChangeAmount(CommonVO vo){
+		return saleMapper.getTvChangeAmount(vo);
+	}
+	public Float getTotalCmsChangeAmount(CommonVO vo){
+		return saleMapper.getTotalCmsChangeAmount(vo);
+	}
+	public Float getAvgCmsChangeAmount(CommonVO vo){
+		return saleMapper.getAvgCmsChangeAmount(vo);
+	}
+
+	// 그래프 페이지
+	// 그래프 요약
+	public List<Map<String,Object>> getGraphSummary(CommonVO vo){
+		vo.setRange(6);
+		return saleMapper.getGraphSummary(vo);
+	}
+
+	public Map<String,String> getCtGraphByDateType(CommonVO vo){
+		return saleMapper.getCtGraphByDateType(vo);
+	}
+
+	public Map<String,String> getInternetGraphByDateType(CommonVO vo){
+		return saleMapper.getInternetGraphByDateType(vo);
+	}
+
+	public Map<String,String> getTvGraphByDateType(CommonVO vo){
+		return saleMapper.getTvGraphByDateType(vo);
+	}
+
+	public Map<String,String> getMarginGraphByDateType(CommonVO vo){
+		return saleMapper.getMarginGraphByDateType(vo);
+	}
+
+	public Map<String,String> getAvgMarginGraphByDateType(CommonVO vo){
+		return saleMapper.getAvgMarginGraphByDateType(vo);
+	}
+
+	public List<Integer> getAvgMarginBySelectType(CommonVO vo){
+		return saleMapper.getAvgMarginBySelectType(vo);
+	}
+
 }

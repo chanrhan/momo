@@ -877,6 +877,1135 @@
             sale_id=#{saleId}
     </delete>
 
+<!--    메인 페이지 (Dashboard)-->
+<!--    각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )-->
+    <select id="getSummary">
+        SET @curr_shop_id :=(
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+            );
 
 
+        with prevMonth as (
+            SELECT *
+            FROM tb_sale
+            WHERE shop_id=@curr_shop_id and
+                actv_dt like '${prevDate}%'
+        ), currMonth as (
+            SELECT *
+            FROM tb_sale
+            WHERE shop_id=@curr_shop_id and
+                actv_dt like '${currDate}%'
+        ) , tb as (
+            SELECT
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM prevMonth
+                    WHERE device_id != 0
+                    ) as prev,
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM currMonth
+                    WHERE device_id != 0
+                ) as curr
+            from dual
+            UNION ALL
+            SELECT
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM prevMonth
+                    WHERE internet_plan != 0
+                ) as prev,
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM currMonth
+                    WHERE internet_plan != 0
+                ) as curr
+            from dual
+            UNION ALL
+            SELECT
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM prevMonth
+                    WHERE tv_plan != 0
+                ) as prev,
+                (
+                    SELECT IFNULL(count(*), 0)
+                    FROM currMonth
+                    WHERE tv_plan != 0
+                ) as curr
+            from dual
+            UNION ALL
+            SELECT
+                (
+                    SELECT SUM(total_cms)
+                    FROM prevMonth
+                ) as prev,
+                (
+                    SELECT SUM(total_cms)
+                    FROM currMonth
+                ) as curr
+            from dual
+            UNION ALL
+            SELECT
+                (
+                    SELECT AVG(total_cms)
+                    FROM prevMonth
+                ) as prev,
+                (
+                    SELECT AVG(total_cms)
+                    FROM currMonth
+                ) as curr
+            from dual
+        )
+
+        SELECT FLOOR(curr) as value,
+               (
+                   CASE
+                       WHEN curr = 0 THEN 0
+                       WHEN prev = 0 THEN 100
+                       WHEN prev != 0 THEN TRUNCATE(((curr/prev)-1)*100, 1)
+                   END
+                   ) as pct
+        FROM tb
+    </select>
+
+<!--    // 판매일보 대비 항목(카드/세컨/부가서비스) 비율 (항목 개수)-->
+    <select id="getSaleRatio">
+        SET @curr_shop_id :=  (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        SET @total_sale_count := (
+            SELECT count(*)
+            FROM tb_sale
+            WHERE shop_id=@curr_shop_id and
+                actv_dt like '${date}%'
+        );
+
+        with tb as (
+            SELECT count(*) as curr
+            FROM tb_sale_card sc
+                     LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
+            WHERE sc.shop_id=@curr_shop_id and
+                actv_dt like '${date}%'
+            UNION ALL
+            SELECT count(*) as curr
+            FROM tb_sale
+            WHERE shop_id=(
+                SELECT curr_shop_id
+                FROM tb_account
+                WHERE id=#{userId}
+            ) and
+                actv_dt like '${date}%' and
+                sd_id != 0
+            UNION ALL
+            SELECT count(*) as curr
+            FROM tb_sale
+            WHERE shop_id=(
+                SELECT curr_shop_id
+                FROM tb_account
+                WHERE id=#{userId}
+            ) and
+                actv_dt like '${date}%' and
+                exsvc_id != 0
+        )
+
+        SELECT
+            curr as value,
+            @total_sale_count as total,
+            (
+                CASE
+                    WHEN @total_sale_count = 0 THEN 100
+                    WHEN @total_sale_count != 0 THEN TRUNCATE(((curr/@total_sale_count))*100, 1)
+                    END
+                ) as pct
+        FROM tb
+    </select>
+
+<!--    각 항목별 진행 현황 (완료 개수, 총 개수)-->
+    <select id="getWorkInProcess">
+        SET @curr_shop_id :=  (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with table_ud as (
+            SELECT ud_st
+            FROM tb_sale_used_device sud
+            LEFT OUTER JOIN tb_sale sl on sl.sale_id=sud.sale_id
+            WHERE sud.shop_id=@curr_shop_id and
+                actv_dt like '${date}%'
+        ), table_card as (
+            SELECT card_st
+            FROM tb_sale_card sc
+            LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
+            WHERE sc.shop_id=@curr_shop_id and
+                actv_dt like '${date}%'
+        ), table_comb as (
+            SELECT comb_st
+            FROM tb_sale
+            WHERE shop_id=@curr_shop_id and
+                actv_dt like '%${date}%'
+        ), table_sup as (
+            SELECT sup_st
+            FROM tb_sale_support sc LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
+            WHERE sc.shop_id=@curr_shop_id and
+                actv_dt like '%${date}%'
+        ), table_pm as (
+            SELECT checked
+            FROM tb_promise sc
+                LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
+            WHERE sc.shop_id=@curr_shop_id and
+                actv_dt like '%${date}%'
+        ), rst as (
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM table_ud
+                    WHERE ud_st=2
+                ) as value,
+                (
+                    SELECT count(*)
+                    FROM table_ud
+                ) as total
+            UNION ALL
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM table_card
+                    WHERE card_st=2
+                ) as value,
+                (
+                    SELECT count(*)
+                    FROM table_card
+                ) as total
+            UNION ALL
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM table_comb
+                    WHERE comb_st=1
+                ) as value,
+                (
+                    SELECT count(*)
+                    FROM table_comb
+                ) as total
+            UNION ALL
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM table_sup
+                    WHERE sup_st=1
+                ) as value,
+                (
+                    SELECT count(*)
+                    FROM table_sup
+                ) as total
+            UNION ALL
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM table_pm
+                    WHERE checked=1
+                ) as value,
+                (
+                    SELECT count(*)
+                    FROM table_pm
+                ) as total
+        )
+
+        SELECT value,
+               total,
+               (
+                   CASE
+                       WHEN total = 0 and value !=0 THEN 100
+                       WHEN total = 0 and value =0 THEN 0
+                       WHEN total != 0 THEN TRUNCATE(((rst.value/total))*100, 1)
+                       END
+                   ) as pct
+        FROM rst
+    </select>
+
+<!--    // 각 항목별 전월 대비 증가/감소량-->
+    <select id="getCtChangeAmount">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+            );
+
+        with tb as (
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                          device_id != 0 and
+                          actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
+                    ) as prev,
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        device_id != 0 and
+                        actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
+                ) as curr
+            FROM DUAL
+        )
+
+        SELECT tb.curr - tb.prev
+        FROM tb
+    </select>
+
+    <select id="getInternetChangeAmount">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with tb as (
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        internet_plan != 0 and
+                        actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
+                ) as prev,
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        internet_plan != 0 and
+                        actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
+                ) as curr
+            FROM DUAL
+        )
+
+        SELECT tb.curr - tb.prev
+        FROM tb
+    </select>
+
+    <select id="getTvChangeAmount">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with tb as (
+            SELECT
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        tv_plan != 0 and
+                        actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
+                ) as prev,
+                (
+                    SELECT count(*)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        tv_plan != 0 and
+                        actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
+                ) as curr
+            FROM DUAL
+        )
+
+        SELECT tb.curr - tb.prev
+        FROM tb
+    </select>
+
+    <select id="getTotalCmsChangeAmount">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with tb as (
+            SELECT
+                (
+                    SELECT SUM(total_cms)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
+                ) as prev,
+                (
+                    SELECT SUM(total_cms)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
+                ) as curr
+            FROM DUAL
+        )
+
+        SELECT tb.curr - tb.prev
+        FROM tb
+    </select>
+
+    <select id="getAvgCmsChangeAmount">
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with tb as (
+            SELECT
+                (
+                    SELECT AVG(total_cms)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
+                ) as prev,
+                (
+                    SELECT AVG(total_cms)
+                    FROM tb_sale
+                    WHERE shop_id=@curr_shop_id and
+                        actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
+                ) as curr
+            FROM DUAL
+        )
+
+        SELECT FLOOR(tb.curr - tb.prev)
+        FROM tb
+    </select>
+
+
+<!--    그래프 페이지-->
+<!--    그래프 요약-->
+    <select id="getGraphSummary">
+        <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+#         월별 날짜 구하기
+        with recursive month_range as (
+            select #{fromYmd} as d
+            union all
+            select date_add(d, interval 1 month) as d
+            from month_range
+            where date_add(d, interval 1 month) < #{toYmd}
+        ), months as(
+            select month(d) as m
+            from month_range
+        ), filtered_sale as ( # 판매일보 초벌
+            select month(actv_dt) as actv_month,
+                   device_id,
+                   internet_plan,
+                   tv_plan,
+                   total_cms,
+                   wt_cms,
+                   sale_id,
+                   sd_id
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                seller_id=#{userId} and
+                actv_dt between #{fromYmd} and date_add(#{toYmd}, interval 1 month)
+        ), ct_graph as ( # 무선 그래프 데이터
+            SELECT m,
+                   count(device_id) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m and
+                                                      device_id!=0
+            group by m
+        ), internet_graph as ( # 인터넷 그래프 데이터
+            SELECT m,
+                   count(internet_plan) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
+                                                      internet_plan !=0
+            group by m
+        ), tv_graph as ( # TV 그래프 데이터
+            SELECT m,
+                   count(tv_plan) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
+                                                      tv_plan !=0
+            group by m
+        ), tc_graph as ( # 총 이익 그래프 데이터
+            SELECT m,
+                   IFNULL(sum(total_cms), 0) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m
+            group by m
+        ), margin_table as (
+            select *
+            from filtered_sale
+        ), margin_graph as ( # 개인 평균 마진 그래프 데이터
+            SELECT m,
+                   IFNULL(avg(total_cms), 0) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m
+            group by m
+        ), ud_graph as ( # 중고 개통 그래프 데이터
+            SELECT m,
+                   count(ud_id) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m
+                     LEFT OUTER JOIN tb_sale_used_device sud on sud.sale_id=filtered_sale.sale_id
+            group by m
+        ), sec_graph as ( # 세컨 그래프 데이터
+            SELECT m,
+                   count(sd_id) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m and
+                                                      sd_id != 0
+            group by m
+        ), diff_ct as (
+            select
+                (
+                    select cnt
+                    from ct_graph
+                    limit 4, 1
+                ) as prv,
+                (
+                    select cnt
+                    from ct_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_internet as (
+            select
+                (
+                    select cnt
+                    from internet_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from internet_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_tv as (
+            select
+                (
+                    select cnt
+                    from tv_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from tv_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_tc as (
+            select
+                (
+                    select cnt
+                    from tc_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from tc_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ) , diff_margin as (
+            select
+                (
+                    select cnt
+                    from margin_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from margin_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_ud as (
+            select
+                (
+                    select cnt
+                    from ud_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from ud_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ) , diff_sec as (
+            select
+                (
+                    select cnt
+                    from sec_graph
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from sec_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), final as (
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from ct_graph
+                ) as list
+            from diff_ct
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from internet_graph
+                ) as list
+            from diff_internet
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from tv_graph
+                ) as list
+            from diff_tv
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from tc_graph
+                ) as list
+            from diff_tc
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from margin_graph
+                ) as list
+            from diff_margin
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from ud_graph
+                ) as list
+            from diff_ud
+            union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from sec_graph
+                ) as list
+            from diff_sec
+        )
+
+        select FLOOR(curr) as value,
+               (
+                   CASE
+                       WHEN curr = 0 and prv = 0 THEN 0
+                       WHEN prv != 0 and curr = 0 THEN -100
+                       WHEN prv = 0 and curr != 0 THEN 100
+                       WHEN curr != 0 and prv != 0 THEN TRUNCATE(((curr/prv)-1)*100, 1)
+                       END
+                   ) as per,
+               list
+        from final
+        ]]>
+    </select>
+
+    <select id="getCtGraphByDateType">
+    <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+
+        with recursive org_date_table as (
+            select (
+                       case
+                           when #{dateType} = 'h' then '2000-01-01'
+                           when #{dateType} != 'h' then #{fromYmd}
+                           end
+                       ) as it
+            union all
+            select (
+                       case #{dateType}
+                           when 'h' then date_add(it, interval 1 day)
+                           when 'd' then date_add(it, interval 1 day)
+                           when 'w' then date_add(it, interval 1 week)
+                           when 'm' then date_add(it, interval 1 month)
+                           end
+                       ) as it
+            from org_date_table
+            where it < (
+                case
+                    when #{dateType} = 'h' then '2000-01-24'
+                    when #{dateType} != 'h' then #{toYmd}
+                    end
+                )
+        ), date_table as (
+            select
+                year(it) as _year,
+                (
+                    case #{dateType}
+                        when 'h' then day(it)
+                        when 'd' then it
+                        when 'w' then week(it)
+                        when 'm' then month(it)
+                        end
+                    ) as dt
+            from org_date_table
+        ),  date_sale as (
+            select year(actv_dt) _year,
+                   month(actv_dt) as m,
+                   week(actv_dt) as w,
+                   actv_dt as d,
+                   hour(regi_dt) as h,
+                   tb_sale.*
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and (
+                    case
+                        when #{dateType} = 'h' then #{fromYmd}
+                        when #{dateType} != 'h' then #{toYmd}
+                        end
+                    )
+        ), final as (
+            select count(device_id) as cnt
+            from date_table dd
+                     left outer join date_sale ds on dd._year=ds._year and
+                                                     ${dateType} = dt
+            group by dd._year, dd.dt
+        )
+
+        select
+            (
+                select json_arrayagg(cnt)
+                from final
+            ) as value,
+            (
+                select json_arrayagg(date_format(it, '%Y.%m.%d'))
+                from org_date_table
+            ) as date
+
+        ]]>
+    </select>
+
+    <select id="getInternetGraphByDateType">
+    <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+
+        with recursive org_date_table as (
+            select (
+                       case
+                           when #{dateType} = 'h' then '2000-01-01'
+                           when #{dateType} != 'h' then #{fromYmd}
+                           end
+                       ) as it
+            union all
+            select (
+                       case #{dateType}
+                           when 'h' then date_add(it, interval 1 day)
+                           when 'd' then date_add(it, interval 1 day)
+                           when 'w' then date_add(it, interval 1 week)
+                           when 'm' then date_add(it, interval 1 month)
+                           end
+                       ) as it
+            from org_date_table
+            where it < (
+                case
+                    when #{dateType} = 'h' then '2000-01-24'
+                    when #{dateType} != 'h' then #{toYmd}
+                    end
+                )
+        ), date_table as (
+            select
+                year(it) as _year,
+                (
+                    case #{dateType}
+                        when 'h' then day(it)
+                        when 'd' then it
+                        when 'w' then week(it)
+                        when 'm' then month(it)
+                        end
+                    ) as dt
+            from org_date_table
+        ),  date_sale as (
+            select year(actv_dt) _year,
+                   month(actv_dt) as m,
+                   week(actv_dt) as w,
+                   actv_dt as d,
+                   hour(regi_dt) as h,
+                   tb_sale.*
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and (
+                    case
+                        when #{dateType} = 'h' then #{fromYmd}
+                        when #{dateType} != 'h' then #{toYmd}
+                        end
+                    )
+        ), final as (
+            select count(internet_plan) as cnt
+            from date_table dd
+                     left outer join date_sale ds on dd._year=ds._year and
+                                                     ${dateType} = dt
+            group by dd._year, dd.dt
+        )
+
+        select
+            (
+                select json_arrayagg(cnt)
+                from final
+            ) as value,
+            (
+                select json_arrayagg(date_format(it, '%Y.%m.%d'))
+                from org_date_table
+            ) as date
+
+        ]]>
+    </select>
+
+    <select id="getTvGraphByDateType">
+    <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+
+        with recursive org_date_table as (
+            select (
+                       case
+                           when #{dateType} = 'h' then '2000-01-01'
+                           when #{dateType} != 'h' then #{fromYmd}
+                           end
+                       ) as it
+            union all
+            select (
+                       case #{dateType}
+                           when 'h' then date_add(it, interval 1 day)
+                           when 'd' then date_add(it, interval 1 day)
+                           when 'w' then date_add(it, interval 1 week)
+                           when 'm' then date_add(it, interval 1 month)
+                           end
+                       ) as it
+            from org_date_table
+            where it < (
+                case
+                    when #{dateType} = 'h' then '2000-01-24'
+                    when #{dateType} != 'h' then #{toYmd}
+                    end
+                )
+        ), date_table as (
+            select
+                year(it) as _year,
+                (
+                    case #{dateType}
+                        when 'h' then day(it)
+                        when 'd' then it
+                        when 'w' then week(it)
+                        when 'm' then month(it)
+                        end
+                    ) as dt
+            from org_date_table
+        ),  date_sale as (
+            select year(actv_dt) _year,
+                   month(actv_dt) as m,
+                   week(actv_dt) as w,
+                   actv_dt as d,
+                   hour(regi_dt) as h,
+                   tb_sale.*
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and (
+                    case
+                        when #{dateType} = 'h' then #{fromYmd}
+                        when #{dateType} != 'h' then #{toYmd}
+                        end
+                    )
+        ), final as (
+            select count(tv_plan) as cnt
+            from date_table dd
+                     left outer join date_sale ds on dd._year=ds._year and
+                                                     ${dateType} = dt
+            group by dd._year, dd.dt
+        )
+
+        select
+            (
+                select json_arrayagg(cnt)
+                from final
+            ) as value,
+            (
+                select json_arrayagg(date_format(it, '%Y.%m.%d'))
+                from org_date_table
+            ) as date
+
+        ]]>
+    </select>
+
+    <select id="getMarginGraphByDateType">
+    <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+
+        with recursive org_date_table as (
+            select (
+                       case
+                           when #{dateType} = 'h' then '2000-01-01'
+                           when #{dateType} != 'h' then #{fromYmd}
+                           end
+                       ) as it
+            union all
+            select (
+                       case #{dateType}
+                           when 'h' then date_add(it, interval 1 day)
+                           when 'd' then date_add(it, interval 1 day)
+                           when 'w' then date_add(it, interval 1 week)
+                           when 'm' then date_add(it, interval 1 month)
+                           end
+                       ) as it
+            from org_date_table
+            where it < (
+                case
+                    when #{dateType} = 'h' then '2000-01-24'
+                    when #{dateType} != 'h' then #{toYmd}
+                    end
+                )
+        ), date_table as (
+            select
+                year(it) as _year,
+                (
+                    case #{dateType}
+                        when 'h' then day(it)
+                        when 'd' then it
+                        when 'w' then week(it)
+                        when 'm' then month(it)
+                        end
+                    ) as dt
+            from org_date_table
+        ),  date_sale as (
+            select year(actv_dt) _year,
+                   month(actv_dt) as m,
+                   week(actv_dt) as w,
+                   actv_dt as d,
+                   hour(regi_dt) as h,
+                   tb_sale.*
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and (
+                    case
+                        when #{dateType} = 'h' then #{fromYmd}
+                        when #{dateType} != 'h' then #{toYmd}
+                        end
+                    )
+        ), final as (
+            select IFNULL(sum(total_cms),0) as cnt
+            from date_table dd
+                     left outer join date_sale ds on dd._year=ds._year and
+                                                    device_id is not null and
+                                                     device_id != 0 and
+                                                     ${dateType} = dt
+            group by dd._year, dd.dt
+        )
+
+        select
+            (
+                select json_arrayagg(cnt)
+                from final
+            ) as value,
+            (
+                select json_arrayagg(date_format(it, '%Y.%m.%d'))
+                from org_date_table
+            ) as date
+
+        ]]>
+    </select>
+
+    <select id="getAvgMarginGraphByDateType">
+    <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+
+        with recursive org_date_table as (
+            select (
+                       case
+                           when #{dateType} = 'h' then '2000-01-01'
+                           when #{dateType} != 'h' then #{fromYmd}
+                           end
+                       ) as it
+            union all
+            select (
+                       case #{dateType}
+                           when 'h' then date_add(it, interval 1 day)
+                           when 'd' then date_add(it, interval 1 day)
+                           when 'w' then date_add(it, interval 1 week)
+                           when 'm' then date_add(it, interval 1 month)
+                           end
+                       ) as it
+            from org_date_table
+            where it < (
+                case
+                    when #{dateType} = 'h' then '2000-01-24'
+                    when #{dateType} != 'h' then #{toYmd}
+                    end
+                )
+        ), date_table as (
+            select
+                year(it) as _year,
+                (
+                    case #{dateType}
+                        when 'h' then day(it)
+                        when 'd' then it
+                        when 'w' then week(it)
+                        when 'm' then month(it)
+                        end
+                    ) as dt
+            from org_date_table
+        ),  date_sale as (
+            select year(actv_dt) _year,
+                   month(actv_dt) as m,
+                   week(actv_dt) as w,
+                   actv_dt as d,
+                   hour(regi_dt) as h,
+                   tb_sale.*
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and (
+                    case
+                        when #{dateType} = 'h' then #{fromYmd}
+                        when #{dateType} != 'h' then #{toYmd}
+                        end
+                    )
+        ), final as (
+            select FLOOR(IFNULL(avg(total_cms),0)) as cnt
+            from date_table dd
+                     left outer join date_sale ds on dd._year=ds._year and
+                                                     device_id is not null and
+                                                     device_id != 0 and
+                                                     ${dateType} = dt
+            group by dd._year, dd.dt
+        )
+
+        select
+            (
+                select json_arrayagg(cnt)
+                from final
+            ) as value,
+            (
+                select json_arrayagg(date_format(it, '%Y.%m.%d'))
+                from org_date_table
+            ) as date
+
+        ]]>
+    </select>
+
+    <select id="getDeviceStat">
+        <![CDATA[
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        SET @org_month := (
+            SELECT MONTH(#{fromYmd})
+            );
+
+        with recursive date_range as (
+            select #{fromYmd} as d
+            union all
+            select date_add(d, interval 1 day) as d
+            from date_range
+            where MONTH(d) != @org_month
+        )
+
+        SELECT (
+                SELECT device_nm
+                FROM tb_device
+                WHERE tb_device.device_id=sl.device_id
+                   ) as device_nm,
+                TRUNCATE((IFNULL(count(device_id),0) / IFNULL(count(*), 1)), 1) as per
+        FROM date_range
+                 LEFT OUTER JOIN tb_sale sl on sl.actv_dt=d and
+                                               shop_id=@curr_shop_id and
+                                               device_id != 0
+        group by device_id
+        ]]>
+    </select>
+
+    <select id="getAvgMarginBySelectType">
+        <![CDATA[
+
+        SET @curr_shop_id := (
+            SELECT curr_shop_id
+            FROM tb_account
+            WHERE id=#{userId}
+        );
+
+        with sale as (
+            select cust_gd as gender,
+                   provider,
+                   ct_actv_tp as actv_tp,
+                   ct_istm as istm,
+                   (
+                       case
+                           when length(cust_cd) = 6 then floor((year(curdate()) - concat((
+                                         case
+                                             when substring(cust_cd, 1,2) > '44' then '19'
+                                             when substring(cust_cd, 1,2) <= '44' then '20'
+                                             end
+                                         ),substring(cust_cd,1,2))) / 10)
+                           when length(cust_cd) != 6 then null
+                           end
+                       ) as generation,
+                total_cms
+            from tb_sale
+            where shop_id=@curr_shop_id and
+                actv_dt between #{fromYmd} and #{toYmd}
+        )
+
+        select IFNULL(avg(total_cms), 0) as amount
+        from sale
+        where ${selectType} is not null
+        group by ${selectType}
+        order by ${selectType}
+        ]]>
+    </select>
 </mapper>

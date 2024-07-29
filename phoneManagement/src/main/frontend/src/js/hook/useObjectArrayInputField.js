@@ -8,14 +8,14 @@ export function useObjectArrayInputField(init, arr){
             copyArr.push({...v});
         }
     }
-    const [input, setInput] = useState(!ObjectUtils.isEmptyArray(arr) ? copyArr : [init ? {...init} : {}]);
+    const [input, setInput] = useState(!ObjectUtils.isEmptyArray(arr) ? copyArr : init ? [{...init}] : null);
 
     const length = ()=>{
         return input.length;
     }
 
     const get = (index, key)=>{
-        if(index >= input.length){
+        if(!input || !input[index] || index >= input.length){
             return ''
         }
         return input[index][key] ?? ''
@@ -36,6 +36,10 @@ export function useObjectArrayInputField(init, arr){
     }
 
     const addItem = ()=>{
+        if(!input){
+            setInput([init])
+            return;
+        }
         const copy = [...input]
         copy.push(init ? {...init} : {})
         setInput(copy)

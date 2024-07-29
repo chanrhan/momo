@@ -49,18 +49,20 @@ export function CalendarTable({inputField}){
     const getReserveMsgForCalendar = async ()=>{
         await rsvMsgApi.getReserveMsgForCalendar(DateUtils.formatYYMM(cYear, cMonth)).then(({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
-                let arr = new Array(totalDays).fill(null);
+                let map = {};
                 data.forEach((v,i)=>{
-                    const idx = v.rsv_dt.substring(8,10);
-                    if(!Number.isNaN(idx)){
-                        arr[idx] = {
-                            msg_st: v.msg_st,
-                            cnt: v.cnt
-                        }
+                    const rsv_dt = v.rsv_dt;
+                    const body = {
+                        msg_st: v.msg_st,
+                        cnt: v.cnt
+                    }
+                    if(map[rsv_dt]){
+                        map[rsv_dt].push(body);
+                    }else{
+                        map[rsv_dt] = [body]
                     }
                 })
-                setItems(arr)
+                setItems(map)
             }
         })
     }
@@ -166,9 +168,11 @@ export function CalendarTable({inputField}){
                                                           }
                                                       }}>
                                             {
-                                                items && calDay > 0 && calDay <= totalDays && items[calDay] && (
-                                                    <span className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[items[calDay].msg_st]} {items[calDay].cnt}건</span>
-                                                )
+                                                items && calDay > 0 && calDay <= totalDays && items[calDay] && items[calDay].map((data,i)=> {
+                                                    return <span
+                                                        className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[data.msg_st]} {data.cnt}건</span>
+                                                })
+
                                             }
                                         </Cdate>
                                     })

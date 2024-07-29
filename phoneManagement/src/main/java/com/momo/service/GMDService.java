@@ -17,15 +17,15 @@ public class GMDService {
     private final GMDMapper gmdMapper;
 
     // 정적 목록
-    public List<Map<String,Object>> getDevice(String keyword){
-        return gmdMapper.getDevice(keyword);
+    public List<Map<String,Object>> getDevice(String keyword, Integer provider){
+        return gmdMapper.getDevice(keyword, provider);
     }
 
-    public List<Map<String,Object>> getSecondDevice(String keyword){
-        return gmdMapper.getSecondDevice(keyword);
+    public List<Map<String,Object>> getSecondDevice(String keyword, Integer provider){
+        return gmdMapper.getSecondDevice(keyword,provider);
     }
-    public List<Map<String,Object>> getCtPlan(String keyword){
-        return gmdMapper.getCtPlan(keyword);
+    public List<Map<String,Object>> getCtPlan(String keyword, Integer provider){
+        return gmdMapper.getCtPlan(keyword,provider);
     }
 
     public Map<String,Object> getSecondDeviceById(int id){
@@ -33,16 +33,16 @@ public class GMDService {
     }
 
     // 동적 목록
-    public List<Map<String,Object>> getExtraService(String userId, String keyword){
-        return gmdMapper.getExtraService(userId, keyword);
+    public List<Map<String,Object>> getExtraService(String userId, String keyword, Integer provider){
+        return gmdMapper.getExtraService(userId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getInternetPlan(String userId, String keyword){
-        return gmdMapper.getInternetPlan(userId, keyword);
+    public List<Map<String,Object>> getInternetPlan(String userId, String keyword, Integer provider){
+        return gmdMapper.getInternetPlan(userId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getTvPlan(String userId, String keyword){
-        return gmdMapper.getTvPlan(userId, keyword);
+    public List<Map<String,Object>> getTvPlan(String userId, String keyword, Integer provider){
+        return gmdMapper.getTvPlan(userId, keyword,provider);
     }
 
     public List<Map<String,Object>> getComb(String userId, String keyword){

@@ -14,7 +14,8 @@
             select IFNULL(max(msg_id),0)+1
             from tb_rsv_msg
             where shop_id=@curr_shop_id and
-                  sale_id=#{saleId}
+                  sale_id=#{saleId} and
+                  rsv_dt=#{rsvDt}
             );
 
         INSERT INTO tb_rsv_msg
@@ -23,7 +24,7 @@
     </insert>
 
     <select id="getReserveMsgForCalendar">
-        SELECT rsv_dt,
+        SELECT SUBSTR(rsv_dt, 9,2) as rsv_dt,
                msg_st,
                COUNT(msg_tp) as cnt
         FROM tb_rsv_msg

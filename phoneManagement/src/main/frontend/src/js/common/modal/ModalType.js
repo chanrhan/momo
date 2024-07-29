@@ -1,5 +1,8 @@
 export const ModalType = {
     LAYER: {
+        // common
+        Bulk_Upload: 'BulkUpload',
+
         Change_Nickname: 'ChangeNickname',
         Add_Shop: 'AddShop',
         Update_Password: 'UpdatePassword',
@@ -19,7 +22,10 @@ export const ModalType = {
         Table_Validation: 'TableValidation',
         Sale_Filter: 'SaleFilter',
         Reserve_Message: 'ReserveMessage',
-        Reserve_Date: 'ReserveDate'
+        Reserve_Date: 'ReserveDate',
+
+        //todo
+        Todo_Add: 'TodoAdd'
     },
     MENU: {
         Change_Shop: 'ChangeShop',
@@ -29,6 +35,7 @@ export const ModalType = {
         Select_Date: 'SelectDate',
         Select: 'Select',
         // Dynamic_Select: 'DynamicSelect'
+
     },
     SNACKBAR: {
         Alert: 'Alert',

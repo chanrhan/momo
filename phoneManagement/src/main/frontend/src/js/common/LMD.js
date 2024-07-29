@@ -6,6 +6,9 @@ export const LMD = {
     ],
 
     // common
+    color: [
+        'black','blue','red','yellow','green'
+    ],
     provier: [
       'SKT','KT','LG'
     ],

@@ -6,8 +6,8 @@
 <!--    정적 목록-->
     <select id="getDevice">
         select device_id,
-        device_nm,
-        device_cd
+                device_nm,
+                device_cd
         from    tb_device
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -15,6 +15,9 @@
             device_cd like '%${keyword}%' or
             device_nm like '%${keyword}%'
             ) and
+        </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
         </if>
         1=1
         <!--        <if test="order != null and !order.equals('')">-->
@@ -34,6 +37,9 @@
             sd_cd like '%${keyword}%' or
             sd_nm like '%${keyword}%'
             ) and
+        </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
         </if>
         1=1
         <!--        <if test="order != null and !order.equals('')">-->
@@ -59,6 +65,9 @@
             ct_plan_nm like '%${keyword}%'
             ) and
         </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
+        </if>
         1=1
         <!--        <if test="order != null and !order.equals('')">-->
         <!--            order by ${order} ${asc}-->
@@ -77,6 +86,9 @@
                 exsvc_nm like '%${keyword}%'
             ) and
         </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
+        </if>
         1=1
 <!--        <if test="order != null and !order.equals('')">-->
 <!--            order by ${order} ${asc}-->
@@ -94,6 +106,9 @@
             internet_plan_nm like '%${keyword}%'
             ) and
         </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
+        </if>
         1=1
         <!--        <if test="order != null and !order.equals('')">-->
         <!--            order by ${order} ${asc}-->
@@ -110,6 +125,9 @@
             (
             tv_plan_nm like '%${keyword}%'
             ) and
+        </if>
+        <if test="provider != null and !provider.equals('')">
+            provider = #{provider} and
         </if>
         1=1
         <!--        <if test="order != null and !order.equals('')">-->

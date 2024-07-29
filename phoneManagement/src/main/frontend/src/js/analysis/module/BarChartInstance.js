@@ -3,18 +3,20 @@ import {
     CategoryScale,
     LinearScale,
     PointElement,
+    BarElement,
     LineElement,
     Title,
     Tooltip,
     Legend, LineController,Filler
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 import {ObjectUtils} from "../../utils/objectUtil";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
+    BarElement,
     LineElement,
     Title,
     Tooltip,
@@ -25,8 +27,7 @@ ChartJS.register(
 
 
 
-export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled, x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled}){
-    const {borderColor, bgStartColor} = getChartColor(color);
+export function BarChartInstance({labelName, labels, data, color, hoverColor, x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled}){
 
     if(ObjectUtils.isEmpty(data)){
         return null;
@@ -43,26 +44,12 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 label: labelName, //그래프 분류되는 항목
                 data: data, //실제 그려지는 데이터(Y축 숫자)
                 fill: true,
-                borderColor: borderColor, //그래프 선 color
-                backgroundColor: (context)=>{
-                    const bgColor = [
-                        bgStartColor,
-                        'rgba(255,255,255,0.07)'
-                    ]
-                    if(!context.chart.chartArea){
-                        return;
-                    }
-                    const {ctx, chartArea: {top, bottom}} = context.chart;
-                    const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
-                    const colorTranches = 1 / (bgColor.length - 1);
-                    for(let i=0;i < bgColor.length;++i){
-                        gradientBg.addColorStop(i*colorTranches, bgColor[i])
-                    }
-
-                    return gradientBg;
-                }, //마우스 호버시 나타나는 분류네모 표시 bg, fill=true일 시 선 아래쪽 배경색이 채워진다
+                borderColor: `rgb(0,0,0,0)`, //그래프 선 color
+                backgroundColor: color,
+                hoverBackgroundColor: hoverColor,
+                borderRadius: 5,
                 borderWidth: borderWidth,
-                pointRadius: pointRadius, // 데이터 꼭짓점 동그라미 크기
+                pointRadius: 1, // 데이터 꼭짓점 동그라미 크기
                 pointHoverRadius: 1.2 // 마우스  호버 시 동그라미 크기
             },
         ],
@@ -91,14 +78,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 display: !y_axis_disabled, // y축 표시 여부
                 grid: { // y축 격자
                     display: false
-                },
-                ticks:{
-                    // stepSize: 1,
-                    callback: (value)=>{
-                        if(Number.isInteger(value)){
-                            return value
-                        }
-                    }
                 }
             }
         },
@@ -113,33 +92,13 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 offset: 100,
             },
             tooltip: {
-                enabled: !tooltip_disabled, // 마우스 호버 시 나타나는 툴팁 비활성화
-                callbacks: {
-                    label: (context)=>{
-                        // let label = context.dataset.label || '';
-                        //
-                        // if (label) {
-                        //     label += ': ';
-                        // }
-                        // if (context.parsed.y !== null) {
-                        //     label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                        // }
-                        // return label;
-                        // console.log(123)
-                        // if(ObjectUtils.isEmpty(tooltips)){
-                        //     console.log('empty')
-                        //     return ''
-                        // }
-                        // console.log(tooltips[tooltipItem.datasetIndex])
-                        // return tooltips[tooltipItem.datasetIndex];
-                    }
-                }
+                enabled: false // 마우스 호버 시 나타나는 툴팁 비활성화
             }
         },
     }
 
     return (
-        <Line data={chartData} options={options}/>
+        <Bar data={chartData} options={options}/>
     )
 }
 

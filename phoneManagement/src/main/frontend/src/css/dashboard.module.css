@@ -20,9 +20,11 @@
 .dashboard .panel_body .panel.n1 .panel_item{display:inline-block; width:calc(20% - 20px); margin:0 10px; padding:18px 8px 12px 8px; border-radius:8px; background-color:#fff; vertical-align:top;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_title{color:#141218; font-size:20px; font-weight:600; line-height:23px;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_num{margin-top:18px; color:#141218; font-size:30px; font-weight:600; line-height:32px;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_price{margin-top:18px; color:#141218; font-size:18px; font-weight:600; line-height:32px;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per{display:inline-block; position:relative; margin-top:17px; padding-left:19px; font-size:17px; text-align:left; line-height:20px;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per.up{color:#f34432;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per.down{color:#4781ff;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_per.none{color: #b2b2b2;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per .per_arrow{position:absolute; top:0; left:0; font-size:14px;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per .per_text{display:block; color:#91939f; font-size:8px; line-height:10px;}
 
@@ -34,6 +36,7 @@
 .dashboard .panel_body .panel.n2 .panel_item .panel_per{width:50px; margin-left:40px; font-size:14px; text-align:center;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per.up{color:#f34432;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per.down{color:#4781ff;}
+.dashboard .panel_body .panel.n2 .panel_item .panel_per.none{color: #b2b2b2;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per .span{font-size:20px; vertical-align:top;}
 
 .dashboard .panel_body .panel.n3{width:calc(100% - 308px); height:372px; border-radius:8px; background-color:#fff;}
@@ -50,6 +53,7 @@
 .dashboard .panel_body .panel.n3 .chart_panel.active{display:block;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_map{
     font-size:14px; text-align:center; line-height:16px;
+    height: 210px;
 }
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab{position:absolute; left:0; right:0; bottom:16px; text-align:center;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item{display:inline-block; vertical-align:top;}
@@ -115,10 +119,28 @@
 .dashboard .info_schedule .schedule_body{margin-top:35px;}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender{text-align:center;}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .thead .th{padding-bottom:24px; color:#62626e; font-size:14px; font-weight:500; line-height:16px;}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td{padding:0 1px;}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button{position:relative; width:100%; padding:4px 4px 16px 4px; border-radius:4px; font-size:14px; font-weight:600; line-height:16px;}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.active{background-color:#e8f2fe;}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.has:before{display:block; position:absolute; left:0; right:0; bottom:8px; width:4px; height:4px; margin:0 auto; border-radius:50%; background-color:#91939f;}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .thead .th:first-child{color: red}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .thead .th:last-child{color: #4781ff}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td{padding:0 1px;border-radius:7px;}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:first-child{color: red}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:last-child{color: #4781ff}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:hover{background-color:#e8f2fe;}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.active{background-color: #c1dbff;}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td.today{border: 2px solid #4781ff; border-radius: 15px}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button{position:relative; width:100%;
+    border-radius: 5px;
+    padding:8px 4px 12px 4px;
+    font-size:14px;
+    font-weight:600;
+    line-height:16px;
+}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.has:before{display:block; position:absolute; left:0; right:0; bottom:4px; width:4px; height:4px; margin:0 auto; border-radius:50%; background-color:#91939f;}
+
+.dashboard .info_schedule .schedule_body .schedule_item.add_btn{
+    display: block;
+    float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:12px;
+}
+
 .dashboard .info_schedule .schedule_body .schedule_list{margin-top:22px;}
 .dashboard .info_schedule .schedule_body .schedule_item{position:relative; padding:8px 24px 8px 21px;}
 .dashboard .info_schedule .schedule_body .schedule_item:before,
@@ -127,7 +149,20 @@
 .dashboard .info_schedule .schedule_body .schedule_item:first-child:before{display:none;}
 .dashboard .info_schedule .schedule_body .schedule_item:after{top:20px; bottom:0;}
 .dashboard .info_schedule .schedule_body .schedule_item:last-child:after{display:none;}
-.dashboard .info_schedule .schedule_body .schedule_item .schedule_mark{position:absolute; top:16px; left:0; z-index:1; width:8px; height:8px; border-radius:50%; background-color:#91939f;}
+
+.dashboard .info_schedule .schedule_body .schedule_item .schedule_mark{
+    position:absolute;
+    top:16px;
+    left:0;
+    z-index:1;
+    width:8px;
+    height:8px; border-radius:50%; background-color:#91939f;}
+.dashboard .info_schedule .schedule_body .schedule_item .schedule_mark:hover{
+    top: 14px;
+    left: -2px;
+    width:12px;
+    height:12px;
+}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_mark.green{background-color:#00bb35;}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_mark.red{background-color:#f34432;}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_mark.blue{background-color:#4781ff;}

@@ -7,7 +7,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public abstract class CommonQueryVO {
+public abstract class BaseVO {
+	protected String userId;
 	protected String keyword;
 	protected String target;
 	protected String order; // 정렬
