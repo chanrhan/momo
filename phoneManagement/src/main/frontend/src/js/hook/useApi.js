@@ -9,6 +9,8 @@ import TestApi from "../api/TestApi";
 import GMDApi from "../api/GMDApi";
 import RsvMsgApi from "../api/RsvMsgApi";
 import TodoApi from "../api/TodoApi";
+import FileApi from "../api/FileApi";
+import PostImageApi from "../api/PostImageApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -23,7 +25,9 @@ function useApi(){
         notifApi: NotificationApi(accessToken),
         todoApi: TodoApi(accessToken),
         testApi: TestApi(accessToken),
-        gmdApi: GMDApi(accessToken)
+        gmdApi: GMDApi(accessToken),
+        fileApi: FileApi(accessToken),
+        pimgApi: PostImageApi(accessToken)
     }
 }
 

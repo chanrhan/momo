@@ -1,7 +1,6 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
-import com.momo.common.util.BusinessmanApiUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
@@ -16,10 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +36,8 @@ public class PublicController {
 	 * @return ResponseEntity
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<?> login(HttpServletResponse response, @RequestBody Map<String, String> user) {
+	public ResponseEntity<?> login(HttpSession session,
+								   HttpServletResponse response, @RequestBody Map<String, String> user) {
 		String username = user.get("username");
 		String password = user.get("password");
 
@@ -50,8 +48,14 @@ public class PublicController {
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
-		System.out.println("test");
 
+		session.setAttribute("curr_shop_id", userService.getSessionData(username));
+
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<?> logout(HttpSession session){
 		return ResponseEntity.ok().build();
 	}
 

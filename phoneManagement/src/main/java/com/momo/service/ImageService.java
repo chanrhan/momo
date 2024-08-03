@@ -2,26 +2,46 @@ package com.momo.service;
 
 import com.momo.common.util.FileServiceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @Slf4j
 public class ImageService {
-	public ResponseEntity<byte[]> download(String dir,String path) throws IOException {
-		UrlResource resource = FileServiceUtil.getFileResource(dir, path);
+	public byte[] download(String dir,String path) throws IOException {
+		UrlResource resource = FileServiceUtil.getUrlResource(dir, path);
 		if(!resource.exists()){
-			return ResponseEntity.notFound().build();
+			return null;
 		}
-		byte[] byteArray = Files.readAllBytes(resource.getFile().toPath());
+		return Files.readAllBytes(resource.getFile().toPath());
+	}
 
-		return ResponseEntity.ok(byteArray);
+	public ResponseEntity<?> downloadResource(String dir, String fileName) throws IOException {
+		String str = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+		str = str.replaceAll("\\+","%20");
+
+		Path path = Paths.get(FileServiceUtil.getFilePath(dir,fileName));
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, "application/octect-stream")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+str+";")
+				.body(resource);
 	}
 
 	public String upload(String dir, MultipartFile mf) {

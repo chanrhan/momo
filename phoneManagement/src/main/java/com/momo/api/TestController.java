@@ -3,23 +3,31 @@ package com.momo.api;
 import com.momo.alimtalk.ImageAlimTalk;
 import com.momo.alimtalk.SENSUtil;
 import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.common.util.FileServiceUtil;
 import com.momo.common.vo.SaleVO;
-import com.momo.exception.RestApiException;
+import com.momo.exception.BusinessException;
 import com.momo.service.ImageService;
 import com.momo.service.NotificationService;
 import com.momo.service.RegionService;
 import com.momo.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Map;
 
 
@@ -69,15 +77,30 @@ public class TestController {
 
 	@GetMapping("/exception")
 	public ResponseEntity<?> getException(@RequestParam int code, @RequestParam String reason){
-		throw new RestApiException(CommonErrorCode.fromInt(code), reason);
+		throw new BusinessException(CommonErrorCode.fromInt(code), reason);
 	}
 
 	@PostMapping("/img")
-	@ResponseBody
-	public ResponseEntity<String> upload(@RequestParam String dir, @RequestPart(value = "file") MultipartFile file) {
-		log.info("dir: {}, file: {}", dir, file.getName());
-		return ResponseEntity.ok(imageService.upload(dir, file));
+	public ResponseEntity<String> upload(@RequestPart(value = "file") MultipartFile file) {
+		return ResponseEntity.ok(imageService.upload("test", file));
 	}
+
+	@GetMapping("/img")
+	public ResponseEntity<?> download(@RequestParam String filename) throws IOException {
+		String str = URLEncoder.encode(filename, "UTF-8");
+		str = str.replaceAll("\\+","%20");
+
+		Path path = Paths.get(FileServiceUtil.getFilePath("test",filename));
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_TYPE, "application/octect-stream")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+str+";")
+				.body(resource);
+	}
+
+
 
 	@PostMapping("/alimtalk")
 	public ResponseEntity<ImageAlimTalk> sendAlimTalk(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {

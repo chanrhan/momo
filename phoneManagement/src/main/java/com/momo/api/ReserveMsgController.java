@@ -2,6 +2,7 @@ package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.service.ReserveMsgService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,17 @@ public class ReserveMsgController {
     private final ReserveMsgService reserveMsgService;
 
     @GetMapping("/calendar")
-    public ResponseEntity<List<Map<String,Integer>>> getReserveMsgForCalendar(@RequestParam String date){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(reserveMsgService.getReserveMsgForCalendar(username, date));
+    public ResponseEntity<List<Map<String,Integer>>> getReserveMsgForCalendar(HttpSession session,
+                                                                              @RequestParam String date){
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(reserveMsgService.getReserveMsgForCalendar(currShopId, date));
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<List<Map<String,Object>>> getReserveMsgDetail(@RequestParam String date,
+    public ResponseEntity<List<Map<String,Object>>> getReserveMsgDetail(HttpSession session,
+                                                                        @RequestParam String date,
                                                                         @RequestParam int state){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(username, date, state));
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(currShopId, date, state));
     }
 }

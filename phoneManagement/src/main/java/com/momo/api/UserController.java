@@ -5,12 +5,14 @@ import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.service.ImageService;
 import com.momo.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -34,23 +36,29 @@ public class UserController {
 	 * }
 	 */
 	@GetMapping("/info")
-	public ResponseEntity<Map<String,Object>> fetchUserInfo(){
+	public ResponseEntity<Map<String,Object>> getUserInfo() throws IOException {
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getUserById(username));
+		return ResponseEntity.ok(userService.getUserInfo(username));
 	}
 
 	/**
 	 * 사용자 정보 수정하기
 	 * @param user UserVO
-	 * @param file MultipartFile
 	 * @return Boolean
 	 */
-	@PostMapping("/info")
-	public ResponseEntity<?> updateUserInfo(@RequestPart UserVO user,
-											@RequestPart MultipartFile file){
+	@PostMapping("/profile")
+	public ResponseEntity<?> updateProfile(@RequestBody UserVO user){
 		String username = SecurityContextUtil.getUsername();
 		user.setId(username);
 		return ResponseEntity.ok(userService.updateUser(user));
+	}
+
+	@PostMapping("/pfp")
+	public ResponseEntity<Boolean> updateProfileImg(@RequestPart MultipartFile file){
+		String username = SecurityContextUtil.getUsername();
+		String path = imageService.upload("pfp", file);
+		log.info("path: {}",path);
+		return ResponseEntity.ok(userService.updatePfp(username, path) > 0);
 	}
 
 	/**
@@ -64,19 +72,19 @@ public class UserController {
 		return ResponseEntity.ok(userService.updateNickname(username, nickname) > 0);
 	}
 
-//	/**
-//	 * (대표 권한) 매장 변경
-//	 * @param id string
-//	 * @return Boolean
-//	 */
-//	@PutMapping("/{userId}/shop")
-//	public ResponseEntity<?> updateCurrentShop(@PathVariable(required = false) String userId,
-//											   @RequestParam int shopId) {
-//		if(userId == null){
-//			userId = SecurityContextUtil.getUsername();
-//		}
-//		return ResponseEntity.ok(userService.updateCurrentShop(userId, shopId) != 0);
-//	}
+	/**
+	 * 현재 매장 변경
+	 */
+	@GetMapping("/shop/curr")
+	public ResponseEntity<?> updateCurrentShop(HttpSession session,
+											   @RequestParam int shopId) {
+		String username = SecurityContextUtil.getUsername();
+		int result = userService.updateCurrentShop(username, shopId);
+		if(result > 0){
+			session.setAttribute("curr_shop_id", shopId);
+		}
+		return ResponseEntity.ok(result > 0);
+	}
 
 	/**
 	 * 사업자 인증
@@ -116,7 +124,7 @@ public class UserController {
 	 * 비밀번호 변경
 	 * @return Boolean
 	 */
-	@PutMapping("/password")
+	@PostMapping("/password")
 	public ResponseEntity<?> updatePassword(@RequestBody UserVO vo){
 		String username = SecurityContextUtil.getUsername();
 		vo.setId(username);
@@ -177,10 +185,11 @@ public class UserController {
 	 * @return Boolean
 	 */
 	@PostMapping("/{staffId}/approval-st")
-	public ResponseEntity<Boolean> updateApprovalState(@PathVariable String staffId,
+	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
+													   @PathVariable String staffId,
 													   @RequestBody Integer state){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.updateApprovalState(username,staffId,state)> 0);
+		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		return ResponseEntity.ok(userService.updateApprovalState(currShopId,staffId,state)> 0);
 	}
 
 	/**
@@ -196,28 +205,35 @@ public class UserController {
 	}
 
 	@GetMapping("/staff/inner")
-	public ResponseEntity<Map<String,String>> getInnerStaff(){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getInnerStaff(username));
+	public ResponseEntity<Map<String,String>> getInnerStaff(HttpSession session){
+		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		return ResponseEntity.ok(userService.getInnerStaff(currShopId));
 	}
 
 	@GetMapping("/staff/inner/all")
-	public ResponseEntity<List<Map<String,Object>>> getInnerStaffAll(@RequestParam(required = false) String keyword){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getInnerStaffAll(username, keyword));
+	public ResponseEntity<List<Map<String,Object>>> getInnerStaffAll(HttpSession session,
+																	 @RequestParam(required = false) String keyword){
+		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		return ResponseEntity.ok(userService.getInnerStaffAll(currShopId, keyword));
 	}
 
 	@GetMapping("/staff/inner/count")
-	public ResponseEntity<Integer> getInnerStaffTotalCount(){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getInnerStaffTotalCount(username));
+	public ResponseEntity<Integer> getInnerStaffTotalCount(HttpSession session){
+		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		return ResponseEntity.ok(userService.getInnerStaffTotalCount(currShopId));
 	}
 
 
 	@GetMapping("/staff/name/inner")
-	public ResponseEntity<List<String>> getInnerStaffName(){
+	public ResponseEntity<List<String>> getInnerStaffName(HttpSession session){
+		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		return ResponseEntity.ok(userService.getInnerStaffName(currShopId));
+	}
+
+	@PostMapping("/invite")
+	public ResponseEntity<Boolean> invite(@RequestBody List<String> telList){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getInnerStaffName(username));
+		return ResponseEntity.ok(userService.inviteAll(username, telList));
 	}
 
 }

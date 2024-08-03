@@ -26,7 +26,7 @@ export function ReserveDateModal(props){
     const setDate = (year,month, day)=>{
         const today = new Date();
         if(year < today.getFullYear() || month < today.getMonth()+1 || day < today.getDate()){
-            modal.openModal(ModalType.SNACKBAR.Warning,{
+            modal.openModal(ModalType.SNACKBAR.Warn,{
                 msg: "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
             })
             return;

@@ -14,6 +14,11 @@ public enum CommonErrorCode implements ErrorCode {
 	 * 500 : Internal Server Error
 	 * *********************************************************************************************
 	 */
+	LOGIN_FAILED(413, "아이디 또는 비밀번호가 일치하지 않습니다"),
+
+	UNMATCHED_PASSWORD(401, "비밀번호가 일치하지 않습니다"),
+	SESSION_NOT_FOUND(404, "세션을 찾을 수 없습니다"),
+
 	// 잘못된 서버 요청
 	BAD_REQUEST_ERROR(400,  "Bad Request Exception"),
 

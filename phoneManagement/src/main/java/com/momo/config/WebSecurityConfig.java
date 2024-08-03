@@ -74,9 +74,10 @@ public class WebSecurityConfig {
 
 		http.sessionManagement((httpSecuritySessionManagementConfigurer ->
 				httpSecuritySessionManagementConfigurer
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+						.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 						.maximumSessions(1)
 						.maxSessionsPreventsLogin(false)));
+
 
 		// jwt 토큰 검사
 		http.addFilterBefore(new JwtAuthorizationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

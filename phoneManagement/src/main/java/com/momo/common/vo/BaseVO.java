@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public abstract class BaseVO {
 	protected String userId;
+	protected Integer currShopId;
 	protected String keyword;
 	protected String target;
 	protected String order; // 정렬

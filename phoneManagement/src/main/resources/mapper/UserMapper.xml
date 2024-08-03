@@ -3,8 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
-    <select id="getBMIdByShop">
-        SELECT sf.staff_id as id
+    <select id="getNotificationData">
+        SELECT sf.staff_id as id,
+               (
+                   select name
+                   from tb_account
+                   where id=#{userId}
+                   ) as name
         FROM tb_staff sf
         WHERE sf.role=1 and
               shop_id=#{shopId}
@@ -30,6 +35,12 @@
 <!--        where br_no = #{brNo}-->
 <!--    </select>-->
 
+    <select id="getPassword">
+        select pwd
+        from tb_account
+        where id=#{id}
+    </select>
+
     <update id="updatePassword" parameterType="com.momo.common.vo.UserVO">
         UPDATE tb_account
         SET pwd = #{updatePwd}
@@ -48,11 +59,7 @@
                     sf.approval_st
             from tb_staff sf
             left outer join tb_account ac on ac.id = sf.staff_id
-            where shop_id = (
-                        select ac2.curr_shop_id
-                        from tb_account ac2
-                        where ac2.id = #{userId}
-                        )
+            where shop_id = #{currShopId}
         )
 
         SELECT *
@@ -72,11 +79,13 @@
                ac.name
         from tb_staff sf
                  left outer join tb_account ac on ac.id = sf.staff_id
-        where shop_id = (
-            select ac2.curr_shop_id
-            from tb_account ac2
-            where ac2.id = #{userId}
-        )
+        where shop_id = #{currShopId}
+    </select>
+
+    <select id="getSessionData">
+        SELECT curr_shop_id
+        FROM tb_account
+        WHERE id=#{userId}
     </select>
 
     <select id="getName">
@@ -89,11 +98,7 @@
         UPDATE tb_staff
         SET approval_st=#{state}
         WHERE staff_id=#{staffId} and
-              shop_id=(
-                  SELECT curr_shop_id
-                  FROM tb_account
-                  WHERE id=#{userId}
-                  )
+              shop_id=#{currShopId}
     </update>
 
     <select id="getInnerStaffName">
@@ -103,11 +108,8 @@
                 WHERE id=staff_id
                    ) as name
         from tb_staff
-        where shop_id = (
-            select ac2.curr_shop_id
-            from tb_account ac2
-            where ac2.id = #{userId}
-        ) and approval_st=1
+        where shop_id = #{currShopId} and
+              approval_st=1
     </select>
 
     <select id="getStaffByShopId">
@@ -119,6 +121,12 @@
         left outer join tb_account ac on ac.id = sf.staff_id
         where shop_id = #{shopId}
     </select>
+
+    <update id="updateCurrentShop">
+        update tb_account
+        set curr_shop_id=#{shopId}
+        where id=#{userId}
+    </update>
 
     <update id="updateNickname">
         UPDATE tb_account
@@ -169,7 +177,7 @@
 
     <update id="updatePfp">
         UPDATE tb_account
-        SET pfp=#{pfp}
+        SET pfp=#{path}
         WHERE id = #{id}
     </update>
 
@@ -262,28 +270,23 @@
         where id=#{userId}
     </select>
 
-    <select id="getUserByUserAndShop">
+    <select id="getUserInfo">
         SELECT ac.id,
                ac.name,
                ac.tel,
                ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
                (
                    select IFNULL(sf.role, -1)
                    from tb_staff sf
                    where sf.shop_id = ac.curr_shop_id and
                          sf.staff_id = ac.id
-                   ) as role
-#                IFNULL(sh.shop_nm, (
-#                    SELECT sh2.shop_nm
-#                    FROM tb_shop sh2
-#                    WHERE sh2.shop_id = (
-#                        SELECT min(tb_shop.shop_id)
-#                        FROM tb_shop
-#                        WHERE tb_shop.corp_id = cp.corp_id
-#                        )
-#                    )) as shop_nm
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr
         FROM tb_account ac
-#                  LEFT OUTER JOIN tb_shop sh ON sf.shop_id = sh.shop_id
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
         WHERE id = #{userId}
     </select>
 
@@ -390,11 +393,7 @@
     <select id="getInnerStaffTotalCount">
         SELECT count(*)
         FROM tb_staff
-        WHERE shop_id=(
-            SELECT curr_shop_id
-            FROM tb_account
-            WHERE id=#{userId}
-            )
+        WHERE shop_id= #{currShopId}
     </select>
 
 </mapper>

@@ -1,8 +1,6 @@
 import {LayerModal} from "../../../common/modal/LayerModal";
 import {useEffect, useState} from "react";
-import profileImg1 from "../../../../images/profile_img1.jpg"
 import useValidateInputField from "../../../hook/useValidateInputField";
-import {SALE_INITIAL_STATE} from "../SALE_INITIAL_STATE";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import useApi from "../../../hook/useApi";
@@ -12,14 +10,11 @@ import Popup from "../../../../css/popup.module.css"
 import {cm, cmc, toCssModules} from "../../../utils/cm";
 import {AddSaleItem} from "../module/AddSaleItem";
 import {AddSaleTabItem} from "../module/AddSaleTabItem";
-import {AddSaleSelectOptionLayer} from "../module/AddSaleSelectOptionLayer";
 import {AddSaleCheckItem} from "../module/AddSaleCheckItem";
 import {AddSaleInput} from "../module/AddSaleInput";
 import {TabList} from "../../../common/module/TabList";
-import {ElementUtils} from "../../../utils/ElementUtils";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {NumberUtils} from "../../../utils/NumberUtils";
-import {getSaleSample} from "../test/getSaleSample";
 import {AddSaleNumberInput} from "../module/AddSaleNumberInput";
 import {LMD} from "../../../common/LMD";
 import useUserInfo from "../../../hook/useUserInfo";
@@ -61,12 +56,15 @@ function SaleDetailModal(props){
     const checkBit = useBitArray();
     const checkListInputField = useObjectInputField();
 
-    const [files, setFiels] = useState({
+    const [files, setFiles] = useState({
         estimate: null,
         docs: null
     })
 
     const [staff, setStaff] = useState([])
+
+    const [previewDocs, setPreviewDocs] = useState(null)
+    const [previewEstimate, setPreviewEstimate] = useState(null)
 
 
     useEffect(()=>{
@@ -78,10 +76,23 @@ function SaleDetailModal(props){
     },[])
 
     const handleFileInput = (e)=>{
-        setFiels(prev=>({
+        const name = e.target.name;
+        const file = e.target.files[0]
+        setFiles(prev=>({
             ...prev,
-            [e.target.name]: e.target.files[0]
+            [name]: file
         }))
+        if(file){
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onloadend = ()=>{
+                if(name === 'docs'){
+                    setPreviewDocs(reader.result)
+                }else if(name === 'estimate'){
+                    setPreviewEstimate(reader.result)
+                }
+            }
+        }
     }
 
     const getInnerStaff = async ()=>{
@@ -336,7 +347,6 @@ function SaleDetailModal(props){
                 sale_id: props.id,
                 ...inputField.input,
                 ...checkListInputField.input,
-                seller_id: userInfo.user.id,
                 sup_list: supportInputField.input,
                 add_list: addInputField.input,
                 total_cms: inputField.get('ct_cms') +
@@ -421,7 +431,9 @@ function SaleDetailModal(props){
                                 <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
                                     <input type="hidden" id=""/>
                                     <SelectMapLayer cssModules={toCssModules(Popup, User)} inputField={inputField}
-                                                      values={staff} name='seller_id'/>
+                                                      values={staff} onChange={(v)=>{
+                                                          inputField.put('seller_id', v)
+                                    }} name='seller_id'/>
                                 </div>
                             </div>
                         </div>
@@ -578,11 +590,15 @@ function SaleDetailModal(props){
                                                     <div className={Popup.data_title}>서류</div>
                                                     <div className={Popup.data_area}>
                                                         <div className={Popup.data_upload}>
-                                                            <input type="file" name='docs'
-                                                                   onChange={handleFileInput}
-                                                                   className={Popup.upload_btn}/>
-                                                            {/*<button type="button" className={Popup.upload_btn}>업로드</button>*/}
+                                                            <label htmlFor='docs'
+                                                                   className={Popup.upload_btn}>업로드</label>
+                                                            <input type="file" id='docs' name='docs'
+                                                                   onChange={handleFileInput} style={{
+                                                                visibility: "hidden"
+                                                            }}/>
+
                                                         </div>
+                                                        <img src={previewDocs} alt=''/>
                                                     </div>
                                                 </div>
 
@@ -590,18 +606,21 @@ function SaleDetailModal(props){
                                                     <div className={Popup.data_title}>견적서</div>
                                                     <div className={Popup.data_area}>
                                                         <div className={Popup.data_upload}>
-                                                            <input type="file" name='estimate'
-                                                                   onChange={handleFileInput}
-                                                                   className={Popup.upload_btn}/>
-                                                            {/*<button type="button" className={Popup.upload_btn}>업로드*/}
-                                                            {/*</button>*/}
+                                                            <label htmlFor='estimate' className={Popup.upload_btn}>업로드
+                                                            </label>
+                                                            <input type="file" id='estimate' name='estimate'
+                                                                   onChange={handleFileInput} style={{
+                                                                visibility: "hidden"
+                                                            }}/>
+
                                                         </div>
+                                                        <img src={previewEstimate} alt=''/>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className={cm(Popup.data_box, Popup.n3)}>
-                                                <div className={Popup.data_title}>비고</div>
+                                            <div className={Popup.data_title}>비고</div>
                                                 <div className={Popup.data_area}>
                                                     <textarea className={Popup.data_textarea} name='memo'
                                                               value={inputField.get('memo')}

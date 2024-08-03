@@ -43,6 +43,7 @@ import {LandingPage} from "./js/landing/LandingPage";
 import {ChatBotButton} from "./js/common/module/ChatBotButton";
 import {GraphTest} from "./js/test/GraphTest";
 import {MasterData} from "./js/admin/MasterData";
+import {ErrorBoundary} from "react-error-boundary";
 
 function App() {
   return (
@@ -75,7 +76,7 @@ function App() {
 
               <Route element={<ChatBotButton/>}>
                   <Route element={<AccountLayout/>}>
-                  {/*<Route path='/' element={<Preview/>}/>*/}
+                      {/*<Route path='/' element={<Preview/>}/>*/}
                       <Route path='/account/login' element={<Login/>}/>
                       <Route path='/account/signup' element={<Signup/>}/>
 
@@ -111,7 +112,7 @@ function App() {
                           <Route path='task' element={<Task/>}/>
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>
-                          <Route path='statistics' element={<Statistics/>}/>
+                          {/*<Route path='statistics' element={<Statistics/>}/>*/}
                           <Route path='admin' element={<Administrator/>}></Route>
                           <Route path='admin/gmd' element={<MasterData/>}></Route>
                       </Route>
@@ -132,6 +133,7 @@ function App() {
 
 
           </Routes>
+
       </div>
   )
 }

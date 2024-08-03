@@ -1,9 +1,10 @@
-import {AxiosApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 import {ObjectUtils} from "../utils/objectUtil";
 import useModal from "../hook/useModal";
 
 function UserApi(accessToken){
     const axiosApiWithAccessToken = AxiosApiWithAccessToken();
+    const axiosApi = AxiosApi();
 
     return {
         getUser : async ()=>{
@@ -26,20 +27,26 @@ function UserApi(accessToken){
         updateNickname : async (nickname)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
         },
-        updateCurrentShop : async (shopId, userId)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/user/${userId}/shop?shopId=${shopId}`, accessToken);
+        updateCurrentShop : async (shopId)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/user/shop/curr?shopId=${shopId}`, accessToken);
         },
-        updateUserInfo : async (data)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/user/info', data, accessToken);
+        updateProfile : async (data)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/user/profile', data, accessToken);
         },
         updateRole: async (userId, role)=>{
             return await axiosApiWithAccessToken.put(`/api/v1/user/${userId}/role?role=${role}`)
         },
         updatePfp : async (data)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/user/update/pfp',data, accessToken);
+            const option = {
+                headers:{
+                    'X-ACCESS-TOKEN': accessToken,
+                    'Content-Type': "multipart/form-data"
+                }
+            }
+            return await axiosApi.post('/api/v1/user/pfp',data, option);
         },
         updatePassword: async (data)=>{
-          return await axiosApiWithAccessToken.put('/api/v1/user/password',data, accessToken);
+          return await axiosApiWithAccessToken.post('/api/v1/user/password',data, accessToken);
         },
         // getUserAsStaff : async ()=>{
         //     return await axiosApiWithAccessToken.get('/api/v1/user/staff', accessToken);
@@ -64,6 +71,9 @@ function UserApi(accessToken){
         // },
         updateApprovalState: async (staffId, state)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/user/${staffId}/approval-st`, state, accessToken);
+        },
+        invite: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/user/invite', body, accessToken);
         }
     }
 }

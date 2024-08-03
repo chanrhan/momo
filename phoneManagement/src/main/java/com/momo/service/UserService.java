@@ -1,12 +1,15 @@
 package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
+import com.momo.common.enums.codes.CommonErrorCode;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
-import com.momo.mapper.RefreshTokenMapper;
+import com.momo.exception.BusinessException;
 import com.momo.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,13 +28,17 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class UserService extends CommonService implements UserDetailsService{
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
-	private final RefreshTokenMapper refreshTokenMapper;
+
+	public int getSessionData(String userId){
+		return userMapper.getSessionData(userId);
+	}
 
 	// Authentication
-	public Map<String,String> getInnerStaff(String userId){
-		List<Map<String,String>> list = userMapper.getInnerStaff(userId);
+	public Map<String,String> getInnerStaff(int currShopId){
+		List<Map<String,String>> list = userMapper.getInnerStaff(currShopId);
 		Map<String,String> map = new HashMap<>();
 
 		for(Map<String,String> m : list){
@@ -41,16 +48,16 @@ public class UserService extends CommonService implements UserDetailsService{
 		return map;
 	}
 
-	public List<Map<String,Object>> getInnerStaffAll(String userId, String keyword){
-		return userMapper.getInnerStaffAll(userId, keyword);
+	public List<Map<String,Object>> getInnerStaffAll(int currShopId, String keyword){
+		return userMapper.getInnerStaffAll(currShopId, keyword);
 	}
 
-	public Integer getInnerStaffTotalCount(String userId){
-		return userMapper.getInnerStaffTotalCount(userId);
+	public Integer getInnerStaffTotalCount(int currShopId){
+		return userMapper.getInnerStaffTotalCount(currShopId);
 	}
 
-	public List<String> getInnerStaffName(String userId){
-		return userMapper.getInnerStaffName(userId);
+	public List<String> getInnerStaffName(int currShopId){
+		return userMapper.getInnerStaffName(currShopId);
 	}
 
 	@Deprecated
@@ -58,9 +65,9 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.getStaffByShopId(shopId);
 	}
 
-//	public int updateCurrentShop(String userId, int shopId){
-//		return userMapper.updateCurrentShop(userId, shopId);
-//	}
+	public int updateCurrentShop(String userId, int shopId){
+		return userMapper.updateCurrentShop(userId, shopId);
+	}
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);
 	}
@@ -81,28 +88,10 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.findUserByTelEmail(tel, email);
 	}
 
-//	public String getUserByBpNo(String bpNo){
-//		String userId = userMapper.getUserByBrNo(bpNo);
-//		if(!StringUtils.hasText(userId)){
-//			return null;
-//		}
-//		int length = userId.length();
-//		StringBuilder sb = new StringBuilder(userId);
-//		sb.replace(length-5, length-1, "****");
-//		return sb.toString();
-//	}
-
-	public void sendAuthNumberByEmailForUpdatePassword(String id){
-
+	public boolean inviteAll(String senderId, List<String> telList){
+		return false;
 	}
 
-	public void sendAuthNumberByTelForUpdatePassword(String id){
-
-	}
-
-	public String getMyName(String userId){
-		return userMapper.getName(userId);
-	}
 
 	public Map<String,Object> getProtectedTelAndEmail(String id){
 		Map<String,Object> map = userMapper.findTelEmailById(id);
@@ -127,16 +116,13 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.matchUserId(vo);
 	}
 
-	public void loginNow(String id){
-		userMapper.loginNow(id);
-	}
 
 	public int updateUserToDormant(int date){
 		return userMapper.updateUserToDormant(date);
 	}
 
-	public Map<String,Object> getUserById(String id){
-		return userMapper.getUserByUserAndShop(id);
+	public Map<String,Object> getUserInfo(String id){
+		return userMapper.getUserInfo(id);
 	}
 
 	public Map<String,Object> getUserAsAuthorization(String id){
@@ -166,17 +152,19 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 	public int updatePassword(UserVO vo){
+		String orgPwd = userMapper.getPassword(vo.getId());
+		if(!passwordEncoder.matches(vo.getPwd(), orgPwd)){
+			return 0;
+		}
+		vo.setPwd(orgPwd);
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
 		return userMapper.updatePassword(vo);
 	}
-	public int updateApprovalState(String userId, String staffId, int state){
-		return userMapper.updateApprovalState(userId,staffId,state);
+	public int updateApprovalState(int currShopId, String staffId, int state){
+		return userMapper.updateApprovalState(currShopId,staffId,state);
 	}
-	public int updatePfp(UserVO vo){
-		return userMapper.updatePfp(vo);
-	}
-	public String getPfpFilePath(String id){
-		return userMapper.getProfilePicture(id);
+	public int updatePfp(String userId, String pfpPath){
+		return userMapper.updatePfp(userId, pfpPath);
 	}
 	public int deleteUser(String id) {
 		return userMapper.deleteUser(id);
@@ -190,79 +178,38 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.getChatInvitableUser(vo);
 	}
 
-	public int updateRole(String id, String role){
-		UserVO vo = UserVO.builder().id(id).role(role).build();
-		return userMapper.updateUser(vo);
-	}
 
+//	public void replaceAuthority(String role){
+//		replaceAuthority(role, false);
+//	}
 
-	// Employee
-//	public int insertEmp(UserVO vo){
-//		if(vo.getApprovalSt() == null){
-//			vo.setApprovalSt(false);
-//		}
-//		// 이거 임시 코드임. 나중에 수정
-//		if(vo.getShopId() == null){
-//			vo.setShopId(0);
+//	public void replaceAuthority(String role, boolean approve){
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
+//
+//		updateAuthorities.add(new SimpleGrantedAuthority(role));
+//		if(approve){
+//			updateAuthorities.add(new SimpleGrantedAuthority("APPROVE"));
 //		}
 //
-//		return userMapper.insertStaff(vo);
-//	}
-//	public int updateEmp(UserVO vo){
-//		return userMapper.updateStaff(vo);
-//	}
+//		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
 //
-//	public int deleteEmp(String id) {
-//		return userMapper.deleteStaff(id);
+//		SecurityContextHolder.getContext().setAuthentication(newAuth);
 //	}
-
-//	public List<Map<String,Object>> fetchStaff(UserVO vo) {
-//		return userMapper.getUserAsStaff(vo);
-//	}
-//	public Map<String,Object> fetchStaffById(String id){
-//		UserVO                   vo   = UserVO.builder().empId(id).build();
-//		List<Map<String,Object>> list = fetchStaff(vo);
-//		if(list == null || list.isEmpty()){
-//			return null;
-//		}
-//		return list.get(0);
-//	}
-
-//	public List<Map<String,Object>> searchEmp(SearchVO vo) {
-//		return userMapper.searchEmp(vo);
-//	}
-
-	public void replaceAuthority(String role){
-		replaceAuthority(role, false);
-	}
-
-	public void replaceAuthority(String role, boolean approve){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
-
-		updateAuthorities.add(new SimpleGrantedAuthority(role));
-		if(approve){
-			updateAuthorities.add(new SimpleGrantedAuthority("APPROVE"));
-		}
-
-		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
-
-		SecurityContextHolder.getContext().setAuthentication(newAuth);
-	}
 
 	public Authentication login(String username, String password){
 		Authentication authentication = authenticate(username, password);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
 		return authentication;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws BusinessException{
 		Map<String,Object> user = getUserAsAuthorization(username);
+//		log.info("load user: {}",user);
 		if(user == null){
-			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
+			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
 		}
 
 		String id = user.get("id").toString();
@@ -303,14 +250,14 @@ public class UserService extends CommonService implements UserDetailsService{
 	private Authentication authenticate(String username, String password) {
 		UserDetails userDetails = loadUserByUsername(username);
 
-		if (userDetails == null) {
-			System.out.println("Login details - null " + userDetails);
-			throw new BadCredentialsException("Invalid username and password");
-		}
+//		if (userDetails == null) {
+//			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
+////			throw new BadCredentialsException("Invalid username and password");
+//		}
 
 		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-			System.out.println("Login userDetails - password mismatch" + userDetails);
-			throw new BadCredentialsException("Invalid password");
+			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
+//			throw new BadCredentialsException("Invalid password");
 		}
 		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}

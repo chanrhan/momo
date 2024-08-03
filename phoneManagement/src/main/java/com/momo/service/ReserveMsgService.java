@@ -13,19 +13,19 @@ import java.util.Map;
 public class ReserveMsgService extends CommonService {
 	private final ReserveMsgMapper reserveMsgMapper;
 
-    public void insertMsgList(String userId, int saleId, List<ReserveMessageVO> list){
+    public void insertMsgList(int currShopId, int saleId, List<ReserveMessageVO> list){
 		for(ReserveMessageVO vo : list){
-			vo.setUserId(userId);
 			vo.setSaleId(saleId);
+			vo.setCurrShopId(currShopId);
 			reserveMsgMapper.insertMsg(vo);
 		}
 	}
 
-	public List<Map<String,Integer>> getReserveMsgForCalendar(String userId, String date){
-		return reserveMsgMapper.getReserveMsgForCalendar(userId,date);
+	public List<Map<String,Integer>> getReserveMsgForCalendar(int currShopId, String date){
+		return reserveMsgMapper.getReserveMsgForCalendar(currShopId,date);
 	}
 
-	public List<Map<String ,Object>> getReserveMsgDetail(String userId, String date, int state){
-		return reserveMsgMapper.getReserveMsgDetail(userId, date, state);
+	public List<Map<String ,Object>> getReserveMsgDetail(int currShopId, String date, int state){
+		return reserveMsgMapper.getReserveMsgDetail(currShopId, date, state);
 	}
 }

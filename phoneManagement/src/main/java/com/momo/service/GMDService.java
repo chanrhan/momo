@@ -33,28 +33,28 @@ public class GMDService {
     }
 
     // 동적 목록
-    public List<Map<String,Object>> getExtraService(String userId, String keyword, Integer provider){
-        return gmdMapper.getExtraService(userId, keyword,provider);
+    public List<Map<String,Object>> getExtraService(int currShopId, String keyword, Integer provider){
+        return gmdMapper.getExtraService(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getInternetPlan(String userId, String keyword, Integer provider){
-        return gmdMapper.getInternetPlan(userId, keyword,provider);
+    public List<Map<String,Object>> getInternetPlan(int currShopId, String keyword, Integer provider){
+        return gmdMapper.getInternetPlan(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getTvPlan(String userId, String keyword, Integer provider){
-        return gmdMapper.getTvPlan(userId, keyword,provider);
+    public List<Map<String,Object>> getTvPlan(int currShopId, String keyword, Integer provider){
+        return gmdMapper.getTvPlan(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getComb(String userId, String keyword){
-        return gmdMapper.getComb(userId, keyword);
+    public List<Map<String,Object>> getComb(int currShopId, String keyword){
+        return gmdMapper.getComb(currShopId, keyword);
     }
 
-    public List<Map<String,Object>> getSupportDiv(String userId, String keyword){
-        return gmdMapper.getSupportDiv(userId, keyword);
+    public List<Map<String,Object>> getSupportDiv(int currShopId, String keyword){
+        return gmdMapper.getSupportDiv(currShopId, keyword);
     }
 
-    public List<Map<String,Object>> getAddDiv(String userId, String keyword){
-        return gmdMapper.getAddDiv(userId, keyword);
+    public List<Map<String,Object>> getAddDiv(int currShopId, String keyword){
+        return gmdMapper.getAddDiv(currShopId, keyword);
     }
 
 

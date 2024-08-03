@@ -77,7 +77,7 @@
 .dashboard .panel_body .panel.n5 .panel_list{margin:0 -8px; margin-top:11px;}
 .dashboard .panel_body .panel.n5 .panel_item{display:inline-block; width:calc(25% - 16px); margin:0 8px 20px 8px; vertical-align:top; font-weight: 200;}
 .dashboard .panel_body .panel.n5 .panel_item_head{position:relative; border:1px solid #dde1e8; border-radius:8px; background-color:#fff;}
-.dashboard .panel_body .panel.n5 .panel_item_head .panel_item_text{padding:0 24px 0 12px; border:0; background-color:transparent; color:#141218; font-size:18px; line-height:39px; letter-spacing:-0.04em;}
+.dashboard .panel_body .panel.n5 .panel_item_head .panel_item_text{padding:0 24px 0 12px; border:0; background-color:transparent; color:#141218; font-size:15px; line-height:39px; letter-spacing:-0.04em;}
 .dashboard .panel_body .panel.n5 .panel_item_head .panel_item_del{position:absolute; top:0; right:0; width:39px; height:39px; background:url(../images/del_icon.png) no-repeat center / 24px;}
 .dashboard .panel_body .panel.n5 .panel_item_body{position:relative; height:218px; margin-top:7px; border-radius:8px; background-color:#fff;}
 .dashboard .panel_body .panel.n5 .panel_item_body .panel_item_add{position:absolute; top:0; left:0; right:0; bottom:0; background:url(../images/plus_icon.png) no-repeat center / 40px;}

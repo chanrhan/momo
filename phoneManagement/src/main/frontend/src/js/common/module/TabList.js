@@ -29,9 +29,9 @@ export function TabList({name, inputField, className, value, onChange, theme, va
         return value;
     }
 
-    if(ObjectUtils.isEmptyArray(values)){
-        return null;
-    }
+    // if(ObjectUtils.isEmptyArray(values)){
+    //     return null;
+    // }
 
     return (
         <ul className={`tab_list ${theme && theme['tab_list']} ${className}`}>

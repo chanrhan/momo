@@ -6,6 +6,7 @@ import com.momo.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -94,7 +95,7 @@ public class ShopController {
 	 * }
 	 */
 	@GetMapping("/shop/all")
-	public ResponseEntity<List<Map<String,String>>> getShopAll(){
+	public ResponseEntity<List<Map<String,Object>>> getShopAll(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(shopService.getShopItems(username));
 	}
@@ -102,7 +103,10 @@ public class ShopController {
 	@GetMapping("/shop/join")
 	public ResponseEntity<Boolean> joinShop(@RequestParam int shopId){
 		String username = SecurityContextUtil.getUsername();
-
+		log.info("join username: {}", username);
+		if(!StringUtils.hasText(username)){
+			username = "SERVER";
+		}
 		return ResponseEntity.ok(shopService.joinShop(username, shopId));
 	}
 

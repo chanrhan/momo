@@ -1,5 +1,5 @@
 import {Navigate, useLocation} from "react-router-dom";
-import {CheckToken} from "../js/utils/AuthUtils";
+import {AuthUtils, CheckToken} from "../js/utils/AuthUtils";
 import Loading from "../js/common/module/Loading";
 
 

@@ -12,6 +12,7 @@ import useApi from "../hook/useApi";
 import {Link} from "react-router-dom";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
+import {StringUtils} from "../utils/StringUtils";
 
 export function FindUsername(){
     const {publicApi} = useApi();
@@ -22,6 +23,8 @@ export function FindUsername(){
     const [isSent, setIsSent] = useState(false)
     const [auth, setAuth] = useState(null)
     const [foundUsers, setFoundUsers] = useState(null)
+
+    const [selected, setSelected] = useState(0)
 
     const toggleRadio = ()=>{
         let field = inputField.input[(byTel ? 'tel': 'email')];
@@ -54,15 +57,30 @@ export function FindUsername(){
     }
 
     const submit = async()=>{
-        const by = byTel ? 'tel':'email';
-        if(inputField.matchAuthNumber(auth) && inputField.validateOne(by)){
-            await publicApi.findUser(by, inputField.input[by]).then(({status,data})=>{
-                if(status === 200){
-                    setFoundUsers(data)
+        console.log(123)
+        if(inputField.matchAuthNumber(auth)){
+            if(byTel){
+                if(inputField.validateOne('tel')){
+                    const tel = inputField.input.tel;
+                    console.log(`tel: ${StringUtils.toPhoneNumber(tel)}`)
+                    await publicApi.findUser('tel', StringUtils.toPhoneNumber(tel)).then(({status,data})=>{
+                        if(status === 200){
+                            setFoundUsers(data)
+                        }
+                    })
                 }
-            })
+            }else{
+                if(inputField.validateOne('email')){
+                    await publicApi.findUser('email', inputField.input.email).then(({status,data})=>{
+                        if(status === 200){
+                            setFoundUsers(data)
+                        }
+                    })
+                }
+            }
         }
     }
+
 
     if(foundUsers){
         return (
@@ -74,8 +92,11 @@ export function FindUsername(){
                         foundUsers.map((v,i)=> {
                             return <li className={cm(User.form_item)}>
                                 <div className={cmc(User.radio_box)}>
-                                    <input type="radio" name="radio" className={cm(User.input)}/>
-                                    <label htmlFor="radio" className={User.form_label}><span
+                                    <input type="radio" name={`radio_${i}`} className={cm(User.input)} checked={i === selected}/>
+                                    <label htmlFor={`radio_${i}`} className={User.form_label}
+                                           onClick={()=>{
+                                               setSelected(i)
+                                           }}><span
                                         className={User.span}>{v.id}</span>(가입일 : {v.regi_dt})</label>
                                 </div>
                             </li>

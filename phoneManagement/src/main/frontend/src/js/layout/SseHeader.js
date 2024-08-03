@@ -17,7 +17,7 @@ function SseHeader(){
 
     const onNote = (e)=>{
         const { data: receivedConnectData } = e;
-        // alert(`메세지가 도착했습니다 ${receivedConnectData}`);
+        alert(`메세지가 도착했습니다 ${receivedConnectData}`);
 
     }
 

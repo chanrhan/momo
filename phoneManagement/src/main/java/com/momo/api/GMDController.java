@@ -2,6 +2,7 @@ package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.service.GMDService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -52,47 +53,53 @@ public class GMDController {
 
     // 부가서비스
     @GetMapping("/exsvc")
-    public ResponseEntity<List<Map<String,Object>>> getExtraService(@RequestParam(required = false)String keyword,
+    public ResponseEntity<List<Map<String,Object>>> getExtraService(HttpSession session,
+                                                                    @RequestParam(required = false)String keyword,
                                                                     @RequestParam(required = false)Integer provider){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getExtraService(username, keyword,provider));
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getExtraService(currShopId, keyword,provider));
     }
 
     // 인터넷 요금제
     @GetMapping("/internet-plan")
-    public ResponseEntity<List<Map<String,Object>>> getInternetPlan(@RequestParam(required = false)String keyword,
+    public ResponseEntity<List<Map<String,Object>>> getInternetPlan(HttpSession session,
+                                                                    @RequestParam(required = false)String keyword,
                                                                     @RequestParam(required = false)Integer provider){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getInternetPlan(username, keyword,provider));
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getInternetPlan(currShopId, keyword,provider));
     }
 
     // TV 요금제
     @GetMapping("/tv-plan")
-    public ResponseEntity<List<Map<String,Object>>> getTvPlan(@RequestParam(required = false)String keyword,
+    public ResponseEntity<List<Map<String,Object>>> getTvPlan(HttpSession session,
+                                                              @RequestParam(required = false)String keyword,
                                                               @RequestParam(required = false)Integer provider){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getTvPlan(username, keyword,provider));
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getTvPlan(currShopId, keyword,provider));
     }
 
     // 결합
     @GetMapping("/comb-tp")
-    public ResponseEntity<List<Map<String,Object>>> getComb(@RequestParam(required = false)String keyword){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getComb(username, keyword));
+    public ResponseEntity<List<Map<String,Object>>> getComb(HttpSession session,
+                                                            @RequestParam(required = false)String keyword){
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getComb(currShopId, keyword));
     }
 
     // 지원 구분
     @GetMapping("/sup-div")
-    public ResponseEntity<List<Map<String,Object>>> getSupportDiv(@RequestParam(required = false)String keyword){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getSupportDiv(username, keyword));
+    public ResponseEntity<List<Map<String,Object>>> getSupportDiv(HttpSession session,
+                                                                  @RequestParam(required = false)String keyword){
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getSupportDiv(currShopId, keyword));
     }
 
     // 지원 구분
     @GetMapping("/add-div")
-    public ResponseEntity<List<Map<String,Object>>> getAddDiv(@RequestParam(required = false)String keyword){
-        String username = SecurityContextUtil.getUsername();
-        return ResponseEntity.ok(gmdService.getAddDiv(username, keyword));
+    public ResponseEntity<List<Map<String,Object>>> getAddDiv(HttpSession session,
+                                                              @RequestParam(required = false)String keyword){
+        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        return ResponseEntity.ok(gmdService.getAddDiv(currShopId, keyword));
     }
 
 

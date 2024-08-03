@@ -21,27 +21,28 @@ export const AxiosApi = ()=> {
     // });
 
     axiosInstance.interceptors.response.use((response)=>{
+        // console.log("axios response")
+        // console.table(response)
         return {
             status: response.status,
             data: response.data,
             headers: response.headers
         }
     }, (error)=>{
-        // console.table(error)
+        console.table(error)
+        let msg = null;
         if(error.code === 'ERR_NETWORK'){
-            modal.openModal(ModalType.SNACKBAR.Alert, {
-                msg: '서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.'
-            })
-            return {
-                status: false,
-                message: error.message
-            }
+            msg =  '서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.'
+        }else{
+            msg = error.response.data.message;
         }
+        modal.openModal(ModalType.SNACKBAR.Warn, {
+            msg: msg
+        })
         return  {
             status: error.response.status,
-            data: error.response.data,
-            message: error.message
-        }
+            data: error.response.data
+        }   
     })
 
     const post = async(url, data, option)=>{
@@ -49,7 +50,7 @@ export const AxiosApi = ()=> {
     }
 
     const get = async(url, option)=>{
-        return  await axiosInstance.get(url, option)
+        return await axiosInstance.get(url, option)
     }
 
     const del = async(url, option)=>{

@@ -18,6 +18,8 @@ public class ReserveMessageVO extends BaseVO {
     private Integer msgId;
     private String rsvDt;
 
+    private Integer currShopId;
+
     private String content;
 
     private Integer dday;

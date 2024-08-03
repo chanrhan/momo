@@ -13,7 +13,7 @@ public interface ReserveMsgMapper {
 	// Message Reserve
 	public int insertMsg(ReserveMessageVO vo);
 
-	public List<Map<String,Integer>> getReserveMsgForCalendar(String userId, String date);
+	public List<Map<String,Integer>> getReserveMsgForCalendar(int currShopId, String date);
 
-	public List<Map<String,Object>> getReserveMsgDetail(String userId, String date,int state);
+	public List<Map<String,Object>> getReserveMsgDetail(int currShopId, String date,int state);
 }

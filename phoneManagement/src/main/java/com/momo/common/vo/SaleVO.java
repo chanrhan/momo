@@ -21,6 +21,8 @@ public class SaleVO extends BaseVO {
 	private Integer supId;
 	private Integer addId;
 
+	private Integer currShopId;
+
 	// 고객 정보
 	private String custNm; // 고객 이름
 	private Integer custGd; // 고객 성별 (Gender)

@@ -7,7 +7,7 @@ export function WarningModal(props){
     const modal = useModal();
 
     const close = ()=>{
-        modal.closeModal(ModalType.SNACKBAR.Warning)
+        modal.closeModal(ModalType.SNACKBAR.Warn)
     }
 
     return (

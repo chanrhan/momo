@@ -14,7 +14,7 @@ public interface ShopMapper {
 	public int updateShop(ShopVO vo);
 	public int deleteShop(int shopId);
 	public List<Map<String,Object>> getShop(ShopVO vo);
-	public List<Map<String,String>> getShopItems(String userId);
+	public List<Map<String,Object>> getShopItems(String userId);
 
 
 	public void joinShop(String userId, int shopId);

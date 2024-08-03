@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.apache.el.stream.StreamELResolverImpl;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -18,6 +19,7 @@ public class CommonVO extends BaseVO {
     };
 
     private Integer provider;
+    private String date;
 
     private Integer year;
     private Integer month;

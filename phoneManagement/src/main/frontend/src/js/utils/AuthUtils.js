@@ -3,8 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCookieToken, removeCookieToken, setRefreshToken} from "./Cookies";
 import {authActions} from "../store/slices/authSlice";
 import {requestRefreshToken} from "../api/Auth";
+import useApi from "../hook/useApi";
 
 //
+
 export function CheckToken(key){
     const [isAuth, setIsAuth] = useState('Loading');
     const {authenticated, accessToken, expireTime} = useSelector(state=>state.authReducer);

@@ -12,27 +12,27 @@ import java.util.Map;
 public class TodoService {
     private final TodoMapper todoMapper;
 
-    public List<Map<String,Object>> getTodoDetail(String userId, String date){
-        return todoMapper.getTodoDetail(userId,date);
+    public List<Map<String,Object>> getTodoDetail(int currShopId, String date){
+        return todoMapper.getTodoDetail(currShopId,date);
     }
 
-    public List<Integer> getTodoForCalendar(String userId, String date){
-        return todoMapper.getTodoForCalendar(userId,date);
+    public List<Integer> getTodoForCalendar(int currShopId, String date){
+        return todoMapper.getTodoForCalendar(currShopId,date);
     }
 
-    public int updateTodoContent(String userId, String date, int todoId, String content){
-        return todoMapper.updateTodoContent(userId, date, todoId, content);
+    public int updateTodoContent(int currShopId, String date, int todoId, String content){
+        return todoMapper.updateTodoContent(currShopId, date, todoId, content);
     }
 
-    public int updateTodoColor(String userId,String date, int todoId, int color){
-        return todoMapper.updateTodoColor(userId, date, todoId, color);
+    public int updateTodoColor(int currShopId,String date, int todoId, int color){
+        return todoMapper.updateTodoColor(currShopId, date, todoId, color);
     }
 
-    public void insertTodo(String userId,String date, int color, String content){
-        todoMapper.insertTodo(userId, date, color, content);
+    public void insertTodo(int currShopId,String date, int color, String content){
+        todoMapper.insertTodo(currShopId, date, color, content);
     }
 
-    public int deleteTodo(String userId, String date, int todoId){
-        return todoMapper.deleteTodo(userId, date, todoId);
+    public int deleteTodo(int currShopId, String date, int todoId){
+        return todoMapper.deleteTodo(currShopId, date, todoId);
     }
 }

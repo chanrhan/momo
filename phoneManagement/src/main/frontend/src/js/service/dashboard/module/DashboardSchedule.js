@@ -5,18 +5,15 @@ import {useEffect, useState} from "react";
 import {DateUtils} from "../../../utils/DateUtils";
 import useApi from "../../../hook/useApi";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
-import {ObjectUtils} from "../../../utils/objectUtil";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LMD} from "../../../common/LMD";
 
-// 캘린더는 나중에 라이브러리 사용할지 말지 결정한후 css 작업 들어가도 될듯
-export function DashboardSchedule({}){
+export function DashboardSchedule({userInfo}){
     const {todoApi} = useApi();
     const modal = useModal();
 
     const today = new Date();
-
 
     const [month, setMonth] = useState(today.getMonth()+1);
     const [year, setYear] = useState(today.getFullYear());
@@ -36,15 +33,15 @@ export function DashboardSchedule({}){
 
     useEffect(() => {
         getTodoForCalendar();
-    }, [month]);
+    }, [month, userInfo]);
 
     useEffect(() => {
         getTodoDetail()
-    }, [day]);
+    }, [day, userInfo]);
 
     const getTodoForCalendar = async ()=>{
         await todoApi.getTodoForCalendar(DateUtils.formatYYMM(year,month)).then(({status,data})=>{
-            if(status === 200 && data){
+            if(status === 200 && data && typeof data === 'object'){
                 let map = {};
                 data.forEach((v,i)=>{
                     map[v] = true;
@@ -159,11 +156,11 @@ export function DashboardSchedule({}){
                         <tbody className={cm(Dashboard.tbody)}>
                         {
                             new Array(monthInfo.totalWeek).fill(0).map((v, week) => {
-                                return <tr>
+                                return <tr key={week}>
                                     {
                                         new Array(7).fill(0).map((v, _day) => {
                                             const d = (week * 7) + _day - monthInfo.startDay + 1;
-                                            return <DateItem key={_day} today={DateUtils.isToday(year, month, d)}
+                                            return <DateItem index={_day} today={DateUtils.isToday(year, month, d)}
                                                              day={(d > 0 && d <= monthInfo.totalDays) && d}
                                                              active={year === cYear && month === cMonth && d === day}
                                                              has={items && items[d]}
@@ -200,9 +197,9 @@ export function DashboardSchedule({}){
     )
 }
 
-function DateItem({key, day, today, active, onClick, has}) {
+function DateItem({index, day, today, active, onClick, has}) {
     return (
-        <td key={key} className={cm(Dashboard.td, `${today && Dashboard.today}`)}>
+        <td key={index} className={cm(Dashboard.td, `${today && Dashboard.today}`)}>
             <button className={cm(Dashboard.button, `${active && Dashboard.active}`, `${has && Dashboard.has}`)}
                     type="button" onClick={() => {
                 onClick(day)

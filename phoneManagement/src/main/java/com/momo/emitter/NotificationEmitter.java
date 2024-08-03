@@ -61,7 +61,7 @@ public class NotificationEmitter {
 
 	public void sendToClient(String id, String eventName, Object data){
 		Map<String,SseEmitter> emitters = findAllStartById(id);
-//		log.info("current emitter: {}",emitters);
+		log.info("current emitter: {}",emitters);
 		if(emitters != null && !emitters.isEmpty()){
 			emitters.forEach((key, value) -> {
 				try {

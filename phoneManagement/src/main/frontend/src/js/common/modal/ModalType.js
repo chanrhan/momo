@@ -2,10 +2,16 @@ export const ModalType = {
     LAYER: {
         // common
         Bulk_Upload: 'BulkUpload',
+        Invite: 'Invite',
+        Payment_Card: 'Payment_Card',
+        Charge_Point: 'Charge_Point',
+
+        // Profile
+        Update_Password: 'UpdatePassword',
+        Name_Card: 'NameCard',
 
         Change_Nickname: 'ChangeNickname',
         Add_Shop: 'AddShop',
-        Update_Password: 'UpdatePassword',
         // sale
         Sale_Detail: 'SaleDetail',
         Sale_Card: 'SaleCard',
@@ -39,7 +45,7 @@ export const ModalType = {
     },
     SNACKBAR: {
         Alert: 'Alert',
-        Warning: 'Warning',
+        Warn: 'Warning',
         Info: 'Info'
     },
     TOAST: {

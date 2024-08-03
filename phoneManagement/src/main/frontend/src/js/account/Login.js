@@ -11,10 +11,12 @@ import useValidateInputField from "../hook/useValidateInputField";
 import {cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
+import {useAuthentication} from "../hook/useAuthentication";
 
 function Login(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const authentication = useAuthentication();
     const {publicApi} = useApi();
     const modal = useModal();
 
@@ -50,20 +52,15 @@ function Login(){
             return;
         }
 
-
-        await publicApi.login(inputField.input).then(res=>{
-            if(res.status === 200){
-                dispatch(authActions.setAccessToken(res.headers.get('authorization')));
-                setRefreshToken(res.headers.get('refreshtoken'));
-                navigate('/service');
-            }else if(res.status){
-                inputField.handleError('username','아이디를 다시 입력해주세요')
-                inputField.handleError('password','비밀번호를 다시 입력해주세요')
-                modal.openModal(ModalType.SNACKBAR.Warning, {
-                    msg: "아이디 혹은 비밀번호가 일치하지 않습니다."
-                });
-            }
-        })
+        if(await authentication.login(inputField.input)){
+            navigate('/service');
+        }else{
+            inputField.handleError('username','아이디를 다시 입력해주세요')
+            inputField.handleError('password','비밀번호를 다시 입력해주세요')
+            // modal.openModal(ModalType.SNACKBAR.Warning, {
+            //     msg: "아이디 혹은 비밀번호가 일치하지 않습니다."
+            // });
+        }
     }
 
     const handleRememberMe = ()=>{

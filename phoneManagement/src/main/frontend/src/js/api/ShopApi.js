@@ -14,9 +14,6 @@ function ShopApi(accessToken){
         // addShopBulk: async (data)=>{
         //     return await axiosApiWithAccessToken.post(`/api/v1/shop/bulk`, data, accessToken);
         // },
-        // addCorp: async(data)=>{
-        //   return await axiosApiWithAccessToken.post('api/v1/corp',data,accessToken)
-        // },
         getShop : async (keyword)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/shop?keyword=${keyword}`,accessToken);
         },
@@ -25,7 +22,7 @@ function ShopApi(accessToken){
         },
         joinShop: async (shopId)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/shop/join?shopId=${shopId}`, accessToken);
-    }
+        }
     }
 }
 

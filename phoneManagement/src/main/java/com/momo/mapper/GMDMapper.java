@@ -15,12 +15,12 @@ public interface GMDMapper {
     public List<Map<String,Object>> getCtPlan(String keyword, Integer provider);
 
     // 동적 목록
-    public List<Map<String,Object>> getExtraService(String userId, String keyword, Integer provider);
-    public List<Map<String,Object>> getInternetPlan(String userId, String keyword, Integer provider);
-    public List<Map<String,Object>> getTvPlan(String userId, String keyword, Integer provider);
-    public List<Map<String,Object>> getComb(String userId, String keyword);
-    public List<Map<String,Object>> getSupportDiv(String userId, String keyword);
-    public List<Map<String,Object>> getAddDiv(String userId, String keyword);
+    public List<Map<String,Object>> getExtraService(int currShopId, String keyword, Integer provider);
+    public List<Map<String,Object>> getInternetPlan(int currShopId, String keyword, Integer provider);
+    public List<Map<String,Object>> getTvPlan(int currShopId, String keyword, Integer provider);
+    public List<Map<String,Object>> getComb(int currShopId, String keyword);
+    public List<Map<String,Object>> getSupportDiv(int currShopId, String keyword);
+    public List<Map<String,Object>> getAddDiv(int currShopId, String keyword);
 
     public Map<String,Object> getSecondDeviceById(int id);
 }

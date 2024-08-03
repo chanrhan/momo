@@ -11,6 +11,7 @@ import {authActions} from "../store/slices/authSlice";
 import {ObjectUtils} from "../utils/objectUtil";
 import {cm} from "../utils/cm";
 import {useDispatch} from "react-redux";
+import {StringUtils} from "../utils/StringUtils";
 
 export function Signup(){
     const {publicApi} = useApi();
@@ -41,28 +42,18 @@ export function Signup(){
         inputField.matchAuthNumber(auth);
     }
 
-    const telFormat = (tel)=>{
-        if(ObjectUtils.isEmpty(tel)){
-            return ''
-        }
-
-        if(tel.length > 0 && tel.length <= 10){
-            return tel.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-        }else if(tel.length === 11){
-            return tel.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-        }
-    }
 
     const submit = async ()=>{
         if(inputField.validateAll()){
             await publicApi.signup({
                 ...inputField.input,
-                tel: telFormat(inputField.input.tel),
+                tel: StringUtils.toPhoneNumber(inputField.input.tel),
                 terms: ObjectUtils.convertBooleanArrayToString(termList)
-            }).then((res)=>{
-                if(res.status === 200){
-                    dispatch(authActions.setAccessToken(res.headers.get('authorization')));
-                    setRefreshToken(res.headers.get('refreshtoken'));
+            }).then(({status, data, headers})=>{
+                if(status === 200 && data){
+                    console.table(headers)
+                    dispatch(authActions.setAccessToken(headers.get('authorization')));
+                    setRefreshToken(headers.get('refreshtoken'));
                     navigate('/shop/list')
                 }
             })

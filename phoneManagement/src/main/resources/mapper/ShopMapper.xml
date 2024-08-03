@@ -69,9 +69,9 @@
     <select id="getShopItems">
         select sh.shop_id,
                sh.shop_nm
-        from tb_shop sh
-        left outer join tb_staff sf on sf.shop_id = sh.shop_id
-        where sf.staff_id = #{userId}
+        from tb_staff sf
+        left outer join tb_shop sh on sh.shop_id=sf.shop_id
+        where staff_id=#{userId}
     </select>
 
     <insert id="joinShop">
@@ -79,6 +79,4 @@
             (shop_id, staff_id, role, approval_st)
         VALUES (#{shopId}, #{userId}, 0, 0);
     </insert>
-
-
 </mapper>

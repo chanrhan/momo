@@ -18,6 +18,11 @@ function SaleApi(accessToken){
         getSaleAll : async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/all`, body, accessToken);
         },
+        getSaleSimple : async (keyword)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/simple`, {
+                keyword: keyword
+            }, accessToken);
+        },
         getSaleDetail: async (saleId)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/detail/${saleId}`,accessToken);
         },
@@ -98,6 +103,9 @@ function SaleApi(accessToken){
         getAvgMarginGraphBySelectType: async (selectType, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/select/${selectType}`, body, accessToken);
         },
+        getPersonalStatistics: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/stat', body, accessToken)
+        }
     }
 }
 

@@ -9,11 +9,17 @@ import {Last} from "react-bootstrap/PageItem";
 import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
 import alarmIcon1 from "../../images/alarm_icon.png"
 import alarmIcon2 from "../../images/alarm_icon2.png"
+import {HeaderSearchLayer} from "./module/HeaderSearchLayer";
+import useModal from "../hook/useModal";
+import {ModalType} from "../common/modal/ModalType";
+import {useAuthentication} from "../hook/useAuthentication";
 // import "../../css/user.module.css"
 
 export function MainHeader(){
     const nav = useNavigate()
-    const {notifApi} = useApi();
+    const modal = useModal();
+    const {notifApi, publicApi} = useApi();
+    const authentication = useAuthentication();
     const [count, setCount] = useState(0)
     const [active, setActive] = useState(false)
 
@@ -35,17 +41,17 @@ export function MainHeader(){
         setActive(!active)
     }
 
+    const openChargePointModal = ()=>{
+        modal.openModal(ModalType.LAYER.Charge_Point)
+    }
+
+
     return (
         <header className={Layout.header}>
             <h1 className={Layout.logo}><Link to='/service' className={Layout.a}><img src={logo} className={Layout.img} alt="momo"/></Link></h1>
 
             <div className={Layout.gnb}>
-                <div className={Layout.gnb_search}>
-                    <form className={Layout.form}>
-                        <input type="search" title="검색" className={Layout.input} id="검색" placeholder="이름, 전화번호, 식별번호로 검색해보세요."/>
-                        <button type="submit" className={Layout.button}>검색</button>
-                    </form>
-                </div>
+                <HeaderSearchLayer/>
 
                 <div className={Layout.gnb_link}>
                     <ul className="link_list">
@@ -65,8 +71,13 @@ export function MainHeader(){
                                     nav('/staff')
                                 }}>회원 관리</SelectItem>
                                 <SelectItem onClick={() => {
+                                    openChargePointModal();
                                     setActive(false)
-                                    nav('/')
+                                }}>문자 포인트 충전</SelectItem>
+                                <SelectItem onClick={() => {
+                                    setActive(false)
+                                    authentication.logout();
+                                    nav('/account/login')
                                 }}>로그아웃</SelectItem>
                             </SelectLayer>
                         </li>

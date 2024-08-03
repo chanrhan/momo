@@ -4,8 +4,11 @@ import com.momo.mapper.ShopMapper;
 import com.momo.common.vo.ShopVO;
 import com.momo.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ShopService extends CommonService {
+	private static final Logger log = LoggerFactory.getLogger(ShopService.class);
 	private final ShopMapper shopMapper;
 	private final UserMapper userMapper;
 	private final NotificationService notificationService;
@@ -39,7 +43,7 @@ public class ShopService extends CommonService {
 		return shopMapper.getShop(vo);
 	}
 
-	public List<Map<String ,String>> getShopItems(String userId){
+	public List<Map<String ,Object>> getShopItems(String userId){
 		return shopMapper.getShopItems(userId);
 	}
 
@@ -51,10 +55,15 @@ public class ShopService extends CommonService {
 	@Transactional
 	public boolean joinShop(String userId, int shopId){
 		shopMapper.joinShop(userId, shopId);
-		String receiverId = userMapper.getBMIdByShop(shopId);
-
+		Map<String,String> map = userMapper.getNotificationData(userId, shopId);
+		String senderName = map.get("name").toString();
+		String receiverId = map.get("id").toString();
+		log.info("join: {}",map);
+		if(!StringUtils.hasText(receiverId)){
+			return false;
+		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(userId).append("님의 매장 가입 요청입니다.");
+		sb.append(senderName).append("님의 매장 가입 요청입니다.");
 
 		notificationService.sendMessage(userId, receiverId, sb.toString());
 		return true;

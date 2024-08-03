@@ -1,8 +1,29 @@
 import Graph from "../../css/graph.module.css"
 import {cm} from "../utils/cm";
+import {useEffect, useState} from "react";
+import useApi from "../hook/useApi";
+import {NumberUtils} from "../utils/NumberUtils";
 
-export function Statistics(){
-    const tmp = new Array(6).fill(0);
+export function Statistics({date}){
+    const {saleApi} = useApi()
+
+    const [items, setItems] = useState(null)
+
+    useEffect(() => {
+        getPersonalStatistics()
+    }, [date]);
+
+    const getPersonalStatistics = async ()=>{
+        await saleApi.getPersonalStatistics({
+            date: date
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                console.table(data)
+                setItems(data)
+            }
+        })
+    }
+
     return (
         <div className={Graph.graph_table}>
             <table className={Graph.tb_calender}>
@@ -14,103 +35,109 @@ export function Statistics(){
                 <thead className={Graph.thead}>
                 <tr>
                     <Sth/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
-                    <Sth title='김모모 실장' sub='평촌역점'/>
+                    {
+                        items && items.profile && JSON.parse(items.profile).map((v,i)=>{
+                            return <Sth profile={v} sub='평촌역점'/>
+                        })
+                    }
                 </tr>
                 </thead>
                 <tbody className={Graph.tbody}>
-                <Str subject='판매자 수수료' inclination='up'>
+                <Str subject='무선 수수료' inclination='up'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>100,000</span>원</Std>
+                        items && items.ct_cms && JSON.parse(items.ct_cms).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
-                <Str subject='추가 정책' inclination='up'>
+                <Str subject='유선 수수료' inclination='up'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>100,000</span>원</Std>
+                        items && items.wt_cms && JSON.parse(items.wt_cms).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
+                        })
+                    }
+                </Str>
+                <Str subject='추가' inclination='up'>
+                    {
+                        items && items.sum_add && JSON.parse(items.sum_add).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
                 <Str subject='중고폰 판매 금액' inclination='up'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>100,000</span>원</Std>
+                        items && items.ud_cms && JSON.parse(items.ud_cms).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
                 <Str subject='지원' inclination='down'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>100,000</span>원</Std>
+                        items && items.sum_sup && JSON.parse(items.sum_sup).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
                 <Str bb subject='총 이익' inclination='none'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>100,000</span>원</Std>
+                        items && items.total_cms && JSON.parse(items.total_cms).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
                 <Str subject='무선 개수'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>5</span>개</Std>
+                        items && items.ct_cnt && JSON.parse(items.ct_cnt).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v}</span>개</Std>
                         })
                     }
                 </Str>
                 <Str subject='인터넷 개수'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>5</span>개</Std>
+                        items && items.internet_cnt && JSON.parse(items.internet_cnt).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v}</span>개</Std>
                         })
                     }
                 </Str>
                 <Str subject='TV 개수'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>1</span>개</Std>
+                        items && items.tv_cnt && JSON.parse(items.tv_cnt).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v}</span>개</Std>
                         })
                     }
                 </Str>
                 <Str subject='평균 마진'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>5,000</span>원</Std>
+                        items && items.avg_margin && JSON.parse(items.avg_margin).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
                         })
                     }
                 </Str>
                 <Str subject='동판 개수'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>35</span>개 <span className={Graph.span}>(20%)</span></Std>
+                        items && items.dongsi_stat && JSON.parse(items.dongsi_stat).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
                         })
                     }
                 </Str>
                 <Str subject='중고 개통'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>3</span>개</Std>
+                        items && items.ud_cnt && JSON.parse(items.ud_cnt).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v}</span>개</Std>
                         })
                     }
                 </Str>
                 <Str subject='세컨'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>35</span>개 <span className={Graph.span}>(20%)</span></Std>
+                        items && items.sd_stat && JSON.parse(items.sd_stat).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
                         })
                     }
                 </Str>
                 <Str subject='부가서비스'>
                     {
-                        tmp.map(()=>{
-                            return <Std><span className={Graph.span}>4</span>개 <span className={Graph.span}>(10%)</span></Std>
+                        items && items.exsvc_stat && JSON.parse(items.exsvc_stat).map((v,i)=>{
+                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
                         })
                     }
                 </Str>
@@ -124,14 +151,16 @@ export function Statistics(){
     )
 }
 
-function Sth({title, sub}){
+function Sth({profile}){
     return (
         <th className={Graph.th} scope="col">
-            {title}
             {
-                sub && <span className={Graph.span}>
-                ({sub})
-            </span>
+                profile && <>
+                    {profile.name}
+                    <span className={Graph.span}>
+                        {profile.nickname}
+                    </span>
+                </>
             }
         </th>
     )

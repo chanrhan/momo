@@ -1,5 +1,6 @@
 import User from "../../../css/user.module.css"
 import {cm} from "../../utils/cm";
+import {ObjectUtils} from "../../utils/objectUtil";
 
 export function UserFormInput({value, type = 'text', subject, name, inputField, className, style, placeholder, search, onSearch, bg, readOnly, onChange, errorText, children}){
 
@@ -9,9 +10,9 @@ export function UserFormInput({value, type = 'text', subject, name, inputField, 
         }
     }
 
-    // if(typeof inputField !== 'object'){
-    //     return null;
-    // }
+    if(typeof inputField !== 'object' && ObjectUtils.isEmpty(value)){
+        return null;
+    }
 
     return (
         <>

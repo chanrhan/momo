@@ -30,7 +30,7 @@ export function GraphBox3({date}){
 
         await saleApi.getAvgMarginGraphBySelectType(tab, body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 setGraphData(data)
             }
         })

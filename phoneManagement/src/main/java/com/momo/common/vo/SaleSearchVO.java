@@ -16,6 +16,8 @@ public class SaleSearchVO extends BaseVO {
     private String userId;
     private Integer saleId;
     private Integer category;
+    private Integer currShopId;
+
     private String keyword;
     private String keydate;
     private Integer order;

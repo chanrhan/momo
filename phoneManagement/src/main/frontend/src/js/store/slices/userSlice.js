@@ -7,8 +7,10 @@ const initialState = {
     nickname: null,
     tel: null,
     email: null,
+    pfp: null,
     corp_nm: null,
-    shop_nm: null
+    shop_nm: null,
+    shop_addr: null,
 }
 
 export const userSlice = createSlice({

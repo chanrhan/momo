@@ -80,7 +80,7 @@
         select exsvc_id as id,
                exsvc_nm as name
         from    tb_extra_service
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
                 exsvc_nm like '%${keyword}%'
@@ -100,7 +100,7 @@
         select internet_plan_id as id,
                internet_plan_nm as name
         from    tb_internet_plan
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
             internet_plan_nm like '%${keyword}%'
@@ -120,7 +120,7 @@
         select tv_plan_id as id,
                 tv_plan_nm as name
         from    tb_tv_plan
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
             tv_plan_nm like '%${keyword}%'
@@ -140,7 +140,7 @@
         select comb_tp_id as id,
                comb_tp_nm as name
         from    tb_comb_tp
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
             comb_tp_nm like '%${keyword}%'
@@ -157,7 +157,7 @@
         select sup_div_id as id,
                sup_div_nm as name
         from    tb_sup_div
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
             sup_div_nm like '%${keyword}%'
@@ -174,7 +174,7 @@
         select add_div_id as id,
                add_div_nm as name
         from    tb_add_div
-        where
+        where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
             (
             add_div_nm like '%${keyword}%'

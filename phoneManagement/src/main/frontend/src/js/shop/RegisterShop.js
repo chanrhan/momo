@@ -120,8 +120,8 @@ function RegisterShopStep1({inputField, prev, next}){
                     </UserFormList>
 
                     <div className={User.form_btn_box}>
-                        <Link className={`btn_grey ${User.w30} ${cmc(User.btn)}`} to='/shop/list'>이전</Link>
-                        <button type="button" className={`btn_blue ${User.w70} ${cmc(User.btn)}`} onClick={submit}>다음</button>
+                        {/*<Link className={`btn_grey ${User.w30} ${cmc(User.btn)}`} to='/shop/list'>이전</Link>*/}
+                        <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
                     </div>
                 </UserFormBox>
             </div>

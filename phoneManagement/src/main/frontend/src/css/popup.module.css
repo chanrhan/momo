@@ -469,7 +469,7 @@
 .popup .form.card .card_info .card_info_item .card_info_title{display:inline-block; font-size:16px; font-weight:500; line-height:19px; vertical-align:top;}
 .popup .form.card .card_info .card_info_item.price .card_info_title + .span{float:right; font-weight:500; line-height:19px; vertical-align:top;}
 .popup .form.card .card_info .card_info_item.auto{margin-top:32px; padding-top:31px; border-top:1px solid #dde1e8;}
-.popup .form.card .card_info .card_info_item.auto .switch{width:42px; height:23px;}
+.popup .form.card .card_info .card_info_item.auto .switch{width:42px; height:23px;margin-left: 7px}
 .popup .form.card .card_info .card_info_item.auto .switch .input{top:9px;}
 .popup .form.card .card_info .card_info_item.auto .switch .label{font-size:0;}
 .popup .form.card .card_info .card_info_item.auto .switch .label:before{width:42px; height:23px; background-color:#00bb35;}

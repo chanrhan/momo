@@ -16,13 +16,19 @@ function TestApi(accessToken){
         getException: async ({code, reason})=>{
             return await axiosApi.get(`/api/v1/test/exception?code=${code}&reason=${reason}`)
         },
-        uploadFile: async (dir, data)=>{
+        uploadFile: async (data)=>{
             const option = {
                 headers:{
                     'Content-Type': "multipart/form-data"
                 }
             }
-            return await axiosApi.post(`/api/v1/test/img?dir=${dir}`, data, option);
+            return await axiosApi.post(`/api/v1/test/img`, data, option);
+        },
+        downloadFile: async (fileName)=>{
+            const option = {
+                responseType: 'blob'
+            }
+            return await axiosApi.get(`/api/v1/test/img?filename=${fileName}`, option)
         },
         sendAlimTalk: async (body)=>{
             return await axiosApi.post('/api/v1/test/alimtalk', body);

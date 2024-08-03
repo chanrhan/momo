@@ -9,24 +9,16 @@ import {userActions} from "../store/slices/userSlice";
 import {ObjectUtils} from "../utils/objectUtil";
 import {useDispatch, useSelector} from "react-redux";
 import {WaitingApproval} from "./WaitingApproval";
+import useUserInfo from "../hook/useUserInfo";
 
 function MainLayout(){
-    const {userApi}  = useApi();
-    const dispatch = useDispatch();
-    const userInfo = useSelector(state=>state.userReducer);
-
-    const getUser = async ()=>{
-        await userApi.getUser().then(({status,data})=>{
-            if(status === 200 && !ObjectUtils.isEmpty(data)){
-                dispatch(userActions.setUserInfo(data))
-                console.table(data)
-            }
-        })
-    }
+    const userInfo = useUserInfo();
+    const {accessToken} = useSelector(state=>state.authReducer)
 
     useEffect(()=>{
-        getUser()
-    },[]);
+        userInfo.updateUser();
+    },[accessToken]);
+
 
     return (
         <div className='container'>

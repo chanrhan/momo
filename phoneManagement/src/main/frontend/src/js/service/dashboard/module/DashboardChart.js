@@ -8,14 +8,12 @@ import useValidateInputField from "../../../hook/useValidateInputField";
 import useApi from "../../../hook/useApi";
 import {DateUtils} from "../../../utils/DateUtils";
 import {NumberUtils} from "../../../utils/NumberUtils";
-import {from} from "form-data";
-import {ObjectUtils} from "../../../utils/objectUtil";
 
 const DATE_TYPE = [
     'd','w','m'
 ]
 
-export function DashboardChart(){
+export function DashboardChart({userInfo}){
     // const tab = useTabs(2);
     const {saleApi} = useApi();
     const [tab1, setTab1] = useState(0)
@@ -37,11 +35,11 @@ export function DashboardChart(){
 
     useEffect(() => {
         getChangeAmount();
-    }, [tab1]);
+    }, [userInfo,tab1]);
 
     useEffect(() => {
         getGraph(20)
-    }, [tab1, tab2]);
+    }, [userInfo,tab1, tab2]);
 
     const getChangeAmount = async ()=>{
         const body = {
@@ -261,7 +259,7 @@ export function DashboardChart(){
             arr.push(`${month}/${day}`);
             startDate.setDate(day+1);
         }
-        console.table(arr)
+        // console.table(arr)
         return arr;
     }
 
@@ -274,15 +272,15 @@ export function DashboardChart(){
             arr.push(`${DateUtils.getYearWeek(startDate)}주`);
             startDate.setDate(startDate.getDate()+7);
         }
-        console.table(arr)
+        // console.table(arr)
         return arr;
     }
 
     const getMonthLabelArray = (fromDate, toDate)=>{
         const startDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
         const endDate = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
-        console.log(startDate)
-        console.log(endDate)
+        // console.log(startDate)
+        // console.log(endDate)
 
         let arr = [];
         while(startDate < endDate){
@@ -291,7 +289,7 @@ export function DashboardChart(){
             arr.push(`${month}월`);
             startDate.setMonth(month);
         }
-        console.table(arr)
+        // console.table(arr)
         return arr;
     }
 

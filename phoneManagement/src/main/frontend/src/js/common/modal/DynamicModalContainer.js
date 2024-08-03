@@ -7,7 +7,6 @@ import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
 import ChangeShopModal from "../../shop/modal/ChangeShopModal";
 import AddShopModal from "../../shop/modal/AddShopModal";
 import AlertModal from "./snackbar/AlertModal";
-import UpdatePasswordModal from "../../account/modal/UpdatePasswordModal";
 import MenuModalTest from "../../test/MenuModalTest";
 import SaleDetailModal from "../../service/sale/modal/SaleDetailModal";
 import SaleSecondModal from "../../service/sale/modal/SaleSecondModal";
@@ -18,7 +17,7 @@ import TableHeaderSelectModal from "../../test/TableHeaderSelectModal";
 import TableValidationModal from "../../test/TableValidationModal";
 import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
-import {MonthSelectModal} from "./menu/MonthSelectModal";
+import {MonthSelectLayer} from "./menu/MonthSelectLayer";
 import {DateSelectModal} from "./menu/DateSelectModal";
 import {SelectModal} from "./menu/SelectModal";
 import {SaleWtPlanModal} from "../../service/sale/modal/SaleWtPlanModal";
@@ -31,20 +30,34 @@ import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {DynamicSelectLayer} from "../module/DynamicSelectLayer";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
 import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
+import {InviteModal} from "../../service/dashboard/module/InviteModal";
+import {ChargePointModal} from "../../profile/module/ChargePointModal";
+import {PaymentCardModal} from "../../profile/module/PaymentCardModal";
+import {UpdatePasswordModal} from "../../profile/module/UpdatePasswordModal";
+import {NameCardModal} from "../../profile/module/NameCardModal";
 
 const MODAL_COMPONENTS = {
     // common
     // DynamicSelect: DynamicSelectLayer,
     BulkUpload: BulkUploadModal,
+    Invite: InviteModal,
+    Charge_Point: ChargePointModal,
+    Alert: AlertModal,
 
     // todo
-    TodoAdd: TodoAddModal,
+    Payment_Card: PaymentCardModal,
 
+    // Profile
+    TodoAdd: TodoAddModal,
+    UpdatePassword: UpdatePasswordModal,
+    NameCard: NameCardModal,
+
+    // Shop
     ChangeNickname: ChangeNicknameModal,
     ChangeShop: ChangeShopModal,
     AddShop: AddShopModal,
-    Alert: AlertModal,
-    UpdatePassword: UpdatePasswordModal,
+
+    // Test
     MenuModalTest: MenuModalTest,
     // sale
     SaleDetail: SaleDetailModal,
@@ -63,7 +76,7 @@ const MODAL_COMPONENTS = {
     SelectTableHeader: TableHeaderSelectModal,
     TableValidation: TableValidationModal,
     Select: SelectModal,
-    SelectMonth: MonthSelectModal,
+    SelectMonth: MonthSelectLayer,
     SelectDate: DateSelectModal,
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
