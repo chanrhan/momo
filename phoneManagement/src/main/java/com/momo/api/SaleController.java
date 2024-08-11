@@ -1,8 +1,6 @@
 package com.momo.api;
 
-import com.momo.common.util.HttpSessionUtils;
 import com.momo.common.util.ResponseEntityUtil;
-import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.CommonVO;
 import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
@@ -24,9 +22,9 @@ import java.util.Map;
 @RequestMapping("/api/v1/sale")
 public class SaleController {
 	private final SaleService       saleService;
+	private final CommonService commonService;
 	private final ReserveMsgService reserveMsgService;
 
-	private final ItemCommonService itemCommonService;
 
 	private final ImageService imageService;
 
@@ -37,7 +35,7 @@ public class SaleController {
 		if(vo == null){
 			vo = new SaleSearchVO();
 		}
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getSaleSimple(vo));
 	}
@@ -50,13 +48,13 @@ public class SaleController {
 	 * }
 	 */
 	@PostMapping("/all")
-	public ResponseEntity<List<Map<String,Object>>> getSaleAll(HttpSession session,
+	public ResponseEntity<Map<String,Object>> getSaleAll(HttpSession session,
 															   @RequestBody(required = false) SaleSearchVO vo){
-//		System.out.println("get sale: "+vo);
+		System.out.println("get sale: "+vo);
 		if(vo == null){
 			vo = new SaleSearchVO();
 		}
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getSaleAll(vo));
 	}
@@ -64,40 +62,10 @@ public class SaleController {
 	@GetMapping("/detail/{saleId}")
 	public ResponseEntity<Map<String,Object>> getSale(HttpSession session,
 													  @PathVariable int saleId){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getSaleOne(currShopId, saleId));
 	}
 
-	@GetMapping("/count/total")
-	public ResponseEntity<Integer> getSaleTotalCount(HttpSession session){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
-		return ResponseEntity.ok(saleService.getSaleTotalCount(currShopId));
-	}
-
-	@GetMapping("/task/count/total")
-	public ResponseEntity<Integer> getSaleTotalCountByCategory(HttpSession session,
-															   @RequestParam Integer category){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
-
-		switch (category){
-			case 0 -> {
-				return ResponseEntity.ok(saleService.getSaleTotalUsedDeviceCount(currShopId));
-			}
-			case 1 -> {
-				return ResponseEntity.ok(saleService.getSaleTotalCardCount(currShopId));
-			}
-			case 2 -> {
-				return ResponseEntity.ok(saleService.getSaleTotalCombCount(currShopId));
-			}
-			case 3 -> {
-				return ResponseEntity.ok(saleService.getSaleTotalSupportCount(currShopId));
-			}
-			case 4 -> {
-				return ResponseEntity.ok(saleService.getSaleTotalPromiseCount(currShopId));
-			}
-		}
-		return ResponseEntity.badRequest().build();
-	}
 
 	/**
 	 * 판매일보 카테고리 검색
@@ -107,10 +75,10 @@ public class SaleController {
 	 * }
 	 */
 	@PostMapping("/category")
-	public ResponseEntity<List<?>> getSale(HttpSession session,
+	public ResponseEntity<Map<String,Object>> getSale(HttpSession session,
 										   @RequestBody SaleSearchVO vo){
 		int category = vo.getCategory();
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 
 
@@ -153,11 +121,11 @@ public class SaleController {
 	 * @param deletes int[]
 	 * @return Boolean
 	 */
-	@PostMapping("/delete")
-	public ResponseEntity<?> deleteBulkSale(HttpSession session,
-											@RequestBody int[] deletes){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
-		return ResponseEntity.ok(saleService.deleteBulkSale(currShopId, deletes) != 0);
+	@PostMapping("/delete/bulk")
+	public ResponseEntity<?> deleteSaleBulk(HttpSession session,
+											@RequestBody List<Integer> deletes){
+		int currShopId = commonService.getCurrentShopId(session);
+		return ResponseEntity.ok(saleService.deleteSaleBulk(currShopId, deletes) != 0);
 	}
 
 
@@ -165,7 +133,7 @@ public class SaleController {
 	@ResponseBody
 	public ResponseEntity<Boolean> deleteSale(HttpSession session,
 											  @PathVariable int id) {
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(currShopId, id));
 	}
 
@@ -191,7 +159,7 @@ public class SaleController {
 			vo.setDocs(imageService.upload("sale/docs", docs));
 		}
 
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 
 		int maxSaleId = saleService.insertSale(vo);
@@ -215,7 +183,7 @@ public class SaleController {
 			vo.setDocs(imageService.upload("sale/docs", docs));
 		}
 
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 
 		return ResponseEntity.ok(saleService.updateSale(vo) > 0);
@@ -240,7 +208,7 @@ public class SaleController {
 	@ResponseBody
 	public ResponseEntity<Boolean> changeSaleState(HttpSession session,
 												   @RequestBody Map<String , Integer> body){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 
 		int category = body.get("category");
 		int saleId = body.get("sale_id");
@@ -271,28 +239,28 @@ public class SaleController {
 	public ResponseEntity<List<Map<String,Object>>> getSummary(HttpSession session,
 															   @RequestParam String prevMonth,
 															   @RequestParam String month){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getSummary(currShopId, prevMonth,month));
 	}
 
 	@GetMapping("/ratio")
 	public ResponseEntity<List<Map<String,Object>>> getSaleRatio(HttpSession session,
 																 @RequestParam String date){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getSaleRatio(currShopId, date));
 	}
 
 	@GetMapping("/wip")
 	public ResponseEntity<List<Map<String,Object>>> getWorkInProcess(HttpSession session,
 																	 @RequestParam String date){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getWorkInProcess(currShopId, date));
 	}
 
 	@PostMapping("/change/ct")
 	public ResponseEntity<Integer> getCtChangeAmount(HttpSession session,
 													 @RequestBody CommonVO vo){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getCtChangeAmount(vo));
 	}
@@ -300,7 +268,7 @@ public class SaleController {
 	@PostMapping("/change/internet")
 	public ResponseEntity<Integer> getInternetChangeAmount(HttpSession session,
 														   @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getInternetChangeAmount(vo));
 	}
@@ -308,7 +276,7 @@ public class SaleController {
 	@PostMapping("/change/tv")
 	public ResponseEntity<Integer> getTvChangeAmount(HttpSession session,
 													 @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getTvChangeAmount(vo));
 	}
@@ -316,7 +284,7 @@ public class SaleController {
 	@PostMapping("/change/total-cms")
 	public ResponseEntity<Float> getTotalCmsChangeAmount(HttpSession session,
 														 @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getTotalCmsChangeAmount(vo));
 	}
@@ -324,7 +292,7 @@ public class SaleController {
 	@PostMapping("/change/avg-cms")
 	public ResponseEntity<Float> getAvgCmsChangeAmount(HttpSession session,
 													   @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getAvgCmsChangeAmount(vo));
 	}
@@ -335,7 +303,8 @@ public class SaleController {
 	@PostMapping("/graph/summary")
 	public ResponseEntity<List<Map<String,Object>>> getGraphSummary(HttpSession session,
 																	@RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		log.info("summary: {}", vo);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return ResponseEntity.ok(saleService.getGraphSummary(vo));
 	}
@@ -344,7 +313,7 @@ public class SaleController {
 	public ResponseEntity<Map<String,String> > getCtGraphByDateType(HttpSession session,
 																	@PathVariable Character dateType,
 														  			@RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		vo.setDateType(dateType);
 		return ResponseEntity.ok(saleService.getCtGraphByDateType(vo));
@@ -354,7 +323,7 @@ public class SaleController {
 	public ResponseEntity<Map<String,String> > getInternetGraphByDateType(HttpSession session,
 																		  @PathVariable Character dateType,
 																		  @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		vo.setDateType(dateType);
 		return ResponseEntity.ok(saleService.getInternetGraphByDateType(vo));
@@ -364,7 +333,7 @@ public class SaleController {
 	public ResponseEntity<Map<String,String> > getTvGraphByDateType(HttpSession session,
 																	@PathVariable Character dateType,
 																	@RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		vo.setDateType(dateType);
 		return ResponseEntity.ok(saleService.getTvGraphByDateType(vo));
@@ -374,7 +343,7 @@ public class SaleController {
 	public ResponseEntity<Map<String,String> > getMarginGraphByDateType(HttpSession session,
 																		@PathVariable Character dateType,
 																		@RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		vo.setDateType(dateType);
 		return ResponseEntity.ok(saleService.getMarginGraphByDateType(vo));
@@ -384,29 +353,76 @@ public class SaleController {
 	public ResponseEntity<Map<String,String> > getAvgMarginGraphByDateType(HttpSession session,
 																		   @PathVariable Character dateType,
 																		   @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		vo.setDateType(dateType);
 		return ResponseEntity.ok(saleService.getAvgMarginGraphByDateType(vo));
 	}
 
-	@PostMapping("/graph/avg-margin/select/{selectType}")
-	public ResponseEntity<List<Integer> > getAvgMarginBySelectType(HttpSession session,
+	@PostMapping("/graph/ct/select/{selectType}")
+	public ResponseEntity<List<Integer> > getCtCountBySelectType(HttpSession session,
 																   @PathVariable Integer selectType,
 																   @RequestBody CommonVO vo){
 		if (selectType == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
-		vo.setSelectType(selectType);
-		return ResponseEntity.ok(saleService.getAvgMarginBySelectType(vo));
+		String select = switch (selectType) {
+            case 0 -> "generation";
+            case 1 -> "weekdays";
+            default -> null;
+        };
+        vo.setSelectType(select);
+		return ResponseEntity.ok(saleService.getCtCountBySelectType(vo));
 	}
 
+	@PostMapping("/graph/stat/select/{selectType}")
+	public ResponseEntity<List<Map<String,Object>> > getStatBySelectType(HttpSession session,
+																   @PathVariable Integer selectType,
+																   @RequestBody CommonVO vo){
+		if (selectType == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		int currShopId = commonService.getCurrentShopId(session);
+		vo.setCurrShopId(currShopId);
+		String select = switch (selectType) {
+            case 0 -> "device";
+			case 1 -> "actv_plan";
+			case 2 -> "sec_device";
+            default -> null;
+        };
+        vo.setSelectType(select);
+		return ResponseEntity.ok(saleService.getStatBySelectType(vo));
+	}
+
+	@PostMapping("/graph/ratio/select/{selectType}")
+	public ResponseEntity<Map<String,Object>> getRatioBySelectType(HttpSession session,
+																		 @PathVariable Integer selectType,
+																		 @RequestBody CommonVO vo){
+		if (selectType == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		int currShopId = commonService.getCurrentShopId(session);
+		vo.setCurrShopId(currShopId);
+
+        return switch (selectType) {
+            case 0 -> ResponseEntity.ok(saleService.getIstmRatio(vo));
+            case 1 -> ResponseEntity.ok(saleService.getProviderRatio(vo));
+            case 2 -> ResponseEntity.ok(saleService.getActvTpRatio(vo));
+            case 3 -> ResponseEntity.ok(saleService.getGenderRatio(vo));
+            default -> ResponseEntity.badRequest().build();
+        };
+    }
+
+
+
+
+	// 통계 페이지
 	@PostMapping("/stat")
 	public ResponseEntity<Map<String,Object>> getPersonalStatistics(HttpSession session,
 												  @RequestBody CommonVO vo){
-		int currShopId = HttpSessionUtils.getCurrentShopId(session);
+		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
 		return  ResponseEntity.ok(saleService.getPersonalStatistics(vo));
 	}

@@ -40,8 +40,8 @@ export function Bth({children, className, checked, checkbox, name, sort, onClick
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>
-                        <input type="checkbox" id={name} onChange={onCheck} checked={checked}/>
-                        <label htmlFor={name} className={cm(Board.label)}>선택</label>
+                        <input type="checkbox" id={name}checked={checked} readOnly/>
+                        <label htmlFor={name} className={cm(Board.label)} onClick={onCheck}>선택</label>
                     </div>
                 )
             }
@@ -50,14 +50,17 @@ export function Bth({children, className, checked, checkbox, name, sort, onClick
     )
 }
 
-export function Btd({children, className, checkbox, onCheck, checked, name}) {
+export function Btd({children, className, stopPropagation, checkbox, onCheck, checked, name}) {
     return (
-        <td className={`${Board.td} ${checkbox && 'ta_c'} ${className ? className : ''}`}>
+        <td className={`${Board.td} ${checkbox && 'ta_c'} ${className ? className : ''}`}  onClick={e=>{
+            if(checkbox || stopPropagation)
+            e.stopPropagation();
+        }}>
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>
-                        <input type="checkbox" id={name} className={cm(Board.input)} onChange={onCheck} checked={checked}/>
-                        <label htmlFor={name} className={cm(Board.label)}>선택</label>
+                        <input type="checkbox" id={name} className={cm(Board.input)} checked={checked} readOnly/>
+                        <label htmlFor={name} className={cm(Board.label)} onClick={onCheck}>선택</label>
                     </div>
                 )
             }

@@ -2,7 +2,6 @@ import Board from "../../css/board.module.css"
 import Layout from "../../css/layout.module.css"
 import {TabList} from "../common/module/TabList";
 import {BoardTable, Btbody, Bth, Bthead} from "../service/board/BoardTable";
-import {AdminTableData} from "./module/AdminTableData";
 import useValidateInputField from "../hook/useValidateInputField";
 import {useEffect, useState} from "react";
 import {DeviceTable} from "./module/DeviceTable";
@@ -14,9 +13,11 @@ import {TvPlanTable} from "./module/TvPlanTable";
 import {cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
+import {useNavigate} from "react-router-dom";
 
 export function MasterData(){
     const modal = useModal()
+    const nav = useNavigate();
     const {gmdApi} = useApi();
     const [tab, setTab] = useState(0)
     const [keywowrd, setKeyword] = useState('')
@@ -62,7 +63,11 @@ export function MasterData(){
     return (
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
-                <h2 className={Layout.sub_title}>동적 목록 관리</h2>
+                <h2 className={Layout.sub_title}>동적 데이터 관리</h2>
+                <button type='button' className={cmc(Layout.sub_head_btn)} onClick={() => {
+                    nav('/admin')
+                }}>회원 관리
+                </button>
             </div>
 
             <div className={Layout.sub_tab}>

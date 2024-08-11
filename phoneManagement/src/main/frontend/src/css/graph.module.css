@@ -9,7 +9,13 @@
 .graph .graph_head .graph_head_group .tab.type3{display:inline-block; float:left; vertical-align:top;}
 
 .graph .graph_panel{margin-top:24px;}
-.graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;overflow-x: auto}
+.graph .graph1 .graph_scroll{overflow-x:auto; overflow-y:hidden; padding-bottom:8px;}
+.graph .graph1 .graph_scroll::-webkit-scrollbar{height:8px;}
+.graph .graph1 .graph_scroll::-webkit-scrollbar-track{background-color:transparent;}
+.graph .graph1 .graph_scroll::-webkit-scrollbar-thumb{background-color:#bcbcbc;}
+.graph .graph1 .graph_scroll::-webkit-scrollbar-track,
+.graph .graph1 .graph_scroll::-webkit-scrollbar-thumb{border-radius:4px;}
+.graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;}
 .graph .graph1 .graph_item{display:inline-block; overflow:hidden; position:relative; width:242px; padding:16px 24px 15px 24px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
 .graph .graph1 .graph_item + .graph_item{margin-left:16px;}
 .graph .graph1 .graph_item .graph_title{color:#141218; font-size:14px; line-height:16px;}
@@ -26,12 +32,13 @@
 .graph .graph_group{font-size:0; line-height:0;}
 .graph .graph1 + .graph_group{margin-top:40px;}
 
-.graph_group > .div{display:inline-block; overflow:hidden; padding:32px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
-.graph .graph2{position:relative; width:calc(100% - 424px); height:289px;}
+.graph_group > .div{display:inline-block; overflow:hidden; padding:32px;
+    border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
+.graph .graph2{position:relative; width:100%;}
 .graph .graph2 .graph_top{position:relative;}
-.graph .graph2 .graph_top .tab.type4{position:absolute; top:0; right:0;}
-.graph .graph2 .graph_box{height:111px; margin-top:14px; font-size:14px; line-height:16px;}
-.graph .graph2 .tab.type5{position:absolute; left:-10px; right:-10px; bottom:32px;}
+.graph .graph2 .graph_top .tab.type4{position:relative; float: right; top:0; right:0;}
+.graph .graph2 .graph_box{position: inherit; height: 512px; margin-top:14px;font-size:14px;line-height:16px;}
+.graph .graph2 .tab.type5{position:inherit; top: 15px; left:-10px; right:-10px; bottom:32px;}
 .graph .graph2 .tab.type5 .tab_item{width:16.66%;}
 
 .graph .graph3{width:400px; height:289px; margin-left:24px;}
@@ -40,7 +47,7 @@
 .graph .graph3 .tab.type4{display:inline-block; vertical-align:top;}
 .graph .graph3 .graph_box{overflow:hidden; height:170px; margin-top:24px; font-size:14px; line-height:16px;}
 
-.graph .graph4_group{margin:32px -12px 0 -12px;}
+.graph .graph4_group{display:flex; margin:32px -12px 0 -12px;}
 .graph .graph4{width:calc(33.33% - 24px); margin:0 12px;}
 .graph .graph4 .graph_top .graph_title{display:inline-block; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
 .graph .graph4 .graph_bar .bar_item{margin-top:24px;}
@@ -56,6 +63,7 @@
 .graph .graph4 .graph_bar .bar_item:nth-child(7) .bar .span{background-color:#5a8ff7;}
 .graph .graph4 .graph_bar .bar_item:nth-child(4) .bar .span,
 .graph .graph4 .graph_bar .bar_item:nth-child(8) .bar .span{background-color:#7eb1fa;}
+.graph .graph4 .graph_box{margin-top:24px;height: calc(100% - 54px);}
 
 .graph .graph_table{margin-top:17px;}
 .graph .graph_table .tb_calender{text-align:right;}

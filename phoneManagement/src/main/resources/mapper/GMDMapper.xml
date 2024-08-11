@@ -7,7 +7,8 @@
     <select id="getDevice">
         select device_id,
                 device_nm,
-                device_cd
+                device_cd,
+                provider
         from    tb_device
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -29,7 +30,8 @@
     <select id="getSecondDevice">
         select sd_id,
                sd_nm,
-               sd_cd
+               sd_cd,
+               provider
         from    tb_second_device
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -56,8 +58,9 @@
     </select>
 
     <select id="getCtPlan">
-        select ct_plan_id,
-        ct_plan_nm
+        select ct_plan_id as id,
+        ct_plan_nm as name,
+        provider
         from    tb_ct_plan
         where
         <if test="keyword != null and !keyword.equals('')">
@@ -78,7 +81,8 @@
 <!--    동적 목록-->
     <select id="getExtraService" parameterType="com.momo.common.vo.GMDVO">
         select exsvc_id as id,
-               exsvc_nm as name
+               exsvc_nm as name,
+               provider
         from    tb_extra_service
         where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
@@ -98,7 +102,8 @@
 
     <select id="getInternetPlan">
         select internet_plan_id as id,
-               internet_plan_nm as name
+               internet_plan_nm as name,
+               provider
         from    tb_internet_plan
         where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">
@@ -118,7 +123,8 @@
 
     <select id="getTvPlan">
         select tv_plan_id as id,
-                tv_plan_nm as name
+                tv_plan_nm as name,
+                provider
         from    tb_tv_plan
         where shop_id = #{currShopId} and
         <if test="keyword != null and !keyword.equals('')">

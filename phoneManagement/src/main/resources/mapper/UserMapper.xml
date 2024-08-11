@@ -3,6 +3,53 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <select id="getUserAll">
+        with users as (
+            select ac.*,
+                   sf.role,
+                   IF(role = 1, (
+                       select br_no
+                       from tb_shop
+                       where tb_shop.shop_id = ac.curr_shop_id
+                   ), '') as br_no
+            from tb_account ac
+                     left outer join tb_staff sf on sf.staff_id=ac.id and
+                                                    sf.shop_id=ac.curr_shop_id
+            where user_st=#{userSt}
+        ), search as (
+            select json_arrayagg(json_object(
+                    'name',name,
+                    'email',email,
+                    'tel',tel,
+                    'br_no',br_no,
+                    'regi_dt',regi_dt,
+                    'last_login_dt',last_login_dt,
+                    'role',role
+                                 ))
+            from users
+            where
+                <if test="keyword != null and !keyword.equals('')">
+                    (
+                        name like '%${keyword}%' or
+                        tel like '%${keyword}%' or
+                        email like '%${keyword}%' or
+                        br_no like '%${keyword}%'
+                    ) and
+                </if>
+                1=1
+        )
+
+        select (
+                   select count(*)
+                   from users
+               ) as total_cnt,
+               (
+                   select *
+                   from search
+               ) as list
+
+    </select>
+
     <select id="getNotificationData">
         SELECT sf.staff_id as id,
                (
@@ -29,11 +76,6 @@
             1=1
     </select>
 
-<!--    <select id="getUserByBrNo">-->
-<!--        select id-->
-<!--        from tb_account-->
-<!--        where br_no = #{brNo}-->
-<!--    </select>-->
 
     <select id="getPassword">
         select pwd
@@ -75,11 +117,12 @@
     </select>
 
     <select id="getInnerStaff">
-        SELECT sf.staff_id as id,
-               ac.name
+        select json_objectagg(
+                       sf.staff_id, ac.name
+               )
         from tb_staff sf
-                 left outer join tb_account ac on ac.id = sf.staff_id
-        where shop_id = #{currShopId}
+                 left outer join tb_account ac on ac.id=sf.staff_id
+        where shop_id=#{currShopId}
     </select>
 
     <select id="getSessionData">
@@ -242,8 +285,8 @@
     <update id="updateUserToDormant">
         UPDATE
             tb_account
-        SET user_st=2
-        WHERE user_st = 1
+        SET user_st=1
+        WHERE user_st = 0
           AND DATEDIFF(CURRENT_DATE, last_login_dt) > #{date};
 
 
@@ -253,7 +296,7 @@
         UPDATE
             tb_account
         SET last_login_dt=NOW(),
-            user_st=1
+            user_st=0
         WHERE id = #{id}
     </update>
 

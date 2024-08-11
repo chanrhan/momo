@@ -28,17 +28,17 @@ function PublicApi(){
         // 비밀번호 재설정
         // 보안**
         resetPassword : async (data, resetToken)=>{
-            return await AxiosApi.post('/api/v1/public/reset/password', data, {
+            return await axiosApi.post('/api/v1/public/reset/password', data, {
                 headers:{
                     "RESET-TOKEN": resetToken
                 }
             });
         },
         getResetToken : async (data)=>{
-            return await AxiosApi.post('/api/v1/auth/token/reset-pwd', data, {});
+            return await axiosApi.post('/api/v1/auth/token/reset-pwd', data, {});
         },
         getProtectedTelAndEmail : async(id)=>{
-            return await AxiosApi.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
+            return await axiosApi.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
         }
     }
 }

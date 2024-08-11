@@ -25,6 +25,15 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 .form_textarea:focus{padding:17px 23px; border:2px solid #4781ff; outline:none;}
 .error .form_textarea{padding:17px 23px; border:2px solid #f34432;}
 
+.error_text{display:none; margin-top:10px; color:#f24430; font-size:12px; line-height:14px;}
+.error .error_text{display:block;}
+/*.error .error_border,*/
+/*.error .error_border:focus{*/
+/*    border-radius:8px;*/
+/*    border:2px solid #f34432;*/
+/*}*/
+
+
 /* select */
 .select_box{position:relative;}
 .select_box + .select_box{margin-top:10px;}

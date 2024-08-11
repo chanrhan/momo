@@ -7,7 +7,7 @@ import {cm, cmc} from "../../../utils/cm";
 import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useRef, useState} from "react";
 
-export function DateSelectModal({rootClassName, onSelect, children}){
+export function DateSelectModal({rootClassName, onSelect, children, errorText}){
     const [active, setActive] = useState(false)
     const componentRef = useRef(null)
     const onClickRef = useRef()
@@ -94,10 +94,15 @@ export function DateSelectModal({rootClassName, onSelect, children}){
     }
 
     return (
-        <div onClick={handleActive} className={rootClassName} style={{
+        <div onClick={handleActive} className={`${rootClassName} ${errorText && cmc(Popup.error)}`} style={{
             position: 'relative'
         }}>
             {children}
+            {
+                errorText && <>
+                    <p className='error_text'>{errorText}</p>
+                </>
+            }
             <div className={`${cm(Popup.date_popup, Popup.solo, `${active && Popup.active}`)}`} ref={componentRef}>
                 <div className={Popup.date_head}>
                     <span className={Popup.span}>{year}년 {month}월</span>
@@ -130,7 +135,7 @@ export function DateSelectModal({rootClassName, onSelect, children}){
                         <tbody className={Popup.tbody}>
                         {
                             new Array(monthInfo.totalWeek).fill(0).map((v, week) => {
-                                return <tr>
+                                return <tr key={week}>
                                     {
                                         new Array(7).fill(0).map((v, day) => {
                                             const d = (week * 7) + day - monthInfo.startDay + 1;
@@ -153,9 +158,9 @@ export function DateSelectModal({rootClassName, onSelect, children}){
     )
 }
 
-function DateItem({key, day, today, onClick}) {
+function DateItem({day, today, onClick}) {
     return (
-        <td key={key} className={cm(Popup.td, `${today && Popup.today}`)}>
+        <td className={cm(Popup.td, `${today && Popup.today}`)}>
             <button type='button' className={Popup.button} onClick={() => {
                 onClick(day)
             }}>{day}</button>

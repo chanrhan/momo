@@ -108,7 +108,7 @@ export function DashboardMain(){
                                         if(ObjectUtils.isEmpty(v)){
                                             return null;
                                         }
-                                        return <DashboardPanelItem1 title={SUMMARY_NAMES[i]}
+                                        return <DashboardPanelItem1 key={i} index={i} title={SUMMARY_NAMES[i]}
                                                                     num={i < 3 ? v.value : NumberUtils.toPrice(summary[3].value)}
                                                                     per={v.per} price={i > 2}/>
                                     })
@@ -122,7 +122,7 @@ export function DashboardMain(){
                                         if(ObjectUtils.isEmpty(v)){
                                             return null;
                                         }
-                                        return <DashboardPanelItem2 title={RATIO_NAMES[i]} value={v.value} total={v.total} per={v.pct}/>
+                                        return <DashboardPanelItem2 key={i} title={RATIO_NAMES[i]} value={v.value} total={v.total} per={v.per}/>
                                     })
                                 }
                             </ul>
@@ -141,7 +141,7 @@ export function DashboardMain(){
                                         if(ObjectUtils.isEmpty(v)){
                                             return null
                                         }
-                                        return <DashboardPannelItem4 title={WIP_NAMES[i]} value={v.value} total={v.total} per={v.pct}/>
+                                        return <DashboardPannelItem4 key={i} title={WIP_NAMES[i]} value={v.value} total={v.total} per={v.per}/>
                                     })
                                 }
                             </ul>

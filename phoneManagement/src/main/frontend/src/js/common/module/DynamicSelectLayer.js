@@ -18,34 +18,35 @@ export const DYNAMIC_TYPE = {
 }
 
 
-export function DynamicSelectLayer({value, type, onClick}){
+export function DynamicSelectLayer({initValue, provider, type, onClick}){
     const [active, setActive] = useState(false);
     const componentRef = useRef(null)
     const onclickRef = useRef()
+    const [buttonName, setButtonName] = useState('선택없음')
+
     const {gmdApi} = useApi();
 
     const [keyword, setKeyword] = useState('')
 
     const [items, setItems] = useState(null)
-
     const [boxWidth, setBoxWidth] = useState(150)
-    const [buttonName, setButtonName] = useState('선택없음')
 
-    // useEffect(() => {
-    //     if(value){
-    //
-    //     }
-    // }, []);
+    useEffect(() => {
+        if(initValue){
+            setButtonName(initValue)
+        }
+    }, [initValue]);
+
+
+    useEffect(() => {
+        getItems();
+    }, [keyword]);
+
 
     useEffect(() => {
         setKeyword('')
     }, [active]);
 
-    useEffect(() => {
-        if(active){
-            getItems();
-        }
-    }, [keyword, active]);
 
     useEffect(() => {
         let maxLength = 12;
@@ -62,50 +63,34 @@ export function DynamicSelectLayer({value, type, onClick}){
     }, [items]);
 
     const getItems = async ()=>{
-        console.log(type)
+        // console.log(type)
+        let res = null;
         switch (type){
             case 0:
-                await gmdApi.getSupportDiv(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+                res = await gmdApi.getSupportDiv(keyword);
                 break;
             case 1:
-                await gmdApi.getAddDiv(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+                res = await gmdApi.getAddDiv(keyword);
                 break;
             case 2:
-                await gmdApi.getCombTp(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+                res = await gmdApi.getCombTp(keyword);
                 break;
             case 3:
-                await gmdApi.getExtraService(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+                res = await gmdApi.getExtraService(keyword, provider)
                 break;
             case 4:
-                await gmdApi.getInternetPlan(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+                res = await gmdApi.getInternetPlan(keyword, provider)
                 break;
             case 5:
-                await gmdApi.getTvPlan(keyword).then(({status,data})=>{
-                    if(status === 200 && data){
-                        setItems(data)
-                    }
-                })
+               res = await gmdApi.getTvPlan(keyword, provider)
                 break;
+        }
+
+        if(res !== null){
+            const {status,data} = res;
+            if(status === 200 && data){
+                setItems(data);
+            }
         }
     }
 
@@ -146,9 +131,12 @@ export function DynamicSelectLayer({value, type, onClick}){
 
     const selectItem = (index, id)=>{
         if(onClick){
-            onClick(id)
+            onClick({
+                id: id,
+                name: items[id-1].name
+            })
         }
-        setButtonName(items[index].name)
+        setButtonName(items[id-1].name)
         setActive(false);
     }
 
@@ -163,7 +151,7 @@ export function DynamicSelectLayer({value, type, onClick}){
                  style={{
                      width: `${boxWidth}px`
                  }}
-                 ref={componentRef}>
+                 ref={componentRef} >
                 <input type="text" className={cm(Popup.select_inp)}
                        value={keyword}
                        onChange={e => {
@@ -175,15 +163,11 @@ export function DynamicSelectLayer({value, type, onClick}){
                     <ul className="layer_list">
                         {
                             items && items.map((v, i) => {
-                                return <LayerItem content={v.name} onClick={() => {
+                                return <LayerItem key={i} content={v.name} onClick={() => {
                                     selectItem(i, v.id);
                                 }}/>
                             })
                         }
-                        {/*<li key={999} className={cm(Popup.add_item)}>*/}
-                        {/*    /!*<span className={Popup.layer_type}></span>*!/*/}
-                        {/*    <button type="button" className={Popup.layer_btn}>추가</button>*/}
-                        {/*</li>*/}
                     </ul>
                 </div>
             </div>
@@ -191,9 +175,9 @@ export function DynamicSelectLayer({value, type, onClick}){
     )
 }
 
-function LayerItem({key, content, active, onClick}) {
+function LayerItem({content, active, onClick}) {
     return (
-        <li key={key} className={cm(Popup.layer_item, `${active && Popup.active}`)}>
+        <li className={cm(Popup.layer_item, `${active && Popup.active}`)}>
             <span className={Popup.layer_type}></span>
             <button type="button" className={Popup.layer_btn} onClick={onClick}>{content}</button>
             <MoreItem/>

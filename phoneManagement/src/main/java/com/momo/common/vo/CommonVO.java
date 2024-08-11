@@ -14,9 +14,10 @@ import org.apache.el.stream.StreamELResolverImpl;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CommonVO extends BaseVO {
-    private static final String[] SELECT_TYPE = new String[]{
-            "generation","gender","provider","actv_tp","istm"
-    };
+//    private static final String[] SELECT_TYPE = new String[]{
+//            "generation","weekdays","device","sec_device","actv_plan"
+//    };
+//    private String userId;
 
     private Integer provider;
     private String date;
@@ -46,10 +47,10 @@ public class CommonVO extends BaseVO {
     private String currDate;
 
 
-    public void setSelectType(int value){
-        if(value >= 0 && value <= 4){
-            this.selectType = SELECT_TYPE[value];
-        }
-    }
+//    public void setSelectType(int value){
+//        if(value >= 0 && value <= 4){
+//            this.selectType = SELECT_TYPE[value];
+//        }
+//    }
 
 }

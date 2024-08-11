@@ -9,12 +9,15 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
-	public int getSessionData(String userId);
+	public Map<String,Object> getUserAll(UserVO vo);
+
+
+	public Integer getSessionData(String userId);
 	public String getName(String id);
 
 	public Map<String,String> getNotificationData(String userId, int shopId);
 
-	public List<Map<String,String>> getInnerStaff(int currShopId);
+	public String getInnerStaff(int currShopId);
 	public List<Map<String,Object>> getInnerStaffAll(int currShopId, String keyword);
 	public List<String> getInnerStaffName(int currShopId);
 	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);

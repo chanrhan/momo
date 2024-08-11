@@ -2,6 +2,7 @@ package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
 import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
 import com.momo.exception.BusinessException;
@@ -27,7 +28,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends CommonService implements UserDetailsService{
+public class UserService  implements UserDetailsService{
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
@@ -36,16 +37,13 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.getSessionData(userId);
 	}
 
-	// Authentication
-	public Map<String,String> getInnerStaff(int currShopId){
-		List<Map<String,String>> list = userMapper.getInnerStaff(currShopId);
-		Map<String,String> map = new HashMap<>();
 
-		for(Map<String,String> m : list){
-			map.put(m.get("id"), m.get("name"));
-		}
+	public Map<String,Object> getUserAll(UserVO vo){
+		return userMapper.getUserAll(vo);
+	}
 
-		return map;
+	public String getInnerStaff(int currShopId){
+		return userMapper.getInnerStaff(currShopId);
 	}
 
 	public List<Map<String,Object>> getInnerStaffAll(int currShopId, String keyword){
@@ -200,6 +198,8 @@ public class UserService extends CommonService implements UserDetailsService{
 	public Authentication login(String username, String password){
 		Authentication authentication = authenticate(username, password);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		userMapper.loginNow(username);
 
 		return authentication;
 	}

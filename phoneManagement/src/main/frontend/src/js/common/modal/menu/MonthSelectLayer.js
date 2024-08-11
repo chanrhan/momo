@@ -17,7 +17,6 @@ export function MonthSelectLayer({onSelect, children}){
         }else{
             detachOnClick()
         }
-        console.log(`active: ${active}`)
     }, [active]);
 
     const attachOnClick = ()=>{

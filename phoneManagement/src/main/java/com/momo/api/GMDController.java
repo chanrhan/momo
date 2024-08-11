@@ -1,6 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.service.CommonService;
 import com.momo.service.GMDService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/gmd")
 public class GMDController {
     private final GMDService gmdService;
-
+    private final CommonService commonService;
 
     // 정적 목록
 
@@ -56,7 +57,7 @@ public class GMDController {
     public ResponseEntity<List<Map<String,Object>>> getExtraService(HttpSession session,
                                                                     @RequestParam(required = false)String keyword,
                                                                     @RequestParam(required = false)Integer provider){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getExtraService(currShopId, keyword,provider));
     }
 
@@ -65,7 +66,7 @@ public class GMDController {
     public ResponseEntity<List<Map<String,Object>>> getInternetPlan(HttpSession session,
                                                                     @RequestParam(required = false)String keyword,
                                                                     @RequestParam(required = false)Integer provider){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getInternetPlan(currShopId, keyword,provider));
     }
 
@@ -74,7 +75,7 @@ public class GMDController {
     public ResponseEntity<List<Map<String,Object>>> getTvPlan(HttpSession session,
                                                               @RequestParam(required = false)String keyword,
                                                               @RequestParam(required = false)Integer provider){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getTvPlan(currShopId, keyword,provider));
     }
 
@@ -82,7 +83,7 @@ public class GMDController {
     @GetMapping("/comb-tp")
     public ResponseEntity<List<Map<String,Object>>> getComb(HttpSession session,
                                                             @RequestParam(required = false)String keyword){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getComb(currShopId, keyword));
     }
 
@@ -90,7 +91,7 @@ public class GMDController {
     @GetMapping("/sup-div")
     public ResponseEntity<List<Map<String,Object>>> getSupportDiv(HttpSession session,
                                                                   @RequestParam(required = false)String keyword){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getSupportDiv(currShopId, keyword));
     }
 
@@ -98,7 +99,7 @@ public class GMDController {
     @GetMapping("/add-div")
     public ResponseEntity<List<Map<String,Object>>> getAddDiv(HttpSession session,
                                                               @RequestParam(required = false)String keyword){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(gmdService.getAddDiv(currShopId, keyword));
     }
 

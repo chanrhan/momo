@@ -22,24 +22,32 @@ public class SaleSearchVO extends BaseVO {
     private String keydate;
     private Integer order;
     private boolean asc = false;
-    private Boolean completed;
+    private Boolean notDone;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
     private SaleSearchFilter[] filters;
 
+//    private Integer[] columns;
+
+    @Data
+    @NoArgsConstructor
     private static class SaleSearchFilter{
         private boolean and = false;
-        private Integer item;
-        private Integer condition;
+        private Integer type ;
+        private Integer option;
         private Integer target;
     }
 
     private static String[] COLUMNS = {
-        "actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
+        "main_div","actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
+    };
+
+    private static String[] TYPES = {
+      "device_id","sd_id","ct_actv_plan"
     };
 
     private static String[] CONDITIONS = {
-            " is ",
-            " is not ",
+            " = ",
+            " != ",
             " is null ",
             " is not null "
     };
@@ -49,7 +57,7 @@ public class SaleSearchVO extends BaseVO {
 
     private String generateClause(SaleSearchFilter filter){
         StringBuilder sb = new StringBuilder();
-        sb.append(filter.item).append(CONDITIONS[filter.condition]).append(filter.target);
+        sb.append(TYPES[filter.type]).append(CONDITIONS[filter.option]).append(filter.target);
         return sb.toString();
     }
 
@@ -67,6 +75,7 @@ public class SaleSearchVO extends BaseVO {
             sb.append(filters[i].and ? " and " : " or ")
                     .append(generateClause(filters[i])).append(" ");
         }
+        sb.append(" and ");
 
         return sb.toString();
     }

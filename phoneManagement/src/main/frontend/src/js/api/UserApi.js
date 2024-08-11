@@ -51,7 +51,7 @@ function UserApi(accessToken){
         // getUserAsStaff : async ()=>{
         //     return await axiosApiWithAccessToken.get('/api/v1/user/staff', accessToken);
         // },
-        getInnerStaffAsIdNameMap: async ()=>{
+        getInnerStaffAsObject: async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/user/staff/inner', accessToken);
         },
         getInnerStaffAll: async (keyword)=>{
@@ -63,8 +63,8 @@ function UserApi(accessToken){
         getInnerStaffName: async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/user/staff/name/inner', accessToken);
         },
-        getUserAll: async (keyword, keydate)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/user/all?keyword=${keyword}&keydate=${keydate}`, accessToken);
+        getUserAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/user/all`, body, accessToken);
         },
         // sendShopRequest: async (shopId)=>{
         //     return await axiosApiWithAccessToken.post(`/api/v1/user/shop/request?shopId=${shopId}`,accessToken)

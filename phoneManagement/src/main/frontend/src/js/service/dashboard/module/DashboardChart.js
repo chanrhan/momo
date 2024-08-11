@@ -96,7 +96,7 @@ export function DashboardChart({userInfo}){
     const getGraph = async (range)=>{
         let fromDate = new Date();
         let toDate = new Date();
-        toDate.setDate(toDate.getDate()-1);
+        // toDate.setDate(toDate.getDate());
 
         switch (tab2){
             case 0:

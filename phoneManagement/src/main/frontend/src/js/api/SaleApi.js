@@ -26,12 +26,12 @@ function SaleApi(accessToken){
         getSaleDetail: async (saleId)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/detail/${saleId}`,accessToken);
         },
-        getSaleTotalCount: async ()=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/sale/count/total`, accessToken);
-        },
-        getSaleTotalCountByCategory: async (category)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/sale/task/count/total?category=${category}`, accessToken);
-        },
+        // getSaleTotalCount: async ()=>{
+        //     return await axiosApiWithAccessToken.get(`/api/v1/sale/count/total`, accessToken);
+        // },
+        // getSaleTotalCountByCategory: async (category)=>{
+        //     return await axiosApiWithAccessToken.get(`/api/v1/sale/task/count/total?category=${category}`, accessToken);
+        // },
         getSaleByCategory : async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/category`, body, accessToken);
         },
@@ -51,7 +51,7 @@ function SaleApi(accessToken){
             return await axiosApi.post(`/api/v1/sale/update`,body, option);
         },
         deleteSales : async (data)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/sale/delete', data, accessToken);
+            return await axiosApiWithAccessToken.post('/api/v1/sale/delete/bulk', data, accessToken);
         },
         changeSaleState: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/state', body, accessToken);
@@ -100,8 +100,14 @@ function SaleApi(accessToken){
         getAvgMarginGraphByDateType: async (dateType, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/date/${dateType}`, body, accessToken);
         },
-        getAvgMarginGraphBySelectType: async (selectType, body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/select/${selectType}`, body, accessToken);
+        getCtCountBySelectType: async (selectType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/ct/select/${selectType}`, body, accessToken);
+        },
+        getGraphStat: async (selectType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/stat/select/${selectType}`, body, accessToken);
+        },
+        getRatio: async (selectType, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/ratio/select/${selectType}`, body, accessToken);
         },
         getPersonalStatistics: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/stat', body, accessToken)

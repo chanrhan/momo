@@ -6,13 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class SaleService extends CommonService {
+public class SaleService  {
 	private final SaleMapper saleMapper;
 
 	public String getSpecFilePath(int id){
@@ -175,7 +173,7 @@ public class SaleService extends CommonService {
 		return saleMapper.deleteSale(currShopId, saleId);
 	}
 
-	public List<Map<String,Object>> getSaleAll(SaleSearchVO vo){
+	public Map<String,Object> getSaleAll(SaleSearchVO vo){
 		return saleMapper.getSaleAll(vo);
 	}
 	public List<Map<String,Object>> getSaleSimple(SaleSearchVO vo){
@@ -183,42 +181,43 @@ public class SaleService extends CommonService {
 	}
 
 	public Map<String,Object> getSaleOne(int currShopId, int saleId){
-		Map<String,Object> sale = new HashMap<>();
-		sale.put("sale", saleMapper.getSaleOne(currShopId,saleId));
-
-		sale.put("pm_list", saleMapper.getSalePromiseDetail(currShopId, saleId));
-		sale.put("sup_list", saleMapper.getSaleSupportDetail(currShopId, saleId));
-		sale.put("add_list", saleMapper.getSaleAddDetail(currShopId, saleId));
-		sale.put("card_list", saleMapper.getSaleCardDetail(currShopId, saleId));
-		sale.put("ud_list", saleMapper.getSaleUsedDeviceDetail(currShopId, saleId));
-
-		return sale;
+		return saleMapper.getSaleOne(currShopId, saleId);
+//		Map<String,Object> sale = new HashMap<>();
+//		sale.put("sale", saleMapper.getSaleOne(currShopId,saleId));
+//
+//		sale.put("pm_list", saleMapper.getSalePromiseDetail(currShopId, saleId));
+//		sale.put("sup_list", saleMapper.getSaleSupportDetail(currShopId, saleId));
+//		sale.put("add_list", saleMapper.getSaleAddDetail(currShopId, saleId));
+//		sale.put("card_list", saleMapper.getSaleCardDetail(currShopId, saleId));
+//		sale.put("ud_list", saleMapper.getSaleUsedDeviceDetail(currShopId, saleId));
+//
+//		return sale;
 	}
 
 
 
-	public int deleteBulkSale(int currShopId, int[] deletes){
-		int result = 0;
-		for(int saleId: deletes){
-			result += saleMapper.deleteSale(currShopId, saleId);
-		}
+	public int deleteSaleBulk(int currShopId, List<Integer> deletes){
+		int result = saleMapper.deleteSaleBulk(currShopId, deletes);
+//		for(int saleId: deletes){
+//			result += saleMapper.deleteSale(currShopId, saleId);
+//		}
 		return result;
 	}
 
 	// task,= category
-	public List<Map<String,Object>> getSaleAsUsedDevice(SaleSearchVO vo){
+	public Map<String,Object> getSaleAsUsedDevice(SaleSearchVO vo){
 		return saleMapper.getSaleAsUsedDevice(vo);
 	}
 
-	public List<Map<String,Object>> getSaleAsCard(SaleSearchVO vo){
+	public Map<String,Object> getSaleAsCard(SaleSearchVO vo){
 		return saleMapper.getSaleAsCard(vo);
 	}
 
-	public List<Map<String,Object>> getSaleAsComb(SaleSearchVO vo){
+	public Map<String,Object> getSaleAsComb(SaleSearchVO vo){
 		return saleMapper.getSaleAsComb(vo);
 	}
 
-	public List<Map<String,Object>> getSaleAsSupport(SaleSearchVO vo){
+	public Map<String,Object> getSaleAsSupport(SaleSearchVO vo){
 		return saleMapper.getSaleAsSupport(vo);
 	}
 
@@ -229,41 +228,20 @@ public class SaleService extends CommonService {
 
 	// promise
 
-	public List<Map<String, Object>> getPromise(SaleSearchVO vo){
+	public Map<String,Object>getPromise(SaleSearchVO vo){
 		int currShopId = vo.getCurrShopId();
-		List<Map<String,Object>> sale = saleMapper.getSaleAsPromise(vo);
+		Map<String,Object> sale = saleMapper.getSaleAsPromise(vo);
 
-		for(int i=0;i<sale.size();++i){
-			int saleId = Integer.parseInt(sale.get(i).get("sale_id").toString());
-			List<Map<String,Object>> promise = saleMapper.getSalePromiseDetail(currShopId, saleId);
-			sale.get(i).put("pm_list", promise);
-		}
+//		for(int i=0;i<sale.size();++i){
+//			int saleId = Integer.parseInt(sale.get(i).get("sale_id").toString());
+//			List<Map<String,Object>> promise = saleMapper.getSalePromiseDetail(currShopId, saleId);
+//			sale.get(i).put("pm_list", promise);
+//		}
 
 		return sale;
 	}
 
 
-
-	// total count
-	public Integer getSaleTotalCount(int currShopId){
-		return saleMapper.getSaleTotalCount(currShopId);
-	}
-
-	public Integer getSaleTotalUsedDeviceCount(int currShopId){
-		return saleMapper.getSaleTotalUsedDeviceCount(currShopId);
-	}
-	public Integer getSaleTotalCardCount(int currShopId){
-		return saleMapper.getSaleTotalCardCount(currShopId);
-	}
-	public Integer getSaleTotalCombCount(int currShopId){
-		return saleMapper.getSaleTotalCombCount(currShopId);
-	}
-	public Integer getSaleTotalSupportCount(int currShopId){
-		return saleMapper.getSaleTotalSupportCount(currShopId);
-	}
-	public Integer getSaleTotalPromiseCount(int currShopId){
-		return saleMapper.getSaleTotalPromiseCount(currShopId);
-	}
 
 
 	// 진행현황 관리
@@ -344,8 +322,26 @@ public class SaleService extends CommonService {
 		return saleMapper.getAvgMarginGraphByDateType(vo);
 	}
 
-	public List<Integer> getAvgMarginBySelectType(CommonVO vo){
-		return saleMapper.getAvgMarginBySelectType(vo);
+	public List<Integer> getCtCountBySelectType(CommonVO vo){
+		return saleMapper.getCtCountBySelectType(vo);
+	}
+
+	public List<Map<String,Object>> getStatBySelectType(CommonVO vo){
+		return saleMapper.getStatBySelectType(vo);
+	}
+
+	// 파이 그래프
+	public Map<String,Object> getIstmRatio(CommonVO vo){
+		return saleMapper.getIstmRatio(vo);
+	}
+	public Map<String,Object> getProviderRatio(CommonVO vo){
+		return saleMapper.getProviderRatio(vo);
+	}
+	public Map<String,Object> getActvTpRatio(CommonVO vo){
+		return saleMapper.getActvTpRatio(vo);
+	}
+	public Map<String,Object> getGenderRatio(CommonVO vo){
+		return saleMapper.getGenderRatio(vo);
 	}
 
 	// 통계 페이지

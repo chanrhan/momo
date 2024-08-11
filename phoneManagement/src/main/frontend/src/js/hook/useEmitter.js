@@ -8,7 +8,7 @@ function useEmitter(){
     const {sse} = useSelector(state=>state.sseReducer)
 
     const connect = ()=>{
-        console.log(`sse connent: ${accessToken}`)
+        // console.log(`sse connent: ${accessToken}`)
         const evtSrc = new EventSourcePolyfill("http://localhost:8080/sse/connect",{
             headers:{
                 'X-ACCESS-TOKEN': accessToken

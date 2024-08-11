@@ -1,5 +1,5 @@
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../../service/board/BoardTable";
-import {AdminTableData} from "./AdminTableData";
+import {LMD} from "../../common/LMD";
 
 export function InternetPlanTable({data}){
     return (
@@ -7,7 +7,7 @@ export function InternetPlanTable({data}){
             <Bthead>
                 <Bth className="ta_c" checkbox></Bth>
                 <Bth>통신사</Bth>
-                <wBth>요금제명</wBth>
+                <Bth>요금제명</Bth>
                 {/*<Bth>등록일자</Bth>*/}
             </Bthead>
             <Btbody br>
@@ -15,8 +15,8 @@ export function InternetPlanTable({data}){
                     data && data.map((v,i)=> {
                         return <tr key={i}>
                             <Btd checkbox/>
-                            <Btd>{v.provider}</Btd>
-                            <Btd>{v.internet_plan_nm}</Btd>
+                            <Btd>{LMD.provier[v.provider]}</Btd>
+                            <Btd>{v.name}</Btd>
                         </tr>
                     })
                 }

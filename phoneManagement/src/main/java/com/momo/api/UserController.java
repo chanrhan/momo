@@ -3,6 +3,7 @@ package com.momo.api;
 import com.momo.common.util.BusinessmanApiUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
+import com.momo.service.CommonService;
 import com.momo.service.ImageService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class UserController {
 	private final UserService userService;
 	private final ImageService imageService;
+	private final CommonService commonService;
 
 	/**
 	 * 사용자 정보 불러오기
@@ -150,7 +152,6 @@ public class UserController {
 	/**
 	 * (관리자 권한) 모든 유저 불러오기
 	 * @param keyword string
-	 * @param keydate string
 	 * @return {
 	 *     가입채널
 	 *     이름
@@ -162,11 +163,10 @@ public class UserController {
 	 *     역할
 	 * }
 	 */
-	@GetMapping("/all")
-	public ResponseEntity<List<Map<String,Object>>> getUserAll(@RequestParam(required = false) String keyword,
-															   @RequestParam(required = false) LocalDate keydate){
-
-		return null;
+	@PostMapping("/all")
+	public ResponseEntity<Map<String,Object>> getUserAll(@RequestBody(required = false) UserVO vo){
+		log.info("user all: {}", vo);
+		return ResponseEntity.ok(userService.getUserAll(vo));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class UserController {
 	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
 													   @PathVariable String staffId,
 													   @RequestBody Integer state){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.updateApprovalState(currShopId,staffId,state)> 0);
 	}
 
@@ -205,28 +205,28 @@ public class UserController {
 	}
 
 	@GetMapping("/staff/inner")
-	public ResponseEntity<Map<String,String>> getInnerStaff(HttpSession session){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+	public ResponseEntity<String> getInnerStaff(HttpSession session){
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.getInnerStaff(currShopId));
 	}
 
 	@GetMapping("/staff/inner/all")
 	public ResponseEntity<List<Map<String,Object>>> getInnerStaffAll(HttpSession session,
 																	 @RequestParam(required = false) String keyword){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.getInnerStaffAll(currShopId, keyword));
 	}
 
 	@GetMapping("/staff/inner/count")
 	public ResponseEntity<Integer> getInnerStaffTotalCount(HttpSession session){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.getInnerStaffTotalCount(currShopId));
 	}
 
 
 	@GetMapping("/staff/name/inner")
 	public ResponseEntity<List<String>> getInnerStaffName(HttpSession session){
-		int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.getInnerStaffName(currShopId));
 	}
 

@@ -1,6 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.service.CommonService;
 import com.momo.service.ReserveMsgService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,12 @@ import java.util.Map;
 @RequestMapping("/api/v1/msg")
 public class ReserveMsgController {
     private final ReserveMsgService reserveMsgService;
+    private final CommonService commonService;
 
     @GetMapping("/calendar")
-    public ResponseEntity<List<Map<String,Integer>>> getReserveMsgForCalendar(HttpSession session,
+    public ResponseEntity<List<String>> getReserveMsgForCalendar(HttpSession session,
                                                                               @RequestParam String date){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(reserveMsgService.getReserveMsgForCalendar(currShopId, date));
     }
 
@@ -29,7 +31,7 @@ public class ReserveMsgController {
     public ResponseEntity<List<Map<String,Object>>> getReserveMsgDetail(HttpSession session,
                                                                         @RequestParam String date,
                                                                         @RequestParam int state){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+        int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(currShopId, date, state));
     }
 }

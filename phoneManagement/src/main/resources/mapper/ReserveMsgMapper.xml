@@ -18,13 +18,36 @@
     </insert>
 
     <select id="getReserveMsgForCalendar">
-        SELECT SUBSTR(rsv_dt, 9,2) as rsv_dt,
-               msg_st,
-               COUNT(msg_tp) as cnt
-        FROM tb_rsv_msg
-        WHERE shop_id=#{currShopId} and
-            rsv_dt like '%${date}%'
-        GROUP BY rsv_dt, msg_st
+        <![CDATA[
+
+        set @from := (
+            select concat(#{date},'-01')
+        );
+
+
+        with recursive calendar as (
+            select @from as d
+            union all
+            select date_add(d, interval 1 day) as d
+            from calendar
+            where d < last_day(@from)
+        ), msg as (
+            select rsv_dt,
+                   json_object(
+                           'msg_st',msg_st,
+                           'cnt', IFNULL(count(msg_st),0)
+                   ) as value
+            from tb_rsv_msg
+            where shop_id=#{currShopId}
+            group by rsv_dt, msg_st
+        )
+
+
+        select json_arrayagg(value) as value
+        from calendar
+                 left outer join msg rm on rm.rsv_dt=d
+        group by d
+        ]]>
     </select>
 
     <select id="getReserveMsgDetail">

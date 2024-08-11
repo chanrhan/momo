@@ -6,7 +6,7 @@ import {ProfileTableColumn} from "./ProfileTableColumn";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import {LMD} from "../../../common/LMD";
 
-export function StaffTableData({key, data, onChangeState}){
+export function StaffTableData({data, onChangeState}){
     const state= data.approval_st;
 
     const changeState = (state)=>{
@@ -19,7 +19,7 @@ export function StaffTableData({key, data, onChangeState}){
     }
 
     return (
-        <tr key={key}>
+        <tr>
             <Btd checkbox name='check1'/>
             <ProfileTableColumn src={profileImg1} name={data.name}/>
             <Btd>{data.tel}</Btd>

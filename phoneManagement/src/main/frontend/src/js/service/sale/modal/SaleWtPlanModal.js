@@ -9,13 +9,16 @@ import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {LMD} from "../../../common/LMD";
 import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
+import {PriceInput} from "../../../common/inputbox/PriceInput";
 
 export function SaleWtPlanModal(props){
     const inputField = useObjectInputField(props.data ?? {
         wt_actv_div: 0,
         wt_cms: 0,
-        internet_plan: 1,
-        tv_plan: 1
+        internet_plan: null,
+        internet_plan_nm: null,
+        tv_plan: null,
+        tv_plan_nm: null
     })
     const modal = useModal();
 
@@ -24,6 +27,7 @@ export function SaleWtPlanModal(props){
     }
 
     const submit = ()=>{
+        // console.table(inputField.input)
         if(props.onSubmit){
             props.onSubmit(inputField.input);
         }
@@ -53,9 +57,9 @@ export function SaleWtPlanModal(props){
                             <li className={cm(Popup.form_item,User.form_item)}>
                                 <label htmlFor="wt_cms" className={cm(Popup.form_label, User.form_label)}>유선 판매 수수료(정책)</label>
                                 <div className={User.form_inp}>
-                                    <input type="text" name="wt_cms" className={cmc(Popup.inp, Popup.ta_r)}
-                                           value={inputField.get('wt_cms')}
-                                           onChange={inputField.handleInput} />
+                                    <PriceInput name="wt_cms" className={cmc(Popup.inp, Popup.ta_r)}
+                                                value={inputField.get('wt_cms')}
+                                                onChange={inputField.handleInput}/>
                                 </div>
                             </li>
                         </ul>
@@ -65,20 +69,24 @@ export function SaleWtPlanModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id="net"/>
-                                        <DynamicSelectLayer type={DYNAMIC_TYPE.internet}/>
-                                        {/*<SelectIndexLayer name='internet_plan' inputField={inputField} values={[1, 2, 3]}*/}
-                                        {/*                  cssModules={toCssModules(Popup, User)}/>*/}
+                                        <DynamicSelectLayer initValue={inputField.get('internet_plan_nm')} type={DYNAMIC_TYPE.internet} provider={props.provider}
+                                                            onClick={({id,name})=>{
+                                                                inputField.put('internet_plan',id)
+                                                                inputField.put('internet_plan_nm',name)
+                                        }}/>
                                     </div>
                                 </div>
                             </li>
                             <li className={cm(Popup.form_item, User.form_item)}>
-                                <label htmlFor="net" className={cm(Popup.form_label, User.form_label)}>TV 요금제</label>
+                                <label htmlFor="tv" className={cm(Popup.form_label, User.form_label)}>TV 요금제</label>
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
-                                        <input type="hidden" id="net"/>
-                                        <DynamicSelectLayer type={DYNAMIC_TYPE.tv}/>
-                                        {/*<SelectIndexLayer name='tv_plan' inputField={inputField} values={[1, 2, 3]}*/}
-                                        {/*                  cssModules={toCssModules(Popup, User)}/>*/}
+                                        <input type="hidden" id="tv"/>
+                                        <DynamicSelectLayer initValue={inputField.get('tv_plan_nm')} type={DYNAMIC_TYPE.tv} provider={props.provider}
+                                                            onClick={({id,name})=>{
+                                            inputField.put('tv_plan',id)
+                                            inputField.put('tv_plan_nm',name)
+                                        }}/>
                                     </div>
                                 </div>
                             </li>

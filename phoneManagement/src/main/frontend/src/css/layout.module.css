@@ -77,8 +77,16 @@
 .contents{position:relative; min-height:calc(100vh - 64px); margin:64px 0 0 79px;}
 .contents .sub{max-width:1328px; margin:0 auto; padding:40px 40px 75px 40px;}
 .contents .sub .sub_head{position:relative;}
+/*.contents .sub .sub_head{position:relative;}*/
 .contents .sub .sub_head .sub_title{display:inline-block; color:#141218; font-size:24px; font-weight:700; line-height:30px;}
-.contents .sub .sub_head .sub_head_btn{float:right; padding-right:16px; padding-left:16px; border-radius:4px; font-size:14px; font-weight:400;}
+.contents .sub .sub_head .sub_head_btn{float:right;
+    /*padding-right:16px; padding-left:16px; */
+    padding: 8px 16px 8px 16px;
+    border-radius:4px; font-size:16px;
+    font-weight:400;
+    color: #fff;
+    background-color: #ff4778;
+}
 .contents .back_btn{position:absolute; top:40px; right:30px; width:30px; height:30px; background:url(../images/back_icon.png) no-repeat center / 100%; font-size:0;}
 .contents .sub_tab{margin-top:38px;}
 .contents .sub_tab .tab_list{display:inline-block; font-size:0; line-height:0; vertical-align:top;}

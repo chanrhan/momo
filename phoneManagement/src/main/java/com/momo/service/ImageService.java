@@ -45,7 +45,7 @@ public class ImageService {
 	}
 
 	public String upload(String dir, MultipartFile mf) {
-		if (mf.isEmpty()) {
+		if (mf == null || mf.isEmpty()) {
 			return null;
 		}
 

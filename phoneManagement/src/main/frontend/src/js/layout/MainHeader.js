@@ -138,9 +138,9 @@ function NotificationListLayer({}){
 
     const getNotif = async ()=>{
         await notifApi.getNotifList().then(({status,data})=>{
-            console.log(status)
+            // console.log(status)
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 setItems(data)
             }
         })

@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ShopService extends CommonService {
+public class ShopService {
 	private static final Logger log = LoggerFactory.getLogger(ShopService.class);
 	private final ShopMapper shopMapper;
 	private final UserMapper userMapper;

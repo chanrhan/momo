@@ -19,6 +19,6 @@ public class SaleAddVO extends BaseVO {
 
     private Integer addId;
 
-    private Integer addDiv;
-    private Integer addAmount;
+    private Integer div;
+    private Integer amount;
 }

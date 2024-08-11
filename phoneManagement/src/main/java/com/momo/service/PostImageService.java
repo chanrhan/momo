@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.common.vo.PostImageVO;
 import com.momo.mapper.PostImageMapper;
 import com.momo.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +14,16 @@ import java.util.Map;
 public class PostImageService {
     private final PostImageMapper postImageMapper;
 
-    public List<Map<String,String>> getPostImageAll(int currShopId){
+    public List<Map<String,Object>> getPostImageAll(int currShopId){
         return postImageMapper.getPostImageAll(currShopId);
     }
 
-    public void insertPostImage(int currShopId, String text, String path){
-        postImageMapper.insertPostImage(currShopId, text, path);
+    public Integer insertPostImage( PostImageVO vo){
+        return postImageMapper.insertPostImage(vo);
+    }
+
+    public int updatePostImage( PostImageVO vo){
+        return postImageMapper.updatePostImage(vo);
     }
 
     public int deletePostImage(int currShopId, int pimgId){

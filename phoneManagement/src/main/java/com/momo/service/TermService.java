@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TermService extends CommonService {
+public class TermService {
 	private final TermMapper termMapper;
 
 	public int insert(TermVO vo) {

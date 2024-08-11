@@ -20,6 +20,6 @@ public class SaleSupportVO extends BaseVO {
     private Integer supId;
     private Integer supSt;
 
-    private Integer supDiv;
-    private Integer supAmount;
+    private Integer div;
+    private Integer amount;
 }

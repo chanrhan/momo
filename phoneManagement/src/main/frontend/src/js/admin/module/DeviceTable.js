@@ -1,7 +1,7 @@
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../../service/board/BoardTable";
-import {AdminTableData} from "./AdminTableData";
 import {ProfileTableColumn} from "../../service/sale/module/ProfileTableColumn";
 import profileImg1 from "../../../images/profile_img1.jpg";
+import {LMD} from "../../common/LMD";
 
 export function DeviceTable({data}){
     return (
@@ -18,7 +18,7 @@ export function DeviceTable({data}){
                     data && data.map((v,i)=> {
                         return <tr key={i}>
                             <Btd checkbox/>
-                            <Btd>{v.provider}</Btd>
+                            <Btd>{LMD.provier[v.provider]}</Btd>
                             <Btd>{v.device_nm}</Btd>
                             <Btd>{v.device_cd}</Btd>
                         </tr>

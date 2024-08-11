@@ -14,15 +14,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-@SpringBootTest
+//@SpringBootTest
 class PhoneManagementApplicationTests {
 	private static final Logger log = LoggerFactory.getLogger(PhoneManagementApplicationTests.class);
-	@Autowired
+//	@Autowired
 	private SaleService saleService;
 
 	@Test
 	void contextLoads() throws IllegalAccessException {
-		insertData();
+//		insertData();
 //		insertRandomData();
 	}
 

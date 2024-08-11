@@ -55,6 +55,9 @@ function TestHeader(){
                 <Link to='css'>
                     <button className='btn btn-outline-success ms-1'>CSS 테스트</button>
                 </Link>
+                <Link to='async'>
+                    <button className='btn btn-outline-success ms-1'>비동기 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

@@ -15,11 +15,19 @@
 .board .board_head .board_search .input{width:calc(100% - 24px); height:24px; background-color:transparent; font-size:14px;}
 .board .board_head .board_search .button{display:inline-block; width:24px; height:24px; background:url(../images/search_icon3.png) no-repeat center / 100%; vertical-align:top;}
 .board .board_head .board_filter_btn{margin:0 16px 0 8px; padding-left:28px; background:url(../images/filter_icon.png) no-repeat left center / 30px; color:#141218; font-size:16px; line-height:36px; vertical-align:top;}
+.board .board_head .board_filter_btn.active{
+    border: 2px #4781ff solid;
+    border-radius: 5px;
+}
+
 .board .board_head .board_btn_box{display:inline-block; position:relative; margin-left:13px; vertical-align:top;}
 .board .board_head .board_btn_box + .board_btn_box{margin-left:2px;}
 .board .board_head .board_btn_box .board_btn{width:36px; height:36px; background-repeat:no-repeat; background-position:center; background-size:30px;}
 .board .board_head .board_btn_box .board_btn + .board_btn{}
 .board .board_head .board_btn_box .board_btn.board_filter{background-image:url(../images/filter_icon2.png);}
+
+
+
 .board .board_head .board_btn_box .board_btn.board_more{background-image:url(../images/more_icon.png);/* margin-right:13px;*/}
 .board .board_head .board_btn_box + .btn{margin-left:13px;}
 .board .board_head .filter_layer{opacity:0; visibility:hidden; position:absolute; top:100%; right:0; z-index:1; width:232px; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px 0 rgba(20, 18, 24, 0.16); transition:all .25s ease-in-out;}
@@ -35,13 +43,16 @@
 .board .board_head .filter_layer .filter_item .check_box .label{font-size:14px;}
 .board .board_head .filter_layer .filter_item.active .check_box .label:before,
 .board .board_head .filter_layer .filter_item:hover .check_box .label:before{background-color:#f4f5f9;}
-.board .td_board .thead .th{padding:10px; background-color:#f8f8f9; color:#62626e; font-size:14px; font-weight:400; text-align:left; line-height:16px;}
+.board .td_board .thead .th{padding:10px; background-color:#f8f8f9; color:#62626e; font-size:14px; font-weight:400; text-align:center; line-height:16px;}
+.board .td_board{
+    /*background-color: red;*/
+}
 .board .td_board .thead .th.sort{cursor:pointer;}
 .board .td_board .thead .th.sort:after{display:inline-block; width:5px; height:9px; margin-left:4px; background:url(../images/sort_icon.png) no-repeat center / 5px auto;}
 .board .td_board .check_box{display:inline-block; vertical-align:top;}
 .board .td_board .check_box .label{width:16px; height:16px; padding-left:0; font-size:0; line-height:16px !important;}
 .board .td_board .check_box .label:before{width:16px; height:16px; background-size:24px;}
-.board .td_board .tbody .td{padding:10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; text-align:left; line-height:16px;}
+.board .td_board .tbody .td{padding:10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; text-align:center; line-height:16px;}
 .board .td_board .tbody .td:last-child{border-right:0;}
 .board .td_board .tbody.br_none .td{border-right:0;}
 .board .td_board .tbody .td_type{padding:4px; border-radius:4px; font-size:12px; line-height:14px; vertical-align:top;}

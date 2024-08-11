@@ -20,7 +20,7 @@ export function PlanSearchModal(props){
 
 
     const getCtPlan = async ()=>{
-        await gmdApi.getCtPlan(keyword).then(({status,data})=>{
+        await gmdApi.getCtPlan(keyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 setItems(data)
             }
@@ -37,7 +37,7 @@ export function PlanSearchModal(props){
     }
 
     const submit = ()=>{
-        if(props.onSubmit){
+        if(props.onSubmit && items[selected]){
             props.onSubmit(items[selected])
         }
         close();

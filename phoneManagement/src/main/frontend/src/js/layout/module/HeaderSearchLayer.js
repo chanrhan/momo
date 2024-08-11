@@ -10,7 +10,7 @@ export function HeaderSearchLayer({}){
     const onclickRef = useRef()
 
     const {saleApi} = useApi();
-    const [keyword, setKeyword] = useState(null)
+    const [keyword, setKeyword] = useState('')
     const [items, setItems] = useState(null)
 
     useEffect(() => {
@@ -100,9 +100,9 @@ export function HeaderSearchLayer({}){
     )
 }
 
-function SearchResult({key, data}){
+function SearchResult({data}){
     return (
-        <tr key={key} className={Layout.tr}>
+        <tr className={Layout.tr}>
             <td className={Layout.td}>{data.cust_nm}</td>
             <td className={Layout.td}>{data.cust_tel}</td>
             <td className={Layout.td}>{data.cust_cd}</td>

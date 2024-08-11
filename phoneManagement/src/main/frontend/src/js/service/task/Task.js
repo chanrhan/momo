@@ -10,8 +10,13 @@ import {useEffect, useState} from "react";
 import {TaskCardBoardTable} from "./module/TaskCardBoardTable";
 import {TaskCombBoardTable} from "./module/TaskCombBoardTable";
 import {TaskSupportBoardTable} from "./module/TaskSupportBoardTable";
+import useModal from "../../hook/useModal";
+import {ModalType} from "../../common/modal/ModalType";
+import {useFileLoader} from "../../hook/useFileLoader";
 
 export function Task(){
+    const modal = useModal();
+    const fileLoader = useFileLoader();
     const {saleApi} = useApi();
     const [items, setItems] = useState([]);
     const [totalCount, setTotalCount] = useState(0)
@@ -23,18 +28,50 @@ export function Task(){
         asc: false
     });
 
+    const [profileImages, setProfileImages] = useState(null)
+
+    const [allChecked, setAllChecked] = useState(false)
+    const [checkedSale, setCheckedSale] = useState([])
+
     useEffect(() => {
         getSaleByCategory()
-        // if(category !== 4){
-        // }else{
-        //     getPromise();
-        // }
-        getSaleTotalCountByCategory();
+        // getSaleTotalCountByCategory();
     }, [inputField.input]);
 
     useEffect(() => {
         refresh()
     }, [category]);
+
+    const checkSale = index=>{
+        const copy = [...checkedSale]
+        copy[index] = !copy[index]
+        setCheckedSale(copy)
+    }
+
+    const checkAll = ()=>{
+        setCheckedSale(new Array(checkedSale.length).fill(!allChecked))
+        setAllChecked(!allChecked)
+    }
+
+    const deleteSale = async ()=>{
+        const body = checkedSale.map((v,i)=>{
+            if(v){
+                return items[i].sale_id;
+            }
+        }).filter(v=>v);
+
+        if(body && body.length > 0){
+            await saleApi.deleteSales(body).then(({status,data})=>{
+                if(status === 200 && data){
+                    modal.openModal(ModalType.SNACKBAR.Info, {
+                        msg: '판매일보가 삭제되었습니다.'
+                    })
+                    getSaleByCategory();
+                    // getSaleTotalCount()
+                }
+            })
+        }
+    }
 
     const getSaleByCategory = async ()=>{
         await saleApi.getSaleByCategory({
@@ -43,29 +80,39 @@ export function Task(){
         }).then(({status,data})=>{
             if(status === 200 && data){
                 // console.table(data)
-                setItems(data)
+                if(data.total_cnt){
+                    setTotalCount(data.total_cnt)
+                }
+                if(data.list){
+                    const parsed = JSON.parse(data.list)
+                    // console.table(parsed)
+                    setItems(parsed)
+                    setCheckedSale(new Array(parsed.length).fill(false))
+
+                    getProfimeImages(parsed).then(data=>{
+                        if(data){
+                            setProfileImages(data)
+                        }
+                    })
+                }else{
+                    setItems([])
+                    // setProfileImages(null)
+                }
             }
         })
     }
 
-    // const getPromise = async ()=>{
-    //     console.log('get promise')
-    //     await saleApi.getPromise(inputField.input).then(({status,data})=>{
-    //         console.log(`status: ${status} data: ${data}`)
-    //         if(status === 200 && data){
-    //             console.table(data)
-    //             setItems(data)
-    //         }
-    //     })
-    // }
-
-    const getSaleTotalCountByCategory = async ()=>{
-        await saleApi.getSaleTotalCountByCategory(category).then(({status,data})=>{
-            if(status === 200 && data){
-                // console.table(data)
-                setTotalCount(data)
+    const getProfimeImages = async (list)=>{
+        if(list){
+            const copy = new Array(list.length)
+            for(let i=0;i<list.length; ++i){
+                await fileLoader.pfp(list[i].seller_pfp).then(d=>{
+                    copy[i] = d;
+                })
             }
-        })
+            return copy;
+        }
+        return null;
     }
 
     const refresh = ()=>{
@@ -92,6 +139,13 @@ export function Task(){
         })
     }
 
+    const openSaleDetailModal = (sale_id)=>{
+        modal.openModal(ModalType.LAYER.Sale_Detail, {
+            sale_id: sale_id,
+            onSubmit: refresh
+        })
+    }
+
     return (
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
@@ -102,11 +156,6 @@ export function Task(){
                 <TabList value={category} onChange={setCategory} theme={Layout} values={
                     ['중고폰','카드','결합','지원','고객약속']
                 }/>
-                {
-                    category === 4 && (
-                        <button className={`btn_blue ${cm(Board.btn_medium, Board.btn)} btn_add`}>약속 추가</button>
-                    )
-                }
             </div>
 
             <div className={`${Board.board} board_list`}>
@@ -114,9 +163,10 @@ export function Task(){
                     <form>
                         <div className={Board.board_head_group}>
                                 <span className="switch">
-                                    <input type="checkbox" name='completed' className="switch_inp" checked={inputField.get('completed')}/>
-                                    <label htmlFor="completed" onClick={()=>{
-                                        inputField.put('completed', !inputField.get('completed'))
+                                    <input type="checkbox" name='not_done' className="switch_inp"
+                                           checked={inputField.get('not_done')} readOnly/>
+                                    <label htmlFor="not_done" onClick={()=>{
+                                        inputField.put('not_done', !inputField.get('not_done'))
                                     }}><span>on/off</span></label>
                                 </span>
                             <span className="switch_text">미완료 고객 보기</span>
@@ -139,7 +189,15 @@ export function Task(){
                 </div>
 
                 <div className="board_body">
-                    <CategorySelector category={category} items={items} onChangeState={onChangeState}/>
+                    <CategorySelector allChecked={allChecked}
+                                      checkAll={checkAll}
+                                      checkedSale={checkedSale}
+                                      onCheck={checkSale}
+                                      profileImages={profileImages}
+                                      onSelectSale={openSaleDetailModal}
+                                      category={category}
+                                      items={items}
+                                      onChangeState={onChangeState}/>
                     <div className="view_more">
                         <button type="button" className="view_more_btn">더 보기</button>
                     </div>
@@ -149,18 +207,18 @@ export function Task(){
     )
 }
 
-function CategorySelector({category, items, onChangeState}){
+function CategorySelector({checkAll, allChecked, checkedSale, onCheck, profileImages, category, items, onChangeState, onSelectSale}){
     switch (category){
         case 0:
-            return <TaskUsedDeviceBoardTable items={items} onChangeState={onChangeState}/>
+            return <TaskUsedDeviceBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
         case 1:
-            return <TaskCardBoardTable items={items} onChangeState={onChangeState}/>
+            return <TaskCardBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
         case 2:
-            return <TaskCombBoardTable items={items} onChangeState={onChangeState}/>
+            return <TaskCombBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
         case 3:
-            return <TaskSupportBoardTable items={items} onChangeState={onChangeState}/>
+            return <TaskSupportBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
         case 4:
-            return <PromiseBoardTable items={items} onChangeState={onChangeState}/>
+            return <PromiseBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
     }
     return null;
 }

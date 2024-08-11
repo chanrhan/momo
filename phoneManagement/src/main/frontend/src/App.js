@@ -44,6 +44,7 @@ import {ChatBotButton} from "./js/common/module/ChatBotButton";
 import {GraphTest} from "./js/test/GraphTest";
 import {MasterData} from "./js/admin/MasterData";
 import {ErrorBoundary} from "react-error-boundary";
+import {AsyncTest} from "./js/test/AsyncTest";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
                   <Route path='file' element={<FileUploadTest/>}/>
                   <Route path='css' element={<CssTest/>}/>
                   <Route path='alimtalk' element={<AlimTalkTest/>}/>
+                  <Route path='async' element={<AsyncTest/>}/>
               </Route>
 
 
@@ -113,8 +115,7 @@ function App() {
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>
                           {/*<Route path='statistics' element={<Statistics/>}/>*/}
-                          <Route path='admin' element={<Administrator/>}></Route>
-                          <Route path='admin/gmd' element={<MasterData/>}></Route>
+
                       </Route>
 
                       <Route path='/staff' element={<ManageStaff/>}>
@@ -125,6 +126,7 @@ function App() {
 
                       <Route path='/admin'>
                           <Route path='' element={<Administrator/>}/>
+                          <Route path='gmd' element={<MasterData/>}></Route>
                       </Route>
 
                   </Route>

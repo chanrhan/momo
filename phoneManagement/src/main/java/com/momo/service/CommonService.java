@@ -1,99 +1,43 @@
 package com.momo.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.momo.common.util.TransactionTemplateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.common.util.SecurityContextUtil;
+import com.momo.exception.BusinessException;
+import com.momo.mapper.UserMapper;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-import java.util.Map;
+@Service
+@RequiredArgsConstructor
+public class CommonService {
+    private static final Logger log = LoggerFactory.getLogger(CommonService.class);
+    private final UserMapper userMapper;
 
 
+    // Authentication
+    public void setCurrentShopId(HttpSession session){
+        int currShopId = getCurrentShopId(session);
+        session.setAttribute("curr_shop_id", currShopId);
+    }
 
-public abstract class CommonService {
-	@Autowired
-	protected TransactionTemplateUtil transactionTemplate;
-
-	protected final ObjectMapper objectMapper = new ObjectMapper()
-			.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-
-	@Deprecated
-	protected String getUpdateQueryString(Object ob){
-		StringBuilder sb = new StringBuilder(" ");
-		Map<String,String> map = objectMapper.convertValue(ob, Map.class);
-		if(map == null || map.isEmpty()){
-			return "1 = 1";
-		}
-
-		Object target = map.get("target");
-		if(target == null){
-			return "1 = 1";
-		}
-
-		int[] index = {0};
-
-		map.forEach((key,value)->{
-//			System.out.println("key: "+key+", value: "+value);
-//			System.out.println(map.size()+" / "+index[0]);
-			if(value == null || value.equals("")) return;
-			if(key.equals("target") || key.equals("order") || key.equals("asc") || key.equals("offset") || key.equals("limit")){
-				return;
-			}
-			if(index[0] > 0){
-				sb.append(",");
-			}else{
-				++index[0];
-			}
-			sb.append(key).append("=").append("'").append(value).append("'");
-		});
-		sb.append(" where ").append(target).append("='").append(map.get(target)).append("'");
-		System.out.println(sb);
-		return sb.toString();
-	}
-	@Deprecated
-	protected String getSelectQueryString(Object ob){
-		System.out.println("qs ob: "+ob);
-		if(ob == null){
-			return "1 = 1";
-		}
-		StringBuilder sb = new StringBuilder(" ");
-		Map<String,Object> map = objectMapper.convertValue(ob, Map.class);
-//		System.out.println(map);
-
-		if(map == null || map.isEmpty()){
-			return "1 = 1";
-		}
-		Object order = map.getOrDefault("order", null);
-		Object asc = map.getOrDefault("asc", null);
-		Object offset = map.getOrDefault("offset", null);
-		Object limit = map.getOrDefault("limit", null);
-
-		map.forEach((key,value)->{
-			if(value == null || value.equals("0")) return;
-			if(key.equals("order") || key.equals("asc") || key.equals("offset") || key.equals("limit")){
-				return;
-			}
-			sb.append(key).append("=").append("'").append(value).append("' ").append("and ");
-		});
-		sb.append("1 = 1 ");
-		if(order != null){
-			sb.append("order by ").append(order);
-			if(asc != null){
-				sb.append(" ").append(asc).append(" ");
-			}
-		}
-		if(offset != null && limit != null){
-			sb.append("limit ").append(offset).append(" ").append(limit);
-		}
-		return sb.toString();
-	}
-
-	protected ResponseEntity<Boolean> toResponseEntity(int result){
-		return ResponseEntity.status((result != 0) ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).body(true);
-	}
-
-	protected<T> ResponseEntity<T> toResponseEntity(T result){
-		return ResponseEntity.status((result != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND).body(result);
-	}
+    public int getCurrentShopId(HttpSession session){
+        Object _attr = session.getAttribute("curr_shop_id");
+        if(_attr != null){
+            return Integer.parseInt(_attr.toString());
+        }
+        else{
+            log.info("Session('curr_shop_id') is not found. Try to find on Database...");
+            String username = SecurityContextUtil.getUsername();
+            Integer currShopId = userMapper.getSessionData(username);
+            if(currShopId == null){
+                throw new BusinessException(CommonErrorCode.SESSION_NOT_FOUND);
+            }
+            session.setAttribute("curr_shop_id", currShopId);
+            return currShopId;
+        }
+//        throw new BusinessException(CommonErrorCode.SESSION_NOT_FOUND);
+    }
 }

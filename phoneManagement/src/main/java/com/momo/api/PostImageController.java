@@ -1,6 +1,7 @@
 package com.momo.api;
 
-import com.momo.common.util.HttpSessionUtils;
+import com.momo.common.vo.PostImageVO;
+import com.momo.service.CommonService;
 import com.momo.service.ImageService;
 import com.momo.service.PostImageService;
 import com.momo.service.TodoService;
@@ -21,33 +22,48 @@ import java.util.Map;
 public class PostImageController {
     private final PostImageService postImageService;
     private final ImageService imageService;
+    private final CommonService commonService;
 
     @GetMapping("")
     public ResponseEntity<List<Map<String,Object>>> getPostImageAll(HttpSession session){
-        List<Map<String,String>> list = postImageService.getPostImageAll(HttpSessionUtils.getCurrentShopId(session));
-        return null;
+        return ResponseEntity.ok(postImageService.getPostImageAll(commonService.getCurrentShopId(session)));
     }
 
-    @PostMapping("")
-    public ResponseEntity<Boolean> addPostImage(HttpSession session,
-                                                @RequestPart String text,
-                                                @RequestPart MultipartFile file){
-        int currShopId = HttpSessionUtils.getCurrentShopId(session);
+    @PostMapping("/add")
+    public ResponseEntity<Integer> addPostImage(HttpSession session,
+                                                @RequestPart(value = "body") PostImageVO vo,
+                                                @RequestPart(required = false) MultipartFile file){
+        log.info("pimg add: {}",vo);
+        int currShopId = commonService.getCurrentShopId(session);
         String path = imageService.upload("pimg", file);
-        postImageService.insertPostImage(currShopId, text, path);
-        return ResponseEntity.ok(true);
+        vo.setCurrShopId(currShopId);
+        vo.setPath(path);
+
+        return ResponseEntity.ok(postImageService.insertPostImage(vo));
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updatePostImage(HttpSession session,
+                                                @RequestPart(value = "body") PostImageVO vo,
+                                                @RequestPart(required = false) MultipartFile file){
+        int currShopId = commonService.getCurrentShopId(session);
+        String path = imageService.upload("pimg", file);
+        vo.setCurrShopId(currShopId);
+        vo.setPath(path);
+        return ResponseEntity.ok(postImageService.updatePostImage(vo) > 0);
+    }
+
 
     @GetMapping("/del")
     public ResponseEntity<Boolean> deletePostImage(HttpSession session,
                                                    @RequestParam int id){
-        int currShopid = HttpSessionUtils.getCurrentShopId(session);
+        int currShopid = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(postImageService.deletePostImage(currShopid, id) > 0);
     }
 
     @GetMapping("/del/all")
     public ResponseEntity<Boolean> deleteAll(HttpSession session){
-        int currShopid = HttpSessionUtils.getCurrentShopId(session);
+        int currShopid = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(postImageService.deleteAll(currShopid) > 0);
     }
 

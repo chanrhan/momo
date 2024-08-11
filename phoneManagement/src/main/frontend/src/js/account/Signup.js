@@ -12,6 +12,7 @@ import {ObjectUtils} from "../utils/objectUtil";
 import {cm} from "../utils/cm";
 import {useDispatch} from "react-redux";
 import {StringUtils} from "../utils/StringUtils";
+import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
 
 export function Signup(){
     const {publicApi} = useApi();
@@ -47,7 +48,7 @@ export function Signup(){
         if(inputField.validateAll()){
             await publicApi.signup({
                 ...inputField.input,
-                tel: StringUtils.toPhoneNumber(inputField.input.tel),
+                // tel: StringUtils.toPhoneNumber(inputField.input.tel),
                 terms: ObjectUtils.convertBooleanArrayToString(termList)
             }).then(({status, data, headers})=>{
                 if(status === 200 && data){
@@ -83,9 +84,18 @@ export function Signup(){
                             <UserFormInput subject='이메일' name='email' inputField={inputField}/>
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.tel}>
-                            <UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>
-                                <button type="button" className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)} onClick={sendAuthNumber}>{isSent ? '재발송': '인증번호 받기'}</button>
-                            </UserFormInput>
+                            <label htmlFor='tel' className={User.form_label}>휴대폰 번호</label>
+                            <div className={`${User.form_inp} ${User.div}`}>
+                                <TelePhoneInput name='tel' value={inputField.get('tel')}
+                                                className={`inp ${User.inp}`} placeholder=''
+                                                onChange={inputField.handleInput}/>
+                                <button type="button"
+                                        className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
+                                        onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
+                            </div>
+                            {/*<UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>*/}
+
+                            {/*</UserFormInput>*/}
                             <UserFormInput name='auth_code' inputField={inputField}>
                                 <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
                             </UserFormInput>

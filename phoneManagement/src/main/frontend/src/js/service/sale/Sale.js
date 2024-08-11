@@ -2,24 +2,37 @@ import Board from "../../../css/board.module.css"
 import Layout from "../../../css/layout.module.css"
 import {cm, cmc} from "../../utils/cm";
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../board/BoardTable";
-import {SaleTableData} from "./module/SaleTableData";
 import useValidateInputField from "../../hook/useValidateInputField";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import {useSelector} from "react-redux";
-import {SaleFilterModal} from "./modal/SaleFilterModal";
 import {MonthSelectLayer} from "../../common/modal/menu/MonthSelectLayer";
 import {DateUtils} from "../../utils/DateUtils";
 import {MoreOptionLayer} from "../../common/module/MoreOptionLayer";
 import {SelectItem} from "../../common/module/SelectLayer";
-import {all} from "axios";
+import {useFileLoader} from "../../hook/useFileLoader";
+import {LMD} from "../../common/LMD";
+import {useBitArray} from "../../hook/useBitArray";
+import {ColumnSelectLayer} from "./module/ColumnSelectLayer";
+import {NumberUtils} from "../../utils/NumberUtils";
+import {ProfileTableColumn} from "./module/ProfileTableColumn";
+
+const COLUMNS_SORT = [
+    false,true,false,false,false,true,true,true
+]
 
 export function Sale(){
     const modal = useModal();
     const {saleApi} = useApi();
-    const inputField = useValidateInputField();
+    const inputField = useValidateInputField([
+        {
+            key: 'order',
+            value: 1
+        }
+    ]);
+    const fileLoader = useFileLoader();
     const [totalCount, setTotalCount] = useState(0)
     const [asc, setAsc] = useState(new Array(10).fill(false))
 
@@ -29,33 +42,65 @@ export function Sale(){
     const [allChecked, setAllChecked] = useState(false)
     const [checkedSale, setCheckedSale] = useState([])
 
+    const [profileImages, setProfileImages] = useState([])
+
+    const columns = useBitArray(Math.pow(2, (LMD.sale_column_vars.length))-1);
+
     const getSale = async ()=>{
-        await saleApi.getSaleAll(inputField.input).then(({status,data})=>{
-            if(status === 200){
+        // return;
+        await saleApi.getSaleAll(inputField.input).then(async ({status,data})=>{
+            if(status === 200 && data){
                 // console.log(data)
-                setSaleItems(data)
-                setCheckedSale(new Array(data.length).fill(false))
+                if(data.total_cnt){
+                    setTotalCount(data.total_cnt)
+                }
+                if(data.list){
+                    const parsed = JSON.parse(data.list)
+                    setSaleItems(parsed)
+                    setCheckedSale(new Array(parsed.length).fill(false))
+
+                    getProfimeImages(parsed).then((data)=>{
+                        if(data){
+                            setProfileImages(data)
+                        }
+                    })
+                }
+
             }
         })
     }
-    const getSaleTotalCount = async ()=>{
-        await saleApi.getSaleTotalCount().then(({status,data})=>{
-            // console.log(`total count: ${status} ${data}`)
-            if(status === 200 && !Number.isNaN(data)){
-                setTotalCount(data)
+
+    const getProfimeImages = async (list)=>{
+        if(list){
+            const copy = new Array(list.length)
+            for(let i=0;i<list.length; ++i){
+               await fileLoader.pfp(list[i].seller_pfp).then(d=>{
+                    copy[i] = d;
+                })
             }
-        })
+            return copy;
+        }
+        return null;
     }
+
+    // const getSaleTotalCount = async ()=>{
+    //     await saleApi.getSaleTotalCount().then(({status,data})=>{
+    //         // console.log(`total count: ${status} ${data}`)
+    //         if(status === 200 && !Number.isNaN(data)){
+    //             setTotalCount(data)
+    //         }
+    //     })
+    // }
 
 
     useEffect(() => {
         getSale();
-        getSaleTotalCount()
+        // getSaleTotalCount()
     }, [inputField.input]);
 
     // const getSaleCount = ()=>{
     //     return saleItems ? saleItems.length : 0;
-    // }
+    //
 
     const addSale = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Detail, {
@@ -121,23 +166,22 @@ export function Sale(){
                         msg: '판매일보가 삭제되었습니다.'
                     })
                     getSale();
-                    getSaleTotalCount()
+                    // getSaleTotalCount()
                 }
             })
         }
     }
 
-
     const openFilterModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Filter, {
-            top: '220px'
+            top: '220px',
+            data: inputField.input.filters,
+            onSubmit: (data)=>{
+                // console.table(data)
+                inputField.put('filters', data);
+            }
         })
     }
-
-    const openColumnSelectModal = ()=>{
-
-    }
-
 
     return (
         <div className={cm(Layout.sub)}>
@@ -160,20 +204,22 @@ export function Sale(){
                             <div className={cm(Board.board_count)}>
                                 <span className={cm(Board.count_text)}>전체 <em
                                     className={cm(Board.em)}>{totalCount}</em>건</span>
-                                <span className={cm(Board.count_text)}><em className={cm(Board.em)}>{saleItems ? saleItems.length : 0}</em>건</span>
+                                <span className={cm(Board.count_text)}><em
+                                    className={cm(Board.em)}>{saleItems ? saleItems.length : 0}</em>건</span>
                             </div>
 
-                            <button type="button" className={cm(Board.board_filter_btn)} onClick={openFilterModal}>필터</button>
-                            {/*<SaleFilterModal/>*/}
+                            <button type="button" className={cm(Board.board_filter_btn, `${inputField.input.filters && Board.active}`)} onClick={openFilterModal}>필터
+                            </button>
 
                             <div className={cm(Board.board_search)}>
-                                <input type="search" name='keyword' onChange={inputField.handleInput} value={inputField.get('keyword')} className={cm(Board.input)}
+                                <input type="search" name='keyword' onChange={inputField.handleInput}
+                                       value={inputField.get('keyword')} className={cm(Board.input)}
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
                                 <button type="button" className={cm(Board.button)} onClick={search}>검색</button>
                             </div>
 
                             <div className={cm(Board.board_btn_box)}>
-                                <button type="button" className={cm(Board.board_btn, Board.board_filter)} onClick={openColumnSelectModal}>컬럼 선택</button>
+                               <ColumnSelectLayer columns={columns}/>
                             </div>
 
                             <div className={`select_box ${cm(Board.board_btn_box)}`}>
@@ -184,8 +230,16 @@ export function Sale(){
                                 {/*<button type="button" className={cm(Board.board_btn, Board.board_more)}>더보기</button>*/}
                             </div>
 
-                            <button onClick={addSale} type="button" className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>판매일보 추가
+                            <button onClick={addSale} type="button"
+                                    className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>판매일보 추가
                             </button>
+                        </div>
+                        <div>
+                            {
+                                inputField.input.filters && inputField.input.filters.map((v, i) => {
+                                    return <p>{LMD.filter_and[v.and]} {LMD.filter_type[v.type]} {LMD.filter_option[v.option]}</p>
+                                })
+                            }
                         </div>
                     </form>
                 </div>
@@ -193,31 +247,41 @@ export function Sale(){
                 <BoardTable caption='판매일보 테이블 - 선택, 메인 구분, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 모델명, 총 이익, 담당자, 예약 정보 제공'
                             colgroup={
                                 <>
-                                    <col style={{width: "42px"}}/>
-                                    <col span="8"/>
-                                    <col style={{width: "90px"}}/>
+                                    {/*<col style={{width: "42px"}}/>*/}
+                                    {/*<col span="8"/>*/}
+                                    {/*<col style={{width: "90px"}}/>*/}
                                 </>
                             }>
                     <Bthead>
                         <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox/>
-                        <Bth name='main_div'>메인 구분</Bth>
-                        <Bth name='actv_dt' sort onClick={()=>{setOrder(0)}}>개통 날짜</Bth>
-                        <Bth name='cust_nm'>이름</Bth>
-                        <Bth name='cust_tel'>휴대폰 번호</Bth>
-                        <Bth name='cust_cd'>식별 번호</Bth>
-                        <Bth name='device_nm' sort onClick={()=>{setOrder(4)}}>모델명</Bth>
-                        <Bth name='total_cms' sort onClick={()=>{setOrder(5)}}>총 이익</Bth>
-                        <Bth name='seller_nm' sort onClick={()=>{setOrder(6)}}>담당자</Bth>
+                        {
+                            columns && columns.toArray().map((v,i)=>{
+                                // const sort =
+                                return <Bth key={i} name={LMD.sale_column_vars[v]} sort={COLUMNS_SORT[v]}
+                                            onClick={()=>{
+                                                if(COLUMNS_SORT[v]){
+                                                    setOrder(v)
+                                                }
+                                            }}>{LMD.sale_column_names[v]}</Bth>
+                            })
+                        }
                         <Bth>예약</Bth>
                     </Bthead>
                     <Btbody br>
                         {
-                            typeof saleItems === 'object' && saleItems.map((v,i)=>{
-                                return <SaleTableData key={i} data={v} checked={checkedSale[i]} onCheck={()=>{
-                                    checkSale(i)
-                                }} onClick={()=>{
-                                    openSaleDetail(v.sale_id)
-                                }}/>
+                            typeof saleItems === 'object' && saleItems.map((v1, i) => {
+                                return <tr key={i} onClick={(e) => {
+                                    openSaleDetail(v1.sale_id)
+                                }}>
+                                    <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
+                                        checkSale(i)
+                                    }} checkbox/>
+                                    {
+                                        columns.toArray().map((v2, j)=>{
+                                            return <TdChoice key={j} image={profileImages[i]} column_index={v2} data={v1}/>
+                                        })
+                                    }
+                                </tr>
                             })
                         }
                     </Btbody>
@@ -229,4 +293,41 @@ export function Sale(){
             </div>
         </div>
     )
+}
+
+function TdChoice({column_index, data, image}){
+    switch (column_index){
+        case 0:
+            return <Btd>
+                {
+                    data.ct === 1 && <span className={`${Board.td_type} ${Board.blue}`}>무선</span>
+                }
+                {
+                    data.wt === 1 && <span className={`${Board.td_type} ${Board.orange}`}>유선</span>
+                }
+                {
+                    data.sd === 1 && <span className={`${Board.td_type} ${Board.pink}`}>세컨</span>
+                }
+            </Btd>
+        case 1:
+            return <Btd>{data.actv_dt}</Btd>
+        case 2:
+            return <Btd>
+                <span className={cm(Board.td_num)}>1</span>{data.cust_nm}
+            </Btd>
+        case 3:
+            return <Btd className="ta_c">{data.cust_tel}</Btd>;
+        case 4:
+            return <Btd className="ta_r">{data.cust_cd}</Btd>
+        case 5:
+            return <Btd className="ta_r">{data.device_nm}</Btd>;
+        case 6:
+            return <Btd className="ta_r">{NumberUtils.toPrice(data.total_cms)} 원</Btd>;
+        case 7:
+            return <ProfileTableColumn src={image} name={data.seller_nm}/>;
+        case 8:
+            return null;
+        case 9:
+            return null;
+    }
 }

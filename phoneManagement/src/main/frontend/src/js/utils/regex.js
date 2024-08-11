@@ -42,7 +42,7 @@ export const RegexUtils = {
 export const emailRegex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_.]?[0-9a-zA-z])*\.[a-zA-z]{2,3}$/;
 
 // 전화번호(01~) 검사 정규식
-export const telRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+export const telRegex = /^01[016789]-\d{3,4}-?\d{4}$/;
 
 // 전화번호(모든 전화번호 가능) 정규식
 export const commonTelRegex = /^[0-9]{2,3}(\s-)?[0-9]{3,4}(\s-)?[0-9]{3,4}$/

@@ -99,7 +99,8 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                             return value
                         }
                     }
-                }
+                },
+                min: 0
             }
         },
         plugins: {

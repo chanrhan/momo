@@ -7,9 +7,6 @@ export function MoreOptionLayer({className, children, cssModule, cssModules}) {
     const [active, setActive] = useState(false)
     const componentRef = useRef(null)
     const onclickRef = useRef()
-    // console.log(`select layer`)
-
-    // const COMPONENT = children;
 
 
     useEffect(() => {

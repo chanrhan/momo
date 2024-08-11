@@ -18,8 +18,8 @@ export function DashboardSchedule({userInfo}){
     const [month, setMonth] = useState(today.getMonth()+1);
     const [year, setYear] = useState(today.getFullYear());
     const [day, setDay] = useState(today.getDate())
-    const [cYear, setCYear] = useState(year)
-    const [cMonth, setCMonth] = useState(month)
+    const [cYear, setCYear] = useState(year) // clicked year
+    const [cMonth, setCMonth] = useState(month) // clicked month
 
     const [monthInfo, setMonthInfo] = useState(DateUtils.getMonthInfo(today.getFullYear(), today.getMonth()+1))
 
@@ -123,12 +123,18 @@ export function DashboardSchedule({userInfo}){
         })
     }
 
+    const setToday = ()=>{
+        setYear(today.getFullYear())
+        setMonth(today.getMonth()+1)
+        setDay(today.getDate())
+    }
+
     return (
         <div className={cm(Dashboard.info_schedule, Dashboard.div)}>
             <div className={Dashboard.schedule_head}>
                 <div className={cm(Dashboard.schedule_title)}>{month}월 일정</div>
                 <div className={cm(Dashboard.schedule_control)}>
-                    <button type="button" className={cm(Dashboard.schedule_btn, Dashboard.btn_today)}>오늘</button>
+                    <button type="button" className={cm(Dashboard.schedule_btn, Dashboard.btn_today)} onClick={setToday}>오늘</button>
                     <button type="button" className={cm(Dashboard.schedule_btn, Dashboard.btn_arrow, Dashboard.btn_prev)} onClick={setMonthPrev}>이전</button>
                     <button type="button" className={cm(Dashboard.schedule_btn, Dashboard.btn_arrow, "btn_next")} onClick={setMonthNext}>이전</button>
                 </div>
@@ -160,7 +166,7 @@ export function DashboardSchedule({userInfo}){
                                     {
                                         new Array(7).fill(0).map((v, _day) => {
                                             const d = (week * 7) + _day - monthInfo.startDay + 1;
-                                            return <DateItem index={_day} today={DateUtils.isToday(year, month, d)}
+                                            return <DateItem key={_day} today={DateUtils.isToday(year, month, d)}
                                                              day={(d > 0 && d <= monthInfo.totalDays) && d}
                                                              active={year === cYear && month === cMonth && d === day}
                                                              has={items && items[d]}
@@ -197,9 +203,9 @@ export function DashboardSchedule({userInfo}){
     )
 }
 
-function DateItem({index, day, today, active, onClick, has}) {
+function DateItem({day, today, active, onClick, has}) {
     return (
-        <td key={index} className={cm(Dashboard.td, `${today && Dashboard.today}`)}>
+        <td className={cm(Dashboard.td, `${today && Dashboard.today}`)}>
             <button className={cm(Dashboard.button, `${active && Dashboard.active}`, `${has && Dashboard.has}`)}
                     type="button" onClick={() => {
                 onClick(day)

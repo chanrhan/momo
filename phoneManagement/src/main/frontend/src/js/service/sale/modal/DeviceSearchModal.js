@@ -18,9 +18,8 @@ export function DeviceSearchModal(props){
     }, [keyword]);
 
 
-
     const getDevice = async ()=>{
-        await gmdApi.getDevice(keyword).then(({status,data})=>{
+        await gmdApi.getDevice(keyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 setItems(data)
             }

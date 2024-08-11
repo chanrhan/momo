@@ -38,8 +38,10 @@
 .user_form .form_agree .agree_item .label{position:relative; padding-left:58px; color:#50505c; font-size:18px; line-height:48px;}
 .user_form .form_agree .agree_item .label:before{display:block; position:absolute; top:0; left:0; width:48px; height:48px; background:#fff url(../images/check_agree_icon.png) no-repeat center / 100%;}
 .user_form .form_agree .agree_item .input:checked + .label:before{background-image:url(../images/check_agree_icon_on.png);}
-.user_form .error_text{display:none; margin-top:10px; color:#f24430; font-size:12px; line-height:14px;}
-.user_form .error .error_text{display:block;}
+/*.user_form .error_text{display:none; margin-top:10px; color:#f24430; font-size:12px; line-height:14px;}*/
+/*.user_form .error .error_text{display:block;}*/
+.error_text{display:none; margin-top:10px; color:#f24430; font-size:12px; line-height:14px;}
+.error .error_text{display:block;}
 
 .user_form .form_auto{position:relative; margin-top:10px; text-align:right;}
 .user_form .form_auto .input{position:absolute; top:5px; right:80px;}

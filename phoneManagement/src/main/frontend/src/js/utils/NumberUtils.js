@@ -15,10 +15,11 @@ export const NumberUtils = {
         return rst;
     },
     toNumber: (value)=>{
-        if(ObjectUtils.isEmpty(value) || Number.isNaN(value)){
+        const num = Number(value);
+        if(Number.isNaN(num)){
             return 0;
         }
-        return Number(value);
+        return num;
     }
 
 }

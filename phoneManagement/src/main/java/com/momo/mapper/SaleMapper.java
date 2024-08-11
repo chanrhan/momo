@@ -12,30 +12,29 @@ public interface SaleMapper{
 	public int insertSale(SaleVO vo);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int currShopId, int saleId);
-	public List<Map<String,Object>> getSaleAll(SaleSearchVO vo);
+	public int deleteSaleBulk(int currShopId, List<Integer> ids);
+	public Map<String,Object> getSaleAll(SaleSearchVO vo);
 	public List<Map<String,Object>> getSaleSimple(SaleSearchVO vo);
 
 	public Map<String,Object> getSaleOne(int currShopId, int saleId);
 
 	// task, category
-	public List<Map<String,Object>> getSaleAsUsedDevice(SaleSearchVO vo);
-	public List<Map<String,Object>> getSaleAsCard(SaleSearchVO vo);
-	public List<Map<String,Object>> getSaleAsComb(SaleSearchVO vo);
-	public List<Map<String,Object>> getSaleAsSupport(SaleSearchVO vo);
-	public List<Map<String,Object>> getSaleAsPromise(SaleSearchVO vo);
+	public Map<String,Object> getSaleAsUsedDevice(SaleSearchVO vo);
+	public Map<String,Object> getSaleAsCard(SaleSearchVO vo);
+	public Map<String,Object> getSaleAsComb(SaleSearchVO vo);
+	public Map<String,Object> getSaleAsSupport(SaleSearchVO vo);
+	public Map<String,Object> getSaleAsPromise(SaleSearchVO vo);
 
 	public Integer getMaxSaleId(int currShopId);
-
-	public Integer getSaleTotalCount(int currShopId);
 
 	public boolean isDuplicatedTel(SaleVO vo);
 	public String getSpecFilePath(int id);
 
+	public List<Map<String,Object>> getSaleUsedDeviceDetail(int currShopId, int saleId);
 	public List<Map<String,Object>> getSalePromiseDetail(int currShopId, int saleId);
 	public List<Map<String,Integer>> getSaleSupportDetail(int currShopId, int saleId);
 	public List<Map<String,Integer>> getSaleAddDetail(int currShopId, int saleId);
 	public List<Map<String,Object>> getSaleCardDetail(int currShopId, int saleId);
-	public List<Map<String,Object>> getSaleUsedDeviceDetail(int currShopId, int saleId);
 
 	public int insertSalePromise(int currShopId, int saleId, List<SalePromiseVO> list);
 	public int insertSaleSupport(int currShopId, int saleId, List<SaleSupportVO> list);
@@ -48,13 +47,6 @@ public interface SaleMapper{
 	public int updateSaleAdd(int currShopId, int saleId, int addId, int div, int amount);
 	public int updateSaleCard(int currShopId, int saleId, int cardId, int cardNm, int cardTp);
 	public int updateSaleUsedDevice(int currShopId, int saleId, int usedDeviceId, String usedDeviceNm, int usedDeviceStor);
-
-	public Integer getSaleTotalPromiseCount(int currShopId);
-	public Integer getSaleTotalSupportCount(int currShopId);
-//	public Integer getSaleAddCount(int currShopId, int saleId);
-	public Integer getSaleTotalCardCount(int currShopId);
-	public Integer getSaleTotalCombCount(int currShopId);
-	public Integer getSaleTotalUsedDeviceCount(int currShopId);
 
 	public int deleteSalePromise(int currShopId, int saleId, int pmId);
 	public int deleteSaleSupport(int currShopId, int saleId, int supId);
@@ -103,13 +95,17 @@ public interface SaleMapper{
 	public Map<String,String> getMarginGraphByDateType(CommonVO vo);
 	public Map<String,String> getAvgMarginGraphByDateType(CommonVO vo);
 
-	// 기준별 평균 마진
-	public List<Integer> getAvgMarginBySelectType(CommonVO vo);
+	// 바 그래프: 나이별,요일별 무선 개수
+	public List<Integer> getCtCountBySelectType(CommonVO vo);
 
-	// 모델명, 요금제 통계
-	public List<Map<String,Object>> getDeviceStat(CommonVO vo);
-	public List<Map<String,Object>> getPlanStat(CommonVO vo);
-	public List<Map<String,Object>> getSecondDeviceStat(CommonVO vo);
+	// 슬라이더 그래프: 모델명, 요금제, 세컨 개수
+	public List<Map<String,Object>> getStatBySelectType(CommonVO vo);
+
+	// 파이 그래프: 할부,제조사,개통유형,성별 판매일보 개수, 비율
+	public Map<String,Object> getIstmRatio(CommonVO vo);
+	public Map<String,Object> getProviderRatio(CommonVO vo);
+	public Map<String,Object> getActvTpRatio(CommonVO vo);
+	public Map<String,Object> getGenderRatio(CommonVO vo);
 
 	// 통계 페이지
 	// 개인 통계

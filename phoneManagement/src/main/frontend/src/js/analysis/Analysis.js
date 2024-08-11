@@ -6,7 +6,7 @@ import graphImg1 from "../../images/graph_img1.png"
 import {TabList} from "../common/module/TabList";
 import {useEffect, useState} from "react";
 import {GraphBarItem} from "./module/GraphBarItem";
-import {GraphBarCard} from "./module/GraphBarCard";
+import {SliderChartArea} from "./module/SliderChartArea";
 import {DataGraph} from "./DataGraph";
 import {Statistics} from "./Statistics";
 import useValidateInputField from "../hook/useValidateInputField";
@@ -19,29 +19,41 @@ export function Analysis(){
     const {userApi} = useApi();
     const userInfo = useSelector(state=>state.userReducer)
 
-    const [tab1, setTab1 ] = useState(0)
-    const [tab2, setTab2 ] = useState(0)
-    const [tab3, setTab3 ] = useState(0)
+    const [graphTab, setGraphTab ] = useState(0)
+    const [groupTab, setGroupTab ] = useState(0)
+    const [userTab, setUserTab ] = useState(0)
 
     const today = new Date();
     const [keydate, setKeydate] = useState(DateUtils.formatYYMM(today.getFullYear(),today.getMonth()+1))
 
-    const [staffList, setStaffList] = useState([])
+    const [staffIdList, setStaffIdList] = useState([])
+    const [staffNameList, setStaffNameList] = useState([])
 
     useEffect(() => {
         getInnerStaff();
     }, []);
 
+
     const getInnerStaff = async ()=>{
         const {role} = userInfo;
         if(role === 1){
-            await userApi.getInnerStaffName().then(({status,data})=>{
+            await userApi.getInnerStaffAsObject().then(({status,data})=>{
                 if(status === 200 && data){
-                    setStaffList(data)
+                    // console.table(data)
+                    const keys = Object.keys(data);
+                    setStaffIdList(keys)
+                    setStaffNameList(Object.values(data));
+                    for(let i=0;i<keys.length; ++i){
+                        if(keys[i] === userInfo.id){
+                            setUserTab(i)
+                            break;
+                        }
+                    }
                 }
             })
         }else{
-            setStaffList([userInfo.name])
+            setStaffIdList([userInfo.id])
+            setStaffNameList([userInfo.name])
         }
     }
 
@@ -55,15 +67,15 @@ export function Analysis(){
             <div className={Graph.graph}>
                 <div className={Graph.graph_head}>
                     <div className={`${cmc(Graph.tab)} type1`}>
-                        <TabList value={tab1} onChange={setTab1} values={
+                        <TabList value={graphTab} onChange={setGraphTab} values={
                             ['그래프', '통계']
                         }/>
                     </div>
 
                     {
-                        tab1 === 0 && (
+                        (graphTab === 0) && (
                             <div className={cmc(Graph.tab, Graph.type2)}>
-                                <TabList value={tab2} onChange={setTab2} values={
+                                <TabList value={groupTab} onChange={setGroupTab} values={
                                     (userInfo.role === 1) ? ['개인', '매장'] : ['개인']
                                 }/>
                             </div>
@@ -73,8 +85,8 @@ export function Analysis(){
 
                     <div className={Graph.graph_head_group}>
                         {
-                            tab1 === 0 && <div className={cmc(Graph.tab, Graph.type3)}>
-                                <TabList value={tab3} onChange={setTab3} values={staffList}/>
+                           ( graphTab === 0 && groupTab === 0) && <div className={cmc(Graph.tab, Graph.type3)}>
+                                <TabList value={userTab} onChange={setUserTab} values={staffNameList}/>
                             </div>
                         }
 
@@ -86,7 +98,7 @@ export function Analysis(){
                     </div>
                 </div>
                 {
-                    tab1 === 0 ? <DataGraph/> : <Statistics date={keydate}/>
+                    graphTab === 0 ? <DataGraph userId={groupTab === 0 ? staffIdList[userTab] : null} date={keydate}/> : <Statistics date={keydate}/>
                 }
             </div>
 

@@ -21,8 +21,11 @@ export const LMD = {
     ],
 
     // sale
-    saleOrder: [
-        "actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
+    sale_column_names: [
+      '메인구분','개통날짜','이름','휴대폰번호','식별번호','모델명','총 이익','판매자'
+    ],
+    sale_column_vars: [
+      'main_div','actv_dt','cust_nm','cust_tel','cust_cd','device_nm','total_cms','seller_nm'
     ],
     ct_actv_div: [
         '선택약정','공시지원금'
@@ -48,6 +51,21 @@ export const LMD = {
     ],
     sup_st: [
         '지원 전','지원 완료'
+    ],
+
+    // sale filter
+    filter_and: [
+        '그리고','또는'
+    ],
+
+    filter_type: [
+        '모델명','세컨모델명','개통요금제명'
+    ],
+    filter_option:[
+        '값과 동일한 데이터',
+        '값과 동일하지 않은 데이터',
+        '비어 있음',
+        '비어 있지 않음'
     ],
 
     // task (sale)

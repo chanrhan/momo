@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class NotificationService extends CommonService {
+public class NotificationService  {
 	private final NotificationEmitter notificationEmitter;
 	private final NotificationMapper  notificationMapper;
 

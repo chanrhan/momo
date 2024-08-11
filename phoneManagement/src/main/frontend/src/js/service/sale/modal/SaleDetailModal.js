@@ -25,6 +25,9 @@ import {useBitArray} from "../../../hook/useBitArray";
 import {SelectMapLayer} from "../../../common/module/SelectMapLayer";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
+import {TelePhoneInput} from "../../../common/inputbox/TelePhoneInput";
+import {telRegex} from "../../../utils/regex";
+import {PriceInput} from "../../../common/inputbox/PriceInput";
 
 
 const DYNAMIC_ITEMS = [
@@ -34,7 +37,29 @@ const DYNAMIC_ITEMS = [
 function SaleDetailModal(props){
     const userInfo = useUserInfo()
     const modal = useModal();
-    const inputField = useValidateInputField();
+    const inputField = useValidateInputField([
+        {
+          key: 'actv_dt',
+          name: '개통일자'
+        },
+        {
+          key: 'cust_nm',
+          name: '이름',
+          msg: '이름을 입력해 주십시오'
+        },
+        {
+            key: 'cust_tel',
+            name: '휴대폰번호',
+            regex: telRegex,
+            msg: '전화번호 형식에 맞춰 입력해 주십시오'
+        },
+        {
+            key: 'cust_cd',
+            name: '식별번호',
+            regex: /^\d{6}$|^\d{10}$/,
+            msg: '생년월일 또는 사입자번호를 정확하게 입력해 주십시오'
+        }
+    ]);
 
     const supportInputField = useObjectArrayInputField({
         sup_div: 0,
@@ -61,6 +86,7 @@ function SaleDetailModal(props){
         docs: null
     })
 
+    const [initStaffName, setInitStaffName] = useState(null)
     const [staff, setStaff] = useState([])
 
     const [previewDocs, setPreviewDocs] = useState(null)
@@ -74,6 +100,13 @@ function SaleDetailModal(props){
         }
         getInnerStaff()
     },[])
+
+    const getInitStaffName = ()=>{
+        if(staff){
+            return staff[userInfo.id];
+        }
+        return null;
+    }
 
     const handleFileInput = (e)=>{
         const name = e.target.name;
@@ -96,8 +129,9 @@ function SaleDetailModal(props){
     }
 
     const getInnerStaff = async ()=>{
-        await userApi.getInnerStaffAsIdNameMap().then(({status,data})=>{
+        await userApi.getInnerStaffAsObject().then(({status,data})=>{
             if(status === 200 && data){
+                // console.table(data)
                 setStaff(data)
             }
         })
@@ -107,39 +141,45 @@ function SaleDetailModal(props){
         await saleApi.getSaleDetail(saleId).then(({status,data})=>{
             if(status === 200 && data){
                 console.table(data)
-                const {sale, pm_list, sup_list, add_list, card_list, ud_list} = data;
                 let bit = 0;
-                if(sale){
-                    if(sale.wt_cms){
-                        bit = bit | 1
-                    }
-                    if(sale.sec_device_id){
-                        bit = bit | (1 << 1);
-                    }
-                    if(sale.exsvc_id){
-                        bit = bit | (1 << 4);
-                    }
-                    if(sale.comb_tp || sale.comb_memo){
-                        bit = bit | (1 << 5);
-                    }
-                    inputField.putAll(sale);
+                if(data.wt_cms || data.internet_plan || data.tv_plan){
+                    bit = bit | 1
                 }
-                if(!ObjectUtils.isEmptyArray(pm_list)){
-                    promiseInputField.putAll(pm_list);
+                if(data.sec_device_id){
+                    bit = bit | (1 << 1);
                 }
-                if(!ObjectUtils.isEmptyArray(sup_list)){
-                    supportInputField.putAll(sup_list);
+                if(data.exsvc_id){
+                    bit = bit | (1 << 4);
                 }
-                if(!ObjectUtils.isEmptyArray(add_list)){
-                    addInputField.putAll(add_list);
+                if(data.comb_tp || data.comb_memo){
+                    bit = bit | (1 << 5);
                 }
-                if(!ObjectUtils.isEmptyArray(card_list)){
+
+                inputField.putAll(data);
+
+                checkListInputField.put('internet_plan',data.internet_plan)
+                checkListInputField.put('internet_plan_nm',data.internet_plan_nm)
+                checkListInputField.put('tv_plan',data.tv_plan)
+                checkListInputField.put('tv_plan_nm',data.tv_plan_nm)
+
+                // 리스트형 데이터
+                const {pm_list, sup_list, add_list, card_list, ud_list} = data;
+                if(!ObjectUtils.isEmpty(pm_list)){
+                    promiseInputField.putAll(JSON.parse(pm_list));
+                }
+                if(!ObjectUtils.isEmpty(sup_list)){
+                    supportInputField.putAll(JSON.parse(sup_list));
+                }
+                if(!ObjectUtils.isEmpty(add_list)){
+                    addInputField.putAll(JSON.parse(add_list));
+                }
+                if(!ObjectUtils.isEmpty(card_list)){
                     bit = bit | (1 << 2)
-                    checkListInputField.put('card_list', card_list);
+                    checkListInputField.put('card_list', JSON.parse(card_list));
                 }
-                if(!ObjectUtils.isEmptyArray(ud_list)){
+                if(!ObjectUtils.isEmpty(ud_list)){
                     bit = bit | (1 << 3)
-                    checkListInputField.put('ud_list', ud_list);
+                    checkListInputField.put('ud_list', JSON.parse(ud_list));
                 }
                 checkBit.setAll(bit);
             }
@@ -150,14 +190,20 @@ function SaleDetailModal(props){
         modal.closeModal(ModalType.LAYER.Sale_Detail);
     }
 
+    const sumCms = ()=>{
+        const ctCms = Number(inputField.get('ct_cms')) ?? 0;
+        const wtCms = Number(checkListInputField.get('wt_cms')) ?? 0;
+        return ctCms+wtCms;
+    }
+
     const sumSup = ()=>{
         let rst = 0;
-        if(!supportInputField.input || supportInputField.length() === 0){
+        if(!supportInputField.input){
             return rst;
         }
 
         supportInputField.input.forEach(v=>{
-            rst += NumberUtils.toNumber(v.sup_amount)
+            rst += NumberUtils.toNumber(v.amount)
         })
         return rst;
     }
@@ -165,12 +211,12 @@ function SaleDetailModal(props){
     const sumAdd = ()=>{
         let rst = 0;
         // console.table(addInputField)
-        if(!addInputField || !addInputField.input || addInputField.length() === 0){
+        if(!addInputField.input){
             return rst;
         }
 
         addInputField.input.forEach(v=>{
-            rst += NumberUtils.toNumber(v.add_amount)
+            rst += NumberUtils.toNumber(v.amount)
         })
         return rst;
     }
@@ -178,6 +224,7 @@ function SaleDetailModal(props){
     const setDate = (year, month, day)=>{
         // console.log(`set day: ${date}`)
         inputField.put('actv_dt', DateUtils.formatYYMMdd(year,month,day))
+        inputField.handleError('actv_dt',null)
     }
 
     const openWtSelectModal = ()=>{
@@ -186,16 +233,20 @@ function SaleDetailModal(props){
               wt_actv_div: checkListInputField.input.wt_actv_div,
               wt_cms: checkListInputField.input.wt_cms,
               internet_plan: checkListInputField.input.internet_plan,
+              internet_plan_nm: checkListInputField.input.internet_plan_nm,
               tv_plan: checkListInputField.input.tv_plan,
+              tv_plan_nm: checkListInputField.input.tv_plan_nm,
             },
-            onSubmit: ({wt_actv_div, wt_cms, internet_plan, tv_plan})=>{
-                console.log(`wt: ${wt_actv_div} ${wt_cms} ${internet_plan} ${tv_plan}`)
-                checkListInputField.put('wt_actv_div',wt_actv_div)
-                checkListInputField.put('wt_cms',wt_cms)
-                checkListInputField.put('internet_plan',internet_plan)
-                checkListInputField.put('tv_plan',tv_plan)
-                if(!ObjectUtils.isEmpty(wt_actv_div) || !ObjectUtils.isEmpty(wt_cms) ||
-                    !ObjectUtils.isEmpty(internet_plan) || !ObjectUtils.isEmpty(tv_plan)){
+            provider: inputField.input.provider,
+            onSubmit: (data)=>{
+                checkListInputField.put('wt_actv_div',data.wt_actv_div)
+                checkListInputField.put('wt_cms',data.wt_cms)
+                checkListInputField.put('internet_plan',data.internet_plan)
+                checkListInputField.put('internet_plan_nm',data.internet_plan_nm)
+                checkListInputField.put('tv_plan',data.tv_plan)
+                checkListInputField.put('tv_plan_nm',data.tv_plan_nm)
+                if(!ObjectUtils.isEmpty(data.wt_cms) ||
+                    !ObjectUtils.isEmpty(data.internet_plan) || !ObjectUtils.isEmpty(data.tv_plan)){
                     checkBit.on(0)
                 }else{
                     checkBit.off(0)
@@ -282,6 +333,7 @@ function SaleDetailModal(props){
     const openDeviceSearchModal = ()=>{
         modal.openModal(ModalType.LAYER.Device_Search, {
             title: '모델명 선택',
+            provider: inputField.input.provider,
             onSubmit: ({device_nm, device_id})=>{
                 inputField.put('device_id', device_id)
                 inputField.put('device_nm', device_nm)
@@ -292,6 +344,7 @@ function SaleDetailModal(props){
     const openActvPlanSearchModal = ()=>{
         modal.openModal(ModalType.LAYER.Plan_Search, {
             title: '무선 개통 요금제 선택',
+            provider: inputField.input.provider,
             onSubmit: ({ct_plan_id, ct_plan_nm})=>{
                 inputField.put('ct_actv_plan', ct_plan_id)
                 inputField.put('ct_actv_plan_nm', ct_plan_nm)
@@ -302,6 +355,7 @@ function SaleDetailModal(props){
     const openDecPlanSearchModal = ()=>{
         modal.openModal(ModalType.LAYER.Plan_Search, {
             title: '무선 하향 요금제 선택',
+            provider: inputField.input.provider,
             onSubmit: ({ct_plan_id, ct_plan_nm})=>{
                 inputField.put('ct_dec_plan', ct_plan_id)
                 inputField.put('ct_dec_plan_nm', ct_plan_nm)
@@ -309,106 +363,124 @@ function SaleDetailModal(props){
         })
     }
 
-    const openReserveMessageModal = ()=>{
-        if(props.sale_id){
-            submit()
-            return;
+    const onSubmit = ()=>{
+        if(inputField.validateAll()){
+            if(props.sale_id){
+                submit()
+                return;
+            }
+            modal.openModal(ModalType.LAYER.Reserve_Message, {
+                actv_dt: inputField.get('actv_dt'),
+                onSubmit: submit
+            })
         }
-        modal.openModal(ModalType.LAYER.Reserve_Message, {
-            actv_dt: inputField.get('actv_dt'),
-            onSubmit: submit
-        })
     }
+
+    // const openReserveMessageModal = ()=>{
+    //     if(props.sale_id){
+    //         submit()
+    //         return;
+    //     }
+    //     modal.openModal(ModalType.LAYER.Reserve_Message, {
+    //         actv_dt: inputField.get('actv_dt'),
+    //         onSubmit: submit
+    //     })
+    // }
 
     const submit = async (rsvMsgList)=>{
-        // console.table(rsvMsgList)
-        if(inputField.validateAll()){
-            const formData = new FormData();
+        const formData = new FormData();
 
-            const {estimate, docs} = files;
-            if(!ObjectUtils.isEmpty(estimate)){
-                const estimateFiles = Array.prototype.slice.call(estimate);
-                estimateFiles.forEach((file)=>{
-                    formData.append('estimate',file);
-                })
-            }
-
-            if(!ObjectUtils.isEmpty(docs)){
-                const docFiles = Array.prototype.slice.call(docs);
-                docFiles.forEach(file=>{
-                    formData.append('docs', file);
-                })
-            }
-
-
-
-
-            const body = {
-                sale_id: props.id,
-                ...inputField.input,
-                ...checkListInputField.input,
-                sup_list: supportInputField.input,
-                add_list: addInputField.input,
-                total_cms: inputField.get('ct_cms') +
-                    sumAdd() -
-                    sumSup(),
-                pm_list: promiseInputField.input,
-                rsv_msg_list: rsvMsgList
-            }
-
-            console.table(body)
-
-            formData.append('sale', new Blob([JSON.stringify(body)], {
-                type: 'application/json'
-            }))
-
-            if(props.sale_id){
-                // update
-                await saleApi.updateSale(formData).then(({status,data})=>{
-                    console.log(`${status} ${data}`)
-                    if(status === 200 && data === true){
-                        modal.openModal(ModalType.SNACKBAR.Info, {
-                            msg: '판매일보가 수정되었습니다'
-                        })
-                        if(props.onSubmit) props.onSubmit();
-                        close();
-                    }
-                })
-            }else{
-                // add
-                await saleApi.addSale(formData).then(({status,data})=>{
-                    console.log(`${status} ${data}`)
-                    if(status === 200 && data === true){
-                        modal.openModal(ModalType.SNACKBAR.Info, {
-                            msg: '판매일보가 추가되었습니다'
-                        })
-                        if(props.onSubmit) props.onSubmit();
-                        close();
-                    }
-                })
-            }
-            return true;
+        const {estimate, docs} = files;
+        if(!ObjectUtils.isEmpty(estimate)){
+            const estimateFiles = Array.prototype.slice.call(estimate);
+            estimateFiles.forEach((file)=>{
+                formData.append('estimate',file);
+            })
         }
-        return false;
+
+        if(!ObjectUtils.isEmpty(docs)){
+            const docFiles = Array.prototype.slice.call(docs);
+            docFiles.forEach(file=>{
+                formData.append('docs', file);
+            })
+        }
+
+
+        let pm_list = null
+        if(promiseInputField.input.length > 0){
+            pm_list = promiseInputField.input.filter(v=>!ObjectUtils.isEmpty(v.content));
+        }
+
+        const body = {
+            sale_id: props.id,
+            ...inputField.input,
+            ...checkListInputField.input,
+            sup_list: supportInputField.input,
+            add_list: addInputField.input,
+            total_cms: inputField.get('ct_cms') +
+                sumAdd() -
+                sumSup(),
+            pm_list: pm_list,
+            rsv_msg_list: rsvMsgList
+        }
+
+        // console.table(body)
+        // return ;
+        formData.append('sale', new Blob([JSON.stringify(body)], {
+            type: 'application/json'
+        }))
+
+        if(props.sale_id){
+            // update
+            await saleApi.updateSale(formData).then(({status,data})=>{
+                // console.log(`${status} ${data}`)
+                if(status === 200 && data === true){
+                    modal.openModal(ModalType.SNACKBAR.Info, {
+                        msg: '판매일보가 수정되었습니다'
+                    })
+                    if(props.onSubmit) props.onSubmit();
+                    close();
+                }
+            })
+        }else{
+            // add
+            await saleApi.addSale(formData).then(({status,data})=>{
+                // console.log(`${status} ${data}`)
+                if(status === 200 && data === true){
+                    modal.openModal(ModalType.SNACKBAR.Info, {
+                        msg: '판매일보가 추가되었습니다'
+                    })
+                    if(props.onSubmit) props.onSubmit();
+                    close();
+                }
+            })
+        }
+        return true;
     }
+
 
 
     return (
         <LayerModal>
-            <div className={Popup.popup} style={{maxWidth: '1060px'}}>
+            <div className={Popup.popup} style={
+                {
+                    maxWidth: '1060px',
+                }
+            }>
                 <div className={Popup.popup_title}>판매일보 추가</div>
 
                 <form className={cm(Popup.user_form, Popup.customer)}>
-                    <div className={Popup.sale_hint}>
-                        {
-                            props.sale_id ? '기존 판매일보입니다' : '새로 등록하는 판매일보입니다'
-                        }
-                    </div>
+                    {/*<div className={Popup.sale_hint}>*/}
+                    {/*    {*/}
+                    {/*        props.sale_id ? '기존 판매일보입니다' : '새로 등록하는 판매일보입니다'*/}
+                    {/*    }*/}
+                    {/*</div>*/}
 
                     <div className={Popup.popup_cont}>
                         <div className={Popup.customer_head}>
                             <div className={Popup.head_box} >
-                                <DateSelectModal rootClassName={Popup.head_box} onSelect={setDate}>
+                                <DateSelectModal errorText={inputField.error.actv_dt} rootClassName={Popup.head_box}
+                                                 onSelect={setDate}>
                                     <input type="text" className={`date ${cmc(Popup.inp)}`}
                                            value={inputField.get('actv_dt')}
                                            placeholder='개통 날짜' readOnly/>
@@ -430,7 +502,7 @@ function SaleDetailModal(props){
                             <div className={cm(Popup.head_box, Popup.fr)}>
                                 <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
                                     <input type="hidden" id=""/>
-                                    <SelectMapLayer cssModules={toCssModules(Popup, User)} inputField={inputField}
+                                    <SelectMapLayer initValue={getInitStaffName()} cssModules={toCssModules(Popup, User)} inputField={inputField}
                                                       values={staff} onChange={(v)=>{
                                                           inputField.put('seller_id', v)
                                     }} name='seller_id'/>
@@ -438,20 +510,25 @@ function SaleDetailModal(props){
                             </div>
                         </div>
 
-                        <div className={Popup.customer_body}>
-                            <div className="">
+                        <div className={cm(Popup.customer_body)}>
+                            <div className={cm(Popup.customer_scroll)}>
                                 <div className={Popup.customer_box}>
                                     <ul className={Popup.customer_list}>
-                                        <AddSaleItem>
-                                            <AddSaleInput inputField={inputField} name='cust_nm' subject='이름'/>
+                                        <AddSaleItem errorText={inputField.error.cust_nm}>
+                                            <AddSaleInput inputField={inputField} name='cust_nm' subject='이름' maxLength='8'/>
                                         </AddSaleItem>
                                         <AddSaleTabItem inputField={inputField} name='cust_gd' subject='성별 / 법인'
                                                         depth={3} values={LMD.gender}/>
-                                        <AddSaleItem>
-                                            <AddSaleInput inputField={inputField} name='cust_tel' subject='휴대폰 번호'/>
+                                        <AddSaleItem errorText={inputField.error.cust_tel}>
+                                            <label htmlFor='cust_tel' className={Popup.customer_label}>휴대폰 번호</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <TelePhoneInput name='cust_tel' value={inputField.get('cust_tel')}
+                                                                className={cm(Popup.customer_inp)}
+                                                                onChange={inputField.handleInput}/>
+                                            </div>
                                         </AddSaleItem>
-                                        <AddSaleItem>
-                                            <AddSaleInput inputField={inputField} name='cust_cd'
+                                        <AddSaleItem errorText={inputField.error.cust_cd}>
+                                            <AddSaleInput maxLength={10} inputField={inputField} name='cust_cd'
                                                           subject='생년월일 / 사업자번호'/>
                                         </AddSaleItem>
                                     </ul>
@@ -516,12 +593,14 @@ function SaleDetailModal(props){
                                                                       name='ct_istm' values={LMD.istm}/>
                                                 </div>
                                             </div>
-                                            {/*<AddSaleSelectOptionLayer inputField={inputField} name='istm' subject='할부'*/}
-                                            {/*                          itemNames={ISTM_ITEMS}/>*/}
                                         </AddSaleItem>
                                         <AddSaleItem>
-                                            <AddSaleNumberInput inputField={inputField} className='ta_r' name='ct_cms'
-                                                                subject='판매 수수료(정책)'/>
+                                            <label htmlFor='ct_cms' className={Popup.customer_label}>판매 수수료(정책)</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <PriceInput name='ct_cms' value={inputField.get('ct_cms')}
+                                                            className={`ta_r ${Popup.customer_inp}`}
+                                                            onChange={inputField.handleInput}/>
+                                            </div>
                                         </AddSaleItem>
                                     </ul>
                                 </div>
@@ -548,8 +627,7 @@ function SaleDetailModal(props){
                                     <div className={Popup.price_total}>
                                         <ul className='price_list'>
                                             <li className={Popup.price_item}>
-                                                <div
-                                                    className={Popup.price_num}>{NumberUtils.toPrice(inputField.get('ct_cms'))}원
+                                                <div className={Popup.price_num}>{NumberUtils.toPrice(sumCms())}원
                                                 </div>
                                                 <div className={Popup.price_text}>유/무선 판매 수수료</div>
                                             </li>
@@ -572,7 +650,7 @@ function SaleDetailModal(props){
                                             <li className={cm(Popup.price_item, Popup.sum)}>
                                                 <div className={Popup.price_num}>{
                                                     NumberUtils.toPrice(
-                                                        inputField.get('ct_cms') +
+                                                        sumCms() +
                                                         sumAdd() -
                                                         sumSup()
                                                     )
@@ -675,7 +753,8 @@ function SaleDetailModal(props){
                             </div>
 
                             <div className={Popup.popup_btn_box}>
-                                <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={openReserveMessageModal}>저장
+                                <button type="button" className={`btn_blue ${cmc(Popup.btn)}`}
+                                        onClick={onSubmit}>저장
                                 </button>
                             </div>
                         </div>
@@ -690,9 +769,7 @@ function SaleDetailModal(props){
 }
 
 function PriceHalfBox({type=0, inputField}){
-    const subject = (type === 0) ? 'sup' : 'add';
-
-
+    // console.table(inputField.input)
     return (
         <div className={Popup.half_box}>
             <div className={cm(Popup.customer_title, Popup[`n${type+3}`])}>{type === 0 ? '지원':'추가'}
@@ -717,23 +794,23 @@ function PriceHalfBox({type=0, inputField}){
                 </thead>
                 <tbody className={Popup.tbody}>
                 {
-                    inputField.length() > 0 && inputField.input.map((v, i) => {
+                    inputField.input && inputField.input.map((v, i) => {
+                        // console.log(`[${type}]  %${i}`)
+                        // console.table(v)
                         return <tr key={i}>
                             <td className={Popup.td}>
-                                <DivSelectItem type={type} value={inputField.get(i, `${subject}_div`)} onClick={(v)=>{
-                                    inputField.put(i, `${subject}_div`, v);
-                                }}/>
-                                {/*<div className={`${cmc(User.select_box, Popup.select_box)}`}>*/}
-                                {/*    <input type="hidden" id=""/>*/}
-                                {/*    <SelectIndexLayer value={DYNAMIC_ITEMS[inputField.get(i,`${subject}_div`) ?? 0]} onChange={(v) => {*/}
-                                {/*        inputField.put(i, `${subject}_div` , v)*/}
-                                {/*    }} cssModules={toCssModules(Popup, User)} values={DYNAMIC_ITEMS}/>*/}
-                                {/*</div>*/}
+                                <div className={`${cmc(User.select_box, Popup.select_box)}`}>
+                                    <DynamicSelectLayer initValue={v.name}
+                                                        type={type} onClick={({id,name}) => {
+                                                            // console.log(v)
+                                        inputField.put(i, `div`, id);
+                                    }}/>
+                                </div>
                             </td>
                             <td className={Popup.td}>
-                                <input type="text" className={`ta_r ${cmc(Popup.inp)}`}
-                                       value={inputField.get(i, `${subject}_amount`)} onChange={(e) => {
-                                    inputField.put(i,`${subject}_amount` , e.target.value)
+                                <PriceInput className={`ta_r ${cmc(Popup.inp)}`}
+                                            value={inputField.get(i, `amount`)} onChange={(e) => {
+                                    inputField.put(i,`amount` , e.target.value)
                                 }}/>
                             </td>
                             <td className={Popup.td}>
@@ -747,14 +824,6 @@ function PriceHalfBox({type=0, inputField}){
                 }
                 </tbody>
             </table>
-        </div>
-    )
-}
-
-function DivSelectItem({onClick, value, type=0}){
-    return (
-        <div className={`${cmc(User.select_box, Popup.select_box)}`}>
-            <DynamicSelectLayer value={value} type={DYNAMIC_TYPE.sup_div+type} onClick={onClick}/>
         </div>
     )
 }

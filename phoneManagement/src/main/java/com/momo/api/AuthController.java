@@ -3,9 +3,11 @@ package com.momo.api;
 import com.momo.common.response.JwtVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
+import com.momo.service.CommonService;
 import com.momo.service.JwtService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,12 +26,16 @@ import java.util.Map;
 public class AuthController {
 	private final JwtService  jwtService;
 	private final JwtProvider jwtProvider;
+	private final CommonService commonService;
 
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(HttpServletResponse response,
-						 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
+	public ResponseEntity<?> refresh(HttpSession session,
+									 HttpServletResponse response,
+									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
+		log.info("refresh");
 		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken);
+		commonService.setCurrentShopId(session);
 
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 

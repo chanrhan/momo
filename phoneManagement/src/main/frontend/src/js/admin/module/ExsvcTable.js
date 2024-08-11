@@ -1,5 +1,5 @@
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../../service/board/BoardTable";
-import {AdminTableData} from "./AdminTableData";
+import {LMD} from "../../common/LMD";
 
 export function ExsvcTable({data}){
     return (
@@ -15,8 +15,8 @@ export function ExsvcTable({data}){
                     data && data.map((v,i)=> {
                         return <tr key={i}>
                             <Btd checkbox/>
-                            <Btd>{v.provider}</Btd>
-                            <Btd>{v.exsvc_nm}</Btd>
+                            <Btd>{LMD.provier[v.provider]}</Btd>
+                            <Btd>{v.name}</Btd>
                         </tr>
                     })
                 }

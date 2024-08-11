@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-export const TOKEN_TIME_OUT = 1000 * 60 * 30; // 30분
+export const ACCESS_TOKEN_TIMEOUT = 1000 * 60 * 30; // 30분
 
 const initialState = {
         authenticated: false,
@@ -18,7 +18,7 @@ export const authSlice = createSlice({
 
             state.authenticated = true;
             state.accessToken = action.payload;
-            state.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
+            state.expireTime = new Date().getTime() + ACCESS_TOKEN_TIMEOUT;
             return state;
             // console.log(`state.accessToken: ${state.accessToken}`)
         },

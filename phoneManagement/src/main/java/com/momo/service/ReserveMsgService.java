@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ReserveMsgService extends CommonService {
+public class ReserveMsgService {
 	private final ReserveMsgMapper reserveMsgMapper;
 
     public void insertMsgList(int currShopId, int saleId, List<ReserveMessageVO> list){
@@ -21,7 +21,7 @@ public class ReserveMsgService extends CommonService {
 		}
 	}
 
-	public List<Map<String,Integer>> getReserveMsgForCalendar(int currShopId, String date){
+	public List<String> getReserveMsgForCalendar(int currShopId, String date){
 		return reserveMsgMapper.getReserveMsgForCalendar(currShopId,date);
 	}
 

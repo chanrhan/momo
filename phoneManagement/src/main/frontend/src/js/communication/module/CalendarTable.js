@@ -7,6 +7,7 @@ import {TabList} from "../../common/module/TabList";
 import {CalendarDetail} from "./CalendarDetail";
 import useApi from "../../hook/useApi";
 import {LMD} from "../../common/LMD";
+import {ObjectUtils} from "../../utils/objectUtil";
 
 export function CalendarTable({inputField}){
     const {rsvMsgApi} = useApi();
@@ -40,29 +41,17 @@ export function CalendarTable({inputField}){
     const getReserveMsgDetail = async ()=>{
         await  rsvMsgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day), tab).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
                 setDetail(data)
             }
         })
     }
 
     const getReserveMsgForCalendar = async ()=>{
+        // console.log(DateUtils.formatYYMM(cYear, cMonth))
         await rsvMsgApi.getReserveMsgForCalendar(DateUtils.formatYYMM(cYear, cMonth)).then(({status,data})=>{
             if(status === 200 && data){
-                let map = {};
-                data.forEach((v,i)=>{
-                    const rsv_dt = v.rsv_dt;
-                    const body = {
-                        msg_st: v.msg_st,
-                        cnt: v.cnt
-                    }
-                    if(map[rsv_dt]){
-                        map[rsv_dt].push(body);
-                    }else{
-                        map[rsv_dt] = [body]
-                    }
-                })
-                setItems(map)
+                // console.table(data)
+                setItems(data)
             }
         })
     }
@@ -148,11 +137,15 @@ export function CalendarTable({inputField}){
                     <tbody className={Calender.tbody}>
                     {
                         new Array(totalWeek).fill(0).map((v, week) => {
-                            return <tr>
+                            return <tr key={week}>
                                 {
                                     new Array(7).fill(0).map((_, d) => {
                                         const calDay = (week * 7) + d - startDay + 1;
-                                        return <Cdate today={DateUtils.isToday(cYear, cMonth, calDay)}
+                                        let parsed = null;
+                                        if(items && calDay-1 > 0 && items[calDay-1]){
+                                            parsed = JSON.parse(items[calDay-1])
+                                        }
+                                        return <Cdate key={d} today={DateUtils.isToday(cYear, cMonth, calDay)}
                                                       active={cYear === year && cMonth === month && day === calDay}
                                                       day={getCalendarDay(calDay)}
                                                       out={calDay <= 0 || calDay > totalDays}
@@ -168,9 +161,12 @@ export function CalendarTable({inputField}){
                                                           }
                                                       }}>
                                             {
-                                                items && calDay > 0 && calDay <= totalDays && items[calDay] && items[calDay].map((data,i)=> {
+                                                parsed && parsed.map((v,i)=> {
+                                                    if(ObjectUtils.isEmpty(v)){
+                                                        return null;
+                                                    }
                                                     return <span
-                                                        className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[data.msg_st]} {data.cnt}건</span>
+                                                        className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[v.msg_st]} {v.cnt}건</span>
                                                 })
 
                                             }

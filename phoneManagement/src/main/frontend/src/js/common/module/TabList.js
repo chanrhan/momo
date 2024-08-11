@@ -7,7 +7,7 @@ import {ObjectUtils} from "../../utils/objectUtil";
 
 export function TabList({name, inputField, className, value, onChange, theme, values}){
     // const [selected, setSelected] = useState(0);
-    useMemo(() => {
+    useEffect(() => {
         if(inputField && ObjectUtils.isEmpty(inputField.get(name))){
             inputField.put(name, 0);
         }
@@ -24,9 +24,10 @@ export function TabList({name, inputField, className, value, onChange, theme, va
 
     const getSelectedItem = ()=>{
         if(inputField){
-            return inputField.get(name);
+            const v = inputField.get(name);
+            return ObjectUtils.isEmpty(v) ? 1 : v;
         }
-        return value;
+        return value ?? 0;
     }
 
     // if(ObjectUtils.isEmptyArray(values)){

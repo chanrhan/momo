@@ -34,12 +34,36 @@ export function useBitArray(init){
         return (bit >> index) & 1;
     }
 
+    const toArray = ()=>{
+        let value = bit;
+        let arr = []
+        let i = 0;
+        while(value > 0){
+            if((value & 1) === 1){
+                // console.log(i)
+                arr.push(i)
+            }
+
+            value = value >> 1
+            // console.log(`v: ${value}`)
+            ++i;
+        }
+        return arr;
+    }
+
+    const is = (index)=>{
+        return !!get(index)
+    }
+
     return {
+        bit,
         get,
         set,
         on,
         off,
+        is,
         toggle,
-        setAll
+        setAll,
+        toArray
     }
 }

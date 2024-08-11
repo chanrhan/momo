@@ -16,7 +16,7 @@ function GMDApi(accessToken){
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
         },
         getExtraService: async (keyword, provider= '')=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/exsvc?keyword=${keyword}&provider=${provider}`, accessToken);
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/exsvc?keyword=${keyword}&provider=${provider}`, accessToken);
         },
         getInternetPlan: async (keyword, provider= '')=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/internet-plan?keyword=${keyword}&provider=${provider}`, accessToken);

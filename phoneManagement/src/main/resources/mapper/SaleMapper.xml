@@ -31,85 +31,197 @@
     </select>
 
     <select id="getSaleAll" parameterType="com.momo.common.vo.SaleSearchVO">
-        with tb as (
+        with sale as (
             select s.*,
+                   IF(device_id is not null, true, false) as ct,
+                   IF(wt_cms > 0, true, false) as wt,
+                   IF(s.sd_id is not null, true, false) as sd,
                 (
                     select device_nm
                     from tb_device
                     where device_id=s.device_id
                     ) as device_nm,
-                (
-                    select ac.name
-                    from tb_account ac
-                    where ac.id = s.seller_id
-                ) as seller_nm
+                ac.name as seller_nm,
+                ac.pfp as seller_pfp
             from tb_sale s
+            left outer join tb_account ac on s.seller_id=ac.id
             where shop_id=#{currShopId}
-            )
-
-        select *
-        from tb
-        where
-        <if test="keyword != null and !keyword.equals('')">
-            (
-                cust_nm like '%${keyword}%' or
-                cust_tel like '%${keyword}%' or
-                cust_cd like '%${keyword}%'
-            ) and
-        </if>
-        <if test="keydate != null">
-            (
-                actv_dt like '%${keydate}%'
-            ) and
-        </if>
-        ${filters}
-        1=1
         <if test="order != null and !order.equals('')">
             order by ${order} ${asc}
         </if>
+        ), search as (
+            select json_arrayagg(json_object(
+                                'sale_id',sale_id,
+                                'cust_nm', cust_nm,
+                                 'cust_tel',cust_tel,
+                                 'cust_cd',cust_cd,
+                                 'cust_gd',cust_gd,
+                                 'actv_dt',actv_dt,
+                                'total_cms',total_cms,
+                                'ct', ct,
+                                'wt',wt,
+                                'sd',sd,
+                                'device_nm',device_nm,
+                                'seller_nm',seller_nm,
+                                'seller_pfp', seller_pfp
+        ))
+            from sale
+            where
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                cust_cd like '%${keyword}%'
+                ) and
+            </if>
+            <if test="keydate != null">
+                (
+                actv_dt like '%${keydate}%'
+                ) and
+            </if>
+            ${filters}
+            1=1
+
+        )
+
+        select (
+            select count(*)
+            from sale
+        ) as total_cnt,
+            (
+                select *
+                from search
+        ) as list
+
+
 <!--        <if test="limit != null and !limit.equals('')">-->
 <!--            limit ${limit} ${offset}-->
 <!--        </if>-->
     </select>
 
-    <select id="getSaleTotalCount">
-        select count(sale_id)
-        from tb_sale
-        where shop_id=#{currShopId}
-    </select>
 
 <!--    get sale-->
     <select id="getSaleOne">
-        select s.*,
+        with sup as (
+            select json_arrayagg(json_object(
+                    'name',(
+                        select sup_div_nm
+                        from tb_sup_div
+                        where tb_sup_div.shop_id=#{currShopId} and
+                              tb_sup_div.sup_div_id=ss.sup_div
+                        ),
+                    'div',sup_div,
+                    'amount',sup_amount
+                                 ))
+            from tb_sale_support ss
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by sup_id
+        ), addition as (
+            select json_arrayagg(json_object(
+                    'name',(
+                        select add_div_nm
+                        from tb_add_div
+                        where tb_add_div.shop_id=#{currShopId} and
+                            tb_add_div.add_div_id=ss.add_div
+                    ),
+                    'div',add_div,
+                    'amount',add_amount
+                     ))
+            from tb_sale_add ss
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by add_id
+        ), promise as (
+            select json_arrayagg(json_object(
+                    'checked',checked,
+                    'content',content
+                                 ))
+            from tb_promise ss
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by pm_id
+        ), card as (
+            select json_arrayagg(json_object(
+                    'card_tp',card_tp,
+                    'card_nm',card_nm
+                                 ))
+            from tb_sale_card ss
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by card_id
+        ), ud as(
+            select json_arrayagg(json_object(
+                    'ud_nm',ud_nm,
+                    'ud_stor',ud_stor
+                                 ))
+            from tb_sale_used_device ss
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by ud_id
+        )
+
+
+        select sl.*,
+               (
+                   select internet_plan_nm
+                   from tb_internet_plan
+                   where internet_plan_id=internet_plan
+               ) as internet_plan_nm,
+               (
+                   select tv_plan_nm
+                   from tb_tv_plan
+                   where tv_plan_id=tv_plan
+               ) as tv_plan_nm,
                (
                    select device_nm
                    from tb_device
-                   where device_id=s.device_id
+                   where device_id=sl.device_id
                ) as device_nm,
                (
                    select ac.name
                    from tb_account ac
-                   where ac.id = s.seller_id
+                   where ac.id = sl.seller_id
                ) as seller_nm,
-                (
-                select cp.ct_plan_nm
-                from tb_ct_plan cp
-                where cp.ct_plan_id=s.ct_actv_plan
+               (
+                   select cp.ct_plan_nm
+                   from tb_ct_plan cp
+                   where cp.ct_plan_id=sl.ct_actv_plan
                ) as ct_actv_plan_nm,
                (
                    select cp.ct_plan_nm
                    from tb_ct_plan cp
-                   where cp.ct_plan_id=s.ct_dec_plan
-               ) as ct_dec_plan_nm
-        from tb_sale s
-        where shop_id= #{currShopId} and 
-              sale_id=#{saleId}
+                   where cp.ct_plan_id=sl.ct_dec_plan
+               ) as ct_dec_plan_nm,
+               (
+                   select *
+                   from sup
+               ) as sup_list,
+               (
+                   select *
+                   from addition
+               ) as add_list,
+               (
+                   select *
+                   from promise
+               ) as pm_list,
+               (
+                   select *
+                   from card
+               ) as card_list,
+               (
+                   select *
+                   from ud
+               ) as ud_list
+        from tb_sale sl
+        where shop_id=#{currShopId} and
+            sale_id=#{saleId}
     </select>
 
 <!--    get sale category-->
     <select id="getSaleAsUsedDevice">
 
-        WITH tb as (
+        WITH sale as (
             SELECT sl.sale_id,
                    sud.ud_id,
                     sud.ud_st,
@@ -120,38 +232,60 @@
                     sud.ud_nm,
                    sud.ud_cms,
                    sl.total_cms,
-                   (
-                       SELECT name
-                       from tb_account
-                       where id=#{userId}
-                       ) as seller_nm
+                   ac.name as seller_nm,
+                   ac.pfp as seller_pfp
             from tb_sale_used_device sud
             left outer join tb_sale sl on sud.sale_id=sl.sale_id
+        left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sud.shop_id=#{currShopId}
-        )
-
-        SELECT *
-        from tb
-        WHERE
-        <if test="completed != null and completed == true">
-            ud_st = 2 and
-        </if>
-        <if test="keyword != null and !keyword.equals('')">
-            (
+        ), search as (
+            SELECT json_arrayagg(json_object(
+                                 'sale_id',sale_id,
+                                'ud_id',ud_id,
+                                'ud_st',ud_st,
+                                'actv_dt',actv_dt,
+                                'cust_nm',cust_nm,
+                                'cust_tel',cust_tel,
+                                'cust_cd',cust_cd,
+                                'ud_nm',ud_nm,
+                                'ud_cms',ud_cms,
+                                'total_cms',total_cms,
+                                'seller_nm',seller_nm,
+                                'seller_pfp',seller_pfp
+                                 ))
+            from sale
+            WHERE
+            <if test="notDone != null and notDone == true">
+                ud_st != 2 and
+            </if>
+            <if test="keyword != null and !keyword.equals('')">
+                (
                 cust_nm like '%${keyword}%' or
                 cust_tel like '%${keyword}%' or
                 device_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
+                ) and
+            </if>
+            1=1
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+        )
+
+        select (
+            select count(*)
+            from sale
+        ) as total_cnt,
+        (
+            select *
+            from search
+        ) as list
+
+
     </select>
 
     <select id="getSaleAsCard">
 
-        WITH tb as (
+        WITH sale as (
             SELECT sl.sale_id,
                    sc.card_id,
                    sc.card_st,
@@ -161,39 +295,60 @@
                    sl.cust_cd,
                    sc.card_nm,
                    sc.card_tp,
-                   (
-                       SELECT name
-                       from tb_account
-                       where id=#{userId}
-                   ) as seller_nm
+                   ac.name as seller_nm,
+                   ac.pfp as seller_pfp
             from tb_sale_card sc
                      left outer join tb_sale sl on sc.sale_id=sl.sale_id
+        left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sc.shop_id=#{currShopId}
+        ), search as (
+            SELECT json_arrayagg(json_object(
+                    'sale_id',sale_id,
+                    'card_id',card_id,
+                    'card_st',card_st,
+                    'actv_dt',actv_dt,
+                    'cust_nm',cust_nm,
+                    'cust_tel',cust_tel,
+                    'cust_cd',cust_cd,
+                    'card_nm',card_nm,
+                    'card_tp',card_tp,
+                    'seller_nm',seller_nm,
+                    'seller_pfp',seller_pfp
+        ))
+            from sale
+            WHERE
+            <if test="notDone != null and notDone == true">
+                card_st != 2 and
+            </if>
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                cust_cd like '%${keyword}%' or
+                seller_nm like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
         )
 
-        SELECT *
-        from tb
-        WHERE
-        <if test="completed != null and completed == true">
-            card_st = 2 and
-        </if>
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            cust_nm like '%${keyword}%' or
-            cust_tel like '%${keyword}%' or
-            cust_cd like '%${keyword}%' or
-            seller_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
+
+
+        select (
+        select count(*)
+        from sale
+        ) as total_cnt,
+        (
+        select *
+        from search
+        ) as list
     </select>
 
     <select id="getSaleAsComb">
 
-        WITH tb as (
+        WITH sale as (
             SELECT sl.sale_id,
                    sl.comb_st,
                    sl.actv_dt,
@@ -202,41 +357,60 @@
                    sl.cust_cd,
                    sl.comb_tp,
                    sl.comb_memo,
-                   (
-                       SELECT name
-                       from tb_account
-                       where id=#{userId}
-                   ) as seller_nm
+                   ac.name as seller_nm,
+                   ac.pfp as seller_pfp
             from tb_sale sl
+        left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sl.shop_id=#{currShopId} and
                   sl.comb_tp is not null
-        )
-
-        SELECT *
-        from tb
-        WHERE
-        <if test="completed != null and completed == true">
-            comb_st = 1 and
-        </if>
-        <if test="keyword != null and !keyword.equals('')">
-                (
+        ), search as (
+                SELECT json_arrayagg(json_object(
+                        'sale_id',sale_id,
+                        'comb_st',comb_st,
+                        'actv_dt',actv_dt,
+                        'cust_nm',cust_nm,
+                        'cust_tel',cust_tel,
+                        'cust_cd',cust_cd,
+                        'comb_tp',comb_tp,
+                        'comb_memo',comb_memo,
+                        'seller_nm',seller_nm,
+                        'seller_pfp',seller_pfp
+                        ))
+                from sale
+                WHERE
+                <if test="notDone != null and notDone == true">
+                    comb_st != 1 and
+                </if>
+                <if test="keyword != null and !keyword.equals('')">
+                    (
                     cust_nm like '%${keyword}%' or
                     cust_tel like '%${keyword}%' or
                     cust_cd like '%${keyword}%' or
                     seller_nm like '%${keyword}%' or
                     comb_memo like '%${keyword}%' or
                     comb_tp like '%${keyword}%'
-                ) and
-            </if>
-            1=1
-            <if test="order != null and !order.equals('')">
-                order by ${order} ${asc}
-            </if>
+                    ) and
+                </if>
+                1=1
+                <if test="order != null and !order.equals('')">
+                    order by ${order} ${asc}
+                </if>
+        )
+
+
+
+        select (
+        select count(*)
+        from sale
+        ) as total_cnt,
+        (
+        select *
+        from search
+        ) as list
     </select>
 
     <select id="getSaleAsSupport">
-
-        WITH tb as (
+        WITH sale as (
             SELECT sl.sale_id,
                    ss.sup_id,
                    ss.sup_st,
@@ -246,72 +420,106 @@
                    sl.cust_cd,
                    ss.sup_div,
                    ss.sup_amount,
-                   (
-                       SELECT name
-                       from tb_account
-                       where id=#{userId}
-                   ) as seller_nm
+                   ac.name as seller_nm,
+                   ac.pfp as seller_pfp
             from tb_sale_support ss
                      left outer join tb_sale sl on ss.sale_id=sl.sale_id
+                    left outer join tb_account ac on ac.id=sl.seller_id
             WHERE ss.shop_id=#{currShopId}
+        ), search as (
+                SELECT json_arrayagg(json_object(
+                        'sale_id',sale_id,
+                        'sup_id',sup_id,
+                        'sup_st',sup_st,
+                        'actv_dt',actv_dt,
+                        'cust_nm',cust_nm,
+                        'cust_tel',cust_tel,
+                        'cust_cd',cust_cd,
+                        'sup_div',sup_div,
+                        'sup_amount',sup_amount,
+                        'seller_nm',seller_nm,
+                        'seller_pfp',seller_pfp
+                        ))
+                from sale
+                WHERE
+                <if test="notDone != null and notDone == true">
+                    sup_st != 1 and
+                </if>
+                <if test="keyword != null and !keyword.equals('')">
+                    (
+                    cust_nm like '%${keyword}%' or
+                    cust_tel like '%${keyword}%' or
+                    cust_cd like '%${keyword}%' or
+                    seller_nm like '%${keyword}%'
+                    ) and
+                </if>
+                1=1
+                <if test="order != null and !order.equals('')">
+                    order by ${order} ${asc}
+                </if>
         )
 
-        SELECT *
-        from tb
-        WHERE
-        <if test="completed != null and completed == true">
-            sup_st = 1 and
-        </if>
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            cust_nm like '%${keyword}%' or
-            cust_tel like '%${keyword}%' or
-            cust_cd like '%${keyword}%' or
-            seller_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
+
+        select (
+        select count(*)
+        from sale
+        ) as total_cnt,
+        (
+        select *
+        from search
+        ) as list
     </select>
 
     <select id="getSaleAsPromise">
-        WITH tb as (
-                SELECT distinct sl.sale_id,
-                        sl.cust_nm,
-                        sl.cust_tel,
-                        sl.cust_cd,
-                        sl.actv_dt
-                from tb_promise pm
-                left outer join tb_sale sl on pm.sale_id=sl.sale_id
-                WHERE pm.shop_id=#{currShopId}
-        )
-
-        SELECT *
-        from tb
-        WHERE
-<!--        <if test="completed != null and completed == true">-->
-<!--            card_st = 2 and-->
-<!--        </if>-->
-        <if test="keyword != null and !keyword.equals('')">
-            (
-                (
-                select IFNULL(count(*),0)
-                from tb_promise apm
-                where apm.shop_id=#{currShopId} and
-                apm.sale_id=tb.sale_id and
-                apm.content like '%${keyword}%'
-                ) > 0 or
+        WITH sale as (
+            SELECT distinct sl.sale_id,
+                            sl.cust_nm,
+                            sl.cust_tel,
+                            sl.cust_cd,
+                            sl.actv_dt,
+                            (
+                                select JSON_ARRAYAGG(json_object(
+                                        'pm_id',pm2.pm_id,
+                                        'checked',pm2.checked,
+                                        'content',pm2.content
+                                                     ))
+                                from tb_promise pm2
+                                where pm2.shop_id=#{currShopId} and
+                                    pm2.sale_id=pm.sale_id
+                            ) as pm_list
+            from tb_promise pm
+                     left outer join tb_sale sl on pm.sale_id=sl.sale_id
+            WHERE pm.shop_id=#{currShopId}
+        ), search as (
+            SELECT json_arrayagg(json_object(
+                    'sale_id',sale_id,
+                    'cust_nm',cust_nm,
+                    'cust_tel',cust_tel,
+                    'cust_cd',cust_cd,
+                    'actv_dt',actv_dt,
+                    'pm_list',pm_list
+                                 ))
+            from sale
+            WHERE (
+                      select IFNULL(count(*),0)
+                      from tb_promise pm
+                      where pm.shop_id=#{currShopId} and
+                          pm.sale_id=sale.sale_id and
+                          pm.content like '%${keyword}%'
+                  ) > 0 or
                 cust_nm like '%${keyword}%' or
                 cust_tel like '%${keyword}%'
-            )
-          and
-        </if>
-        1=1
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
+        )
+
+        select (
+                   select count(*)
+                   from sale
+               ) as total_cnt,
+               (
+                   select *
+                   from search
+               ) as list
+
     </select>
 
 <!--    promise-->
@@ -387,6 +595,7 @@
             family = #{family},
             friend = #{friend},
             sale_memo=#{saleMemo},
+            total_cms=#{totalCms},
             estimate=#{estimate},
             docs=#{docs}
         where sale_id=#{saleId}
@@ -396,6 +605,57 @@
         delete from tb_sale
         where sale_id=#{saleId}
         and shop_id= #{currShopId}
+    </delete>
+
+    <delete id="deleteSaleBulk">
+        delete from tb_sale
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
+        delete from tb_sale_used_device
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
+        delete from tb_sale_add
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
+        delete from tb_sale_support
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
+        delete from tb_sale_card
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
+        delete from tb_promise
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
     </delete>
 
     <insert id="insertSale" parameterType="com.momo.common.vo.SaleVO">
@@ -483,7 +743,7 @@
         (shop_id, sale_id, sup_id, sup_div, sup_amount)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},#{saleId},#{index}+1,#{item.supDiv},#{item.supAmount}
+            #{currShopId},#{saleId},#{index}+1,#{item.div},#{item.amount}
         </foreach>
     </insert>
 
@@ -492,7 +752,7 @@
             (shop_id, sale_id, add_id, add_div, add_amount)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},#{saleId},#{index}+1,#{item.addDiv},#{item.addAmount}
+            #{currShopId},#{saleId},#{index}+1,#{item.div},#{item.amount}
         </foreach>
     </insert>
 
@@ -559,38 +819,6 @@
             sale_id=#{saleId} and
             ud_id=#{udId}
     </update>
-
-<!--    count-->
-    <select id="getSaleTotalPromiseCount">
-        SELECT count(*)
-        from tb_promise
-        where shop_id = #{currShopId}
-    </select>
-
-    <select id="getSaleTotalSupportCount">
-        SELECT count(*)
-        from tb_sale_support
-        where shop_id = #{currShopId}
-    </select>
-
-    <select id="getSaleTotalCardCount">
-        SELECT count(*)
-        from tb_sale_card
-        where shop_id = #{currShopId}
-    </select>
-
-    <select id="getSaleTotalCombCount">
-        SELECT count(*)
-        from tb_sale
-        where shop_id = #{currShopId} and
-            comb_tp is not null
-    </select>
-
-    <select id="getSaleTotalUsedDeviceCount">
-        SELECT count(*)
-        from tb_sale_used_device
-        where shop_id = #{currShopId}
-    </select>
 
 <!--    delete-->
     <delete id="deleteSalePromise">
@@ -758,23 +986,23 @@
         );
 
         with tb as (
-            SELECT count(*) as curr
+            SELECT IFNULL(count(*),0) as curr
             FROM tb_sale_card sc
                      LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
             WHERE sc.shop_id=#{currShopId} and
                 actv_dt like '${date}%'
             UNION ALL
-            SELECT count(*) as curr
+            SELECT IFNULL(count(*),0) as curr
             FROM tb_sale
             WHERE shop_id= #{currShopId} and
                 actv_dt like '${date}%' and
-                sd_id != 0
+                sd_id is not null
             UNION ALL
-            SELECT count(*) as curr
+            SELECT IFNULL(count(*) ,0) as curr
             FROM tb_sale
             WHERE shop_id= #{currShopId} and
                 actv_dt like '${date}%' and
-                exsvc_id != 0
+                exsvc_id is not null
         )
 
         SELECT
@@ -782,10 +1010,10 @@
             @total_sale_count as total,
             (
                 CASE
-                    WHEN @total_sale_count = 0 THEN 100
+                    WHEN @total_sale_count = 0 THEN 0
                     WHEN @total_sale_count != 0 THEN TRUNCATE(((curr/@total_sale_count))*100, 1)
                     END
-                ) as pct
+                ) as per
         FROM tb
     </select>
 
@@ -884,7 +1112,7 @@
                        WHEN total = 0 and value =0 THEN 0
                        WHEN total != 0 THEN TRUNCATE(((rst.value/total))*100, 1)
                        END
-                   ) as pct
+                   ) as per
         FROM rst
     </select>
 
@@ -1031,28 +1259,32 @@
                    sd_id
             from tb_sale
             where shop_id=#{currShopId} and
-                seller_id=#{userId} and
+                ]]>
+                <if test="userId != null and !userId.equals('')">
+                    seller_id=#{userId} and
+                </if>
+                <![CDATA[
                 actv_dt between #{fromYmd} and date_add(#{toYmd}, interval 1 month)
         ), ct_graph as ( # 무선 그래프 데이터
             SELECT m,
                    count(device_id) as cnt
             FROM months
                      LEFT OUTER JOIN filtered_sale on actv_month = m and
-                                                      device_id!=0
+                                                      device_id is not null
             group by m
         ), internet_graph as ( # 인터넷 그래프 데이터
             SELECT m,
                    count(internet_plan) as cnt
             FROM months
                      LEFT OUTER JOIN filtered_sale on actv_month = m  and
-                                                      internet_plan !=0
+                                                      internet_plan is not null
             group by m
         ), tv_graph as ( # TV 그래프 데이터
             SELECT m,
                    count(tv_plan) as cnt
             FROM months
                      LEFT OUTER JOIN filtered_sale on actv_month = m  and
-                                                      tv_plan !=0
+                                                      tv_plan is not null
             group by m
         ), tc_graph as ( # 총 이익 그래프 데이터
             SELECT m,
@@ -1060,14 +1292,12 @@
             FROM months
                      LEFT OUTER JOIN filtered_sale on actv_month = m
             group by m
-        ), margin_table as (
-            select *
-            from filtered_sale
-        ), margin_graph as ( # 개인 평균 마진 그래프 데이터
+        ), avg_margin_graph as ( # 개인 평균 마진 그래프 데이터
             SELECT m,
                    IFNULL(avg(total_cms), 0) as cnt
             FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m
+                     LEFT OUTER JOIN filtered_sale on actv_month = m and
+                                                      device_id is not null
             group by m
         ), ud_graph as ( # 중고 개통 그래프 데이터
             SELECT m,
@@ -1139,12 +1369,12 @@
             select
                 (
                     select cnt
-                    from margin_graph
+                    from avg_margin_graph
                     limit 4,1
                 ) as prv,
                 (
                     select cnt
-                    from margin_graph
+                    from avg_margin_graph
                     limit 5,1
                 ) as curr
             from dual
@@ -1216,7 +1446,7 @@
                 prv,
                 (
                     select json_arrayagg(cnt)
-                    from margin_graph
+                    from avg_margin_graph
                 ) as list
             from diff_margin
             union all
@@ -1299,6 +1529,11 @@
                    tb_sale.*
             from tb_sale
             where shop_id=#{currShopId} and
+                  ]]>
+                <if test="userId != null and !userId.equals('')">
+                    seller_id=#{userId} and
+                </if>
+                <![CDATA[
                 actv_dt between #{fromYmd} and (
                     case
                         when #{dateType} = 'h' then #{fromYmd}
@@ -1372,6 +1607,11 @@
                    tb_sale.*
             from tb_sale
             where shop_id=#{currShopId} and
+]]>
+        <if test="userId != null and !userId.equals('')">
+            seller_id=#{userId} and
+        </if>
+        <![CDATA[
                 actv_dt between #{fromYmd} and (
                     case
                         when #{dateType} = 'h' then #{fromYmd}
@@ -1445,6 +1685,11 @@
                    tb_sale.*
             from tb_sale
             where shop_id=#{currShopId} and
+                  ]]>
+        <if test="userId != null and !userId.equals('')">
+            seller_id=#{userId} and
+        </if>
+        <![CDATA[
                 actv_dt between #{fromYmd} and (
                     case
                         when #{dateType} = 'h' then #{fromYmd}
@@ -1518,6 +1763,11 @@
                    tb_sale.*
             from tb_sale
             where shop_id=#{currShopId} and
+                    ]]>
+                    <if test="userId != null and !userId.equals('')">
+                        seller_id=#{userId} and
+                    </if>
+                    <![CDATA[
                 actv_dt between #{fromYmd} and (
                     case
                         when #{dateType} = 'h' then #{fromYmd}
@@ -1593,6 +1843,11 @@
                    tb_sale.*
             from tb_sale
             where shop_id=#{currShopId} and
+                ]]>
+                <if test="userId != null and !userId.equals('')">
+                    seller_id=#{userId} and
+                </if>
+                <![CDATA[
                 actv_dt between #{fromYmd} and (
                     case
                         when #{dateType} = 'h' then #{fromYmd}
@@ -1622,63 +1877,283 @@
         ]]>
     </select>
 
-    <select id="getDeviceStat">
+    <select id="getStatBySelectType">
         <![CDATA[
-        SET @org_month := (
-            SELECT MONTH(#{fromYmd})
-            );
+        with base as (select device_id,
+                             (SELECT device_nm
+                              FROM tb_device
+                              WHERE tb_device.device_id = sl.device_id)      as device,
+                             sd_id,
+                             (SELECT sd_nm
+                              FROM tb_second_device
+                              WHERE tb_second_device.sd_id = sl.sd_id)       as sec_device,
+                             ct_actv_plan,
+                             (SELECT ct_plan_nm
+                              FROM tb_ct_plan
+                              WHERE tb_ct_plan.ct_plan_id = sl.ct_actv_plan) as actv_plan
+                      from tb_sale sl
+                      where shop_id = 1 and
+                          ]]>
+                            <if test="userId != null and !userId.equals('')">
+                                seller_id=#{userId} and
+                            </if>
+                            <![CDATA[
+                        actv_dt between #{fromYmd} and #{toYmd}),
+             device as (SELECT device                   as name,
+                               IFNULL(count(device), 0) as count
+                        from base
+                        where device_id is not null
+                        group by device),
+             sec_device as (SELECT sec_device                   as name,
+                                   IFNULL(count(sec_device), 0) as count
+                            from base
+                            where sd_id is not null
+                            group by sec_device),
+             actv_plan as (SELECT actv_plan                   as name,
+                                  IFNULL(count(actv_plan), 0) as count
+                           from base
+                           where ct_actv_plan is not null
+                           group by actv_plan),
+             total as (select IFNULL(count(#{selectType}), 0) as cnt
+                       from base
+                       where #{selectType} is not null
+             )
 
-        with recursive date_range as (
-            select #{fromYmd} as d
-            union all
-            select date_add(d, interval 1 day) as d
-            from date_range
-            where MONTH(d) != @org_month
-        )
-
-        SELECT (
-                SELECT device_nm
-                FROM tb_device
-                WHERE tb_device.device_id=sl.device_id
-                   ) as device_nm,
-                TRUNCATE((IFNULL(count(device_id),0) / IFNULL(count(*), 1)), 1) as per
-        FROM date_range
-                 LEFT OUTER JOIN tb_sale sl on sl.actv_dt=d and
-                                               shop_id=#{currShopId} and
-                                               device_id != 0
-        group by device_id
+        select name,
+               count,
+               (
+                   IF((select cnt
+                       from total) = 0 or count = 0, 0, TRUNCATE(
+                              (count / (
+                                  select cnt
+                                  from total
+                              )
+                                  ) * 100, 1))
+                   ) as per
+        from ${selectType}
+        order by per desc
+        limit 5
         ]]>
     </select>
 
-    <select id="getAvgMarginBySelectType">
+    <select id="getCtCountBySelectType">
         <![CDATA[
-        with sale as (
-            select cust_gd as gender,
-                   provider,
-                   ct_actv_tp as actv_tp,
-                   ct_istm as istm,
+        with recursive group_generation as (
+            select 0 as g
+            union all
+            select g+1
+            from group_generation
+            where g < 8
+        ), group_weekday as (
+            select 0 as g
+            union all
+            select g+1
+            from group_weekday
+            where g < 6
+        ),  sale as (
+            select weekday(actv_dt) as days,
+                   device_id,
+                   cust_cd,
+                   sale_id
+            from tb_sale
+            where shop_id=#{currShopId} and
+                  ]]>
+                  <if test="userId != null and !userId.equals('')">
+                      seller_id=#{userId} and
+                  </if>
+                  <![CDATA[
+                device_id is not null and
+                actv_dt between #{fromYmd} and #{toYmd}
+        ), sale_gene as (
+            select sale_id,
                    (
                        case
                            when length(cust_cd) = 6 then floor((year(curdate()) - concat((
-                                         case
-                                             when substring(cust_cd, 1,2) > '44' then '19'
-                                             when substring(cust_cd, 1,2) <= '44' then '20'
-                                             end
-                                         ),substring(cust_cd,1,2))) / 10)
+                                 case
+                                     when substring(cust_cd, 1,2) > '44' then '19'
+                                     when substring(cust_cd, 1,2) <= '44' then '20'
+                                     end
+                                 ),substring(cust_cd,1,2))) / 10)
                            when length(cust_cd) != 6 then null
                            end
-                       ) as generation,
-                total_cms
-            from tb_sale
-            where shop_id=#{currShopId} and
-                actv_dt between #{fromYmd} and #{toYmd}
+                       ) as generation
+            from sale
+        ), generation as (
+            select g,
+                   device_id
+            from group_generation g
+                     left outer join sale_gene sg on g.g=sg.generation
+                     left outer join sale s on s.sale_id=sg.sale_id
+        ), weekdays as (
+            select g,
+                   device_id
+            from group_weekday w
+                     left outer join sale s on s.days=w.g
         )
 
-        select IFNULL(avg(total_cms), 0) as amount
-        from sale
-        where ${selectType} is not null
-        group by ${selectType}
-        order by ${selectType}
+        select IFNULL(count(device_id),0) as avg
+        from ${selectType}
+        group by g
+        ]]>
+    </select>
+
+    <select id="getIstmRatio">
+        <![CDATA[
+        with recursive istm_range as (
+            select 0 as i
+            union all
+            select i+1
+            from istm_range
+            where i<5
+        ), base as (
+            select ct_istm
+            from tb_sale
+            where shop_id=#{currShopId} and
+                  ]]>
+                    <if test="userId != null and !userId.equals('')">
+                        seller_id=#{userId} and
+                    </if>
+                    <![CDATA[
+                actv_dt between #{fromYmd} and #{toYmd}
+        ), final as (
+            select i as istm,
+                   IFNULL(count(base.ct_istm),0) as cnt
+            from istm_range
+                     left outer join base on base.ct_istm=istm_range.i
+            group by i
+            order by cnt desc
+        )
+
+        select json_arrayagg(istm) as type,
+               json_arrayagg(cnt) as cnt,
+               json_arrayagg(IF((
+                      select IFNULL(count(ct_istm), 0)
+                      from base
+                  ) = 0 or cnt = 0, 0, TRUNCATE((cnt/(
+                   select IFNULL(count(ct_istm), 0)
+                   from base
+               )) * 100, 1))) as per
+        from final
+        ]]>
+    </select>
+
+    <select id="getProviderRatio">
+        <![CDATA[
+        with recursive provider_range as (
+            select 0 as i
+            union all
+            select i+1
+            from provider_range
+            where i<2
+        ), base as (
+            select provider
+            from tb_sale
+            where shop_id=#{currShopId} and
+                  ]]>
+        <if test="userId != null and !userId.equals('')">
+            seller_id=#{userId} and
+        </if>
+        <![CDATA[
+                actv_dt between #{fromYmd} and #{toYmd}
+        ), final as (
+            select i as provider,
+                   IFNULL(count(base.provider),0) as cnt
+            from provider_range
+                     left outer join base on base.provider=provider_range.i
+            group by i
+            order by cnt desc
+        )
+
+        select json_arrayagg(provider) as type,
+               json_arrayagg(cnt) as cnt,
+               json_arrayagg(IF((
+                      select IFNULL(count(provider), 0)
+                      from base
+                  ) = 0 or cnt = 0, 0, TRUNCATE((cnt/(
+                   select IFNULL(count(provider), 0)
+                   from base
+               )) * 100, 1))) as per
+        from final;
+        ]]>
+    </select>
+
+    <select id="getActvTpRatio">
+        <![CDATA[
+        with recursive actv_tp_range as (
+            select 0 as i
+            union all
+            select i+1
+            from actv_tp_range
+            where i<2
+        ), base as (
+            select ct_actv_tp
+            from tb_sale
+            where shop_id=#{currShopId} and
+                  ]]>
+        <if test="userId != null and !userId.equals('')">
+            seller_id=#{userId} and
+        </if>
+        <![CDATA[
+                actv_dt between #{fromYmd} and #{toYmd}
+        ), final as (
+            select i as ct_actv_tp,
+                   IFNULL(count(base.ct_actv_tp),0) as cnt
+            from actv_tp_range
+                     left outer join base on base.ct_actv_tp=actv_tp_range.i
+            group by i
+           order by cnt desc
+        )
+
+        select json_arrayagg(ct_actv_tp) as type,
+               json_arrayagg(cnt) as cnt,
+               json_arrayagg(IF((
+                      select IFNULL(count(ct_actv_tp), 0)
+                      from base
+                  ) = 0 or cnt = 0, 0, TRUNCATE((cnt/(
+                   select IFNULL(count(ct_actv_tp), 0)
+                   from base
+               )) * 100, 1)) ) as per
+        from final;
+        ]]>
+    </select>
+
+    <select id="getGenderRatio">
+        <![CDATA[
+        with recursive gender_range as (
+            select 0 as i
+            union all
+            select i+1
+            from gender_range
+            where i<2
+        ), base as (
+            select cust_gd
+            from tb_sale
+            where shop_id=#{currShopId} and
+                  ]]>
+                <if test="userId != null and !userId.equals('')">
+                    seller_id=#{userId} and
+                </if>
+                <![CDATA[
+                actv_dt between #{fromYmd} and #{toYmd}
+        ), final as (
+            select i as gender,
+                   IFNULL(count(base.cust_gd),0) as cnt
+            from gender_range
+                     left outer join base on base.cust_gd=gender_range.i
+            group by i
+            order by cnt desc
+        )
+
+        select json_arrayagg(gender) as type,
+               json_arrayagg(cnt) as cnt,
+               json_arrayagg(IF((
+                      select IFNULL(count(cust_gd), 0)
+                      from base
+                  ) = 0 or cnt = 0, 0, TRUNCATE((cnt/(
+                   select IFNULL(count(cust_gd), 0)
+                   from base
+               )) * 100, 1))) as per
+        from final;
         ]]>
     </select>
 
@@ -1768,4 +2243,6 @@
         from stat
         ]]>
     </select>
+
+
 </mapper>

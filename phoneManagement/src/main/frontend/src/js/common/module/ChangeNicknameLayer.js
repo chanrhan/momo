@@ -4,7 +4,7 @@ import {ObjectUtils} from "../../utils/objectUtil";
 import {useEffect, useRef, useState} from "react";
 
 export function ChangeNicknameLayer({initValue, value, values, onChange}){
-    const [custom, setCustom] = useState(null)
+    const [custom, setCustom] = useState('')
     const [isCustomSelected, setCustomSelected] = useState(false)
 
     const [active, setActive ] = useState(false)
