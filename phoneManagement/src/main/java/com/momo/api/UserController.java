@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -185,10 +186,14 @@ public class UserController {
 	 * @return Boolean
 	 */
 	@PostMapping("/{staffId}/approval-st")
+	@Transactional
 	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
 													   @PathVariable String staffId,
 													   @RequestBody Integer state){
 		int currShopId = commonService.getCurrentShopId(session);
+		if(state == 1){
+			userService.updateCurrentShop(staffId, currShopId);
+		}
 		return ResponseEntity.ok(userService.updateApprovalState(currShopId,staffId,state)> 0);
 	}
 

@@ -1,14 +1,16 @@
 import axios from "axios";
 import {useSelector} from "react-redux";
 
+export const CONTEXT_PATH = window.location.origin;
+
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: CONTEXT_PATH,
     timeout: 10000,
     headers: {
         "Content-Type": `application/json`,
         "Accept": "application/json",
         "Access-Control-Allow-Origin": `http://localhost:3000`,
-        'Access-Control-Allow-Credentials':"true",
+        'Access-Control-Allow-Credentials': "true",
     },
     withCredentials: true,
 });

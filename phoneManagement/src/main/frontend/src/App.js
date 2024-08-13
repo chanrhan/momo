@@ -9,7 +9,6 @@ import {Role} from "./js/account/Role";
 import {SelectShop} from "./js/shop/SelectShop";
 import MainLayout from "./js/layout/MainLayout";
 import Authorization from "./common/Authorization";
-import {RegisterCorp} from "./js/shop/RegisterCorp";
 import {RegisterShop} from "./js/shop/RegisterShop";
 import {FindUsername} from "./js/account/FindUsername";
 import {FindPassword} from "./js/account/FindPassword";
@@ -45,8 +44,11 @@ import {GraphTest} from "./js/test/GraphTest";
 import {MasterData} from "./js/admin/MasterData";
 import {ErrorBoundary} from "react-error-boundary";
 import {AsyncTest} from "./js/test/AsyncTest";
+import {Allowance} from "./js/layout/Allowance";
+import useUserInfo from "./js/hook/useUserInfo";
 
 function App() {
+    const userInfo = useUserInfo();
   return (
       <div className="App">
           <Helmet>
@@ -87,7 +89,8 @@ function App() {
                       <Route path='/support' element={<Support/>}/>
                   </Route>
 
-                  <Route path='/role' element={<Role/>}/>
+                  {/*<Route path='/role' element={<Role/>}/>*/}
+
 
                   <Route element={
                       <Authorization redirectTo='/account/login'>
@@ -102,10 +105,28 @@ function App() {
                       </Route>
                   </Route>
 
+                  <Route element={
+                      <Authorization redirectTo='/account/login'>
+                          <Allowance condition={()=>{
+                              return userInfo.curr_shop_id === -1
+                          }} redirectTo='/service'>
+                              <MainLayout/>
+                          </Allowance>
+                      </Authorization>
+                  }>
+                      <Route path='/admin'>
+                          <Route path='' element={<Administrator/>}/>
+                          <Route path='gmd' element={<MasterData/>}></Route>
+                      </Route>
+                  </Route>
 
                   <Route element={
                       <Authorization redirectTo='/account/login'>
-                          <MainLayout/>
+                          <Allowance condition={()=>{
+                              return userInfo.curr_shop_id !== -1
+                          }} redirectTo='/admin'>
+                              <MainLayout/>
+                          </Allowance>
                       </Authorization>
                   }>
                       <Route path='/service'>
@@ -115,19 +136,11 @@ function App() {
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>
                           {/*<Route path='statistics' element={<Statistics/>}/>*/}
-
                       </Route>
 
-                      <Route path='/staff' element={<ManageStaff/>}>
-
-                      </Route>
+                      <Route path='/staff' element={<ManageStaff/>}/>
 
                       <Route path='profile' element={<Profile/>}/>
-
-                      <Route path='/admin'>
-                          <Route path='' element={<Administrator/>}/>
-                          <Route path='gmd' element={<MasterData/>}></Route>
-                      </Route>
 
                   </Route>
               </Route>

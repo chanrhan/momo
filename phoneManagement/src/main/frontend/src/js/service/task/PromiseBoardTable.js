@@ -5,9 +5,12 @@ import profileImg1 from "../../../images/profile_img1.jpg"
 import {PromiseOptionItem} from "./module/PromiseOptionItem";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
+import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
+import {ObjectUtils} from "../../utils/objectUtil";
+import useModal from "../../hook/useModal";
+import {ModalType} from "../../common/modal/ModalType";
 
-export function PromiseBoardTable({profileImages, items, onChangeState, onSelectSale}){
-
+export function PromiseBoardTable({onLoad, items, onChangeState, onSelectSale}){
     return (
         <div className='board_body'>
             <div className={Board.promise}>
@@ -15,7 +18,7 @@ export function PromiseBoardTable({profileImages, items, onChangeState, onSelect
                     <ul className={Board.promise_list}>
                         {
                             items && items.map((v,i)=>{
-                                return <PromiseItem img={profileImages ? profileImages[i] : profileImg1} key={i} onClick={()=>{
+                                return <PromiseItem onLoad={onLoad} key={i} onClick={()=>{
                                     onSelectSale(v.sale_id)
                                 }} item={v} onUpdate={onChangeState}/>
                             })
@@ -31,7 +34,31 @@ export function PromiseBoardTable({profileImages, items, onChangeState, onSelect
     )
 }
 
-function PromiseItem({img, item, onUpdate, onClick}){
+function PromiseItem({onLoad, item, onUpdate, onClick}){
+    const {saleApi} = useApi()
+    const modal = useModal()
+    const [content, setContent] = useState('')
+
+    const add = async ()=>{
+        if(ObjectUtils.isEmpty(content)){
+            return;
+        }
+        await saleApi.addPromiseContent({
+            sale_id: item.sale_id,
+            content: content
+        }).then(({status,data})=>{
+            console.log(`${status} ${data}`)
+            if(status === 200 && data){
+                // modal.openModal(ModalType.SNACKBAR.Info, {
+                //     msg: '추가되었습니다.'
+                // })
+                setContent('')
+                onLoad();
+            }
+        })
+
+    }
+
     return (
         <li className={Board.promise_item} onClick={onClick}>
             <div className="promise_box">
@@ -68,8 +95,10 @@ function PromiseItem({img, item, onUpdate, onClick}){
                         </ul>
                     </div>
                     <div className={Board.option_add}>
-                        <button type="button" className={Board.add_btn}>추가</button>
-                        <input type="text" className={cm(Board.inp)} placeholder="단계 추가"/>
+                        <button type="button" onClick={add} className={Board.add_btn}>추가</button>
+                        <input type="text" className={cm(Board.inp)} value={content} onChange={e=>{
+                            setContent(e.target.value)
+                        }} placeholder="단계 추가"/>
                     </div>
                 </div>
                 <button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>

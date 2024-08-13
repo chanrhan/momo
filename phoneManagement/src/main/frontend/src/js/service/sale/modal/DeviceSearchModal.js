@@ -59,9 +59,12 @@ export function DeviceSearchModal(props){
                             <ul className="service_list">
                                 {
                                     items && items.map((v,i)=>{
-                                        return <DeviceItem active={i === selected} key={i} device_nm={v.device_nm} device_cd={v.device_cd} onClick={()=>{
-                                            setSelected(i)
-                                        }}/>
+                                        return <DeviceItem active={i === selected} key={i}
+                                                           device_nm={v.name}
+                                                           device_cd={v.code}
+                                                           onClick={()=>{
+                                                    setSelected(i)
+                                                }}/>
                                     })
                                 }
                             </ul>

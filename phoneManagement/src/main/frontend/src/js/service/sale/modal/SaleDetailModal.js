@@ -28,6 +28,7 @@ import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSe
 import {TelePhoneInput} from "../../../common/inputbox/TelePhoneInput";
 import {telRegex} from "../../../utils/regex";
 import {PriceInput} from "../../../common/inputbox/PriceInput";
+import modal from "bootstrap/js/src/modal";
 
 
 const DYNAMIC_ITEMS = [
@@ -99,7 +100,7 @@ function SaleDetailModal(props){
             getSaleDetail(props.sale_id);
         }
         getInnerStaff()
-    },[])
+    },[props])
 
     const getInitStaffName = ()=>{
         if(staff){
@@ -140,7 +141,7 @@ function SaleDetailModal(props){
     const getSaleDetail = async (saleId)=>{
         await saleApi.getSaleDetail(saleId).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 let bit = 0;
                 if(data.wt_cms || data.internet_plan || data.tv_plan){
                     bit = bit | 1
@@ -274,8 +275,8 @@ function SaleDetailModal(props){
         modal.openModal(ModalType.LAYER.Sale_Card, {
             data: checkListInputField.get('card_list'),
             onSubmit: (list)=>{
-                console.log(`card: `)
-                console.table(list)
+                // console.log(`card: `)
+                // console.table(list)
                 checkListInputField.put('card_list',list)
                 if(!ObjectUtils.isEmpty(list)){
                     checkBit.on(2)
@@ -290,7 +291,7 @@ function SaleDetailModal(props){
         modal.openModal(ModalType.LAYER.Sale_Used_Phone, {
             data: checkListInputField.get('ud_list'),
             onSubmit: (list)=>{
-                console.table(list)
+                // console.table(list)
                 checkListInputField.put('ud_list',list)
                 if(!ObjectUtils.isEmpty(list)){
                     checkBit.on(3)
@@ -304,7 +305,7 @@ function SaleDetailModal(props){
     const openExsvcModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Exsvc, {
             onSubmit: (id)=>{
-                console.log(`exsvc: ${id}`)
+                // console.log(`exsvc: ${id}`)
                 checkListInputField.put('exsvc_id',id)
                 if(id !== 0){
                     checkBit.on(4)
@@ -318,7 +319,7 @@ function SaleDetailModal(props){
     const openCombModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Comb, {
             onSubmit: ({comb_tp, comb_memo})=>{
-                console.log(`comb: ${comb_tp} ${comb_memo}`)
+                // console.log(`comb: ${comb_tp} ${comb_memo}`)
                 checkListInputField.put('comb_tp',comb_tp)
                 checkListInputField.put('comb_memo',comb_memo)
                 if(!ObjectUtils.isEmpty(comb_tp) || !ObjectUtils.isEmpty(comb_memo)){
@@ -362,6 +363,7 @@ function SaleDetailModal(props){
             }
         })
     }
+
 
     const onSubmit = ()=>{
         if(inputField.validateAll()){
@@ -699,9 +701,11 @@ function SaleDetailModal(props){
 
                                             <div className={cm(Popup.data_box, Popup.n3)}>
                                             <div className={Popup.data_title}>비고</div>
-                                                <div className={Popup.data_area}>
-                                                    <textarea className={Popup.data_textarea} name='memo'
-                                                              value={inputField.get('memo')}
+                                                <div className={Popup.data_area} style={{
+                                                    padding: '3px'
+                                                }}>
+                                                    <textarea className={Popup.data_textarea} name='sale_memo'
+                                                              value={inputField.get('sale_memo')}
                                                               onChange={inputField.handleInput}></textarea>
                                                 </div>
                                             </div>
@@ -710,7 +714,9 @@ function SaleDetailModal(props){
                                         <div className={Popup.data_half}>
                                             <div className={cm(Popup.data_box, Popup.n4)}>
                                                 <div className={Popup.data_title}>고객 약속</div>
-                                                <div className={Popup.data_area}>
+                                                <div className={Popup.data_area} style={{
+                                                    overflowY: 'scroll'
+                                                }}>
                                                     <ul className={Popup.popup_check_list}>
                                                         {
                                                             promiseInputField.length() > 0 && promiseInputField.input.map((v, i) => {
@@ -769,7 +775,9 @@ function SaleDetailModal(props){
 }
 
 function PriceHalfBox({type=0, inputField}){
+    const modal = useModal();
     // console.table(inputField.input)
+
     return (
         <div className={Popup.half_box}>
             <div className={cm(Popup.customer_title, Popup[`n${type+3}`])}>{type === 0 ? '지원':'추가'}
@@ -800,9 +808,20 @@ function PriceHalfBox({type=0, inputField}){
                         return <tr key={i}>
                             <td className={Popup.td}>
                                 <div className={`${cmc(User.select_box, Popup.select_box)}`}>
+                                    {/*<button type="button" className={Popup.dynamic_btn}*/}
+                                    {/*        onClick={(e) => {*/}
+                                    {/*            const absoluteTop = window.pageYOffset + e.currentTarget.getBoundingClientRect().top;*/}
+                                    {/*            const absoluteLeft = window.pageXOffset + e.currentTarget.getBoundingClientRect().left;*/}
+
+                                    {/*            modal.openModal(ModalType.MENU.Dynamic_Select, {*/}
+                                    {/*                top: `${absoluteTop}px`,*/}
+                                    {/*                left: `${absoluteLeft}px`*/}
+                                    {/*            })*/}
+                                    {/*        }}>{v.name}*/}
+                                    {/*</button>*/}
                                     <DynamicSelectLayer initValue={v.name}
-                                                        type={type} onClick={({id,name}) => {
-                                                            // console.log(v)
+                                                        type={type} onClick={({id, name}) => {
+                                        // console.log(v)
                                         inputField.put(i, `div`, id);
                                     }}/>
                                 </div>

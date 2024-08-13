@@ -2,6 +2,7 @@ package com.momo.api;
 
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.CommonVO;
+import com.momo.common.vo.SalePromiseVO;
 import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.service.*;
@@ -233,6 +234,14 @@ public class SaleController {
 			}
 		}
 		return ResponseEntity.badRequest().build();
+	}
+
+	@PostMapping("/promise/content")
+	public ResponseEntity<Boolean> insertPromiseContent(HttpSession session,
+														@RequestBody SalePromiseVO vo){
+		vo.setCurrShopId(commonService.getCurrentShopId(session));
+		saleService.insertPromiseContent(vo);
+		return ResponseEntity.ok(true);
 	}
 
 	@GetMapping("/summary")

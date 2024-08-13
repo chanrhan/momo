@@ -1,6 +1,6 @@
 package com.momo.api;
 
-import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.GMDVO;
 import com.momo.service.CommonService;
 import com.momo.service.GMDService;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +29,8 @@ public class GMDController {
                                                               @RequestParam(required = false)Integer provider){
         return ResponseEntity.ok(gmdService.getDevice(keyword, provider));
     }
+
+
 
     // 세컨 디바이스
     @GetMapping("/sec-device")
@@ -104,6 +106,67 @@ public class GMDController {
     }
 
 
+    // 추가
+
+    @PostMapping("/device")
+    public ResponseEntity<Boolean> addDevice(@RequestBody List<GMDVO> list){
+        gmdService.insertDeviceAll(list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/sec-device")
+    public ResponseEntity<Boolean> addSecondDeviceAll(@RequestBody List<GMDVO> list){
+        gmdService.insertSecondDeviceAll(list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/ct-plan")
+    public ResponseEntity<Boolean> addCtPlanAll(@RequestBody List<GMDVO> list){
+        gmdService.insertCtPlanAll(list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/internet-plan")
+    public ResponseEntity<Boolean> addInternetPlanAll(HttpSession session,
+                                                      @RequestBody List<GMDVO> list){
+        log.info("internet plan: {}", list);
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertInternetPlanAll(currShopId, list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/tv-plan")
+    public ResponseEntity<Boolean> addTvPlanAll(HttpSession session,
+                                                @RequestBody List<GMDVO> list){
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertTvPlanAll(currShopId, list);
+
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/exsvc")
+    public ResponseEntity<Boolean> addExsvcAll(HttpSession session,
+                                               @RequestBody List<GMDVO> list){
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertExtraServiceAll(currShopId, list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/sup")
+    public ResponseEntity<Boolean> addSupportDivAll(HttpSession session,
+                                                    @RequestBody List<GMDVO> list){
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertSupportDivAll(currShopId, list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/add")
+    public ResponseEntity<Boolean> addAddDivAll(HttpSession session,
+                                                @RequestBody List<GMDVO> list){
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertAddDivAll(currShopId, list);
+        return ResponseEntity.ok(true);
+    }
+    @PostMapping("/comb")
+    public ResponseEntity<Boolean> addCombAll(HttpSession session,
+                                              @RequestBody List<GMDVO> list){
+        int currShopId  = commonService.getCurrentShopId(session);
+        gmdService.insertCombAll(currShopId, list);
+        return ResponseEntity.ok(true);
+    }
 
 
 

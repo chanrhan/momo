@@ -5,9 +5,9 @@
 <mapper namespace="com.momo.mapper.GMDMapper">
 <!--    정적 목록-->
     <select id="getDevice">
-        select device_id,
-                device_nm,
-                device_cd,
+        select device_id as id,
+                device_nm as name,
+                device_cd as code,
                 provider
         from    tb_device
         where
@@ -28,9 +28,9 @@
     </select>
 
     <select id="getSecondDevice">
-        select sd_id,
-               sd_nm,
-               sd_cd,
+        select sd_id as id,
+               sd_nm as name,
+               sd_cd as code,
                provider
         from    tb_second_device
         where
@@ -192,6 +192,132 @@
         <!--        </if>-->
         limit 20
     </select>
+
+    <insert id="insertDeviceAll">
+        set @next_id := (
+            select IFNULL(max(device_id),0)+1
+            from tb_device
+        );
+
+        insert into tb_device
+        (device_id, provider, device_nm, device_cd)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (@next_id+#{index}),#{item.provider},#{item.name},#{item.code}
+        </foreach>
+    </insert>
+
+    <insert id="insertSecondDeviceAll">
+        set @next_id := (
+        select IFNULL(max(sd_id),0)+1
+        from tb_second_device
+        );
+
+        insert into tb_second_device
+        (sd_id, provider, sd_nm, sd_cd)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (@next_id+#{index}),#{item.provider},#{item.name},#{item.code}
+        </foreach>
+    </insert>
+
+    <insert id="insertCtPlanAll">
+        set @next_id := (
+        select IFNULL(max(ct_plan_id),0)+1
+        from tb_ct_plan
+        );
+
+        insert into tb_ct_plan
+       (ct_plan_id, provider, ct_plan_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            (@next_id+#{index}),#{item.provider},#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertInternetPlanAll">
+        set @next_id := (
+        select IFNULL(max(internet_plan_id),0)+1
+        from tb_internet_plan
+        );
+
+        insert into tb_internet_plan
+        (shop_id, internet_plan_id, provider, internet_plan_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertTvPlanAll">
+        set @next_id := (
+        select IFNULL(max(tv_plan_id),0)+1
+        from tb_tv_plan
+        );
+
+        insert into tb_tv_plan
+        (shop_id, tv_plan_id, provider, tv_plan_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertExtraServiceAll">
+        set @next_id := (
+        select IFNULL(max(exsvc_id),0)+1
+        from tb_extra_service
+        );
+
+        insert into tb_extra_service
+        (shop_id, exsvc_id, provider, exsvc_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertSupportDivAll">
+        set @next_id := (
+        select IFNULL(max(sup_div_id),0)+1
+        from tb_sup_div
+        );
+
+        insert into tb_sup_div
+        (shop_id, sup_div_id, sup_div_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertAddDivAll">
+        set @next_id := (
+        select IFNULL(max(add_div_id),0)+1
+        from tb_add_div
+        );
+
+        insert into tb_add_div
+        (shop_id, add_div_id, add_div_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.name}
+        </foreach>
+    </insert>
+
+    <insert id="insertCombAll">
+        set @next_id := (
+        select IFNULL(max(tv_plan_id),0)+1
+        from tb_comb_tp
+        );
+
+        insert into tb_comb_tp
+        (shop_id, comb_tp_id, comb_tp_nm)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},(@next_id+#{index}),#{item.name}
+        </foreach>
+    </insert>
 
 
 </mapper>

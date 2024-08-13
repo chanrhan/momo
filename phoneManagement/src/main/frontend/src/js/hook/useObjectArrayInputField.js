@@ -51,6 +51,13 @@ export function useObjectArrayInputField(init, arr){
         setInput(copy)
     }
 
+    const isEmpty = (index, key)=>{
+        if(!input[index]){
+            return false
+        }
+        return ObjectUtils.isEmpty(input[index][key])
+    }
+
     return {
         input,
         setInput,
@@ -59,6 +66,7 @@ export function useObjectArrayInputField(init, arr){
         put,
         putAll,
         addItem,
-        removeItem
+        removeItem,
+        isEmpty
     }
 }

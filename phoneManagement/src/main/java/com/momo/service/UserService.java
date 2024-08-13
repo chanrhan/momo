@@ -66,6 +66,7 @@ public class UserService  implements UserDetailsService{
 	public int updateCurrentShop(String userId, int shopId){
 		return userMapper.updateCurrentShop(userId, shopId);
 	}
+
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);
 	}

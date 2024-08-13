@@ -1,7 +1,7 @@
 import Board from "../../css/board.module.css"
 import Layout from "../../css/layout.module.css"
 import {TabList} from "../common/module/TabList";
-import {BoardTable, Btbody, Bth, Bthead} from "../service/board/BoardTable";
+import {BoardTable, Btbody, Btd, Bth, Bthead} from "../service/board/BoardTable";
 import useValidateInputField from "../hook/useValidateInputField";
 import {useEffect, useState} from "react";
 import {DeviceTable} from "./module/DeviceTable";
@@ -14,6 +14,17 @@ import {cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {useNavigate} from "react-router-dom";
+import {LMD} from "../common/LMD";
+
+const PROVIDER = [
+    true,true,true,true,true,true,false,false,false
+]
+const NAME = [
+    '기기명','기기명','요금제명','요금제명','요금제','요금제명','부가서비스명','지원명','추가명','결합명'
+]
+const CODE = [
+    true,true,false,false,false,false,false,false,false
+]
 
 export function MasterData(){
     const modal = useModal()
@@ -36,16 +47,28 @@ export function MasterData(){
                 rst = await gmdApi.getDevice(keywowrd);
                 break;
             case 1:
-                rst = await gmdApi.getCtPlan(keywowrd);
+                rst = await gmdApi.getSecondDevice(keywowrd);
                 break;
             case 2:
-                rst = await gmdApi.getInternetPlan(keywowrd);
+                rst = await gmdApi.getCtPlan(keywowrd);
                 break;
             case 3:
-                rst = await gmdApi.getTvPlan(keywowrd);
+                rst = await gmdApi.getInternetPlan(keywowrd);
                 break;
             case 4:
+                rst = await gmdApi.getTvPlan(keywowrd);
+                break;
+            case 5:
                 rst = await gmdApi.getExtraService(keywowrd);
+                break;
+            case 6:
+                rst = await gmdApi.getSupportDiv(keywowrd);
+                break;
+            case 7:
+                rst = await gmdApi.getAddDiv(keywowrd);
+                break;
+            case 8:
+                rst = await gmdApi.getCombTp(keywowrd);
                 break;
         }
         if(rst !== null){
@@ -72,7 +95,7 @@ export function MasterData(){
 
             <div className={Layout.sub_tab}>
                 <TabList name='user_st' value={tab} onChange={setTab} theme={Layout} values={
-                    ['핸드폰','무선요금제','인터넷요금제','TV요금제','부가서비스']
+                    ['디바이스','세컨 디바이스','무선요금제','인터넷요금제','TV요금제','부가서비스','지원구분','추가구분','결합유형']
                 }/>
             </div>
 
@@ -102,7 +125,38 @@ export function MasterData(){
                     </form>
                 </div>
 
-                <BoardTableSelector tab={tab} items={items}/>
+                <BoardTable>
+                    <Bthead>
+                        <Bth className="ta_c" checkbox></Bth>
+                        {
+                            PROVIDER[tab] && <Bth>통신사</Bth>
+                        }
+                        <Bth>{NAME[tab]}</Bth>
+                        {
+                            CODE[tab] &&  <Bth>모델명</Bth>
+                        }
+                        {/*<Bth>등록일자</Bth>*/}
+                    </Bthead>
+                    <Btbody br>
+                        {
+                            items && items.map((v,i)=> {
+                                return <tr key={i}>
+                                    <Btd checkbox/>
+                                    {
+                                       PROVIDER[tab] && <Btd>{LMD.provier[v.provider]}</Btd>
+                                    }
+                                    {
+                                        NAME[tab] && <Btd>{v.name}</Btd>
+                                    }
+                                    {
+                                        CODE[tab] &&  <Btd>{v.code}</Btd>
+                                    }
+                                </tr>
+                            })
+                        }
+                    </Btbody>
+                </BoardTable>
+                {/*<BoardTableSelector tab={tab} items={items}/>*/}
             </div>
         </div>
     )

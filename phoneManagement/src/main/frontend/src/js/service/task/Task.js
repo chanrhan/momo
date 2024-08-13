@@ -190,6 +190,7 @@ export function Task(){
 
                 <div className="board_body">
                     <CategorySelector allChecked={allChecked}
+                                      onLoad={getSaleByCategory}
                                       checkAll={checkAll}
                                       checkedSale={checkedSale}
                                       onCheck={checkSale}
@@ -207,7 +208,7 @@ export function Task(){
     )
 }
 
-function CategorySelector({checkAll, allChecked, checkedSale, onCheck, profileImages, category, items, onChangeState, onSelectSale}){
+function CategorySelector({checkAll, allChecked, checkedSale, onCheck, onLoad, profileImages, category, items, onChangeState, onSelectSale}){
     switch (category){
         case 0:
             return <TaskUsedDeviceBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
@@ -218,7 +219,7 @@ function CategorySelector({checkAll, allChecked, checkedSale, onCheck, profileIm
         case 3:
             return <TaskSupportBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
         case 4:
-            return <PromiseBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
+            return <PromiseBoardTable onLoad={onLoad} checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
     }
     return null;
 }

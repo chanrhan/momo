@@ -299,6 +299,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -335,8 +336,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v20.11.1</nodeVersion>
-                            <npmVersion>10.2.4</npmVersion>
+                            <nodeVersion>v21.7.3</nodeVersion>
+                            <npmVersion>10.5.0</npmVersion>
                         </configuration>
                     </execution>
                     <execution>

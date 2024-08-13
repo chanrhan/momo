@@ -11,6 +11,7 @@ import {useObjectInputField} from "../hook/useObjectInputField";
 import {LMD} from "../common/LMD";
 import {cm, cmc} from "../utils/cm";
 import {useNavigate} from "react-router-dom";
+import {useFileLoader} from "../hook/useFileLoader";
 
 export function Administrator(){
     const {userApi} = useApi();
@@ -19,9 +20,12 @@ export function Administrator(){
         keyword: ''
     });
     const nav = useNavigate();
+    const fileLoader = useFileLoader();
 
     const [totalCount, setTotalCount] = useState(0)
     const [items, setItems] = useState(null)
+
+    const [profileImages, setProfileImages] = useState(null)
 
     useEffect(() => {
         getUserAll()
@@ -35,12 +39,33 @@ export function Administrator(){
                     setTotalCount(data.total_cnt)
                 }
                 if(data.list){
-                    setItems(JSON.parse(data.list))
+                    const parsed = JSON.parse(data.list);
+                    setItems(parsed)
+
+                    getProfimeImages(parsed).then((data)=>{
+                        if(data){
+                            console.table(data)
+                            setProfileImages(data)
+                        }
+                    })
                 }else{
                     setItems(null)
                 }
             }
         })
+    }
+
+    const getProfimeImages = async (list)=>{
+        if(list){
+            const copy = new Array(list.length)
+            for(let i=0;i<list.length; ++i){
+                await fileLoader.pfp(list[i].pfp).then(d=>{
+                    copy[i] = d;
+                })
+            }
+            return copy;
+        }
+        return null;
     }
 
     const refresh = ()=>{
@@ -74,7 +99,7 @@ export function Administrator(){
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                             <div className={Board.board_count}>
                                 <span className={Board.count_text}>전체 <em className={Board.em}>{totalCount}</em>건</span>
-                                <span className={Board.count_text}><em className={Board.em}>3</em>건</span>
+                                <span className={Board.count_text}><em className={Board.em}>{items?.length ?? 0}</em>건</span>
                             </div>
 
                             <div className={Board.board_search}>
@@ -96,10 +121,12 @@ export function Administrator(){
                         <Bth>이름</Bth>
                         <Bth className="ta_c">이메일</Bth>
                         <Bth className="ta_c">휴대폰 번호</Bth>
+                        <Bth className="ta_c">소속 매장</Bth>
                         <Bth className="ta_c">사업자번호</Bth>
                         <Bth className="ta_c">가입일</Bth>
                         <Bth className="ta_c">최근 로그인</Bth>
                         <Bth className="ta_c">직급</Bth>
+                        <Bth className="ta_c">승인 여부</Bth>
                         <Bth className="ta_c">관리</Bth>
                     </Bthead>
                     <Btbody br>
@@ -108,13 +135,15 @@ export function Administrator(){
                                 return <tr key={i}>
                                     {/*<Btd checkbox/>*/}
                                     <Btd>{i+1}</Btd>
-                                    <ProfileTableColumn src={profileImg1} name={v.name}/>
+                                    <ProfileTableColumn src={profileImages ? profileImages[i] : profileImg1} name={v.name}/>
                                     <Btd className="ta_c">{v.email}</Btd>
                                     <Btd className="ta_c">{v.tel}</Btd>
+                                    <Btd className="ta_c">{v.shop_nm}</Btd>
                                     <Btd className="ta_c">{v.br_no}</Btd>
                                     <Btd className="ta_c">{v.regi_dt}</Btd>
                                     <Btd className="ta_c">{v.last_login_dt}</Btd>
                                     <Btd className="ta_c">{LMD.role[v.role]}</Btd>
+                                    <Btd className="ta_c">{v.approval_st ? 'Y':'N'}</Btd>
                                     <Btd className="ta_c">
                                         <a href="#" className="btn btn_grey btn_small btn_line">관리</a>
                                     </Btd>

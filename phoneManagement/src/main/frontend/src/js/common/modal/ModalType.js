@@ -40,7 +40,7 @@ export const ModalType = {
         Select_Month: 'SelectMonth',
         Select_Date: 'SelectDate',
         Select: 'Select',
-        // Dynamic_Select: 'DynamicSelect'
+        Dynamic_Select: 'DynamicSelect'
 
     },
     SNACKBAR: {

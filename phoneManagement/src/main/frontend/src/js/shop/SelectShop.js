@@ -75,7 +75,7 @@ export function SelectShop(){
                     </Link>
 
                     <div className={User.form_btn_box}>
-                        <Link to='/role' className='btn btn_grey'>
+                        <Link to='/service' className='btn btn_grey'>
                             이전
                         </Link>
                     </div>

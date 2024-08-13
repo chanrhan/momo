@@ -52,7 +52,7 @@
 .board .td_board .check_box{display:inline-block; vertical-align:top;}
 .board .td_board .check_box .label{width:16px; height:16px; padding-left:0; font-size:0; line-height:16px !important;}
 .board .td_board .check_box .label:before{width:16px; height:16px; background-size:24px;}
-.board .td_board .tbody .td{padding:10px; border-right:1px solid #f4f4f5; border-bottom:1px solid #f4f4f5; color:#28272c; font-size:14px; text-align:center; line-height:16px;}
+.board .td_board .tbody .td{padding:10px; border-right:2px solid #f4f4f5; border-bottom:1px solid rgba(227, 227, 227, 0.9); color:#28272c; font-size:14px; text-align:center; line-height:16px;}
 .board .td_board .tbody .td:last-child{border-right:0;}
 .board .td_board .tbody.br_none .td{border-right:0;}
 .board .td_board .tbody .td_type{padding:4px; border-radius:4px; font-size:12px; line-height:14px; vertical-align:top;}

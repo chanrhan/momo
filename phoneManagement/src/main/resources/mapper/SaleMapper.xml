@@ -104,32 +104,24 @@
     <select id="getSaleOne">
         with sup as (
             select json_arrayagg(json_object(
-                    'name',(
-                        select sup_div_nm
-                        from tb_sup_div
-                        where tb_sup_div.shop_id=#{currShopId} and
-                              tb_sup_div.sup_div_id=ss.sup_div
-                        ),
+                    'name',sp.sup_div_nm,
                     'div',sup_div,
                     'amount',sup_amount
-                                 ))
+             ))
             from tb_sale_support ss
-            where shop_id=#{currShopId} and
+            left outer join tb_sup_div sp on sp.sup_div_id=ss.sup_id
+            where ss.shop_id=#{currShopId} and
                 sale_id=#{saleId}
             order by sup_id
         ), addition as (
             select json_arrayagg(json_object(
-                    'name',(
-                        select add_div_nm
-                        from tb_add_div
-                        where tb_add_div.shop_id=#{currShopId} and
-                            tb_add_div.add_div_id=ss.add_div
-                    ),
+                    'name', ad.add_div_nm,
                     'div',add_div,
                     'amount',add_amount
                      ))
-            from tb_sale_add ss
-            where shop_id=#{currShopId} and
+            from tb_sale_add sa
+            left outer join tb_add_div ad on ad.add_div_id=sa.add_id
+            where sa.shop_id=#{currShopId} and
                 sale_id=#{saleId}
             order by add_id
         ), promise as (
@@ -166,12 +158,14 @@
                (
                    select internet_plan_nm
                    from tb_internet_plan
-                   where internet_plan_id=internet_plan
+                   where internet_plan_id=internet_plan and
+                         tb_internet_plan.shop_id=#{currShopId}
                ) as internet_plan_nm,
                (
                    select tv_plan_nm
                    from tb_tv_plan
-                   where tv_plan_id=tv_plan
+                   where tv_plan_id=tv_plan and
+                         tb_tv_plan.shop_id=#{currShopId}
                ) as tv_plan_nm,
                (
                    select device_nm
@@ -726,6 +720,19 @@
         where sale_id=#{saleId} and
             shop_id = #{currShopId}
     </select>
+
+    <insert id="insertPromiseContent">
+        set @next_promise_id := (
+            select IFNULL(max(pm_id),0)+1
+            from tb_promise
+            where shop_id=#{currShopId} and
+                  sale_id=#{saleId}
+            );
+
+        INSERT INTO tb_promise
+        (shop_id, sale_id, pm_id, checked, content)
+        VALUES (#{currShopId},#{saleId},@next_promise_id,false,#{content})
+    </insert>
 
 
 <!--    insert-->
@@ -1892,7 +1899,7 @@
                               FROM tb_ct_plan
                               WHERE tb_ct_plan.ct_plan_id = sl.ct_actv_plan) as actv_plan
                       from tb_sale sl
-                      where shop_id = 1 and
+                      where shop_id = #{currShopId} and
                           ]]>
                             <if test="userId != null and !userId.equals('')">
                                 seller_id=#{userId} and
@@ -2161,10 +2168,20 @@
 <!--    개인 통계-->
     <select id="getPersonalStatistics">
         <![CDATA[
-        with sale as (select *
-                      from tb_sale
-                      where shop_id = #{currShopId}
-                        and actv_dt like '${date}%'),
+        with staff as (
+            select ac.id,
+                   ac.name,
+                   ac.nickname,
+                   approval_st
+            from tb_staff
+                     left outer join tb_account ac on ac.id=staff_id
+            where approval_st = 1 and
+                shop_id=#{currShopId}
+            order by ac.regi_dt
+        ), sale as (select *
+                    from tb_sale
+                    where shop_id = #{currShopId}
+                      and actv_dt like '${date}%'),
              tb_avg_margin as (select shop_id,
                                       sale_id,
                                       total_cms
@@ -2178,8 +2195,9 @@
                            and wt_cms is not null
                            and wt_cms > 0),
              stat as (
-                 select ac.name,
-                        ac.nickname,
+                 select id,
+                        name,
+                        nickname,
                         IFNULL(sum(sl.ct_cms), 0)           as ct_cms,
                         IFNULL(sum(sl.wt_cms), 0)           as wt_cms,
                         IFNULL(sum(sa.add_amount), 0)       as sum_add,
@@ -2203,19 +2221,20 @@
                         TRUNCATE(
                                 IF((count(*) > 0 and count(sl.exsvc_id) > 0), (count(sl.exsvc_id) / count(*)) * 100, 0)
                             , 1)                            as exsvc_per
-                 from sale sl
-                          left outer join tb_account ac on ac.id = sl.seller_id
+                 from staff
+                          left outer join sale sl on sl.seller_id=id
                           left outer join tb_sale_support ss on ss.sale_id = sl.sale_id and ss.shop_id = #{currShopId}
                           left outer join tb_sale_add sa on sa.sale_id = sl.sale_id and sa.shop_id = #{currShopId}
                           left outer join tb_sale_used_device sud on sud.sale_id = sl.sale_id and sud.shop_id = #{currShopId}
                           left outer join tb_avg_margin am on am.sale_id = sl.sale_id and am.shop_id = #{currShopId}
                           left outer join tb_both b on b.sale_id = sl.sale_id and b.shop_id = #{currShopId}
-                 group by seller_id
+                 group by id
              )
 
+
         select json_arrayagg(json_object(
-                             'name', name,
-                             'nickname', nickname
+                'name', name,
+                'nickname', nickname
                              )) as profile,
                json_arrayagg(ct_cms) as ct_cms,
                json_arrayagg(wt_cms) as wt_cms ,

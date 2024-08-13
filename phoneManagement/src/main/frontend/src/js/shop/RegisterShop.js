@@ -72,7 +72,7 @@ function RegisterShopStep1({inputField, prev, next}){
 
     const checkBrNoStatus = async ()=>{
         if(inputField.validateOne('br_no')){
-            await userApi.checkBrNoStatus(inputField.getInput('br_no')).then(({status,data})=>{
+            await userApi.checkBrNoStatus(inputField.get('br_no')).then(({status,data})=>{
                 if(status === 200){
                     let msg = null;
                     // console.table(data)
@@ -113,7 +113,7 @@ function RegisterShopStep1({inputField, prev, next}){
                             <UserFormInput name='br_nm' inputField={inputField} subject='사업자 등록' placeholder='상호명을 입력하세요.'/>
                         </UserFormItem>
                         <UserFormItem style={{marginTop: 10}} errorText={inputField.error.br_no}>
-                            <UserFormInput name='br_no' inputField={inputField} placeholder='-을 제외한 사업자등록번호 10자리를 입력하세요.'>
+                            <UserFormInput readOnly={bpNoChecked} name='br_no' inputField={inputField} placeholder='-을 제외한 사업자등록번호 10자리를 입력하세요.'>
                                 <button type="button" className={User.form_btn} onClick={checkBrNoStatus}>인증하기</button>
                             </UserFormInput>
                         </UserFormItem>
@@ -138,7 +138,7 @@ function RegisterShopStep2({inputField}){
         if(inputField.validateAll()){
             await shopApi.addShop({
                 ...inputField.input,
-                'shop_addr': inputField.getInput('shop_addr') + ' ' + inputField.getInput('shop_addr_detail')
+                'shop_addr': inputField.get('shop_addr') + ' ' + inputField.get('shop_addr_detail')
             }).then(({status,data})=>{
                 console.log(`${status} ${data}`)
                 if(status === 200 && data){

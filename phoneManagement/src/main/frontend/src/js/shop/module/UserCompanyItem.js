@@ -9,6 +9,7 @@ import useValidateInputField from "../../hook/useValidateInputField";
 import {SelectModal} from "../../common/modal/menu/SelectModal";
 import {telRegex} from "../../utils/regex";
 import {SelectIndexLayer} from "../../common/module/SelectIndexLayer";
+import {TelePhoneInput} from "../../common/inputbox/TelePhoneInput";
 
 export function UserCompanyItem({inputField, close}){
 
@@ -35,7 +36,13 @@ export function UserCompanyItem({inputField, close}){
                     <UserFormInput inputField={inputField} name='shop_addr_detail' placeholder='상세 주소를 입력해주세요.'/>
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.shop_tel}>
-                    <UserFormInput inputField={inputField} subject='매장 전화번호' name='shop_tel' placeholder='- 없이 숫자만 입력해주세요.'/>
+                    <label htmlFor='shop_tel' className={User.form_label}>매장 전화번호</label>
+                    <div className={`${User.form_inp} ${User.div}`}>
+                        <TelePhoneInput name='shop_tel' value={inputField.get('shop_tel')}
+                                        className={`inp ${User.inp}`}
+                                        placeholder='- 없이 숫자만 입력해주세요.'
+                                        onChange={inputField.handleInput}/>
+                    </div>
                 </UserFormItem>
             </UserFormList>
             {/*<div className={User.company_btn_box}>*/}

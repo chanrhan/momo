@@ -8,8 +8,10 @@ import {ObjectUtils} from "../../../utils/objectUtil";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {useArrayInputField} from "../../../hook/useArrayInputField";
+import {useSelector} from "react-redux";
 
 export function DashboardPostImage({}){
+    const userInfo = useSelector(state=>state.userReducer);
     const modal = useModal();
     const fileLoader = useFileLoader()
     const {pimgApi} = useApi();
@@ -23,7 +25,7 @@ export function DashboardPostImage({}){
 
     useEffect(() => {
         getPostImages()
-    }, []);
+    }, [userInfo]);
 
     const getPostImages = async ()=>{
         await pimgApi.getPostImageAll().then(async ({status,data})=>{

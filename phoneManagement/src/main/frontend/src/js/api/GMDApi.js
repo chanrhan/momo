@@ -36,6 +36,34 @@ function GMDApi(accessToken){
         getCombTp: async (keyword)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/comb-tp?keyword=${keyword}`, accessToken);
         },
+        // 추가
+        insertDeviceAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/device`, body, accessToken);
+        },
+        insertSecondDeviceAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/sec-device`, body, accessToken);
+        },
+        insertCtPlanAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/ct-plan`, body, accessToken);
+        },
+        insertInternetPlanAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/internet-plan`, body, accessToken);
+        },
+        insertTvPlanAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/tv-plan`, body, accessToken);
+        },
+        insertExsvcAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/exsvc`, body, accessToken);
+        },
+        insertSupportDivAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/sup`, body, accessToken);
+        },
+        insertAddDivAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/add`, body, accessToken);
+        },
+        insertCombTpAll: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/comb`, body, accessToken);
+        },
     }
 }
 

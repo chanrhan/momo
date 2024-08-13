@@ -62,7 +62,8 @@ export function PlanSearchModal(props){
                             <ul className="service_list">
                                 {
                                     items && items.map((v,i)=>{
-                                        return <CtPlanItem active={i === selected} key={i} plan_nm={v.ct_plan_nm} onClick={()=>{
+                                        return <CtPlanItem active={i === selected} key={i}
+                                                           plan_nm={v.name} onClick={()=>{
                                             setSelected(i)
                                         }}/>
                                     })

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +56,36 @@ public class GMDService {
         return gmdMapper.getAddDiv(currShopId, keyword);
     }
 
+    // 추가
 
-
+    public void insertDeviceAll(List<GMDVO> list){
+         gmdMapper.insertDeviceAll(list);
+    }
+    public void insertSecondDeviceAll(List<GMDVO> list){
+        gmdMapper.insertSecondDeviceAll(list);
+    }
+    public void insertCtPlanAll(List<GMDVO> list){
+        gmdMapper.insertCtPlanAll(list);
+    }
+    // 동적 추가
+    public void insertInternetPlanAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertInternetPlanAll(currShopId, list);
+    }
+    public void insertTvPlanAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertTvPlanAll(currShopId, list);
+    }
+    public void insertExtraServiceAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertExtraServiceAll(currShopId, list);
+    }
+    public void insertSupportDivAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertSupportDivAll(currShopId, list);
+    }
+    public void insertAddDivAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertAddDivAll(currShopId, list);
+    }
+    public void insertCombAll(int currShopId,List<GMDVO> list){
+        gmdMapper.insertCombAll(currShopId, list);
+    }
 
 
 }

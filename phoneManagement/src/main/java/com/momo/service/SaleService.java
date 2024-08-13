@@ -23,6 +23,10 @@ public class SaleService  {
 
 	// Common
 
+	public void insertPromiseContent(SalePromiseVO vo){
+		saleMapper.insertPromiseContent(vo);
+	}
+
 	public int insertSale(SaleVO vo) {
 		saleMapper.insertSale(vo);
 		int maxSaleId = saleMapper.getMaxSaleId(vo.getCurrShopId());

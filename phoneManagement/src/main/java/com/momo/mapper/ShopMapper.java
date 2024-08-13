@@ -16,13 +16,8 @@ public interface ShopMapper {
 	public List<Map<String,Object>> getShop(ShopVO vo);
 	public List<Map<String,Object>> getShopItems(String userId);
 
-
 	public void joinShop(String userId, int shopId);
-	// Corperation
-//	public boolean existBpNo(String bpNo);
-//	public int insertCorp(ShopVO vo);
-//	public int updateCorp(ShopVO vo);
-//	public int updateCorpPoint(int id, int amount);
-//	public int deleteCorp(int id);
-//	public List<Map<String,Object>> getCorp(ShopVO vo);
+
+	// 데이터 초기화
+//	public void initializeShopData()
 }

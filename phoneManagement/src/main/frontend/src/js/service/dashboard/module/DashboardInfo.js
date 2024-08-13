@@ -25,6 +25,10 @@ export function DashboardInfo({}){
 
     const [shopItems, setShopItems] = useState([]);
 
+    useEffect(() => {
+        setShopName(userInfo.shop_nm)
+    }, [userInfo]);
+
     const getShopAll = async ()=>{
         await shopApi.getShopAll().then(({status,data})=>{
             if(status === 200 && data){

@@ -21,6 +21,94 @@
         INSERT INTO tb_staff
             (shop_id, staff_id, role)
         VALUES (@next_shopId, #{userId}, 1);
+
+        set @size1 := (
+            select IFNULL(count(*),0)
+            from tb_internet_plan
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_internet_plan
+        select @next_shopId as shop_id,
+               (@size1 + row_number() over (order by internet_plan_id)) as idx,
+               provider,
+               internet_plan_nm,
+               now()
+        from tb_internet_plan
+        where shop_id = -1;
+
+        set @size2 := (
+            select IFNULL(count(*),0)
+            from tb_tv_plan
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_tv_plan
+        select @next_shopId as shop_id,
+               (@size2 + row_number() over (order by tv_plan_id)) as idx,
+               provider,
+               tv_plan_nm,
+               now()
+        from tb_tv_plan
+        where shop_id = -1;
+
+        set @size3 := (
+            select IFNULL(count(*),0)
+            from tb_extra_service
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_extra_service
+        select @next_shopId as shop_id,
+               (@size3 + row_number() over (order by exsvc_id)) as idx,
+               provider,
+               exsvc_nm,
+               now()
+        from tb_extra_service
+        where shop_id = -1;
+
+        set @size4 := (
+            select IFNULL(count(*),0)
+            from tb_sup_div
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_sup_div
+        select @next_shopId as shop_id,
+               (@size4 + row_number() over (order by sup_div_id)) as idx,
+               sup_div_nm,
+               now()
+        from tb_sup_div
+        where shop_id = -1;
+
+        set @size5 := (
+            select IFNULL(count(*),0)
+            from tb_add_div
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_add_div
+        select @next_shopId as shop_id,
+               (@size5 + row_number() over (order by add_div_id)) as idx,
+               add_div_nm,
+               now()
+        from tb_add_div
+        where shop_id = -1;
+
+        set @size6 := (
+            select IFNULL(count(*),0)
+            from tb_comb_tp
+            where shop_id=@next_shopId
+        );
+
+        insert into tb_comb_tp
+        select @next_shopId as shop_id,
+               (@size6 + row_number() over (order by comb_tp_id)) as idx,
+               comb_tp_nm,
+               now()
+        from tb_comb_tp
+        where shop_id = -1;
+
     </insert>
 
     <update id="updateShop" parameterType="com.momo.common.vo.UserVO">

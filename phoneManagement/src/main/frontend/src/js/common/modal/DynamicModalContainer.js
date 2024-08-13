@@ -35,10 +35,11 @@ import {ChargePointModal} from "../../profile/module/ChargePointModal";
 import {PaymentCardModal} from "../../profile/module/PaymentCardModal";
 import {UpdatePasswordModal} from "../../profile/module/UpdatePasswordModal";
 import {NameCardModal} from "../../profile/module/NameCardModal";
+import {DynamicSelectModal} from "./DynamicSelectModal";
 
 const MODAL_COMPONENTS = {
     // common
-    // DynamicSelect: DynamicSelectLayer,
+    DynamicSelect: DynamicSelectModal,
     BulkUpload: BulkUploadModal,
     Invite: InviteModal,
     Charge_Point: ChargePointModal,

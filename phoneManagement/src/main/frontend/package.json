@@ -52,7 +52,7 @@
     "workbox-streams": "^6.6.0",
     "xlsx": "^0.18.5"
   },
-  "proxy": "http://127.0.0.1:11040",
+  "proxy": "http://localhost:11040",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

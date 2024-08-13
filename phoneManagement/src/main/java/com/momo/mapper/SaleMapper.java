@@ -30,11 +30,7 @@ public interface SaleMapper{
 	public boolean isDuplicatedTel(SaleVO vo);
 	public String getSpecFilePath(int id);
 
-	public List<Map<String,Object>> getSaleUsedDeviceDetail(int currShopId, int saleId);
-	public List<Map<String,Object>> getSalePromiseDetail(int currShopId, int saleId);
-	public List<Map<String,Integer>> getSaleSupportDetail(int currShopId, int saleId);
-	public List<Map<String,Integer>> getSaleAddDetail(int currShopId, int saleId);
-	public List<Map<String,Object>> getSaleCardDetail(int currShopId, int saleId);
+	public void insertPromiseContent(SalePromiseVO vo);
 
 	public int insertSalePromise(int currShopId, int saleId, List<SalePromiseVO> list);
 	public int insertSaleSupport(int currShopId, int saleId, List<SaleSupportVO> list);

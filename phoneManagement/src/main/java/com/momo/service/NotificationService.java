@@ -96,6 +96,6 @@ public class NotificationService  {
 				.build();
 
 		notificationMapper.insertNotification(vo);
-		notificationEmitter.sendToClient(receiverId, "notif", data);
+//		notificationEmitter.sendToClient(receiverId, "notif", data);
 	}
 }

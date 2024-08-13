@@ -45,9 +45,10 @@ public class WebSecurityConfig {
 				// Stomp는 아예 에러 메시지 조차 뜨지 않아서 힘들었다..
 				.requestMatchers("/api/v1/public/**","/api/v1/auth/**","/api/v1/test/**",
 //						"/api/v1/gmd/**",
-						"/sse/**","/ws/**")
+						"/sse/**","/ws/**","/**")
 				.permitAll()
-				.anyRequest().authenticated());
+				.requestMatchers("/api/v1/**")
+				.authenticated());
 //		http.formLogin(formLogin->formLogin.);
 		// csrf는 토큰을 발행하여 세션으로 등록하는데
 		// h2-console은 이러한 기능들이 없기 떄문에 403 오류가 발생하게 된다.
