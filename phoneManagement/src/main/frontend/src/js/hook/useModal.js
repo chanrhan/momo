@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {closeModal, openModal} from "../store/slices/modalSlice";
+import {closeModal, getStackSize, hasModal, openModal} from "../store/slices/modalSlice";
 import {ModalType} from "../common/modal/ModalType";
 
 function useModal(){
@@ -14,9 +14,14 @@ function useModal(){
         dispatch(closeModal(modalName));
     }
 
+    const hasModal = ()=>{
+        return getStackSize();
+    }
+
     return {
         openModal: handleOpenModal,
-        closeModal: handleCloseModal
+        closeModal: handleCloseModal,
+        hasModal
     }
 }
 

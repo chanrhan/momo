@@ -16,14 +16,14 @@ public class GMDService {
     private final GMDMapper gmdMapper;
 
     // 정적 목록
-    public List<Map<String,Object>> getDevice(String keyword, Integer provider){
+    public Map<String,Object> getDevice(String keyword, Integer provider){
         return gmdMapper.getDevice(keyword, provider);
     }
 
-    public List<Map<String,Object>> getSecondDevice(String keyword, Integer provider){
+    public Map<String,Object> getSecondDevice(String keyword, Integer provider){
         return gmdMapper.getSecondDevice(keyword,provider);
     }
-    public List<Map<String,Object>> getCtPlan(String keyword, Integer provider){
+    public Map<String,Object> getCtPlan(String keyword, Integer provider){
         return gmdMapper.getCtPlan(keyword,provider);
     }
 
@@ -32,27 +32,27 @@ public class GMDService {
     }
 
     // 동적 목록
-    public List<Map<String,Object>> getExtraService(int currShopId, String keyword, Integer provider){
+    public Map<String,Object> getExtraService(int currShopId, String keyword, Integer provider){
         return gmdMapper.getExtraService(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getInternetPlan(int currShopId, String keyword, Integer provider){
+    public Map<String,Object> getInternetPlan(int currShopId, String keyword, Integer provider){
         return gmdMapper.getInternetPlan(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getTvPlan(int currShopId, String keyword, Integer provider){
+    public Map<String,Object> getTvPlan(int currShopId, String keyword, Integer provider){
         return gmdMapper.getTvPlan(currShopId, keyword,provider);
     }
 
-    public List<Map<String,Object>> getComb(int currShopId, String keyword){
+    public Map<String,Object> getComb(int currShopId, String keyword){
         return gmdMapper.getComb(currShopId, keyword);
     }
 
-    public List<Map<String,Object>> getSupportDiv(int currShopId, String keyword){
+    public Map<String,Object> getSupportDiv(int currShopId, String keyword){
         return gmdMapper.getSupportDiv(currShopId, keyword);
     }
 
-    public List<Map<String,Object>> getAddDiv(int currShopId, String keyword){
+    public Map<String,Object> getAddDiv(int currShopId, String keyword){
         return gmdMapper.getAddDiv(currShopId, keyword);
     }
 
@@ -87,5 +87,64 @@ public class GMDService {
         gmdMapper.insertCombAll(currShopId, list);
     }
 
+    // 삭제
+    public int deleteDeviceAll(List<Integer> list){
+        return gmdMapper.deleteDeviceAll(list);
+    }
+    public int deleteSecondDeviceAll(List<Integer> list){
+        return gmdMapper.deleteSecondDeviceAll(list);
+    }
+    public int deleteCtPlanAll(List<Integer> list){
+        return gmdMapper.deleteCtPlanAll(list);
+    }
+
+    public int deleteInternetPlanAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteInternetPlanAll(currShopId, list);
+    }
+    public int deleteTvPlanAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteTvPlanAll(currShopId, list);
+    }
+    public int deleteSupportDivAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteSupportDivAll(currShopId, list);
+    }
+    public int deleteAddDivAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteAddDivAll(currShopId, list);
+    }
+    public int deleteExsvcAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteExsvcAll(currShopId, list);
+    }
+    public int deleteCombTpAll(int currShopId, List<Integer> list){
+        return gmdMapper.deleteCombTpAll(currShopId, list);
+    }
+
+    // 수정
+    public int updateDevice(GMDVO vo){
+        return gmdMapper.updateDevice(vo);
+    }
+    public int updateSecondDevice(GMDVO vo){
+        return gmdMapper.updateSecondDevice(vo);
+    }
+    public int updateCtPlan(GMDVO vo){
+        return gmdMapper.updateCtPlan(vo);
+    }
+    //
+    public int updateInternetPlan(GMDVO vo){
+        return gmdMapper.updateInternetPlan(vo);
+    }
+    public int updateTvPlan(GMDVO vo){
+        return gmdMapper.updateTvPlan(vo);
+    }
+    public int updateSupportDiv(GMDVO vo){
+        return gmdMapper.updateSupportDiv(vo);
+    }
+    public int updateAddDiv(GMDVO vo){
+        return gmdMapper.updateAddDiv(vo);
+    }
+    public int updateExsvc(GMDVO vo){
+        return gmdMapper.updateExsvc(vo);
+    }
+    public int updateCombTp(GMDVO vo){
+        return gmdMapper.updateCombTp(vo);
+    }
 
 }

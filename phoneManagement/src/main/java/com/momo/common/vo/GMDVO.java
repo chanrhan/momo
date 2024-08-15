@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class GMDVO extends BaseVO {
     private Integer provider;
+    private Integer id;
 
     private String name;
     private String code;

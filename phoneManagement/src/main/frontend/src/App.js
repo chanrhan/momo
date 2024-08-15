@@ -46,6 +46,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import {AsyncTest} from "./js/test/AsyncTest";
 import {Allowance} from "./js/layout/Allowance";
 import useUserInfo from "./js/hook/useUserInfo";
+import {AdminLayout} from "./js/layout/AdminLayout";
 
 function App() {
     const userInfo = useUserInfo();
@@ -110,13 +111,13 @@ function App() {
                           <Allowance condition={()=>{
                               return userInfo.curr_shop_id === -1
                           }} redirectTo='/service'>
-                              <MainLayout/>
+                              <AdminLayout/>
                           </Allowance>
                       </Authorization>
                   }>
                       <Route path='/admin'>
                           <Route path='' element={<Administrator/>}/>
-                          <Route path='gmd' element={<MasterData/>}></Route>
+                          <Route path='gmd' element={<MasterData/>}/>
                       </Route>
                   </Route>
 

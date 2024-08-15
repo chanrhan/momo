@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import User from "../../css/user.module.css"
 import {ComponentStepper} from "../utils/ComponentStepper";
 import {UserFormBox} from "./module/UserFormBox";
@@ -12,6 +12,8 @@ import {ObjectUtils} from "../utils/objectUtil";
 import {useEffect, useState} from "react";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
+import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
+import {FindAccountBox} from "./module/FindAccountBox";
 
 export function FindPassword(){
     const inputField = useValidateInputField();
@@ -28,6 +30,7 @@ export function FindPassword(){
 
 function FindPasswordStep1({next, prev, inputField}){
     const {publicApi} = useApi();
+    const nav = useNavigate()
 
     const submit = async ()=>{
         if(ObjectUtils.isEmpty(inputField.input.findId)){
@@ -73,7 +76,9 @@ function FindPasswordStep1({next, prev, inputField}){
             </UserFormList>
 
             <div className={User.form_btn_box}>
-                {/*<button type="button" className={`btn_grey ${cmc(User.btn)} ${User.w50}`} onClick={prev}>이전</button>*/}
+                <button type="button" className={`btn_grey ${cmc(User.btn)} ${User.w50}`} onClick={()=>{
+                    nav('/account/login')
+                }}>이전</button>
                 <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
             </div>
         </UserFormBox>
@@ -83,104 +88,32 @@ function FindPasswordStep1({next, prev, inputField}){
 function FindPasswordStep2({next, prev, inputField}) {
     const {publicApi} = useApi();
     const modal = useModal();
-    const [byTel, setByTel] = useState(true)
-    const [isSent, setIsSent] = useState(false)
-    const [auth, setAuth] = useState(null)
+
 
     useEffect(() => {
         inputField.clearError();
         inputField.clearOf('auth_code')
     }, []);
 
-    const toggleRadio = ()=>{
-        let field = inputField.input[(byTel ? 'tel': 'email')];
-        // console.log(`field: ${field}`)
-        if(ObjectUtils.isEmpty(field)){
-            inputField.clearErrorOf(byTel ? 'tel': 'email')
-        }
-        inputField.clearOf('auth_code');
-        inputField.clearOf(byTel ? 'tel':'email')
-        setByTel(!byTel)
-        setIsSent(false)
-    }
 
-    const sendAuthNumber = ()=>{
-        if(inputField.validateOne('tel')){
-            setAuth("123")
-            modal.openModal(ModalType.SNACKBAR.Alert)
-        }
-    }
-
-    const matchAuthNumber = ()=>{
-        inputField.matchAuthNumber(auth)
-    }
-
-    const submit = async () => {
-        console.table(inputField.input)
-        const by = byTel ? 'tel':'email';
-        if(inputField.matchAuthNumber(auth) && inputField.validateOne(by)){
-            await publicApi.matchUserId(inputField.input.findId, by, inputField.input[by]).then(({status,data})=>{
-                if(status === 200){
-                    if(data === true){
-                        next();
-                    }
+    const submit = async (by) => {
+        await publicApi.matchUserId(inputField.input.findId, by, inputField.input[by]).then(({status,data})=>{
+            if(status === 200){
+                if(data === true){
+                    next();
+                }else{
+                    modal.openModal(ModalType.SNACKBAR.Alert, {
+                        msg: '정보가 일치하지 않습니다'
+                    })
                 }
-            })
-        }
+            }
+        })
     }
+
 
     return (
         <UserFormBox title='비밀번호 찾기' find={true}>
-            <ul className={cm(User.form_list, User.form_select)}>
-                <UserFormItem active={byTel} errorText={inputField.error.tel}>
-                    {/*활성화시 active 추가*/}
-                    <div className={`radio_box ${User.radio_box} ${User.div}`}>
-                        <input type="radio" name="radio" id="radio" checked={byTel}/>
-                        <label htmlFor="radio" className={User.form_label} onClick={toggleRadio}>휴대폰 번호로 찾기 ({inputField.input.telHint})</label>
-                    </div>
-                    <UserFormInput name='tel' inputField={inputField}>
-                        <button type="button" className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
-                                onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
-                    </UserFormInput>
-                    <UserFormInput name='auth_code' inputField={inputField}>
-                        <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
-                    </UserFormInput>
-                    {
-                        isSent && <div className={User.form_timer}>
-                                    <span className={User.timer_text}>유효시간 <span
-                                        className={User.timer_num}>05:00</span></span>
-                            <button type="button" className={User.timer_btn}>재발송</button>
-                        </div>
-                    }
-                </UserFormItem>
-                <UserFormItem active={!byTel} errorText={inputField.error.email}>
-                    {/*활성화시 active 추가*/}
-                    <div className={`radio_box ${User.radio_box} ${User.div}`}>
-                        <input type="radio" name="radio" id="radio" checked={!byTel}/>
-                        <label htmlFor="radio" className={User.form_label} onClick={toggleRadio}>이메일로 찾기 ({inputField.input.emailHint})</label>
-                    </div>
-                    <UserFormInput name='email' inputField={inputField}>
-                        <button type="button" className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
-                                onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
-                    </UserFormInput>
-                    <UserFormInput name='auth_code' inputField={inputField}>
-                        <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
-                    </UserFormInput>
-                    {
-                        isSent && <div className={User.form_timer}>
-                                    <span className={User.timer_text}>유효시간 <span
-                                        className={User.timer_num}>05:00</span></span>
-                            <button type="button" className={User.timer_btn}>재발송</button>
-                        </div>
-                    }
-                </UserFormItem>
-            </ul>
-            {/*<UserFormFindBox inputField={inputField}/>*/}
-
-            <div className={User.form_btn_box}>
-                <button type="button" className={`btn_grey ${cmc(User.btn)} ${User.w50}`} onClick={prev}>이전</button>
-                <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
-            </div>
+            <FindAccountBox inputField={inputField} onSubmit={submit} onPrev={prev}/>
         </UserFormBox>
     )
 }
@@ -189,8 +122,8 @@ function FindPasswordStep3({prev, inputField}) {
     const {publicApi} = useApi()
 
 
-    const submit = async ()=>{
-        if(inputField.validateAll() && inputField.matchPassword()){
+    const submit = async () => {
+        if (inputField.validateAll() && inputField.matchPassword()) {
             await publicApi.getResetToken({
                 id: inputField.input.findId
             }).then(({status,data})=>{

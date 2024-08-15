@@ -33,11 +33,11 @@ function MainLayout(){
             <main>
                 <Sidebar/>
                 <div className={Layout.contents}>
-                    {
-                        userInfo.curr_shop_id === -1 ? <Outlet/>
-                            : <LayoutSelector approval_state={userInfo.approval_st}/>
-                    }
-
+                    {/*{*/}
+                    {/*    userInfo.curr_shop_id === -1 ? <Outlet/>*/}
+                    {/*        : <LayoutSelector approval_state={userInfo.approval_st}/>*/}
+                    {/*}*/}
+                    <LayoutSelector approval_state={userInfo.approval_st}/>
                     {/*{*/}
                     {/*    (userInfo && userInfo.approval_st && userInfo.approval_st !== 'NONE') ?*/}
                     {/*        <Outlet/> : <WaitingApproval/>*/}

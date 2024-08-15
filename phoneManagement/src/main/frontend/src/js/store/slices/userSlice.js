@@ -20,18 +20,10 @@ export const userSlice = createSlice({
         setUserInfo: (state, action)=>{
             state = action.payload;
             return state;
-            // let user = action.payload;
-            // state.id = user.id;
-            // state.name = user.name;
-            // state.role = user.role;
-            // state.nickname = user.nickname;
-            // state.tel = user.tel;
-            // state.email = user.email;
-            // state.corp_nm = user.corp_nm;
-            // state.shop_nm = user.shop_nm;
         },
         deleteUserInfo: (state)=>{
             state = initialState;
+            return state;
         }
     }
 });

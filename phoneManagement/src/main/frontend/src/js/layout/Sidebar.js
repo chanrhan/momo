@@ -4,9 +4,27 @@ import {useState} from "react";
 
 // import "../../css/user.module.css"
 
+const selectTab = (pathname)=>{
+    switch (pathname){
+        case '/service':
+            return -1;
+        case '/service/sale':
+            return 0;
+        case '/service/task':
+            return 1;
+        case '/service/communication':
+            return 2;
+        case '/service/analysis':
+            return 3;
+        default:
+            return -1;
+    }
+}
 
 export function Sidebar() {
-    const [tab, setTab] = useState(-1)
+    const pathname = window.location.pathname
+    const [tab, setTab] = useState(selectTab(pathname))
+
 
     return (
         <div className={Layout.lnb}>

@@ -4,7 +4,7 @@ import {UserFormItem} from "./module/UserFormItem";
 import {UserTermList} from "./module/UserTermList";
 import {UserFormInput} from "./module/UserFormInput";
 import useValidateInputField from "../hook/useValidateInputField";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import useApi from "../hook/useApi";
 import {setRefreshToken} from "../utils/Cookies";
 import {authActions} from "../store/slices/authSlice";
@@ -13,16 +13,41 @@ import {cm} from "../utils/cm";
 import {useDispatch} from "react-redux";
 import {StringUtils} from "../utils/StringUtils";
 import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
+import {PasswordInput} from "../common/inputbox/PasswordInput";
+import useModal from "../hook/useModal";
+import {ModalType} from "../common/modal/ModalType";
+
+const MINUTES_IN_MS = 5 * 60 * 1000;
+const INTERVAL = 1000;
 
 export function Signup(){
+    const modal = useModal();
     const {publicApi} = useApi();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
-    let auth = null;
+    const [authNumber, setAuthNumber] = useState(null)
 
     const [termList, setTermList] = useState(new Array(2).fill(false));
     const [isSent, setIsSent] = useState(false)
+    const [authenticated, setAuthenticated] = useState(false)
+
+    const [timeLeft, setTimeLeft] = useState(0)
+
+    useEffect(() => {
+        let timer = null;
+        if(timeLeft > 0){
+            timer = setInterval(()=>{
+                setTimeLeft(prev=>prev - INTERVAL);
+            }, INTERVAL)
+            if(timeLeft <= 0){
+                clearInterval(timer)
+            }
+        }
+        return ()=>{
+            clearInterval(timer)
+        }
+    }, [timeLeft]);
 
     const toggleTerm = (index)=>{
         // console.log(`key: ${index}`)
@@ -32,15 +57,26 @@ export function Signup(){
     }
 
     const sendAuthNumber = async ()=>{
-        setIsSent(true)
-        if(!inputField.error.tel && !ObjectUtils.isEmpty(inputField.input.tel)){
+        if(inputField.validateOne('tel')){
+            setAuthenticated(false)
+            setIsSent(true)
             // 휴대폰번호로 인증번호 보내는 로직
-
+            setAuthNumber(123)
+            setTimeLeft(MINUTES_IN_MS)
         }
     }
 
     const matchAuthNumber = ()=>{
-        inputField.matchAuthNumber(auth);
+        if(inputField.matchAuthNumber(authNumber)){
+            setTimeLeft(0)
+            setAuthenticated(true)
+            // modal.openModal(ModalType.SNACKBAR.Info, {
+            //     msg: '인증되었습니다.'
+            // })
+        }else{
+            setAuthenticated(false)
+        }
+
     }
 
 
@@ -61,6 +97,12 @@ export function Signup(){
         }
     }
 
+    const getTimeerMS = ()=>{
+        const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
+        const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
+        return `${minutes}:${second}`
+    }
+
     return (
         <main>
             <div>
@@ -69,44 +111,74 @@ export function Signup(){
 
                     <ul className={User.form_list}>
                         <UserFormItem errorText={inputField.error.id}>
-                            <UserFormInput subject='아이디' name='id' inputField={inputField}/>
+                            <UserFormInput subject='아이디' name='id' inputField={inputField}
+                                           placeholder='아이디를 입력해주세요.' autoComplete='off'/>
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.pwd}>
-                            <UserFormInput subject='비밀번호' name='pwd' inputField={inputField} onChange={inputField.handlePassword}/>
+                            <label htmlFor='pwd' className={User.form_label}>비밀번호</label>
+                            <div className={`${User.form_inp} ${User.div} ${User.form_search_btn}`}>
+                                <PasswordInput name='pwd' value={inputField.get('pwd')}
+                                               className={`inp ${User.inp}`}
+                                       placeholder='비밀번호를 입력해주세요.'
+                                               autoComplete='new-password'
+                                       onChange={inputField.handlePassword}/>
+                            </div>
+                            {/*<UserFormInput subject='비밀번호' name='pwd' inputField={inputField} onChange={inputField.handlePassword}/>*/}
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.pwd2}>
-                            <UserFormInput subject='비밀번호 확인' name='pwd2' inputField={inputField} onChange={inputField.handleConfirmPassword}/>
+                            <label htmlFor='pwd' className={User.form_label}>비밀번호 확인</label>
+                            <div className={`${User.form_inp} ${User.div} ${User.form_search_btn}`}>
+                                <PasswordInput name='pwd2' value={inputField.get('pwd2')}
+                                               className={`inp ${User.inp}`}
+                                               placeholder='비밀번호를 한 번 더 입력해주세요.'
+                                               onChange={inputField.handleConfirmPassword}/>
+                            </div>
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.name}>
-                            <UserFormInput subject='이름' name='name' inputField={inputField}/>
+                            <UserFormInput subject='이름' name='name' inputField={inputField}
+                                           placeholder='이름을 입력해주세요'/>
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.email}>
-                            <UserFormInput subject='이메일' name='email' inputField={inputField}/>
+                            <UserFormInput subject='이메일' name='email' inputField={inputField}
+                                           placeholder='이메일을 입력해주세요'/>
                         </UserFormItem>
                         <UserFormItem errorText={inputField.error.tel}>
-                            <label htmlFor='tel' className={User.form_label}>휴대폰 번호</label>
-                            <div className={`${User.form_inp} ${User.div}`}>
-                                <TelePhoneInput name='tel' value={inputField.get('tel')}
-                                                className={`inp ${User.inp}`} placeholder=''
-                                                onChange={inputField.handleInput}/>
-                                <button type="button"
-                                        className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
-                                        onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
+                        <label htmlFor='tel' className={User.form_label}>휴대폰 번호</label>
+                        <div className={`${User.form_inp} ${User.div}`}>
+                            <TelePhoneInput name='tel' value={inputField.get('tel')}
+                                            className={`inp ${User.inp}`} placeholder='휴대폰 번호를 입력해주세요'
+                                            onChange={e=>{
+                                                inputField.handleInput(e)
+                                                setAuthNumber(null)
+                                                setTimeLeft(0)
+                                                setIsSent(false)
+                                                setAuthenticated(false)
+                                            }}/>
+                            <button type="button"
+                                    className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
+                                    onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
+                        </div>
+                        {/*<UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>*/}
+
+                        {/*</UserFormInput>*/}
+                        <UserFormInput name='auth_code' inputField={inputField} placeholder='인증번호를 입력해주세요'
+                                       readOnly={authenticated}>
+                            <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
+                        </UserFormInput>
+                        {
+                            isSent && <div className={User.form_timer}>
+                                {
+                                    authenticated ? <span className={User.timer_text}>인증되었습니다!</span>
+                                        : <>
+                                            <span className={User.timer_text}>유효시간 <span
+                                                className={User.timer_num}>{getTimeerMS()}</span></span>
+                                            <button type="button" className={User.timer_btn}
+                                                    onClick={sendAuthNumber}>재발송
+                                            </button>
+                                        </>
+                                }
                             </div>
-                            {/*<UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>*/}
-
-                            {/*</UserFormInput>*/}
-                            <UserFormInput name='auth_code' inputField={inputField}>
-                                <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
-                            </UserFormInput>
-                            {
-                                isSent && <div className={User.form_timer}>
-                                    <span className={User.timer_text}>유효시간 <span
-                                        className={User.timer_num}>05:00</span></span>
-                                    <button type="button" className={User.timer_btn}>재발송</button>
-                                </div>
-                            }
-
+                        }
                         </UserFormItem>
                     </ul>
 

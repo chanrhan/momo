@@ -34,13 +34,28 @@
         with sale as (
             select s.*,
                    IF(device_id is not null, true, false) as ct,
-                   IF(wt_cms > 0, true, false) as wt,
+                   IF(wt_cms > 0 and (internet_plan is not null or tv_plan is not null), true, false) as wt,
                    IF(s.sd_id is not null, true, false) as sd,
                 (
                     select device_nm
                     from tb_device
                     where device_id=s.device_id
                     ) as device_nm,
+                (
+                select device_cd
+                from tb_device
+                where device_id=s.device_id
+                ) as device_cd,
+                (
+                select ct_plan_nm
+                from tb_ct_plan
+                where ct_plan_id=s.ct_actv_plan
+                ) as ct_actv_plan_nm,
+                (
+                select ct_plan_nm
+                from tb_ct_plan
+                where ct_plan_id=s.ct_dec_plan
+                ) as ct_dec_plan_nm,
                 ac.name as seller_nm,
                 ac.pfp as seller_pfp
             from tb_sale s
@@ -104,25 +119,29 @@
     <select id="getSaleOne">
         with sup as (
             select json_arrayagg(json_object(
-                    'name',sp.sup_div_nm,
-                    'div',sup_div,
+                    'name',IFNULL(sp.sup_div_nm, '삭제된 항목'),
+                    'div',IF(sp.sup_div_nm is null, 0, sup_div),
                     'amount',sup_amount
              ))
             from tb_sale_support ss
-            left outer join tb_sup_div sp on sp.sup_div_id=ss.sup_id
+            left outer join tb_sup_div sp on sp.sup_div_id=ss.sup_div and
+                                             sp.shop_id=#{currShopId}
             where ss.shop_id=#{currShopId} and
-                sale_id=#{saleId}
+                sale_id=#{saleId} and
+                ss.sup_div is not null
             order by sup_id
         ), addition as (
             select json_arrayagg(json_object(
-                    'name', ad.add_div_nm,
-                    'div',add_div,
+                    'name', IFNULL(ad.add_div_nm, '삭제된 항목'),
+                    'div',IF(add_div_nm is null, 0, add_div),
                     'amount',add_amount
                      ))
             from tb_sale_add sa
-            left outer join tb_add_div ad on ad.add_div_id=sa.add_id
+            left outer join tb_add_div ad on ad.add_div_id=sa.add_div and
+                                             ad.shop_id=#{currShopId}
             where sa.shop_id=#{currShopId} and
-                sale_id=#{saleId}
+                sale_id=#{saleId} and
+                sa.add_div is not null
             order by add_id
         ), promise as (
             select json_arrayagg(json_object(

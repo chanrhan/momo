@@ -65,7 +65,7 @@ public class ShopService {
 		StringBuilder sb = new StringBuilder();
 		sb.append(senderName).append("님의 매장 가입 요청입니다.");
 
-		notificationService.sendMessage(userId, receiverId, sb.toString());
+		notificationService.sendRequest(userId, receiverId, sb.toString());
 		return true;
 	}
 

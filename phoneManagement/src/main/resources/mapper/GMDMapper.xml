@@ -5,49 +5,75 @@
 <mapper namespace="com.momo.mapper.GMDMapper">
 <!--    정적 목록-->
     <select id="getDevice">
-        select device_id as id,
-                device_nm as name,
-                device_cd as code,
-                provider
-        from    tb_device
-        where
-        <if test="keyword != null and !keyword.equals('')">
+        with item as (
+            select JSON_ARRAYAGG(json_object(
+                                 'id',device_id,
+                                 'name',device_nm,
+                                 'code',device_cd,
+                                 'provider',provider
+        ))
+            from    tb_device
+            where
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                device_cd like '%${keyword}%' or
+                device_nm like '%${keyword}%'
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+            select IFNULL(count(*),0)
+            from tb_device
+        ) as total_cnt,
             (
-            device_cd like '%${keyword}%' or
-            device_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+                select *
+                from item
+        ) as list
     </select>
 
     <select id="getSecondDevice">
-        select sd_id as id,
-               sd_nm as name,
-               sd_cd as code,
-               provider
-        from    tb_second_device
-        where
-        <if test="keyword != null and !keyword.equals('')">
+        with item as (
+            select JSON_ARRAYAGG(JSON_OBJECT(
+                                 'id',sd_id,
+                                 'name',sd_nm,
+                                 'code',sd_cd,
+                                 'provider',provider
+        ))
+            from    tb_second_device
+            where
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                sd_cd like '%${keyword}%' or
+                sd_nm like '%${keyword}%'
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+            select IFNULL(count(*),0)
+            from tb_second_device
+        ) as total_cnt,
             (
-            sd_cd like '%${keyword}%' or
-            sd_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+                select *
+                from item
+        ) as list
     </select>
 
     <select id="getSecondDeviceById">
@@ -58,141 +84,234 @@
     </select>
 
     <select id="getCtPlan">
-        select ct_plan_id as id,
-        ct_plan_nm as name,
-        provider
-        from    tb_ct_plan
-        where
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            ct_plan_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',ct_plan_id,
+                                 'name',ct_plan_nm,
+                                 'provider',provider
+        ))
+            from    tb_ct_plan
+            where
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                ct_plan_nm like '%${keyword}%'
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_ct_plan
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
 <!--    동적 목록-->
     <select id="getExtraService" parameterType="com.momo.common.vo.GMDVO">
-        select exsvc_id as id,
-               exsvc_nm as name,
-               provider
-        from    tb_extra_service
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',exsvc_id,
+                                 'name',exsvc_nm,
+                                 'provider',provider
+        ))
+            from    tb_extra_service
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
                 exsvc_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-<!--        <if test="order != null and !order.equals('')">-->
-<!--            order by ${order} ${asc}-->
-<!--        </if>-->
-        limit 20
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_extra_service
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
     <select id="getInternetPlan">
-        select internet_plan_id as id,
-               internet_plan_nm as name,
-               provider
-        from    tb_internet_plan
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            internet_plan_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',internet_plan_id,
+                                 'name',internet_plan_nm,
+                                 'provider',provider
+        ))
+            from    tb_internet_plan
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                internet_plan_nm like '%${keyword}%'
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_internet_plan
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
     <select id="getTvPlan">
-        select tv_plan_id as id,
-                tv_plan_nm as name,
-                provider
-        from    tb_tv_plan
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            tv_plan_nm like '%${keyword}%'
-            ) and
-        </if>
-        <if test="provider != null and !provider.equals('')">
-            provider = #{provider} and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',tv_plan_id,
+                                 'name',tv_plan_nm,
+                                 'provider',provider
+        ))
+            from    tb_tv_plan
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                tv_plan_nm like '%${keyword}%'
+                ) and
+            </if>
+            <if test="provider != null and !provider.equals('')">
+                provider = #{provider} and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_tv_plan
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
     <select id="getComb">
-        select comb_tp_id as id,
-               comb_tp_nm as name
-        from    tb_comb_tp
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            comb_tp_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',comb_tp_id,
+                                 'name',comb_tp_nm
+        ))
+            from    tb_comb_tp
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                comb_tp_nm like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_comb_tp
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
     <select id="getSupportDiv">
-        select sup_div_id as id,
-               sup_div_nm as name
-        from    tb_sup_div
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            sup_div_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',sup_div_id,
+                                 'name',sup_div_nm
+        ))
+            from    tb_sup_div
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                sup_div_nm like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_sup_div
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
     <select id="getAddDiv">
-        select add_div_id as id,
-               add_div_nm as name
-        from    tb_add_div
-        where shop_id = #{currShopId} and
-        <if test="keyword != null and !keyword.equals('')">
-            (
-            add_div_nm like '%${keyword}%'
-            ) and
-        </if>
-        1=1
-        <!--        <if test="order != null and !order.equals('')">-->
-        <!--            order by ${order} ${asc}-->
-        <!--        </if>-->
-        limit 20
+        with item as (
+            select json_arrayagg(json_object(
+                                 'id',add_div_id,
+                                 'name',add_div_nm
+        ))
+            from    tb_add_div
+            where shop_id = #{currShopId} and
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                add_div_nm like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <!--        <if test="order != null and !order.equals('')">-->
+            <!--            order by ${order} ${asc}-->
+            <!--        </if>-->
+            limit 20
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from tb_add_div
+        ) as total_cnt,
+        (
+        select *
+        from item
+        ) as list
     </select>
 
+
+<!--    insert-->
     <insert id="insertDeviceAll">
         set @next_id := (
             select IFNULL(max(device_id),0)+1
@@ -319,5 +438,162 @@
         </foreach>
     </insert>
 
+<!--    delete-->
+    <delete id="deleteDeviceAll">
+        delete from tb_device
+        where
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            device_id=#{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteSecondDeviceAll">
+        delete from tb_second_device
+        where
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            sd_id=#{item}
+        </foreach>
+        )
+    </delete>
 
+    <delete id="deleteCtPlanAll">
+        delete from tb_ct_plan
+        where
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            ct_plan_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteInternetPlanAll">
+        delete from tb_internet_plan
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            internet_plan_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteTvPlanAll">
+        delete from tb_tv_plan
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            tv_plan_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteSupportDivAll">
+        delete from tb_sup_div
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            sup_div_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteAddDivAll">
+        delete from tb_add_div
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            add_div_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteExsvcAll">
+        delete from tb_extra_service
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            exsvc_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteCombTpAll">
+        delete from tb_comb_tp
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="list" index="index" item="item" open="" close="" separator="or">
+            comb_tp_id=#{item}
+        </foreach>
+        )
+    </delete>
+
+<!--    update-->
+    <update id="updateDevice">
+        update tb_device
+        set provider=#{provider},
+            device_cd=#{code},
+            device_nm=#{name}
+        where device_id=#{id}
+    </update>
+
+    <update id="updateSecondDevice">
+        update tb_second_device
+        set provider=#{provider},
+            sd_cd=#{code},
+            sd_nm=#{name}
+        where sd_id=#{id}
+    </update>
+
+    <update id="updateCtPlan">
+        update tb_ct_plan
+        set provider=#{provider},
+            ct_plan_nm=#{name}
+        where ct_plan_id=#{id}
+    </update>
+
+    <update id="updateInternetPlan">
+        update tb_internet_plan
+        set provider=#{provider},
+            internet_plan_nm=#{name}
+        where internet_plan_id=#{id} and
+              shop_id=#{currShopId}
+    </update>
+
+    <update id="updateTvPlan">
+        update tb_tv_plan
+        set provider=#{provider},
+            tv_plan_nm=#{name}
+        where tv_plan_id=#{id} and
+            shop_id=#{currShopId}
+    </update>
+
+    <update id="updateSupportDiv">
+        update tb_sup_div
+        set sup_div_nm=#{name}
+        where sup_div_id=#{id} and
+            shop_id=#{currShopId}
+    </update>
+
+    <update id="updateAddDiv">
+        update tb_add_div
+        set add_div_nm=#{name}
+        where add_div_id=#{id} and
+            shop_id=#{currShopId}
+    </update>
+
+    <update id="updateExsvc">
+        update tb_extra_service
+        set provider=#{provider},
+            exsvc_nm=#{name}
+        where exsvc_id=#{id} and
+            shop_id=#{currShopId}
+    </update>
+
+    <update id="updateCombTp">
+        update tb_comb_tp
+        set comb_tp_nm=#{name}
+        where comb_tp_id=#{id} and
+            shop_id=#{currShopId}
+    </update>
 </mapper>

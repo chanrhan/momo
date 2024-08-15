@@ -3,7 +3,7 @@ import Dashboard from "../../../css/dashboard.module.css";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {useEffect, useRef, useState} from "react";
 
-export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[], className, name, value, onChange, values, children}){
+export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[], buttonClassName, className, name, value, onChange, values, children, buttonStyle}){
     const [active, setActive ] = useState(false)
     const componentRef = useRef(null)
     const onclickRef = useRef()
@@ -93,7 +93,7 @@ export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[
 
     return (
         <>
-            <button type="button" className={`select_btn ${fromCssModule('select_btn')}`}
+            <button type="button" className={`select_btn ${buttonClassName} ${fromCssModule('select_btn')}`}
                     onClick={()=>{
                         setActive(!active)
                     }}>{getButtonName()}</button>

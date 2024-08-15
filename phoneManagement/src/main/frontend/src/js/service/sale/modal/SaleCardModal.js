@@ -79,7 +79,8 @@ function CardItem({index, inputField}){
                 <div className={User.form_inp}>
                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                         {/*<input type="hidden" id="card"/>*/}
-                        <SelectIndexLayer name='card_nm' cssModules={toCssModules(Popup, User)}
+                        <SelectIndexLayer buttonClassName={Popup.type2}
+                                          name='card_nm' cssModules={toCssModules(Popup, User)}
                                           value={LMD.card_nm[inputField.get(index, 'card_nm') ?? 0]}
                                           onChange={v => {
                                               inputField.put(index, 'card_nm', v)
@@ -93,7 +94,8 @@ function CardItem({index, inputField}){
                 <div className={cm(User.form_inp, Popup.card_form)}>
                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                         {/*<input type="hidden" id="card"/>*/}
-                        <SelectIndexLayer name='card_tp' cssModules={toCssModules(Popup, User)}
+                        <SelectIndexLayer buttonClassName={Popup.type2}
+                                          name='card_tp' cssModules={toCssModules(Popup, User)}
                                           value={LMD.card_tp[inputField.get(index, 'card_tp') ?? 0]}
                                           onChange={v => {
                                               inputField.put(index, 'card_tp', v)

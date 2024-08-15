@@ -6,7 +6,8 @@ import User from "../../../../css/user.module.css"
 import {cm, cmc, toCssModules} from "../../../utils/cm";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
-import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
+import {DynamicSelectButton} from "../../../common/module/DynamicSelectButton";
+import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 
 function SaleCombModal(props){
     const inputField = useObjectInputField({
@@ -43,7 +44,7 @@ function SaleCombModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(User.select_box, Popup.select_box)}`}>
                                         <input type="hidden" id="type"/>
-                                        <DynamicSelectLayer type={DYNAMIC_TYPE.comb_tp}/>
+                                        <DynamicSelectButton type={DYNAMIC_TYPE.comb_tp}/>
                                         {/*<SelectIndexLayer values={[1,2,3]} name='comb_tp' inputField={inputField} cssModules={toCssModules(Popup, User)}/>*/}
                                     </div>
                                 </div>

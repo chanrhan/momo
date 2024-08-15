@@ -21,6 +21,7 @@
         SELECT content,
                notif_id,
                read_st,
+               notif_tp as type,
                IF(date(send_dt) = current_date,true,false) as today,
             (
                TIMESTAMPDIFF(MINUTE, send_dt, current_timestamp)

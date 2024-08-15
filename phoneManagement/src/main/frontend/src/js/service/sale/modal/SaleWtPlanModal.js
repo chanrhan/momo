@@ -8,8 +8,9 @@ import {ModalType} from "../../../common/modal/ModalType";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {LMD} from "../../../common/LMD";
-import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
+import {DynamicSelectButton} from "../../../common/module/DynamicSelectButton";
 import {PriceInput} from "../../../common/inputbox/PriceInput";
+import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 
 export function SaleWtPlanModal(props){
     const inputField = useObjectInputField(props.data ?? {
@@ -69,8 +70,10 @@ export function SaleWtPlanModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id="net"/>
-                                        <DynamicSelectLayer initValue={inputField.get('internet_plan_nm')} type={DYNAMIC_TYPE.internet} provider={props.provider}
-                                                            onClick={({id,name})=>{
+                                        <DynamicSelectButton type={DYNAMIC_TYPE.internet_plan}
+                                                             provider={props.provider}
+                                                             value={inputField.get('internet_plan_nm')}
+                                                             onChange={({id,name})=>{
                                                                 inputField.put('internet_plan',id)
                                                                 inputField.put('internet_plan_nm',name)
                                         }}/>
@@ -82,8 +85,10 @@ export function SaleWtPlanModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id="tv"/>
-                                        <DynamicSelectLayer initValue={inputField.get('tv_plan_nm')} type={DYNAMIC_TYPE.tv} provider={props.provider}
-                                                            onClick={({id,name})=>{
+                                        <DynamicSelectButton type={DYNAMIC_TYPE.tv_plan}
+                                                             provider={props.provider}
+                                                             value={inputField.get('tv_plan_nm')}
+                                                             onChange={({id,name})=>{
                                             inputField.put('tv_plan',id)
                                             inputField.put('tv_plan_nm',name)
                                         }}/>

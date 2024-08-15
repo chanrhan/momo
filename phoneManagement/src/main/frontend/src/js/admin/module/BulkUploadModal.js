@@ -23,14 +23,19 @@ const HEADERS = [
     ['결합명'], // plan
 ]
 
+
 export function BulkUploadModal(props){
     const {gmdApi} = useApi();
     const modal = useModal()
-    const [header, setHeader] = useState(new Array(DEFAULT_HEADERS.length()).fill('empty'))
-    const [dataType, setDataType] = useState(0)
+    // const [header, setHeader] = useState(new Array(DEFAULT_HEADERS.length()).fill('empty'))
+    const [dataType, setDataType] = useState(props.type ?? 0)
     const [provider, setProvider] = useState(0)
 
     const [data, setData] = useState(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))
+
+    useEffect(() => {
+        console.table(data)
+    }, [data]);
 
     // useEffect(() => {
     //     setData(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))
@@ -51,48 +56,17 @@ export function BulkUploadModal(props){
             return v.name
         })
 
-        // console.table(body)
-        // return;
-        console.log(dataType)
-
-        switch (dataType){
-            case 0:
-                console.log(222)
-                res = await gmdApi.insertDeviceAll(body)
-                break;
-            case 1:
-                res = await gmdApi.insertSecondDeviceAll(body)
-                break;
-            case 2:
-                res = await gmdApi.insertCtPlanAll(body)
-                break;
-            case 3:
-                console.log(111)
-                res = await gmdApi.insertInternetPlanAll(body)
-                break;
-            case 4:
-                res = await gmdApi.insertTvPlanAll(body)
-                break;
-            case 5:
-                res = await gmdApi.insertExsvcAll(body)
-                break;
-            case 6:
-                res = await gmdApi.insertSupportDivAll(body)
-                break;
-            case 7:
-                res = await gmdApi.insertAddDivAll(body)
-                break;
-            case 8:
-                res = await gmdApi.insertCombTpAll(body)
-                break;
+        if(ObjectUtils.isEmptyArray(body)){
+            return;
         }
-
-        if(res !== null){
-            const {status,data} = res;
+        await gmdApi.insertAll(dataType, body).then(({status,data})=>{
             if(status === 200 && data){
-
+                setData(Array(20).fill(Array(HEADERS[dataType].length).fill('')))
+                modal.openModal(ModalType.SNACKBAR.Info, {
+                    msg: '추가되었습니다'
+                })
             }
-        }
+        })
     }
 
     const close = ()=>{

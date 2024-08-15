@@ -78,5 +78,20 @@ export const DateUtils = {
     getYearWeek: (date) => {
         const onejan = new Date(date.getFullYear(),0,1);
         return Math.ceil((((date - onejan) / 86400000) + onejan.getDay()+1)/7);
+    },
+    getMonthAndWeek: (year, weekNumber)=>{
+        // 주 번호에 해당하는 날짜 계산 (1월 1일부터 주 번호만큼 더함)
+        const firstDayOfYear = new Date(year, 0, 1); // 1월 1일
+        const daysOffset = (weekNumber - 1) * 7; // 주 번호에 따른 오프셋 계산
+        const weekStartDate = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + daysOffset));
+
+        // 해당 날짜의 월과 몇째 주인지 계산
+        const month = weekStartDate.getMonth() + 1; // 월 (0이 1월이므로 +1)
+        const firstDayOfMonth = new Date(weekStartDate.getFullYear(), weekStartDate.getMonth(), 1);
+        const dayOfWeek = firstDayOfMonth.getDay(); // 그 달의 첫 날의 요일 (0: 일요일, 1: 월요일, ...)
+        const adjustedDay = weekStartDate.getDate() + dayOfWeek - 1; // 첫 주 보정
+        const weekOfMonth = Math.ceil(adjustedDay / 7); // 몇째 주인지 계산
+
+        return { month, weekOfMonth };
     }
 }

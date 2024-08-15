@@ -24,20 +24,28 @@ public class GMDController {
     // 정적 목록
 
     // 핸드폰 기기
-    @GetMapping("/device")
-    public ResponseEntity<List<Map<String,Object>>> getDevice(@RequestParam(required = false)String keyword,
+    @GetMapping("")
+    public ResponseEntity<Map<String,Object>> getAll(HttpSession session,
+                                                        @RequestParam int type,
+                                                        @RequestParam(required = false)String keyword,
                                                               @RequestParam(required = false)Integer provider){
-        return ResponseEntity.ok(gmdService.getDevice(keyword, provider));
+        int currShopId = commonService.getCurrentShopId(session);
+        Map<String,Object> result = switch (type){
+            case 0 -> gmdService.getDevice(keyword, provider);
+            case 1 -> gmdService.getSecondDevice(keyword, provider);
+            case 2 -> gmdService.getCtPlan(keyword, provider);
+            //
+            case 3 -> gmdService.getInternetPlan(currShopId, keyword, provider);
+            case 4 -> gmdService.getTvPlan(currShopId, keyword, provider);
+            case 5 -> gmdService.getExtraService(currShopId, keyword, provider);
+            case 6 -> gmdService.getSupportDiv(currShopId, keyword);
+            case 7 -> gmdService.getAddDiv(currShopId, keyword);
+            case 8 -> gmdService.getComb(currShopId, keyword);
+            default -> null;
+        };
+        return ResponseEntity.ok(result);
     }
 
-
-
-    // 세컨 디바이스
-    @GetMapping("/sec-device")
-    public ResponseEntity<List<Map<String,Object>>> getSecondDevice(@RequestParam(required = false)String keyword,
-                                                                    @RequestParam(required = false)Integer provider){
-        return ResponseEntity.ok(gmdService.getSecondDevice(keyword,provider));
-    }
 
     // 세컨 디바이스 by ID
     @GetMapping("/sec-device/{id}")
@@ -45,127 +53,75 @@ public class GMDController {
         return ResponseEntity.ok(gmdService.getSecondDeviceById(id));
     }
 
-    // 무선 요금제
-    @GetMapping("/ct-plan")
-    public ResponseEntity<List<Map<String,Object>>> getCtPlan(@RequestParam(required = false)String keyword,
-                                                              @RequestParam(required = false)Integer provider){
-        return ResponseEntity.ok(gmdService.getCtPlan(keyword,provider));
-    }
-
-    // 동적 목록
-
-    // 부가서비스
-    @GetMapping("/exsvc")
-    public ResponseEntity<List<Map<String,Object>>> getExtraService(HttpSession session,
-                                                                    @RequestParam(required = false)String keyword,
-                                                                    @RequestParam(required = false)Integer provider){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getExtraService(currShopId, keyword,provider));
-    }
-
-    // 인터넷 요금제
-    @GetMapping("/internet-plan")
-    public ResponseEntity<List<Map<String,Object>>> getInternetPlan(HttpSession session,
-                                                                    @RequestParam(required = false)String keyword,
-                                                                    @RequestParam(required = false)Integer provider){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getInternetPlan(currShopId, keyword,provider));
-    }
-
-    // TV 요금제
-    @GetMapping("/tv-plan")
-    public ResponseEntity<List<Map<String,Object>>> getTvPlan(HttpSession session,
-                                                              @RequestParam(required = false)String keyword,
-                                                              @RequestParam(required = false)Integer provider){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getTvPlan(currShopId, keyword,provider));
-    }
-
-    // 결합
-    @GetMapping("/comb-tp")
-    public ResponseEntity<List<Map<String,Object>>> getComb(HttpSession session,
-                                                            @RequestParam(required = false)String keyword){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getComb(currShopId, keyword));
-    }
-
-    // 지원 구분
-    @GetMapping("/sup-div")
-    public ResponseEntity<List<Map<String,Object>>> getSupportDiv(HttpSession session,
-                                                                  @RequestParam(required = false)String keyword){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getSupportDiv(currShopId, keyword));
-    }
-
-    // 지원 구분
-    @GetMapping("/add-div")
-    public ResponseEntity<List<Map<String,Object>>> getAddDiv(HttpSession session,
-                                                              @RequestParam(required = false)String keyword){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(gmdService.getAddDiv(currShopId, keyword));
-    }
-
 
     // 추가
 
-    @PostMapping("/device")
-    public ResponseEntity<Boolean> addDevice(@RequestBody List<GMDVO> list){
-        gmdService.insertDeviceAll(list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/sec-device")
-    public ResponseEntity<Boolean> addSecondDeviceAll(@RequestBody List<GMDVO> list){
-        gmdService.insertSecondDeviceAll(list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/ct-plan")
-    public ResponseEntity<Boolean> addCtPlanAll(@RequestBody List<GMDVO> list){
-        gmdService.insertCtPlanAll(list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/internet-plan")
-    public ResponseEntity<Boolean> addInternetPlanAll(HttpSession session,
-                                                      @RequestBody List<GMDVO> list){
-        log.info("internet plan: {}", list);
+    @PostMapping("")
+    public ResponseEntity<Boolean> insertAll(HttpSession session,
+                                             @RequestParam int type,
+                                             @RequestBody List<GMDVO> list){
         int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertInternetPlanAll(currShopId, list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/tv-plan")
-    public ResponseEntity<Boolean> addTvPlanAll(HttpSession session,
-                                                @RequestBody List<GMDVO> list){
-        int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertTvPlanAll(currShopId, list);
+        switch (type){
+            case 0: gmdService.insertDeviceAll(list); break;
+            case 1: gmdService.insertSecondDeviceAll(list);  break;
+            case 2: gmdService.insertCtPlanAll(list); break;
+            //
+            case 3: gmdService.insertInternetPlanAll(currShopId, list); break;
+            case 4: gmdService.insertTvPlanAll(currShopId, list); break;
+            case 5: gmdService.insertExtraServiceAll(currShopId, list); break;
+            case 6: gmdService.insertSupportDivAll(currShopId, list); break;
+            case 7: gmdService.insertAddDivAll(currShopId, list); break;
+            case 8: gmdService.insertCombAll(currShopId, list); break;
+            default: return ResponseEntity.badRequest().build();
 
+        }
         return ResponseEntity.ok(true);
     }
-    @PostMapping("/exsvc")
-    public ResponseEntity<Boolean> addExsvcAll(HttpSession session,
-                                               @RequestBody List<GMDVO> list){
-        int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertExtraServiceAll(currShopId, list);
-        return ResponseEntity.ok(true);
+
+
+    // 수정
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateItem(HttpSession session,
+                                                   @RequestParam int type,
+                                                   @RequestBody GMDVO vo){
+        int currShopId = commonService.getCurrentShopId(session);
+        vo.setCurrShopId(currShopId);
+        int result = switch (type){
+            case 0 -> gmdService.updateDevice(vo);
+            case 1 -> gmdService.updateSecondDevice(vo);
+            case 2 -> gmdService.updateCtPlan(vo);
+            //
+            case 3 -> gmdService.updateInternetPlan(vo);
+            case 4 -> gmdService.updateTvPlan(vo);
+            case 5 -> gmdService.updateExsvc(vo);
+            case 6 -> gmdService.updateSupportDiv(vo);
+            case 7 -> gmdService.updateAddDiv(vo);
+            case 8 -> gmdService.updateCombTp(vo);
+            default -> 0;
+        };
+        return ResponseEntity.ok(result > 0);
     }
-    @PostMapping("/sup")
-    public ResponseEntity<Boolean> addSupportDivAll(HttpSession session,
-                                                    @RequestBody List<GMDVO> list){
-        int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertSupportDivAll(currShopId, list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/add")
-    public ResponseEntity<Boolean> addAddDivAll(HttpSession session,
-                                                @RequestBody List<GMDVO> list){
-        int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertAddDivAll(currShopId, list);
-        return ResponseEntity.ok(true);
-    }
-    @PostMapping("/comb")
-    public ResponseEntity<Boolean> addCombAll(HttpSession session,
-                                              @RequestBody List<GMDVO> list){
-        int currShopId  = commonService.getCurrentShopId(session);
-        gmdService.insertCombAll(currShopId, list);
-        return ResponseEntity.ok(true);
+
+    // 삭제
+    @PostMapping("/del")
+    public ResponseEntity<Boolean> deleteAll(HttpSession session,
+                                                   @RequestParam int type,
+                                                   @RequestBody List<Integer> list){
+        int currShopId = commonService.getCurrentShopId(session);
+        int result = switch (type){
+            case 0 -> gmdService.deleteDeviceAll(list);
+            case 1 -> gmdService.deleteSecondDeviceAll(list);
+            case 2 -> gmdService.deleteCtPlanAll(list);
+            //
+            case 3 -> gmdService.deleteInternetPlanAll(currShopId, list);
+            case 4 -> gmdService.deleteTvPlanAll(currShopId, list);
+            case 5 -> gmdService.deleteExsvcAll(currShopId, list);
+            case 6 -> gmdService.deleteSupportDivAll(currShopId, list);
+            case 7 -> gmdService.deleteAddDivAll(currShopId, list);
+            case 8 -> gmdService.deleteCombTpAll(currShopId, list);
+            default -> 0;
+        };
+        return ResponseEntity.ok(result > 0);
     }
 
 

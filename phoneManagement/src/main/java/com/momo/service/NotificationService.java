@@ -55,17 +55,23 @@ public class NotificationService  {
 		return notificationMapper.read(alarmId);
 	}
 
-	public void sendMessage(String senderId, String receiverId, String title, String content){
+//	public void sendMessage(String senderId, String receiverId, String title, String content){
+//		Map<String,Object> data = new HashMap<>();
+//		data.put("title", title);
+//		data.put("content", content);
+//		notify(senderId, receiverId, 0, data);
+//	}
+
+	public void sendRequest(String senderId, String receiverId, String content){
 		Map<String,Object> data = new HashMap<>();
-		data.put("title", title);
 		data.put("content", content);
-		notify(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, 1, data);
 	}
 
 	public void sendMessage(String senderId, String receiverId, String content){
 		Map<String,Object> data = new HashMap<>();
 		data.put("content", content);
-		notify(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, 0, data);
 	}
 
 //	public void approvalRequestToReps(String senderId, int corpId, int shopId){
@@ -82,16 +88,16 @@ public class NotificationService  {
 	}
 
 	// Private
-	private void notify(String senderId, String receiverId, String alertTp, Map<String,Object> data){
+	private void notify(String senderId, String receiverId, int type, Map<String,Object> data){
 		data.put("sender_id", senderId);
-		data.put("type", alertTp);
+		data.put("type", type);
 
 		String content = data.containsKey("content") ? data.get("content").toString() : null;
 
 		NotifVO vo = NotifVO.builder()
 				.senderId(senderId)
 				.receiverId(receiverId)
-				.noteTp(alertTp)
+				.noteTp(type)
 				.content(content)
 				.build();
 

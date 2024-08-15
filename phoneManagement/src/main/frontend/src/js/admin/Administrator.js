@@ -34,7 +34,7 @@ export function Administrator(){
     const getUserAll = async ()=>{
         await userApi.getUserAll(inputField.input).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
                 }
@@ -44,7 +44,7 @@ export function Administrator(){
 
                     getProfimeImages(parsed).then((data)=>{
                         if(data){
-                            console.table(data)
+                            // console.table(data)
                             setProfileImages(data)
                         }
                     })
@@ -76,9 +76,9 @@ export function Administrator(){
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
                 <h2 className={Layout.sub_title}>관리자 페이지</h2>
-                <button type='button' className={cmc(Layout.sub_head_btn)} onClick={()=>{
-                    nav('/admin/gmd')
-                }}>동적 데이터 관리</button>
+                {/*<button type='button' className={cmc(Layout.sub_head_btn)} onClick={()=>{*/}
+                {/*    nav('/admin/gmd')*/}
+                {/*}}>동적 데이터 관리</button>*/}
             </div>
 
 

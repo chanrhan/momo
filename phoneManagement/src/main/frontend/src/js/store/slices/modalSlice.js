@@ -16,9 +16,12 @@ const modalSlice = createSlice({
         closeModal: (state, action)=>{
             const modalName = action.payload;
             return state.filter(value=>(value.modalName !== modalName));
+        },
+        getStackSize: (state)=>{
+            return state && state.length > 0
         }
     }
 });
 
 export const modalReducer = modalSlice.reducer;
-export const {openModal, closeModal} = modalSlice.actions;
+export const {openModal, closeModal, getStackSize} = modalSlice.actions;

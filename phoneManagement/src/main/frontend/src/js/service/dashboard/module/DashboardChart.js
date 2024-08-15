@@ -150,103 +150,6 @@ export function DashboardChart({userInfo}){
         }
     }
 
-    // const getGraph = async (range)=>{
-    //     let rst = null;
-    //
-    //     let fromDate = new Date();
-    //     let body = null;
-    //     switch (tab2){
-    //         // day
-    //         case 0:
-    //             fromDate.setDate(day-range);
-    //             body = {
-    //                 from_ymd: DateUtils.formatYYMMdd(fromDate.getFullYear(), fromDate.getMonth()+1, fromDate.getDate()),
-    //                 to_ymd: DateUtils.formatYYMMdd(year, month, day-1)
-    //             }
-    //             switch (tab1){
-    //                 case 0:
-    //                     rst = await saleApi.getCtGraphByDay(body);
-    //                     break;
-    //                 case 1:
-    //                     rst = await saleApi.getInternetGraphByDay(body);
-    //                     break;
-    //                 case 2:
-    //                     rst = await saleApi.getTvGraphByDay(body);
-    //                     break;
-    //                 case 3:
-    //                     rst = await saleApi.getTotalCmsGraphByDay(body);
-    //                     break;
-    //                 case 4:
-    //                     rst = await saleApi.getAvgCmsGraphByDay(body);
-    //                     break;
-    //             }
-    //             setGraphLabel(getDayLabelArray(fromDate, today));
-    //             break;
-    //         // week
-    //         case 1:
-    //             fromDate.setDate(day-(range*7));
-    //             console.log(fromDate)
-    //             body = {
-    //                 from_ymd: DateUtils.formatYYMMdd(fromDate.getFullYear(), fromDate.getMonth()+1, fromDate.getDate()),
-    //                 to_ymd: DateUtils.formatYYMMdd(year, month, day)
-    //             }
-    //             switch (tab1){
-    //                 case 0:
-    //                     rst = await saleApi.getCtGraphByWeek(body);
-    //                     break;
-    //                 case 1:
-    //                     rst = await saleApi.getInternetGraphByWeek(body);
-    //                     break;
-    //                 case 2:
-    //                     rst = await saleApi.getTvGraphByWeek(body);
-    //                     break;
-    //                 case 3:
-    //                     rst = await saleApi.getTotalCmsGraphByWeek(body);
-    //                     break;
-    //                 case 4:
-    //                     rst = await saleApi.getAvgCmsGraphByWeek(body);
-    //                     break;
-    //             }
-    //             setGraphLabel(getWeekLabelArray(fromDate, today));
-    //             break;
-    //         // month
-    //         case 2:
-    //             fromDate.setMonth(today.getMonth() - range);
-    //             console.log(fromDate)
-    //             body = {
-    //                 from_ymd: DateUtils.formatYYMMdd(fromDate.getFullYear(), fromDate.getMonth()+1, 1),
-    //                 to_ymd: DateUtils.formatYYMMdd(year, month-1, 1)
-    //             }
-    //             switch (tab1){
-    //                 case 0:
-    //                     rst = await saleApi.getCtGraphByMonth(body);
-    //                     break;
-    //                 case 1:
-    //                     rst = await saleApi.getInternetGraphByMonth(body);
-    //                     break;
-    //                 case 2:
-    //                     rst = await saleApi.getTvGraphByMonth(body);
-    //                     break;
-    //                 case 3:
-    //                     rst = await saleApi.getTotalCmsGraphByMonth(body);
-    //                     break;
-    //                 case 4:
-    //                     rst = await saleApi.getAvgCmsGraphByMonth(body);
-    //                     break;
-    //             }
-    //             setGraphLabel(getMonthLabelArray(fromDate, today));
-    //             break;
-    //     }
-    //
-    //     if(rst != null){
-    //         const {status, data} = rst;
-    //         if(status === 200 && data){
-    //             console.table(data)
-    //             setGraphData(data)
-    //         }
-    //     }
-    // }
-
     const getDayLabelArray = (fromDate, toDate)=>{
         const startDate = new Date(fromDate);
         const endDate = new Date(toDate);
@@ -269,7 +172,8 @@ export function DashboardChart({userInfo}){
 
         let arr = [];
         while(startDate <= endDate){
-            arr.push(`${DateUtils.getYearWeek(startDate)}주`);
+            const {month, weekOfMonth} = DateUtils.getMonthAndWeek(startDate.getFullYear(), DateUtils.getYearWeek(startDate))
+            arr.push(`${month}월 ${weekOfMonth}주`);
             startDate.setDate(startDate.getDate()+7);
         }
         // console.table(arr)

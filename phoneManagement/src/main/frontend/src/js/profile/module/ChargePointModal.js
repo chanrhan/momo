@@ -4,9 +4,24 @@ import Popup from "../../../css/popup.module.css"
 import {cm, cmc} from "../../utils/cm";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
+import {useObjectInputField} from "../../hook/useObjectInputField";
+import {NumberUtils} from "../../utils/NumberUtils";
+import {useState} from "react";
+import {SelectIndexLayer} from "../../common/module/SelectIndexLayer";
+import {ObjectUtils} from "../../utils/objectUtil";
+
+const AUTO_CHARGE_AMOUNTS = [
+    '10,000','20,000','50,000','100,000'
+]
 
 export function ChargePointModal(props){
     const modal = useModal()
+    const inputField = useObjectInputField({
+        trigger_amount: 0,
+        charge_amount: 0
+    });
+
+    const [autoCharge, setAutoCharge] = useState(false)
 
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Charge_Point)
@@ -33,18 +48,20 @@ export function ChargePointModal(props){
                             <ul className={Popup.card_info_list}>
                                 <li className={cm(Popup.price, Popup.card_info_item)}><span
                                     className={Popup.card_info_title}>연락 포인트</span>
-                                    <span className={Popup.span}>10,000₩</span>
+                                    <span className={Popup.span}>{NumberUtils.toPrice(inputField.get('point'))}₩</span>
                                 </li>
                                 <li className={cm(Popup.price, Popup.card_info_item)}><span
                                     className={cm(Popup.price, Popup.card_info_title)}>연락 잔액</span>
-                                    <span className={Popup.span}>20,000₩</span>
+                                    <span className={Popup.span}>{NumberUtils.toPrice(inputField.get('amount'))}₩</span>
                                 </li>
                                 <li className={cm(Popup.auto, Popup.card_info_item)}>
                                     <span className={Popup.card_info_title}>자동 충전 설정</span>
                                     <span className={cmc(Popup.switch)}>
                                         <input type="checkbox" id="switch" className={`switch_inp ${Popup.input}`}
-                                               checked/>
-                                        <label htmlFor="switch" className={Popup.label}>
+                                               checked={!autoCharge}/>
+                                        <label htmlFor="switch" className={Popup.label} onClick={()=>{
+                                            setAutoCharge(!autoCharge)
+                                        }}>
                                             {/*<span className={Popup.span}>on/off</span>*/}
                                         </label>
                                     </span>
@@ -59,32 +76,24 @@ export function ChargePointModal(props){
                                     <span className={Popup.card_info_title}>내 문자 금액이 다음보다 적으면</span>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id=""/>
-                                        <button type="button" className={cmc(User.select_btn)}>₩10,000</button>
-                                        <ul className={`select_layer`}>
-                                            {/*활성화시 active 추가 -->*/}
-                                            <li className="select_item">
-                                                <button type="button">₩10,000</button>
-                                            </li>
-                                            <li className="select_item">
-                                                <button type="button">₩10,000</button>
-                                            </li>
-                                        </ul>
+                                        <SelectIndexLayer cssModule={User}
+                                                          onChange={v=>{
+                                                              inputField.put('trigger_amount', v)
+                                                          }}
+                                                          value={`${AUTO_CHARGE_AMOUNTS[inputField.get('trigger_amount')]}₩`}
+                                                          values={AUTO_CHARGE_AMOUNTS}/>
                                     </div>
                                 </li>
                                 <li className={cm(Popup.select, Popup.card_info_item)}>
                                     <span className={Popup.card_info_title}>다음 금액을 잔액으로 자동 충전합니다.</span>
                                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                         <input type="hidden" id=""/>
-                                        <button type="button" className={cmc(User.select_btn)}>₩10,000</button>
-                                        <ul className="select_layer">
-                                            {/*활성화시 active 추가 -->*/}
-                                            <li className="select_item">
-                                                <button type="button">₩10,000</button>
-                                            </li>
-                                            <li className="select_item">
-                                                <button type="button">₩10,000</button>
-                                            </li>
-                                        </ul>
+                                        <SelectIndexLayer cssModule={User}
+                                                          onChange={v=>{
+                                                              inputField.put('charge_amount', v)
+                                                          }}
+                                                          value={`${AUTO_CHARGE_AMOUNTS[inputField.get('charge_amount')]}₩`}
+                                                          values={AUTO_CHARGE_AMOUNTS} />
                                     </div>
                                 </li>
                             </ul>

@@ -1,5 +1,5 @@
 import {LayerModal} from "../../../common/modal/LayerModal";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import useValidateInputField from "../../../hook/useValidateInputField";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
@@ -24,12 +24,14 @@ import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {useBitArray} from "../../../hook/useBitArray";
 import {SelectMapLayer} from "../../../common/module/SelectMapLayer";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
-import {DYNAMIC_TYPE, DynamicSelectLayer} from "../../../common/module/DynamicSelectLayer";
+import {DynamicSelectButton} from "../../../common/module/DynamicSelectButton";
 import {TelePhoneInput} from "../../../common/inputbox/TelePhoneInput";
 import {telRegex} from "../../../utils/regex";
 import {PriceInput} from "../../../common/inputbox/PriceInput";
 import modal from "bootstrap/js/src/modal";
-
+import {ScrollUtils} from "../../../utils/ScrollUtils";
+import {MouseEventUtils} from "../../../utils/MouseEventUtils";
+import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 
 const DYNAMIC_ITEMS = [
     'test 1', 'test 2', 'test 3'
@@ -42,6 +44,10 @@ function SaleDetailModal(props){
         {
           key: 'actv_dt',
           name: '개통일자'
+        },
+        {
+          key: 'provider',
+          value: userInfo.provider ?? 0
         },
         {
           key: 'cust_nm',
@@ -63,12 +69,14 @@ function SaleDetailModal(props){
     ]);
 
     const supportInputField = useObjectArrayInputField({
-        sup_div: 0,
-        sup_amount: 0
+        name: '선택없음',
+        div: 0,
+        amount: 0
     })
     const addInputField = useObjectArrayInputField({
-        add_div: 0,
-        add_amount: 0
+        name: '선택없음',
+        div: 0,
+        amount: 0
     })
 
     const promiseInputField = useObjectArrayInputField({
@@ -93,6 +101,8 @@ function SaleDetailModal(props){
     const [previewDocs, setPreviewDocs] = useState(null)
     const [previewEstimate, setPreviewEstimate] = useState(null)
 
+    const scrollRef = useRef();
+
 
     useEffect(()=>{
         if(props.sale_id){
@@ -100,7 +110,17 @@ function SaleDetailModal(props){
             getSaleDetail(props.sale_id);
         }
         getInnerStaff()
-    },[props])
+    },[props.sale_id])
+
+    useEffect(() => {
+        const target = scrollRef.current;
+        if(props.scrollable === false){
+            // target.style.position = 'fixed'
+            target.style.pointerEvents = 'none'
+        }else if(props.scrollable === true){
+            target.style.pointerEvents = 'auto'
+        }
+    }, [props.scrollable]);
 
     const getInitStaffName = ()=>{
         if(staff){
@@ -172,7 +192,11 @@ function SaleDetailModal(props){
                     supportInputField.putAll(JSON.parse(sup_list));
                 }
                 if(!ObjectUtils.isEmpty(add_list)){
-                    addInputField.putAll(JSON.parse(add_list));
+                    const parsed = JSON.parse(add_list);
+                    // console.table(parsed)
+                    if(!ObjectUtils.isEmptyMap(parsed)){
+                        addInputField.putAll(parsed);
+                    }
                 }
                 if(!ObjectUtils.isEmpty(card_list)){
                     bit = bit | (1 << 2)
@@ -258,10 +282,16 @@ function SaleDetailModal(props){
 
     const openSecondModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Second, {
-            data: checkListInputField.input.sd_id,
-            onSubmit: (id)=>{
+            data: {
+              name: checkListInputField.get('sd_nm'),
+              code: checkListInputField.get('sd_cd')
+            },
+            provider: inputField.get('provider'),
+            onSubmit: ({id, name, code})=>{
                 // console.log(`sec: ${id}`)
                 checkListInputField.put('sd_id',id)
+                checkListInputField.put('sd_nm',name)
+                checkListInputField.put('sd_cd',code)
                 if(id !== 0){
                     checkBit.on(1)
                 }else{
@@ -304,10 +334,13 @@ function SaleDetailModal(props){
 
     const openExsvcModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Exsvc, {
-            onSubmit: (id)=>{
+            data: checkListInputField.get('exsvc_nm'),
+            provider: inputField.get('provider'),
+            onSubmit: ({id, name})=>{
                 // console.log(`exsvc: ${id}`)
                 checkListInputField.put('exsvc_id',id)
-                if(id !== 0){
+                checkListInputField.put('exsvc_nm',name)
+                if(id !== null){
                     checkBit.on(4)
                 }else{
                     checkBit.off(4)
@@ -318,6 +351,7 @@ function SaleDetailModal(props){
 
     const openCombModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Comb, {
+            provider: inputField.get('provider'),
             onSubmit: ({comb_tp, comb_memo})=>{
                 // console.log(`comb: ${comb_tp} ${comb_memo}`)
                 checkListInputField.put('comb_tp',comb_tp)
@@ -417,8 +451,8 @@ function SaleDetailModal(props){
             sale_id: props.id,
             ...inputField.input,
             ...checkListInputField.input,
-            sup_list: supportInputField.input,
-            add_list: addInputField.input,
+            sup_list: supportInputField.input.filter(v=>v.div && v.div !== 0),
+            add_list: addInputField.input.filter(v=>v.div && v.div !== 0),
             total_cms: inputField.get('ct_cms') +
                 sumAdd() -
                 sumSup(),
@@ -472,12 +506,6 @@ function SaleDetailModal(props){
                 <div className={Popup.popup_title}>판매일보 추가</div>
 
                 <form className={cm(Popup.user_form, Popup.customer)}>
-                    {/*<div className={Popup.sale_hint}>*/}
-                    {/*    {*/}
-                    {/*        props.sale_id ? '기존 판매일보입니다' : '새로 등록하는 판매일보입니다'*/}
-                    {/*    }*/}
-                    {/*</div>*/}
-
                     <div className={Popup.popup_cont}>
                         <div className={Popup.customer_head}>
                             <div className={Popup.head_box} >
@@ -513,7 +541,7 @@ function SaleDetailModal(props){
                         </div>
 
                         <div className={cm(Popup.customer_body)}>
-                            <div className={cm(Popup.customer_scroll)}>
+                            <div className={cm(Popup.customer_scroll)} ref={scrollRef}>
                                 <div className={Popup.customer_box}>
                                     <ul className={Popup.customer_list}>
                                         <AddSaleItem errorText={inputField.error.cust_nm}>
@@ -623,8 +651,8 @@ function SaleDetailModal(props){
                                 </div>
 
                                 <div className={cm(Popup.customer_box, Popup.price)}>
-                                    <PriceHalfBox type={0} inputField={supportInputField}/>
-                                    <PriceHalfBox type={1} inputField={addInputField}/>
+                                    <PriceHalfBox type={0} inputField={supportInputField} provider={inputField.get('provider')}/>
+                                    <PriceHalfBox type={1} inputField={addInputField} provider={inputField.get('provider')}/>
 
                                     <div className={Popup.price_total}>
                                         <ul className='price_list'>
@@ -774,7 +802,7 @@ function SaleDetailModal(props){
     )
 }
 
-function PriceHalfBox({type=0, inputField}){
+function PriceHalfBox({type=0, inputField, provider}){
     const modal = useModal();
     // console.table(inputField.input)
 
@@ -808,22 +836,32 @@ function PriceHalfBox({type=0, inputField}){
                         return <tr key={i}>
                             <td className={Popup.td}>
                                 <div className={`${cmc(User.select_box, Popup.select_box)}`}>
+                                    <DynamicSelectButton type={DYNAMIC_TYPE.sup_div+type} provider={provider}
+                                                         value={v.name} onChange={v=>{
+                                                             inputField.put(i, 'div', v.id)
+                                                            inputField.put(i, 'name', v.name)
+                                    }}/>
                                     {/*<button type="button" className={Popup.dynamic_btn}*/}
                                     {/*        onClick={(e) => {*/}
-                                    {/*            const absoluteTop = window.pageYOffset + e.currentTarget.getBoundingClientRect().top;*/}
-                                    {/*            const absoluteLeft = window.pageXOffset + e.currentTarget.getBoundingClientRect().left;*/}
-
+                                    {/*            const {top, left} = MouseEventUtils.getAbsolutePos(e);*/}
                                     {/*            modal.openModal(ModalType.MENU.Dynamic_Select, {*/}
-                                    {/*                top: `${absoluteTop}px`,*/}
-                                    {/*                left: `${absoluteLeft}px`*/}
+                                    {/*                top: `${top}px`,*/}
+                                    {/*                left: `${left}px`,*/}
+                                    {/*                type: DYNAMIC_TYPE.sup_div+type,*/}
+                                    {/*                provider: provider,*/}
+                                    {/*                onSubmit: ({id, name})=>{*/}
+                                    {/*                    console.log(`${id} ${name}`)*/}
+                                    {/*                    inputField.put(i, 'div', id)*/}
+                                    {/*                    inputField.put(i, 'name', name)*/}
+                                    {/*                }*/}
                                     {/*            })*/}
                                     {/*        }}>{v.name}*/}
                                     {/*</button>*/}
-                                    <DynamicSelectLayer initValue={v.name}
-                                                        type={type} onClick={({id, name}) => {
-                                        // console.log(v)
-                                        inputField.put(i, `div`, id);
-                                    }}/>
+                                    {/*<DynamicSelectLayer initValue={v.name}*/}
+                                    {/*                    type={type} onClick={({id, name}) => {*/}
+                                    {/*    // console.log(v)*/}
+                                    {/*    inputField.put(i, `div`, id);*/}
+                                    {/*}}/>*/}
                                 </div>
                             </td>
                             <td className={Popup.td}>

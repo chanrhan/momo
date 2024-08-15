@@ -152,6 +152,7 @@ public class SaleController {
 											  @RequestPart(value = "sale") SaleVO vo,
 											  @RequestPart(value = "estimate", required = false) MultipartFile estimate,
 											  @RequestPart(value = "docs", required = false) MultipartFile docs) {
+		log.info("sale add: {}", vo);
 		if(estimate != null){
 			vo.setEstimate(imageService.upload("sale/spec", estimate));
 		}

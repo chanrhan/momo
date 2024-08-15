@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -148,9 +149,13 @@ public class PublicController {
 	 * }
 	 */
 	@GetMapping("/user/find")
-	public ResponseEntity<List<Map<String,Object>>> findUser(@RequestParam(required = false) String tel,
-										   @RequestParam(required = false) String email){
-		return ResponseEntity.ok(userService.findUserByTelEmail(tel, email));
+	public ResponseEntity<List<Map<String,Object>>> findUser(@RequestParam String by,
+										   @RequestParam(required = false) String data){
+		if("tel".equals(by)){
+			return ResponseEntity.ok(userService.findUserByTelEmail(data, ""));
+		}else{
+			return ResponseEntity.ok(userService.findUserByTelEmail("", data));
+		}
 	}
 
 

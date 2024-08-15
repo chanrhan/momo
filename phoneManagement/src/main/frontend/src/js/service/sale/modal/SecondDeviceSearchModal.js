@@ -6,38 +6,29 @@ import User from "../../../../css/user.module.css"
 import {cm, cmc} from "../../../utils/cm";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
+import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
+import {ObjectUtils} from "../../../utils/objectUtil";
 
-function SaleSecondModal(props){
+function SecondDeviceSearchModal(props){
     const modal = useModal();
     const {gmdApi} = useApi();
     const [keyword, setKeyword] = useState('')
-    const [selected, setSelected] = useState(-1)
+    const [selected, setSelected] = useState(null)
     const [items, setItems] = useState([])
 
-    const [orgItem, setOrgItem] = useState(null)
+    const [buttonName, setButtonName] = useState(props.data)
 
-    useEffect(() => {
-        if(props.data){
-            getSecondDeviceById(props.data);
-        }
-    }, []);
 
     useEffect(() => {
         getSecondDevice()
     }, [keyword]);
 
     const getSecondDevice = async ()=>{
-        await gmdApi.getSecondDevice(keyword).then(({status,data})=>{
+        await gmdApi.getData(DYNAMIC_TYPE.sec_device, keyword).then(({status,data})=>{
             if(status === 200 && data){
-                setItems(data)
-            }
-        })
-    }
-
-    const getSecondDeviceById = async (id)=>{
-        await gmdApi.getSecondDeviceById(id).then(({status,data})=>{
-            if(status === 200 && data){
-                setOrgItem(data)
+                if(data.list){
+                    setItems(JSON.parse(data.list))
+                }
             }
         })
     }
@@ -54,27 +45,15 @@ function SaleSecondModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
-            props.onSubmit(items[selected].sd_id)
+            props.onSubmit(items[selected])
         }
         close();
     }
 
-    const getDisplayedName = ()=>{
-        if(items && selected !== -1){
-            return items[selected].sd_nm;
-        }else if(orgItem){
-            return orgItem.sd_nm
-        }
-        return "선택없음"
-    }
 
-    const getDisplayedCode = ()=>{
-        if(items && selected !== -1){
-            return items[selected].sd_cd;
-        }else if(orgItem){
-            return orgItem.sd_cd
-        }
-        return ""
+    const selectItem = (i)=>{
+        setSelected(i)
+        setButtonName(items[i])
     }
 
 
@@ -89,8 +68,9 @@ function SaleSecondModal(props){
                 <form className={Popup.service}>
                     <div className={Popup.popup_cont}>
                         <div className={Popup.org_head_box}>
-                            <button className={Popup.button} type="button">{getDisplayedName()}<span
-                                className={Popup.span}>{getDisplayedCode()}</span>
+                            <button className={Popup.button} type="button">
+                                {!ObjectUtils.isEmpty(buttonName.name) ? buttonName.name : '선택없음'}
+                                <span className={Popup.span}>{buttonName.code}</span>
                             </button>
                         </div>
                         <div className={Popup.service_search}>
@@ -104,10 +84,15 @@ function SaleSecondModal(props){
                             <ul className="service_list">
                                 {
                                     items && items.map((v, i) => {
-                                        return <DeviceItem key={i} active={i === selected} device_nm={v.sd_nm}
-                                                           device_cd={v.sd_cd} onClick={() => {
-                                            setSelected(i)
-                                        }}/>
+                                        return <li key={i}
+                                                   className={`${cm(Popup.service_item)} ${i === selected && Popup.active}`}
+                                                   onClick={()=>{
+                                                       selectItem(i)
+                                                   }}>
+                                            <button className={Popup.button} type="button">{v.name}<span
+                                                className={Popup.span}>{v.code}</span>
+                                            </button>
+                                        </li>
                                     })
                                 }
                             </ul>
@@ -125,13 +110,4 @@ function SaleSecondModal(props){
     )
 }
 
-function DeviceItem({key, active, device_nm, device_cd, onClick}){
-    return (
-        <li key={key} className={`${cm(Popup.service_item)} ${active && Popup.active}`} onClick={onClick}>
-            <button className={Popup.button} type="button">{device_nm}<span className={Popup.span}>{device_cd}</span>
-            </button>
-        </li>
-    )
-}
-
-export default SaleSecondModal;
+export default SecondDeviceSearchModal;

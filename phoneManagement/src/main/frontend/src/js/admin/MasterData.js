@@ -33,64 +33,46 @@ export function MasterData(){
     const [tab, setTab] = useState(0)
     const [keywowrd, setKeyword] = useState('')
 
+    const [offset, setOffset] = useState(0)
+    const [limit, setLimit] = useState(20)
+
     const [items, setItems] = useState(null)
     const [totalCount, setTotalCount] = useState(0)
 
     useEffect(() => {
         getItems()
-    }, [tab]);
+    }, [tab, keywowrd]);
 
     const getItems = async ()=>{
-        let rst = null
-        switch (tab){
-            case 0:
-                rst = await gmdApi.getDevice(keywowrd);
-                break;
-            case 1:
-                rst = await gmdApi.getSecondDevice(keywowrd);
-                break;
-            case 2:
-                rst = await gmdApi.getCtPlan(keywowrd);
-                break;
-            case 3:
-                rst = await gmdApi.getInternetPlan(keywowrd);
-                break;
-            case 4:
-                rst = await gmdApi.getTvPlan(keywowrd);
-                break;
-            case 5:
-                rst = await gmdApi.getExtraService(keywowrd);
-                break;
-            case 6:
-                rst = await gmdApi.getSupportDiv(keywowrd);
-                break;
-            case 7:
-                rst = await gmdApi.getAddDiv(keywowrd);
-                break;
-            case 8:
-                rst = await gmdApi.getCombTp(keywowrd);
-                break;
-        }
-        if(rst !== null){
-            // console.table(rst)
-            if(rst.status === 200 && rst.data){
-                setItems(rst.data)
+        await gmdApi.getData(tab, keywowrd).then(({status,data})=>{
+            if(status === 200 && data){
+                console.table(data)
+                if(data.total_cnt){
+                    setTotalCount(data.total_cnt)
+                }
+                if(data.list){
+                    setItems(JSON.parse(data.list))
+                }else{
+                    setItems(null)
+                }
             }
-        }
+        })
     }
 
-    const addSale =()=>{
-        modal.openModal(ModalType.LAYER.Bulk_Upload)
+    const openBulkUploadModal =()=>{
+        modal.openModal(ModalType.LAYER.Bulk_Upload, {
+            type: tab
+        })
     }
 
     return (
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
                 <h2 className={Layout.sub_title}>동적 데이터 관리</h2>
-                <button type='button' className={cmc(Layout.sub_head_btn)} onClick={() => {
-                    nav('/admin')
-                }}>회원 관리
-                </button>
+                {/*<button type='button' className={cmc(Layout.sub_head_btn)} onClick={() => {*/}
+                {/*    nav('/admin')*/}
+                {/*}}>회원 관리*/}
+                {/*</button>*/}
             </div>
 
             <div className={Layout.sub_tab}>
@@ -106,18 +88,21 @@ export function MasterData(){
                             {/*<input type="text" className="inp date entered" placeholder="날짜 선택" value="최근 30일"/>*/}
                             {/*/!*입력시 entered 추가-->*!/*/}
                             {/*<button type="button" className="btn_all">전체 보기</button>*/}
-                            <button onClick={addSale} type="button"
+                            <button onClick={openBulkUploadModal} type="button"
                                     className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>데이터 추가
                             </button>
                         </div>
                         <div className={Board.board_head_group}>
                             <div className={Board.board_count}>
                             <span className={Board.count_text}>전체 <em className={Board.em}>{totalCount}</em>건</span>
-                                <span className={Board.count_text}><em className={Board.em}>3</em>건</span>
+                                <span className={Board.count_text}><em className={Board.em}>{items ? items.length : 0}</em>건</span>
                             </div>
 
                             <div className={Board.board_search}>
-                                <input className={Board.input} type="search" title="검색" id="board_search" placeholder="이름, 전화번호, 식별번호 검색"/>
+                                <input className={Board.input} type="search" value={keywowrd} onChange={e=>{
+                                    setKeyword(e.target.value)
+                                }} title="검색" id="board_search"
+                                       placeholder="이름, 전화번호, 식별번호 검색"/>
                                 <button className={Board.button} type="submit">검색</button>
                             </div>
 
@@ -140,7 +125,7 @@ export function MasterData(){
                     <Btbody br>
                         {
                             items && items.map((v,i)=> {
-                                return <tr key={i}>
+                                return <tr className={Board.tr} key={i}>
                                     <Btd checkbox/>
                                     {
                                        PROVIDER[tab] && <Btd>{LMD.provier[v.provider]}</Btd>

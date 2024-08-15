@@ -12,6 +12,7 @@ import {cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {useAuthentication} from "../hook/useAuthentication";
+import {PasswordInput} from "../common/inputbox/PasswordInput";
 
 function Login(){
     const dispatch = useDispatch();
@@ -79,8 +80,11 @@ function Login(){
                 </li>
                 <li className={`${User.form_item} ${inputField.error.password && cmc(User.error)}`}>
                     <label htmlFor="pw" className={User.form_label}>비밀번호</label>
-                    <div className={User.form_inp}>
-                        <input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>
+                    <div className={User.form_inp} style={{
+                        // display: 'inline-block'
+                    }}>
+                        <PasswordInput name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>
+                        {/*<input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>*/}
                     </div>
                     <p className={User.error_text}>{inputField.error.password}</p>
                 </li>

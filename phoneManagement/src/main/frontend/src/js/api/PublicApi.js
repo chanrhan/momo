@@ -16,8 +16,8 @@ function PublicApi(){
             return await axiosApi.post('/api/v1/public/signup', data);
         },
 
-        findUser : async (findBy, value)=>{
-            return await axiosApi.get(`/api/v1/public/user/find?${findBy}=${value}`, {});
+        findUser : async (by, data)=>{
+            return await axiosApi.get(`/api/v1/public/user/find?by=${by}&data=${data}`, {});
         },
         existUserId : async(id)=>{
             return await axiosApi.get(`/api/v1/public/user/id/${id}/exist`,{});

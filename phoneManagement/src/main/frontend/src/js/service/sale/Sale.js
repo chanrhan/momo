@@ -18,10 +18,13 @@ import {useBitArray} from "../../hook/useBitArray";
 import {ColumnSelectLayer} from "./module/ColumnSelectLayer";
 import {NumberUtils} from "../../utils/NumberUtils";
 import {ProfileTableColumn} from "./module/ProfileTableColumn";
+import {FILTER_INPUT_TYPE} from "./modal/SaleFilterModal";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
 ]
+
+const COLUMN_MAX_SIZE = Math.pow(2, (LMD.sale_column_vars.length))-1;
 
 export function Sale(){
     const modal = useModal();
@@ -38,15 +41,16 @@ export function Sale(){
 
     const user = useSelector(state=>state.userReducer)
 
-    const [saleItems, setSaleItems] = useState([])
+    const [saleItems, setSaleItems] = useState(null)
     const [allChecked, setAllChecked] = useState(false)
     const [checkedSale, setCheckedSale] = useState([])
 
     const [profileImages, setProfileImages] = useState([])
 
-    const columns = useBitArray(Math.pow(2, (LMD.sale_column_vars.length))-1);
+    const columns = useBitArray(COLUMN_MAX_SIZE);
 
     const getSale = async ()=>{
+        // console.table(inputField.input)
         // return;
         await saleApi.getSaleAll(inputField.input).then(async ({status,data})=>{
             if(status === 200 && data){
@@ -64,6 +68,10 @@ export function Sale(){
                             setProfileImages(data)
                         }
                     })
+                }else{
+                    setSaleItems(null)
+                    setCheckedSale(null)
+                    setProfileImages(null)
                 }
 
             }
@@ -126,14 +134,15 @@ export function Sale(){
     }
 
     const refresh = async()=>{
-        console.log('refresh')
+        // console.log('refresh')
         inputField.clear();
+        columns.setAll(COLUMN_MAX_SIZE)
     }
 
     const setOrder = async (idx)=>{
         inputField.put('order',idx);
         const nextAsc = !asc[idx];
-        console.log(`asc: ${nextAsc ? 1 : 0}`)
+        // console.log(`asc: ${nextAsc ? 1 : 0}`)
         inputField.put('asc',nextAsc);
 
         const copy = [...asc]
@@ -234,10 +243,25 @@ export function Sale(){
                                     className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>판매일보 추가
                             </button>
                         </div>
-                        <div>
+                        <div style={{
+                            marginTop: '5px'
+                            // float: "left",
+                            // display: "block"
+                        }}>
                             {
                                 inputField.input.filters && inputField.input.filters.map((v, i) => {
-                                    return <p>{LMD.filter_and[v.and]} {LMD.filter_type[v.type]} {LMD.filter_option[v.option]}</p>
+                                    return <p style={{
+                                        marginTop: '5px',
+                                        backgroundColor: 'rgb(239,239,239)',
+                                        minWidth: '200px',
+                                        maxWidth: '300px',
+                                        padding: '5px 10px 5px 10px',
+                                        border: `2px ${'#4275e8'} solid`,
+                                        borderRadius: '5px'
+                                        // display: "inline-block"
+                                    }} >{LMD.filter_and[v.and]} {LMD.filter_type[v.type]}:{LMD.filter_option[v.option]}: [{
+                                        !FILTER_INPUT_TYPE[v.type] ? v.target : FILTER_INPUT_TYPE[v.type][v.target]
+                                    }]</p>
                                 })
                             }
                         </div>
@@ -269,7 +293,8 @@ export function Sale(){
                     </Bthead>
                     <Btbody br>
                         {
-                            typeof saleItems === 'object' && saleItems.map((v1, i) => {
+                            saleItems && saleItems.map((v1, i) => {
+                                // console.table(v1)
                                 return <tr key={i} onClick={(e) => {
                                     openSaleDetail(v1.sale_id)
                                 }}>
@@ -277,8 +302,8 @@ export function Sale(){
                                         checkSale(i)
                                     }} checkbox/>
                                     {
-                                        columns.toArray().map((v2, j)=>{
-                                            return <TdChoice key={j} image={profileImages[i]} column_index={v2} data={v1}/>
+                                        columns.toArray() && columns.toArray().map((v2, j)=>{
+                                            return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
                                         })
                                     }
                                 </tr>

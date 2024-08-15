@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {createPortal} from "react-dom";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
@@ -9,7 +9,7 @@ import AddShopModal from "../../shop/modal/AddShopModal";
 import AlertModal from "./snackbar/AlertModal";
 import MenuModalTest from "../../test/MenuModalTest";
 import SaleDetailModal from "../../service/sale/modal/SaleDetailModal";
-import SaleSecondModal from "../../service/sale/modal/SaleSecondModal";
+import SecondDeviceSearchModal from "../../service/sale/modal/SecondDeviceSearchModal";
 import SaleCardModal from "../../service/sale/modal/SaleCardModal";
 import SaleCombModal from "../../service/sale/modal/SaleCombModal";
 import SaleExsvcModal from "../../service/sale/modal/SaleExsvcModal";
@@ -27,7 +27,7 @@ import {ReserveDateModal} from "../../service/sale/modal/ReserveDateModal";
 import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
-import {DynamicSelectLayer} from "../module/DynamicSelectLayer";
+import {DynamicSelectButton} from "../module/DynamicSelectButton";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
 import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
@@ -36,10 +36,13 @@ import {PaymentCardModal} from "../../profile/module/PaymentCardModal";
 import {UpdatePasswordModal} from "../../profile/module/UpdatePasswordModal";
 import {NameCardModal} from "../../profile/module/NameCardModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
+import {MoreOptionModal} from "./menu/MoreOptionModal";
+import {ScrollUtils} from "../../utils/ScrollUtils";
 
 const MODAL_COMPONENTS = {
     // common
     DynamicSelect: DynamicSelectModal,
+    MoreOption: MoreOptionModal,
     BulkUpload: BulkUploadModal,
     Invite: InviteModal,
     Charge_Point: ChargePointModal,
@@ -62,7 +65,7 @@ const MODAL_COMPONENTS = {
     MenuModalTest: MenuModalTest,
     // sale
     SaleDetail: SaleDetailModal,
-    SaleSecond: SaleSecondModal,
+    SaleSecond: SecondDeviceSearchModal,
     SaleCard: SaleCardModal,
     SaleComb: SaleCombModal,
     SaleExsvc: SaleExsvcModal,
@@ -92,6 +95,8 @@ function DynamicModalContainer(){
     const modalList = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
 
+    const [prevScrollY, setPrevScrollY] = useState(null)
+
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList)){
             return;
@@ -99,6 +104,7 @@ function DynamicModalContainer(){
         let timer = null;
         const {type, modalName} = modalList[modalList.length-1];
         if(type === 'MENU' || type === 'LAYER'){
+            setPrevScrollY( ScrollUtils.preventScroll(document.body))
             if(window.onclick == null){
                 timer = setTimeout(()=>{
                     // onclick 함수를 추가하자마자, 이게 호출된다
@@ -107,6 +113,7 @@ function DynamicModalContainer(){
                     window.onclick = e=>{
                         if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                             modal.closeModal(modalName);
+                            
                         }
                     }
                 }, 10);
@@ -115,6 +122,8 @@ function DynamicModalContainer(){
         return ()=>{
             clearTimeout(timer);
             window.onclick = null;
+            ScrollUtils.allowScroll(document.body, prevScrollY)
+            setPrevScrollY(null)
         }
     },[modalList])
 
@@ -128,11 +137,11 @@ function DynamicModalContainer(){
 
         if(index === modalList.length-1){
             if(type === 'MENU' || type === 'LAYER'){
-                return <ModalComponent modalRef={topComponentRef} key={modalName} {...props}/>
+                return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
             }
         }
 
-        return <ModalComponent key={modalName} {...props}/>
+        return <ModalComponent scrollable={false} key={modalName} {...props}/>
     });
 
 

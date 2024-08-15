@@ -118,24 +118,24 @@ function useValidateInputField(initialState) {
         }
     }
 
-    const matchAuthNumber = (auth) => {
+    const matchAuthNumber = (auth, by='tel') => {
         const {auth_code} = input;
         // console.log(`auth: ${auth}, auth_code: ${auth_code}`)
         if (ObjectUtils.isEmpty(auth)) {
-            handleError('tel', '먼저 인증번호를 발송해야 합니다')
+            handleError(by, '먼저 인증번호를 발송해야 합니다')
             return false;
         }
 
         if (ObjectUtils.isEmpty(auth_code)) {
-            handleError('tel', '인증번호를 입력해 주세요')
+            handleError(by, '인증번호를 입력해 주세요')
             return false;
         }
 
         if (auth != auth_code) {
-            handleError('tel', '인증번호가 일치하지 않습니다');
+            handleError(by, '인증번호가 일치하지 않습니다');
             return false;
         } else {
-            handleError('tel', null);
+            handleError(by, null);
             return true;
         }
     }

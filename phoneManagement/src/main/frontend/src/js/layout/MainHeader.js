@@ -90,6 +90,7 @@ export function MainHeader(){
 
 function NotificationListLayer({}){
     const {notifApi} = useApi()
+    const nav = useNavigate()
     const [items, setItems] = useState(null)
 
     const [active, setActive ] = useState(false)
@@ -173,12 +174,18 @@ function NotificationListLayer({}){
                     <ul className={Layout.alarm_list}>
                         {
                             items && items.filter(v=>v.today).map((v,i)=> {
-                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}>
-                                    <Link to="" className={Layout.a}>
+                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}
+                                           onClick={()=>{
+                                    console.log(v.type)
+                                    if(v.type === 1) {
+                                        nav('/staff')
+                                    }
+                                }}>
+                                    <div className={Layout.a}>
                                         <span className={Layout.alarm_img}><img src={alarmIcon2} alt=""/></span>
                                         <span className={Layout.alarm_text}>{v.content}</span>
                                         <span className={Layout.alarm_date}>{getTimeAgo(v.ago)} 전</span>
-                                    </Link>
+                                    </div>
                                 </li>
                             })
                         }
@@ -191,12 +198,19 @@ function NotificationListLayer({}){
                     <ul className={Layout.alarm_list}>
                         {
                             items && items.filter(v=>!v.today).map((v, i) => {
-                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}>
-                                <Link to="" className={Layout.a}>
+                                return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}
+                                           onClick={()=>{
+                                    console.log(v.type)
+                                    if(v.type === 1) {
+                                        nav('/staff')
+                                        setActive(false)
+                                    }
+                                }}>>
+                                <div className={Layout.a}>
                                         <span className={Layout.alarm_img}><img src={alarmIcon2} alt=""/></span>
                                         <span className={Layout.alarm_text}>{v.content}</span>
                                         <span className={Layout.alarm_date}>{getTimeAgo(v.ago)} 전</span>
-                                    </Link>
+                                    </div>
                                 </li>
                             })
                         }

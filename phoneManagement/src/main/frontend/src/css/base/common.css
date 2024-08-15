@@ -33,6 +33,23 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
 /*    border:2px solid #f34432;*/
 /*}*/
 
+/*password*/
+.visible {
+    position: absolute;
+    top: 17px;
+    right: 25px;
+    width: 26px;
+    height: 26px;
+    background: url(../../images/popup/popup_close.png) no-repeat center / 100%;
+}
+.visible.active{
+    position: absolute;
+    top: 17px;
+    right: 25px;
+    width: 26px;
+    height: 26px;
+    background: url(../../images/popup/check_add_icon.png) no-repeat center / 100%;
+}
 
 /* select */
 .select_box{position:relative;}
@@ -54,11 +71,14 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
     z-index: 99; /* chan:  layer가 다른 요소에 가려지는 문제 떄문에 추가 */
     opacity:0;
     visibility:hidden;
-    position:absolute; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
+    position:absolute; top:100%; left:0; right:0;
+    padding:8px 6px; border-radius:8px; background-color:#fff;
+    box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0;
+    line-height:0; transition:all .25s ease-in-out;}
 .select_box .select_layer.active{opacity:1; visibility:inherit; top:calc(100% + 8px); z-index:1;}
 .select_box .select_item button{
     /*z-index: 100;*/
-    width:100%; padding:10px; font-size:14px; text-align:left; line-height:16px;}
+    width:100%; padding:10px; font-size:12px; text-align:left; line-height:16px;}
 .select_box .select_item.active button,
 .select_box .select_item button:hover{border-radius:8px; background-color:#f4f5f9; color:#4781ff;}
 .select_box .select_layer.add_icon{right:auto; min-width:190px;}

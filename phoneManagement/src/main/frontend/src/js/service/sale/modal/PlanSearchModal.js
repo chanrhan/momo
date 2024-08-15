@@ -5,6 +5,7 @@ import {cm, cmc} from "../../../utils/cm";
 import Popup from "../../../../css/popup.module.css";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
+import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 
 export function PlanSearchModal(props){
     const modal = useModal();
@@ -20,9 +21,11 @@ export function PlanSearchModal(props){
 
 
     const getCtPlan = async ()=>{
-        await gmdApi.getCtPlan(keyword, props.provider).then(({status,data})=>{
+        await gmdApi.getData(DYNAMIC_TYPE.ct_plan, keyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
-                setItems(data)
+                if(data.list){
+                    setItems(JSON.parse(data.list))
+                }
             }
         })
     }

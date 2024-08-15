@@ -6,64 +6,21 @@ function GMDApi(accessToken){
     // const axiosApiWithAccessToken = AxiosApiWithAccessToken();
 
     return {
-        getDevice: async (keyword, provider = '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/device?keyword=${keyword}&provider=${provider}`, accessToken);
-        },
-        getSecondDevice: async (keyword, provider = '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device?keyword=${keyword}&provider=${provider}`, accessToken);
+        getData: async (type, keyword, provider = '')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd?type=${type}&keyword=${keyword}&provider=${provider}`, accessToken);
         },
         getSecondDeviceById: async (id)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
         },
-        getExtraService: async (keyword, provider= '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/exsvc?keyword=${keyword}&provider=${provider}`, accessToken);
+        insertAll: async (type, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd?type=${type}`, body, accessToken);
         },
-        getInternetPlan: async (keyword, provider= '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/internet-plan?keyword=${keyword}&provider=${provider}`, accessToken);
+        deleteAll: async (type, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/del?type=${type}`, body, accessToken);
         },
-        getTvPlan: async (keyword, provider= '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/tv-plan?keyword=${keyword}&provider=${provider}`, accessToken);
-        },
-        getCtPlan: async (keyword, provider= '')=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/ct-plan?keyword=${keyword}&provider=${provider}`, accessToken);
-        },
-        getSupportDiv: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/sup-div?keyword=${keyword}`, accessToken);
-        },
-        getAddDiv: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/add-div?keyword=${keyword}`, accessToken);
-        },
-        getCombTp: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/comb-tp?keyword=${keyword}`, accessToken);
-        },
-        // 추가
-        insertDeviceAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/device`, body, accessToken);
-        },
-        insertSecondDeviceAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/sec-device`, body, accessToken);
-        },
-        insertCtPlanAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/ct-plan`, body, accessToken);
-        },
-        insertInternetPlanAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/internet-plan`, body, accessToken);
-        },
-        insertTvPlanAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/tv-plan`, body, accessToken);
-        },
-        insertExsvcAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/exsvc`, body, accessToken);
-        },
-        insertSupportDivAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/sup`, body, accessToken);
-        },
-        insertAddDivAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/add`, body, accessToken);
-        },
-        insertCombTpAll: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/gmd/comb`, body, accessToken);
-        },
+        updateItem: async (type, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/update?type=${type}`, body, accessToken);
+        }
     }
 }
 
