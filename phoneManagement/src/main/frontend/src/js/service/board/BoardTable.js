@@ -1,10 +1,10 @@
 import {cm, cmc} from "../../utils/cm";
 import Board from "../../../css/board.module.css";
 
-export function BoardTable({caption, colgroup, children}){
+export function BoardTable({caption, colgroup, children, tableRef}){
     return (
         <div className="board_body">
-            <table className={Board.td_board}>
+            <table className={Board.td_board} ref={tableRef}>
                 <caption>{caption}</caption>
                 <colgroup>
                     {colgroup}
@@ -34,7 +34,7 @@ export function Btbody({br, children}){
     )
 }
 
-export function Bth({children, className, checked, checkbox, name, sort, onClick, onCheck}){
+export function Bth({children, className, checked, checkbox, name, sort, onClick, onCheck, onMouseDown}){
     return (
         <th className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`} scope='col' onClick={onClick}>
             {
@@ -46,6 +46,7 @@ export function Bth({children, className, checked, checkbox, name, sort, onClick
                 )
             }
             {children}
+            <div className={Board.resize_handle} onMouseDown={onMouseDown}></div>
         </th>
     )
 }

@@ -6,21 +6,66 @@ import profileImg1 from "../../../../images/profile_img1.jpg";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {LMD} from "../../../common/LMD";
 import Board from "../../../../css/board.module.css";
+import {useRef} from "react";
 
 export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, profileImages, items, onChangeState, onSelectSale}){
+    const tableRef = useRef()
+
+    const resizeColumn = (e, index) => {
+        const startX = e.clientX;
+        const table = tableRef.current;
+        const th = table.querySelectorAll('th')[index];
+        const startWidth = th.offsetWidth;
+
+        const onMouseMove = (e) => {
+            const newWidth = startWidth + (e.clientX - startX);
+            if (newWidth > 50) {  // 최소 너비 설정
+                th.style.width = `${newWidth}px`;
+            }
+        };
+
+        const onMouseUp = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    };
+
     return (
-        <BoardTable caption='고객관리 테이블 - 선택, 진행 사항, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 중고폰, 판매 금액, 총 이익, 담당자, 전송 정보 제공'>
+        <BoardTable tableRef={tableRef} caption='고객관리 테이블 - 선택, 진행 사항, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 중고폰, 판매 금액, 총 이익, 담당자, 전송 정보 제공'>
             <Bthead>
-                <Bth checked={allChecked} onCheck={checkAll} checkbox/>
-                <Bth>진행 사항</Bth>
-                <Bth sort>개통날짜</Bth>
-                <Bth>이름</Bth>
-                <Bth className="ta_c">휴대폰 번호</Bth>
-                <Bth className="ta_r">식별 번호</Bth>
-                <Bth className="ta_r">카드명</Bth>
-                <Bth className="ta_r">구분</Bth>
-                <Bth className="ta_r">담당자</Bth>
-                <Bth className="ta_c">전송</Bth>
+                <Bth checked={allChecked} onCheck={checkAll} checkbox onMouseDown={e=>{
+                    resizeColumn(e, 0)
+                }}/>
+                <Bth onMouseDown={e=>{
+                    resizeColumn(e, 1)
+                }}>진행 사항</Bth>
+                <Bth sort onMouseDown={e=>{
+                    resizeColumn(e, 2)
+                }}>개통날짜</Bth>
+                <Bth onMouseDown={e=>{
+                    resizeColumn(e, 3)
+                }}>이름</Bth>
+                <Bth className="ta_c" onMouseDown={e=>{
+                    resizeColumn(e, 4)
+                }}>휴대폰 번호</Bth>
+                <Bth className="ta_r" onMouseDown={e=>{
+                    resizeColumn(e, 5)
+                }}>식별 번호</Bth>
+                <Bth className="ta_r" onMouseDown={e=>{
+                    resizeColumn(e, 6)
+                }}>카드명</Bth>
+                <Bth className="ta_r" onMouseDown={e=>{
+                    resizeColumn(e, 7)
+                }}>구분</Bth>
+                <Bth className="ta_r" onMouseDown={e=>{
+                    resizeColumn(e, 8)
+                }}>담당자</Bth>
+                <Bth className="ta_c" onMouseDown={e=>{
+                    resizeColumn(e, 9)
+                }}>전송</Bth>
             </Bthead>
             <Btbody br>
                 {
@@ -35,7 +80,11 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                                 <div className="select_box">
                                     <SelectIndexLayer value={LMD.card_st[v.card_st]} cssModule={Board}
                                                       onChange={state => {
-                                                          onChangeState(v.sale_id, state, v.card_id);
+                                                          onChangeState({
+                                                              sale_id: v.sale_id,
+                                                              card_id: v.card_id,
+                                                              state: state
+                                                          });
                                                       }} values={LMD.card_st}/>
                                 </div>
                             </Btd>

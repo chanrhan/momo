@@ -2,7 +2,9 @@ package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
 import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.common.util.AligoApiUtil;
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.ApiVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
 import com.momo.exception.BusinessException;
@@ -24,6 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
 import java.util.*;
 
 @Service
@@ -35,6 +38,22 @@ public class UserService  implements UserDetailsService{
 
 	public int getSessionData(String userId){
 		return userMapper.getSessionData(userId);
+	}
+
+	public Integer sendAuthNumber(String tel){
+		Random random = new Random();
+		int authNumber = random.nextInt(1000, 9000);
+		ApiVO vo = ApiVO.builder()
+				.msg("인증번호는 [" + authNumber +"] 입니다")
+				.msgType("SMS")
+				.receiver(tel)
+				.build();
+		Map<String,Object> res = AligoApiUtil.sendMessage(vo);
+		log.info("send auth: {}", res);
+		if(!res.get("result_code").toString().equals("1")){
+			return null;
+		}
+		return authNumber;
 	}
 
 
@@ -159,8 +178,8 @@ public class UserService  implements UserDetailsService{
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
 		return userMapper.updatePassword(vo);
 	}
-	public int updateApprovalState(int currShopId, String staffId, int state){
-		return userMapper.updateApprovalState(currShopId,staffId,state);
+	public int updateApprovalState(int shopId, String staffId, int state){
+		return userMapper.updateApprovalState(shopId,staffId,state);
 	}
 	public int updatePfp(String userId, String pfpPath){
 		return userMapper.updatePfp(userId, pfpPath);

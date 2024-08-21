@@ -86,7 +86,11 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                             <input type="radio" name="radio" id={`pr_${i}`} disabled={v.checked}/>
                                             <label htmlFor={`pr_${i}`} className={Board.form_label}
                                                    onClick={() => {
-                                                       onUpdate(item.sale_id, (v.checked) ? 0 : 1, v.pm_id)
+                                                       onUpdate({
+                                                           sale_id: item.sale_id,
+                                                           state: (v.checked) ? 0 : 1,
+                                                           pm_id: v.pm_id
+                                                   })
                                                    }}>{v.content}</label>
                                         </div>
                                     </li>

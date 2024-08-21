@@ -35,8 +35,8 @@ export function ManageStaff(){
         })
     }
 
-    const updateApprovalState = async (staffId, state)=>{
-        await userApi.updateApprovalState(staffId,state).then(({status,data})=>{
+    const updateApprovalState = async (staffId, shopId, state)=>{
+        await userApi.updateApprovalState(staffId, shopId,state).then(({status,data})=>{
             if(status === 200 && data){
                 getStaff();
                 getInnerStaffTotalCount();
@@ -85,6 +85,7 @@ export function ManageStaff(){
                 }>
                     <Bthead>
                         <Bth checkbox/>
+                        <Bth>아이디</Bth>
                         <Bth>이름</Bth>
                         <Bth>연락처</Bth>
                         <Bth>권한</Bth>

@@ -10,7 +10,7 @@ export function StaffTableData({data, onChangeState}){
     const state= data.approval_st;
 
     const changeState = (state)=>{
-        onChangeState(data.id, state);
+        onChangeState(data.id, data.shop_id, state);
     }
 
 
@@ -21,6 +21,7 @@ export function StaffTableData({data, onChangeState}){
     return (
         <tr>
             <Btd checkbox name='check1'/>
+            <Btd>{data.id}</Btd>
             <ProfileTableColumn src={profileImg1} name={data.name}/>
             <Btd>{data.tel}</Btd>
             <Btd>{LMD.role[data.role]}</Btd>

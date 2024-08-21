@@ -26,12 +26,15 @@ export const AxiosApi = ()=> {
         //     throw response
         // }
         // console.log(111)
+        // console.log('success')
+        // console.table(response)
         return {
             status: response.status,
             data: response.data,
             headers: response.headers
         }
     }, (error)=>{
+        // console.error("error")
         // console.table(error)
         // console.log(222)
         if(!error){
@@ -43,11 +46,12 @@ export const AxiosApi = ()=> {
         }else if(error.response && error.response.data){
             msg = error.response.data.message;
         }
-        if(msg){
-            modal.openModal(ModalType.SNACKBAR.Warn, {
-                msg: msg ?? "문제가 발생했습니다. 다시 한번 시도해 주세요."
-            })
-        }
+        // if(msg){
+        //
+        // }
+        modal.openModal(ModalType.SNACKBAR.Warn, {
+            msg: msg ?? "문제가 발생했습니다. 다시 한번 시도해 주세요."
+        })
         // throw msg;
         return  {
             status: error.response.status,

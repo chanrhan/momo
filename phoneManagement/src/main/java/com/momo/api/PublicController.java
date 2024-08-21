@@ -68,6 +68,11 @@ public class PublicController {
 	@PostMapping("/signup")
 	@Transactional
 	public ResponseEntity<?> signup(HttpServletResponse response, HttpSession session, @RequestBody UserVO vo){
+		boolean existed = userService.existUserId(vo.getId());
+//		log.info("existed: {}", existed);
+		if(existed){
+			return ResponseEntity.ok(2);
+		}
 		int result = userService.insertUser(vo);
 		if (result == 0) {
 			return ResponseEntity.notFound().build();
@@ -80,7 +85,7 @@ public class PublicController {
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
-		return ResponseEntity.ok().body(true);
+		return ResponseEntity.ok(1);
 	}
 
 	/**
@@ -91,7 +96,7 @@ public class PublicController {
 	@GetMapping("/auth/send")
 	public ResponseEntity<Integer> sendAuthNumber(@RequestParam String tel){
 		// 휴대폰 인증번호 보내는 api
-		return null;
+		return ResponseEntity.ok(userService.sendAuthNumber(tel));
 	}
 
 	/**
@@ -182,5 +187,6 @@ public class PublicController {
 
 		return ResponseEntity.ok(userService.resetPassword(vo) != 0);
 	}
+
 
 }

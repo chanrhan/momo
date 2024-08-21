@@ -18,10 +18,10 @@ public class SaleSearchVO extends BaseVO {
     private Integer category;
     private Integer currShopId;
 
-    private String keyword;
-    private String keydate;
-    private Integer order;
-    private boolean asc = false;
+//    private String keyword;
+//    private String keydate;
+//    private Integer order;
+//    private boolean asc = false;
     private Boolean notDone;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
     private SaleSearchFilter[] filters;
@@ -37,9 +37,7 @@ public class SaleSearchVO extends BaseVO {
         private Object target;
     }
 
-    private static String[] COLUMNS = {
-        "main_div","actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
-    };
+
 
     private static String[] TYPES = {
       "device_id","sd_id","ct_actv_plan"
@@ -128,9 +126,7 @@ public class SaleSearchVO extends BaseVO {
         return sb.toString();
     }
 
-    public String getOrder(){
-        return order != null ? COLUMNS[order] : null;
-    }
+
 
     public String getFilters(){
         if(filters == null || filters.length == 0){

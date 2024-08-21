@@ -22,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e){
-
+		log.error("NullPointerException: {}", e);
 		return ResponseEntity.notFound().build();
 	}
 

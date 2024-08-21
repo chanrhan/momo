@@ -57,12 +57,13 @@ public interface SaleMapper{
 	public int deleteAllSaleUsedDevice(int currShopId, int saleId);
 
 	// 진행현황 관리
-	public int changeUsedDeviceState(int currShopId, int saleId, int udId, int state);
-	public int changeCardState(int currShopId, int saleId, int cardId, int state);
-	public int changeCombState(int currShopId, int saleId, int state);
-	public int changeSupportState(int currShopId, int saleId, int supId, int state);
-	public int changePromiseState(int currShopId, int saleId, int pmId, int checked);
+	public int changeUsedDeviceState(SaleVO vo);
+	public int changeCardState(SaleVO vo);
+	public int changeCombState(SaleVO vo);
+	public int changeSupportState(SaleVO vo);
+	public int changePromiseState(SaleVO vo);
 
+	public int updateUsedDeviceCms(SaleVO vo);
 
 	// 메인 페이지 (Dashboard)
 	//  각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )

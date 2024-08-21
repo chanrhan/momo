@@ -43,10 +43,25 @@
 .board .board_head .filter_layer .filter_item .check_box .label{font-size:14px;}
 .board .board_head .filter_layer .filter_item.active .check_box .label:before,
 .board .board_head .filter_layer .filter_item:hover .check_box .label:before{background-color:#f4f5f9;}
-.board .td_board .thead .th{padding:10px; background-color:#f8f8f9; color:#62626e; font-size:14px; font-weight:400; text-align:center; line-height:16px;}
 .board .td_board{
     /*background-color: red;*/
     border-collapse: collapse;
+}
+.board .td_board .thead .th{
+    position: relative;
+    padding:10px; background-color:#f8f8f9; color:#62626e;
+    font-size:14px; font-weight:400; text-align:center;
+    line-height:16px;
+    user-select: none;
+}
+.board .td_board .thead .th .resize_handle{
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
+    background-color: transparent;
 }
 .board .td_board .thead .th.sort{cursor:pointer;}
 .board .td_board .thead .th.sort:after{display:inline-block; width:5px; height:9px; margin-left:4px; background:url(../images/sort_icon.png) no-repeat center / 5px auto;}

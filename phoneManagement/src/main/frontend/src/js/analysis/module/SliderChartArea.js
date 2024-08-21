@@ -1,10 +1,11 @@
 import Graph from "../../../css/graph.module.css";
 import {cm, cmc} from "../../utils/cm";
-import {GraphBarItem} from "./GraphBarItem";
 import {TabList} from "../../common/module/TabList";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
+import DataNotFound from "../../../images/profile_img2.jpg"
+import {ObjectUtils} from "../../utils/objectUtil";
 
 export function SliderChartArea({date, userId}){
     const {saleApi} = useApi()
@@ -46,7 +47,7 @@ export function SliderChartArea({date, userId}){
             </div>
 
             <div className={Graph.graph_bar}>
-                <ul className="bar_list">
+                <ul className={Graph.bar_list}>
                     {
                         items && items.map((v,i)=> {
                             return <li key={i} className={Graph.bar_item}>
@@ -55,6 +56,11 @@ export function SliderChartArea({date, userId}){
                                 </div>
                             </li>
                         })
+                    }
+                    {
+                        ObjectUtils.isEmpty(items) && <>
+                            <img className={Graph.img} src={DataNotFound} alt=""/>
+                        </>
                     }
                 </ul>
             </div>

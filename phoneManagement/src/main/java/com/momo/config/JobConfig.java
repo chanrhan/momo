@@ -19,7 +19,7 @@ public class JobConfig {
 		JobDetail jobDetail = getJobDetail(DormantUserJob.class, new HashMap());
 
 		try{
-			scheduler.scheduleJob(jobDetail, getCronTrigger("0 0 0/1 * * ?")); // Cron 표현식
+			scheduler.scheduleJob(jobDetail, getCronTrigger("0 0 9 1 */6 ?")); // Cron 표현식
 		} catch (SchedulerException e) {
 			throw new RuntimeException(e);
 		}

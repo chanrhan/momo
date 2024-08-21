@@ -96,7 +96,9 @@
             </if>
             ${filters}
             1=1
-
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
         )
 
         select (
@@ -164,7 +166,8 @@
         ), ud as(
             select json_arrayagg(json_object(
                     'ud_nm',ud_nm,
-                    'ud_stor',ud_stor
+                    'ud_stor',ud_stor,
+                     'ud_cms',ud_cms
                                  ))
             from tb_sale_used_device ss
             where shop_id=#{currShopId} and
@@ -577,6 +580,15 @@
             sup_id=#{supId}
     </update>
 
+    <update id="updateUsedDeviceCms">
+        UPDATE tb_sale_used_device
+        SET ud_cms=#{amount},
+            ud_st=2
+        WHERE shop_id=#{currShopId} and
+              sale_id=#{saleId} and
+              ud_id=#{udId}
+    </update>
+
 
 <!--    update-->
 
@@ -684,7 +696,8 @@
          wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
          friend, seller_id, estimate, docs, sale_memo, total_cms)
         VALUES (#{currShopId},@next_sale_id, #{custNm},#{custTel},#{custCd},#{custGd},
-                #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},#{ctActvTp},#{ctActvPlan},
+                #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},
+                #{ctActvTp},#{ctActvPlan},
                 #{ctDecPlan},#{ctCms},#{sdId},#{combTp},
                 #{combMemo},#{wtActvTp},#{wtCms},#{internetPlan},#{tvPlan},
                 #{exsvcId},#{family},#{friend},#{sellerId},#{estimate},#{docs},#{saleMemo},#{totalCms})
@@ -793,10 +806,10 @@
 
     <insert id="insertSaleUsedDevice" parameterType="com.momo.common.vo.SaleUsedDeviceVO">
         INSERT INTO tb_sale_used_device
-            (shop_id, sale_id, ud_id, ud_nm, ud_stor)
+            (shop_id, sale_id, ud_id, ud_nm, ud_stor, ud_cms)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},#{saleId},#{index}+1,#{item.udNm},#{item.udStor}
+            #{currShopId},#{saleId},#{index}+1,#{item.udNm},#{item.udStor},#{item.udCms}
         </foreach>
     </insert>
 
@@ -1926,21 +1939,21 @@
                             <![CDATA[
                         actv_dt between #{fromYmd} and #{toYmd}),
              device as (SELECT device                   as name,
-                               IFNULL(count(device), 0) as count
+                               count(device_id) as count
                         from base
                         where device_id is not null
                         group by device),
              sec_device as (SELECT sec_device                   as name,
-                                   IFNULL(count(sec_device), 0) as count
+                                   count(sec_device) as count
                             from base
                             where sd_id is not null
                             group by sec_device),
              actv_plan as (SELECT actv_plan                   as name,
-                                  IFNULL(count(actv_plan), 0) as count
+                                  count(actv_plan) as count
                            from base
                            where ct_actv_plan is not null
                            group by actv_plan),
-             total as (select IFNULL(count(#{selectType}), 0) as cnt
+             total as (select count(#{selectType}) as cnt
                        from base
                        where #{selectType} is not null
              )

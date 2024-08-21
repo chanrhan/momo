@@ -16,6 +16,10 @@ import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
 import {PasswordInput} from "../common/inputbox/PasswordInput";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
+import {AligoUtils} from "../utils/AligoUtils";
+import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
+import {AxiosApi} from "../api/ApiCommon";
 
 const MINUTES_IN_MS = 5 * 60 * 1000;
 const INTERVAL = 1000;
@@ -23,6 +27,7 @@ const INTERVAL = 1000;
 export function Signup(){
     const modal = useModal();
     const {publicApi} = useApi();
+    const api = AxiosApi()
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
@@ -61,8 +66,32 @@ export function Signup(){
             setAuthenticated(false)
             setIsSent(true)
             // 휴대폰번호로 인증번호 보내는 로직
-            setAuthNumber(123)
-            setTimeLeft(MINUTES_IN_MS)
+            let tel:string = inputField.get('tel');
+            tel = tel.replaceAll("-",'');
+            // await publicApi.sendAuthNumber(tel).then(({status,data})=>{
+            //     let msg = null;
+            //     console.log(data)
+            //     if(status === 200 && data && !Number.isNaN(data)){
+            //         msg = '인증번호를 전송했습니다.'
+            //         setAuthNumber(Number(data))
+            //         setTimeLeft(MINUTES_IN_MS)
+            //         setIsSent(true)
+            //     }else{
+            //         msg = '전송에 실패하였습니다.'
+            //         setAuthNumber(null)
+            //         setTimeLeft(null)
+            //         setIsSent(false)
+            //     }
+            //     modal.openModal(ModalType.SNACKBAR.Info, {
+            //         msg: msg
+            //     })
+            // })
+            modal.openModal(ModalType.SNACKBAR.Info, {
+                msg: '인증번호는 123 입니다 [임시]'
+            })
+                    setAuthNumber(123)
+                    setTimeLeft(MINUTES_IN_MS)
+                    setIsSent(true)
         }
     }
 
@@ -82,22 +111,33 @@ export function Signup(){
 
     const submit = async ()=>{
         if(inputField.validateAll()){
+            console.table(inputField.input)
             await publicApi.signup({
                 ...inputField.input,
                 // tel: StringUtils.toPhoneNumber(inputField.input.tel),
                 terms: ObjectUtils.convertBooleanArrayToString(termList)
             }).then(({status, data, headers})=>{
-                if(status === 200 && data){
-                    console.table(headers)
-                    dispatch(authActions.setAccessToken(headers.get('authorization')));
-                    setRefreshToken(headers.get('refreshtoken'));
-                    navigate('/shop/list')
+                if(status === 200){
+                    if(data === 1){
+                        dispatch(authActions.setAccessToken(headers.get('authorization')));
+                        setRefreshToken(headers.get('refreshtoken'));
+                        navigate('/shop/list')
+                    }else if(data === 2){
+                        inputField.handleError('id','이미 존재하는 아이디입니다.')
+                        modal.openModal(ModalType.SNACKBAR.Alert,{
+                            msg: '이미 존재하는 아이디입니다'
+                        })
+                    }
+                    // console.table(headers)
                 }
             })
         }
     }
 
     const getTimeerMS = ()=>{
+        if(timeLeft <= 0){
+            return '유효시간이 만료되었습니다. 인증번호를 다시 발송해주세요.'
+        }
         const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
         const second = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
         return `${minutes}:${second}`
@@ -170,8 +210,8 @@ export function Signup(){
                                 {
                                     authenticated ? <span className={User.timer_text}>인증되었습니다!</span>
                                         : <>
-                                            <span className={User.timer_text}>유효시간 <span
-                                                className={User.timer_num}>{getTimeerMS()}</span></span>
+                                            <span className={User.timer_text}>{timeLeft<=0 ? '':'유효시간 '}<span
+                                                className={cm(User.timer_num, `${timeLeft <=0 && User.red}`)}>{getTimeerMS()}</span></span>
                                             <button type="button" className={User.timer_btn}
                                                     onClick={sendAuthNumber}>재발송
                                             </button>

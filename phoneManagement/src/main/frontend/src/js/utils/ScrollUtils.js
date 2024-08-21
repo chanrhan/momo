@@ -10,14 +10,17 @@ export const ScrollUtils = {
         target.style.overflowY = 'scroll';
         return currentScrollY;
     },
-    allowScroll: (target, prevScrollY: number)=>{
-        if(!target || !target.style){
+    allowScroll: (target, prevScrollY: number)=> {
+        if (!target || !target.style) {
             return;
         }
+
         target.style.position = '';
         target.style.width = '';
-        target.style.top = '';
         target.style.overflowY = '';
-        window.scrollTo(0, prevScrollY);
+        target.style.top = '';
+        if (prevScrollY) {
+            window.scrollTo(0, prevScrollY);
+        }
     }
 }

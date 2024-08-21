@@ -8,6 +8,7 @@ import {UserFormInput} from "../../account/module/UserFormInput";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import useApi from "../../hook/useApi";
+import {PasswordInput} from "../../common/inputbox/PasswordInput";
 
 export function UpdatePasswordModal(props){
     const inputField = useValidateInputField([
@@ -59,15 +60,31 @@ export function UpdatePasswordModal(props){
 
                         <ul className={cm(Popup.form_list, User.form_list)}>
                             <UserFormItem errorText={inputField.error.org_pwd}>
-                                <UserFormInput type='password' subject='현재 비밀번호' name='org_pwd' inputField={inputField}/>
+                                <label htmlFor='org_pwd' className={User.form_label}>현재 비밀번호</label>
+                                <div className={`${User.form_inp} ${User.div}`}>
+                                    <PasswordInput name='org_pwd' value={inputField.get('org_pwd')} className={`inp ${User.inp}`}
+                                                   placeholder='현재 비밀번호를 입력해주세요.'
+                                           onChange={inputField.handleInput} autoComplete={false}/>
+                                </div>
+                                {/*<UserFormInput type='password' subject='현재 비밀번호' name='org_pwd' inputField={inputField}/>*/}
                             </UserFormItem>
                             <UserFormItem errorText={inputField.error.pwd}>
-                                <UserFormInput type='password' subject='새 비밀번호' name='pwd' inputField={inputField}
-                                               onChange={inputField.handlePassword}/>
+                                <label htmlFor='pwd' className={User.form_label}>새 비밀번호</label>
+                                <div className={`${User.form_inp} ${User.div}`}>
+                                    <PasswordInput name='pwd' value={inputField.get('pwd')}
+                                                   className={`inp ${User.inp}`}
+                                                   placeholder='새 비밀번호를 입력해주세요.'
+                                                   onChange={inputField.handlePassword} autoComplete={false}/>
+                                </div>
                             </UserFormItem>
                             <UserFormItem errorText={inputField.error.pwd2}>
-                                <UserFormInput type='password' subject='새 비밀번호 확인' name='pwd2' inputField={inputField}
-                                               onChange={inputField.handleConfirmPassword}/>
+                                <label htmlFor='pwd2' className={User.form_label}>새 비밀번호 확인</label>
+                                <div className={`${User.form_inp} ${User.div}`}>
+                                    <PasswordInput name='pwd' value={inputField.get('pwd2')}
+                                                   className={`inp ${User.inp}`}
+                                                   placeholder='새 비밀번호를 한 번 더 입력해주세요.'
+                                                   onChange={inputField.handleConfirmPassword} autoComplete={false}/>
+                                </div>
                             </UserFormItem>
                         </ul>
 

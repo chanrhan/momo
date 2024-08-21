@@ -30,6 +30,9 @@ export const ModalType = {
         Reserve_Message: 'ReserveMessage',
         Reserve_Date: 'ReserveDate',
 
+        // Task
+        Used_Device_Cms: 'UsedDeviceCms',
+
         //todo
         Todo_Add: 'TodoAdd'
     },

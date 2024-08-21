@@ -24,7 +24,7 @@ export function RegisterShop(){
         {
             key: 'provider',
             name: '통신사',
-            value: 'SKT'
+            value: 0
         },
         {
             key: 'shop_nm',

@@ -87,7 +87,7 @@ public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-type", "application/json; utf-8");
 
-			Map<String,Object> result = ExternalApiUtils.request(conn, body);
+			Map<String,Object> result = ExternalApiUtils.post(conn, body);
 
 			log.info("result: {}", result);
 			Object matchCnt = result.get("match_cnt");

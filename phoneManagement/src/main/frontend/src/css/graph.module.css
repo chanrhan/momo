@@ -50,6 +50,15 @@
 .graph .graph4_group{display:flex; margin:32px -12px 0 -12px;}
 .graph .graph4{width:calc(33.33% - 24px); margin:0 12px;}
 .graph .graph4 .graph_top .graph_title{display:inline-block; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
+.graph .graph4 .graph_bar{
+    height: 100%;
+}
+.graph .graph4 .graph_bar .bar_list{
+    height: 100%;
+}
+.graph .graph4 .graph_bar .bar_list .img{
+    position: relative;
+}
 .graph .graph4 .graph_bar .bar_item{margin-top:24px;}
 .graph .graph4 .graph_bar .bar_item .bar_text{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph4 .graph_bar .bar_item .bar_text .bar_per{float:right; color:#91939f;}

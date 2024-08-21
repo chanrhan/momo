@@ -209,32 +209,39 @@ public class SaleController {
 	@PostMapping("/state")
 	@ResponseBody
 	public ResponseEntity<Boolean> changeSaleState(HttpSession session,
-												   @RequestBody Map<String , Integer> body){
-		int currShopId = commonService.getCurrentShopId(session);
+												   @RequestBody SaleVO vo){
+		vo.setCurrShopId(commonService.getCurrentShopId(session));
 
-		int category = body.get("category");
-		int saleId = body.get("sale_id");
+		int category = vo.getCategory();
+		int saleId = vo.getSaleId();
 
-		int state = body.get("state");
+		int state = vo.getState();
 
 		switch (category){
 			case 0 -> {
-				return ResponseEntity.ok(saleService.changeUsedDeviceState(currShopId, saleId, body.get("item_id"), state) > 0);
+				return ResponseEntity.ok(saleService.changeUsedDeviceState(vo) > 0);
 			}
 			case 1 -> {
-				return ResponseEntity.ok(saleService.changeCardState(currShopId, saleId,body.get("item_id"), state) > 0);
+				return ResponseEntity.ok(saleService.changeCardState(vo) > 0);
 			}
 			case 2 -> {
-				return ResponseEntity.ok(saleService.changeCombState(currShopId, saleId, state) > 0);
+				return ResponseEntity.ok(saleService.changeCombState(vo) > 0);
 			}
 			case 3 -> {
-				return ResponseEntity.ok(saleService.changeSupportState(currShopId, saleId, body.get("item_id"),state) > 0);
+				return ResponseEntity.ok(saleService.changeSupportState(vo) > 0);
 			}
 			case 4 -> {
-				return ResponseEntity.ok(saleService.changePromiseState(currShopId, saleId, body.get("item_id"), state) > 0);
+				return ResponseEntity.ok(saleService.changePromiseState(vo) > 0);
 			}
 		}
 		return ResponseEntity.badRequest().build();
+	}
+
+	@PostMapping("/ud/cms")
+	public ResponseEntity<Boolean> updateUsedDeviceCms(HttpSession session,
+													   @RequestBody SaleVO vo){
+		vo.setCurrShopId(commonService.getCurrentShopId(session));
+		return ResponseEntity.ok(saleService.updateUsedDeviceCms(vo) > 0);
 	}
 
 	@PostMapping("/promise/content")

@@ -27,7 +27,6 @@ import {ReserveDateModal} from "../../service/sale/modal/ReserveDateModal";
 import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
-import {DynamicSelectButton} from "../module/DynamicSelectButton";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
 import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
@@ -38,6 +37,7 @@ import {NameCardModal} from "../../profile/module/NameCardModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
 import {ScrollUtils} from "../../utils/ScrollUtils";
+import {UsedDeviceCmsModal} from "../../service/task/module/TaskUsedDeviceCmsModal";
 
 const MODAL_COMPONENTS = {
     // common
@@ -85,6 +85,10 @@ const MODAL_COMPONENTS = {
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
     ReserveDate: ReserveDateModal,
+
+    // Task
+    UsedDeviceCms: UsedDeviceCmsModal,
+
     // error
     Warning: WarningModal,
     Info: InfoModal
@@ -104,7 +108,8 @@ function DynamicModalContainer(){
         let timer = null;
         const {type, modalName} = modalList[modalList.length-1];
         if(type === 'MENU' || type === 'LAYER'){
-            setPrevScrollY( ScrollUtils.preventScroll(document.body))
+            // console.log(`scroll fixed: ${window.scrollY}`)
+            // setPrevScrollY( ScrollUtils.preventScroll(document.body))
             if(window.onclick == null){
                 timer = setTimeout(()=>{
                     // onclick 함수를 추가하자마자, 이게 호출된다
@@ -122,11 +127,21 @@ function DynamicModalContainer(){
         return ()=>{
             clearTimeout(timer);
             window.onclick = null;
-            ScrollUtils.allowScroll(document.body, prevScrollY)
-            setPrevScrollY(null)
+            // console.log(`scrollY: ${prevScrollY}`)
+            // if(!ObjectUtils.isEmpty(prevScrollY)){
+            //     console.log(`detach onclick`)
+            //     ScrollUtils.allowScroll(document.body, prevScrollY);
+            //     setPrevScrollY(null)
+            // }
         }
     },[modalList])
 
+    let topIndex = 0;
+    modalList.forEach(({modalName, type, props}, index)=>{
+        if(type === 'MENU' || type === 'LAYER'){
+            topIndex = index
+        }
+    })
 
     const renderModal = modalList.map(({modalName, type, props}, index)=>{
         if(!modalName){
@@ -135,10 +150,13 @@ function DynamicModalContainer(){
 
         const ModalComponent = MODAL_COMPONENTS[modalName];
 
-        if(index === modalList.length-1){
-            if(type === 'MENU' || type === 'LAYER'){
-                return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
-            }
+        // if(index === modalList.length-1){
+        //     if(type === 'MENU' || type === 'LAYER'){
+        //         return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
+        //     }
+        // }
+        if(index === topIndex){
+            return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         }
 
         return <ModalComponent scrollable={false} key={modalName} {...props}/>

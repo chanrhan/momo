@@ -19,6 +19,7 @@ public class SaleUsedDeviceVO extends BaseVO {
 
     private Integer udId;
     private Integer udSt;
+    private Integer udCms;
 
     private String udNm;
     private Integer udStor;

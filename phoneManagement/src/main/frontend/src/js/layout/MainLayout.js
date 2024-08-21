@@ -22,6 +22,8 @@ function MainLayout(){
         userInfo.updateUser();
     },[accessToken]);
 
+
+
     // if(userInfo.curr_shop_id === -1){
     //     nav('/admin')
     // }

@@ -39,6 +39,7 @@ export function DeviceSearchModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
+            console.table(items[selected])
             props.onSubmit(items[selected])
         }
         close();

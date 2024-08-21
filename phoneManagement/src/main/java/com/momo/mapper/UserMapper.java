@@ -24,7 +24,7 @@ public interface UserMapper {
 
 	public List<Map<String,Object>> getStaffByShopId(String shopId);
 
-	public int updateApprovalState(int currShopId, String staffId, int state);
+	public int updateApprovalState(int shopId, String staffId, int state);
 
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);

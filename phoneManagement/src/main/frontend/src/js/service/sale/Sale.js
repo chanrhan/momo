@@ -3,7 +3,7 @@ import Layout from "../../../css/layout.module.css"
 import {cm, cmc} from "../../utils/cm";
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../board/BoardTable";
 import useValidateInputField from "../../hook/useValidateInputField";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import useApi from "../../hook/useApi";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
@@ -19,6 +19,9 @@ import {ColumnSelectLayer} from "./module/ColumnSelectLayer";
 import {NumberUtils} from "../../utils/NumberUtils";
 import {ProfileTableColumn} from "./module/ProfileTableColumn";
 import {FILTER_INPUT_TYPE} from "./modal/SaleFilterModal";
+import {useObjectInputField} from "../../hook/useObjectInputField";
+import {Scrollable} from "../../common/module/Scrollable";
+import {ScrollUtils} from "../../utils/ScrollUtils";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
@@ -29,12 +32,10 @@ const COLUMN_MAX_SIZE = Math.pow(2, (LMD.sale_column_vars.length))-1;
 export function Sale(){
     const modal = useModal();
     const {saleApi} = useApi();
-    const inputField = useValidateInputField([
-        {
-            key: 'order',
-            value: 1
-        }
-    ]);
+    const inputField = useObjectInputField({
+        order: 1,
+        limit: 10
+    });
     const fileLoader = useFileLoader();
     const [totalCount, setTotalCount] = useState(0)
     const [asc, setAsc] = useState(new Array(10).fill(false))
@@ -48,6 +49,17 @@ export function Sale(){
     const [profileImages, setProfileImages] = useState([])
 
     const columns = useBitArray(COLUMN_MAX_SIZE);
+
+    const tableRef = useRef()
+
+    const [prevScrollY, setPrevScrollY] = useState(null)
+
+    useEffect(() => {
+       setPrevScrollY( ScrollUtils.preventScroll(document.body))
+        return ()=>{
+            ScrollUtils.allowScroll(document.body, prevScrollY)
+        }
+    }, []);
 
     const getSale = async ()=>{
         // console.table(inputField.input)
@@ -135,7 +147,10 @@ export function Sale(){
 
     const refresh = async()=>{
         // console.log('refresh')
-        inputField.clear();
+        inputField.clearOf({
+            order: 1,
+            limit: 10
+        })
         columns.setAll(COLUMN_MAX_SIZE)
     }
 
@@ -190,6 +205,32 @@ export function Sale(){
                 inputField.put('filters', data);
             }
         })
+    }
+
+    const resizeColumn = (e, index) => {
+        const startX = e.clientX;
+        const table = tableRef.current;
+        const th = table.querySelectorAll('th')[index];
+        const startWidth = th.offsetWidth;
+
+        const onMouseMove = (e) => {
+            const newWidth = startWidth + (e.clientX - startX);
+            if (newWidth > 50) {  // 최소 너비 설정
+                th.style.width = `${newWidth}px`;
+            }
+        };
+
+        const onMouseUp = () => {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    };
+
+    const scrollDown = ()=>{
+        inputField.put('limit', Number(inputField.get('limit')) + 10)
     }
 
     return (
@@ -268,6 +309,10 @@ export function Sale(){
                     </form>
                 </div>
 
+                {/*<button type='button' style={{*/}
+                {/*    backgroundColor: "#89a9cb",*/}
+                {/*    padding: '10px'*/}
+                {/*}} onClick={scrollDown}>스크롤</button>*/}
                 <BoardTable caption='판매일보 테이블 - 선택, 메인 구분, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 모델명, 총 이익, 담당자, 예약 정보 제공'
                             colgroup={
                                 <>
@@ -275,9 +320,11 @@ export function Sale(){
                                     {/*<col span="8"/>*/}
                                     {/*<col style={{width: "90px"}}/>*/}
                                 </>
-                            }>
+                            } tableRef={tableRef}>
                     <Bthead>
-                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox/>
+                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox onMouseDown={e=>{
+                            resizeColumn(e, 0)
+                        }}/>
                         {
                             columns && columns.toArray().map((v,i)=>{
                                 // const sort =
@@ -286,30 +333,37 @@ export function Sale(){
                                                 if(COLUMNS_SORT[v]){
                                                     setOrder(v)
                                                 }
-                                            }}>{LMD.sale_column_names[v]}</Bth>
+                                            }} onMouseDown={e=>{
+                                        resizeColumn(e, i+1)
+                                }}>{LMD.sale_column_names[v]}</Bth>
                             })
                         }
                         <Bth>예약</Bth>
                     </Bthead>
-                    <Btbody br>
-                        {
-                            saleItems && saleItems.map((v1, i) => {
-                                // console.table(v1)
-                                return <tr key={i} onClick={(e) => {
-                                    openSaleDetail(v1.sale_id)
-                                }}>
-                                    <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
-                                        checkSale(i)
-                                    }} checkbox/>
-                                    {
-                                        columns.toArray() && columns.toArray().map((v2, j)=>{
-                                            return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
-                                        })
-                                    }
-                                </tr>
-                            })
-                        }
-                    </Btbody>
+                    <Scrollable scrollable={!modal.hasModal()}>
+                        <Btbody br>
+                            {
+                                saleItems && saleItems.map((v1, i) => {
+                                    // console.table(v1)
+                                    return <tr key={i} onClick={(e) => {
+                                        openSaleDetail(v1.sale_id)
+                                    }}>
+                                        <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
+                                            checkSale(i)
+                                        }} checkbox/>
+                                        {
+                                            columns.toArray() && columns.toArray().map((v2, j)=>{
+                                                return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
+                                            })
+                                        }
+                                        <Btd className="ta_r" stopPropagation>
+                                            <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}>예약 확인</button>
+                                        </Btd>
+                                    </tr>
+                                })
+                            }
+                        </Btbody>
+                    </Scrollable>
                 </BoardTable>
 
                 <div className="view_more">
@@ -321,7 +375,7 @@ export function Sale(){
 }
 
 function TdChoice({column_index, data, image}){
-    switch (column_index){
+    switch (column_index) {
         case 0:
             return <Btd>
                 {
@@ -350,9 +404,9 @@ function TdChoice({column_index, data, image}){
             return <Btd className="ta_r">{NumberUtils.toPrice(data.total_cms)} 원</Btd>;
         case 7:
             return <ProfileTableColumn src={image} name={data.seller_nm}/>;
-        case 8:
-            return null;
-        case 9:
-            return null;
+        // case 8:
+        //     return
+        // case 9:
+        //     return null;
     }
 }

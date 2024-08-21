@@ -9,7 +9,12 @@
 .header .logo .a{display:block; padding-top:32px;}
 .header .logo .a .img{height:15px;}
 .header .gnb{text-align:right;}
-.header .gnb .gnb_search{display:inline-block; position:relative; width:394px; height:40px; padding:8px 12px 8px 20px; border:1px solid #dde1e8; border-radius:4px; background-color:#f8f8f9; vertical-align:top;}
+.header .gnb .gnb_search{
+    display:inline-block; position:relative;
+    right: calc(10%);
+    width:394px; height:40px; padding:8px 12px 8px 20px;
+    border:1px solid #dde1e8; border-radius:4px;
+    background-color:#f8f8f9; vertical-align:top;}
 .header .gnb .gnb_search .form .input{width:calc(100% - 24px); height:24px; background-color:transparent; font-size:14px;}
 .header .gnb .gnb_search .form .input::placeholder{color:#91939f;}
 .header .gnb .gnb_search .form .button{display:inline-block; width:24px; height:24px; background:url(../images/search_icon2.png) no-repeat center / 100%; vertical-align:top;}

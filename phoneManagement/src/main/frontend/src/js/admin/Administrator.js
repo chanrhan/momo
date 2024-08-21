@@ -72,6 +72,14 @@ export function Administrator(){
         inputField.put('keyword','')
     }
 
+    const changeState = async (id, shopId, state)=>{
+        await userApi.updateApprovalState(id, shopId, state).then(({status,data})=>{
+            if(status === 200 && data){
+                getUserAll();
+            }
+        })
+    }
+
     return (
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
@@ -118,32 +126,56 @@ export function Administrator(){
                     <Bthead>
                         {/*<Bth className="ta_c" checkbox></Bth>*/}
                         <Bth>No</Bth>
+                        <Bth>아이디</Bth>
                         <Bth>이름</Bth>
+                        <Bth className="ta_c">소속 매장</Bth>
+                        <Bth className="ta_c">직급</Bth>
                         <Bth className="ta_c">이메일</Bth>
                         <Bth className="ta_c">휴대폰 번호</Bth>
-                        <Bth className="ta_c">소속 매장</Bth>
                         <Bth className="ta_c">사업자번호</Bth>
                         <Bth className="ta_c">가입일</Bth>
                         <Bth className="ta_c">최근 로그인</Bth>
-                        <Bth className="ta_c">직급</Bth>
                         <Bth className="ta_c">승인 여부</Bth>
                         <Bth className="ta_c">관리</Bth>
                     </Bthead>
                     <Btbody br>
                         {
                             items && items.map((v,i)=> {
-                                return <tr key={i}>
+                                const state = v.approval_st;
+
+                                return <tr key={i} onClick={()=>{
+                                    console.log(state)
+                                }}>
                                     {/*<Btd checkbox/>*/}
                                     <Btd>{i+1}</Btd>
+                                    <Btd className="ta_c">{v.id}</Btd>
                                     <ProfileTableColumn src={profileImages ? profileImages[i] : profileImg1} name={v.name}/>
+                                    <Btd className="ta_c">{v.shop_nm}</Btd>
+                                    <Btd className="ta_c">{LMD.role[v.role]}</Btd>
                                     <Btd className="ta_c">{v.email}</Btd>
                                     <Btd className="ta_c">{v.tel}</Btd>
-                                    <Btd className="ta_c">{v.shop_nm}</Btd>
                                     <Btd className="ta_c">{v.br_no}</Btd>
                                     <Btd className="ta_c">{v.regi_dt}</Btd>
                                     <Btd className="ta_c">{v.last_login_dt}</Btd>
-                                    <Btd className="ta_c">{LMD.role[v.role]}</Btd>
-                                    <Btd className="ta_c">{v.approval_st ? 'Y':'N'}</Btd>
+                                    <Btd>
+                                        {
+                                            state === 0 ?
+                                                (
+                                                    <>
+                                                        <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
+                                                            changeState(v.id, v.shop_id, 1);
+                                                        }}>승인</button>
+                                                        <button type="button" className="btn btn_red btn_small btn_line" onClick={()=>{
+                                                            changeState(v.id, v.shop_id, 2);
+                                                        }}>거절</button>
+                                                    </>
+                                                ) :
+                                                <button type="button" className={`btn ${state === 1 ? 'btn_blue':'btn_red'} btn_small btn_line`}>
+                                                    {state === 1 ? '승인완료': (state === 2 ? '승인거절':'관리자')}
+                                                </button>
+                                        }
+
+                                    </Btd>
                                     <Btd className="ta_c">
                                         <a href="#" className="btn btn_grey btn_small btn_line">관리</a>
                                     </Btd>

@@ -71,7 +71,7 @@
 .popup .user_form .form_list + .form_list{margin-top:28px;}
 .popup .user_form .form_list + .form_text{margin-top:10px; color:#91939f; font-size:12px; line-height:14px;}
 .popup .user_form .ta_r + .form_list.half{margin-top:17px;}
-.popup .user_form .form_list.half .form_item{display:inline-block; width:calc(50% - 6px); vertical-align:top;}
+.popup .user_form .form_list.half .form_item{display:inline-block; width:calc(32% - 6px); vertical-align:top;}
 .popup .user_form .form_list.half .form_item + .form_item{margin-top:0; margin-left:12px;}
 .popup .user_form.inp_type2 .select_btn{padding:10px 12px;}
 .popup .user_form.inp_type2 .select_btn:before{width:34px; height:34px; background-size:34px;}
@@ -637,8 +637,11 @@
 
 
 /*커스텀*/
-.list_title{margin-bottom: 10px}
-.list_title .form_label + .form_label{margin-left: 150px;}
+.list_title{margin-bottom: 10px; padding-left: 5px}
+.list_title .form_label + .form_label{margin-left: calc(30% - 14px);}
+.list_title .form_label{
+    /*width:calc(25% - 6px);*/
+}
 
 .card_form .check_del{position:relative; top:13px; left:10px; width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
 

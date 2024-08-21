@@ -56,6 +56,9 @@ function SaleApi(accessToken){
         changeSaleState: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/state', body, accessToken);
         },
+        updateUsedDeviceCms: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/ud/cms', body, accessToken);
+        },
         addPromiseContent: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/promise/content', body, accessToken);
         },

@@ -7,16 +7,18 @@
         with users as (
             select ac.*,
                    sf.role,
-                   IF(role = 1, sh.br_no, '') as br_no,
+                   IF(sf.role = 1, sh.br_no, '') as br_no,
                     sf.approval_st,
+                    sf.shop_id,
                     sh.shop_nm
-            from tb_account ac
-            left outer join tb_shop sh on sh.shop_id=ac.curr_shop_id
-            left outer join tb_staff sf on sf.staff_id=ac.id and
-                                            sf.shop_id=sh.shop_id
+            from tb_staff sf
+            left outer join tb_shop sh on sh.shop_id=sf.shop_id
+            left outer join tb_account ac on ac.id=sf.staff_id
             where user_st=#{userSt}
         ), search as (
             select json_arrayagg(json_object(
+                    'id', id,
+                    'shop_id',shop_id,
                     'name',name,
                     'pfp',pfp,
                     'email',email,
@@ -26,8 +28,8 @@
                     'last_login_dt',last_login_dt,
                     'role',role,
                      'approval_st',approval_st,
-                                 'shop_nm',shop_nm
-                                 ))
+                     'shop_nm',shop_nm
+                     ))
             from users
             where
                 <if test="keyword != null and !keyword.equals('')">
@@ -99,11 +101,11 @@
                     ac.name,
                     ac.tel,
                     sf.start_dt,
-                    ac.curr_shop_id as shop_id,
+                    sf.shop_id,
                     sf.approval_st
             from tb_staff sf
             left outer join tb_account ac on ac.id = sf.staff_id
-            where shop_id = #{currShopId}
+            where sf.shop_id = #{currShopId}
         )
 
         SELECT *
@@ -144,7 +146,7 @@
         UPDATE tb_staff
         SET approval_st=#{state}
         WHERE staff_id=#{staffId} and
-              shop_id=#{currShopId}
+              shop_id=#{shopId}
     </update>
 
     <select id="getInnerStaffName">
@@ -187,7 +189,7 @@
     </update>
 
     <select id="existUserId">
-        SELECT (COUNT(*) > 0) as exist
+        SELECT IF(count(*) > 0, true, false)
         FROM tb_account
         WHERE id = #{userId}
     </select>

@@ -30,6 +30,7 @@
 .user_form .form_timer{margin-top:12px;}
 .user_form .form_timer .timer_text{color:#4781ff; font-size:16px; line-height:20px; vertical-align:top;}
 .user_form .form_timer .timer_text .timer_num{font-weight:600;}
+.user_form .form_timer .timer_text .timer_num.red{color: red; font-weight: 500;}
 .user_form .form_timer .timer_btn{margin-left:8px; color:#50505c; font-size:16px; text-decoration:underline; line-height:20px; vertical-align:top;}
 .user_form .form_agree{margin-top:40px;}
 .user_form .form_agree .agree_list{font-size:0; line-height:0;}

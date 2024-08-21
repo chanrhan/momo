@@ -36,7 +36,9 @@ export function ReserveMessageModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
-            const body = arrayInputField.input.filter(v=>v.checked).map(v=>{
+            const body = arrayInputField.input.filter(v=>{
+                return v.checked && v.dday && v.rsv_dt
+            }).map(v=>{
                 return {
                     msg_tp: v.msg_tp,
                     dday: v.dday,
@@ -122,7 +124,7 @@ const RESERVE_INPUT = [
         checked: false,
         msg_tp: 0,
         rsv_tp: 0,
-        rsv_dt: '2021-12-11'
+        rsv_dt: ''
     },
     {
         checked: false,

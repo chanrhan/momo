@@ -1,18 +1,10 @@
-import Layout from "../../css/layout.module.css";
 import Graph from "../../css/graph.module.css";
 import {cm, cmc} from "../utils/cm";
-import {TabList} from "../common/module/TabList";
 import {GraphSummaryCard} from "./module/GraphSummaryCard";
-import graphImg1 from "../../images/graph_img1.png";
 import {SliderChartArea} from "./module/SliderChartArea";
-import {GraphBarItem} from "./module/GraphBarItem";
-import useValidateInputField from "../hook/useValidateInputField";
-import {LineChartInstance} from "./module/LineChartInstance";
-import {BarChartInstance} from "./module/BarChartInstance";
 import useApi from "../hook/useApi";
 import {useEffect, useState} from "react";
 import {DateUtils} from "../utils/DateUtils";
-import {NumberUtils} from "../utils/NumberUtils";
 import {LineChartArea} from "./module/LineChartArea";
 import {BarChartArea} from "./module/BarChartArea";
 import {PieChartArea} from "./module/PieChartArea";

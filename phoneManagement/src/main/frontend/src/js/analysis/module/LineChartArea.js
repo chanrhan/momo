@@ -5,6 +5,7 @@ import {LineChartInstance} from "./LineChartInstance";
 import {useEffect, useState} from "react";
 import {DateUtils} from "../../utils/DateUtils";
 import useApi from "../../hook/useApi";
+import {PerformanceChart} from "../../service/dashboard/module/PerformanceChart";
 
 export function LineChartArea({date, userId}){
     const {saleApi} = useApi();
@@ -82,21 +83,27 @@ export function LineChartArea({date, userId}){
             <div className={Graph.graph_top}>
                 <div className={cmc(Graph.tab, Graph.type4)}>
                     <TabList name='tab2' value={tab2} onChange={setTab2} values={
-                        ['무선', '인터넷', 'TV', '총이익', '평균마진']
+                        ['무선', '인터넷', 'TV', '총이익', '평균이익']
                     }/>
                 </div>
             </div>
 
-            <div className={Graph.graph_box}>
-                <LineChartInstance color='blue' pointRadius='0' data={graphData && graphData.value} x_axis_disabled
-                                   y_axis_disabled/>
-            </div>
+            <PerformanceChart userInfo={userId}
+                              categoryTab={tab2}
+                              pannelClassName={cmc(Graph.tab, Graph.type5)}
+                              chartClassName={Graph.graph_box}
+            />
 
-            <div className={cmc(Graph.tab, Graph.type5)}>
-                <TabList name='tab3' value={tab3} onChange={setTab3} theme={Graph} values={
-                    ['1주', '1개월', '3개월', '1년']
-                }/>
-            </div>
+            {/*<div className={Graph.graph_box}>*/}
+            {/*    <LineChartInstance color='blue' pointRadius='0' data={graphData && graphData.value} x_axis_disabled*/}
+            {/*                       y_axis_disabled/>*/}
+            {/*</div>*/}
+
+            {/*<div className={cmc(Graph.tab, Graph.type5)}>*/}
+            {/*    <TabList name='tab3' value={tab3} onChange={setTab3} theme={Graph} values={*/}
+            {/*        ['1주', '1개월', '3개월', '1년']*/}
+            {/*    }/>*/}
+            {/*</div>*/}
         </div>
     )
 }

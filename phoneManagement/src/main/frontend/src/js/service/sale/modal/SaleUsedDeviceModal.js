@@ -7,10 +7,12 @@ import {cm, cmc, toCssModules} from "../../../utils/cm";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import {LMD} from "../../../common/LMD";
+import {PriceInput} from "../../../common/inputbox/PriceInput";
 
 const USED_ITEM = {
     ud_nm: '',
-    ud_stor: 0
+    ud_stor: 0,
+    ud_cms: 0
 }
 
 function SaleUsedDeviceModal(props){
@@ -31,7 +33,9 @@ function SaleUsedDeviceModal(props){
     return (
         <LayerModal>
             <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '130px'
+                top: '130px',
+                minWidth: '600px',
+                maxWidth: '600px'
             }}>
                 {/*활성화시 active 추가 -->*/}
                 <div className={Popup.popup_title}>중고폰</div>
@@ -44,6 +48,7 @@ function SaleUsedDeviceModal(props){
                         <div className={Popup.list_title}>
                             <label htmlFor="card_n1m" className={cm(Popup.form_label, User.form_label)}>모델명</label>
                             <label htmlFor="card_nm2" className={cm(Popup.form_label, User.form_label)}>용량</label>
+                            <label htmlFor="card_n1m" className={cm(Popup.form_label, User.form_label)}>판매 수수료</label>
                         </div>
                         {
                             inputField.length() > 0 && inputField.input.map((_,i)=>{
@@ -73,7 +78,7 @@ function UsedDeviceItem({index, inputField}){
                         <div className={User.form_inp}>
                             <input name='ud_nm' type="text" className={`inp ${cm(Popup.inp, User.inp)}`}
                                    value={inputField.get(index, 'ud_nm')}
-                                   onChange={e=>{
+                                   onChange={e => {
                                        inputField.put(index, 'ud_nm', e.target.value)
                                    }}/>
                         </div>
@@ -81,17 +86,32 @@ function UsedDeviceItem({index, inputField}){
                 </div>
             </li>
             <li className={cm(Popup.form_item, User.form_item)}>
-                {/*<label htmlFor="card_tp" className={cm(Popup.form_label, User.form_label)}>카드 유형</label>*/}
                 <div className={cm(User.form_inp, Popup.card_form)}>
-                <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
+                    <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                         <input type="hidden" id="card"/>
-                        <SelectIndexLayer name='ud_stor' cssModules={toCssModules(Popup, User)}
-                                          value={LMD.storage[inputField.get(index, 'used_device_stor') ?? 0]}
+                        <SelectIndexLayer buttonClassName={Popup.type2}
+                                          name='ud_stor' cssModules={toCssModules(Popup, User)}
+                                          value={LMD.storage[inputField.get(index, 'ud_stor') ?? 0]}
                                           onChange={v => {
-                                              console.log(`change: ${v}`)
-                                              inputField.put(index, 'used_device_stor', v)
+                                              // console.log(`change: ${v}`)
+                                              inputField.put(index, 'ud_stor', v)
                                           }}
                                           values={LMD.storage}/>
+                    </div>
+                </div>
+            </li>
+            <li className={cm(Popup.form_item, User.form_item)}>
+                {/*<label htmlFor="card_tp" className={cm(Popup.form_label, User.form_label)}>카드 유형</label>*/}
+                <div className={cm(User.form_inp, Popup.card_form)}>
+                    <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
+                        {/*<input type="hidden" id="used_device"/>*/}
+                        <div className={User.form_inp}>
+                            <PriceInput name='ud_cms' className={`inp ${cm(Popup.inp, User.inp)}`}
+                                   value={inputField.get(index, 'ud_cms')}
+                                   onChange={e => {
+                                       inputField.put(index, 'ud_cms', e.target.value)
+                                   }}/>
+                        </div>
                     </div>
                     <button type="button" className={Popup.check_del}
                             onClick={() => {

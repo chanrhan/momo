@@ -124,13 +124,11 @@ export function Task(){
         });
     }
 
-    const onChangeState = async (saleId, state, itemId)=>{
+    const onChangeState = async (body)=>{
         // console.log(`change state: ${saleId} | ${state}`)
         await saleApi.changeSaleState({
             category: category,
-            sale_id: saleId,
-            item_id: itemId,
-            state: state
+            ...body
         }).then(({status,data})=>{
             // console.log(`res: ${status} ${data}`)
             if(status === 200 && data){

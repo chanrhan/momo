@@ -250,20 +250,26 @@ public class SaleService  {
 
 	// 진행현황 관리
 
-	public int changeUsedDeviceState(int currShopId, int saleId, int udId, int state){
-		return saleMapper.changeUsedDeviceState(currShopId, saleId, udId, state);
+	public int changeUsedDeviceState(SaleVO vo){
+		if(vo.getState() == 2){
+			return saleMapper.updateUsedDeviceCms(vo);
+		}
+		return saleMapper.changeUsedDeviceState(vo);
 	}
-	public int changeCardState(int currShopId, int saleId, int cardId, int state){
-		return saleMapper.changeCardState(currShopId, saleId, cardId, state);
+	public int changeCardState(SaleVO vo){
+		return saleMapper.changeCardState(vo);
 	}
-	public int changeCombState(int currShopId, int saleId, int state){
-		return saleMapper.changeCombState(currShopId, saleId, state);
+	public int changeCombState(SaleVO vo){
+		return saleMapper.changeCombState(vo);
 	}
-	public int changeSupportState(int currShopId, int saleId, int supId, int state){
-		return saleMapper.changeSupportState(currShopId, saleId, supId, state);
+	public int changeSupportState(SaleVO vo){
+		return saleMapper.changeSupportState(vo);
 	}
-	public int changePromiseState(int currShopId, int saleId, int pmId, int checked){
-		return saleMapper.changePromiseState(currShopId, saleId, pmId, checked);
+	public int changePromiseState(SaleVO vo){
+		return saleMapper.changePromiseState(vo);
+	}
+	public int updateUsedDeviceCms(SaleVO vo){
+		return saleMapper.updateUsedDeviceCms(vo);
 	}
 
 	// 메인 페이지 (Dashboard)

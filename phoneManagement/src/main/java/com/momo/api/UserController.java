@@ -185,16 +185,17 @@ public class UserController {
 	 * 사용자 매장 가입 요청 승인
 	 * @return Boolean
 	 */
-	@PostMapping("/{staffId}/approval-st")
+	@PostMapping("/{staffId}/{shopId}/state")
 	@Transactional
 	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
+													   @PathVariable Integer shopId,
 													   @PathVariable String staffId,
 													   @RequestBody Integer state){
-		int currShopId = commonService.getCurrentShopId(session);
-		if(state == 1){
-			userService.updateCurrentShop(staffId, currShopId);
-		}
-		return ResponseEntity.ok(userService.updateApprovalState(currShopId,staffId,state)> 0);
+//		int currShopId = commonService.getCurrentShopId(session);
+//		if(state == 1){
+//			userService.updateCurrentShop(staffId, currShopId);
+//		}
+		return ResponseEntity.ok(userService.updateApprovalState(shopId,staffId,state)> 0);
 	}
 
 	/**

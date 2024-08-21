@@ -15,13 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SaleVO extends BaseVO {
-	private String userId;
+//	private String userId;
 	private Integer saleId; // 판매일보 번호
 	private Integer shopId; // 매장 코드
 	private Integer supId;
 	private Integer addId;
 
-	private Integer currShopId;
+//	private Integer currShopId;
 
 	// 고객 정보
 	private String custNm; // 고객 이름
@@ -92,5 +92,13 @@ public class SaleVO extends BaseVO {
 	// 예약 문자
 	private List<ReserveMessageVO> rsvMsgList;
 
+	private Integer udId;
+	private Integer amount;
 
+	private Integer pmId;
+	private Integer cardId;
+	private Integer combId;
+
+	private Integer category;
+	private Integer state;
 }

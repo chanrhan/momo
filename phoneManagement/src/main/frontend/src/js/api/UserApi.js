@@ -69,8 +69,8 @@ function UserApi(accessToken){
         // sendShopRequest: async (shopId)=>{
         //     return await axiosApiWithAccessToken.post(`/api/v1/user/shop/request?shopId=${shopId}`,accessToken)
         // },
-        updateApprovalState: async (staffId, state)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/user/${staffId}/approval-st`, state, accessToken);
+        updateApprovalState: async (staffId, shopId, state)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/user/${staffId}/${shopId}/state`, state, accessToken);
         },
         invite: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/user/invite', body, accessToken);

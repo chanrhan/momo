@@ -10,18 +10,28 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public abstract class BaseVO {
+public class BaseVO {
 	protected String userId;
 	protected Integer currShopId;
 	protected String keyword;
+	protected String keydate;
+
 	protected String target;
-	protected String order; // 정렬
+	protected Integer order; // 정렬
 	protected boolean asc = false; // true: asc(오름차순), false: desc(내림차순)
 	protected Integer offset;
 	protected Integer limit;
 
 	public String getAsc(){
 		return asc ? "asc" : "desc";
+	}
+
+	protected static String[] COLUMNS = {
+			"main_div","actv_dt","cust_nm","cust_tel","cust_cd","device_nm","total_cms","seller_nm"
+	};
+
+	public String getOrder(){
+		return order != null ? COLUMNS[order] : null;
 	}
 
 //	protected Integer zeroToNull(Integer value){

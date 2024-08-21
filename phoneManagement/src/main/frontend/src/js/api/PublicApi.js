@@ -39,6 +39,9 @@ function PublicApi(){
         },
         getProtectedTelAndEmail : async(id)=>{
             return await axiosApi.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
+        },
+        sendAuthNumber: async (tel)=>{
+            return await axiosApi.get(`/api/v1/public/auth/send?tel=${tel}`,{});
         }
     }
 }
