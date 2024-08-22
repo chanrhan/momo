@@ -1,5 +1,5 @@
 import useApi from "./useApi";
-import {removeCookieToken, setRefreshToken} from "../utils/Cookies";
+import {removeRefreshToken, setRefreshToken} from "../utils/Cookies";
 import {useDispatch, useSelector} from "react-redux";
 import {authActions} from "../store/slices/authSlice";
 import {ModalType} from "../common/modal/ModalType";
@@ -26,7 +26,7 @@ export const useAuthentication = ()=>{
 
     const logout = ()=>{
         localStorage.removeItem('authorization') // 웹페이지 Accesstoekn 쿠키 제거
-        removeCookieToken() // 웹페이지 Refresh 쿠키 제거
+        removeRefreshToken() // 웹페이지 Refresh 쿠키 제거
         dispatch(authActions.clear()) // 리액트 내장 변수 제거
         dispatch(userActions.deleteUserInfo())
 

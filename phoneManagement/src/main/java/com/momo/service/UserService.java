@@ -44,7 +44,7 @@ public class UserService  implements UserDetailsService{
 		Random random = new Random();
 		int authNumber = random.nextInt(1000, 9000);
 		ApiVO vo = ApiVO.builder()
-				.msg("인증번호는 [" + authNumber +"] 입니다")
+				.msg("[모모] 인증번호는 [" + authNumber +"] 입니다")
 				.msgType("SMS")
 				.receiver(tel)
 				.build();
@@ -65,8 +65,8 @@ public class UserService  implements UserDetailsService{
 		return userMapper.getInnerStaff(currShopId);
 	}
 
-	public List<Map<String,Object>> getInnerStaffAll(int currShopId, String keyword){
-		return userMapper.getInnerStaffAll(currShopId, keyword);
+	public Map<String,Object> getInnerStaffAll(UserVO vo){
+		return userMapper.getInnerStaffAll(vo);
 	}
 
 	public Integer getInnerStaffTotalCount(int currShopId){

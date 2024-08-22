@@ -72,18 +72,22 @@ function Login(){
         <UserFormBox title='로그인'>
             <ul className={User.form_list}>
                 <li className={`${User.form_item} ${inputField.error.username && cmc(User.error)}`}>
-                    <label htmlFor="id" className={`${User.form_label} ${User.label}`}>아이디</label>
+                    <label htmlFor="username" className={`${User.form_label} ${User.label}`}>아이디</label>
                     <div className={User.form_inp}>
-                        <input type="text" name="username" className={`inp ` + User.inp} onChange={inputField.handleInput}/>
+                        <input type="text" name="username" className={`inp ` + User.inp}
+                               value={inputField.get('username')}
+                               onChange={inputField.handleInput}
+                               placeholder='아이디를 입력해주세요' autoComplete='username'/>
                     </div>
                     <p className={User.error_text}>{inputField.error.username}</p>
                 </li>
                 <li className={`${User.form_item} ${inputField.error.password && cmc(User.error)}`}>
-                    <label htmlFor="pw" className={User.form_label}>비밀번호</label>
-                    <div className={User.form_inp} style={{
-                        // display: 'inline-block'
-                    }}>
-                        <PasswordInput name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>
+                    <label htmlFor="password" className={User.form_label}>비밀번호</label>
+                    <div className={User.form_inp}>
+                        <PasswordInput name="password" className={`inp ` + User.inp}
+                                       value={inputField.get('password')}
+                                       onChange={inputField.handleInput}
+                                       placeholder='비밀번호를 입력해주세요' autoComplete='password'/>
                         {/*<input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>*/}
                     </div>
                     <p className={User.error_text}>{inputField.error.password}</p>

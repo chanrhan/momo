@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getCookieToken, removeCookieToken, setRefreshToken} from "./Cookies";
+import {getRefreshToken, removeRefreshToken, setRefreshToken} from "./Cookies";
 import {authActions} from "../store/slices/authSlice";
 import {requestRefreshToken} from "../api/Auth";
 import useApi from "../hook/useApi";
@@ -10,7 +10,7 @@ import useApi from "../hook/useApi";
 export function CheckToken(key){
     const [isAuth, setIsAuth] = useState('Loading');
     const {authenticated, accessToken, expireTime} = useSelector(state=>state.authReducer);
-    const refreshToken = getCookieToken();
+    const refreshToken = getRefreshToken();
     const dispatch = useDispatch();
 
     const checkAuthToken = async ()=> {
@@ -32,7 +32,7 @@ export function CheckToken(key){
 
                 } else {
                     dispatch(authActions.delAccessToken());
-                    removeCookieToken();
+                    removeRefreshToken();
                     setIsAuth('Failed');
                 }
             }

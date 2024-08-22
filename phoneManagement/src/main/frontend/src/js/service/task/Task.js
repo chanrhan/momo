@@ -82,6 +82,8 @@ export function Task(){
                 // console.table(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
+                }else{
+                    setTotalCount(0)
                 }
                 if(data.list){
                     const parsed = JSON.parse(data.list)

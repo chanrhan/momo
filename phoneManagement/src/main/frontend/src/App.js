@@ -47,6 +47,7 @@ import {AsyncTest} from "./js/test/AsyncTest";
 import {Allowance} from "./js/layout/Allowance";
 import useUserInfo from "./js/hook/useUserInfo";
 import {AdminLayout} from "./js/layout/AdminLayout";
+import {VOTest} from "./js/test/VOTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -74,6 +75,7 @@ function App() {
                   <Route path='css' element={<CssTest/>}/>
                   <Route path='alimtalk' element={<AlimTalkTest/>}/>
                   <Route path='async' element={<AsyncTest/>}/>
+                  <Route path='vo' element={<VOTest/>}/>
               </Route>
 
 
@@ -141,7 +143,7 @@ function App() {
 
                       <Route path='/staff' element={<ManageStaff/>}/>
 
-                      <Route path='profile' element={<Profile/>}/>
+                      <Route path='/profile' element={<Profile/>}/>
 
                   </Route>
               </Route>

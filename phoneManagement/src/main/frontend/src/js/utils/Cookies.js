@@ -13,11 +13,11 @@ export const setRefreshToken = (refreshToken)=>{
     })
 };
 
-export const getCookieToken = ()=>{
+export const getRefreshToken = ()=>{
     return cookies.get('refresh_token');
 }
 
-export const removeCookieToken = ()=>{
+export const removeRefreshToken = ()=>{
     return cookies.remove('refresh_token',{
         sameSite: 'strict',
         path: '/'

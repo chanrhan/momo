@@ -32,6 +32,9 @@ function TestApi(accessToken){
         },
         sendAlimTalk: async (body)=>{
             return await axiosApi.post('/api/v1/test/alimtalk', body);
+        },
+        voTest: async (body)=>{
+            return await axiosApi.post('/api/v1/test/vo', body);
         }
     }
 }

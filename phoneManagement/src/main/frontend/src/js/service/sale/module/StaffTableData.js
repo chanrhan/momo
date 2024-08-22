@@ -20,11 +20,13 @@ export function StaffTableData({data, onChangeState}){
 
     return (
         <tr>
-            <Btd checkbox name='check1'/>
+            {/*<Btd checkbox name='check1'/>*/}
             <Btd>{data.id}</Btd>
             <ProfileTableColumn src={profileImg1} name={data.name}/>
+            <Btd>{data.email}</Btd>
             <Btd>{data.tel}</Btd>
             <Btd>{LMD.role[data.role]}</Btd>
+            <Btd>{data.last_login_dt}</Btd>
             <Btd>{data.start_dt}</Btd>
             <Btd>
                 {

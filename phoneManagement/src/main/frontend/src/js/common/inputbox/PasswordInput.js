@@ -2,6 +2,7 @@ import {useState} from "react";
 
 export function PasswordInput({id, name, placeholder, className, value, onChange, readOnly, autoComplete}){
     const [visible, setVisible] = useState(false)
+
     return (
         <>
             <input type={visible ? 'text':'password'}

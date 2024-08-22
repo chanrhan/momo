@@ -129,7 +129,7 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
                             <Btd className="ta_c">{v.cust_tel}</Btd>
                             <Btd className="ta_r">{v.cust_cd}</Btd>
                             <Btd className="ta_r">{v.ud_nm}</Btd>
-                            <Btd className="ta_r">{v.cms}</Btd>
+                            <Btd className="ta_r">{v.ud_cms}</Btd>
                             <Btd className="ta_r">{v.total_cms}</Btd>
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
                             <Btd className="ta_c">

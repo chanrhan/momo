@@ -34,7 +34,7 @@ export function Sale(){
     const {saleApi} = useApi();
     const inputField = useObjectInputField({
         order: 1,
-        limit: 10
+        limit: 30
     });
     const fileLoader = useFileLoader();
     const [totalCount, setTotalCount] = useState(0)
@@ -69,9 +69,13 @@ export function Sale(){
                 // console.log(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
+                }else{
+                    setTotalCount(0)
                 }
+
                 if(data.list){
                     const parsed = JSON.parse(data.list)
+                    console.table(parsed)
                     setSaleItems(parsed)
                     setCheckedSale(new Array(parsed.length).fill(false))
 
@@ -230,7 +234,11 @@ export function Sale(){
     };
 
     const scrollDown = ()=>{
-        inputField.put('limit', Number(inputField.get('limit')) + 10)
+        const limit = Number(inputField.get('limit'))
+        modal.openModal(ModalType.SNACKBAR.Info, {
+            msg: `limit: ${limit}`
+        })
+        inputField.put('limit', (limit ?? 0) + 30)
     }
 
     return (
@@ -309,10 +317,6 @@ export function Sale(){
                     </form>
                 </div>
 
-                {/*<button type='button' style={{*/}
-                {/*    backgroundColor: "#89a9cb",*/}
-                {/*    padding: '10px'*/}
-                {/*}} onClick={scrollDown}>스크롤</button>*/}
                 <BoardTable caption='판매일보 테이블 - 선택, 메인 구분, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 모델명, 총 이익, 담당자, 예약 정보 제공'
                             colgroup={
                                 <>

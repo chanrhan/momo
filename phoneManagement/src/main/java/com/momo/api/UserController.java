@@ -217,10 +217,11 @@ public class UserController {
 	}
 
 	@GetMapping("/staff/inner/all")
-	public ResponseEntity<List<Map<String,Object>>> getInnerStaffAll(HttpSession session,
-																	 @RequestParam(required = false) String keyword){
+	public ResponseEntity<Map<String,Object>> getInnerStaffAll(HttpSession session,
+															 @RequestParam(required = false) String keyword){
 		int currShopId = commonService.getCurrentShopId(session);
-		return ResponseEntity.ok(userService.getInnerStaffAll(currShopId, keyword));
+		UserVO vo = UserVO.builder().keyword(keyword).currShopId(currShopId).build();
+		return ResponseEntity.ok(userService.getInnerStaffAll(vo));
 	}
 
 	@GetMapping("/staff/inner/count")

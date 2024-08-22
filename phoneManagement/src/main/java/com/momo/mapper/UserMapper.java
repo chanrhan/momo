@@ -18,7 +18,7 @@ public interface UserMapper {
 	public Map<String,String> getNotificationData(String userId, int shopId);
 
 	public String getInnerStaff(int currShopId);
-	public List<Map<String,Object>> getInnerStaffAll(int currShopId, String keyword);
+	public Map<String,Object> getInnerStaffAll(UserVO vo);
 	public List<String> getInnerStaffName(int currShopId);
 	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);
 

@@ -123,10 +123,19 @@ function DynamicModalContainer(){
                     }
                 }, 10);
             }
+            if(window.onkeydown == null){
+                window.onkeydown = e=>{
+                    // console.log('keydown')
+                    if(e.keyCode === 27){
+                        modal.closeModal(modalName);
+                    }
+                }
+            }
         }
         return ()=>{
             clearTimeout(timer);
             window.onclick = null;
+            window.onkeydown = null;
             // console.log(`scrollY: ${prevScrollY}`)
             // if(!ObjectUtils.isEmpty(prevScrollY)){
             //     console.log(`detach onclick`)

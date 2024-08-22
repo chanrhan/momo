@@ -16,20 +16,7 @@
             left outer join tb_account ac on ac.id=sf.staff_id
             where user_st=#{userSt}
         ), search as (
-            select json_arrayagg(json_object(
-                    'id', id,
-                    'shop_id',shop_id,
-                    'name',name,
-                    'pfp',pfp,
-                    'email',email,
-                    'tel',tel,
-                    'br_no',br_no,
-                    'regi_dt',date_format(regi_dt, '%Y-%m-%d'),
-                    'last_login_dt',last_login_dt,
-                    'role',role,
-                     'approval_st',approval_st,
-                     'shop_nm',shop_nm
-                     ))
+            select *
             from users
             where
                 <if test="keyword != null and !keyword.equals('')">
@@ -41,6 +28,25 @@
                     ) and
                 </if>
                 1=1
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+                'id', id,
+                'shop_id',shop_id,
+                'name',name,
+                'pfp',pfp,
+                'email',email,
+                'tel',tel,
+                'br_no',br_no,
+                'regi_dt',date_format(regi_dt, '%Y-%m-%d'),
+                'last_login_dt',last_login_dt,
+                'role',role,
+                'approval_st',approval_st,
+                'shop_nm',shop_nm
+                ))
+            from search
         )
 
         select (
@@ -49,7 +55,7 @@
                ) as total_cnt,
                (
                    select *
-                   from search
+                   from result
                ) as list
 
     </select>
@@ -95,29 +101,57 @@
     </update>
 
     <select id="getInnerStaffAll">
-        WITH tb as (
+        WITH sale as (
             SELECT sf.staff_id as id,
                     sf.role,
                     ac.name,
                     ac.tel,
+                    ac.email,
                     sf.start_dt,
+                    ac.last_login_dt,
                     sf.shop_id,
                     sf.approval_st
             from tb_staff sf
             left outer join tb_account ac on ac.id = sf.staff_id
             where sf.shop_id = #{currShopId}
-        )
-
-        SELECT *
-        from tb
-        WHERE
-        <if test="keyword != null and !keyword.equals('')">
-            (
+        ), search as (
+            SELECT *
+            from sale
+            WHERE
+            <if test="keyword != null and !keyword.equals('')">
+                (
                 name like '%${keyword}%' or
                 tel like '%${keyword}%'
-            ) and
-        </if>
-        1=1
+                ) and
+            </if>
+            1=1
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+                'id',id,
+                'role',role,
+                'name',name,
+                'tel',tel,
+                'email',email,
+                'last_login_dt',last_login_dt,
+                'start_dt',start_dt,
+                'shop_id',shop_id,
+                'approval_st',approval_st
+                ))
+            from search
+        )
+
+        select (
+            select IFNULL(count(*),0)
+            from sale
+        ) as total_cnt,
+            (
+                select *
+                from result
+        ) as list
+
     </select>
 
     <select id="getInnerStaff">

@@ -22,7 +22,19 @@ export function ManageStaff(){
     const getStaff = async ()=>{
         await userApi.getInnerStaffAll(keyword).then(({status,data})=>{
             if(status === 200 && data){
-                setItems(data)
+                if(data.total_cnt){
+                    setTotalCount(data.total_cnt)
+                }else{
+                    setTotalCount(0)
+                }
+
+                if(data.list){
+                    const parsed = JSON.parse(data.list)
+                    console.table(parsed)
+                    setItems(parsed)
+                }else{
+                    setItems(null)
+                }
             }
         })
     }
@@ -77,18 +89,20 @@ export function ManageStaff(){
                 <BoardTable caption='직원 현황 테이블 - 선택, 이름, 소속매장, 권한, 승인요청 정보 제공'
                 colgroup={
                     <>
-                        <col style={{width: "42px"}}/>
+                        {/*<col style={{width: "42px"}}/>*/}
                         <col/>
                         <col/>
                         <col style={{width: "150px"}}/>
                     </>
                 }>
                     <Bthead>
-                        <Bth checkbox/>
+                        {/*<Bth checkbox/>*/}
                         <Bth>아이디</Bth>
                         <Bth>이름</Bth>
+                        <Bth>이메일</Bth>
                         <Bth>연락처</Bth>
                         <Bth>권한</Bth>
+                        <Bth>마지막 로그인</Bth>
                         <Bth>입사일</Bth>
                         <Bth>승인요청</Bth>
                     </Bthead>

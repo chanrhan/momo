@@ -5,6 +5,7 @@ import useUserInfo from "../js/hook/useUserInfo";
 
 
 export default function Authorization({redirectTo, children}){
+    // console.log(`auth: ${window.location.pathname}`)
     const location = useLocation();
     const {isAuth} = CheckToken(location.key);
     const userInfo = useUserInfo();

@@ -50,7 +50,7 @@ public class SaleController {
 	 */
 	@PostMapping("/all")
 	public ResponseEntity<Map<String,Object>> getSaleAll(HttpSession session,
-															   @RequestBody(required = false) SaleSearchVO vo){
+													   @RequestBody(required = false) SaleSearchVO vo){
 		System.out.println("get sale: "+vo);
 		if(vo == null){
 			vo = new SaleSearchVO();
@@ -213,9 +213,6 @@ public class SaleController {
 		vo.setCurrShopId(commonService.getCurrentShopId(session));
 
 		int category = vo.getCategory();
-		int saleId = vo.getSaleId();
-
-		int state = vo.getState();
 
 		switch (category){
 			case 0 -> {

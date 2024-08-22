@@ -5,14 +5,12 @@
 <mapper namespace="com.momo.mapper.GMDMapper">
 <!--    정적 목록-->
     <select id="getDevice">
-        with item as (
-            select JSON_ARRAYAGG(json_object(
-                                 'id',device_id,
-                                 'name',device_nm,
-                                 'code',device_cd,
-                                 'provider',provider
-        ))
-            from    tb_device
+        with base as (
+            select *
+            from tb_device
+        ), search as (
+            select *
+            from    base
             where
             <if test="keyword != null and !keyword.equals('')">
                 (
@@ -24,31 +22,39 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select JSON_ARRAYAGG(json_object(
+            'id',device_id,
+            'name',device_nm,
+            'code',device_cd,
+            'provider',provider
+            ))
+            from    search
         )
 
         select (
             select IFNULL(count(*),0)
-            from tb_device
+            from base
         ) as total_cnt,
             (
                 select *
-                from item
+                from result
         ) as list
     </select>
 
     <select id="getSecondDevice">
-        with item as (
-            select JSON_ARRAYAGG(JSON_OBJECT(
-                                 'id',sd_id,
-                                 'name',sd_nm,
-                                 'code',sd_cd,
-                                 'provider',provider
-        ))
-            from    tb_second_device
+        with base as (
+            select *
+            from tb_second_device
+        ), search as (
+            select *
+            from    base
             where
             <if test="keyword != null and !keyword.equals('')">
                 (
@@ -60,19 +66,28 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
-        )
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select JSON_ARRAYAGG(JSON_OBJECT(
+            'id',sd_id,
+            'name',sd_nm,
+            'code',sd_cd,
+            'provider',provider
+            ))
+            from    search
 
         select (
             select IFNULL(count(*),0)
-            from tb_second_device
+            from base
         ) as total_cnt,
             (
                 select *
-                from item
+                from result
         ) as list
     </select>
 
@@ -84,13 +99,12 @@
     </select>
 
     <select id="getCtPlan">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',ct_plan_id,
-                                 'name',ct_plan_nm,
-                                 'provider',provider
-        ))
-            from    tb_ct_plan
+        with base as (
+            select *
+            from tb_ct_plan
+        ), search as (
+            select *
+            from    base
             where
             <if test="keyword != null and !keyword.equals('')">
                 (
@@ -101,32 +115,41 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',ct_plan_id,
+            'name',ct_plan_nm,
+            'provider',provider
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_ct_plan
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
 <!--    동적 목록-->
     <select id="getExtraService" parameterType="com.momo.common.vo.GMDVO">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',exsvc_id,
-                                 'name',exsvc_nm,
-                                 'provider',provider
-        ))
-            from    tb_extra_service
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_extra_service
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 exsvc_nm like '%${keyword}%'
@@ -136,31 +159,40 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',exsvc_id,
+            'name',exsvc_nm,
+            'provider',provider
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_extra_service
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
     <select id="getInternetPlan">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',internet_plan_id,
-                                 'name',internet_plan_nm,
-                                 'provider',provider
-        ))
-            from    tb_internet_plan
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_internet_plan
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 internet_plan_nm like '%${keyword}%'
@@ -170,31 +202,40 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',internet_plan_id,
+            'name',internet_plan_nm,
+            'provider',provider
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_internet_plan
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
     <select id="getTvPlan">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',tv_plan_id,
-                                 'name',tv_plan_nm,
-                                 'provider',provider
-        ))
-            from    tb_tv_plan
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_tv_plan
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 tv_plan_nm like '%${keyword}%'
@@ -204,109 +245,145 @@
                 provider = #{provider} and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',tv_plan_id,
+            'name',tv_plan_nm,
+            'provider',provider
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_tv_plan
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
     <select id="getComb">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',comb_tp_id,
-                                 'name',comb_tp_nm
-        ))
-            from    tb_comb_tp
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_comb_tp
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 comb_tp_nm like '%${keyword}%'
                 ) and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',comb_tp_id,
+            'name',comb_tp_nm
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_comb_tp
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
     <select id="getSupportDiv">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',sup_div_id,
-                                 'name',sup_div_nm
-        ))
-            from    tb_sup_div
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_sup_div
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 sup_div_nm like '%${keyword}%'
                 ) and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',sup_div_id,
+            'name',sup_div_nm
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_sup_div
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 
     <select id="getAddDiv">
-        with item as (
-            select json_arrayagg(json_object(
-                                 'id',add_div_id,
-                                 'name',add_div_nm
-        ))
-            from    tb_add_div
-            where shop_id = #{currShopId} and
+        with base as (
+            select *
+            from tb_add_div
+            where shop_id=#{currShopId}
+        ), search as (
+            select *
+            from    base
+            where
             <if test="keyword != null and !keyword.equals('')">
                 (
                 add_div_nm like '%${keyword}%'
                 ) and
             </if>
             1=1
-            <!--        <if test="order != null and !order.equals('')">-->
-            <!--            order by ${order} ${asc}-->
-            <!--        </if>-->
-            limit 20
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            select json_arrayagg(json_object(
+            'id',add_div_id,
+            'name',add_div_nm
+            ))
+            from    search
         )
 
         select (
         select IFNULL(count(*),0)
-        from tb_add_div
+        from base
         ) as total_cnt,
         (
         select *
-        from item
+        from result
         ) as list
     </select>
 

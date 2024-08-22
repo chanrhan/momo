@@ -65,21 +65,7 @@
             order by ${order} ${asc}
         </if>
         ), search as (
-            select json_arrayagg(json_object(
-                                'sale_id',sale_id,
-                                'cust_nm', cust_nm,
-                                 'cust_tel',cust_tel,
-                                 'cust_cd',cust_cd,
-                                 'cust_gd',cust_gd,
-                                 'actv_dt',actv_dt,
-                                'total_cms',total_cms,
-                                'ct', ct,
-                                'wt',wt,
-                                'sd',sd,
-                                'device_nm',device_nm,
-                                'seller_nm',seller_nm,
-                                'seller_pfp', seller_pfp
-        ))
+            select *
             from sale
             where
             <if test="keyword != null and !keyword.equals('')">
@@ -99,6 +85,23 @@
             <if test="limit != null and !limit.equals('')">
                 limit ${limit}
             </if>
+        ), result as (
+                select json_arrayagg(json_object(
+                'sale_id',sale_id,
+                'cust_nm', cust_nm,
+                'cust_tel',cust_tel,
+                'cust_cd',cust_cd,
+                'cust_gd',cust_gd,
+                'actv_dt',actv_dt,
+                'total_cms',total_cms,
+                'ct', ct,
+                'wt',wt,
+                'sd',sd,
+                'device_nm',device_nm,
+                'seller_nm',seller_nm,
+                'seller_pfp', seller_pfp
+                ))
+                from search
         )
 
         select (
@@ -107,7 +110,7 @@
         ) as total_cnt,
             (
                 select *
-                from search
+                from result
         ) as list
 
 
@@ -255,20 +258,7 @@
         left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sud.shop_id=#{currShopId}
         ), search as (
-            SELECT json_arrayagg(json_object(
-                                 'sale_id',sale_id,
-                                'ud_id',ud_id,
-                                'ud_st',ud_st,
-                                'actv_dt',actv_dt,
-                                'cust_nm',cust_nm,
-                                'cust_tel',cust_tel,
-                                'cust_cd',cust_cd,
-                                'ud_nm',ud_nm,
-                                'ud_cms',ud_cms,
-                                'total_cms',total_cms,
-                                'seller_nm',seller_nm,
-                                'seller_pfp',seller_pfp
-                                 ))
+            SELECT *
             from sale
             WHERE
             <if test="notDone != null and notDone == true">
@@ -285,6 +275,25 @@
             <if test="order != null and !order.equals('')">
                 order by ${order} ${asc}
             </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+            'sale_id',sale_id,
+            'ud_id',ud_id,
+            'ud_st',ud_st,
+            'actv_dt',actv_dt,
+            'cust_nm',cust_nm,
+            'cust_tel',cust_tel,
+            'cust_cd',cust_cd,
+            'ud_nm',ud_nm,
+            'ud_cms',ud_cms,
+            'total_cms',total_cms,
+            'seller_nm',seller_nm,
+            'seller_pfp',seller_pfp
+            ))
+            from search
         )
 
         select (
@@ -293,7 +302,7 @@
         ) as total_cnt,
         (
             select *
-            from search
+            from result
         ) as list
 
 
@@ -318,19 +327,7 @@
         left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sc.shop_id=#{currShopId}
         ), search as (
-            SELECT json_arrayagg(json_object(
-                    'sale_id',sale_id,
-                    'card_id',card_id,
-                    'card_st',card_st,
-                    'actv_dt',actv_dt,
-                    'cust_nm',cust_nm,
-                    'cust_tel',cust_tel,
-                    'cust_cd',cust_cd,
-                    'card_nm',card_nm,
-                    'card_tp',card_tp,
-                    'seller_nm',seller_nm,
-                    'seller_pfp',seller_pfp
-        ))
+            SELECT *
             from sale
             WHERE
             <if test="notDone != null and notDone == true">
@@ -348,6 +345,24 @@
             <if test="order != null and !order.equals('')">
                 order by ${order} ${asc}
             </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+                'sale_id',sale_id,
+                'card_id',card_id,
+                'card_st',card_st,
+                'actv_dt',actv_dt,
+                'cust_nm',cust_nm,
+                'cust_tel',cust_tel,
+                'cust_cd',cust_cd,
+                'card_nm',card_nm,
+                'card_tp',card_tp,
+                'seller_nm',seller_nm,
+                'seller_pfp',seller_pfp
+                ))
+            from search
         )
 
 
@@ -358,7 +373,7 @@
         ) as total_cnt,
         (
         select *
-        from search
+        from result
         ) as list
     </select>
 
@@ -380,37 +395,43 @@
             WHERE sl.shop_id=#{currShopId} and
                   sl.comb_tp is not null
         ), search as (
-                SELECT json_arrayagg(json_object(
-                        'sale_id',sale_id,
-                        'comb_st',comb_st,
-                        'actv_dt',actv_dt,
-                        'cust_nm',cust_nm,
-                        'cust_tel',cust_tel,
-                        'cust_cd',cust_cd,
-                        'comb_tp',comb_tp,
-                        'comb_memo',comb_memo,
-                        'seller_nm',seller_nm,
-                        'seller_pfp',seller_pfp
-                        ))
-                from sale
-                WHERE
-                <if test="notDone != null and notDone == true">
-                    comb_st != 1 and
-                </if>
-                <if test="keyword != null and !keyword.equals('')">
-                    (
-                    cust_nm like '%${keyword}%' or
-                    cust_tel like '%${keyword}%' or
-                    cust_cd like '%${keyword}%' or
-                    seller_nm like '%${keyword}%' or
-                    comb_memo like '%${keyword}%' or
-                    comb_tp like '%${keyword}%'
-                    ) and
-                </if>
-                1=1
-                <if test="order != null and !order.equals('')">
-                    order by ${order} ${asc}
-                </if>
+            SELECT *
+            from sale
+            WHERE
+            <if test="notDone != null and notDone == true">
+                comb_st != 1 and
+            </if>
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                cust_cd like '%${keyword}%' or
+                seller_nm like '%${keyword}%' or
+                comb_memo like '%${keyword}%' or
+                comb_tp like '%${keyword}%'
+                ) and
+            </if>
+            1=1
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+                'sale_id',sale_id,
+                'comb_st',comb_st,
+                'actv_dt',actv_dt,
+                'cust_nm',cust_nm,
+                'cust_tel',cust_tel,
+                'cust_cd',cust_cd,
+                'comb_tp',comb_tp,
+                'comb_memo',comb_memo,
+                'seller_nm',seller_nm,
+                'seller_pfp',seller_pfp
+                ))
+            from search
         )
 
 
@@ -421,7 +442,7 @@
         ) as total_cnt,
         (
         select *
-        from search
+        from result
         ) as list
     </select>
 
@@ -443,19 +464,7 @@
                     left outer join tb_account ac on ac.id=sl.seller_id
             WHERE ss.shop_id=#{currShopId}
         ), search as (
-                SELECT json_arrayagg(json_object(
-                        'sale_id',sale_id,
-                        'sup_id',sup_id,
-                        'sup_st',sup_st,
-                        'actv_dt',actv_dt,
-                        'cust_nm',cust_nm,
-                        'cust_tel',cust_tel,
-                        'cust_cd',cust_cd,
-                        'sup_div',sup_div,
-                        'sup_amount',sup_amount,
-                        'seller_nm',seller_nm,
-                        'seller_pfp',seller_pfp
-                        ))
+                SELECT *
                 from sale
                 WHERE
                 <if test="notDone != null and notDone == true">
@@ -473,6 +482,24 @@
                 <if test="order != null and !order.equals('')">
                     order by ${order} ${asc}
                 </if>
+            <if test="limit != null and !limit.equals('')">
+                limit ${limit}
+            </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+                'sale_id',sale_id,
+                'sup_id',sup_id,
+                'sup_st',sup_st,
+                'actv_dt',actv_dt,
+                'cust_nm',cust_nm,
+                'cust_tel',cust_tel,
+                'cust_cd',cust_cd,
+                'sup_div',sup_div,
+                'sup_amount',sup_amount,
+                'seller_nm',seller_nm,
+                'seller_pfp',seller_pfp
+                ))
+            from search
         )
 
 
@@ -482,7 +509,7 @@
         ) as total_cnt,
         (
         select *
-        from search
+        from result
         ) as list
     </select>
 
@@ -507,14 +534,7 @@
                      left outer join tb_sale sl on pm.sale_id=sl.sale_id
             WHERE pm.shop_id=#{currShopId}
         ), search as (
-            SELECT json_arrayagg(json_object(
-                    'sale_id',sale_id,
-                    'cust_nm',cust_nm,
-                    'cust_tel',cust_tel,
-                    'cust_cd',cust_cd,
-                    'actv_dt',actv_dt,
-                    'pm_list',pm_list
-                                 ))
+            SELECT *
             from sale
             WHERE (
                       select IFNULL(count(*),0)
@@ -525,6 +545,19 @@
                   ) > 0 or
                 cust_nm like '%${keyword}%' or
                 cust_tel like '%${keyword}%'
+        <if test="limit != null and !limit.equals('')">
+            limit ${limit}
+        </if>
+        ), result as (
+            SELECT json_arrayagg(json_object(
+                    'sale_id',sale_id,
+                    'cust_nm',cust_nm,
+                    'cust_tel',cust_tel,
+                    'cust_cd',cust_cd,
+                    'actv_dt',actv_dt,
+                    'pm_list',pm_list
+                                 ))
+            from search
         )
 
         select (
@@ -533,7 +566,7 @@
                ) as total_cnt,
                (
                    select *
-                   from search
+                   from result
                ) as list
 
     </select>

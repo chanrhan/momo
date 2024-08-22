@@ -161,16 +161,23 @@ export function Administrator(){
                                         {
                                             state === 0 ?
                                                 (
-                                                    <>
-                                                        <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
-                                                            changeState(v.id, v.shop_id, 1);
-                                                        }}>승인</button>
-                                                        <button type="button" className="btn btn_red btn_small btn_line" onClick={()=>{
-                                                            changeState(v.id, v.shop_id, 2);
-                                                        }}>거절</button>
-                                                    </>
+                                                    v.role === 0 ? (
+                                                        <>
+                                                            <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
+                                                                changeState(v.id, v.shop_id, 1);
+                                                            }}>승인</button>
+                                                            <button type="button" className="btn btn_red btn_small btn_line" onClick={()=>{
+                                                                changeState(v.id, v.shop_id, 2);
+                                                            }}>거절</button>
+                                                        </>
+                                                    ) : (
+                                                        <button type="button" className={`btn btn_green btn_small btn_line`}>
+                                                            승인대기중
+                                                        </button>
+                                                    )
                                                 ) :
-                                                <button type="button" className={`btn ${state === 1 ? 'btn_blue':'btn_red'} btn_small btn_line`}>
+                                                <button type="button"
+                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_red'} btn_small btn_line`}>
                                                     {state === 1 ? '승인완료': (state === 2 ? '승인거절':'관리자')}
                                                 </button>
                                         }

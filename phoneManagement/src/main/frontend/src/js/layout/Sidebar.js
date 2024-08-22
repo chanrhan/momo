@@ -1,10 +1,11 @@
 import Layout from "../../css/layout.module.css"
 import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 // import "../../css/user.module.css"
 
 const selectTab = (pathname)=>{
+    console.log(`path: ${pathname}`)
     switch (pathname){
         case '/service':
             return -1;
@@ -17,7 +18,7 @@ const selectTab = (pathname)=>{
         case '/service/analysis':
             return 3;
         default:
-            return -1;
+            return -2;
     }
 }
 
@@ -25,6 +26,13 @@ export function Sidebar() {
     const pathname = window.location.pathname
     const [tab, setTab] = useState(selectTab(pathname))
 
+    useEffect(() => {
+        console.log(`tab: ${tab}`)
+    }, [tab]);
+
+    useEffect(() => {
+        console.log(`p tab: ${tab}`)
+    }, [window.location.pathname]);
 
     return (
         <div className={Layout.lnb}>

@@ -4,7 +4,9 @@ import com.momo.alimtalk.ImageAlimTalk;
 import com.momo.alimtalk.SENSUtil;
 import com.momo.common.enums.codes.CommonErrorCode;
 import com.momo.common.util.FileServiceUtil;
+import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
+import com.momo.common.vo.TestChildVO;
 import com.momo.exception.BusinessException;
 import com.momo.service.ImageService;
 import com.momo.service.NotificationService;
@@ -111,5 +113,11 @@ public class TestController {
 		log.info("b0dy: {}",result.getBody());
 		return result;
 //		return ResponseEntity.ok(SENSUtil.send(map));
+	}
+
+	@PostMapping("/vo")
+	public ResponseEntity<?> voTest(@RequestBody TestChildVO vo){
+		log.info("vo test: {}", vo.getLimit());
+		return ResponseEntity.ok(true);
 	}
 }
