@@ -298,6 +298,23 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .check_del{position:absolute; top:0; right:0; width:24px; height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon{margin-top:18px; padding:0; color:#4781ff; font-size:16px; text-align:left;}
 
+/*20240829 추가*/
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5{display:block; width:100%;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_area{padding:16px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text{position:relative; padding-left:100px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text div{position:absolute; top:3px; left:0; color:#28272c; font-size:15px; font-weight:600; line-height:20px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text div span{margin-left:10px; color:#acacac; font-size:15px; font-weight:400;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text p{color:#aaa; font-size:11px; line-height:15px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box{margin-top:12px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload{display:inline-block; position:relative; top:auto; left:auto; right:auto; bottom:auto; width:calc(20% - 4px); height:90px; border:1px solid #d5d5d5; border-radius:10px; vertical-align:top; /* overflow:hidden;*/}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload + .data_upload{margin-left:5px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload input[type="file"]{position:absolute; top:10px; left:10px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .upload_btn{position:relative; border-radius:10px; background-size:36px; background-color:#fff;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn{position:absolute; top:-6px; right:-6px; width:19px; height:19px; border-radius:50%; background-color:#999;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:before, .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:after{display:block; position:absolute; top:0; left:0; right:0; bottom:0; width:11px; height:1px; margin:auto; background-color:#fff;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:before{transform:rotate(45deg);}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:after{transform:rotate(135deg);}
+
 /*CUSTOM*/
 .popup_cont .org_head_box .button{
     width:100%;

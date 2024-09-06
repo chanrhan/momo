@@ -16,15 +16,15 @@ public class GMDService {
     private final GMDMapper gmdMapper;
 
     // 정적 목록
-    public Map<String,Object> getDevice(String keyword, Integer provider){
-        return gmdMapper.getDevice(keyword, provider);
+    public Map<String,Object> getDevice(GMDVO vo){
+        return gmdMapper.getDevice(vo);
     }
 
-    public Map<String,Object> getSecondDevice(String keyword, Integer provider){
-        return gmdMapper.getSecondDevice(keyword,provider);
+    public Map<String,Object> getSecondDevice(GMDVO vo){
+        return gmdMapper.getSecondDevice(vo);
     }
-    public Map<String,Object> getCtPlan(String keyword, Integer provider){
-        return gmdMapper.getCtPlan(keyword,provider);
+    public Map<String,Object> getCtPlan(GMDVO vo){
+        return gmdMapper.getCtPlan(vo);
     }
 
     public Map<String,Object> getSecondDeviceById(int id){
@@ -32,28 +32,28 @@ public class GMDService {
     }
 
     // 동적 목록
-    public Map<String,Object> getExtraService(int currShopId, String keyword, Integer provider){
-        return gmdMapper.getExtraService(currShopId, keyword,provider);
+    public Map<String,Object> getExtraService(GMDVO vo){
+        return gmdMapper.getExtraService(vo);
     }
 
-    public Map<String,Object> getInternetPlan(int currShopId, String keyword, Integer provider){
-        return gmdMapper.getInternetPlan(currShopId, keyword,provider);
+    public Map<String,Object> getInternetPlan(GMDVO vo){
+        return gmdMapper.getInternetPlan(vo);
     }
 
-    public Map<String,Object> getTvPlan(int currShopId, String keyword, Integer provider){
-        return gmdMapper.getTvPlan(currShopId, keyword,provider);
+    public Map<String,Object> getTvPlan(GMDVO vo){
+        return gmdMapper.getTvPlan(vo);
     }
 
-    public Map<String,Object> getComb(int currShopId, String keyword){
-        return gmdMapper.getComb(currShopId, keyword);
+    public Map<String,Object> getComb(GMDVO vo){
+        return gmdMapper.getComb(vo);
     }
 
-    public Map<String,Object> getSupportDiv(int currShopId, String keyword){
-        return gmdMapper.getSupportDiv(currShopId, keyword);
+    public Map<String,Object> getSupportDiv(GMDVO vo){
+        return gmdMapper.getSupportDiv(vo);
     }
 
-    public Map<String,Object> getAddDiv(int currShopId, String keyword){
-        return gmdMapper.getAddDiv(currShopId, keyword);
+    public Map<String,Object> getAddDiv(GMDVO vo){
+        return gmdMapper.getAddDiv(vo);
     }
 
     // 추가

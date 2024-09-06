@@ -8,9 +8,8 @@ function PublicApi(){
         login: async (data)=>{
           return await axiosApi.post('/api/v1/public/login',data);
         },
-        logout: async ()=>{
-
-            return await axiosApi.get('/api/v1/public/logout');
+        logout: async (refreshToken)=>{
+            return await axiosApi.get(`/api/v1/public/logout?refreshToken=${refreshToken}`);
         },
         signup : async (data)=>{
             return await axiosApi.post('/api/v1/public/signup', data);

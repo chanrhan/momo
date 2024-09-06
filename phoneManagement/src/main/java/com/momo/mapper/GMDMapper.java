@@ -10,9 +10,9 @@ import java.util.Map;
 @Mapper
 public interface GMDMapper {
     // 정적 목록
-    public Map<String,Object> getDevice(String keyword, Integer provider);
-    public Map<String,Object> getSecondDevice(String keyword, Integer provider);
-    public Map<String,Object> getCtPlan(String keyword, Integer provider);
+    public Map<String,Object> getDevice(GMDVO vo);
+    public Map<String,Object> getSecondDevice(GMDVO vo);
+    public Map<String,Object> getCtPlan(GMDVO vo);
 
     public void insertDeviceAll(List<GMDVO> list);
     public void insertSecondDeviceAll(List<GMDVO> list);
@@ -26,12 +26,12 @@ public interface GMDMapper {
     public void insertCombAll(int currShopId,List<GMDVO> list);
 
     // 동적 목록
-    public Map<String,Object> getInternetPlan(int currShopId, String keyword, Integer provider);
-    public Map<String,Object> getTvPlan(int currShopId, String keyword, Integer provider);
-    public Map<String,Object> getExtraService(int currShopId, String keyword, Integer provider);
-    public Map<String,Object> getSupportDiv(int currShopId, String keyword);
-    public Map<String,Object> getAddDiv(int currShopId, String keyword);
-    public Map<String,Object> getComb(int currShopId, String keyword);
+    public Map<String,Object> getInternetPlan(GMDVO vo);
+    public Map<String,Object> getTvPlan(GMDVO vo);
+    public Map<String,Object> getExtraService(GMDVO vo);
+    public Map<String,Object> getSupportDiv(GMDVO vo);
+    public Map<String,Object> getAddDiv(GMDVO vo);
+    public Map<String,Object> getComb(GMDVO vo);
 
 
     public Map<String,Object> getSecondDeviceById(int id);

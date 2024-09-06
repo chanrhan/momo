@@ -58,7 +58,9 @@ export function BarChartArea({date, userId}){
 
             <div className={Graph.graph_box}>
                 <BarChartInstance labels={labels} color={`#4781ff`}
-                                  hoverColor={`#88adff`} data={data}/>
+                                  hoverColor={`#88adff`} data={data} yAxisCallback={v=>{
+                                      return `${Math.round(v)}개`
+                }}/>
             </div>
         </div>
     )

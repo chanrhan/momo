@@ -48,6 +48,8 @@ import {Allowance} from "./js/layout/Allowance";
 import useUserInfo from "./js/hook/useUserInfo";
 import {AdminLayout} from "./js/layout/AdminLayout";
 import {VOTest} from "./js/test/VOTest";
+import {AutoLogout} from "./js/layout/AutoLogout";
+import {MasterShop} from "./js/admin/MasterShop";
 
 function App() {
     const userInfo = useUserInfo();
@@ -82,7 +84,11 @@ function App() {
               <Route path='/' element={<LandingPage/>}/>
 
               <Route element={<ChatBotButton/>}>
-                  <Route element={<AccountLayout/>}>
+                  <Route element={
+                      <AccountLayout>
+                        <AutoLogout/>
+                      </AccountLayout>
+                  }>
                       {/*<Route path='/' element={<Preview/>}/>*/}
                       <Route path='/account/login' element={<Login/>}/>
                       <Route path='/account/signup' element={<Signup/>}/>
@@ -120,6 +126,7 @@ function App() {
                       <Route path='/admin'>
                           <Route path='' element={<Administrator/>}/>
                           <Route path='gmd' element={<MasterData/>}/>
+                          <Route path='shop' element={<MasterShop/>}/>
                       </Route>
                   </Route>
 

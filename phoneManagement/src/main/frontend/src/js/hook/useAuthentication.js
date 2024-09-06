@@ -13,7 +13,7 @@ export const useAuthentication = ()=>{
     const login = async (data)=>{
         let rst = null;
         await publicApi.login(data).then((res)=>{
-            console.table(res)
+            // console.table(res)
             rst = (res.status === 200)
             if(res.status === 200){
                 dispatch(authActions.setAccessToken(res.headers.get('authorization')));
@@ -25,13 +25,14 @@ export const useAuthentication = ()=>{
     }
 
     const logout = ()=>{
+        const refreshToken = localStorage.getItem('refresh_token')
+        console.log('logout')
         localStorage.removeItem('authorization') // 웹페이지 Accesstoekn 쿠키 제거
         removeRefreshToken() // 웹페이지 Refresh 쿠키 제거
         dispatch(authActions.clear()) // 리액트 내장 변수 제거
+
         dispatch(userActions.deleteUserInfo())
-
-
-        publicApi.logout();
+        publicApi.logout(refreshToken);
     }
 
 

@@ -38,6 +38,7 @@ import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 import {UsedDeviceCmsModal} from "../../service/task/module/TaskUsedDeviceCmsModal";
+import {ImagePreviewModal} from "./layer/ImagePreviewModal";
 
 const MODAL_COMPONENTS = {
     // common
@@ -45,8 +46,9 @@ const MODAL_COMPONENTS = {
     MoreOption: MoreOptionModal,
     BulkUpload: BulkUploadModal,
     Invite: InviteModal,
-    Charge_Point: ChargePointModal,
+    ChargePoint: ChargePointModal,
     Alert: AlertModal,
+    ImagePreview: ImagePreviewModal,
 
     // todo
     Payment_Card: PaymentCardModal,

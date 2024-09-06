@@ -1,12 +1,16 @@
-import {AxiosApiWithAccessToken} from "./ApiCommon";
-import {ObjectUtils} from "../utils/objectUtil";
 
-export const getProfilePicture = async (id, accessToken)=>{
-    const response = await AxiosApiWithAccessToken.get(`/api/v1/img/pfp/${id}`, accessToken);
-    if(response.status === 200){
-        if(!ObjectUtils.isEmpty(response.data)){
-            return response.data;
-        }
+export const FileUtils = {
+    encodeFileToBase64 : async (fileList: Array<File>)=>{
+        const encodingFiles = fileList.map((file)=>{
+            const reader = new FileReader();
+            reader.readAsDataURL(file)
+            return new Promise((resolve)=>{
+                reader.onload = ()=>{
+                    resolve(reader.result)
+                }
+            })
+        });
+
+        return await Promise.all(encodingFiles);
     }
-    return '/img/tmp/default_pfp.png';
 }

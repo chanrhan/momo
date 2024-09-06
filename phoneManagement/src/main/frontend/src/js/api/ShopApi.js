@@ -22,6 +22,9 @@ function ShopApi(accessToken){
         },
         joinShop: async (shopId)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/shop/join?shopId=${shopId}`, accessToken);
+        },
+        getShopAdmin: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/shop/admin`, body, accessToken);
         }
     }
 }

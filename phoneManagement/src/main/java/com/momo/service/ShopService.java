@@ -69,4 +69,8 @@ public class ShopService {
 		return true;
 	}
 
+	public Map<String,Object> getShopAdmin(ShopVO vo){
+		return shopMapper.getShopAdmin(vo);
+	}
+
 }

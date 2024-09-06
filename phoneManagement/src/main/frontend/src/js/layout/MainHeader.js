@@ -76,7 +76,7 @@ export function MainHeader(){
                                 }}>문자 포인트 충전</SelectItem>
                                 <SelectItem onClick={() => {
                                     setActive(false)
-                                    authentication.logout();
+                                    // authentication.logout();
                                     nav('/account/login')
                                 }}>로그아웃</SelectItem>
                             </SelectLayer>

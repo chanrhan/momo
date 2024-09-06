@@ -25,8 +25,13 @@ export function useFileLoader(){
         return await load('pfp',fileName);
     }
 
+    const saleFile = async (fileName)=>{
+        return await load('sale',fileName);
+    }
+
     return {
         pfp,
-        pimg
+        pimg,
+        saleFile,
     }
 }

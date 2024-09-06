@@ -20,6 +20,10 @@ export function useObjectInputField(init){
         }))
     }
 
+    const putAll = (arr)=>{
+        setInput(arr)
+    }
+
     const clear = ()=>{
         setInput({});
     }
@@ -33,6 +37,7 @@ export function useObjectInputField(init){
         setInput,
         get,
         put,
+        putAll,
         handleInput,
         clear,
         clearOf

@@ -25,7 +25,9 @@ ChartJS.register(
 
 
 
-export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled, x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled}){
+export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled,
+                                      x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled,
+                                      yAxisCallback}){
     const {borderColor, bgStartColor} = getChartColor(color);
 
     if(ObjectUtils.isEmpty(data)){
@@ -95,9 +97,10 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 ticks:{
                     // stepSize: 1,
                     callback: (value)=>{
-                        if(Number.isInteger(value)){
-                            return value
+                        if(yAxisCallback){
+                            return yAxisCallback(value)
                         }
+                        return value;
                     }
                 },
                 min: 0

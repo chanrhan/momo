@@ -13,8 +13,12 @@ import java.util.*;
 public class SaleService  {
 	private final SaleMapper saleMapper;
 
-	public String getSpecFilePath(int id){
-		return saleMapper.getSpecFilePath(id);
+	public List<String> getFilePath(SaleVO vo){
+		return saleMapper.getFilePath(vo);
+	}
+
+	public List<FileVO> getFiles(SaleVO vo){
+		return saleMapper.getFiles(vo);
 	}
 
 	public boolean isDuplicatedTel(SaleVO vo){
@@ -36,6 +40,7 @@ public class SaleService  {
 		insertAddList(vo);
 		insertCardList(vo);
 		insertUsedDeviceList(vo);
+		insertFiles(vo);
 		return maxSaleId;
 	}
 
@@ -84,6 +89,15 @@ public class SaleService  {
 		saleMapper.insertSaleUsedDevice(vo.getCurrShopId(), vo.getSaleId(),usedDeviceList);
 	}
 
+	public void insertFiles(SaleVO vo){
+		List<String> files = vo.getFiles();
+
+		if(files == null || files.isEmpty()){
+			return;
+		}
+		saleMapper.insertSaleFiles(vo.getCurrShopId(), vo.getSaleId(), files);
+	}
+
 	@Transactional
 	public int updateSale(SaleVO vo) {
 		int rst = saleMapper.updateSale(vo);
@@ -92,8 +106,10 @@ public class SaleService  {
 		rst += updateSaleAdd(vo);
 		rst += updateSaleCard(vo);
 		rst += updateSaleUsedDevice(vo);
+		rst += updateSaleFiles(vo);
 		return rst;
 	}
+
 
 	public int updateSaleAppointment(SaleVO vo){
 		List<SalePromiseVO> apmList = vo.getPmList();
@@ -169,6 +185,25 @@ public class SaleService  {
 		int rst = saleMapper.deleteAllSaleUsedDevice(currShopId, saleId);
 		saleMapper.insertSaleUsedDevice(currShopId, saleId,usedDeviceList);
 		return rst;
+	}
+
+	public int updateSaleFiles(SaleVO vo){
+		List<String> files = vo.getFiles();
+
+		if(files == null || files.isEmpty()){
+			return 0;
+		}
+
+		int currShopId = vo.getCurrShopId();
+		int saleId = vo.getSaleId();
+
+		int rst = saleMapper.deleteAllSaleFiles(vo);
+		saleMapper.insertSaleFiles(currShopId, saleId, files);
+		return rst;
+	}
+
+	public int deleteSaleFileAll(SaleVO vo){
+		return saleMapper.deleteAllSaleFiles(vo);
 	}
 
 

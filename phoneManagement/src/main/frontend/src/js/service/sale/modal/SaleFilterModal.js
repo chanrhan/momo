@@ -7,6 +7,7 @@ import {LayerModal} from "../../../common/modal/LayerModal";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {LMD} from "../../../common/LMD";
+import {ObjectUtils} from "../../../utils/objectUtil";
 
 export const FILTER_INPUT_TYPE = [
     false,LMD.main_div,false,false,false,LMD.ct_actv_tp,LMD.ct_actv_div,LMD.istm,LMD.storage
@@ -28,7 +29,17 @@ export function SaleFilterModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
-            props.onSubmit(inputField.input)
+            const arr = inputField.input.filter(v=>{
+                if(!FILTER_INPUT_TYPE[v.type] && (ObjectUtils.isEmpty(v.target) || v.target === 0)){
+                    return false
+                }
+                return true
+            })
+            // console.table(arr)
+            // return;
+            if(!ObjectUtils.isEmpty(arr)){
+                props.onSubmit(arr)
+            }
         }
         close();
     }

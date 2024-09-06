@@ -3,6 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
+    <select id="getFiles">
+        SELECT *
+        FROM tb_sale_files
+        where shop_id=#{currShopId} and
+              sale_id=#{saleId}
+    </select>
+
+    <select id="getFilePath">
+        SELECT path
+        FROM tb_sale_files
+        where shop_id=#{currShopId} and
+            sale_id=#{saleId}
+    </select>
+
     <select id="isDuplicatedTel" parameterType="com.momo.common.vo.SaleVO">
         select IF(count(*) > 0, true, false)
         from tb_sale
@@ -176,6 +190,15 @@
             where shop_id=#{currShopId} and
                 sale_id=#{saleId}
             order by ud_id
+        ), files as (
+            select json_arrayagg(json_object(
+                                 'path',path,
+                                 'order',file_id
+                                 ))
+            from tb_sale_files
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId}
+            order by file_id
         )
 
 
@@ -231,7 +254,11 @@
                (
                    select *
                    from ud
-               ) as ud_list
+               ) as ud_list,
+                (
+                    select *
+                    from files
+                   ) as file_list
         from tb_sale sl
         where shop_id=#{currShopId} and
             sale_id=#{saleId}
@@ -653,9 +680,7 @@
             family = #{family},
             friend = #{friend},
             sale_memo=#{saleMemo},
-            total_cms=#{totalCms},
-            estimate=#{estimate},
-            docs=#{docs}
+            total_cms=#{totalCms}
         where sale_id=#{saleId}
     </update>
 
@@ -714,6 +739,14 @@
         </foreach>
         );
 
+        delete from tb_sale_files
+        where shop_id=#{currShopId} and
+        (
+        <foreach collection="ids" index="index" item="item" open="" close="" separator="or">
+            sale_id=#{item}
+        </foreach>
+        );
+
     </delete>
 
     <insert id="insertSale" parameterType="com.momo.common.vo.SaleVO">
@@ -727,13 +760,13 @@
          device_id, device_stor, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
          ct_cms, sd_id, comb_tp, comb_memo,
          wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
-         friend, seller_id, estimate, docs, sale_memo, total_cms)
+         friend, seller_id, sale_memo, total_cms)
         VALUES (#{currShopId},@next_sale_id, #{custNm},#{custTel},#{custCd},#{custGd},
                 #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},
                 #{ctActvTp},#{ctActvPlan},
                 #{ctDecPlan},#{ctCms},#{sdId},#{combTp},
                 #{combMemo},#{wtActvTp},#{wtCms},#{internetPlan},#{tvPlan},
-                #{exsvcId},#{family},#{friend},#{sellerId},#{estimate},#{docs},#{saleMemo},#{totalCms})
+                #{exsvcId},#{family},#{friend},#{sellerId},#{saleMemo},#{totalCms})
     </insert>
 
 <!--    고객약속, 추가, 지원, 카드, 중고폰  -->
@@ -843,6 +876,15 @@
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
             #{currShopId},#{saleId},#{index}+1,#{item.udNm},#{item.udStor},#{item.udCms}
+        </foreach>
+    </insert>
+
+    <insert id="insertSaleFiles">
+        INSERT INTO tb_sale_files
+        (shop_id, sale_id, file_id, path)
+        VALUES
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
+            #{currShopId},#{saleId},#{index}+1,#{item}
         </foreach>
     </insert>
 
@@ -957,6 +999,12 @@
         DELETE FROM tb_sale_used_device
         WHERE shop_id= #{currShopId} and
             sale_id=#{saleId}
+    </delete>
+
+    <delete id="deleteAllSaleFiles">
+        DELETE FROM tb_sale_files
+        WHERE shop_id=#{currShopId} and
+              sale_id=#{saleId}
     </delete>
 
 <!--    메인 페이지 (Dashboard)-->

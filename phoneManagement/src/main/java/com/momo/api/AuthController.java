@@ -35,6 +35,7 @@ public class AuthController {
 									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
 		log.info("refresh");
 		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken);
+		log.info("jwt: {}", jwtVO);
 		commonService.setCurrentShopId(session);
 
 		jwtProvider.setHeaderJwtToken(response, jwtVO);

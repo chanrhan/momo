@@ -5,6 +5,8 @@ import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
 import {TabList} from "../../../common/module/TabList";
+import {NumberUtils} from "../../../utils/NumberUtils";
+import {value} from "lodash/seq";
 
 const DATE_TYPE = [
     'd','w','m'
@@ -129,7 +131,17 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
     return (
         <>
             <div className={chartClassName}>
-                <LineChartInstance tooltip_disabled color='blue' tooltips={graphTooltip} labels={graphLabel} data={graphData}/>
+                <LineChartInstance tooltip_disabled color='blue'
+                                   tooltips={graphTooltip} labels={graphLabel}
+                                   data={graphData} yAxisCallback={v=>{
+                                       if(!Number.isInteger(v)) {
+                                           return;
+                                       }
+                                       if(categoryTab < 3) {
+                                           return `${Math.round(v)}개`
+                                       }
+                                       return `${NumberUtils.toPrice(v)}원`
+                }}/>
             </div>
 
             <div className={pannelClassName}>

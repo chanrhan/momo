@@ -28,6 +28,7 @@ export const requestRefreshToken = async (refreshToken)=>{
         .catch(()=>{
             return statusError;
         })
+    console.table(data)
 
     if(parseInt(Number(data.status) / 100) === 2){
         const status = data.status;

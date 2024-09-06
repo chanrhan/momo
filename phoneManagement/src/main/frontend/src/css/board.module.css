@@ -20,13 +20,28 @@
     border-radius: 5px;
 }
 
+/*20240829 추가*/
+.board .board_head .board_head_filter{margin-top:14px;}
+.board .board_head .board_filter_refresh{display:inline-block; height:26px; margin:2px 17px 2px 0; padding-left:18px; background:url(../images/all_icon.png) no-repeat left -5px top 1px / 24px; color:#91939f; font-size:13px; line-height:28px; vertical-align:top;}
+.board .board_head .board_filter_list{display:inline-block; font-size:0; line-height:0; vertical-align:top;}
+.board .board_head .board_filter_list li{display:inline-block; height:26px; margin:2px 10px 2px 0; padding:0 6px; border:1px solid #4781ff; border-radius:5px; background-color:#f2f2f2; color:#4781ff; font-size:13px; font-weight:500; line-height:26px; vertical-align:top;}
+.board .board_head .board_filter_list li:last-child{margin-right:0;}
+.board .board_head .board_filter_list li span{color:#000; font-weight:600;}
+.board .board_head .board_filter_list li .board_filter_del{position:relative; width:13px; height:13px; margin-top:-2px; margin-left:12px; border-radius:50%; background-color:#8e8e8e; font-size:0;}
+.board .board_head .board_filter_list li .board_filter_del:before,
+.board .board_head .board_filter_list li .board_filter_del:after{display:block; position:absolute; top:0; left:0; right:0; bottom:0; width:7px; height:1px; margin:auto; background-color:#fff;}
+.board .board_head .board_filter_list li .board_filter_del:before{transform:rotate(45deg);}
+.board .board_head .board_filter_list li .board_filter_del:after{transform:rotate(135deg);}
+
 .board .board_head .board_btn_box{display:inline-block; position:relative; margin-left:13px; vertical-align:top;}
 .board .board_head .board_btn_box + .board_btn_box{margin-left:2px;}
 .board .board_head .board_btn_box .board_btn{width:36px; height:36px; background-repeat:no-repeat; background-position:center; background-size:30px;}
 .board .board_head .board_btn_box .board_btn + .board_btn{}
 .board .board_head .board_btn_box .board_btn.board_filter{background-image:url(../images/filter_icon2.png);}
 
-
+/*20240830 추가*/
+.sticky{overflow-x:hidden; overflow-y:scroll ; height:600px;}
+.sticky table thead{position:sticky; top:0; left:0; right:0; z-index:1;}
 
 .board .board_head .board_btn_box .board_btn.board_more{background-image:url(../images/more_icon.png);/* margin-right:13px;*/}
 .board .board_head .board_btn_box + .btn{margin-left:13px;}

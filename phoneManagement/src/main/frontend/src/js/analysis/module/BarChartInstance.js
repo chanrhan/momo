@@ -27,7 +27,9 @@ ChartJS.register(
 
 
 
-export function BarChartInstance({labelName, labels, data, color, hoverColor, x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled}){
+export function BarChartInstance({labelName, labels, data, color, hoverColor,
+                                     x_axis_disabled, y_axis_disabled,
+                                     borderWidth=1, label_disabled, yAxisCallback}){
 
     if(ObjectUtils.isEmpty(data)){
         return null;
@@ -78,7 +80,17 @@ export function BarChartInstance({labelName, labels, data, color, hoverColor, x_
                 display: !y_axis_disabled, // y축 표시 여부
                 grid: { // y축 격자
                     display: false
-                }
+                },
+                ticks:{
+                    // stepSize: 1,
+                    callback: (value)=>{
+                        if(yAxisCallback){
+                            return yAxisCallback(value)
+                        }
+                        return value;
+                    }
+                },
+                min: 0
             }
         },
         plugins: {

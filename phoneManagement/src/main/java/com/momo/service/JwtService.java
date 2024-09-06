@@ -46,6 +46,15 @@ public class JwtService {
 			throw new UsernameNotFoundException("refresh token was not found");
 		}
 
+		if(userRefreshToken.get("expired").equals(true)){
+			log.info("expired");
+			throw new UsernameNotFoundException("refresh token has been expired");
+		}
+		if(userRefreshToken.get("revoked").equals(true)){
+			log.info("revoked");
+			throw new UsernameNotFoundException("refresh token has been revoked");
+		}
+
 		String username = userRefreshToken.get("user_id").toString();
 
 		Authentication authentication = jwtProvider.getAuthenticationByUsername(username);
@@ -54,5 +63,13 @@ public class JwtService {
 		saveRefreshToken(jwtVO);
 
 		return jwtVO;
+	}
+
+	public int expireToken(String userId, String refreshToken){
+		return refreshTokenMapper.expireToken(userId, refreshToken);
+	}
+
+	public int revokeToken(String userId, String refreshToken){
+		return refreshTokenMapper.revokeToken(userId, refreshToken);
 	}
 }

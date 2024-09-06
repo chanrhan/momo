@@ -4,7 +4,8 @@ export const ModalType = {
         Bulk_Upload: 'BulkUpload',
         Invite: 'Invite',
         Payment_Card: 'Payment_Card',
-        Charge_Point: 'Charge_Point',
+        Charge_Point: 'ChargePoint',
+        Image_Preview: 'ImagePreview',
 
         // Profile
         Update_Password: 'UpdatePassword',

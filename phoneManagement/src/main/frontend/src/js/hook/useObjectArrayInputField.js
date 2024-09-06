@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
+import {object} from "prop-types";
 
 export function useObjectArrayInputField(init, arr){
     let copyArr = [];
@@ -35,6 +36,19 @@ export function useObjectArrayInputField(init, arr){
         setInput(copy);
     }
 
+    const putAsObject = (index, value)=>{
+        const copy = [...input]
+        copy.push(value)
+        setInput(copy)
+    }
+
+    const append = (arr)=>{
+        setInput([
+            ...input,
+            ...arr
+        ])
+    }
+
     const addItem = ()=>{
         if(!input){
             setInput([init])
@@ -51,6 +65,10 @@ export function useObjectArrayInputField(init, arr){
         setInput(copy)
     }
 
+    const clear = ()=>{
+        setInput(null)
+    }
+
     const isEmpty = (index, key)=>{
         if(!input[index]){
             return false
@@ -65,8 +83,11 @@ export function useObjectArrayInputField(init, arr){
         get,
         put,
         putAll,
+        putAsObject,
+        append,
         addItem,
         removeItem,
+        clear,
         isEmpty
     }
 }

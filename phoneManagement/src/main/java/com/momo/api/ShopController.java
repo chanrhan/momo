@@ -110,4 +110,9 @@ public class ShopController {
 		return ResponseEntity.ok(shopService.joinShop(username, shopId));
 	}
 
+	@PostMapping("/shop/admin")
+	public ResponseEntity<Map<String,Object>> getShopAdmin(@RequestBody ShopVO vo){
+		return ResponseEntity.ok(shopService.getShopAdmin(vo));
+	}
+
 }

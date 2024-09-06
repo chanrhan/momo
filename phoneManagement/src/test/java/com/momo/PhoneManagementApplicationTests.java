@@ -26,6 +26,7 @@ class PhoneManagementApplicationTests {
 //		insertRandomData();
 	}
 
+
 	public void insertData(){
 		SaleVO vo = SaleVO.builder()
 				.userId("km1104rs")

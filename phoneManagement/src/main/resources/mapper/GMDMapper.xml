@@ -79,7 +79,8 @@
             'code',sd_cd,
             'provider',provider
             ))
-            from    search
+            from search
+        )
 
         select (
             select IFNULL(count(*),0)

@@ -1,9 +1,9 @@
 import {cm, cmc} from "../../utils/cm";
 import Board from "../../../css/board.module.css";
 
-export function BoardTable({caption, colgroup, children, tableRef}){
+export function BoardTable({caption, colgroup, children, tableRef, style, onScroll}){
     return (
-        <div className="board_body">
+        <div className={`board_body ${Board.sticky}`} style={style} onScroll={onScroll}>
             <table className={Board.td_board} ref={tableRef}>
                 <caption>{caption}</caption>
                 <colgroup>

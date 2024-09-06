@@ -30,17 +30,18 @@ public class GMDController {
                                                         @RequestParam(required = false)String keyword,
                                                               @RequestParam(required = false)Integer provider){
         int currShopId = commonService.getCurrentShopId(session);
+        GMDVO vo = GMDVO.builder().currShopId(currShopId).keyword(keyword).provider(provider).build();
         Map<String,Object> result = switch (type){
-            case 0 -> gmdService.getDevice(keyword, provider);
-            case 1 -> gmdService.getSecondDevice(keyword, provider);
-            case 2 -> gmdService.getCtPlan(keyword, provider);
+            case 0 -> gmdService.getDevice(vo);
+            case 1 -> gmdService.getSecondDevice(vo);
+            case 2 -> gmdService.getCtPlan(vo);
             //
-            case 3 -> gmdService.getInternetPlan(currShopId, keyword, provider);
-            case 4 -> gmdService.getTvPlan(currShopId, keyword, provider);
-            case 5 -> gmdService.getExtraService(currShopId, keyword, provider);
-            case 6 -> gmdService.getSupportDiv(currShopId, keyword);
-            case 7 -> gmdService.getAddDiv(currShopId, keyword);
-            case 8 -> gmdService.getComb(currShopId, keyword);
+            case 3 -> gmdService.getInternetPlan(vo);
+            case 4 -> gmdService.getTvPlan(vo);
+            case 5 -> gmdService.getExtraService(vo);
+            case 6 -> gmdService.getSupportDiv(vo);
+            case 7 -> gmdService.getAddDiv(vo);
+            case 8 -> gmdService.getComb(vo);
             default -> null;
         };
         return ResponseEntity.ok(result);

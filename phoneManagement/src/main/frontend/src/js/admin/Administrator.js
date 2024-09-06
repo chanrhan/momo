@@ -50,6 +50,7 @@ export function Administrator(){
                     })
                 }else{
                     setItems(null)
+                    setProfileImages(null)
                 }
             }
         })
@@ -161,7 +162,7 @@ export function Administrator(){
                                         {
                                             state === 0 ?
                                                 (
-                                                    v.role === 0 ? (
+                                                    v.role === 1 ? (
                                                         <>
                                                             <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
                                                                 changeState(v.id, v.shop_id, 1);

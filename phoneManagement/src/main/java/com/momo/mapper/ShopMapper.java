@@ -18,6 +18,8 @@ public interface ShopMapper {
 
 	public void joinShop(String userId, int shopId);
 
+	public Map<String,Object> getShopAdmin(ShopVO vo);
+
 	// 데이터 초기화
 //	public void initializeShopData()
 }

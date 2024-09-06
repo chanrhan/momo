@@ -4,7 +4,7 @@ import {TabList} from "../../common/module/TabList";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
-import DataNotFound from "../../../images/profile_img2.jpg"
+import DataNotFound from "../../../images/no_data_icon.png"
 import {ObjectUtils} from "../../utils/objectUtil";
 
 export function SliderChartArea({date, userId}){
@@ -32,7 +32,7 @@ export function SliderChartArea({date, userId}){
 
         await saleApi.getGraphStat(tab, body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 setItems(data)
             }
         })

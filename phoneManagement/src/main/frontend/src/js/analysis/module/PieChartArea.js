@@ -33,7 +33,7 @@ export function PieChartArea({date, userId}){
 
         await saleApi.getRatio(tab, body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 const count = JSON.parse(data.cnt)
                 const type = JSON.parse(data.type)
                 const per = JSON.parse(data.per)

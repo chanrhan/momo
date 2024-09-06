@@ -33,10 +33,9 @@ import {ScrollUtils} from "../../../utils/ScrollUtils";
 import {MouseEventUtils} from "../../../utils/MouseEventUtils";
 import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 import {Scrollable} from "../../../common/module/Scrollable";
+import {useFileLoader} from "../../../hook/useFileLoader";
+import {FileUtils} from "../../../api/FileUtils";
 
-const DYNAMIC_ITEMS = [
-    'test 1', 'test 2', 'test 3'
-]
 
 function SaleDetailModal(props){
     const userInfo = useUserInfo()
@@ -88,7 +87,7 @@ function SaleDetailModal(props){
             value: 0
         }
     ]);
-    // console.table(inputField.input)
+    const fileLoader = useFileLoader()  ;
 
     const supportInputField = useObjectArrayInputField({
         name: '선택없음',
@@ -112,18 +111,20 @@ function SaleDetailModal(props){
     const checkBit = useBitArray();
     const checkListInputField = useObjectInputField();
 
-    const [files, setFiles] = useState({
-        estimate: null,
-        docs: null
+    const fileInputField = useObjectArrayInputField({
+        file: null,
+        preview: null,
+        key: null
     })
 
-    const [initStaffName, setInitStaffName] = useState(null)
+    const [deleteFiles, setDeleteFiles] = useState([])
+    // !key && order = new
+    // key && order = existed
+        // key != order -> updated
+    // key && !order = deleted
+    // !key && !order = NULL
+
     const [staff, setStaff] = useState([])
-
-    const [previewDocs, setPreviewDocs] = useState(null)
-    const [previewEstimate, setPreviewEstimate] = useState(null)
-
-    // const scrollRef = useRef();
 
 
     useEffect(()=>{
@@ -134,15 +135,6 @@ function SaleDetailModal(props){
         getInnerStaff()
     },[props.sale_id])
 
-    // useEffect(() => {
-    //     const target = scrollRef.current;
-    //     if(props.scrollable === false){
-    //         // target.style.position = 'fixed'
-    //         target.style.pointerEvents = 'none'
-    //     }else if(props.scrollable === true){
-    //         target.style.pointerEvents = 'auto'
-    //     }
-    // }, [props.scrollable]);
 
     const getInitStaffName = ()=>{
         if(staff){
@@ -151,31 +143,15 @@ function SaleDetailModal(props){
         return null;
     }
 
-    const handleFileInput = (e)=>{
-        const name = e.target.name;
-        const file = e.target.files[0]
-        setFiles(prev=>({
-            ...prev,
-            [name]: file
-        }))
-        if(file){
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onloadend = ()=>{
-                if(name === 'docs'){
-                    setPreviewDocs(reader.result)
-                }else if(name === 'estimate'){
-                    setPreviewEstimate(reader.result)
-                }
-            }
-        }
-    }
 
     const getInnerStaff = async ()=>{
         await userApi.getInnerStaffAsObject().then(({status,data})=>{
             if(status === 200 && data){
                 // console.table(data)
                 setStaff(data)
+                if(!props.sale_id && data[userInfo.id]){
+                    inputField.put('seller_id', userInfo.id)
+                }
             }
         })
     }
@@ -206,7 +182,7 @@ function SaleDetailModal(props){
                 checkListInputField.put('tv_plan_nm',data.tv_plan_nm)
 
                 // 리스트형 데이터
-                const {pm_list, sup_list, add_list, card_list, ud_list} = data;
+                const {pm_list, sup_list, add_list, card_list, ud_list, file_list} = data;
                 if(!ObjectUtils.isEmpty(pm_list)){
                     promiseInputField.putAll(JSON.parse(pm_list));
                 }
@@ -228,9 +204,49 @@ function SaleDetailModal(props){
                     bit = bit | (1 << 3)
                     checkListInputField.put('ud_list', JSON.parse(ud_list));
                 }
+                if(!ObjectUtils.isEmpty(file_list)){
+                    const parsed: Array = JSON.parse(file_list)
+                    // fileInputField.setInput(parsed.map(v=>{
+                    //     console.log(v)
+                    //     return {
+                    //         file: v,
+                    //         preview: null
+                    //     }
+                    // }))
+                    getFileImages(parsed).then(li=>{
+                        fileInputField.setInput(li)
+                    })
+                }
                 checkBit.setAll(bit);
             }
         })
+    }
+
+
+    const getFileImages = async (list)=>{
+        // console.table(fileInputField.input)
+        if(list){
+            const copy = new Array(list.length)
+            for(let i=0;i<list.length; ++i){
+                await fileLoader.saleFile(list[i].path).then(d=>{
+                    const order = list[i].order;
+                    copy[i] = {
+                        file: null,
+                        preview: d,
+                        key: order
+                    }
+                })
+            }
+            if(list.length < 5){
+                copy[list.length] = {
+                    file: null,
+                    preview: null,
+                    key: null
+                }
+            }
+            return copy;
+        }
+        return null;
     }
 
     const close = ()=>{
@@ -448,18 +464,21 @@ function SaleDetailModal(props){
     const submit = async (rsvMsgList)=>{
         const formData = new FormData();
 
-        const {estimate, docs} = files;
-        if(!ObjectUtils.isEmpty(estimate)){
-            const estimateFiles = Array.prototype.slice.call(estimate);
-            estimateFiles.forEach((file)=>{
-                formData.append('estimate',file);
-            })
-        }
-
-        if(!ObjectUtils.isEmpty(docs)){
-            const docFiles = Array.prototype.slice.call(docs);
-            docFiles.forEach(file=>{
-                formData.append('docs', file);
+        const filtered = fileInputField.input.filter(v=> v.preview !== null || v.key !== null);
+        const files = filtered.map(v=>v.file);
+        const fileOrders = filtered.map(v=>v.key)
+        // console.table(filtered)
+        // console.table(files)
+        // console.table(fileOrders)
+        // return ;
+        if(files){
+            // const _files = Array.prototype.slice.call(files);
+            files.forEach((v, i)=>{
+                if(v){
+                    formData.append(`file`,v);
+                }else{
+                    formData.append(`file`,new Blob([]), 'null');
+                }
             })
         }
 
@@ -468,8 +487,6 @@ function SaleDetailModal(props){
         if(promiseInputField.input.length > 0){
             pm_list = promiseInputField.input.filter(v=>!ObjectUtils.isEmpty(v.content));
         }
-        // console.table(inputField.input)
-
         const body = {
             sale_id: props.id,
             ...inputField.input,
@@ -480,7 +497,9 @@ function SaleDetailModal(props){
                 sumAdd() -
                 sumSup(),
             pm_list: pm_list,
-            rsv_msg_list: rsvMsgList
+            rsv_msg_list: rsvMsgList,
+            file_orders: fileOrders,
+            // delete_files: deleteFiles
         }
 
         // console.table(body)
@@ -488,6 +507,11 @@ function SaleDetailModal(props){
         formData.append('sale', new Blob([JSON.stringify(body)], {
             type: 'application/json'
         }))
+
+        for(const i of formData){
+            console.table(i)
+        }
+        // return ;
 
         if(props.sale_id){
             // update
@@ -517,6 +541,69 @@ function SaleDetailModal(props){
         return true;
     }
 
+    const handleFileInput = async (e)=>{
+        if(e.target.files && e.target.files.length){
+            const fileLength = e.target.files.length;
+            if(fileLength > 0){
+                const currFiles = fileInputField.input.filter(v=>v.preview)
+                const orgLength = currFiles.length;
+                const files = [...e.target.files].slice(0, Math.min(5 - orgLength, fileLength))
+                const converFiles = await FileUtils.encodeFileToBase64(files);
+                let arr = [...currFiles];
+                for(const index in converFiles){
+                    arr.push({
+                        file: files[index],
+                        preview: converFiles[index]
+                    })
+                }
+
+                if(orgLength + fileLength < 5){
+                    // 추가
+                    arr.push({
+                        file: null,
+                        preview: null
+                    })
+                }
+                fileInputField.putAll(arr)
+            }
+        }
+    }
+
+    const handleClickPreviewImage = (e, i)=>{
+        const previewFile = fileInputField.get(i, 'preview');
+        const image = new Image();
+        image.onload = ()=>{
+            modal.openModal(ModalType.LAYER.Image_Preview, {
+                src: previewFile,
+                width: image.width,
+                height: image.height
+            })
+        }
+        image.onerror = ()=>{
+            modal.openModal(ModalType.SNACKBAR.Alert, {
+                msg: '이미지를 불러오는 중 오류가 발생했습니다.'
+            })
+        }
+        image.src = previewFile
+    }
+
+    const getFileCount = ()=>{
+        return  fileInputField.input.filter(v=>v.preview).length;
+    }
+
+    const removeFile = (i)=>{
+        const currFiles = [...fileInputField.input].filter(v=>v.preview)
+
+        currFiles.splice(i, 1);
+        if(currFiles.length < 5){
+            currFiles.push({
+                file: null,
+                preview: null,
+                key: null
+            })
+        }
+        fileInputField.putAll(currFiles)
+    }
 
 
     return (
@@ -742,37 +829,69 @@ function SaleDetailModal(props){
                                         <div className={Popup.price_data}>
                                             <div className={Popup.data_half}>
                                                 <div className={Popup.data_group}>
-                                                    <div className={cm(Popup.data_box, Popup.n1)}>
-                                                        <div className={Popup.data_title}>서류</div>
+                                                    <div className={cm(Popup.data_box, Popup.n5)}>
+                                                        <div className={Popup.data_title}>서류 및 견적서</div>
                                                         <div className={Popup.data_area}>
-                                                            <div className={Popup.data_upload}>
-                                                                <label htmlFor='docs'
-                                                                       className={Popup.upload_btn}>업로드</label>
-                                                                <input type="file" id='docs' name='docs'
-                                                                       onChange={handleFileInput} style={{
-                                                                    visibility: "hidden"
-                                                                }}/>
-
+                                                            <div className={Popup.data_text}>
+                                                                <div>사진<span>({getFileCount()}/5)</span></div>
+                                                                <p>* 30MB 미만의 .jpg, .peg, .png 파일을 올릴 수 있어요<br/>
+                                                                    * 사진을 섞어서 배치할 수 있어요.
+                                                                </p>
                                                             </div>
-                                                            <img src={previewDocs} alt=''/>
+                                                            <div className={Popup.data_upload_box}>
+                                                                {
+                                                                    fileInputField.input && fileInputField.input.map((v,i)=> {
+                                                                        return <div className={Popup.data_upload}>
+                                                                            <label htmlFor={`file_${i}`}
+                                                                                   className={Popup.upload_btn} style={{
+                                                                                       display: v.preview ? 'none': ''
+                                                                            }}>업로드
+                                                                            </label>
+                                                                            <input type="file" id={`file_${i}`} multiple
+                                                                                   name={`file_${i}`}
+                                                                                   onChange={handleFileInput} style={{
+                                                                                visibility: "hidden"
+                                                                            }}/>
+                                                                            <img src={v.preview} alt='' style={{
+                                                                                display: "inline-block",
+                                                                                top: 0,
+                                                                                left: 0,
+                                                                                position: "absolute"
+                                                                            }} onClick={e=>{
+                                                                                handleClickPreviewImage(e, i)
+                                                                            }}/>
+                                                                            {
+                                                                                (i < fileInputField.length() && v.preview) &&
+                                                                                <button type="button"
+                                                                                        className={Popup.delete_btn}
+                                                                                        onClick={() => {
+                                                                                            removeFile(i)
+                                                                                        }}>삭제
+                                                                                </button>
+                                                                            }
+
+                                                                        </div>
+                                                                    })
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    <div className={cm(Popup.data_box, Popup.n2)}>
-                                                        <div className={Popup.data_title}>견적서</div>
-                                                        <div className={Popup.data_area}>
-                                                            <div className={Popup.data_upload}>
-                                                                <label htmlFor='estimate' className={Popup.upload_btn}>업로드
-                                                                </label>
-                                                                <input type="file" id='estimate' name='estimate'
-                                                                       onChange={handleFileInput} style={{
-                                                                    visibility: "hidden"
-                                                                }}/>
+                                                    {/*<div className={cm(Popup.data_box, Popup.n2)}>*/}
+                                                    {/*    <div className={Popup.data_title}>견적서</div>*/}
+                                                    {/*    <div className={Popup.data_area}>*/}
+                                                    {/*        <div className={Popup.data_upload}>*/}
+                                                    {/*            <label htmlFor='estimate' className={Popup.upload_btn}>업로드*/}
+                                                    {/*            </label>*/}
+                                                    {/*            <input type="file" id='estimate' name='estimate'*/}
+                                                    {/*                   onChange={handleFileInput} style={{*/}
+                                                    {/*                visibility: "hidden"*/}
+                                                    {/*            }}/>*/}
 
-                                                            </div>
-                                                            <img src={previewEstimate} alt=''/>
-                                                        </div>
-                                                    </div>
+                                                    {/*        </div>*/}
+                                                    {/*        <img src={previewEstimate} alt=''/>*/}
+                                                    {/*    </div>*/}
+                                                    {/*</div>*/}
                                                 </div>
 
                                                 <div className={cm(Popup.data_box, Popup.n3)}>

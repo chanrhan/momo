@@ -1,10 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.util.ResponseEntityUtil;
-import com.momo.common.vo.CommonVO;
-import com.momo.common.vo.SalePromiseVO;
-import com.momo.common.vo.SaleSearchVO;
-import com.momo.common.vo.SaleVO;
+import com.momo.common.vo.*;
 import com.momo.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -138,11 +137,72 @@ public class SaleController {
 		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(currShopId, id));
 	}
 
+	@Transactional
+	@PostMapping("/update")
+	@ResponseBody
+	public ResponseEntity<Boolean> updateSale(HttpSession session,
+											  @RequestPart(value = "sale") SaleVO vo,
+											  @RequestPart(value = "file",required = false) List<MultipartFile> files) {
+		log.info("update sale vo: {}", vo);
+		log.info("update files: {}", files);
+		int currShopId = commonService.getCurrentShopId(session);
+		vo.setCurrShopId(currShopId);
+
+		List<String> insertList = new ArrayList<>();
+
+		// 기존 파일(경로) 불러오기
+		List<FileVO> orgFileList = saleService.getFiles(vo);
+		if(orgFileList == null || orgFileList.isEmpty()){
+			// 기존 파일이 없다면, 그냥 추가하는 것과 다름이 없음
+			for(MultipartFile mf : files){
+				insertList.add(imageService.upload("sale", mf));
+			}
+		}else{
+			// 기존 파일이 있다면, 어떤걸 수정하고, 어떤 걸 삭제할지 결정해야함
+			// Delete
+//			List<Integer> deleteFiles = vo.getDeleteFiles();
+//			if(deleteFiles != null && !deleteFiles.isEmpty()){
+//				for(int id : deleteFiles){
+//					imageService.delete("sale", orgFileList.get(id).getPath());
+//				}
+//			}
+
+			// Insert / Update
+			List<Integer> fileOrders = vo.getFileOrders();
+			if(fileOrders != null && !fileOrders.isEmpty()){
+				for(int i=0;i<fileOrders.size();++i){
+					Integer key = fileOrders.get(i);
+					if(files != null && files.get(i) != null && files.get(i).getSize() > 0){
+						// new file or updated file
+						insertList.add(imageService.upload("sale", files.get(i)));
+					}else if(key != null){
+						// existed
+						String path = orgFileList.get(key-1).getPath();
+						insertList.add(path);
+						orgFileList.set(key-1, null);
+					}
+				}
+			}else{
+				imageService.deleteAll("sale", orgFileList.stream().map(FileVO::getPath).toList());
+				return ResponseEntity.ok(saleService.deleteSaleFileAll(vo) > 0);
+			}
+
+			if(!orgFileList.isEmpty()){
+				imageService.deleteAll("sale", orgFileList.stream().filter(Objects::nonNull).map(FileVO::getPath).toList());
+			}
+
+		}
+		vo.setFiles(insertList);
+
+
+
+		return ResponseEntity.ok(saleService.updateSale(vo) > 0);
+	}
+
 	/**
 	 * 판매일보 추가
 	 * @param vo
-	 * @param estimate
-	 * @param docs
+	 * @param files
 	 * @return
 	 */
 	@PostMapping("/add")
@@ -150,46 +210,24 @@ public class SaleController {
 	@Transactional
 	public ResponseEntity<Boolean> createSale(HttpSession session,
 											  @RequestPart(value = "sale") SaleVO vo,
-											  @RequestPart(value = "estimate", required = false) MultipartFile estimate,
-											  @RequestPart(value = "docs", required = false) MultipartFile docs) {
-		log.info("sale add: {}", vo);
-		if(estimate != null){
-			vo.setEstimate(imageService.upload("sale/spec", estimate));
-		}
-
-		if(docs != null){
-			vo.setDocs(imageService.upload("sale/docs", docs));
-		}
-
+											  @RequestPart(value = "file", required = false) List<MultipartFile> files) {
 		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
+
+		List<String> insertList = new ArrayList<>();
+		if(files != null && !files.isEmpty()){
+			for(MultipartFile mf : files){
+				insertList.add(imageService.upload("sale", mf));
+			}
+		}
+
+		vo.setFiles(insertList);
 
 		int maxSaleId = saleService.insertSale(vo);
 		reserveMsgService.insertMsgList(currShopId, maxSaleId, vo.getRsvMsgList());
 		return ResponseEntity.ok(true);
 	}
 
-
-	@PostMapping("/update")
-	@ResponseBody
-	public ResponseEntity<Boolean> updateSale(HttpSession session,
-											  @RequestPart(value = "sale") SaleVO vo,
-							   				  @RequestPart(value = "estimate",required = false) MultipartFile estimate,
-											  @RequestPart(value = "docs",required = false) MultipartFile docs) {
-		log.info("update sale vo: {}", vo);
-		if(estimate != null){
-			vo.setEstimate(imageService.upload("sale/spec", estimate));
-		}
-
-		if(docs != null){
-			vo.setDocs(imageService.upload("sale/docs", docs));
-		}
-
-		int currShopId = commonService.getCurrentShopId(session);
-		vo.setCurrShopId(currShopId);
-
-		return ResponseEntity.ok(saleService.updateSale(vo) > 0);
-	}
 
 
 

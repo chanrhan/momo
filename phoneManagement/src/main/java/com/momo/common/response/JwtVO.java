@@ -12,4 +12,7 @@ public class JwtVO {
 	private String username;
 	private String accessToken;
 	private String refreshToken;
+
+	private boolean revoked = false;
+	private boolean expired = false;
 }

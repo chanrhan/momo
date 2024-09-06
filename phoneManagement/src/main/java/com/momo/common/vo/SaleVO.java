@@ -73,8 +73,10 @@ public class SaleVO extends BaseVO {
 	private Integer totalCms; // 총 판매금액
 
 	// 파일
-	private String estimate; // 견적서
-	private String docs;
+	private List<String> files; // 파일들
+//	private String docs;
+	private List<Integer> fileOrders; // 파일 키
+//	private List<Integer> deleteFiles; // 삭제 파일 키
 
 	// 기타
 	private String saleMemo; // 비고

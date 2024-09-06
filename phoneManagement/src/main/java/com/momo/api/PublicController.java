@@ -1,6 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
+import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
@@ -56,7 +57,13 @@ public class PublicController {
 	}
 
 	@GetMapping("/logout")
-	public ResponseEntity<?> logout(HttpSession session){
+	public ResponseEntity<?> logout(HttpSession session,
+									@RequestParam String refreshToken){
+		String username = SecurityContextUtil.getUsername();
+		if(StringUtils.hasText(username)){
+			jwtService.revokeToken(username, refreshToken);
+			session.removeAttribute("curr_shop_id");
+		}
 		return ResponseEntity.ok().build();
 	}
 

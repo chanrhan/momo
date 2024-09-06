@@ -18,6 +18,9 @@ public interface SaleMapper{
 
 	public Map<String,Object> getSaleOne(int currShopId, int saleId);
 
+	public List<String> getFilePath(SaleVO vo);
+	public List<FileVO> getFiles(SaleVO vo);
+
 	// task, category
 	public Map<String,Object> getSaleAsUsedDevice(SaleSearchVO vo);
 	public Map<String,Object> getSaleAsCard(SaleSearchVO vo);
@@ -37,6 +40,7 @@ public interface SaleMapper{
 	public int insertSaleAdd(int currShopId, int saleId, List<SaleAddVO> list);
 	public int insertSaleCard(int currShopId, int saleId, List<SaleCardVO> list);
 	public int insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
+	public int insertSaleFiles(int currShopId, int saleId, List<String> list);
 
 	public int updateSaleAsPromise(int currShopId, int saleId, int pmId, boolean checked, String content);
 	public int updateSaleSupport(int currShopId, int saleId, int supId, int div, int amount);
@@ -55,6 +59,7 @@ public interface SaleMapper{
 	public int deleteAllSaleAdd(int currShopId, int saleId);
 	public int deleteAllSaleCard(int currShopId, int saleId);
 	public int deleteAllSaleUsedDevice(int currShopId, int saleId);
+	public int deleteAllSaleFiles(SaleVO vo);
 
 	// 진행현황 관리
 	public int changeUsedDeviceState(SaleVO vo);

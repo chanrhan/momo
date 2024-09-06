@@ -22,6 +22,7 @@ import {FILTER_INPUT_TYPE} from "./modal/SaleFilterModal";
 import {useObjectInputField} from "../../hook/useObjectInputField";
 import {Scrollable} from "../../common/module/Scrollable";
 import {ScrollUtils} from "../../utils/ScrollUtils";
+import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
@@ -29,13 +30,20 @@ const COLUMNS_SORT = [
 
 const COLUMN_MAX_SIZE = Math.pow(2, (LMD.sale_column_vars.length))-1;
 
+const INIT_LIMIT = 30;
+
 export function Sale(){
     const modal = useModal();
     const {saleApi} = useApi();
     const inputField = useObjectInputField({
         order: 1,
-        limit: 30
+        // limit: 30
     });
+
+    const [limit, setLimit ] = useState(INIT_LIMIT)
+
+    const filterInputField = useObjectArrayInputField()
+
     const fileLoader = useFileLoader();
     const [totalCount, setTotalCount] = useState(0)
     const [asc, setAsc] = useState(new Array(10).fill(false))
@@ -61,10 +69,14 @@ export function Sale(){
         }
     }, []);
 
-    const getSale = async ()=>{
+    const getSale = async (limit)=>{
         // console.table(inputField.input)
         // return;
-        await saleApi.getSaleAll(inputField.input).then(async ({status,data})=>{
+        await saleApi.getSaleAll({
+            ...inputField.input,
+            limit: limit ?? 30,
+            filters: filterInputField.input
+        }).then(async ({status,data})=>{
             if(status === 200 && data){
                 // console.log(data)
                 if(data.total_cnt){
@@ -75,7 +87,7 @@ export function Sale(){
 
                 if(data.list){
                     const parsed = JSON.parse(data.list)
-                    console.table(parsed)
+                    // console.table(parsed)
                     setSaleItems(parsed)
                     setCheckedSale(new Array(parsed.length).fill(false))
 
@@ -107,20 +119,16 @@ export function Sale(){
         return null;
     }
 
-    // const getSaleTotalCount = async ()=>{
-    //     await saleApi.getSaleTotalCount().then(({status,data})=>{
-    //         // console.log(`total count: ${status} ${data}`)
-    //         if(status === 200 && !Number.isNaN(data)){
-    //             setTotalCount(data)
-    //         }
-    //     })
-    // }
-
 
     useEffect(() => {
-        getSale();
+        getSale(INIT_LIMIT);
+        setLimit(INIT_LIMIT)
+        if(tableRef.current){
+            tableRef.current.scrollTop = 200;
+            console.table(tableRef.current.scrollTop)
+        }
         // getSaleTotalCount()
-    }, [inputField.input]);
+    }, [inputField.input, filterInputField.input]);
 
     // const getSaleCount = ()=>{
     //     return saleItems ? saleItems.length : 0;
@@ -152,10 +160,10 @@ export function Sale(){
     const refresh = async()=>{
         // console.log('refresh')
         inputField.clearOf({
-            order: 1,
-            limit: 10
+            order: 1
         })
         columns.setAll(COLUMN_MAX_SIZE)
+        filterInputField.clear()
     }
 
     const setOrder = async (idx)=>{
@@ -203,10 +211,11 @@ export function Sale(){
     const openFilterModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Filter, {
             top: '220px',
-            data: inputField.input.filters,
+            data: filterInputField.input,
             onSubmit: (data)=>{
                 // console.table(data)
-                inputField.put('filters', data);
+                filterInputField.putAll(data)
+                // inputField.put('filters', data);
             }
         })
     }
@@ -233,13 +242,21 @@ export function Sale(){
         document.addEventListener('mouseup', onMouseUp);
     };
 
-    const scrollDown = ()=>{
-        const limit = Number(inputField.get('limit'))
-        modal.openModal(ModalType.SNACKBAR.Info, {
-            msg: `limit: ${limit}`
-        })
-        inputField.put('limit', (limit ?? 0) + 30)
+    const handleScroll = (e: UIEvent)=>{
+        const target = e.target;
+
+        const scrollTop = target.scrollTop;
+        const scrollHeight = target.scrollHeight;
+        const clientHeight = target.clientHeight;
+
+        if(scrollTop + clientHeight >= scrollHeight){
+            // const scrollPos = scrollTop + clientHeight;
+            const _limit = (limit ?? 0) + 30;
+            getSale(_limit)
+            setLimit(_limit)
+        }
     }
+
 
     return (
         <div className={cm(Layout.sub)}>
@@ -251,9 +268,10 @@ export function Sale(){
                 <div className={cm(Board.board_head)}>
 
                     <form>
-                        <div className={cm(Board.board_head_group)} >
+                        <div className={cm(Board.board_head_group)}>
                             <MonthSelectLayer onSelect={setMonth}>
-                                <input type="text" className="inp date" value={inputField.get('keydate')} placeholder="날짜 선택"
+                                <input type="text" className="inp date" value={inputField.get('keydate')}
+                                       placeholder="날짜 선택"
                                        readOnly/>
                             </MonthSelectLayer>
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
@@ -266,7 +284,9 @@ export function Sale(){
                                     className={cm(Board.em)}>{saleItems ? saleItems.length : 0}</em>건</span>
                             </div>
 
-                            <button type="button" className={cm(Board.board_filter_btn, `${inputField.input.filters && Board.active}`)} onClick={openFilterModal}>필터
+                            <button type="button"
+                                    className={cm(Board.board_filter_btn, `${inputField.input.filters && Board.active}`)}
+                                    onClick={openFilterModal}>필터
                             </button>
 
                             <div className={cm(Board.board_search)}>
@@ -277,7 +297,7 @@ export function Sale(){
                             </div>
 
                             <div className={cm(Board.board_btn_box)}>
-                               <ColumnSelectLayer columns={columns}/>
+                                <ColumnSelectLayer columns={columns}/>
                             </div>
 
                             <div className={`select_box ${cm(Board.board_btn_box)}`}>
@@ -292,28 +312,26 @@ export function Sale(){
                                     className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>판매일보 추가
                             </button>
                         </div>
-                        <div style={{
-                            marginTop: '5px'
-                            // float: "left",
-                            // display: "block"
-                        }}>
-                            {
-                                inputField.input.filters && inputField.input.filters.map((v, i) => {
-                                    return <p style={{
-                                        marginTop: '5px',
-                                        backgroundColor: 'rgb(239,239,239)',
-                                        minWidth: '200px',
-                                        maxWidth: '300px',
-                                        padding: '5px 10px 5px 10px',
-                                        border: `2px ${'#4275e8'} solid`,
-                                        borderRadius: '5px'
-                                        // display: "inline-block"
-                                    }} >{LMD.filter_and[v.and]} {LMD.filter_type[v.type]}:{LMD.filter_option[v.option]}: [{
-                                        !FILTER_INPUT_TYPE[v.type] ? v.target : FILTER_INPUT_TYPE[v.type][v.target]
-                                    }]</p>
-                                })
-                            }
-                        </div>
+                        {
+                            filterInputField.input && filterInputField.length() > 0 && <div className={Board.board_head_filter}>
+                                <button type="button" className={Board.board_filter_refresh}>필터 초기화</button>
+                                <ul className={Board.board_filter_list}>
+                                    {
+                                        filterInputField.input && filterInputField.input.map((v, i) => {
+                                            return <li>{LMD.filter_and[v.and]} {LMD.filter_type[v.type]}:{LMD.filter_option[v.option]}: <span>[{
+                                                !FILTER_INPUT_TYPE[v.type] ? v.target : FILTER_INPUT_TYPE[v.type][v.target]
+                                            }]</span>
+                                                <button type="button" className={Board.board_filter_del} onClick={()=>{
+                                                    filterInputField.removeItem(i)
+                                                }}>삭제</button>
+                                            </li>
+                                        })
+                                    }
+
+                                </ul>
+                            </div>
+                        }
+
                     </form>
                 </div>
 
@@ -324,13 +342,15 @@ export function Sale(){
                                     {/*<col span="8"/>*/}
                                     {/*<col style={{width: "90px"}}/>*/}
                                 </>
-                            } tableRef={tableRef}>
+                            } tableRef={tableRef} style={{
+                                height: '620px'
+                }} onScroll={handleScroll}>
                     <Bthead>
-                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox onMouseDown={e=>{
+                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox onMouseDown={e => {
                             resizeColumn(e, 0)
                         }}/>
                         {
-                            columns && columns.toArray().map((v,i)=>{
+                            columns && columns.toArray().map((v, i) => {
                                 // const sort =
                                 return <Bth key={i} name={LMD.sale_column_vars[v]} sort={COLUMNS_SORT[v]}
                                             onClick={()=>{
@@ -370,9 +390,9 @@ export function Sale(){
                     </Scrollable>
                 </BoardTable>
 
-                <div className="view_more">
-                    <button type="button" className="view_more_btn">더 보기</button>
-                </div>
+                {/*<div className="view_more">*/}
+                {/*    <button type="button" className="view_more_btn">더 보기</button>*/}
+                {/*</div>*/}
             </div>
         </div>
     )

@@ -75,7 +75,7 @@ function Login(){
                     <label htmlFor="username" className={`${User.form_label} ${User.label}`}>아이디</label>
                     <div className={User.form_inp}>
                         <input type="text" name="username" className={`inp ` + User.inp}
-                               value={inputField.get('username')}
+                               // value={inputField.get('username')}
                                onChange={inputField.handleInput}
                                placeholder='아이디를 입력해주세요' autoComplete='username'/>
                     </div>
@@ -85,7 +85,7 @@ function Login(){
                     <label htmlFor="password" className={User.form_label}>비밀번호</label>
                     <div className={User.form_inp}>
                         <PasswordInput name="password" className={`inp ` + User.inp}
-                                       value={inputField.get('password')}
+                                       // value={inputField.get('password')}
                                        onChange={inputField.handleInput}
                                        placeholder='비밀번호를 입력해주세요' autoComplete='password'/>
                         {/*<input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>*/}

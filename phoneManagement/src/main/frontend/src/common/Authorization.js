@@ -8,7 +8,7 @@ export default function Authorization({redirectTo, children}){
     // console.log(`auth: ${window.location.pathname}`)
     const location = useLocation();
     const {isAuth} = CheckToken(location.key);
-    const userInfo = useUserInfo();
+    console.log(`auth: ${isAuth}`)
 
 
     if(isAuth === 'Success'){

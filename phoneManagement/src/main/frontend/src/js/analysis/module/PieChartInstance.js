@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import {Bar, Doughnut, Line, Pie} from 'react-chartjs-2';
 import {ObjectUtils} from "../../utils/objectUtil";
+import DataNotFound from "../../../images/no_data_icon.png"
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +26,9 @@ ChartJS.register(
 
 
 
-export function PieChartInstance({labelName, labels, data, color, hoverColor, x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled}){
+export function PieChartInstance({labelName, labels, data, color, hoverColor,
+                                     x_axis_disabled, y_axis_disabled, borderWidth=1,
+                                     label_disabled, yAxisCallback}){
 
     if(ObjectUtils.isEmpty(data)){
         return null;
@@ -78,15 +81,28 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor, x_
             mode: 'nearest',  // index, dataset, point, nearest(defalut), x, y
             intersect: false // false면 마우스를 정확히 올리지 않고 가까이 대기만 해도 박스가 나타난다
         },
+        legend: {
+
+        },
         // 척도 옵션
         scales: {
 
         },
         plugins: {
+            emptyDataPlugin: emptyDataPlugin,
             legend: {
                 position: 'bottom',
+                maxHeight: 200,
+                align: ()=>{
+                    if(labels){
+                        if(labels.length <= 4){
+                            return 'center'
+                        }
+                    }
+                    return 'start'
+                },
                 labels: {
-
+                    // padding: 10
                 }
             },
             datalabels: {
@@ -103,6 +119,36 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor, x_
     )
 }
 
+const emptyDataPlugin = {
+    id: 'emptyDataPlugin',
+    afterDraw: (chart)=>{
+        const dataList = chart.data.datasets[0].data;
+        console.table(dataList)
+        // 데이터가 없을 때 실행
+        if (dataList.length === 0 || isZeroArray(dataList)) {
+            // 이미지 로드
+            const img = new Image();
+            img.src = DataNotFound; // 표시할 이미지의 URL 또는 경로
+
+            img.onload = function() {
+                // 캔버스에 이미지 그리기
+                const ctx = chart.ctx;
+                const x = (chart.width - img.width) / 2;
+                const y = (chart.height - img.height) / 2;
+                ctx.drawImage(img, x, y, img.width, img.height);
+            };
+        }
+    }
+}
+
+const isZeroArray = (arr: Array)=>{
+    arr.forEach(v=>{
+        if(v && v !== 0){
+            return false;
+        }
+    })
+    return true;
+}
 
 
 

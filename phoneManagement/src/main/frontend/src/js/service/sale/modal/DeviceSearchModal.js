@@ -20,10 +20,13 @@ export function DeviceSearchModal(props){
 
 
     const getDevice = async ()=>{
+        console.log(123)
         await gmdApi.getData(DYNAMIC_TYPE.device, keyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))
+                }else{
+                    setItems(null)
                 }
             }
         })
