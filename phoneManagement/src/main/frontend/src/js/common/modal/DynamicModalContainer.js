@@ -125,14 +125,14 @@ function DynamicModalContainer(){
                 //     }
                 // }
                 modal.closeAndLockModal(modalName)
-                window.removeEventListener('click', onClickCaptureEvent)
+                window.removeEventListener('click', onClickCaptureEvent, true)
             }
         }
         const onClickBubbleEvent = (e)=>{
             console.log('bubble')
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                 modal.unlockModal()
-                window.removeEventListener('click', onClickBubbleEvent)
+                window.removeEventListener('click', onClickBubbleEvent, false)
             }
         }
 
@@ -147,7 +147,7 @@ function DynamicModalContainer(){
                 // }
                 modal.closeModal(modalName);
 
-                window.removeEventListener('keydown', onKeydownCaptureEvent)
+                window.removeEventListener('keydown', onKeydownCaptureEvent, false)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
@@ -177,8 +177,8 @@ function DynamicModalContainer(){
         if(window.onkeydown == null){
             if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
                 onkeydownDelayTimer = setTimeout(()=>{
+                    window.addEventListener('keydown', onKeydownCaptureEvent, false)
                 }, 10)
-                window.addEventListener('keydown', onKeydownCaptureEvent, false)
             }
         }
         return ()=>{

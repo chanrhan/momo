@@ -16,7 +16,7 @@ export const LayerModal = ({modalRef, children, width, height}) => {
     }, []);
 
     return (
-        <div ref={modalRef} className={cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}
+        <div className={cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}
              style={
                  {
                      width: width,
