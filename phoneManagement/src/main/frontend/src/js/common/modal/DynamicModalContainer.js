@@ -96,70 +96,107 @@ const MODAL_COMPONENTS = {
     Info: InfoModal
 }
 
+
 function DynamicModalContainer(){
     const modal = useModal();
-    const modalList = useSelector(state=>state.modalReducer);
+    const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
-
-    const [prevScrollY, setPrevScrollY] = useState(null)
+    // const topComponentRef = useSelector(state=>state.topModalReducer)
 
     useEffect(()=>{
-        if(ObjectUtils.isEmpty(modalList)){
+        if(ObjectUtils.isEmpty(modalList.list)){
             return;
         }
-        let timer = null;
-        const {type, modalName} = modalList[modalList.length-1];
-        if(type === 'MENU' || type === 'LAYER'){
-            // console.log(`scroll fixed: ${window.scrollY}`)
-            // setPrevScrollY( ScrollUtils.preventScroll(document.body))
-            if(window.onclick == null){
-                timer = setTimeout(()=>{
-                    // onclick 함수를 추가하자마자, 이게 호출된다
-                    // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
-                    // Timeout 으로 해결
-                    window.onclick = e=>{
-                        if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                            modal.closeModal(modalName);
-                            
-                        }
-                    }
-                }, 10);
+        let onclickDelayTimer = null;
+        let onkeydownDelayTimer = null;
+
+        const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
+        const onClickCaptureEvent = (e: MouseEvent)=>{
+            console.log(`capture-- current top: ${type} ${modalName}`)
+            // console.log(topComponentRef)
+            // return;
+            console.log(topComponentRef.current)
+            if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
+                console.log('click away')
+                // if(type === 'RENDERLESS'){
+                //     console.log(onclose)
+                //     if(onclose){
+                //         onclose();
+                //     }
+                // }
+                modal.closeAndLockModal(modalName)
+                window.removeEventListener('click', onClickCaptureEvent)
             }
-            if(window.onkeydown == null){
-                window.onkeydown = e=>{
-                    // console.log('keydown')
-                    if(e.keyCode === 27){
-                        modal.closeModal(modalName);
-                    }
-                }
+        }
+        const onClickBubbleEvent = (e)=>{
+            console.log('bubble')
+            if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
+                modal.unlockModal()
+                window.removeEventListener('click', onClickBubbleEvent)
+            }
+        }
+
+        const onKeydownCaptureEvent = (e: KeyboardEvent)=>{
+            if(e.keyCode === 27){
+                // console.table(topComponentRef.current)
+                console.log(`key away: ${type} ${modalName}`)
+                // if(type === 'RENDERLESS'){
+                //     if(onclose){
+                //         onclose();
+                //     }
+                // }
+                modal.closeModal(modalName);
+
+                window.removeEventListener('keydown', onKeydownCaptureEvent)
+                window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('click', onClickBubbleEvent, false)
+            }
+        }
+        if(type === 'MENU' || type === 'RENDERLESS'){
+            console.log(`add event: ${type} ${modalName}`)
+            window.removeEventListener('keydown', onKeydownCaptureEvent)
+            window.removeEventListener('click', onClickCaptureEvent, true)
+            window.removeEventListener('click', onClickBubbleEvent, false)
+
+            onclickDelayTimer = setTimeout(()=>{
+                // onclick 함수를 추가하자마자, 이게 호출된다
+                // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
+                // Timeout 으로 해결
+
+                // 이벤트 흐름 중 캡처링을 사용하여 이벤트를 등록하였다
+                // 이 클릭이벤트는 최상단 계층인 window에서 발생되므로
+                // 가장 먼저 이벤트가 발생해야 한다
+                // 버블링으로 이벤트를 추가하면,
+                // 하나의 모달이 열린 상태에서 다른 (클릭이벤트가 있는) 버튼을 눌렀을 시
+                // 해당 이벤트가 발생하기 전에 버튼 이벤트가 먼저 발생하게 되어 문제가 발생한다.
+                window.addEventListener('click', onClickBubbleEvent, false)
+            }, 10);
+            window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
+        }
+
+        if(window.onkeydown == null){
+            if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
+                onkeydownDelayTimer = setTimeout(()=>{
+                }, 10)
+                window.addEventListener('keydown', onKeydownCaptureEvent, false)
             }
         }
         return ()=>{
-            clearTimeout(timer);
-            window.onclick = null;
-            window.onkeydown = null;
-            // console.log(`scrollY: ${prevScrollY}`)
-            // if(!ObjectUtils.isEmpty(prevScrollY)){
-            //     console.log(`detach onclick`)
-            //     ScrollUtils.allowScroll(document.body, prevScrollY);
-            //     setPrevScrollY(null)
-            // }
+            clearTimeout(onclickDelayTimer);
+            clearTimeout(onkeydownDelayTimer);
         }
-    },[modalList])
+    },[modalList.list])
 
     let topIndex = 0;
-    modalList.forEach(({modalName, type, props}, index)=>{
-        if(type === 'MENU' || type === 'LAYER'){
+    modalList.list.forEach(({modalName, type, props}, index)=>{
+        if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
             topIndex = index
         }
     })
-
-    const renderModal = modalList.map(({modalName, type, props}, index)=>{
+    const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
         if(!modalName){
             return null;
         }
-
-        const ModalComponent = MODAL_COMPONENTS[modalName];
 
         // if(index === modalList.length-1){
         //     if(type === 'MENU' || type === 'LAYER'){
@@ -167,12 +204,22 @@ function DynamicModalContainer(){
         //     }
         // }
         if(index === topIndex){
+            if(type === 'RENDERLESS'){
+                if(props.ref){
+                    console.log('top change--')
+                    topComponentRef.current = props.ref;
+                    // modal.addTopElement(props.ref)
+                }
+                return null;
+            }
+            const ModalComponent = MODAL_COMPONENTS[modalName];
             return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         }
 
+        const ModalComponent = MODAL_COMPONENTS[modalName];
         return <ModalComponent scrollable={false} key={modalName} {...props}/>
     });
-
+    console.log('render')
 
     return createPortal(
         <>

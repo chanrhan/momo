@@ -9,16 +9,14 @@ import {cm} from "../utils/cm";
 import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
 import {AdminSidebar} from "./AdminSidebar";
 import {useAuthentication} from "../hook/useAuthentication";
+import {useRenderlessModal} from "../hook/useRenderlessModal";
 
 export function AdminLayout(){
     // console.log(`layout: ${window.location.pathname}`)
     const nav = useNavigate()
     const authentication = useAuthentication()
-    const [active, setActive] = useState(false)
+    const renderlessModal = useRenderlessModal(`RDL_${Date.now()}`)
 
-    const toggleActive = ()=>{
-        setActive(!active)
-    }
 
     return (
         <div className='container'>
@@ -33,11 +31,10 @@ export function AdminLayout(){
                     <div className={Layout.gnb_link}>
                         <ul className="link_list">
                             <li className={`${cm(Layout.link_item, Layout.my)} select_box`}>
-                                <button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>
-                                <SelectLayer width='150px' top='45px' left='-110px' active={active}
-                                             setActive={setActive}>
+                                {/*<button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>*/}
+                                <SelectLayer width='150px' top='45px' left='-110px' renderlessModal={renderlessModal}>
                                     <SelectItem onClick={() => {
-                                        setActive(false)
+                                        renderlessModal.close()
                                         authentication.logout();
                                         nav('/account/login')
                                     }}>로그아웃</SelectItem>

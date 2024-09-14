@@ -61,6 +61,9 @@ function TestHeader(){
                 <Link to='vo'>
                     <button className='btn btn-outline-success ms-1'>VO 테스트</button>
                 </Link>
+                <Link to='event'>
+                    <button className='btn btn-outline-success ms-1'>Event 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>

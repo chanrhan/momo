@@ -11,14 +11,10 @@ import {authActions} from "../store/slices/authSlice";
 import {ObjectUtils} from "../utils/objectUtil";
 import {cm} from "../utils/cm";
 import {useDispatch} from "react-redux";
-import {StringUtils} from "../utils/StringUtils";
 import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
 import {PasswordInput} from "../common/inputbox/PasswordInput";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
-import {AligoUtils} from "../utils/AligoUtils";
-import axios from "axios";
-import axiosInstance from "../utils/axiosInstance";
 import {AxiosApi} from "../api/ApiCommon";
 
 const MINUTES_IN_MS = 5 * 60 * 1000;
@@ -27,7 +23,6 @@ const INTERVAL = 1000;
 export function Signup(){
     const modal = useModal();
     const {publicApi} = useApi();
-    const api = AxiosApi()
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
@@ -114,7 +109,6 @@ export function Signup(){
             console.table(inputField.input)
             await publicApi.signup({
                 ...inputField.input,
-                // tel: StringUtils.toPhoneNumber(inputField.input.tel),
                 terms: ObjectUtils.convertBooleanArrayToString(termList)
             }).then(({status, data, headers})=>{
                 if(status === 200){

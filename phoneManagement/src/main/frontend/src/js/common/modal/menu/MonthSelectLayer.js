@@ -2,54 +2,19 @@ import {cm} from "../../../utils/cm";
 import Calender from "../../../../css/calendar.module.css";
 import {useEffect, useRef, useState} from "react";
 import {DateUtils} from "../../../utils/DateUtils";
+import useModal from "../../../hook/useModal";
+import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
 export function MonthSelectLayer({onSelect, children}){
-    const [active, setActive] = useState(false)
-    const componentRef = useRef(null)
-    const onClickRef = useRef()
+    const renderlessModal = useRenderlessModal("RDL_MONTHSELECT")
 
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());
 
-    useEffect(() => {
-        if(active){
-            attachOnClick();
-        }else{
-            detachOnClick()
-        }
-    }, [active]);
-
-    const attachOnClick = ()=>{
-        if(window.onclick){
-            onClickRef.current = window.onclick;
-        }
-        const timer = setTimeout(()=>{
-            window.onclick = e=>{
-                // e.preventDefault()
-                if(componentRef.current && !componentRef.current.contains(e.target)){
-                    setActive(false)
-
-                    // detachOnClick();
-                }
-            }
-            clearTimeout(timer);
-        }, 10)
-
-    }
-
-    const detachOnClick = ()=>{
-        if(window.onclick){
-            const timer = setTimeout(()=>{
-                window.onclick = onClickRef.current;
-                onClickRef.current = null;
-                clearTimeout(timer)
-            }, 10)
-        }
-    }
 
     const select = (month)=>{
         if(onSelect) onSelect(year,month);
-        setActive(false)
+        renderlessModal.close()
     }
 
     const nextYear = (e)=>{
@@ -64,13 +29,9 @@ export function MonthSelectLayer({onSelect, children}){
         <div style={{
             display: "inline-block",
             position: "relative"
-        }}  onClick={(e)=>{
-            if(componentRef.current && !componentRef.current.contains(e.target)){
-                setActive(!active)
-            }
-        }}>
+        }} onClick={renderlessModal.clickToOpen}>
             {children}
-            <div className={cm(Calender.date_popup, `${active && Calender.active}`)} ref={componentRef}>
+            <div className={cm(Calender.date_popup, `${renderlessModal.active && Calender.active}`)} ref={renderlessModal.ref}>
                 <div className={Calender.popup_control}>
                     <span className={Calender.popup_year}>{year}년</span>
                     <button type="button" className={cm(Calender.control_btn, Calender.btn_prev)} onClick={prevYear}>이전</button>

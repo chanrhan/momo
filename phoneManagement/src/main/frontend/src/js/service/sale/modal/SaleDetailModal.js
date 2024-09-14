@@ -607,7 +607,7 @@ function SaleDetailModal(props){
 
 
     return (
-        <LayerModal>
+        <LayerModal modalRef={props.modalRef}>
             <div className={Popup.popup} style={
                 {
                     maxWidth: '1060px',
@@ -841,7 +841,7 @@ function SaleDetailModal(props){
                                                             <div className={Popup.data_upload_box}>
                                                                 {
                                                                     fileInputField.input && fileInputField.input.map((v,i)=> {
-                                                                        return <div className={Popup.data_upload}>
+                                                                        return <div key={i} className={Popup.data_upload}>
                                                                             <label htmlFor={`file_${i}`}
                                                                                    className={Popup.upload_btn} style={{
                                                                                        display: v.preview ? 'none': ''

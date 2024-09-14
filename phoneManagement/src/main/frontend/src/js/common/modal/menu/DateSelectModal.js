@@ -1,65 +1,21 @@
-import {MenuModal} from "../MenuModal";
 import Popup from "../../../../css/popup.module.css"
-import User from "../../../../css/user.module.css"
-import useModal from "../../../hook/useModal";
-import {ModalType} from "../ModalType";
 import {cm, cmc} from "../../../utils/cm";
 import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useRef, useState} from "react";
+import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
 export function DateSelectModal({rootClassName, onSelect, children, errorText}){
-    const [active, setActive] = useState(false)
-    const componentRef = useRef(null)
-    const onClickRef = useRef()
+    const renderlessModal = useRenderlessModal("RDL_DATESELECT")
 
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth()+1);
     const [year, setYear] = useState(today.getFullYear());
     const [monthInfo, setMonthInfo] = useState(DateUtils.getMonthInfo(today.getFullYear(), today.getMonth()+1))
 
-    useEffect(() => {
-        if(active){
-            attachOnClick();
-        }else{
-            detachOnClick()
-        }
-    }, [active]);
-
-    const attachOnClick = ()=>{
-        if(window.onclick){
-            onClickRef.current = window.onclick;
-        }
-        const timer = setTimeout(()=>{
-            window.onclick = e=>{
-                // e.preventDefault()
-                if(componentRef.current && !componentRef.current.contains(e.target)){
-                    setActive(false)
-                    // detachOnClick();
-                }
-            }
-            clearTimeout(timer);
-        }, 10)
-
-    }
-
-    const detachOnClick = ()=>{
-        if(window.onclick){
-            const timer = setTimeout(()=>{
-                window.onclick = onClickRef.current;
-                onClickRef.current = null;
-                clearTimeout(timer)
-            }, 10)
-        }
-    }
-
-
     const handleDate = (day)=>{
-        // console.log(day)
         if(onSelect) onSelect(year, month, day)
-        setActive(false)
+        renderlessModal.close()
     }
-
-
 
     const setMonthNext = ()=>{
         if(month === 12){
@@ -83,18 +39,8 @@ export function DateSelectModal({rootClassName, onSelect, children, errorText}){
         }
     }
 
-    const handleActive = (e)=>{
-        if(!active){
-            setActive(true)
-        }else{
-            if(componentRef.current && !componentRef.current.contains(e.target)){
-                setActive(false)
-            }
-        }
-    }
-
     return (
-        <div onClick={handleActive} className={`${rootClassName} ${errorText && cmc(Popup.error)}`} style={{
+        <div onClick={renderlessModal.clickToOpen} className={`${rootClassName} ${errorText && cmc(Popup.error)}`} style={{
             position: 'relative'
         }}>
             {children}
@@ -103,7 +49,7 @@ export function DateSelectModal({rootClassName, onSelect, children, errorText}){
                     <p className='error_text'>{errorText}</p>
                 </>
             }
-            <div className={`${cm(Popup.date_popup, Popup.solo, `${active && Popup.active}`)}`} ref={componentRef}>
+            <div className={`${cm(Popup.date_popup, Popup.solo, `${renderlessModal.active && Popup.active}`)}`} ref={renderlessModal.ref}>
                 <div className={Popup.date_head}>
                     <span className={Popup.span}>{year}년 {month}월</span>
                     <button type="button" className={cm(Popup.date_btn2, Popup.btn_prev2)} onClick={setMonthPrev}

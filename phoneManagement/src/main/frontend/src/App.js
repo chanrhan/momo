@@ -50,6 +50,7 @@ import {AdminLayout} from "./js/layout/AdminLayout";
 import {VOTest} from "./js/test/VOTest";
 import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
+import {EventTest} from "./js/test/EventTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -77,6 +78,7 @@ function App() {
                   <Route path='css' element={<CssTest/>}/>
                   <Route path='alimtalk' element={<AlimTalkTest/>}/>
                   <Route path='async' element={<AsyncTest/>}/>
+                  <Route path='event' element={<EventTest/>}/>
                   <Route path='vo' element={<VOTest/>}/>
               </Route>
 

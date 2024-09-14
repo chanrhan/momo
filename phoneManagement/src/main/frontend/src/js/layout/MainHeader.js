@@ -3,16 +3,14 @@ import Layout from "../../css/layout.module.css"
 import {Link, useNavigate} from "react-router-dom";
 import useApi from "../hook/useApi";
 import {useEffect, useRef, useState} from "react";
-import {useSelector} from "react-redux";
 import {cm, cmc} from "../utils/cm";
-import {Last} from "react-bootstrap/PageItem";
 import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
-import alarmIcon1 from "../../images/alarm_icon.png"
 import alarmIcon2 from "../../images/alarm_icon2.png"
 import {HeaderSearchLayer} from "./module/HeaderSearchLayer";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {useAuthentication} from "../hook/useAuthentication";
+import {useRenderlessModal} from "../hook/useRenderlessModal";
 // import "../../css/user.module.css"
 
 export function MainHeader(){
@@ -21,9 +19,7 @@ export function MainHeader(){
     const {notifApi, publicApi} = useApi();
     const authentication = useAuthentication();
     const [count, setCount] = useState(0)
-    const [active, setActive] = useState(false)
-
-
+    const renderlessModal = useRenderlessModal(`RDL_${Date.now()}`)
 
     const countUnreadNotif = async ()=>{
         await notifApi.countUnreadNotif().then(({status,data})=>{
@@ -37,9 +33,6 @@ export function MainHeader(){
         countUnreadNotif()
     });
 
-    const toggleActive = ()=>{
-        setActive(!active)
-    }
 
     const openChargePointModal = ()=>{
         modal.openModal(ModalType.LAYER.Charge_Point)
@@ -60,23 +53,22 @@ export function MainHeader(){
                             <NotificationListLayer/>
                         </li>
                         <li className={`${cm(Layout.link_item, Layout.my)} select_box`}>
-                            <button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>
-                            <SelectLayer width='150px' top='45px' left='-110px' active={active} setActive={setActive}>
+                            {/*<button type="button" className={Layout.link_btn} onClick={toggleActive}>내 정보</button>*/}
+                            <SelectLayer width='150px' top='45px' left='-110px' renderlessModal={renderlessModal}>
                                 <SelectItem onClick={() => {
-                                    setActive(false)
+                                    renderlessModal.close()
                                     nav('/profile')
                                 }}>개인정보 보기</SelectItem>
                                 <SelectItem onClick={() => {
-                                    setActive(false)
+                                    renderlessModal.close()
                                     nav('/staff')
                                 }}>회원 관리</SelectItem>
                                 <SelectItem onClick={() => {
                                     openChargePointModal();
-                                    setActive(false)
+                                    renderlessModal.close()
                                 }}>문자 포인트 충전</SelectItem>
                                 <SelectItem onClick={() => {
-                                    setActive(false)
-                                    // authentication.logout();
+                                    renderlessModal.close()
                                     nav('/account/login')
                                 }}>로그아웃</SelectItem>
                             </SelectLayer>
@@ -93,45 +85,54 @@ function NotificationListLayer({}){
     const nav = useNavigate()
     const [items, setItems] = useState(null)
 
-    const [active, setActive ] = useState(false)
-    const componentRef = useRef(null)
-    const onclickRef = useRef()
+    const renderlessModal = useRenderlessModal(`RDL_NOTIFICATION_${Date.now()}`)
 
     useEffect(() => {
-        if(active){
-            attachOnClick();
-            getNotif()
-            readAll();
-        }else{
-            detachOnClick()
-        }
-    }, [active]);
+        getNotif()
+        readAll();
+    }, []);
 
-    const attachOnClick = ()=>{
-        if(window.onclick){
-            onclickRef.current = window.onclick;
-        }
-        const timer = setTimeout(()=>{
-            window.onclick = e=>{
-                if(componentRef.current && !componentRef.current.contains(e.target)){
-                    setActive(false)
-                    // detachOnClick();
-                }
-            }
-            clearTimeout(timer);
-        }, 10)
 
-    }
-
-    const detachOnClick = ()=>{
-        if(window.onclick){
-            const timer = setTimeout(()=>{
-                window.onclick = onclickRef.current;
-                onclickRef.current = null;
-                clearTimeout(timer)
-            }, 10)
-        }
-    }
+    // const [active, setActive ] = useState(false)
+    // const componentRef = useRef(null)
+    //
+    // const onclickRef = useRef()
+    //
+    // useEffect(() => {
+    //     if(active){
+    //         attachOnClick();
+    //         getNotif()
+    //         readAll();
+    //     }else{
+    //         detachOnClick()
+    //     }
+    // }, [active]);
+    //
+    // const attachOnClick = ()=>{
+    //     if(window.onclick){
+    //         onclickRef.current = window.onclick;
+    //     }
+    //     const timer = setTimeout(()=>{
+    //         window.onclick = e=>{
+    //             if(componentRef.current && !componentRef.current.contains(e.target)){
+    //                 setActive(false)
+    //                 // detachOnClick();
+    //             }
+    //         }
+    //         clearTimeout(timer);
+    //     }, 10)
+    //
+    // }
+    //
+    // const detachOnClick = ()=>{
+    //     if(window.onclick){
+    //         const timer = setTimeout(()=>{
+    //             window.onclick = onclickRef.current;
+    //             onclickRef.current = null;
+    //             clearTimeout(timer)
+    //         }, 10)
+    //     }
+    // }
 
     const readAll = async ()=>{
         await notifApi.readAll();
@@ -164,10 +165,8 @@ function NotificationListLayer({}){
 
     return (
         <>
-            <button type="button" className={Layout.link_btn} onClick={()=>{
-                setActive(!active)
-            }}>알람</button>
-            <div className={cm(Layout.alarm_popup, `${active && Layout.active}`)} ref={componentRef}>
+            <button type="button" className={Layout.link_btn} onClick={renderlessModal.clickToOpen}>알람</button>
+            <div className={cm(Layout.alarm_popup, `${renderlessModal.active && Layout.active}`)} ref={renderlessModal.ref}>
                 {/*활성화시 active 추가 -->*/}
                 <div className={Layout.alarm_today}>
                     <div className={Layout.alarm_title}>오늘알림</div>
@@ -176,9 +175,10 @@ function NotificationListLayer({}){
                             items && items.filter(v=>v.today).map((v,i)=> {
                                 return <li key={i} className={cm(Layout.alarm_item, `${!v.read_st && Layout.new}`)}
                                            onClick={()=>{
-                                    console.log(v.type)
+                                    // console.log(v.type)
                                     if(v.type === 1) {
                                         nav('/staff')
+                                        renderlessModal.close()
                                     }
                                 }}>
                                     <div className={Layout.a}>
@@ -203,7 +203,7 @@ function NotificationListLayer({}){
                                     console.log(v.type)
                                     if(v.type === 1) {
                                         nav('/staff')
-                                        setActive(false)
+                                        renderlessModal.close()
                                     }
                                 }}>>
                                 <div className={Layout.a}>

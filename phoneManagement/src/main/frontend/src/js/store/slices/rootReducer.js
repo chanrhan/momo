@@ -5,6 +5,7 @@ import {sseReducer} from "./sseSlice";
 import {modalReducer} from "./modalSlice";
 import {localReducer} from "./localStorageSlice";
 import {gmdReducer} from "./gmdSlice";
+import {topModalReducer} from "./TopModalSlice";
 
 const rootReducer = combineReducers({
     authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     sseReducer,
     modalReducer,
     localReducer,
-    gmdReducer
+    gmdReducer,
+    topModalReducer
 });
 
 export default rootReducer;

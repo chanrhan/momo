@@ -79,12 +79,12 @@ export function CalendarTable({inputField}){
         if(month === 1){
             inputField.put('year', year-1)
             inputField.put('month', 12)
-            setDay(prevMonthInfo.totalDays - offset - 1)
+            setDay(prevMonthInfo.totalDays - offset )
             setYear(year-1)
             setMonth(12)
         }else{
             inputField.put('month',month-1)
-            setDay(prevMonthInfo.totalDays - offset - 1)
+            setDay(prevMonthInfo.totalDays - offset )
             setMonth(month-1)
         }
     }
@@ -153,7 +153,7 @@ export function CalendarTable({inputField}){
                                                           if(calDay <= 0){
                                                               setMonthPrev(Math.abs(calDay));
                                                           }else if(calDay > totalDays){
-                                                              setMonthNext(calDay - totalDays)
+                                                              setMonthNext(calDay - totalDays-1)
                                                           }else{
                                                               setYear(cYear)
                                                               setMonth(cMonth)

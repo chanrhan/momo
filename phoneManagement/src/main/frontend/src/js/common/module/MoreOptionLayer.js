@@ -1,48 +1,9 @@
-import {cm} from "../../utils/cm";
-import Board from "../../../css/board.module.css";
 import {useEffect, useRef, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
+import {useRenderlessModal} from "../../hook/useRenderlessModal";
 
 export function MoreOptionLayer({className, children, cssModule, cssModules}) {
-    const [active, setActive] = useState(false)
-    const componentRef = useRef(null)
-    const onclickRef = useRef()
-
-
-    useEffect(() => {
-        if (active) {
-            attachOnClick();
-        } else {
-            detachOnClick()
-        }
-    }, [active]);
-
-    const attachOnClick = () => {
-        if (window.onclick) {
-            onclickRef.current = window.onclick;
-        }
-        const timer = setTimeout(() => {
-            window.onclick = e => {
-                // e.preventDefault()
-                if (componentRef.current && !componentRef.current.contains(e.target)) {
-                    setActive(false)
-                    // detachOnClick();
-                }
-            }
-            clearTimeout(timer);
-        }, 10)
-
-    }
-
-    const detachOnClick = () => {
-        if (window.onclick) {
-            const timer = setTimeout(() => {
-                window.onclick = onclickRef.current;
-                onclickRef.current = null;
-                clearTimeout(timer)
-            }, 10)
-        }
-    }
+    const renderlessModal = useRenderlessModal(`RDL_MOREOPTION_${Date.now()}`)
 
     const fromCssModule = key => {
         if (!ObjectUtils.isEmpty(cssModule)) {
@@ -63,14 +24,12 @@ export function MoreOptionLayer({className, children, cssModule, cssModules}) {
 
     return (
         <>
-            <button type="button" className='btn_more' onClick={() => {
-                setActive(!active)
-            }}>더보기
+            <button type="button" className='btn_more' onClick={renderlessModal.clickToOpen}>더보기
             </button>
-            <ul ref={componentRef}
-                className={`select_layer add_icon left ${active && `active ${fromCssModule('active')}`}`}
+            <ul ref={renderlessModal.ref}
+                className={`select_layer add_icon left ${renderlessModal.active && `active ${fromCssModule('active')}`}`}
                 onClick={()=>{
-                    setActive(false)
+                    renderlessModal.close()
                 }}>
                 {children}
             </ul>

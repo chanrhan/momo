@@ -601,7 +601,7 @@
 <!--    promise-->
     <update id="changePromiseState">
         UPDATE tb_promise
-        SET checked=#{checked}
+        SET checked=#{state}
         WHERE shop_id= #{currShopId} and
             sale_id=#{saleId} and
             pm_id=#{pmId}

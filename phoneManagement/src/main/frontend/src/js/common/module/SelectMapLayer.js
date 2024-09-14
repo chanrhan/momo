@@ -2,47 +2,49 @@ import {cmc} from "../../utils/cm";
 import Dashboard from "../../../css/dashboard.module.css";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {useEffect, useRef, useState} from "react";
+import {useRenderlessModal} from "../../hook/useRenderlessModal";
 
 export function SelectMapLayer({initValue, inputField, cssModule, cssModules=[], className, name, value, onChange, values, children}){
-    const [active, setActive ] = useState(false)
-    const componentRef = useRef(null)
-    const onclickRef = useRef()
-
-
-    useEffect(() => {
-        if(active){
-            attachOnClick();
-        }else{
-            detachOnClick()
-        }
-    }, [active]);
-
-    const attachOnClick = ()=>{
-        if(window.onclick){
-            onclickRef.current = window.onclick;
-        }
-        const timer = setTimeout(()=>{
-            window.onclick = e=>{
-                // e.preventDefault()
-                if(componentRef.current && !componentRef.current.contains(e.target)){
-                    setActive(false)
-                    // detachOnClick();
-                }
-            }
-            clearTimeout(timer);
-        }, 10)
-
-    }
-
-    const detachOnClick = ()=>{
-        if(window.onclick){
-            const timer = setTimeout(()=>{
-                window.onclick = onclickRef.current;
-                onclickRef.current = null;
-                clearTimeout(timer)
-            }, 10)
-        }
-    }
+    const renderlessModal = useRenderlessModal(`RLM_MAP__${Date.now()}`)
+    // const [active, setActive ] = useState(false)
+    // const componentRef = useRef(null)
+    // const onclickRef = useRef()
+    //
+    //
+    // useEffect(() => {
+    //     if(active){
+    //         attachOnClick();
+    //     }else{
+    //         detachOnClick()
+    //     }
+    // }, [active]);
+    //
+    // const attachOnClick = ()=>{
+    //     if(window.onclick){
+    //         onclickRef.current = window.onclick;
+    //     }
+    //     const timer = setTimeout(()=>{
+    //         window.onclick = e=>{
+    //             // e.preventDefault()
+    //             if(componentRef.current && !componentRef.current.contains(e.target)){
+    //                 setActive(false)
+    //                 // detachOnClick();
+    //             }
+    //         }
+    //         clearTimeout(timer);
+    //     }, 10)
+    //
+    // }
+    //
+    // const detachOnClick = ()=>{
+    //     if(window.onclick){
+    //         const timer = setTimeout(()=>{
+    //             window.onclick = onclickRef.current;
+    //             onclickRef.current = null;
+    //             clearTimeout(timer)
+    //         }, 10)
+    //     }
+    // }
 
     const handleChange = i=>{
         if(onChange){
@@ -95,16 +97,15 @@ export function SelectMapLayer({initValue, inputField, cssModule, cssModules=[],
     return (
         <>
             <button type="button" className={`select_btn ${fromCssModule('select_btn')}`}
-                    onClick={()=>{
-                        setActive(!active)
-                    }}>{getButtonName()}</button>
-            <ul ref={componentRef} className={`select_layer ${fromCssModule('select_layer')} ${className} ${active && `active ${fromCssModule('active')}`}`}>
+                    onClick={renderlessModal.clickToOpen}>{getButtonName()}</button>
+            <ul ref={renderlessModal.ref} className={`select_layer ${fromCssModule('select_layer')} 
+            ${className} ${renderlessModal.active && `active ${fromCssModule('active')}`}`}>
                 {
                     values && Object.keys(values).map((key, i) => {
                         return <li key={i} className={`select_item ${fromCssModule('select_item')}`}>
                             <button type="button" onClick={() => {
                                 handleChange(key);
-                                setActive(false)
+                                renderlessModal.close()
                             }}>{values[key]}</button>
                         </li>
                     })

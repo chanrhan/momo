@@ -2,7 +2,6 @@ import Board from "../../../css/board.module.css"
 import Layout from "../../../css/layout.module.css"
 import {cm, cmc} from "../../utils/cm";
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../board/BoardTable";
-import useValidateInputField from "../../hook/useValidateInputField";
 import {useEffect, useRef, useState} from "react";
 import useApi from "../../hook/useApi";
 import useModal from "../../hook/useModal";
@@ -266,7 +265,6 @@ export function Sale(){
 
             <div className={cm(Board.board, "board_list")}>
                 <div className={cm(Board.board_head)}>
-
                     <form>
                         <div className={cm(Board.board_head_group)}>
                             <MonthSelectLayer onSelect={setMonth}>
@@ -364,30 +362,30 @@ export function Sale(){
                         }
                         <Bth>예약</Bth>
                     </Bthead>
-                    <Scrollable scrollable={!modal.hasModal()}>
-                        <Btbody br>
-                            {
-                                saleItems && saleItems.map((v1, i) => {
-                                    // console.table(v1)
-                                    return <tr key={i} onClick={(e) => {
-                                        openSaleDetail(v1.sale_id)
-                                    }}>
-                                        <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
-                                            checkSale(i)
-                                        }} checkbox/>
-                                        {
-                                            columns.toArray() && columns.toArray().map((v2, j)=>{
-                                                return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
-                                            })
-                                        }
-                                        <Btd className="ta_r" stopPropagation>
-                                            <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}>예약 확인</button>
-                                        </Btd>
-                                    </tr>
-                                })
-                            }
-                        </Btbody>
-                    </Scrollable>
+                    <Btbody br>
+                        {
+                            saleItems && saleItems.map((v1, i) => {
+                                // console.table(v1)
+                                return <tr key={i} onClick={(e) => {
+                                    openSaleDetail(v1.sale_id)
+                                }}>
+                                    <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
+                                        checkSale(i)
+                                    }} checkbox/>
+                                    {
+                                        columns.toArray() && columns.toArray().map((v2, j)=>{
+                                            return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
+                                        })
+                                    }
+                                    <Btd className="ta_r" stopPropagation>
+                                        <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}>예약 확인</button>
+                                    </Btd>
+                                </tr>
+                            })
+                        }
+                    </Btbody>
+                    {/*<Scrollable scrollable={!modal.hasModal()}>*/}
+                    {/*</Scrollable>*/}
                 </BoardTable>
 
                 {/*<div className="view_more">*/}
