@@ -126,6 +126,7 @@ function DynamicModalContainer(){
                 // }
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('keydown', onKeydownCaptureEvent, false)
             }
         }
         const onClickBubbleEvent = (e)=>{
@@ -153,8 +154,7 @@ function DynamicModalContainer(){
             }
         }
         if(type === 'MENU' || type === 'RENDERLESS'){
-            console.log(`add event: ${type} ${modalName}`)
-            window.removeEventListener('keydown', onKeydownCaptureEvent)
+            console.log(`add onclick event: ${type} ${modalName}`)
             window.removeEventListener('click', onClickCaptureEvent, true)
             window.removeEventListener('click', onClickBubbleEvent, false)
 
@@ -174,12 +174,12 @@ function DynamicModalContainer(){
             window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
         }
 
-        if(window.onkeydown == null){
-            if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
-                onkeydownDelayTimer = setTimeout(()=>{
-                    window.addEventListener('keydown', onKeydownCaptureEvent, false)
-                }, 10)
-            }
+        if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
+            console.log('add key event')
+            window.removeEventListener('keydown', onKeydownCaptureEvent, false)
+            onkeydownDelayTimer = setTimeout(()=>{
+                window.addEventListener('keydown', onKeydownCaptureEvent, false)
+            }, 20)
         }
         return ()=>{
             clearTimeout(onclickDelayTimer);
