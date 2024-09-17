@@ -11,10 +11,10 @@ export function useRenderlessModal(modalName){
     const componentRef = useRef(null)
 
     useEffect(() => {
-        console.log(`active: ${active}`)
+        // console.log(`active: ${active}`)
         if(active){
             modal.openRenderlessModal(modalName, ()=>{}, ()=>{
-                console.log('onclose')
+                // console.log('onclose')
                 setActive(false)
             }, {
                 ref: componentRef.current

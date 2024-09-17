@@ -1,7 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal, getStackSize, openModal, lock, unlock, closeAndLock} from "../store/slices/modalSlice";
 import {ModalType} from "../common/modal/ModalType";
-import {addTopModal, clearTopModal} from "../store/slices/TopModalSlice";
 
 function useModal(){
     const dispatch = useDispatch();
@@ -33,14 +32,6 @@ function useModal(){
         dispatch(closeAndLock(modalName))
     }
 
-    const addTopElement = (topElement)=>{
-        dispatch(addTopModal(topElement))
-    }
-
-    const clearTopElement = ()=>{
-        dispatch(clearTopModal())
-    }
-
     return {
         openModal: handleOpenModal,
         closeModal: handleCloseModal,
@@ -48,9 +39,7 @@ function useModal(){
         hasModal,
         lockModal,
         unlockModal,
-        closeAndLockModal,
-        addTopElement,
-        clearTopElement
+        closeAndLockModal
     }
 }
 

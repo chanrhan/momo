@@ -11,7 +11,7 @@ const modalSlice = createSlice({
     reducers: {
         openModal: (state,action)=>{
             const {modalName, type, onopen, onclose, props} = action.payload;
-            console.log('open')
+            // console.log('open')
             if(state.list.some(value=>(modalName === value.modalName))){
                 return state;
             }
@@ -26,7 +26,7 @@ const modalSlice = createSlice({
         },
         closeModal: (state, action)=>{
             const modalName = action.payload;
-            console.log('close')
+            // console.log('close')
             const target = state.list.filter(v=>v.modalName === modalName).at(0);
             if(target && target.onclose){
                 target.onclose();
@@ -39,7 +39,7 @@ const modalSlice = createSlice({
         },
         closeAndLock: (state, action)=>{
             const modalName = action.payload;
-            console.log('close and lock')
+            // console.log('close and lock')
             const target = state.list.filter(v=>v.modalName === modalName).at(0);
             if(target && target.onclose){
                 target.onclose();
@@ -51,14 +51,14 @@ const modalSlice = createSlice({
             }
         },
         lock: (state, action)=>{
-            console.log('lock')
+            // console.log('lock')
             return {
                 lock: action.payload,
                 list: [...state.list]
             }
         },
         unlock: (state)=>{
-            console.log('unlock')
+            // console.log('unlock')
             return {
                 lock: null,
                 list: [...state.list]

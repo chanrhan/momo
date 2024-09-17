@@ -3,43 +3,49 @@ import {useEffect, useRef, useState} from "react";
 export function EventTest(){
     const parentRef = useRef(null)
     const childRef = useRef(null)
-    const [change, setChange] = useState(false)
+    const [count, setCount] = useState(0)
 
-    const reRendering = ()=>{
-        setChange(!change)
-    }
-
-    const captureEvent = (e)=>{
-        console.log(`${e.target.name} capture`)
-    }
-
-    const bubbleEvent = (e)=>{
-        console.log(`${e.target.name} bubblue`)
-    }
-
-    useEffect(() => {
-        console.log('use Effect')
-        window.addEventListener('click', captureEvent, true)
-        window.addEventListener('click', bubbleEvent, false)
-        return ()=>{
-            console.log('clean up')
-            window.removeEventListener('click', captureEvent)
-            window.removeEventListener('click', bubbleEvent)
+    useEffect(()=>{
+        const onClickCaptureEvent = (e)=>{
+            console.log(`onclick capture: ${count}`)
+            window.removeEventListener("click", onClickCaptureEvent, true)
         }
-    }, [change]);
+        const onClickBubbleEvent = (e)=>{
+            console.log(`onclick bubble: ${count}`)
+            window.removeEventListener("click", onClickBubbleEvent, false)
+        }
+
+        const onKeydownCaptureEvent = (e)=>{
+            console.log(`onkeydown capture: ${count}`)
+            window.removeEventListener("keydown", onKeydownCaptureEvent, true)
+        }
+
+        window.addEventListener('click', onClickCaptureEvent, true);
+        window.addEventListener('keydown', onKeydownCaptureEvent, true);
+
+        let timer = setTimeout(()=>{
+            window.addEventListener('click', onClickBubbleEvent, false);
+        }, 10)
+
+        return ()=>{
+            clearTimeout(timer);
+        }
+    }, [count])
 
     return (
         <div>
             <h1>버블링 / 캡처링 이벤트 테스트</h1>
 
-            <button onClick={reRendering}>Re-Rendering</button>
+            <button onClick>Re-Rendering</button>
 
-            <div name='parent' ref={parentRef} style={{
+            <div onClick={()=>{
+                setCount(count+1)
+            }} style={{
                 backgroundColor: "yellow",
                 width: '500px',
                 height: '500px'
             }}>
-                <div name='child' ref={childRef} style={{
+                <div style={{
                     backgroundColor: "blue",
                     width: '300px',
                     height: '300px'
