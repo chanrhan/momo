@@ -1,6 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
+import com.momo.common.vo.LoginVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.CommonService;
@@ -32,13 +33,13 @@ public class AuthController {
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(HttpSession session,
 									 HttpServletResponse response,
-									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
+									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken, @RequestBody LoginVO vo) throws AccessDeniedException {
 		log.info("refresh");
-		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken);
+		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken, vo.isRememberMe());
 		log.info("jwt: {}", jwtVO);
 		commonService.setCurrentShopId(session);
 
-		jwtProvider.setHeaderJwtToken(response, jwtVO);
+		jwtProvider.setHeaderAccessToken(response, jwtVO.getAccessToken());
 
 		return  ResponseEntity.status(HttpStatus.OK).build();
 	}

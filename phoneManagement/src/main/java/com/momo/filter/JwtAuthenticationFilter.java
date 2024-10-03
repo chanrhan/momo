@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		log.info("{} - successfulAuthentication -> 인증 완료", this.getClass());
 
 
-		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+		JwtVO jwtVO = jwtProvider.generateToken(authentication, false);
 		jwtService.saveRefreshToken(jwtVO);
 
 		jwtProvider.setHeaderJwtToken(response, jwtVO);

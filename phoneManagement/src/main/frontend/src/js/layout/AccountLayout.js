@@ -7,7 +7,7 @@ export function AccountLayout({children}){
     return (
         <div>
             <div className={User.user}>
-                <div className={`container `+ User.container}>
+                <div className={`container ${User.container}`}>
                     <header className={User.header}>
                         <h1 className={User.logo}>
                             <Link to='/' className={User.a}><img src={logo} alt="momo" className={User.img}/></Link>

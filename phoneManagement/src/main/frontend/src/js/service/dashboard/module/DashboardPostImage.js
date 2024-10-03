@@ -74,6 +74,29 @@ export function DashboardPostImage({}){
         }
     }
 
+    const handleClickPreviewImage = (e, i)=>{
+        const previewFile = preview.get(i)
+        if(!ObjectUtils.isEmpty(previewFile)){
+            console.table(previewFile)
+            const image = new Image();
+            image.onload = ()=>{
+                const yOffset = window.pageYOffset;
+                modal.openModal(ModalType.LAYER.Image_Preview, {
+                    top: yOffset,
+                    src: previewFile,
+                    width: image.width,
+                    height: image.height
+                })
+            }
+            image.onerror = (e)=>{
+                modal.openModal(ModalType.SNACKBAR.Alert, {
+                    msg: '이미지를 불러오는 중 오류가 발생했습니다.'
+                })
+            }
+            image.src = previewFile
+        }
+    }
+
     const updatePostImage = async (i, file)=>{
         const id = inputField.get(i, 'id')
         const text = inputField.get(i, 'text');
@@ -153,6 +176,8 @@ export function DashboardPostImage({}){
                                     <img src={src} alt="" style={{
                                         maxWidth: '100%',
                                         height: '100%'
+                                    }} onClick={e=>{
+                                        handleClickPreviewImage(e, i)
                                     }}/>
                                     <label htmlFor={`pimg_${i}`} className={`${!src && Dashboard.panel_item_add}`}>추가</label>
                                 </div>

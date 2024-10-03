@@ -57,7 +57,7 @@ export const ModalType = {
 
     },
     TOOLTIP: {
-
+        Hint: 'Hint'
     },
     getType: (modalName)=>{
         for(const type in ModalType){

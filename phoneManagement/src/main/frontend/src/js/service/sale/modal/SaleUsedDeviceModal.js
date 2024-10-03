@@ -31,13 +31,7 @@ function SaleUsedDeviceModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '130px',
-                minWidth: '600px',
-                maxWidth: '600px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={30} minWidth={600} maxWidth={600}>
                 <div className={Popup.popup_title}>중고폰</div>
 
                 <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)}>
@@ -63,14 +57,13 @@ function SaleUsedDeviceModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }
 
 function UsedDeviceItem({index, inputField}){
     return (
-        <ul key={index} className={cm(Popup.half, Popup.form_list)}>
+        <ul key={index} className={cm(Popup.third, Popup.form_list)}>
             <li className={cm(Popup.form_item, User.form_item)}>
                 <div className={User.form_inp}>
                     <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>

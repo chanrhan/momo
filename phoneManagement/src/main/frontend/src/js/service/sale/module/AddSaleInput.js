@@ -2,7 +2,7 @@ import Popup from "../../../../css/popup.module.css";
 import {cm} from "../../../utils/cm";
 import User from "../../../../css/user.module.css";
 
-export function AddSaleInput({value, name, subject, search, maxLength, className, onClick, readOnly, inputField, children}){
+export function AddSaleInput({value, name, subject, search, maxLength, className, onClick, readOnly, inputField, icon, children}){
 
     if(typeof inputField !== 'object'){
         return null;
@@ -11,6 +11,7 @@ export function AddSaleInput({value, name, subject, search, maxLength, className
     return (
         <>
             <label htmlFor={name} className={Popup.customer_label}>{subject}</label>
+            {icon}
             <div className={`${Popup.customer_inp_box}`}>
                 <input type="text" name={name}
                        value={value ?? inputField.get(name)}

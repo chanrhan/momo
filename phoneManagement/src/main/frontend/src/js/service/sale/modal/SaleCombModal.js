@@ -29,14 +29,10 @@ function SaleCombModal(props){
 
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '130px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={30}>
                 <div className={Popup.popup_title}>결합</div>
 
-                <form className={cm(Popup.inp_type2, Popup.user_form, User.user_form)}>
+                <form className={cm(Popup.inp_type2, Popup.user_form, User.user_form)} onSubmit={e=>e.preventDefault()}>
                     <div className={Popup.popup_cont}>
                         <ul className={cm(Popup.form_list, User.form_list, Popup.half)}>
                             <li className={cm(Popup.form_item, User.form_item)}>
@@ -64,7 +60,6 @@ function SaleCombModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }

@@ -16,8 +16,15 @@ export const useAuthentication = ()=>{
             // console.table(res)
             rst = (res.status === 200)
             if(res.status === 200){
-                dispatch(authActions.setAccessToken(res.headers.get('authorization')));
-                setRefreshToken(res.headers.get('refreshtoken'));
+                if(res.data){
+
+                }
+                const accessToken = res.headers.get('authorization')
+                const refreshtoken = res.headers.get('refreshtoken');
+                const refreshexpiretime = res.headers.get('refreshexpiretime');
+                // console.log(`r e t : ${refreshexpiretime / 1000 / 60}`)
+                dispatch(authActions.setAccessToken(accessToken));
+                setRefreshToken(refreshtoken, refreshexpiretime);
             }
         })
         // console.log(`rst: ${rst}`)

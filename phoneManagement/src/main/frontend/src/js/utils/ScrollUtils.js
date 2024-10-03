@@ -17,8 +17,8 @@ export const ScrollUtils = {
 
         target.style.position = '';
         target.style.width = '';
-        target.style.overflowY = '';
-        target.style.top = '';
+        target.style.overflowY = 'auto';
+        target.style.top = ``
         if (prevScrollY) {
             window.scrollTo(0, prevScrollY);
         }

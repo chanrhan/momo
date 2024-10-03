@@ -1,17 +1,17 @@
 @charset "UTF-8";
 
 /* 회원 */
-.user .container{max-width:750px; padding:160px 0 148px;}
+.user .container{max-width:750px; padding:90px 0 148px;}
 .user .header .logo .a .img{height:48px;}
 .user .footer,
 .user_copyright{margin-top:20px; color:#b2b4c0; font-size:12px; text-align:center; line-height:14px;}
 .user_copyright{margin-top:32px;}
-.user_box{margin-top:24px; padding:80px 100px; border:1px solid #dde1e8; border-radius:8px;}
+.user_box{margin-top:12px; padding:50px 100px; border:1px solid #dde1e8; border-radius:8px;}
 
 /* 회원 form 공통 */
 .user_form{max-width:750px; margin-right:auto; margin-left:auto;}
 .user_form .user_title{color:#141218; font-size:34px; font-weight:700; text-align:center; line-height:40px;}
-.user_form .form_list{margin-top:60px; font-size:0; line-height:0;}
+.user_form .form_list{margin-top:40px; font-size:0; line-height:0;}
 .user_form .form_item + .form_item{margin-top:40px;}
 .user_form .form_label{color:#50505c; font-size:14px; line-height:16px;}
 .user_form .form_inp{display:flex; position:relative;}

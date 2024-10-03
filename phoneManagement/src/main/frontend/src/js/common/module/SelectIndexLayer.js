@@ -2,15 +2,17 @@ import {ObjectUtils} from "../../utils/objectUtil";
 import {useRenderlessModal} from "../../hook/useRenderlessModal";
 
 export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[], buttonClassName, className, name, value, onChange, values, children, buttonStyle}){
-    const renderlessModal = useRenderlessModal(`RDL_${name}__${Date.now()}`)
+    const renderlessModal = useRenderlessModal(`RDL_INDEX_${name}`)
 
     const handleChange = i=>{
+        console.log(i)
         if(onChange){
             onChange(i);
         }else{
             inputField.put(name, i);
         }
         renderlessModal.close()
+        console.log('closed rr')
     }
 
     const fromCssModule = key=>{
@@ -52,11 +54,14 @@ export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[
             <button type="button" className={`select_btn ${buttonClassName} ${fromCssModule('select_btn')}`}
                     onClick={renderlessModal.clickToOpen}>{getButtonName()}</button>
             <ul ref={renderlessModal.ref}
-                className={`select_layer ${fromCssModule('select_layer')} ${className} ${renderlessModal.active && `active ${fromCssModule('active')}`}`}>
+                className={`select_layer ${fromCssModule('select_layer')} ${className} ${renderlessModal.active && `active ${fromCssModule('active')}`}`}
+                onClick={()=>{
+                    console.log('ul')
+                }}>
                 {
                     values && values.map((v, i) => {
                         return <li key={i} className={`select_item ${fromCssModule('select_item')}`}>
-                            <button type="button" onClick={() => {
+                            <button type="button" onClick={(e) => {
                                 handleChange(i);
                             }}>{v}</button>
                         </li>

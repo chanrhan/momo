@@ -80,6 +80,9 @@ export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onChec
                                 <div className="select_box">
                                     <SelectIndexLayer value={LMD.sup_st[v.sup_st]} cssModule={Board}
                                                       onChange={state => {
+                                                          if(v.sup_st === state) {
+                                                              return;
+                                                          }
                                                           onChangeState(v.sale_id, state, v.sup_id);
                                                           onChangeState({
                                                               sale_id: v.sale_id,

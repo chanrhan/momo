@@ -48,7 +48,7 @@
 .popup .popup_cont .ta_r .btn.btn_small{padding:1px 12px; border-radius:8px; font-size:16px; font-weight:400;}
 .popup .popup_btn_box{margin-top:32px;}
 .popup .popup_btn_box.half{font-size:0; line-height:0;}
-.popup .popup_btn_box.half .btn{display:inline-block; width:calc(50% - 6px);}
+.popup .popup_btn_box.half .btn{display:inline-block; width:calc(48% - 6px);}
 .popup .popup_btn_box.half .btn + .btn{margin-left:12px;}
 .popup .popup_close{position:absolute; top:12px; right:24px; width:32px; height:32px; background:url(../images/popup/popup_close.png) no-repeat center / 32px; font-size:0;}
 .popup .form_right_btn{margin-top:15px; text-align:right;}
@@ -71,8 +71,14 @@
 .popup .user_form .form_list + .form_list{margin-top:28px;}
 .popup .user_form .form_list + .form_text{margin-top:10px; color:#91939f; font-size:12px; line-height:14px;}
 .popup .user_form .ta_r + .form_list.half{margin-top:17px;}
-.popup .user_form .form_list.half .form_item{display:inline-block; width:calc(32% - 6px); vertical-align:top;}
+.popup .user_form .form_list.half .form_item{
+    display:inline-block; width:calc(48% - 6px); vertical-align:top;}
 .popup .user_form .form_list.half .form_item + .form_item{margin-top:0; margin-left:12px;}
+
+.popup .user_form .form_list.third .form_item{
+    display:inline-block; width:calc(32% - 6px); vertical-align:top;}
+.popup .user_form .form_list.third .form_item + .form_item{margin-top:0; margin-left:12px;}
+
 .popup .user_form.inp_type2 .select_btn{padding:10px 12px;}
 .popup .user_form.inp_type2 .select_btn:before{width:34px; height:34px; background-size:34px;}
 .popup .user_form.inp_type2 .inp{padding:0 12px; line-height:50px;}
@@ -314,6 +320,14 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:before, .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:after{display:block; position:absolute; top:0; left:0; right:0; bottom:0; width:11px; height:1px; margin:auto; background-color:#fff;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:before{transform:rotate(45deg);}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_upload_box .data_upload .delete_btn:after{transform:rotate(135deg);}
+
+.font_visible{
+    font-size: 16px;
+    top: 21px;
+    right: 50px;
+    position: relative;
+    color: #838383;
+}
 
 /*CUSTOM*/
 .popup_cont .org_head_box .button{

@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface SaleMapper{
 	// Sale
-	public int insertSale(SaleVO vo);
+	public void insertSale(SaleVO vo);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int currShopId, int saleId);
 	public int deleteSaleBulk(int currShopId, List<Integer> ids);
@@ -35,12 +35,12 @@ public interface SaleMapper{
 
 	public void insertPromiseContent(SalePromiseVO vo);
 
-	public int insertSalePromise(int currShopId, int saleId, List<SalePromiseVO> list);
-	public int insertSaleSupport(int currShopId, int saleId, List<SaleSupportVO> list);
-	public int insertSaleAdd(int currShopId, int saleId, List<SaleAddVO> list);
-	public int insertSaleCard(int currShopId, int saleId, List<SaleCardVO> list);
-	public int insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
-	public int insertSaleFiles(int currShopId, int saleId, List<String> list);
+	public void insertSalePromise(int currShopId, int saleId, List<SalePromiseVO> list);
+	public void insertSaleSupport(int currShopId, int saleId, List<SaleSupportVO> list);
+	public void insertSaleAdd(int currShopId, int saleId, List<SaleAddVO> list);
+	public void insertSaleCard(int currShopId, int saleId, List<SaleCardVO> list);
+	public void insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
+	public void insertSaleFiles(int currShopId, int saleId, List<String> list);
 
 	public int updateSaleAsPromise(int currShopId, int saleId, int pmId, boolean checked, String content);
 	public int updateSaleSupport(int currShopId, int saleId, int supId, int div, int amount);

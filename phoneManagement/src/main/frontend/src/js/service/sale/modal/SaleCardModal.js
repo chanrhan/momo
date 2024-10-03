@@ -36,14 +36,10 @@ function SaleCardModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '130px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={30}>
                 <div className={Popup.popup_title}>카드</div>
 
-                <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)}>
+                <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)} onSubmit={e=>e.preventDefault()}>
                     <div className={Popup.popup_cont}>
                         <div className={cmc(Popup.ta_r)}>
                             <button type="button" className={`btn_blue ${cmc(Popup.btn, Popup.btn_small)}`} onClick={inputField.addItem}>항목추가</button>
@@ -65,7 +61,6 @@ function SaleCardModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }

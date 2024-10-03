@@ -16,6 +16,7 @@ import {UserFormList} from "../account/module/UserFormList";
 import {UserFormItem} from "../account/module/UserFormItem";
 import {UserFormInput} from "../account/module/UserFormInput";
 import {cmc} from "../utils/cm";
+import useUserInfo from "../hook/useUserInfo";
 
 // 일단 보류
 export function RegisterShop(){
@@ -39,103 +40,13 @@ export function RegisterShop(){
         {
             key: 'shop_addr',
             name: '매장 주소'
-        },
-        {
-            key: 'br_nm',
-            name: '상호명',
-            // msg: '상호명을 입력해주세요'
-        },
-        {
-            key: 'br_no',
-            name: '사업자번호',
-            regex: bpNoRegex,
-            msg: '사업자번호를 정확하게 입력해주세요',
         }
     ]);
 
-
-
-
-
-    return (
-        <ComponentStepper inputField={inputField} components={[
-            RegisterShopStep1,
-            RegisterShopStep2,
-        ]}/>
-    )
-}
-
-function RegisterShopStep1({inputField, prev, next}){
-    const modal = useModal();
-    const {userApi, shopApi} = useApi();
-    const [bpNoChecked, setBpNoChecked] = useState(false)
-
-    const checkBrNoStatus = async ()=>{
-        if(inputField.validateOne('br_no')){
-            await userApi.checkBrNoStatus(inputField.get('br_no')).then(({status,data})=>{
-                if(status === 200){
-                    let msg = null;
-                    // console.table(data)
-                    if(data === true){
-                        msg = '사업자번호 인증에 성공하였습니다.'
-                        setBpNoChecked(true)
-                    }
-                    // else if(!ObjectUtils.isEmpty(data.id)){
-                    //     msg = '동일한 사업자번호로 가입된 계정이 존재합니다.'
-                    // }
-                    else{
-                        msg = '존재하지 않는 사업자번호입니다.'
-                    }
-                    modal.openModal(ModalType.SNACKBAR.Info, {
-                        msg: msg
-                    })
-                }
-            })
-        }
-    }
-
-    const submit = async()=>{
-        if(!bpNoChecked){
-            inputField.handleError('br_no','사업자번호를 인증해야 합니다.');
-            return;
-        }
-        if(inputField.validateOne('br_nm')){
-            next();
-        }
-    }
-
-    return (
-        <main>
-            <div>
-                <UserFormBox title='사업자 등록하기'>
-                    <UserFormList>
-                        <UserFormItem errorText={inputField.error.br_nm}>
-                            <UserFormInput name='br_nm' inputField={inputField} subject='사업자 등록' placeholder='상호명을 입력하세요.'/>
-                        </UserFormItem>
-                        <UserFormItem style={{marginTop: 10}} errorText={inputField.error.br_no}>
-                            <UserFormInput readOnly={bpNoChecked} name='br_no' inputField={inputField} placeholder='-을 제외한 사업자등록번호 10자리를 입력하세요.'>
-                                <button type="button" className={User.form_btn} onClick={checkBrNoStatus}>인증하기</button>
-                            </UserFormInput>
-                        </UserFormItem>
-                    </UserFormList>
-
-                    <div className={User.form_btn_box}>
-                        {/*<Link className={`btn_grey ${User.w30} ${cmc(User.btn)}`} to='/shop/list'>이전</Link>*/}
-                        <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
-                    </div>
-                </UserFormBox>
-            </div>
-        </main>
-    )
-}
-
-
-function RegisterShopStep2({inputField}){
-    const {shopApi} = useApi();
     const nav = useNavigate()
 
-    const submit = async ()=>{
-        if(inputField.validateAll()){
+    const submit = async () => {
+        if (inputField.validateAll()) {
             await shopApi.addShop({
                 ...inputField.input,
                 'shop_addr': inputField.get('shop_addr') + ' ' + inputField.get('shop_addr_detail')
@@ -147,6 +58,7 @@ function RegisterShopStep2({inputField}){
             })
         }
     }
+
     return (
         <main>
             <div >
@@ -160,7 +72,7 @@ function RegisterShopStep2({inputField}){
                     </div>
 
                     <div className={User.form_btn_box}>
-                        <Link className={`btn btn_grey ${User.btn} ${User.w30}`} to=''>이전</Link>
+                        <Link className={`btn btn_grey ${User.btn} ${User.w30}`} to='/service'>이전</Link>
                         <button type="button" className={`btn btn_blue ${User.btn}`} onClick={submit}>등록완료</button>
                     </div>
                 </UserFormBox>

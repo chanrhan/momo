@@ -216,6 +216,12 @@
         WHERE   id=#{id}
     </update>
 
+    <update id="updateBrNo">
+        UPDATE tb_account
+        SET br_no=#{brNo}
+        WHERE   id=#{id}
+    </update>
+
     <update id="resetPassword" parameterType="com.momo.common.vo.UserVO">
         UPDATE tb_account
         SET     pwd=#{pwd}

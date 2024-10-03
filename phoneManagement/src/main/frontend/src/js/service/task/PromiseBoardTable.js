@@ -83,7 +83,7 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                 item.pm_list && item.pm_list.map((v,i)=> {
                                     return <li key={i} className={Board.option_item} draggable={true}>
                                         <div className={cmc(Board.radio_box)}>
-                                            <input type="radio" name="radio" id={`pr_${i}`} disabled={v.checked}/>
+                                            <input type="checkbox" name="radio" id={`pr_${i}`} checked={v.checked       } disabled={v.checked}/>
                                             <label htmlFor={`pr_${i}`} className={Board.form_label}
                                                    onClick={() => {
                                                        onUpdate({

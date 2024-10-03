@@ -33,6 +33,7 @@ function useUserInfo(){
 
     return {
         ...userInfo,
+        data: {...userInfo},
         updateUser,
         clearUser,
         getPfp

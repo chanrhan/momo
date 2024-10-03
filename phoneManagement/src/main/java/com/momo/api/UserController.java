@@ -107,7 +107,13 @@ public class UserController {
 //			res.put("matched", );
 //		}
 
-		return ResponseEntity.ok(BusinessmanApiUtil.status(brNo));
+		if(!BusinessmanApiUtil.status(brNo)){
+			return ResponseEntity.ok(false);
+		}
+		String username = SecurityContextUtil.getUsername();
+		userService.updateBrNo(username, brNo);
+
+		return ResponseEntity.ok(true);
 	}
 
 

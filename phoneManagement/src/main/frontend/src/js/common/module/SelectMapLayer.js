@@ -5,46 +5,7 @@ import {useEffect, useRef, useState} from "react";
 import {useRenderlessModal} from "../../hook/useRenderlessModal";
 
 export function SelectMapLayer({initValue, inputField, cssModule, cssModules=[], className, name, value, onChange, values, children}){
-    const renderlessModal = useRenderlessModal(`RLM_MAP__${Date.now()}`)
-    // const [active, setActive ] = useState(false)
-    // const componentRef = useRef(null)
-    // const onclickRef = useRef()
-    //
-    //
-    // useEffect(() => {
-    //     if(active){
-    //         attachOnClick();
-    //     }else{
-    //         detachOnClick()
-    //     }
-    // }, [active]);
-    //
-    // const attachOnClick = ()=>{
-    //     if(window.onclick){
-    //         onclickRef.current = window.onclick;
-    //     }
-    //     const timer = setTimeout(()=>{
-    //         window.onclick = e=>{
-    //             // e.preventDefault()
-    //             if(componentRef.current && !componentRef.current.contains(e.target)){
-    //                 setActive(false)
-    //                 // detachOnClick();
-    //             }
-    //         }
-    //         clearTimeout(timer);
-    //     }, 10)
-    //
-    // }
-    //
-    // const detachOnClick = ()=>{
-    //     if(window.onclick){
-    //         const timer = setTimeout(()=>{
-    //             window.onclick = onclickRef.current;
-    //             onclickRef.current = null;
-    //             clearTimeout(timer)
-    //         }, 10)
-    //     }
-    // }
+    const renderlessModal = useRenderlessModal(`RDL_MAP_${name}`)
 
     const handleChange = i=>{
         if(onChange){
@@ -52,6 +13,7 @@ export function SelectMapLayer({initValue, inputField, cssModule, cssModules=[],
         }else{
             inputField.put(name, i);
         }
+        renderlessModal.close();
     }
 
     const fromCssModule = key=>{

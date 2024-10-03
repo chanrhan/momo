@@ -36,17 +36,16 @@ export function SaleWtPlanModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                maxWidth: '548px',
-                top: '130px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={30} maxWidth={548}>
                 <div className={Popup.popup_title}>유선</div>
 
-                <form className={cm(Popup.user_form, User.user_form, Popup.inp_type2)}>
+                <form className={cm(Popup.user_form, User.user_form, Popup.inp_type2)} onSubmit={(e)=>{
+                    e.preventDefault()
+                }}>
                     <div className={Popup.popup_cont}>
-                        <ul className={cm(Popup.half, Popup.form_list, User.form_list)}>
+                        <ul className={cm(Popup.half, Popup.form_list, User.form_list)} style={{
+                            marginLeft: `20px`
+                        }}>
                             <li className={cm(Popup.form_item, User.form_item)}>
                                 <label className={cm(Popup.form_label, User.form_label)}>개통 유형</label>
                                 <div className={User.form_inp}>
@@ -64,7 +63,9 @@ export function SaleWtPlanModal(props){
                                 </div>
                             </li>
                         </ul>
-                        <ul className={cm(Popup.half, Popup.form_list, User.form_list)}>
+                        <ul className={cm(Popup.half, Popup.form_list, User.form_list)} style={{
+                            marginLeft: `20px`
+                        }}>
                             <li className={cm(Popup.form_item, User.form_item)}>
                                 <label htmlFor="net" className={cm(Popup.form_label, User.form_label)}>인터넷 요금제</label>
                                 <div className={User.form_inp}>
@@ -104,7 +105,6 @@ export function SaleWtPlanModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }

@@ -11,7 +11,7 @@ import java.util.*;
 // 국세청_사업자등록정보 진위확인 및 상태조회 서비스
 // https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15081808
 // 대표님 사업자번호
-// -> 521 87 02490
+// -> 5218702490
 
 // 사업자번호만으로 조회하려면 유료 API가 필요한 듯하다
 // 일단 추후에 다시 알아보자

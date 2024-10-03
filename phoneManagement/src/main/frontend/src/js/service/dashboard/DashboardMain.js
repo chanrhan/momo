@@ -12,6 +12,7 @@ import {DateUtils} from "../../utils/DateUtils";
 import {NumberUtils} from "../../utils/NumberUtils";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {DashboardPostImage} from "./module/DashboardPostImage";
+import {useNavigate} from "react-router-dom";
 
 const SUMMARY_NAMES = [
     '무선','인터넷','TV','총 이익','평균 이익'
@@ -25,8 +26,17 @@ const WIP_NAMES = [
     '중고폰','카드','결합','지원','고객약속'
 ]
 
+const TASK_URL = [
+    'used-device',
+    'card',
+    'comb',
+    'support',
+    'promise'
+]
+
 export function DashboardMain(){
     const {saleApi} = useApi();
+    const nav = useNavigate();
 
     const userInfo = useSelector(state=>state.userReducer);
     const today = new Date();
@@ -110,7 +120,9 @@ export function DashboardMain(){
                                         }
                                         return <DashboardPanelItem1 key={i} index={i} title={SUMMARY_NAMES[i]}
                                                                     num={i < 3 ? v.value : NumberUtils.toPrice(summary[3].value)}
-                                                                    per={v.per} price={i > 2}/>
+                                                                    per={v.per} price={i > 2} onClick={()=>{
+                                                                        nav('/service/analysis')
+                                        }}/>
                                     })
                                 }
                             </ul>
@@ -122,7 +134,10 @@ export function DashboardMain(){
                                         if(ObjectUtils.isEmpty(v)){
                                             return null;
                                         }
-                                        return <DashboardPanelItem2 key={i} title={RATIO_NAMES[i]} value={v.value} total={v.total} per={v.per}/>
+                                        return <DashboardPanelItem2 key={i} title={RATIO_NAMES[i]}
+                                                                    value={v.value} total={v.total} per={v.per} onClick={()=>{
+                                                                        nav('/service/analysis')
+                                        }}/>
                                     })
                                 }
                             </ul>
@@ -141,7 +156,11 @@ export function DashboardMain(){
                                         if(ObjectUtils.isEmpty(v)){
                                             return null
                                         }
-                                        return <DashboardPannelItem4 key={i} title={WIP_NAMES[i]} value={v.value} total={v.total} per={v.per}/>
+                                        return <DashboardPannelItem4 key={i} title={WIP_NAMES[i]}
+                                                                     value={v.value} total={v.total}
+                                                                     per={v.per} onClick={()=>{
+                                                                         nav(`/service/task/${TASK_URL[i]}`)
+                                        }}/>
                                     })
                                 }
                             </ul>

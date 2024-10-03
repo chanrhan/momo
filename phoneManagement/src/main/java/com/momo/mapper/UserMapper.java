@@ -28,6 +28,7 @@ public interface UserMapper {
 
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
+	public int updateBrNo(String userId, String brNo);
 
 	public String getPassword(String id);
 	public int updatePassword(UserVO vo);

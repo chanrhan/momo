@@ -37,8 +37,16 @@ import {NameCardModal} from "../../profile/module/NameCardModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
 import {ScrollUtils} from "../../utils/ScrollUtils";
-import {UsedDeviceCmsModal} from "../../service/task/module/TaskUsedDeviceCmsModal";
+import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModal";
 import {ImagePreviewModal} from "./layer/ImagePreviewModal";
+import {HintModal} from "./tooptip/HintModal";
+
+const M_TYPE = {
+    MENU: 'MENU',
+    LAYER: 'LAYER',
+    RENDERLESS: 'RENDERLESS',
+    TOOLTIP: 'TOOLTIP'
+}
 
 const MODAL_COMPONENTS = {
     // common
@@ -49,6 +57,9 @@ const MODAL_COMPONENTS = {
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
     ImagePreview: ImagePreviewModal,
+
+    // tooltip
+    Hint: HintModal,
 
     // todo
     Payment_Card: PaymentCardModal,
@@ -96,30 +107,10 @@ const MODAL_COMPONENTS = {
     Info: InfoModal
 }
 
-
 function DynamicModalContainer(){
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
-    // const topComponentRef = useSelector(state=>state.topModalReducer)
-
-    const orgAddEventListener = Element.prototype.addEventListener;
-    const orgRemoveEventListener = Element.prototype.removeEventListener;
-
-    // Element.prototype.addEventListener = function (type, listener, options){
-    //     if(type === 'react-click'){
-    //         console.log(`@@ add event`);
-    //         console.table(listener);
-    //     }
-    //     orgAddEventListener.call(this, type, listener, options);
-    // }
-
-    // Element.prototype.removeEventListener = function (type, listener, options){
-    //     if(type === 'react-click'){
-    //         console.log(`@@ remove event: ${listener} ${options}`);
-    //     }
-    //     orgRemoveEventListener.call(this, type, listener, options);
-    // }
 
 
     useEffect(()=>{
@@ -130,6 +121,7 @@ function DynamicModalContainer(){
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
         const onClickCaptureEvent = (e: MouseEvent)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
+                console.log('capture')
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -138,6 +130,7 @@ function DynamicModalContainer(){
 
         const onClickBubbleEvent = (e)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
+                console.log('bubble')
                 modal.unlockModal()
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
@@ -153,9 +146,9 @@ function DynamicModalContainer(){
             }
         }
 
+        // 모든 흐름이 끝난 후 이벤트 리스너를 붙이도록 비동기적으로 처리
         const attachListenerTimer = setTimeout(()=>{
-
-            if(type === 'MENU' || type === 'RENDERLESS'){
+            if(type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
                 // onclickDelayTimer = setTimeout(()=>{
                 //     // onclick 함수를 추가하자마자, 이게 호출된다
                 //     // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
@@ -172,12 +165,10 @@ function DynamicModalContainer(){
                 window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
             }
 
-            if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
-                // console.log(`add keydown: ${type} ${modalName}`)
-                // onkeydownDelayTimer = setTimeout(()=>{
-                // }, 10)
+            if(type === M_TYPE.MENU || type === M_TYPE.LAYER || type === M_TYPE.RENDERLESS){
                 window.addEventListener('keydown', onKeydownCaptureEvent, true)
             }
+
         }, 10)
 
         return ()=>{
@@ -185,6 +176,7 @@ function DynamicModalContainer(){
             window.removeEventListener('keydown', onKeydownCaptureEvent, true)
             window.removeEventListener('click', onClickCaptureEvent, true)
             // window.removeEventListener('click', onClickBubbleEvent, false)
+            // bubbling의 경우에는 미리 삭제하면 안되기 때문에 주석처리
         }
     },[modalList.list])
 
@@ -207,7 +199,6 @@ function DynamicModalContainer(){
         if(index === topIndex){
             if(type === 'RENDERLESS'){
                 if(props.ref){
-                    console.log('top change--')
                     topComponentRef.current = props.ref;
                     // modal.addTopElement(props.ref)
                 }

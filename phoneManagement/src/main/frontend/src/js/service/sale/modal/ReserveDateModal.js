@@ -83,18 +83,12 @@ export function ReserveDateModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={
-                {
-                    top: '130px'
-                }
-            }>
-                {/*활성화시 active 추가 -->*/}
-                <div className={Popup.popup_title}>예약 날짜 설정</div>
+        <LayerModal top={30}>
+            <div className={Popup.popup_title}>예약 날짜 설정</div>
 
-                <form className={Popup.reservation}>
-                    <div className={Popup.popup_cont}>
-                        <div className={Popup.popup_head_box}>
+            <form className={Popup.reservation}>
+                <div className={Popup.popup_cont}>
+                    <div className={Popup.popup_head_box}>
                             <span className={cm(Popup.today_switch)}>
                                     <input type="checkbox" name='completed' className={`switch_inp ${Popup.input}`}
                                            checked={isFromToday}/>
@@ -102,66 +96,65 @@ export function ReserveDateModal(props){
                                         setIsFromToday(!isFromToday)
                                     }}><span className={Popup.span}>on/off</span></label>
                             </span>
-                        </div>
-                        <ul className="reservation_List">
-                            <li key={0} className={cm(Popup.reservation_item)}>
-                                <div className={Popup.reservation_radio}>
-                                    <input type="radio" name='rsv_radio_0' className={Popup.input}
-                                           checked={selected === 0}/>
-                                    <label htmlFor="rsv_radio_0" className={Popup.label}>선택</label>
-                                </div>
-                                <DateSelectModal rootClassName={Popup.reservation_date} onSelect={setDate}>
-                                    <input type="text" className={cmc(Popup.inp)} value={inputField.get('rsv_dt')}
-                                           placeholder="직접입력"
-                                           readOnly/>
-                                    <button type="button" className={Popup.date_btn}>달력</button>
-                                </DateSelectModal>
-                            </li>
-                            <li key={1} className={cm(Popup.reservation_item, Popup.reservation_text)}
-                                onClick={() => {
-                                    setSelected(1)
-                                }}>
-                                <div className={Popup.reservation_radio}>
-                                    <input type="radio" name="rsv_radio_1" className={Popup.input} checked={selected === 1}/>
-                                    <label htmlFor="rsv_radio_1" className={Popup.label}>선택</label>
-                                </div>
-                                <span>D +</span>
-                                <input type="text" name='dday_tp_d' className={cmc(Popup.inp)}
-                                       value={inputField.get('dday_tp_d')}
-                                       onChange={inputField.handleInput}/>
-                                <span>일</span>
-                            </li>
-                            <li key={2} className={cm(Popup.reservation_item, Popup.reservation_text)}
-                                onClick={() => {
-                                    setSelected(2)
-                                }}>
-                                <div className={Popup.reservation_radio}>
-                                    <input type="radio" name="rsv_radio_2" className={Popup.input} checked={selected === 2}/>
-                                    <label htmlFor="rsv_radio_2" className={Popup.label}>선택</label>
-                                </div>
-                                <span>M +</span>
-                                <input type="text" name='dday_tp_m' className={cmc(Popup.inp)}
-                                       value={inputField.get('dday_tp_m')}
-                                       onChange={inputField.handleInput}/>
-                                <span>월</span>
-                            </li>
-                            {
-                                DDAY_ITEMS && DDAY_ITEMS.map((_, i) => {
-                                    return <DdayItem selected={selected} index={i + 3} onClick={() => {
-                                        setSelected(i + 3)
-                                    }}/>
-                                })
-                            }
-                        </ul>
                     </div>
+                    <ul className="reservation_List">
+                        <li key={0} className={cm(Popup.reservation_item)}>
+                            <div className={Popup.reservation_radio}>
+                                <input type="radio" name='rsv_radio_0' className={Popup.input}
+                                       checked={selected === 0}/>
+                                <label htmlFor="rsv_radio_0" className={Popup.label}>선택</label>
+                            </div>
+                            <DateSelectModal rootClassName={Popup.reservation_date} onSelect={setDate}>
+                                <input type="text" className={cmc(Popup.inp)} value={inputField.get('rsv_dt')}
+                                       placeholder="직접입력"
+                                       readOnly/>
+                                <button type="button" className={Popup.date_btn}>달력</button>
+                            </DateSelectModal>
+                        </li>
+                        <li key={1} className={cm(Popup.reservation_item, Popup.reservation_text)}
+                            onClick={() => {
+                                setSelected(1)
+                            }}>
+                            <div className={Popup.reservation_radio}>
+                                <input type="radio" name="rsv_radio_1" className={Popup.input} checked={selected === 1}/>
+                                <label htmlFor="rsv_radio_1" className={Popup.label}>선택</label>
+                            </div>
+                            <span>D +</span>
+                            <input type="text" name='dday_tp_d' className={cmc(Popup.inp)}
+                                   value={inputField.get('dday_tp_d')}
+                                   onChange={inputField.handleInput}/>
+                            <span>일</span>
+                        </li>
+                        <li key={2} className={cm(Popup.reservation_item, Popup.reservation_text)}
+                            onClick={() => {
+                                setSelected(2)
+                            }}>
+                            <div className={Popup.reservation_radio}>
+                                <input type="radio" name="rsv_radio_2" className={Popup.input} checked={selected === 2}/>
+                                <label htmlFor="rsv_radio_2" className={Popup.label}>선택</label>
+                            </div>
+                            <span>M +</span>
+                            <input type="text" name='dday_tp_m' className={cmc(Popup.inp)}
+                                   value={inputField.get('dday_tp_m')}
+                                   onChange={inputField.handleInput}/>
+                            <span>월</span>
+                        </li>
+                        {
+                            DDAY_ITEMS && DDAY_ITEMS.map((_, i) => {
+                                return <DdayItem selected={selected} index={i + 3} onClick={() => {
+                                    setSelected(i + 3)
+                                }}/>
+                            })
+                        }
+                    </ul>
+                </div>
 
-                    <div className={Popup.popup_btn_box}>
-                        <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
-                    </div>
-                </form>
+                <div className={Popup.popup_btn_box}>
+                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
+                </div>
+            </form>
 
-                <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
+            <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>
     )
 }

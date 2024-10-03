@@ -34,7 +34,9 @@ import {MouseEventUtils} from "../../../utils/MouseEventUtils";
 import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 import {Scrollable} from "../../../common/module/Scrollable";
 import {useFileLoader} from "../../../hook/useFileLoader";
-import {FileUtils} from "../../../api/FileUtils";
+import {FileUtils} from "../../../utils/FileUtils";
+import {ChangeEvent} from "react";
+import {useHintBox} from "../../../hook/useHintBox";
 
 
 function SaleDetailModal(props){
@@ -47,7 +49,7 @@ function SaleDetailModal(props){
         },
         {
           key: 'provider',
-          value: userInfo.provider ?? 0
+          value: userInfo.provider === 3 ? null : (userInfo.provider)
         },
         {
           key: 'cust_nm',
@@ -64,7 +66,7 @@ function SaleDetailModal(props){
             key: 'cust_cd',
             name: '식별번호',
             regex: /^\d{6}$|^\d{10}$/,
-            msg: '생년월일 또는 사입자번호를 정확하게 입력해 주십시오'
+            msg: '번호를 정확하게 입력해 주십시오'
         },
         {
             key: 'cust_gd',
@@ -117,7 +119,7 @@ function SaleDetailModal(props){
         key: null
     })
 
-    const [deleteFiles, setDeleteFiles] = useState([])
+    // const [deleteFiles, setDeleteFiles] = useState([])
     // !key && order = new
     // key && order = existed
         // key != order -> updated
@@ -125,6 +127,8 @@ function SaleDetailModal(props){
     // !key && !order = NULL
 
     const [staff, setStaff] = useState([])
+
+    const hintBox = useHintBox("법인인 경우 사업자등록번호 5자리를 입력해주세요.")
 
 
     useEffect(()=>{
@@ -213,6 +217,7 @@ function SaleDetailModal(props){
                     //         preview: null
                     //     }
                     // }))
+                    // console.table(parsed)
                     getFileImages(parsed).then(li=>{
                         fileInputField.setInput(li)
                     })
@@ -463,13 +468,14 @@ function SaleDetailModal(props){
 
     const submit = async (rsvMsgList)=>{
         const formData = new FormData();
+        // return ;
 
-        const filtered = fileInputField.input.filter(v=> v.preview !== null || v.key !== null);
+        const filtered = fileInputField.input.filter(v=>v.preview !== null || (v.key !== null && v.key !== undefined));
         const files = filtered.map(v=>v.file);
         const fileOrders = filtered.map(v=>v.key)
         // console.table(filtered)
-        // console.table(files)
         // console.table(fileOrders)
+        // console.table(files)
         // return ;
         if(files){
             // const _files = Array.prototype.slice.call(files);
@@ -508,9 +514,9 @@ function SaleDetailModal(props){
             type: 'application/json'
         }))
 
-        for(const i of formData){
-            console.table(i)
-        }
+        // for(const i of formData){
+        //     console.table(i)
+        // }
         // return ;
 
         if(props.sale_id){
@@ -542,18 +548,21 @@ function SaleDetailModal(props){
     }
 
     const handleFileInput = async (e)=>{
+        // const currFiles = fileInputField.input.filter(v=>v.preview)
+        // const files = FileUtils.handleFilesInput(currFiles, e.target.files, 5);
+        // fileInputField.putAll(files);
         if(e.target.files && e.target.files.length){
             const fileLength = e.target.files.length;
             if(fileLength > 0){
                 const currFiles = fileInputField.input.filter(v=>v.preview)
                 const orgLength = currFiles.length;
                 const files = [...e.target.files].slice(0, Math.min(5 - orgLength, fileLength))
-                const converFiles = await FileUtils.encodeFileToBase64(files);
+                const convertFiles = await FileUtils.encodeFileToBase64(files);
                 let arr = [...currFiles];
-                for(const index in converFiles){
+                for(const index in convertFiles){
                     arr.push({
                         file: files[index],
-                        preview: converFiles[index]
+                        preview: convertFiles[index]
                     })
                 }
 
@@ -571,20 +580,22 @@ function SaleDetailModal(props){
 
     const handleClickPreviewImage = (e, i)=>{
         const previewFile = fileInputField.get(i, 'preview');
-        const image = new Image();
-        image.onload = ()=>{
-            modal.openModal(ModalType.LAYER.Image_Preview, {
-                src: previewFile,
-                width: image.width,
-                height: image.height
-            })
+        if(previewFile !== null){
+            const image = new Image();
+            image.onload = ()=>{
+                modal.openModal(ModalType.LAYER.Image_Preview, {
+                    src: previewFile,
+                    width: image.width,
+                    height: image.height
+                })
+            }
+            image.onerror = ()=>{
+                modal.openModal(ModalType.SNACKBAR.Alert, {
+                    msg: '이미지를 불러오는 중 오류가 발생했습니다.'
+                })
+            }
+            image.src = previewFile
         }
-        image.onerror = ()=>{
-            modal.openModal(ModalType.SNACKBAR.Alert, {
-                msg: '이미지를 불러오는 중 오류가 발생했습니다.'
-            })
-        }
-        image.src = previewFile
     }
 
     const getFileCount = ()=>{
@@ -605,368 +616,391 @@ function SaleDetailModal(props){
         fileInputField.putAll(currFiles)
     }
 
+    const showHintModal = (e)=>{
+        // modal.openModal(ModalType.TOOLTIP.Hint, {
+        //     msg: '하하하'
+        // });
+        hintBox.open(e);
+    }
+
+
 
     return (
-        <LayerModal modalRef={props.modalRef}>
-            <div className={Popup.popup} style={
-                {
-                    maxWidth: '1060px',
-                }
-            }>
-                <div className={Popup.popup_title}>판매일보 추가</div>
+        <LayerModal modalRef={props.modalRef} maxWidth={1060}>
+            {/*<div className={Popup.popup} style={*/}
+            {/*    {*/}
+            {/*        maxWidth: '1060px',*/}
+            {/*    }*/}
+            {/*}>*/}
 
-                <form className={cm(Popup.user_form, Popup.customer)}>
-                    <div className={Popup.popup_cont}>
-                        <div className={Popup.customer_head}>
-                            <div className={Popup.head_box} >
-                                <DateSelectModal errorText={inputField.error.actv_dt} rootClassName={Popup.head_box}
-                                                 onSelect={setDate}>
-                                    <input type="text" className={`date ${cmc(Popup.inp)}`}
-                                           value={inputField.get('actv_dt')}
-                                           placeholder='개통 날짜' readOnly/>
-                                </DateSelectModal>
-                                <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
-                                    {/*<input type="hidden" id=""/>*/}
-                                    {/*<SelectOptionLayer initValue='개통 타입' cssModules={toCssModules(Popup, User)}*/}
-                                    {/*                   inputField={inputField} values={LMD.ct_actv_tp}*/}
-                                    {/*                   name='ct_actv_tp'/>*/}
-                                </div>
-                            </div>
+            {/*</div>*/}
+            <div className={Popup.popup_title}>판매일보 추가</div>
 
-                            <div className={cmc(Popup.tab, Popup.type2)}>
-                                <TabList name='provider' inputField={inputField} theme={Popup} values={
-                                    LMD.provier
-                                }/>
-                            </div>
-
-                            <div className={cm(Popup.head_box, Popup.fr)}>
-                                <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
-                                    <input type="hidden" id=""/>
-                                    <SelectMapLayer initValue={getInitStaffName()} cssModules={toCssModules(Popup, User)} inputField={inputField}
-                                                      values={staff} onChange={(v)=>{
-                                                          inputField.put('seller_id', v)
-                                    }} name='seller_id'/>
-                                </div>
+            <form className={cm(Popup.user_form, Popup.customer)}>
+                <div className={Popup.popup_cont}>
+                    <div className={Popup.customer_head}>
+                        <div className={Popup.head_box}>
+                            <DateSelectModal errorText={inputField.error.actv_dt} rootClassName={Popup.head_box}
+                                             onSelect={setDate}>
+                                <input type="text" className={`date ${cmc(Popup.inp)}`}
+                                       value={inputField.get('actv_dt')}
+                                       placeholder='개통 날짜' readOnly/>
+                            </DateSelectModal>
+                            <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
+                                {/*<input type="hidden" id=""/>*/}
+                                {/*<SelectOptionLayer initValue='개통 타입' cssModules={toCssModules(Popup, User)}*/}
+                                {/*                   inputField={inputField} values={LMD.ct_actv_tp}*/}
+                                {/*                   name='ct_actv_tp'/>*/}
                             </div>
                         </div>
 
-                        <div className={cm(Popup.customer_body)}>
-                            <Scrollable scrollable={props.scrollable}>
-                                <div className={cm(Popup.customer_scroll)}>
-                                    <div className={Popup.customer_box}>
-                                        <ul className={Popup.customer_list}>
-                                            <AddSaleItem errorText={inputField.error.cust_nm}>
-                                                <AddSaleInput inputField={inputField} name='cust_nm' subject='이름'
-                                                              maxLength='8'/>
-                                            </AddSaleItem>
-                                            <AddSaleTabItem inputField={inputField} name='cust_gd' subject='성별 / 법인'
-                                                            depth={3} values={LMD.gender}/>
-                                            <AddSaleItem errorText={inputField.error.cust_tel}>
-                                                <label htmlFor='cust_tel' className={Popup.customer_label}>휴대폰
-                                                    번호</label>
-                                                <div className={Popup.customer_inp_box}>
-                                                    <TelePhoneInput name='cust_tel' value={inputField.get('cust_tel')}
-                                                                    className={cm(Popup.customer_inp)}
-                                                                    onChange={inputField.handleInput}/>
-                                                </div>
-                                            </AddSaleItem>
-                                            <AddSaleItem errorText={inputField.error.cust_cd}>
-                                                <AddSaleInput maxLength={10} inputField={inputField} name='cust_cd'
-                                                              subject='생년월일 / 사업자번호'/>
-                                            </AddSaleItem>
-                                        </ul>
+                        <div className={cmc(Popup.tab, Popup.type2)}>
+                            <TabList name='provider' inputField={inputField} theme={Popup} values={
+                                LMD.provier
+                            }/>
+                        </div>
 
-                                        <div className={Popup.customer_text}>법인인 경우 사업등록번호 뒷 5자리를 입력해주세요.</div>
-                                    </div>
-
-                                    <div className={Popup.customer_box}>
-                                        <div className={cm(Popup.customer_title, Popup.n1)}>무선</div>
-
-                                        <ul className={Popup.customer_list}>
-                                            <AddSaleTabItem inputField={inputField} name='ct_actv_div' subject='개통 구분'
-                                                            depth={2} values={LMD.ct_actv_div}/>
-                                            <AddSaleItem>
-                                                <AddSaleInput value={inputField.get('device_nm')}
-                                                              inputField={inputField} name='device_id' subject='모델명'
-                                                              search readOnly onClick={openDeviceSearchModal}/>
-                                            </AddSaleItem>
-                                            <AddSaleItem>
-                                                <AddSaleInput value={inputField.get('ct_actv_plan_nm')}
-                                                              inputField={inputField} name='ct_actv_plan'
-                                                              subject='개통 요금제'
-                                                              search readOnly onClick={openActvPlanSearchModal}/>
-                                            </AddSaleItem>
-                                            <AddSaleItem>
-                                                <AddSaleInput value={inputField.get('ct_dec_plan_nm')}
-                                                              inputField={inputField} name='ct_dec_plan'
-                                                              subject='하향 요금제'
-                                                              search readOnly onClick={openDecPlanSearchModal}/>
-                                            </AddSaleItem>
-                                        </ul>
-
-                                        <ul className={Popup.customer_list}>
-                                            <AddSaleItem>
-                                                <label htmlFor='wt_actv_tp' className={Popup.customer_label}>개통
-                                                    유형</label>
-                                                <div className={Popup.customer_inp_box}>
-                                                    <div
-                                                        className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
-                                                        <input type="hidden" id=""/>
-                                                        <SelectIndexLayer cssModules={toCssModules(Popup, User)}
-                                                                          inputField={inputField} name='ct_actv_tp'
-                                                                          values={LMD.ct_actv_tp}/>
-                                                    </div>
-                                                </div>
-                                                {/*<AddSaleSelectOptionLayer inputField={inputField} name='actv_div' subject='개통 유형' itemNames={ACTV_DIV_ITEMS}/>*/}
-                                            </AddSaleItem>
-                                            <AddSaleItem>
-                                                <label htmlFor='device_stor' className={Popup.customer_label}>용량</label>
-                                                <div className={Popup.customer_inp_box}>
-                                                    <div
-                                                        className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
-                                                        <input type="hidden" id=""/>
-                                                        <SelectIndexLayer cssModules={toCssModules(Popup, User)}
-                                                                          inputField={inputField}
-                                                                          name='device_stor'
-                                                                          values={LMD.storage}/>
-                                                    </div>
-                                                </div>
-                                                {/*<AddSaleSelectOptionLayer inputField={inputField} name='stor' subject='용량'*/}
-                                                {/*                          itemNames={STOR_ITEMS}/>*/}
-                                            </AddSaleItem>
-                                            <AddSaleItem>
-                                                <label htmlFor='ct_istm' className={Popup.customer_label}>할부</label>
-                                                <div className={Popup.customer_inp_box}>
-                                                    <div
-                                                        className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
-                                                        <input type="hidden" id=""/>
-                                                        <SelectIndexLayer cssModules={toCssModules(Popup, User)}
-                                                                          inputField={inputField}
-                                                                          name='ct_istm' values={LMD.istm}/>
-                                                    </div>
-                                                </div>
-                                            </AddSaleItem>
-                                            <AddSaleItem>
-                                                <label htmlFor='ct_cms' className={Popup.customer_label}>판매
-                                                    수수료(정책)</label>
-                                                <div className={Popup.customer_inp_box}>
-                                                    <PriceInput name='ct_cms' value={inputField.get('ct_cms')}
-                                                                className={`ta_r ${Popup.customer_inp}`}
-                                                                onChange={inputField.handleInput}/>
-                                                </div>
-                                            </AddSaleItem>
-                                        </ul>
-                                    </div>
-
-                                    <div className={Popup.customer_box}>
-                                        <div className={cm(Popup.customer_title, Popup.n2)}>체크리스트</div>
-
-                                        <ul className={`${cm(Popup.popup_check_list, Popup.customer_list)} ${cmc(Popup.type2)}`}>
-                                            <AddSaleCheckItem subject='유선' onClick={openWtSelectModal}
-                                                              checked={checkBit.get(0)}/>
-                                            <AddSaleCheckItem subject='세컨 디바이스' onClick={openSecondModal}
-                                                              checked={checkBit.get(1)}/>
-                                            <AddSaleCheckItem subject='카드' onClick={openCardModal}
-                                                              checked={checkBit.get(2)}/>
-                                            <AddSaleCheckItem subject='중고폰' onClick={openUsedPhoneModal}
-                                                              checked={checkBit.get(3)}/>
-                                            <AddSaleCheckItem subject='부가서비스' onClick={openExsvcModal}
-                                                              checked={checkBit.get(4)}/>
-                                            <AddSaleCheckItem subject='결합' onClick={openCombModal}
-                                                              checked={checkBit.get(5)}/>
-                                            <AddSaleCheckItem subject='가족 등록' onClick={() => {
-                                                checkBit.toggle(6)
-                                            }} checked={checkBit.get(6)}/>
-                                            <AddSaleCheckItem subject='지인' onClick={() => {
-                                                checkBit.toggle(7)
-                                            }} checked={checkBit.get(7)}/>
-                                        </ul>
-                                    </div>
-
-                                    <div className={cm(Popup.customer_box, Popup.price)}>
-                                        <PriceHalfBox type={0} inputField={supportInputField}
-                                                      provider={inputField.get('provider')}/>
-                                        <PriceHalfBox type={1} inputField={addInputField}
-                                                      provider={inputField.get('provider')}/>
-
-                                        <div className={Popup.price_total}>
-                                            <ul className='price_list'>
-                                                <li className={Popup.price_item}>
-                                                    <div className={Popup.price_num}>{NumberUtils.toPrice(sumCms())}원
-                                                    </div>
-                                                    <div className={Popup.price_text}>유/무선 판매 수수료</div>
-                                                </li>
-                                                <li className={cm(Popup.price_item, Popup.plus)}>
-                                                    <div className={Popup.price_num}>0원</div>
-                                                    <div className={Popup.price_text}>중고폰 판매금액</div>
-                                                </li>
-                                                <li className={cm(Popup.price_item, Popup.plus)}>
-                                                    <div
-                                                        className={Popup.price_num}>{NumberUtils.toPrice(sumAdd())}원
-                                                    </div>
-                                                    <div className={Popup.price_text}>추가</div>
-                                                </li>
-                                                <li className={cm(Popup.price_item, Popup.minus)}>
-                                                    <div
-                                                        className={Popup.price_num}>{NumberUtils.toPrice(sumSup())}원
-                                                    </div>
-                                                    <div className={Popup.price_text}>지원</div>
-                                                </li>
-                                                <li className={cm(Popup.price_item, Popup.sum)}>
-                                                    <div className={Popup.price_num}>{
-                                                        NumberUtils.toPrice(
-                                                            sumCms() +
-                                                            sumAdd() -
-                                                            sumSup()
-                                                        )
-                                                    }원
-                                                    </div>
-                                                    <div className={Popup.price_text}>총이익</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                        <div className={Popup.price_data}>
-                                            <div className={Popup.data_half}>
-                                                <div className={Popup.data_group}>
-                                                    <div className={cm(Popup.data_box, Popup.n5)}>
-                                                        <div className={Popup.data_title}>서류 및 견적서</div>
-                                                        <div className={Popup.data_area}>
-                                                            <div className={Popup.data_text}>
-                                                                <div>사진<span>({getFileCount()}/5)</span></div>
-                                                                <p>* 30MB 미만의 .jpg, .peg, .png 파일을 올릴 수 있어요<br/>
-                                                                    * 사진을 섞어서 배치할 수 있어요.
-                                                                </p>
-                                                            </div>
-                                                            <div className={Popup.data_upload_box}>
-                                                                {
-                                                                    fileInputField.input && fileInputField.input.map((v,i)=> {
-                                                                        return <div key={i} className={Popup.data_upload}>
-                                                                            <label htmlFor={`file_${i}`}
-                                                                                   className={Popup.upload_btn} style={{
-                                                                                       display: v.preview ? 'none': ''
-                                                                            }}>업로드
-                                                                            </label>
-                                                                            <input type="file" id={`file_${i}`} multiple
-                                                                                   name={`file_${i}`}
-                                                                                   onChange={handleFileInput} style={{
-                                                                                visibility: "hidden"
-                                                                            }}/>
-                                                                            <img src={v.preview} alt='' style={{
-                                                                                display: "inline-block",
-                                                                                top: 0,
-                                                                                left: 0,
-                                                                                position: "absolute"
-                                                                            }} onClick={e=>{
-                                                                                handleClickPreviewImage(e, i)
-                                                                            }}/>
-                                                                            {
-                                                                                (i < fileInputField.length() && v.preview) &&
-                                                                                <button type="button"
-                                                                                        className={Popup.delete_btn}
-                                                                                        onClick={() => {
-                                                                                            removeFile(i)
-                                                                                        }}>삭제
-                                                                                </button>
-                                                                            }
-
-                                                                        </div>
-                                                                    })
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/*<div className={cm(Popup.data_box, Popup.n2)}>*/}
-                                                    {/*    <div className={Popup.data_title}>견적서</div>*/}
-                                                    {/*    <div className={Popup.data_area}>*/}
-                                                    {/*        <div className={Popup.data_upload}>*/}
-                                                    {/*            <label htmlFor='estimate' className={Popup.upload_btn}>업로드*/}
-                                                    {/*            </label>*/}
-                                                    {/*            <input type="file" id='estimate' name='estimate'*/}
-                                                    {/*                   onChange={handleFileInput} style={{*/}
-                                                    {/*                visibility: "hidden"*/}
-                                                    {/*            }}/>*/}
-
-                                                    {/*        </div>*/}
-                                                    {/*        <img src={previewEstimate} alt=''/>*/}
-                                                    {/*    </div>*/}
-                                                    {/*</div>*/}
-                                                </div>
-
-                                                <div className={cm(Popup.data_box, Popup.n3)}>
-                                                    <div className={Popup.data_title}>비고</div>
-                                                    <div className={Popup.data_area} style={{
-                                                        padding: '3px'
-                                                    }}>
-                                                    <textarea className={Popup.data_textarea} name='sale_memo'
-                                                              value={inputField.get('sale_memo')}
-                                                              onChange={inputField.handleInput}></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className={Popup.data_half}>
-                                                <div className={cm(Popup.data_box, Popup.n4)}>
-                                                    <div className={Popup.data_title}>고객 약속</div>
-                                                    <div className={Popup.data_area} style={{
-                                                        overflowY: 'scroll'
-                                                    }}>
-                                                        <ul className={Popup.popup_check_list}>
-                                                            {
-                                                                promiseInputField.length() > 0 && promiseInputField.input.map((v, i) => {
-                                                                    return <li key={i} className={Popup.li}>
-                                                                        <input type="checkbox" name={`apm${i}`}
-                                                                               className={Popup.check_inp}
-                                                                               checked={promiseInputField.get(i, 'checked')}
-                                                                               readOnly/>
-                                                                        <label htmlFor={`apm${i}`}
-                                                                               className={Popup.check_label}
-                                                                               onClick={() => {
-                                                                                   promiseInputField.put(i, 'checked', !promiseInputField.get(i, 'checked'))
-                                                                               }}>
-                                                                        </label>
-                                                                        <input type="text" className={Popup.check_text}
-                                                                               value={promiseInputField.get(i, 'content')}
-                                                                               onChange={e => {
-                                                                                   promiseInputField.put(i, 'content', e.target.value)
-                                                                               }}
-                                                                               placeholder='내용을 입력해주세요'/>
-                                                                        {/*<input type="text" className={Popup.inp} value={apmInputField.contents[i]} onChange={e=>{*/}
-                                                                        {/*    apmInputField.putContent(i, e.target.value)*/}
-                                                                        {/*}}/>*/}
-                                                                        <button type="button" className={Popup.check_del}
-                                                                                onClick={() => {
-                                                                                    promiseInputField.removeItem(i)
-                                                                                }}>삭제
-                                                                        </button>
-                                                                    </li>
-                                                                })
-                                                            }
-                                                        </ul>
-                                                        <button type="button"
-                                                                className={`${cmc(Popup.btn, Popup.btn_add_icon)}`}
-                                                                onClick={promiseInputField.addItem}>추가하기
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Scrollable>
-                            <div className={Popup.popup_btn_box}>
-                                <button type="button" className={`btn_blue ${cmc(Popup.btn)}`}
-                                        onClick={onSubmit}>저장
-                                </button>
+                        <div className={cm(Popup.head_box, Popup.fr)}>
+                            <div className={Popup.font_visible}>
+                                판매자
+                            </div>
+                            <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
+                                <input type="hidden" id=""/>
+                                <SelectMapLayer initValue={getInitStaffName()} cssModules={toCssModules(Popup, User)}
+                                                inputField={inputField}
+                                                values={staff} onChange={(v) => {
+                                    inputField.put('seller_id', v)
+                                }} name='seller_id'/>
                             </div>
                         </div>
                     </div>
 
-                </form>
+                    <div className={cm(Popup.customer_body)}>
+                        <Scrollable scrollable={props.scrollable}>
+                            <div className={cm(Popup.customer_scroll)}>
+                                <div className={Popup.customer_box}>
+                                    <ul className={Popup.customer_list}>
+                                        <AddSaleItem errorText={inputField.error.cust_nm}>
+                                            <AddSaleInput inputField={inputField} name='cust_nm' subject='이름'
+                                                          maxLength='8'/>
+                                        </AddSaleItem>
+                                        <AddSaleTabItem inputField={inputField} name='cust_gd' subject='성별 / 법인'
+                                                        depth={3} values={LMD.gender}/>
+                                        <AddSaleItem errorText={inputField.error.cust_tel}>
+                                            <label htmlFor='cust_tel' className={Popup.customer_label}>휴대폰
+                                                번호</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <TelePhoneInput name='cust_tel' value={inputField.get('cust_tel')}
+                                                                className={cm(Popup.customer_inp)}
+                                                                onChange={inputField.handleInput}/>
+                                            </div>
+                                        </AddSaleItem>
+                                        <AddSaleItem errorText={inputField.error.cust_cd} style={{
+                                            marginTop: '11.5px'
+                                        }}>
+                                            <AddSaleInput maxLength={10} inputField={inputField} name='cust_cd'
+                                                          subject='생년월일 / 사업자번호'
+                                                          icon={<>
+                                                              <p className='hint_icon' onMouseOver={showHintModal}></p>
+                                                              {hintBox.component}
+                                                          </>}/>
 
-                <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
+                                        </AddSaleItem>
+
+                                    </ul>
+
+                                    {/*<div className={Popup.customer_text}>법인인 경우 사업등록번호 뒷 5자리를 입력해주세요.</div>*/}
+                                </div>
+
+                                <div className={Popup.customer_box}>
+                                    <div className={cm(Popup.customer_title, Popup.n1)}>무선</div>
+
+                                    <ul className={Popup.customer_list}>
+                                        <AddSaleTabItem inputField={inputField} name='ct_actv_div' subject='개통 구분'
+                                                        depth={2} values={LMD.ct_actv_div}/>
+                                        <AddSaleItem>
+                                            <AddSaleInput value={inputField.get('device_nm')}
+                                                          inputField={inputField} name='device_id' subject='모델명'
+                                                          search readOnly onClick={openDeviceSearchModal}/>
+                                        </AddSaleItem>
+                                        <AddSaleItem>
+                                            <AddSaleInput value={inputField.get('ct_actv_plan_nm')}
+                                                          inputField={inputField} name='ct_actv_plan'
+                                                          subject='개통 요금제'
+                                                          search readOnly onClick={openActvPlanSearchModal}/>
+                                        </AddSaleItem>
+                                        <AddSaleItem>
+                                            <AddSaleInput value={inputField.get('ct_dec_plan_nm')}
+                                                          inputField={inputField} name='ct_dec_plan'
+                                                          subject='하향 요금제'
+                                                          search readOnly onClick={openDecPlanSearchModal}/>
+                                        </AddSaleItem>
+                                    </ul>
+
+                                    <ul className={Popup.customer_list}>
+                                        <AddSaleItem>
+                                            <label htmlFor='wt_actv_tp' className={Popup.customer_label}>개통
+                                                유형</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <div className={`select_box ${cm(Popup.select_box, User.select_box)}`} onClick={()=>{
+                                                    console.log('123')
+                                                }}>
+                                                    <input type="hidden" id=""/>
+                                                    <SelectIndexLayer cssModules={toCssModules(Popup, User)}
+                                                                      inputField={inputField} name='ct_actv_tp'
+                                                                      value={LMD.ct_actv_tp[0]}
+                                                                      values={LMD.ct_actv_tp}/>
+                                                </div>
+                                            </div>
+                                            {/*<AddSaleSelectOptionLayer inputField={inputField} name='actv_div' subject='개통 유형' itemNames={ACTV_DIV_ITEMS}/>*/}
+                                        </AddSaleItem>
+                                        <AddSaleItem>
+                                            <label htmlFor='device_stor' className={Popup.customer_label}>용량</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <div
+                                                    className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
+                                                    <input type="hidden" id=""/>
+                                                    <SelectIndexLayer cssModules={toCssModules(Popup, User)}
+                                                                      inputField={inputField}
+                                                                      name='device_stor'
+                                                                      values={LMD.storage}/>
+                                                </div>
+                                            </div>
+                                            {/*<AddSaleSelectOptionLayer inputField={inputField} name='stor' subject='용량'*/}
+                                            {/*                          itemNames={STOR_ITEMS}/>*/}
+                                        </AddSaleItem>
+                                        <AddSaleItem>
+                                            <label htmlFor='ct_istm' className={Popup.customer_label}>할부</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <div
+                                                    className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
+                                                    <input type="hidden" id=""/>
+                                                    <SelectIndexLayer cssModules={toCssModules(Popup, User)}
+                                                                      inputField={inputField}
+                                                                      name='ct_istm' values={LMD.istm}/>
+                                                </div>
+                                            </div>
+                                        </AddSaleItem>
+                                        <AddSaleItem>
+                                            <label htmlFor='ct_cms' className={Popup.customer_label}>판매
+                                                수수료(정책)</label>
+                                            <div className={Popup.customer_inp_box}>
+                                                <PriceInput name='ct_cms' value={inputField.get('ct_cms')}
+                                                            className={`ta_r ${Popup.customer_inp}`}
+                                                            onChange={inputField.handleInput}/>
+                                            </div>
+                                        </AddSaleItem>
+                                    </ul>
+                                </div>
+
+                                <div className={Popup.customer_box}>
+                                    <div className={cm(Popup.customer_title, Popup.n2)}>체크리스트</div>
+
+                                    <ul className={`${cm(Popup.popup_check_list, Popup.customer_list)} ${cmc(Popup.type2)}`}>
+                                        <AddSaleCheckItem subject='유선' onClick={openWtSelectModal}
+                                                          checked={checkBit.get(0)}/>
+                                        <AddSaleCheckItem subject='세컨 디바이스' onClick={openSecondModal}
+                                                          checked={checkBit.get(1)}/>
+                                        <AddSaleCheckItem subject='카드' onClick={openCardModal}
+                                                          checked={checkBit.get(2)}/>
+                                        <AddSaleCheckItem subject='중고폰' onClick={openUsedPhoneModal}
+                                                          checked={checkBit.get(3)}/>
+                                        <AddSaleCheckItem subject='부가서비스' onClick={openExsvcModal}
+                                                          checked={checkBit.get(4)}/>
+                                        <AddSaleCheckItem subject='결합' onClick={openCombModal}
+                                                          checked={checkBit.get(5)}/>
+                                        <AddSaleCheckItem subject='가족 등록' onClick={() => {
+                                            checkBit.toggle(6)
+                                        }} checked={checkBit.get(6)}/>
+                                        <AddSaleCheckItem subject='지인' onClick={() => {
+                                            checkBit.toggle(7)
+                                        }} checked={checkBit.get(7)}/>
+                                    </ul>
+                                </div>
+
+                                <div className={cm(Popup.customer_box, Popup.price)}>
+                                    <PriceHalfBox type={0} inputField={supportInputField}
+                                                  provider={inputField.get('provider')}/>
+                                    <PriceHalfBox type={1} inputField={addInputField}
+                                                  provider={inputField.get('provider')}/>
+
+                                    <div className={Popup.price_total}>
+                                        <ul className='price_list'>
+                                            <li className={Popup.price_item}>
+                                                <div className={Popup.price_num}>{NumberUtils.toPrice(sumCms())}원
+                                                </div>
+                                                <div className={Popup.price_text}>유/무선 판매 수수료</div>
+                                            </li>
+                                            <li className={cm(Popup.price_item, Popup.plus)}>
+                                                <div className={Popup.price_num}>0원</div>
+                                                <div className={Popup.price_text}>중고폰 판매금액</div>
+                                            </li>
+                                            <li className={cm(Popup.price_item, Popup.plus)}>
+                                                <div
+                                                    className={Popup.price_num}>{NumberUtils.toPrice(sumAdd())}원
+                                                </div>
+                                                <div className={Popup.price_text}>추가</div>
+                                            </li>
+                                            <li className={cm(Popup.price_item, Popup.minus)}>
+                                                <div
+                                                    className={Popup.price_num}>{NumberUtils.toPrice(sumSup())}원
+                                                </div>
+                                                <div className={Popup.price_text}>지원</div>
+                                            </li>
+                                            <li className={cm(Popup.price_item, Popup.sum)}>
+                                                <div className={Popup.price_num}>{
+                                                    NumberUtils.toPrice(
+                                                        sumCms() +
+                                                        sumAdd() -
+                                                        sumSup()
+                                                    )
+                                                }원
+                                                </div>
+                                                <div className={Popup.price_text}>총이익</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className={Popup.price_data}>
+                                        <div className={Popup.data_half}>
+                                            <div className={Popup.data_group}>
+                                                <div className={cm(Popup.data_box, Popup.n5)}>
+                                                    <div className={Popup.data_title}>서류 및 견적서</div>
+                                                    <div className={Popup.data_area}>
+                                                        <div className={Popup.data_text}>
+                                                            <div>사진<span>({getFileCount()}/5)</span></div>
+                                                            <p>* 30MB 미만의 .jpg, .peg, .png 파일을 올릴 수 있어요<br/>
+                                                                * 사진을 섞어서 배치할 수 있어요.
+                                                            </p>
+                                                        </div>
+                                                        <div className={Popup.data_upload_box}>
+                                                            {
+                                                                fileInputField.input && fileInputField.input.map((v, i) => {
+                                                                    return <div key={i} className={Popup.data_upload}>
+                                                                        <label htmlFor={`file_${i}`}
+                                                                               className={Popup.upload_btn} style={{
+                                                                            display: v.preview ? 'none' : ''
+                                                                        }}>업로드
+                                                                        </label>
+                                                                        <input type="file" id={`file_${i}`} multiple
+                                                                               name={`file_${i}`}
+                                                                               onChange={handleFileInput} style={{
+                                                                            visibility: "hidden"
+                                                                        }}/>
+                                                                        <img src={v.preview} alt='' style={{
+                                                                            display: "inline-block",
+                                                                            top: 0,
+                                                                            left: 0,
+                                                                            position: "absolute"
+                                                                        }} onClick={e => {
+                                                                            handleClickPreviewImage(e, i)
+                                                                        }}/>
+                                                                        {
+                                                                            (i < fileInputField.length() && v.preview) &&
+                                                                            <button type="button"
+                                                                                    className={Popup.delete_btn}
+                                                                                    onClick={() => {
+                                                                                        removeFile(i)
+                                                                                    }}>삭제
+                                                                            </button>
+                                                                        }
+
+                                                                    </div>
+                                                                })
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/*<div className={cm(Popup.data_box, Popup.n2)}>*/}
+                                                {/*    <div className={Popup.data_title}>견적서</div>*/}
+                                                {/*    <div className={Popup.data_area}>*/}
+                                                {/*        <div className={Popup.data_upload}>*/}
+                                                {/*            <label htmlFor='estimate' className={Popup.upload_btn}>업로드*/}
+                                                {/*            </label>*/}
+                                                {/*            <input type="file" id='estimate' name='estimate'*/}
+                                                {/*                   onChange={handleFileInput} style={{*/}
+                                                {/*                visibility: "hidden"*/}
+                                                {/*            }}/>*/}
+
+                                                {/*        </div>*/}
+                                                {/*        <img src={previewEstimate} alt=''/>*/}
+                                                {/*    </div>*/}
+                                                {/*</div>*/}
+                                            </div>
+
+                                            <div className={cm(Popup.data_box, Popup.n3)}>
+                                                <div className={Popup.data_title}>비고</div>
+                                                <div className={Popup.data_area} style={{
+                                                    padding: '3px'
+                                                }}>
+                                                    <textarea className={Popup.data_textarea} name='sale_memo'
+                                                              value={inputField.get('sale_memo')}
+                                                              onChange={inputField.handleInput}></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className={Popup.data_half}>
+                                            <div className={cm(Popup.data_box, Popup.n4)}>
+                                                <div className={Popup.data_title}>고객 약속</div>
+                                                <div className={Popup.data_area} style={{
+                                                    overflowY: 'scroll'
+                                                }}>
+                                                    <ul className={Popup.popup_check_list}>
+                                                        {
+                                                            promiseInputField.length() > 0 && promiseInputField.input.map((v, i) => {
+                                                                return <li key={i} className={Popup.li}>
+                                                                    <input type="checkbox" name={`apm${i}`}
+                                                                           className={Popup.check_inp}
+                                                                           checked={promiseInputField.get(i, 'checked')}
+                                                                           readOnly/>
+                                                                    <label htmlFor={`apm${i}`}
+                                                                           className={Popup.check_label}
+                                                                           onClick={() => {
+                                                                               promiseInputField.put(i, 'checked', !promiseInputField.get(i, 'checked'))
+                                                                           }}>
+                                                                    </label>
+                                                                    <input type="text" className={Popup.check_text}
+                                                                           value={promiseInputField.get(i, 'content')}
+                                                                           onChange={e => {
+                                                                               promiseInputField.put(i, 'content', e.target.value)
+                                                                           }}
+                                                                           placeholder='내용을 입력해주세요'/>
+                                                                    {/*<input type="text" className={Popup.inp} value={apmInputField.contents[i]} onChange={e=>{*/}
+                                                                    {/*    apmInputField.putContent(i, e.target.value)*/}
+                                                                    {/*}}/>*/}
+                                                                    <button type="button" className={Popup.check_del}
+                                                                            onClick={() => {
+                                                                                promiseInputField.removeItem(i)
+                                                                            }}>삭제
+                                                                    </button>
+                                                                </li>
+                                                            })
+                                                        }
+                                                    </ul>
+                                                    <button type="button"
+                                                            className={`${cmc(Popup.btn, Popup.btn_add_icon)}`}
+                                                            onClick={promiseInputField.addItem}>추가하기
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Scrollable>
+                        <div className={Popup.popup_btn_box}>
+                            <button type="button" className={`btn_blue ${cmc(Popup.btn)}`}
+                                    onClick={onSubmit}>저장
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>
     )
 }

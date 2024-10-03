@@ -1,10 +1,10 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import User from "../../css/user.module.css"
 import useApi from "../hook/useApi";
 import {authActions} from "../store/slices/authSlice";
-import {setRefreshToken} from "../utils/Cookies";
+import {setAutoLogin, removeAutoLogin, getAutoLogin} from "../utils/Cookies";
 import {UserFormBox} from "./module/UserFormBox";
 import {UserFormBtnBox} from "./module/UserFormBtnBox";
 import useValidateInputField from "../hook/useValidateInputField";
@@ -18,10 +18,10 @@ function Login(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const authentication = useAuthentication();
-    const {publicApi} = useApi();
-    const modal = useModal();
+    const usernameBoxRef = useRef(null)
+    const passwordBoxRef = useRef(null)
 
-    const [rememberMe, setRememberMe] = useState(false)
+    const [rememberMe, setRememberMe] = useState(getAutoLogin() ? true : false);
 
     const inputField = useValidateInputField([
         {
@@ -53,7 +53,16 @@ function Login(){
             return;
         }
 
-        if(await authentication.login(inputField.input)){
+        if(await authentication.login({
+            ...inputField.input,
+            remember_me: rememberMe
+        })){
+            console.log(`rememberMe: ${rememberMe}`)
+            if(rememberMe){
+                setAutoLogin()
+            }else{
+                removeAutoLogin()
+            }
             navigate('/service');
         }else{
             inputField.handleError('username','아이디를 다시 입력해주세요')
@@ -74,9 +83,13 @@ function Login(){
                 <li className={`${User.form_item} ${inputField.error.username && cmc(User.error)}`}>
                     <label htmlFor="username" className={`${User.form_label} ${User.label}`}>아이디</label>
                     <div className={User.form_inp}>
-                        <input type="text" name="username" className={`inp ` + User.inp}
+                        <input ref={usernameBoxRef} type="text" name="username" className={`inp ` + User.inp}
                                // value={inputField.get('username')}
-                               onChange={inputField.handleInput}
+                               onChange={inputField.handleInput} onKeyDown={e=>{
+                                   if(e.keyCode === 13 && passwordBoxRef.current){
+                                        passwordBoxRef.current.focus();
+                                   }
+                        }}
                                placeholder='아이디를 입력해주세요' autoComplete='username'/>
                     </div>
                     <p className={User.error_text}>{inputField.error.username}</p>
@@ -86,6 +99,12 @@ function Login(){
                     <div className={User.form_inp}>
                         <PasswordInput name="password" className={`inp ` + User.inp}
                                        // value={inputField.get('password')}
+                                        ref={passwordBoxRef}
+                                       onKeyDown={(e: KeyboardEvent)=>{
+                                           if(e.keyCode === 13) {
+                                               handleLogin(e)
+                                           }
+                                       }}
                                        onChange={inputField.handleInput}
                                        placeholder='비밀번호를 입력해주세요' autoComplete='password'/>
                         {/*<input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>*/}
@@ -95,7 +114,8 @@ function Login(){
             </ul>
 
             <div className={User.form_auto}>
-                <input type="checkbox" id="auto" className={User.input} checked={rememberMe} onChange={handleRememberMe}/>
+                <input type="checkbox" id="auto" className={User.input}
+                       checked={rememberMe} onChange={handleRememberMe}/>
                 <label htmlFor="auto" className={User.label}>자동로그인</label>
             </div>
 

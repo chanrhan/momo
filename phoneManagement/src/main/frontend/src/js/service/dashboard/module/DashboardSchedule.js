@@ -92,7 +92,21 @@ export function DashboardSchedule({userInfo}){
         const date = DateUtils.formatYYMMdd(cYear, cMonth, day);
         await todoApi.deleteTodo({
             date: date,
-            id: todoId
+            todo_id: todoId
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                getTodoDetail()
+                getTodoForCalendar()
+            }
+        })
+    }
+
+    const checkTodo = async (todoId, checked)=>{
+        const date = DateUtils.formatYYMMdd(cYear, cMonth, day);
+        await todoApi.updateTodoChecked({
+            date: date,
+            todo_id: todoId,
+            checked: checked ? 1 : 0
         }).then(({status,data})=>{
             if(status === 200 && data){
                 getTodoDetail()
@@ -108,7 +122,7 @@ export function DashboardSchedule({userInfo}){
             top: `${y}px`,
             left: `${x}px`,
             onSubmit: async ({color, content})=>{
-                console.log(`submit: ${color} ${content}`)
+                // console.log(`submit: ${color} ${content}`)
                 await todoApi.addTodo({
                     date: DateUtils.formatYYMMdd(cYear, cMonth, day),
                     color: color,
@@ -186,14 +200,22 @@ export function DashboardSchedule({userInfo}){
                     {
                         detail.input ? detail.input.map((v, i) => {
                             return <li key={i} className={cm(Dashboard.schedule_item)}>
-                                <span className={cm(Dashboard.schedule_mark, Dashboard[LMD.color[v.color]])}></span>
+                                <div className='radio_box'>
+                                    {/*<span className={cm(Dashboard.schedule_mark, Dashboard[LMD.color[v.color]])}></span>*/}
+                                    <input type="checkbox" name={`pm_${i}`} id={`pm_${i}`} checked={v.checked} disabled={v.checked}/>
+                                    <label htmlFor={`pm_${i}`} className={Dashboard.form_label} onClick={()=>{
+                                        checkTodo(v.todo_id, !v.checked)
+                                    }}>
+                                        {v.content}
+                                    </label>
 
-                                <span className={cm(Dashboard.schedule_text)}>{v.content}</span>
-                                <button type="button" className={cm(Dashboard.schedule_del)}
-                                        onClick={()=>{
-                                            removeTodo(v.todo_id)
-                                        }}>삭제
-                                </button>
+                                    {/*<span className={cm(Dashboard.schedule_text)}>{v.content}</span>*/}
+                                    <button type="button" className={cm(Dashboard.schedule_del)}
+                                            onClick={() => {
+                                                removeTodo(v.todo_id)
+                                            }}>삭제
+                                    </button>
+                                </div>
                             </li>
                         }) : <div>dd</div>
                     }

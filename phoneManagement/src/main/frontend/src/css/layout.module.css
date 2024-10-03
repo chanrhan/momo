@@ -25,6 +25,10 @@
 .header .gnb .gnb_search .search_result .tb_result .thead .th:last-child{border-radius:0 8px 8px 0;}
 .header .gnb .gnb_search .search_result .tb_result .tbody .td{padding:6px 4px; color:#62626e; font-size:14px; text-align:center; line-height:16px;}
 .header .gnb .gnb_search .search_result .tb_result .tbody .tr:first-child .td{padding-top:12px;}
+.header .gnb .gnb_search .search_result .tb_result .tbody .tr:hover{
+    background-color: #f0f5ff;
+    border-radius: 8px;
+}
 .header .gnb .gnb_link{display:inline-block; margin:11px 0 0 384px; vertical-align:top;}
 .header .gnb .gnb_link .link_item{display:inline-block; vertical-align:top;}
 .header .gnb .gnb_link .link_item .link_btn{width:32px; height:32px;}

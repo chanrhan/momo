@@ -13,14 +13,61 @@ import {TaskSupportBoardTable} from "./module/TaskSupportBoardTable";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import {useFileLoader} from "../../hook/useFileLoader";
+import {useLocation} from "react-router-dom";
 
 export function Task(){
     const modal = useModal();
     const fileLoader = useFileLoader();
     const {saleApi} = useApi();
+
+    const pathname = window.location.pathname;
+    let init_cat = 0;
+    switch (pathname){
+        case '/service/task/used-device':
+            init_cat = 0;
+            break
+        case '/service/task/card':
+            init_cat = 1;
+            break
+        case '/service/task/comb':
+            init_cat = 2;
+            break
+        case '/service/task/support':
+            init_cat = 3;
+            break
+        case '/service/task/promise':
+            init_cat = 4;
+            break
+        default:
+            break;
+    }
+    const [category, setCategory] = useState(init_cat)
+
+    useEffect(() => {
+        let moveUrl = 'used-device'
+        switch (category){
+            case 0:
+                moveUrl = 'used-device'
+                break
+            case 1:
+                moveUrl = 'card'
+                break
+            case 2:
+                moveUrl = 'comb'
+                break
+            case 3:
+                moveUrl = 'support'
+                break
+            case 4:
+                moveUrl = 'promise'
+            default:
+                break;
+        }
+        window.history.pushState("",'test',`/service/task/${moveUrl}`)
+    }, [category]);
+
     const [items, setItems] = useState([]);
     const [totalCount, setTotalCount] = useState(0)
-    const [category, setCategory] = useState(0)
     const inputField = useObjectInputField({
         completed: false,
         keyword: '',
@@ -169,7 +216,7 @@ export function Task(){
                                         inputField.put('not_done', !inputField.get('not_done'))
                                     }}><span>on/off</span></label>
                                 </span>
-                            <span className="switch_text">미완료 고객 보기</span>
+                            <span className="switch_text">{inputField.get('not_done') === true ? '완료 고객 보기' : '미완료 고객 보기'}</span>
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                         </div>
                         <div className={Board.board_head_group}>

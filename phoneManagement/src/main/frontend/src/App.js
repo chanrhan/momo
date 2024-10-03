@@ -51,6 +51,7 @@ import {VOTest} from "./js/test/VOTest";
 import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
+import {RegisterBrNo} from "./js/shop/RegisterBrNo";
 
 function App() {
     const userInfo = useUserInfo();
@@ -112,6 +113,7 @@ function App() {
                       {/*<Route path='/role/reps' element={<RegisterCorp/>}/>*/}
                       <Route path='/shop'>
                           <Route path='register' element={<RegisterShop/>}/>
+                          <Route path='brno' element={<RegisterBrNo/>}/>
                           <Route path='list' element={<SelectShop/>}/>
                       </Route>
                   </Route>
@@ -144,7 +146,7 @@ function App() {
                       <Route path='/service'>
                           <Route path='' element={<DashboardMain/>}/>
                           <Route path='sale' element={<Sale/>}/>
-                          <Route path='task' element={<Task/>}/>
+                          <Route path='task/*' element={<Task/>}/>
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>
                           {/*<Route path='statistics' element={<Statistics/>}/>*/}

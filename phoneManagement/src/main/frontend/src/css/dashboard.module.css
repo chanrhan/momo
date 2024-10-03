@@ -6,7 +6,9 @@
 .dashboard .dashboard_panel{width:calc(100% - 412px); padding:40px 90px 20px 90px;}
 .dashboard .panel_head{overflow:hidden;}
 .dashboard .panel_head > .span{vertical-align:top;}
-.dashboard .panel_head .panel_greeting{color:#141218; font-size:24px; font-weight:600; font-weight:700; line-height:30px;}
+.dashboard .panel_head .panel_greeting{color:#141218; font-size:24px; font-weight:600;
+    /*font-weight:700;*/
+    line-height:30px;}
 .dashboard .panel_head .panel_standard{float:right; color:#2f2f3b; font-size:18px; font-weight:500; line-height:30px;}
 .dashboard .panel_head .panel_standard .span{color:#4781ff;}
 
@@ -94,19 +96,31 @@
 .dashboard .info_company .company_select .select_box .select_btn{width:100%;}
 
 /*20240724 nickname change */
-/*.dashboard .info_company .company_select .select_box .select_layer .select_inp:before{*/
-/*    !*display:inline-block;*!*/
-/*    position:absolute;*/
-/*    !*top:10px; *!*/
-/*    !*right:12px; *!*/
-/*    width:16px; height:16px;*/
-/*    background:url(../images/all_icon.png) no-repeat center / 100%;*/
-/*}*/
+.dashboard .dashboard_info .info_company .company_select .select_box .select_layer .confirm_btn{
+    display: inline-block;
+    background-color: #598dff;
+    line-height:18px;
+    margin-top: 8px;
+    padding:6px 12px; border-radius:4px;
+    font-size:14px;
+    color: white;
+    width: 100%;
+}
 
-/*.dashboard .info_company .company_select .select_box .select_btn{width:100%;}*/
+.dashboard .dashboard_info .info_company .company_select .select_box .select_layer .confirm_btn:active,
+.dashboard .dashboard_info .info_company .company_select .select_box .select_layer .confirm_btn:hover
+{
+    background-color: #3777ff;
+}
+
+.dashboard .dashboard_info .info_company .company_select .select_box .select_layer .active{
+    border-radius:8px; background-color:#f4f5f9; color:#4781ff;
+}
+
+    /*.dashboard .info_company .company_select .select_box .select_btn{width:100%;}*/
 .dashboard .info_company .company_add{margin-top:12px; color:#62626e; font-size:12px; line-height:14px;}
 
-.dashboard .info_schedule{min-height:644px; margin-top:23px;}
+.dashboard .info_schedule{min-height:370px !important; max-height: 600px; margin-top:23px; }
 .dashboard .info_schedule .schedule_head .schedule_title{display:inline-block; color:#141218; font-size:18px; font-weight:600; line-height:21px;}
 .dashboard .info_schedule .schedule_head .schedule_control{float:right; margin-top:-4px;}
 .dashboard .info_schedule .schedule_head .schedule_control .schedule_btn{overflow:hidden; position:relative; height:30px; border:1px solid #dde1e8; border-radius:4px;}
@@ -136,12 +150,15 @@
 }
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.has:before{display:block; position:absolute; left:0; right:0; bottom:4px; width:4px; height:4px; margin:0 auto; border-radius:50%; background-color:#91939f;}
 
-.dashboard .info_schedule .schedule_body .schedule_item.add_btn{
+.dashboard .dashboard_info .info_schedule .schedule_body .add_btn{
+    position: relative;
     display: block;
-    float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:12px;
+    float:right; margin-top:8px; padding:6px 12px; border-radius:4px;
+    margin-bottom: 10px;
+    font-size:13px;
 }
 
-.dashboard .info_schedule .schedule_body .schedule_list{margin-top:22px;}
+.dashboard .info_schedule .schedule_body .schedule_list{margin-top:44px;}
 .dashboard .info_schedule .schedule_body .schedule_item{position:relative; padding:8px 24px 8px 21px;}
 .dashboard .info_schedule .schedule_body .schedule_item:before,
 .dashboard .info_schedule .schedule_body .schedule_item:after{display:block; position:absolute; left:3px; width:1px; background-color:#f4f5f9;}
@@ -169,7 +186,14 @@
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_mark.yellow{background-color:#ffd700;}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_text{font-size:14px; line-height:24px;}
 .dashboard .info_schedule .schedule_body .schedule_item.active .schedule_text{color:#141218; font-weight:500;}
-.dashboard .info_schedule .schedule_body .schedule_item .schedule_del{position:absolute; top:8px; right:-4px; width:24px; height:24px; background:url(../images/del_icon.png) no-repeat center / 24px;}
+.dashboard .info_schedule .schedule_body .schedule_item .schedule_del{
+    position:absolute; top:1px; right:-4px; width:24px;
+    height:24px; background:url(../images/del_icon.png) no-repeat center / 24px;}
+
+.dashboard .info_schedule .schedule_body .schedule_item .form_label{
+    color:#28272c;
+    font-size: 14px;
+}
 
 /*반응형*/
 

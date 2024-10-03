@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getRefreshToken, removeRefreshToken, setRefreshToken} from "./Cookies";
 import {authActions} from "../store/slices/authSlice";
-import {requestRefreshToken} from "../api/Auth";
+import {requestAccessToken} from "../api/Auth";
 import useApi from "../hook/useApi";
 
 //
@@ -21,15 +21,14 @@ export function CheckToken(key){
             if (authenticated && new Date().getTime() < expireTime) {
                 setIsAuth('Success');
             } else {
-                const response = await requestRefreshToken(refreshToken);
+                const response = await requestAccessToken(refreshToken);
 
                 if (response.status === 200) {
                     // const token = response.jwtToken.access_token;
                     // console.log(`new access token: ${response.jwt.access_token}`)
                     dispatch(authActions.setAccessToken(response.jwt.access_token))
-                    setRefreshToken(response.jwt.refresh_token);
+                    // setRefreshToken(response.jwt.refresh_token);
                     setIsAuth('Success')
-
                 } else {
                     dispatch(authActions.delAccessToken());
                     removeRefreshToken();

@@ -80,6 +80,9 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                                 <div className="select_box">
                                     <SelectIndexLayer value={LMD.card_st[v.card_st]} cssModule={Board}
                                                       onChange={state => {
+                                                          if(v.card_st === state) {
+                                                              return;
+                                                          }
                                                           onChangeState({
                                                               sale_id: v.sale_id,
                                                               card_id: v.card_id,

@@ -12,7 +12,12 @@
 
         INSERT INTO tb_shop
             (shop_id, shop_nm, shop_addr, shop_tel, provider, br_nm, br_no)
-        VALUES (@next_shopId, #{shopNm}, #{shopAddr}, #{shopTel},#{provider},#{brNm},#{brNo});
+        VALUES (@next_shopId, #{shopNm}, #{shopAddr}, #{shopTel},#{provider},
+                (
+                    select br_no
+                    from tb_account
+                    where id=#{userId}
+                    ),#{brNo});
 
         UPDATE tb_account
         SET     curr_shop_id = @next_shopId

@@ -20,6 +20,14 @@ export const AxiosApi = ()=> {
     //     withCredentials: true,
     // });
 
+    // // axiosInstance.interceptors.request.use(()=>{
+    // //     // access, refresh 판별해서 재발급하는 함수
+    // //
+    // //
+    // // }, ()=>{
+    // //
+    // })
+
     axiosInstance.interceptors.response.use((response)=>{
         // const status = response.status;
         // if(status !== 200){

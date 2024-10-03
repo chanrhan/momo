@@ -50,16 +50,7 @@ export function SaleFilterModal(props){
 
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup)}
-                 style={
-                    {
-                        top: props.top,
-                        left: props.left,
-                        maxWidth: '609px'
-                    }
-                }>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={props.top} left={props.left} maxWidth={609}>
                 <div className={Popup.popup_title}>필터</div>
 
                 <form className={Popup.filter}>
@@ -142,7 +133,6 @@ export function SaleFilterModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 

@@ -119,9 +119,12 @@ export function DashboardInfo({}){
                     </div>
                 </div>
 
-                <Link to='/shop/register'>
-                    <button type="button" className={cm(Dashboard.company_add)}>매장 추가하기</button>
-                </Link>
+                {
+                    userInfo.role === 1 && <Link to='/shop/register'>
+                        <button type="button" className={cm(Dashboard.company_add)}>매장 추가하기</button>
+                    </Link>
+                }
+
             </div>
             <DashboardSchedule userInfo={userInfo}/>
         </div>

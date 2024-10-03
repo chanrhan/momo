@@ -80,6 +80,9 @@ export function TaskCombBoardTable({allChecked, checkAll, checkedSale, onCheck,p
                                 <div className="select_box">
                                     <SelectIndexLayer value={LMD.comb_st[v.comb_st]} cssModule={Board}
                                                       onChange={state => {
+                                                          if(v.comb_st === state) {
+                                                              return;
+                                                          }
                                                           onChangeState({
                                                               sale_id: v.sale_id,
                                                               state: state

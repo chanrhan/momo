@@ -1,5 +1,6 @@
 package com.momo.service;
 
+import com.momo.common.vo.TodoVO;
 import com.momo.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,27 +13,31 @@ import java.util.Map;
 public class TodoService {
     private final TodoMapper todoMapper;
 
-    public List<Map<String,Object>> getTodoDetail(int currShopId, String date){
-        return todoMapper.getTodoDetail(currShopId,date);
+    public List<Map<String,Object>> getTodoDetail(TodoVO vo){
+        return todoMapper.getTodoDetail(vo);
     }
 
-    public List<Integer> getTodoForCalendar(int currShopId, String date){
-        return todoMapper.getTodoForCalendar(currShopId,date);
+    public List<Integer> getTodoForCalendar(TodoVO vo){
+        return todoMapper.getTodoForCalendar(vo);
     }
 
-    public int updateTodoContent(int currShopId, String date, int todoId, String content){
-        return todoMapper.updateTodoContent(currShopId, date, todoId, content);
+    public int updateTodoContent(TodoVO vo){
+        return todoMapper.updateTodoContent(vo);
     }
 
-    public int updateTodoColor(int currShopId,String date, int todoId, int color){
-        return todoMapper.updateTodoColor(currShopId, date, todoId, color);
+    public int updateTodoColor(TodoVO vo){
+        return todoMapper.updateTodoColor(vo);
     }
 
-    public void insertTodo(int currShopId,String date, int color, String content){
-        todoMapper.insertTodo(currShopId, date, color, content);
+    public int updateTodoChecked(TodoVO vo){
+        return todoMapper.updateTodoChecked(vo);
     }
 
-    public int deleteTodo(int currShopId, String date, int todoId){
-        return todoMapper.deleteTodo(currShopId, date, todoId);
+    public void insertTodo(TodoVO vo){
+        todoMapper.insertTodo(vo);
+    }
+
+    public int deleteTodo(TodoVO vo){
+        return todoMapper.deleteTodo(vo);
     }
 }

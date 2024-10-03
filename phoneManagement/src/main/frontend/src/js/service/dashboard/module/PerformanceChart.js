@@ -14,7 +14,7 @@ const DATE_TYPE = [
 
 export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelClassName}){
     const {saleApi} = useApi();
-    const [tab2, setTab2] = useState(0)
+    const [tab2, setTab2] = useState(0) // 일별, 주별, 월별
 
     const [graphData, setGraphData] = useState(null)
     const [graphLabel, setGraphLabel] = useState(null)
@@ -32,15 +32,15 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
         switch (tab2){
             case 0:
                 fromDate.setDate(fromDate.getDate()-range)
-                setGraphLabel(getDayLabelArray(fromDate, toDate))
+                // setGraphLabel(getDayLabelArray(fromDate, toDate))
                 break;
             case 1:
-                fromDate.setDate(fromDate.getDate()-(range*7))
-                setGraphLabel(getWeekLabelArray(fromDate, toDate))
+                fromDate.setDate(fromDate.getDate()-(7*(range-2))-(toDate.getDay()))
+                // setGraphLabel(getWeekLabelArray(fromDate, toDate))
                 break;
             case 2:
                 fromDate.setMonth(fromDate.getMonth()-range)
-                setGraphLabel(getMonthLabelArray(fromDate, toDate))
+                // setGraphLabel(getMonthLabelArray(fromDate, toDate))
                 break;
         }
 
@@ -75,58 +75,82 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
                     setGraphData(JSON.parse(data.value))
                 }
                 if(data.date){
-                    setGraphTooltip(JSON.parse(data.date))
+                    const dateList: Array = JSON.parse(data.date)
+
+                    setGraphLabel(getLabelArray(dateList))
+                    setGraphTooltip(dateList)
                 }
             }
         }
     }
-
-    const getDayLabelArray = (fromDate, toDate)=>{
-        const startDate = new Date(fromDate);
-        const endDate = new Date(toDate);
-
-        let arr = [];
-        while(startDate < endDate){
-            // const year = startDate.getFullYear() - 2000;
-            const month = startDate.getMonth()+1;
-            const day = startDate.getDate();
-            arr.push(`${month}/${day}`);
-            startDate.setDate(day+1);
+    const getLabelArray = (dateArray)=>{
+        const labels = [];
+        for(const idx in dateArray){
+            const d = new Date(dateArray[idx]);
+            switch (tab2){
+                case 0:
+                    labels[idx] = `${d.getMonth()+1}/${d.getDate()}`
+                    break;
+                case 1:
+                    labels[idx] = `${d.getMonth()+1}/${d.getDate()}`
+                    break;
+                case 2:
+                    labels[idx] = `${d.getMonth()+1}월`
+                    break;
+            }
         }
-        // console.table(arr)
-        return arr;
+        return labels;
     }
 
-    const getWeekLabelArray = (fromDate, toDate)=>{
-        const startDate = new Date(fromDate);
-        const endDate = new Date(toDate);
-
-        let arr = [];
-        while(startDate <= endDate){
-            const {month, weekOfMonth} = DateUtils.getMonthAndWeek(startDate.getFullYear(), DateUtils.getYearWeek(startDate))
-            arr.push(`${month}월 ${weekOfMonth}주`);
-            startDate.setDate(startDate.getDate()+7);
-        }
-        // console.table(arr)
-        return arr;
-    }
-
-    const getMonthLabelArray = (fromDate, toDate)=>{
-        const startDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
-        const endDate = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
-        // console.log(startDate)
-        // console.log(endDate)
-
-        let arr = [];
-        while(startDate < endDate){
-            // const year = startDate.getFullYear();
-            const month = startDate.getMonth()+1;
-            arr.push(`${month}월`);
-            startDate.setMonth(month);
-        }
-        // console.table(arr)
-        return arr;
-    }
+    //
+    // const getDayLabelArray = (fromDate, toDate)=>{
+    //     const startDate = new Date(fromDate);
+    //     const endDate = new Date(toDate);
+    //
+    //     let arr = [];
+    //     while(startDate < endDate){
+    //         // const year = startDate.getFullYear() - 2000;
+    //         const month = startDate.getMonth()+1;
+    //         const day = startDate.getDate();
+    //         arr.push(`${month}/${day}`);
+    //         startDate.setDate(day+1);
+    //     }
+    //     // console.table(arr)
+    //     return arr;
+    // }
+    //
+    // const getWeekLabelArray = (fromDate, toDate)=>{
+    //     const startDate = new Date(fromDate);
+    //     let endDate = new Date(toDate);
+    //     endDate.setDate(endDate.getDate() + (7-endDate.getDay()))
+    //
+    //     let arr = [];
+    //     while(startDate <= endDate){
+    //         // const {month, weekOfMonth} = DateUtils.getMonthAndWeek(startDate.getFullYear(), DateUtils.getYearWeek(startDate))
+    //         // arr.push(`${month}월 ${weekOfMonth}주`);
+    //         arr.push(`${startDate.getMonth()+1}/${startDate.getDate()}`)
+    //         startDate.setDate(startDate.getDate()+7);
+    //     }
+    //     // console.table(arr)
+    //     return arr;
+    // }
+    //
+    // const getMonthLabelArray = (fromDate, toDate)=>{
+    //     const startDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
+    //     const endDate = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
+    //     // console.log(startDate)
+    //     // console.log(endDate)
+    //
+    //     let arr = [];
+    //     while(startDate < endDate){
+    //         // const year = startDate.getFullYear();
+    //         const month = startDate.getMonth()+1;
+    //         arr.push(`${month}월`);
+    //         startDate.setMonth(month);
+    //     }
+    //     // console.table(arr)
+    //     return arr;
+    // }
 
     return (
         <>

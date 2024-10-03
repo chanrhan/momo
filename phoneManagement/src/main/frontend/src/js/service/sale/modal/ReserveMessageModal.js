@@ -53,13 +53,7 @@ export function ReserveMessageModal(props){
 
 
     return (
-        <LayerModal >
-            <div className={cm(Popup.popup, Popup.active)} style={
-                {
-                    top: '80px',
-                    maxWidth: '548px'
-                }
-            }>
+        <LayerModal top={10} maxWidth={548}>
                 {/*활성화시 active 추가 -->*/}
                 <div className={Popup.popup_title}>연락 전송 등록</div>
                 <div className={Popup.popup_text}>전송하고 싶은 문자를 선택해주세요.</div>
@@ -92,7 +86,6 @@ export function ReserveMessageModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }

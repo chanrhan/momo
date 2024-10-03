@@ -53,14 +53,10 @@ function SaleExsvcModal(props){
 
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup,Popup.active)} style={{
-                top: '130px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
+        <LayerModal top={30}>
                 <div className={Popup.popup_title}>부가서비스 선택</div>
 
-                <form className={Popup.service}>
+                <form className={Popup.service} onSubmit={e=>e.preventDefault()}>
                     <div className={Popup.popup_cont}>
                         <div className={Popup.org_head_box}>
                             <button className={Popup.button} type="button">
@@ -93,7 +89,6 @@ function SaleExsvcModal(props){
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
         </LayerModal>
     )
 }

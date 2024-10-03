@@ -1,13 +1,17 @@
-import {useState} from "react";
+import {forwardRef, useState} from "react";
 
-export function PasswordInput({id, name, placeholder, className, value, onChange, readOnly, autoComplete}){
+export const PasswordInput = forwardRef(({id, name, placeholder,
+                                             className, value, onChange, onKeyDown,
+                                             readOnly, autoComplete}, ref)=>{
     const [visible, setVisible] = useState(false)
 
     return (
         <>
             <input type={visible ? 'text':'password'}
+                   ref={ref}
                    id={id}
                    name={name}
+                   onKeyDown={onKeyDown}
                    placeholder={placeholder}
                    readOnly={readOnly}
                    className={`${className}`}
@@ -21,4 +25,4 @@ export function PasswordInput({id, name, placeholder, className, value, onChange
 
         </>
     )
-}
+});

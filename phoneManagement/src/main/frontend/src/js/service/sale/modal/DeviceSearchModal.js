@@ -49,42 +49,37 @@ export function DeviceSearchModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '130px'
-            }}>
-                {/*활성화시 active 추가 -->*/}
-                <div className={Popup.popup_title}>{props.title}</div>
+        <LayerModal top={30} maxWidth={600}>
+            <div className={Popup.popup_title}>{props.title}</div>
 
-                <form className={Popup.service}>
-                    <div className={Popup.popup_cont}>
-                        <div className={Popup.service_search}>
-                            <input type="text" value={keyword} onChange={handleKeyword} className={`inp ${Popup.inp_search}`} placeholder="검색어를 입력해주세요."/>
-                        </div>
-
-                        <div className={Popup.service_scroll}>
-                            <ul className="service_list">
-                                {
-                                    items && items.map((v,i)=>{
-                                        return <DeviceItem active={i === selected} key={i}
-                                                           device_nm={v.name}
-                                                           device_cd={v.code}
-                                                           onClick={()=>{
-                                                    setSelected(i)
-                                                }}/>
-                                    })
-                                }
-                            </ul>
-                        </div>
+            <form className={Popup.service} onSubmit={e=>e.preventDefault()}>
+                <div className={Popup.popup_cont}>
+                    <div className={Popup.service_search}>
+                        <input type="text" value={keyword} onChange={handleKeyword} className={`inp ${Popup.inp_search}`} placeholder="검색어를 입력해주세요."/>
                     </div>
 
-                    <div className={Popup.popup_btn_box}>
-                        <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
+                    <div className={Popup.service_scroll}>
+                        <ul className="service_list">
+                            {
+                                items && items.map((v,i)=>{
+                                    return <DeviceItem active={i === selected} key={i}
+                                                       device_nm={v.name}
+                                                       device_cd={v.code}
+                                                       onClick={()=>{
+                                                           setSelected(i)
+                                                       }}/>
+                                })
+                            }
+                        </ul>
                     </div>
-                </form>
+                </div>
 
-                <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
+                <div className={Popup.popup_btn_box}>
+                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
+                </div>
+            </form>
+
+            <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>
     )
 }

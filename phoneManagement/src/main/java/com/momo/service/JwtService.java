@@ -34,7 +34,7 @@ public class JwtService {
 		}
 	}
 
-	public JwtVO refresh(String bearerRefreshToken) throws AccessDeniedException {
+	public JwtVO refresh(String bearerRefreshToken, boolean rememberMe) throws AccessDeniedException {
 		String refreshToken = jwtProvider.getBearerTokenToString(bearerRefreshToken);
 
 		if(!jwtProvider.validateToken(refreshToken)){
@@ -58,9 +58,9 @@ public class JwtService {
 		String username = userRefreshToken.get("user_id").toString();
 
 		Authentication authentication = jwtProvider.getAuthenticationByUsername(username);
-		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+		JwtVO          jwtVO          = jwtProvider.generateAccessToken(authentication);
 
-		saveRefreshToken(jwtVO);
+//		saveRefreshToken(jwtVO);
 
 		return jwtVO;
 	}

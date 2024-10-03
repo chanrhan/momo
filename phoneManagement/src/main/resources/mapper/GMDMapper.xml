@@ -18,9 +18,9 @@
                 device_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
-                provider = #{provider} and
-            </if>
+<!--            <if test="provider != null and !provider.equals('')">-->
+<!--                provider = #{provider} and-->
+<!--            </if>-->
             1=1
             <if test="order != null and !order.equals('')">
                 order by ${order} ${asc}
@@ -62,9 +62,9 @@
                 sd_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
-                provider = #{provider} and
-            </if>
+<!--            <if test="provider != null and !provider.equals('')">-->
+<!--                provider = #{provider} and-->
+<!--            </if>-->
             1=1
             <if test="order != null and !order.equals('')">
                 order by ${order} ${asc}

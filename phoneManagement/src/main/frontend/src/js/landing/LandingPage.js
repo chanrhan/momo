@@ -60,21 +60,32 @@ const vocItems = [
 
 export function LandingPage(){
 
+    const smoothScrollTop = e=>{
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        })
+    }
 
     return (
         <div className={Landing.landing}>
             <div className="container">
 
                 <header className={Landing.header}>
-                    <h1 className={Landing.logo}><Link className={Landing.a} to=''><img className={Landing.img} src={logo} alt="momo"/></Link></h1>
+                    <h1 className={Landing.logo}>
+                        <div className={Landing.a} onClick={smoothScrollTop}>
+                            <img className={Landing.img} src={logo} alt="momo"/>
+                        </div>
+                    </h1>
                     <div className={Landing.gnb}>
                         <div className={Landing.gnb_link}>
                             <ul className="link_list">
                                 <li className={Landing.link_item}>
-                                    <Link className={Landing.a} to='/account/login'>로그인</Link>
+                                    <a className={Landing.a} href='/account/login'>로그인</a>
                                 </li>
                                 <li className={Landing.link_item}>
-                                    <Link to='' className={cm(Landing.a, Landing.section_btn)}>무료로 시작하기</Link>
+                                    <a href='/account/signup' className={cm(Landing.a, Landing.section_btn)}>무료로 시작하기</a>
                                 </li>
                             </ul>
                         </div>
@@ -87,7 +98,7 @@ export function LandingPage(){
                             <div className={Landing.section_text_box}>
                                 <h2 className={Landing.section_title}>핸드폰 매장 <br/>고객 관리 솔루션 <br/>모모</h2>
                                 <p className={Landing.section_text}>올인원 고객관리 매니저 모모와 <br/>함께 준비하세요.</p>
-                                <Link to='' className={Landing.section_btn}>무료로 시작하기</Link>
+                                <a href='account/signup' className={Landing.section_btn}>무료로 시작하기</a>
                             </div>
                             <img src={sectionImg1} alt="" className={Landing.section_img}/>
                         </LandingSectionWrap>
@@ -140,21 +151,21 @@ export function LandingPage(){
 
                         <LandingSectionWrap num={4}>
                             <h2 className={cm(Landing.section_title, Landing.add_icon)}>한눈에 보이는 <br/>매장 현황 그래프</h2>
-                            <p className={cm(Landing.section_text)}>판매일보 작성시 자동으로 그래프가 생성되어 <br/>매장 현황 파악이 가능합니다.
-                                간편하게 관리하세요.</p>
+                            {/*<p className={cm(Landing.section_text)}>판매일보 작성시 자동으로 그래프가 생성되어 <br/>매장 현황 파악이 가능합니다.*/}
+                            {/*    간편하게 관리하세요.</p>*/}
                             <img src={sectionImg4} alt="" className={Landing.section_img}/>
                         </LandingSectionWrap>
 
                         <LandingSectionWrap num={5}>
                             <h2 className={cm(Landing.section_title, Landing.add_icon)}>모모만의 <br/>확실한 관리 매니저</h2>
-                            <p className={cm(Landing.section_text)}>모모가 쌓아온 고객 관리 지식과 노하우를 기반으로 <br/>관리 매니저 서비스를
-                                제공합니다.</p>
+                            {/*<p className={cm(Landing.section_text)}>모모가 쌓아온 고객 관리 지식과 노하우를 기반으로 <br/>관리 매니저 서비스를*/}
+                            {/*    제공합니다.</p>*/}
                             <img src={sectionImg5} alt="" className={Landing.section_img}/>
                         </LandingSectionWrap>
 
                         <LandingSectionWrap num={6}>
                             <h2 className={cm(Landing.section_title, Landing.add_icon)}>지정 날짜에 <br/>자동 전송되는 메세지</h2>
-                            <p className={Landing.section_text}>판매자에게는 편의를, <br/>구매자에게는 신뢰와 감동을 제공합니다.</p>
+                            {/*<p className={Landing.section_text}>판매자에게는 편의를, <br/>구매자에게는 신뢰와 감동을 제공합니다.</p>*/}
                             <img src={sectionImg6} alt="" className={Landing.section_img}/>
                         </LandingSectionWrap>
 

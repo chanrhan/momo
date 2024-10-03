@@ -89,6 +89,9 @@ public class UserService  implements UserDetailsService{
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);
 	}
+	public int updateBrNo(String id, String brNo){
+		return userMapper.updateBrNo(id, brNo);
+	}
 
 	public int resetPassword(UserVO vo){
 		vo.setPwd(passwordEncoder.encode(vo.getPwd()));

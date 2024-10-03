@@ -1,5 +1,6 @@
 package com.momo.mapper;
 
+import com.momo.common.vo.TodoVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -7,13 +8,14 @@ import java.util.Map;
 
 @Mapper
 public interface TodoMapper {
-    public List<Map<String,Object>> getTodoDetail(int currShopId, String date);
-    public List<Integer> getTodoForCalendar(int currShopId, String date);
+    public List<Map<String,Object>> getTodoDetail(TodoVO vo);
+    public List<Integer> getTodoForCalendar(TodoVO vo);
 
-    public int updateTodoContent(int currShopId, String date, int todoId, String content);
-    public int updateTodoColor(int currShopId,String date, int todoId, int color);
+    public int updateTodoContent(TodoVO vo);
+    public int updateTodoColor(TodoVO vo);
+    public int updateTodoChecked(TodoVO vo);
 
-    public void insertTodo(int currShopId,String date, int color, String content);
+    public void insertTodo(TodoVO vo);
 
-    public int deleteTodo(int currShopId, String date, int todoId);
+    public int deleteTodo(TodoVO vo);
 }

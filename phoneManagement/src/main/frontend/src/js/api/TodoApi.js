@@ -16,6 +16,9 @@ function TodoApi(accessToken){
         updateTodoColor: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/todo/detail/color', body, accessToken)
         },
+        updateTodoChecked: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/checked', body, accessToken)
+        },
         addTodo: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/todo/detail/add', body, accessToken)
         },

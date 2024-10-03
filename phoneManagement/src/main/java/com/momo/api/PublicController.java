@@ -2,6 +2,7 @@ package com.momo.api;
 
 import com.momo.common.response.JwtVO;
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.LoginVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
@@ -28,32 +29,28 @@ import java.util.Map;
 @RequestMapping("/api/v1/public")
 public class PublicController {
 	private final UserService userService;
-	private final ShopService shopService;
 	private final JwtProvider jwtProvider;
 	private final JwtService jwtService;
 
 	/**
 	 * 로그인
-	 * @param user map
+	 * @param vo map
 	 * @return ResponseEntity
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<?> login(HttpSession session,
-								   HttpServletResponse response, @RequestBody Map<String, String> user) {
-		String username = user.get("username");
-		String password = user.get("password");
+	public ResponseEntity<Boolean> login(HttpSession session,
+								   HttpServletResponse response, @RequestBody LoginVO vo) {
+		Authentication authentication = userService.login(vo.getUsername(), vo.getPassword());
 
-		Authentication authentication = userService.login(username, password);
-
-		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+		JwtVO jwtVO = jwtProvider.generateToken(authentication, vo.isRememberMe());
 		System.out.println(jwtVO);
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
-		session.setAttribute("curr_shop_id", userService.getSessionData(username));
+		session.setAttribute("curr_shop_id", userService.getSessionData(vo.getUsername()));
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(vo.isRememberMe());
 	}
 
 	@GetMapping("/logout")
@@ -75,11 +72,11 @@ public class PublicController {
 	@PostMapping("/signup")
 	@Transactional
 	public ResponseEntity<?> signup(HttpServletResponse response, HttpSession session, @RequestBody UserVO vo){
-		boolean existed = userService.existUserId(vo.getId());
-//		log.info("existed: {}", existed);
-		if(existed){
-			return ResponseEntity.ok(2);
-		}
+//		boolean existed = userService.existUserId(vo.getId());
+////		log.info("existed: {}", existed);
+//		if(existed){
+//			return ResponseEntity.ok(2);
+//		}
 		int result = userService.insertUser(vo);
 		if (result == 0) {
 			return ResponseEntity.notFound().build();
@@ -87,13 +84,14 @@ public class PublicController {
 
 		// 즉시 로그인
 		Authentication authentication = userService.loginDirectly(vo.getId(), session);
-		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+		JwtVO          jwtVO          = jwtProvider.generateToken(authentication, false);
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
-		return ResponseEntity.ok(1);
+		return ResponseEntity.ok(true);
 	}
+
 
 	/**
 	 * 휴대폰 인증번호 전송

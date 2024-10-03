@@ -16,10 +16,11 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
     const tableRef = useRef()
     const {saleApi} = useApi()
 
-    const changeState = (saleId, state, udId, udNm)=>{
+    const changeState = (saleId, state, udId, udNm, cms)=>{
         if(state === 2) {
             modal.openModal(ModalType.LAYER.Used_Device_Cms, {
                 ud_nm: udNm,
+                cms: cms,
                 onSubmit: (amount) => {
                     onChangeState({
                         sale_id: saleId,
@@ -120,7 +121,10 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
                                 <div className="select_box">
                                     <SelectIndexLayer value={LMD.ud_st[v.ud_st]} cssModule={Board}
                                                       onChange={state=>{
-                                                          changeState(v.sale_id, state, v.ud_id, v.ud_nm);
+                                                          if(v.ud_st === state) {
+                                                              return;
+                                                          }
+                                                          changeState(v.sale_id, state, v.ud_id, v.ud_nm, v.ud_cms);
                                                       }} values={LMD.ud_st}/>
                                 </div>
                             </Btd>

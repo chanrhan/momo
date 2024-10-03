@@ -194,8 +194,6 @@ public class SaleController {
 		}
 		vo.setFiles(insertList);
 
-
-
 		return ResponseEntity.ok(saleService.updateSale(vo) > 0);
 	}
 

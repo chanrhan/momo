@@ -17,7 +17,7 @@ const statusError = {
 // }
 
 
-export const requestRefreshToken = async (refreshToken)=>{
+export const requestAccessToken = async (refreshToken)=>{
     const option = {
         headers: {
             'X-REFRESH-TOKEN': refreshToken
@@ -34,8 +34,8 @@ export const requestRefreshToken = async (refreshToken)=>{
         const status = data.status;
 
         const jwt = {
-            access_token: data.headers.get('authorization'),
-            refresh_token: data.headers.get('refreshtoken')
+            access_token: data.headers.get('authorization')
+            // refresh_token: data.headers.get('refreshtoken')
         }
 
         return {
