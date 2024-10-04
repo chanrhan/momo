@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import User from "../../css/user.module.css"
 import useApi from "../hook/useApi";
 import {authActions} from "../store/slices/authSlice";
-import {setAutoLogin, removeAutoLogin, getAutoLogin} from "../utils/Cookies";
+import {setAutoLogin, removeAutoLogin, getAutoLogin, getRefreshToken} from "../utils/Cookies";
 import {UserFormBox} from "./module/UserFormBox";
 import {UserFormBtnBox} from "./module/UserFormBtnBox";
 import useValidateInputField from "../hook/useValidateInputField";
@@ -75,6 +75,10 @@ function Login(){
 
     const handleRememberMe = ()=>{
         setRememberMe(!rememberMe);
+    }
+
+    if(getRefreshToken() !== undefined){
+
     }
 
     return (

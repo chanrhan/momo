@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet-async";
-import DynamicModalContainer from "./js/common/modal/DynamicModalContainer";
+import ModalContainer from "./js/common/modal/ModalContainer";
 import {Route, Routes} from "react-router-dom";
 import {AccountLayout} from "./js/layout/AccountLayout";
 import Login from "./js/account/Login";
@@ -52,6 +52,7 @@ import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
 import {RegisterBrNo} from "./js/shop/RegisterBrNo";
+import SnackbarContainer from "./js/common/modal/SnackbarContainer";
 
 function App() {
     const userInfo = useUserInfo();
@@ -61,7 +62,8 @@ function App() {
               <title>모모</title>
               <meta name='viewport' content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
           </Helmet>
-          <DynamicModalContainer/>
+          <SnackbarContainer/>
+          <ModalContainer/>
           <Routes>
               <Route path='/test' element={<TestHeader/>}>
                   <Route path='notify' element={<NotifTest/>}/>

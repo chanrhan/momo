@@ -30,10 +30,10 @@ import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
 import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
-import {ChargePointModal} from "../../profile/module/ChargePointModal";
-import {PaymentCardModal} from "../../profile/module/PaymentCardModal";
-import {UpdatePasswordModal} from "../../profile/module/UpdatePasswordModal";
-import {NameCardModal} from "../../profile/module/NameCardModal";
+import {ChargePointModal} from "../../profile/modal/ChargePointModal";
+import {PaymentCardModal} from "../../profile/modal/PaymentCardModal";
+import {UpdatePasswordModal} from "../../profile/modal/UpdatePasswordModal";
+import {NameCardModal} from "../../profile/modal/NameCardModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
 import {ScrollUtils} from "../../utils/ScrollUtils";
@@ -49,71 +49,20 @@ const M_TYPE = {
 }
 
 const MODAL_COMPONENTS = {
-    // common
-    DynamicSelect: DynamicSelectModal,
-    MoreOption: MoreOptionModal,
-    BulkUpload: BulkUploadModal,
-    Invite: InviteModal,
-    ChargePoint: ChargePointModal,
     Alert: AlertModal,
-    ImagePreview: ImagePreviewModal,
-
-    // tooltip
-    Hint: HintModal,
-
-    // todo
-    Payment_Card: PaymentCardModal,
-
-    // Profile
-    TodoAdd: TodoAddModal,
-    UpdatePassword: UpdatePasswordModal,
-    NameCard: NameCardModal,
-
-    // Shop
-    ChangeNickname: ChangeNicknameModal,
-    ChangeShop: ChangeShopModal,
-    AddShop: AddShopModal,
-
-    // Test
-    MenuModalTest: MenuModalTest,
-    // sale
-    SaleDetail: SaleDetailModal,
-    SaleSecond: SecondDeviceSearchModal,
-    SaleCard: SaleCardModal,
-    SaleComb: SaleCombModal,
-    SaleExsvc: SaleExsvcModal,
-    SaleWtPlan: SaleWtPlanModal,
-    SaleUsedPhone: SaleUsedDeviceModal,
-
-    // sale common
-    DeviceSearch: DeviceSearchModal,
-    PlanSearch: PlanSearchModal,
-
-
-    SelectTableHeader: TableHeaderSelectModal,
-    TableValidation: TableValidationModal,
-    Select: SelectModal,
-    SelectMonth: MonthSelectLayer,
-    SelectDate: DateSelectModal,
-    SaleFilter: SaleFilterModal,
-    ReserveMessage: ReserveMessageModal,
-    ReserveDate: ReserveDateModal,
-
-    // Task
-    UsedDeviceCms: UsedDeviceCmsModal,
-
     // error
     Warning: WarningModal,
     Info: InfoModal
 }
 
-function DynamicModalContainer(){
+function SnackbarContainer(){
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
 
 
     useEffect(()=>{
+        console.log('useEffect')
         if(ObjectUtils.isEmpty(modalList.list)){
             return;
         }
@@ -208,6 +157,7 @@ function DynamicModalContainer(){
             return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         }
 
+        console.log(`render modalName: ${modalName}`)
         const ModalComponent = MODAL_COMPONENTS[modalName];
         return <ModalComponent scrollable={false} key={modalName} {...props}/>
     });
@@ -219,4 +169,4 @@ function DynamicModalContainer(){
     )
 }
 
-export default DynamicModalContainer;
+export default SnackbarContainer;

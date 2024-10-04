@@ -35,7 +35,11 @@ export function MainHeader(){
 
 
     const openChargePointModal = ()=>{
+        console.log('111')
         modal.openModal(ModalType.LAYER.Charge_Point)
+        console.log('222')
+        renderlessModal.close()
+        console.log('333')
     }
 
 
@@ -64,8 +68,8 @@ export function MainHeader(){
                                     nav('/staff')
                                 }}>회원 관리</SelectItem>
                                 <SelectItem onClick={() => {
+
                                     openChargePointModal();
-                                    renderlessModal.close()
                                 }}>문자 포인트 충전</SelectItem>
                                 <SelectItem onClick={() => {
                                     renderlessModal.close()
