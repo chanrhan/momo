@@ -19,7 +19,6 @@ import {NumberUtils} from "../../utils/NumberUtils";
 import {ProfileTableColumn} from "./module/ProfileTableColumn";
 import {FILTER_INPUT_TYPE} from "./modal/SaleFilterModal";
 import {useObjectInputField} from "../../hook/useObjectInputField";
-import {Scrollable} from "../../common/module/Scrollable";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 
@@ -209,7 +208,7 @@ export function Sale(){
 
     const openFilterModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Filter, {
-            top: '220px',
+            // top: '220px',
             data: filterInputField.input,
             onSubmit: (data)=>{
                 // console.table(data)

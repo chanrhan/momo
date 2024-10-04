@@ -52,7 +52,6 @@ import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
 import {RegisterBrNo} from "./js/shop/RegisterBrNo";
-import SnackbarContainer from "./js/common/modal/SnackbarContainer";
 
 function App() {
     const userInfo = useUserInfo();
@@ -62,7 +61,6 @@ function App() {
               <title>모모</title>
               <meta name='viewport' content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
           </Helmet>
-          <SnackbarContainer/>
           <ModalContainer/>
           <Routes>
               <Route path='/test' element={<TestHeader/>}>

@@ -15,7 +15,6 @@ import {AddSaleInput} from "../module/AddSaleInput";
 import {TabList} from "../../../common/module/TabList";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {NumberUtils} from "../../../utils/NumberUtils";
-import {AddSaleNumberInput} from "../module/AddSaleNumberInput";
 import {LMD} from "../../../common/LMD";
 import useUserInfo from "../../../hook/useUserInfo";
 import {DateSelectModal} from "../../../common/modal/menu/DateSelectModal";
@@ -28,14 +27,10 @@ import {DynamicSelectButton} from "../../../common/module/DynamicSelectButton";
 import {TelePhoneInput} from "../../../common/inputbox/TelePhoneInput";
 import {telRegex} from "../../../utils/regex";
 import {PriceInput} from "../../../common/inputbox/PriceInput";
-import modal from "bootstrap/js/src/modal";
-import {ScrollUtils} from "../../../utils/ScrollUtils";
-import {MouseEventUtils} from "../../../utils/MouseEventUtils";
 import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 import {Scrollable} from "../../../common/module/Scrollable";
 import {useFileLoader} from "../../../hook/useFileLoader";
 import {FileUtils} from "../../../utils/FileUtils";
-import {ChangeEvent} from "react";
 import {useHintBox} from "../../../hook/useHintBox";
 
 
@@ -981,7 +976,11 @@ function SaleDetailModal(props){
                                                     </ul>
                                                     <button type="button"
                                                             className={`${cmc(Popup.btn, Popup.btn_add_icon)}`}
-                                                            onClick={promiseInputField.addItem}>추가하기
+                                                            onClick={()=>{
+                                                                if(!promiseInputField.isEmpty(promiseInputField.length()-1, 'content')) {
+                                                                    promiseInputField.addItem()
+                                                                }
+                                                            }}>추가하기
                                                     </button>
                                                 </div>
                                             </div>

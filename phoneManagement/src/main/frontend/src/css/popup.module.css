@@ -168,7 +168,9 @@
 .popup .popup_authority .authority_list .li + .li{margin-top:7px;}
 
 /* 일정 등록 */
-.popup .schedule_regist{position:relative; padding-right:63px;}
+.popup .schedule_regist{position:relative;
+    padding-right:5px;
+}
 .popup .schedule_regist .schedule_color_box{position:absolute; top:12px; right:19px; font-size:0;}
 .popup .schedule_regist .schedule_color_box .schedule_color{width:30px; height:30px; border-radius:50%;}
 .popup .schedule_regist .schedule_color_box .schedule_color.black{background-color:#2f2f3b;}

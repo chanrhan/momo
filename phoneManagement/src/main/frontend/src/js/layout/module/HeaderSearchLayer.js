@@ -38,6 +38,7 @@ export function HeaderSearchLayer({}){
     }
 
     const handleClick = async(e, saleId)=>{
+        setKeyword('')
         renderlessModal.close();
         modal.openModal(ModalType.LAYER.Sale_Detail, {
             sale_id: saleId

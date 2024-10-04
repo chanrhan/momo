@@ -3,21 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SaleMapper">
-    <select id="getFiles">
+    <select id="getFiles" resultType="com.momo.common.vo.FileVO">
         SELECT *
         FROM tb_sale_files
         where shop_id=#{currShopId} and
               sale_id=#{saleId}
     </select>
 
-    <select id="getFilePath">
+    <select id="getFilePath" resultType="java.lang.String">
         SELECT path
         FROM tb_sale_files
         where shop_id=#{currShopId} and
             sale_id=#{saleId}
     </select>
 
-    <select id="isDuplicatedTel" parameterType="com.momo.common.vo.SaleVO">
+    <select id="isDuplicatedTel" parameterType="com.momo.common.vo.SaleVO" resultType="java.lang.Boolean">
         select IF(count(*) > 0, true, false)
         from tb_sale
         where shop_id=#{shopId} and
@@ -26,7 +26,7 @@
               YEAR(actv_dt) = YEAR(#{actvDt})
     </select>
 
-    <select id="getSaleSimple" parameterType="com.momo.common.vo.SaleSearchVO">
+    <select id="getSaleSimple" parameterType="com.momo.common.vo.SaleSearchVO" resultType="java.util.Map">
         select sale_id,
                cust_nm,
                cust_tel,
@@ -45,7 +45,7 @@
         limit 5
     </select>
 
-    <select id="getSaleAll" parameterType="com.momo.common.vo.SaleSearchVO">
+    <select id="getSaleAll" parameterType="com.momo.common.vo.SaleSearchVO" resultType="java.util.Map">
         with sale as (
             select s.*,
                    IF(device_id is not null, true, false) as ct,
@@ -136,7 +136,7 @@
 
 
 <!--    get sale-->
-    <select id="getSaleOne">
+    <select id="getSaleOne" resultType="java.util.Map">
         with sup as (
             select json_arrayagg(json_object(
                     'name',IFNULL(sp.sup_div_nm, '삭제된 항목'),
@@ -266,7 +266,7 @@
     </select>
 
 <!--    get sale category-->
-    <select id="getSaleAsUsedDevice">
+    <select id="getSaleAsUsedDevice" resultType="java.util.Map">
 
         WITH sale as (
             SELECT sl.sale_id,
@@ -296,7 +296,7 @@
                 (
                 cust_nm like '%${keyword}%' or
                 cust_tel like '%${keyword}%' or
-                device_nm like '%${keyword}%'
+                ud_nm like '%${keyword}%'
                 ) and
             </if>
             1=1
@@ -336,7 +336,7 @@
 
     </select>
 
-    <select id="getSaleAsCard">
+    <select id="getSaleAsCard" resultType="java.util.Map">
 
         WITH sale as (
             SELECT sl.sale_id,
@@ -405,7 +405,7 @@
         ) as list
     </select>
 
-    <select id="getSaleAsComb">
+    <select id="getSaleAsComb" resultType="java.util.Map">
 
         WITH sale as (
             SELECT sl.sale_id,
@@ -474,7 +474,7 @@
         ) as list
     </select>
 
-    <select id="getSaleAsSupport">
+    <select id="getSaleAsSupport" resultType="java.util.Map">
         WITH sale as (
             SELECT sl.sale_id,
                    ss.sup_id,
@@ -541,7 +541,7 @@
         ) as list
     </select>
 
-    <select id="getSaleAsPromise">
+    <select id="getSaleAsPromise" resultType="java.util.Map">
         WITH sale as (
             SELECT distinct sl.sale_id,
                             sl.cust_nm,
@@ -783,7 +783,7 @@
 
 <!--    고객약속, 추가, 지원, 카드, 중고폰  -->
 
-    <select id="getMaxSaleId">
+    <select id="getMaxSaleId" resultType="java.lang.Integer">
         SELECT IFNULL(max(sale_id),0)
         from tb_sale
         WHERE shop_id= #{currShopId}
@@ -1021,7 +1021,7 @@
 
 <!--    메인 페이지 (Dashboard)-->
 <!--    각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )-->
-    <select id="getSummary">
+    <select id="getSummary" resultType="java.util.Map">
         with prevMonth as (
             SELECT *
             FROM tb_sale
@@ -1109,7 +1109,7 @@
     </select>
 
 <!--    // 판매일보 대비 항목(카드/세컨/부가서비스) 비율 (항목 개수)-->
-    <select id="getSaleRatio">
+    <select id="getSaleRatio" resultType="java.util.Map">
         SET @total_sale_count := (
             SELECT count(*)
             FROM tb_sale
@@ -1150,7 +1150,7 @@
     </select>
 
 <!--    각 항목별 진행 현황 (완료 개수, 총 개수)-->
-    <select id="getWorkInProcess">
+    <select id="getWorkInProcess" resultType="java.util.Map">
         with table_ud as (
             SELECT ud_st
             FROM tb_sale_used_device sud
@@ -1249,7 +1249,7 @@
     </select>
 
 <!--    // 각 항목별 전월 대비 증가/감소량-->
-    <select id="getCtChangeAmount">
+    <select id="getCtChangeAmount" resultType="java.lang.Integer">
         with tb as (
             SELECT
                 (
@@ -1273,7 +1273,7 @@
         FROM tb
     </select>
 
-    <select id="getInternetChangeAmount">
+    <select id="getInternetChangeAmount" resultType="java.lang.Integer">
         with tb as (
             SELECT
                 (
@@ -1297,7 +1297,7 @@
         FROM tb
     </select>
 
-    <select id="getTvChangeAmount">
+    <select id="getTvChangeAmount" resultType="java.lang.Integer">
         with tb as (
             SELECT
                 (
@@ -1321,7 +1321,7 @@
         FROM tb
     </select>
 
-    <select id="getTotalCmsChangeAmount">
+    <select id="getTotalCmsChangeAmount" resultType="java.lang.Float">
         with tb as (
             SELECT
                 (
@@ -1343,7 +1343,7 @@
         FROM tb
     </select>
 
-    <select id="getAvgCmsChangeAmount">
+    <select id="getAvgCmsChangeAmount" resultType="java.lang.Float">
         with tb as (
             SELECT
                 (
@@ -1368,7 +1368,7 @@
 
 <!--    그래프 페이지-->
 <!--    그래프 요약-->
-    <select id="getGraphSummary">
+    <select id="getGraphSummary" resultType="java.util.Map">
         <![CDATA[
 #         월별 날짜 구하기
         with recursive month_range as (
@@ -1615,7 +1615,7 @@
         ]]>
     </select>
 
-    <select id="getCtGraphByDateType">
+    <select id="getCtGraphByDateType" resultType="java.util.Map">
     <![CDATA[
         with recursive org_date_table as (
             select (
@@ -1693,7 +1693,7 @@
         ]]>
     </select>
 
-    <select id="getInternetGraphByDateType">
+    <select id="getInternetGraphByDateType" resultType="java.util.Map">
     <![CDATA[
         with recursive org_date_table as (
             select (
@@ -1771,7 +1771,7 @@
         ]]>
     </select>
 
-    <select id="getTvGraphByDateType">
+    <select id="getTvGraphByDateType" resultType="java.util.Map">
     <![CDATA[
         with recursive org_date_table as (
             select (
@@ -1849,7 +1849,7 @@
         ]]>
     </select>
 
-    <select id="getMarginGraphByDateType">
+    <select id="getMarginGraphByDateType" resultType="java.util.Map">
     <![CDATA[
         with recursive org_date_table as (
             select (
@@ -1929,7 +1929,7 @@
         ]]>
     </select>
 
-    <select id="getAvgMarginGraphByDateType">
+    <select id="getAvgMarginGraphByDateType" resultType="java.util.Map">
     <![CDATA[
         with recursive org_date_table as (
             select (
@@ -2009,7 +2009,7 @@
         ]]>
     </select>
 
-    <select id="getStatBySelectType">
+    <select id="getStatBySelectType" resultType="java.util.Map">
         <![CDATA[
         with base as (select device_id,
                              (SELECT device_nm
@@ -2068,7 +2068,7 @@
         ]]>
     </select>
 
-    <select id="getCtCountBySelectType">
+    <select id="getCtCountBySelectType" resultType="java.lang.Integer">
         <![CDATA[
         with recursive group_generation as (
             select 0 as g
@@ -2129,7 +2129,7 @@
         ]]>
     </select>
 
-    <select id="getIstmRatio">
+    <select id="getIstmRatio" resultType="java.util.Map">
         <![CDATA[
         with recursive istm_range as (
             select 0 as i
@@ -2169,7 +2169,7 @@
         ]]>
     </select>
 
-    <select id="getProviderRatio">
+    <select id="getProviderRatio" resultType="java.util.Map">
         <![CDATA[
         with recursive provider_range as (
             select 0 as i
@@ -2209,7 +2209,7 @@
         ]]>
     </select>
 
-    <select id="getActvTpRatio">
+    <select id="getActvTpRatio" resultType="java.util.Map">
         <![CDATA[
         with recursive actv_tp_range as (
             select 0 as i
@@ -2249,7 +2249,7 @@
         ]]>
     </select>
 
-    <select id="getGenderRatio">
+    <select id="getGenderRatio" resultType="java.util.Map">
         <![CDATA[
         with recursive gender_range as (
             select 0 as i
@@ -2291,7 +2291,7 @@
 
 <!--    통계 페이지-->
 <!--    개인 통계-->
-    <select id="getPersonalStatistics">
+    <select id="getPersonalStatistics" resultType="java.util.Map">
         <![CDATA[
         with staff as (
             select ac.id,

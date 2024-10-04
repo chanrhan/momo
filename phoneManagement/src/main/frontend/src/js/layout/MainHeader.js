@@ -19,7 +19,7 @@ export function MainHeader(){
     const {notifApi, publicApi} = useApi();
     const authentication = useAuthentication();
     const [count, setCount] = useState(0)
-    const renderlessModal = useRenderlessModal(`RDL_${Date.now()}`)
+    const renderlessModal = useRenderlessModal(`RDL_HEADER`)
 
     const countUnreadNotif = async ()=>{
         await notifApi.countUnreadNotif().then(({status,data})=>{
@@ -35,11 +35,8 @@ export function MainHeader(){
 
 
     const openChargePointModal = ()=>{
-        console.log('111')
         modal.openModal(ModalType.LAYER.Charge_Point)
-        console.log('222')
         renderlessModal.close()
-        console.log('333')
     }
 
 
@@ -67,10 +64,10 @@ export function MainHeader(){
                                     renderlessModal.close()
                                     nav('/staff')
                                 }}>회원 관리</SelectItem>
-                                <SelectItem onClick={() => {
+                                {/*<SelectItem onClick={() => {*/}
 
-                                    openChargePointModal();
-                                }}>문자 포인트 충전</SelectItem>
+                                {/*    openChargePointModal();*/}
+                                {/*}}>문자 포인트 충전</SelectItem>*/}
                                 <SelectItem onClick={() => {
                                     renderlessModal.close()
                                     nav('/account/login')

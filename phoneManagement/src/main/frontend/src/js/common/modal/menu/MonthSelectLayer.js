@@ -28,7 +28,8 @@ export function MonthSelectLayer({onSelect, children}){
     return (
         <div style={{
             display: "inline-block",
-            position: "relative"
+            position: "relative",
+            zIndex: 100
         }} onClick={renderlessModal.clickToOpen}>
             {children}
             <div className={cm(Calender.date_popup, `${renderlessModal.active && Calender.active}`)} ref={renderlessModal.ref}>

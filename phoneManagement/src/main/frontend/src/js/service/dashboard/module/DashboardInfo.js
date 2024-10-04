@@ -2,15 +2,12 @@ import {cm, cmc} from "../../../utils/cm";
 import Dashboard from "../../../../css/dashboard.module.css";
 import {DashboardSchedule} from "./DashboardSchedule";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
 import useModal from "../../../hook/useModal";
 import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {ChangeNicknameLayer} from "../../../common/module/ChangeNicknameLayer";
-import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {ModalType} from "../../../common/modal/ModalType";
-import {useFileLoader} from "../../../hook/useFileLoader";
 import useUserInfo from "../../../hook/useUserInfo";
 
 export function DashboardInfo({}){

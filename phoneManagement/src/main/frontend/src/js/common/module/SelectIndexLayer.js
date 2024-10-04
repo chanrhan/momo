@@ -2,7 +2,7 @@ import {ObjectUtils} from "../../utils/objectUtil";
 import {useRenderlessModal} from "../../hook/useRenderlessModal";
 
 export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[], buttonClassName, className, name, value, onChange, values, children, buttonStyle}){
-    const renderlessModal = useRenderlessModal(`RDL_INDEX_${name}`)
+    const renderlessModal = useRenderlessModal(`RDL_INDEX_${name}_${value}_${onChange}`)
 
     const handleChange = i=>{
         console.log(i)

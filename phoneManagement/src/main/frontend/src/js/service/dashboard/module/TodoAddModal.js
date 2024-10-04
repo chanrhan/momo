@@ -73,47 +73,43 @@ export function TodoAddModal(props){
 
 
     return (
-        <LayerModal>
-            <div className={cm(Popup.popup, Popup.active)} style={{
-                top: '170px'
-            }}>
-                <div className={Popup.popup_title}>일정 등록</div>
+        <LayerModal top={40}>
+            <div className={Popup.popup_title}>일정 등록</div>
 
-                <form className={Popup.form}>
-                    <div className={Popup.popup_cont}>
-                        <div className={Popup.schedule_regist}>
-                            <input type="text" name='content' value={inputField.get('content')} onChange={inputField.handleInput} className="inp"/>
-                            <div className={Popup.schedule_color_box}>
-                                <button type="button" className={cm(Popup.schedule_color, Popup[LMD.color[inputField.get('color')]])} onClick={()=>{
-                                    setActive(!active)
-                                }}>컬러 선택</button>
-                                <ul className={cm(Popup.schedule_color_list, `${active && Popup.active}`)} ref={componentRef}>
-                                    {/*활성화시 active 추가 -->*/}
-                                    {
-                                        LMD.color.map((v,i)=> {
-                                            return <li key={i} className={Popup.li}>
-                                                <button type="button"
-                                                        className={cm(Popup.schedule_color, Popup[v])}
-                                                        onClick={()=>{
-                                                            inputField.put('color',i);
-                                                            setActive(false)
-                                                        }}>검정
-                                                </button>
-                                            </li>
-                                        })
-                                    }
-                                </ul>
-                            </div>
-                        </div>
+            <form className={Popup.form}>
+                <div className={Popup.popup_cont}>
+                    <div className={Popup.schedule_regist}>
+                        <input type="text" name='content' value={inputField.get('content')} onChange={inputField.handleInput} className="inp"/>
+                        {/*<div className={Popup.schedule_color_box}>*/}
+                        {/*    <button type="button" className={cm(Popup.schedule_color, Popup[LMD.color[inputField.get('color')]])} onClick={()=>{*/}
+                        {/*        setActive(!active)*/}
+                        {/*    }}>컬러 선택</button>*/}
+                        {/*    <ul className={cm(Popup.schedule_color_list, `${active && Popup.active}`)} ref={componentRef}>*/}
+                        {/*        /!*활성화시 active 추가 -->*!/*/}
+                        {/*        {*/}
+                        {/*            LMD.color.map((v,i)=> {*/}
+                        {/*                return <li key={i} className={Popup.li}>*/}
+                        {/*                    <button type="button"*/}
+                        {/*                            className={cm(Popup.schedule_color, Popup[v])}*/}
+                        {/*                            onClick={()=>{*/}
+                        {/*                                inputField.put('color',i);*/}
+                        {/*                                setActive(false)*/}
+                        {/*                            }}>검정*/}
+                        {/*                    </button>*/}
+                        {/*                </li>*/}
+                        {/*            })*/}
+                        {/*        }*/}
+                        {/*    </ul>*/}
+                        {/*</div>*/}
                     </div>
+                </div>
 
-                    <div className={Popup.popup_btn_box}>
-                        <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={onSubmit}>등록</button>
-                    </div>
-                </form>
+                <div className={Popup.popup_btn_box}>
+                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={onSubmit}>등록</button>
+                </div>
+            </form>
 
-                <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
-            </div>
+            <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>
 )
 }

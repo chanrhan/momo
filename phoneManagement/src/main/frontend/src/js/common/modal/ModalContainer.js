@@ -28,7 +28,7 @@ import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
-import {BulkUploadModal} from "../../admin/module/BulkUploadModal";
+import {BulkUploadModal} from "../../admin/modal/BulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
 import {ChargePointModal} from "../../profile/modal/ChargePointModal";
 import {PaymentCardModal} from "../../profile/modal/PaymentCardModal";
@@ -114,7 +114,6 @@ function ModalContainer(){
 
 
     useEffect(()=>{
-        console.log('useEffect')
         if(ObjectUtils.isEmpty(modalList.list)){
             return;
         }
@@ -122,7 +121,7 @@ function ModalContainer(){
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
         const onClickCaptureEvent = (e: MouseEvent)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                console.log('capture')
+                // console.log('capture')
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -131,7 +130,7 @@ function ModalContainer(){
 
         const onClickBubbleEvent = (e)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                console.log('bubble')
+                // console.log('bubble')
                 modal.unlockModal()
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
@@ -209,7 +208,6 @@ function ModalContainer(){
             return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         }
 
-        console.log(`render modalName: ${modalName}`)
         const ModalComponent = MODAL_COMPONENTS[modalName];
         return <ModalComponent scrollable={false} key={modalName} {...props}/>
     });

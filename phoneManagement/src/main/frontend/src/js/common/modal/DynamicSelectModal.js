@@ -101,12 +101,20 @@ export function DynamicSelectModal(props){
         // console.log(props.type)
         console.log(props.provider)
         await gmdApi.getData(props.type, keyword, props.provider).then(({status,data})=>{
-            if(status === 200 && data && data.list){
-                // console.table(data)
-                const parsed = JSON.parse(data.list)
-                // console.table(parsed)
-                inputField.setInput(parsed)
-                setOrgCount(parsed.length)
+            if(status === 200 && data){
+                if(data.list){
+                    // console.table(data)
+                    const parsed = JSON.parse(data.list)
+                    // console.table(parsed)
+                    inputField.setInput(parsed)
+                    setOrgCount(parsed.length)
+                }else{
+                    inputField.putAll([{
+                        name: ''
+                    }])
+                    setOrgCount(0)
+                }
+
             }
         })
     }
@@ -134,6 +142,17 @@ export function DynamicSelectModal(props){
         inputField.setInput(copy)
     }
 
+    const addItem = (e)=>{
+        e.stopPropagation()
+        let focusIndex = inputField.length();
+        if(inputField.length() === 1 && ObjectUtils.isEmpty(inputField.get(0, 'name'))){
+            focusIndex -= 1;
+        }else{
+            inputField.addItem();
+        }
+        setInputFocus(focusIndex)
+    }
+
     const insertAll = async ()=>{
         const body = inputField.input.filter((v,i)=>v.name && i>=orgCount).map(v=>{
             return {
@@ -159,6 +178,8 @@ export function DynamicSelectModal(props){
         await gmdApi.deleteAll(props.type, [id]).then(({status,data})=>{
             if(status === 200 && data){
                 getItems();
+                setInputFocus(null)
+                setSelected(null)
                 // e.blur();
             }
         })
@@ -216,11 +237,7 @@ export function DynamicSelectModal(props){
                        }}
                        placeholder="옵션 검색"/>
                 <div className={cm(Popup.select_layer, Popup.active)}>
-                    <button type='button' className={Popup.layer_title} onClick={(e)=>{
-                        e.stopPropagation()
-                        setInputFocus(inputField.length())
-                        inputField.addItem();
-                    }}>옵션 추가하기</button>
+                    <button type='button' className={Popup.layer_title} onClick={addItem}>옵션 추가하기</button>
                     <ul className="layer_list" ref={scrollRef} style={{
                         overflowY: "scroll",
                         height: `${boxHeight}px`

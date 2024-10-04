@@ -2,7 +2,6 @@ import {LayerModal} from "../../common/modal/LayerModal";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import Popup from "../../../css/popup.module.css";
-import DEFAULT_HEADERS from "../../test/DEFAULT_HEADERS";
 import {useEffect, useState} from "react";
 import * as XLSX from "xlsx";
 import {cm, cmc} from "../../utils/cm";
@@ -21,6 +20,10 @@ const HEADERS = [
     ['지원명'], // plan
     ['추기명'], // plan
     ['결합명'], // plan
+]
+
+const displayProvider = [
+    0,0,1,1,1,1,0,0,0
 ]
 
 
@@ -187,76 +190,70 @@ export function BulkUploadModal(props){
     }
 
     return (
-        <LayerModal>
-            <div className={Popup.popup} style={
-                {
-                    maxWidth: '1060px',
-                    top: '15px'
-                }
-            } onClick={() => {
-                setSelectedCell(null)
-            }}>
-                <div className={Popup.popup_title}>데이터 추가</div>
-                <div className={Popup.bulk_upload_box}>
-                    <div className={Popup.bulk_upload_header_group}>
-                        <input type="file" accept=".xlsx, .xls, .csv, .numbers" onChange={handleUploadSheet}/>
-                        <div className={Popup.bulk_upload_tab}>
-                            <TabList value={dataType} onChange={setDataType} theme={Popup}
-                                     values={['디바이스', '세컨디바이스', '무선요금제', '인터넷 요금제', 'TV 요금제','부가서비스','지원구분','추가구분','결합유형']}/>
-                        </div>
+        <LayerModal maxWidth={1060} top={-45}>
+            <div className={Popup.popup_title}>데이터 추가</div>
+            <div className={Popup.bulk_upload_box}>
+                <div className={Popup.bulk_upload_header_group}>
+                    <input type="file" accept=".xlsx, .xls, .csv, .numbers" onChange={handleUploadSheet}/>
+                    <div className={Popup.bulk_upload_tab}>
+                        <TabList value={dataType} onChange={setDataType} theme={Popup}
+                                 values={['디바이스', '세컨디바이스', '무선요금제', '인터넷 요금제', 'TV 요금제','부가서비스','지원구분','추가구분','결합유형']}/>
                     </div>
-                    <div>
-                        <div className={cmc(Popup.tab, Popup.type2)}>
-                            <TabList name='provider' value={provider} onChange={setProvider} theme={Popup} values={
+                </div>
+                <div>
+                    <div className={cmc(Popup.tab, Popup.type2)}>
+                        {
+                            displayProvider[dataType] ? <TabList name='provider' value={provider} onChange={setProvider} theme={Popup} values={
                                 LMD.provier
-                            }/>
-                        </div>
-                        <table className={Popup.bulk_upload_table}>
-                            <thead className={Popup.thead}>
-                            <tr className={Popup.tr}>
-                                {
-                                    HEADERS[dataType].map(((h, i) => {
-                                        return <th className={Popup.th}>{HEADERS[dataType][i]}</th>
-                                    }))
-                                }
-                            </tr>
-                            </thead>
-                            <tbody className={Popup.tbody}>
-                            {
-                                data && data.map((r, rowIdx) => {
-                                    return <tr key={rowIdx} className={Popup.tr}>
-                                        {
-                                            r.map((c, colIdx) => {
-                                                if (colIdx >= HEADERS[dataType].length) {
-                                                    return null;
-                                                }
-                                                return <td onClick={e => {
-                                                    e.stopPropagation()
-                                                }}
-                                                           className={cm(Popup.td, `${selectedCell && selectedCell.row === rowIdx && selectedCell.col === colIdx && Popup.active}`)}
-                                                           key={colIdx} onPaste={handlePaste}>
-                                                    <input className={Popup.input} type="text" value={c} onChange={e => {
-                                                        handleChange(e, rowIdx, colIdx)
-                                                    }} onFocus={() => {
-                                                        handleCellClick(rowIdx, colIdx)
-                                                    }}/>
-                                                </td>
-                                            })
-                                        }
-                                    </tr>
-                                })
-                            }
-                            </tbody>
-                        </table>
+                            }/> : null
+                        }
+
                     </div>
+                    <table className={Popup.bulk_upload_table}>
+                        <thead className={Popup.thead}>
+                        <tr className={Popup.tr}>
+                            {
+                                HEADERS[dataType].map(((h, i) => {
+                                    return <th className={Popup.th}>{HEADERS[dataType][i]}</th>
+                                }))
+                            }
+                        </tr>
+                        </thead>
+                        <tbody className={Popup.tbody}>
+                        {
+                            data && data.map((r, rowIdx) => {
+                                return <tr key={rowIdx} className={Popup.tr}>
+                                    {
+                                        r.map((c, colIdx) => {
+                                            if (colIdx >= HEADERS[dataType].length) {
+                                                return null;
+                                            }
+                                            return <td onClick={e => {
+                                                e.stopPropagation()
+                                            }}
+                                                       className={cm(Popup.td, `${selectedCell && selectedCell.row === rowIdx && selectedCell.col === colIdx && Popup.active}`)}
+                                                       key={colIdx} onPaste={handlePaste}>
+                                                <input className={Popup.input} type="text" value={c} onChange={e => {
+                                                    handleChange(e, rowIdx, colIdx)
+                                                }} onFocus={() => {
+                                                    handleCellClick(rowIdx, colIdx)
+                                                }}/>
+                                            </td>
+                                        })
+                                    }
+                                </tr>
+                            })
+                        }
+                        </tbody>
+                    </table>
                 </div>
-                <div className={Popup.popup_btn_box}>
-                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`}
-                            onClick={submit}>저장
-                    </button>
-                </div>
-                <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
             </div>
+            <div className={Popup.popup_btn_box}>
+                <button type="button" className={`btn_blue ${cmc(Popup.btn)}`}
+                        onClick={submit}>저장
+                </button>
+            </div>
+            <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>
     )
 }
