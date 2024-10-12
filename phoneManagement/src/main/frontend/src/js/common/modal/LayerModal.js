@@ -3,18 +3,24 @@ import {cm, cmc} from "../../utils/cm";
 import {useEffect, useRef, useState} from "react";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 
-export const LayerModal = ({modalRef, children, top, left, width,
+export const LayerModal = ({modalRef, scrollable, children, top, left, width,
                                height, minWidth, maxWidth, minHeight, maxHeight}) => {
     const [fadeIn, setFadeIn] = useState(false);
 
+    const scrollRef = useRef(null)
+
     useEffect(() => {
-        let prevScrollY = ScrollUtils.preventScroll(document.body);
+        let prevScrollY = null;
+        if(!scrollable){
+            prevScrollY = ScrollUtils.preventScroll(scrollRef.current.body);
+        }
         const timer = setTimeout(() => {
             setFadeIn(true)
-
         }, 100)
         return () => {
-            ScrollUtils.allowScroll(document.body, prevScrollY)
+            if(prevScrollY){
+                ScrollUtils.allowScroll(scrollRef.current.body, prevScrollY)
+            }
             prevScrollY = null;
             clearTimeout(timer);
         }
@@ -22,7 +28,7 @@ export const LayerModal = ({modalRef, children, top, left, width,
 
 
     return (
-        <div className={`scroll-hidden ${cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}`}>
+        <div className={`scroll-hidden ${cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}`} ref={scrollRef}>
             <div className={Popup.popup} style={
                 {
                     top: `${60+top}px`,

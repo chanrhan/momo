@@ -38,15 +38,14 @@ export const ModalType = {
         Todo_Add: 'TodoAdd'
     },
     MENU: {
-        Change_Shop: 'ChangeShop',
+        // Change_Shop: 'ChangeShop',
         Test: 'MenuModalTest',
         Select_Table_Header: 'SelectTableHeader',
-        Select_Month: 'SelectMonth',
+        // Select_Month: 'SelectMonth',
         Select_Date: 'SelectDate',
-        Select: 'Select',
+        // Select: 'Select',
         Dynamic_Select: 'DynamicSelect',
         More_Option: 'MoreOption'
-
     },
     SNACKBAR: {
         Alert: 'Alert',

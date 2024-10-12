@@ -65,6 +65,11 @@ function TestHeader(){
                     <button className='btn btn-outline-success ms-1'>Event 테스트</button>
                 </Link>
             </div>
+            <div className='mt-3 d-flex flex-row justify-content-center'>
+                <Link to='component'>
+                    <button className='btn btn-outline-success ms-1'>Component 테스트</button>
+                </Link>
+            </div>
             <Outlet/>
         </div>
     )

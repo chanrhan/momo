@@ -45,6 +45,10 @@
 .popup .form:not(.user_form) .popup_cont .inp:focus{line-height:48px;}
 .popup .popup_cont .btn.btn_medium{font-weight:400;}
 .popup .popup_cont .btn.btn_small{min-width:58px; font-size:14px; line-height:29px;}
+.popup .popup_cont .btn.btn_small:disabled{
+    color: #B3B3BEFF;
+    cursor: default;
+}
 .popup .popup_cont .ta_r .btn.btn_small{padding:1px 12px; border-radius:8px; font-size:16px; font-weight:400;}
 .popup .popup_btn_box{margin-top:32px;}
 .popup .popup_btn_box.half{font-size:0; line-height:0;}
@@ -241,6 +245,9 @@
 .popup .popup_check_list > .li + .li{margin-top:15px;}
 .popup .popup_check_list > .li .check_inp{position:absolute; top:5px; left:5px;}
 .popup .popup_check_list > .li .check_label{position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;}
+.popup .popup_check_list > .li .check_label.disable{
+    color: #B3B3BEFF
+}
 .popup .popup_check_list > .li .check_label:before{display:block; position:absolute; top:0; left:0; width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 24px;}
 .popup .popup_check_list > .li .check_text{display:inline-block; width:calc(100% - 32px); height:24px; border:0; color:#28272c; font-size:16px; font-weight:500; vertical-align:top;}
 .popup .popup_check_list > .li .check_inp:checked + .check_label:before{background-image:url(../images/check_icon_on.png);}
@@ -269,13 +276,36 @@
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .inp{line-height:40px;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .inp:focus{line-height:38px;}
 .popup .customer .customer_body .customer_box.price .half_box .tb_price .tbody .td .btn_del{width:24px; height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
-.popup .customer .customer_body .customer_box.price .price_total{margin-top:18px; padding:8px 22px; border-radius:8px; background-color:#dee8ff; text-align:right;}
-.popup .customer .customer_body .customer_box.price .price_total .price_item{display:inline-block; vertical-align:top;position:relative; margin-left:50px; margin-right: 10px; }
+.popup .customer .customer_body .customer_box.price .price_total{
+    margin-top:18px; padding:8px 22px; border-radius:8px;
+    background-color:#dee8ff; text-align:right;
+
+}
+.popup .customer .customer_body .customer_box.price .price_total .price_item{
+    display:inline-block;
+    vertical-align:top;position:relative; margin-left:50px;
+    margin-right: 10px;
+}
 /*.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item{position:relative; margin-left:51px;}*/
-.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item:before{display:block; position:absolute; top:0; left:-31px; font-size:20px; line-height:24px;}
-.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.plus:before{content:'+';}
-.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.minus:before{content:'-';}
-.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.sum:before{content:'=';}
+
+.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item:not(:last-child){
+    margin-left: calc(8%);
+}
+.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item:before{
+    display:block;
+    position:absolute;
+    top:0;
+    left: -48px;
+    font-size:20px; line-height:24px;
+}
+.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.plus:before{
+    content:'+';
+}
+.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.minus:before{
+    content:'-';}
+.popup .customer .customer_body .customer_box.price .price_total .price_item + .price_item.sum:before{
+    left: -20px;
+    content:'=';}
 .popup .customer .customer_body .customer_box.price .price_total .price_item .price_num{color:#141218; font-size:20px; line-height:24px;}
 .popup .customer .customer_body .customer_box.price .price_total .price_item .price_text{position:absolute; width: 150px; right:0; bottom:-20px; color:#91939f; font-size:13px; font-weight:200;}
 .popup .customer .customer_body .customer_box.price .price_data{margin-top:48px;}
@@ -298,7 +328,7 @@
     background:url(../images/popup/upload_icon.png) no-repeat center / 48px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3{margin-top:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3 .data_area .data_textarea{
-    width:100%; height:110px; font-size:16px; line-height:20px; resize:none;
+    width:100%; height:88px; font-size:16px; line-height:20px; resize:none;
     padding: 5px;
 }
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .data_area{height:300px;}
@@ -433,7 +463,19 @@
 .popup .transfer .popup_check_list .li .transfer_box .inp{width:103px; margin-left:8px; padding:0 12px; font-size:14px; line-height:30px; vertical-align:top;}
 .popup .transfer .popup_check_list .li .transfer_box .inp:focus{padding:0 11px; line-height:28px;}
 .popup .transfer .popup_check_list .li .transfer_box .inp.entered{border-color:transparent; background-color:#f0f5ff; color:#4781ff;}
-.popup .transfer .popup_check_list .li .check_add_btn{padding-left:32px; background:url(../images/popup/check_add_icon.png) no-repeat left top / 24px; color:#28272c; font-size:16px; font-weight:600; line-height:24px;}
+.popup .transfer .popup_check_list .li .transfer_box .inp.entered:disabled{
+    color: #B3B3BEFF
+}
+.popup .transfer .popup_check_list .li .transfer_box .inp:not(:disabled),
+.popup .transfer .popup_check_list .li .transfer_box .inp.entered {
+    cursor: pointer;
+}
+.popup .transfer .popup_check_list .li .transfer_box .inp:disabled{
+    background-color: rgba(187, 185, 196, 0.63);
+}
+.popup .transfer .popup_check_list .li .check_add_btn{
+    padding-left:32px; background:url(../images/popup/check_add_icon.png) no-repeat left top / 24px;
+    color:#28272c; font-size:16px; font-weight:600; line-height:24px;}
 
 /* 예약전송 날짜선택 (구) */
 /*.popup .reservation .popup_cont{margin-bottom:-32px;}*/
@@ -670,11 +712,10 @@
 
 
 /*커스텀*/
-.list_title{margin-bottom: 10px; padding-left: 5px}
-.list_title .form_label + .form_label{margin-left: calc(30% - 14px);}
-.list_title .form_label{
-    /*width:calc(25% - 6px);*/
-}
+.list_title{margin-bottom: 10px; padding-left: 5px; margin-top: 10px}
+.list_title .form_label + .form_label{margin-left: calc(42% - 10px);}
+.list_title.d3 .form_label + .form_label{margin-left: calc(30% - 14px);}
+
 
 .card_form .check_del{position:relative; top:13px; left:10px; width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
 

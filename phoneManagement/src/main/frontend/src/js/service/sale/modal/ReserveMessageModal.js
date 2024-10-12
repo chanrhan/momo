@@ -61,10 +61,10 @@ export function ReserveMessageModal(props){
                 <form className={Popup.transfer}>
                     <div className={Popup.popup_cont}>
                         <div className={cmc(Popup.ta_r)}>
-                            <div className={cmc(Popup.check_box)}>
-                                <input type="checkbox" id="check_"/>
-                                <label htmlFor="check_">고객 맞춤 추천</label>
-                            </div>
+                            {/*<div className={cmc(Popup.check_box)}>*/}
+                            {/*    <input type="checkbox" id="check_"/>*/}
+                            {/*    <label htmlFor="check_">고객 맞춤 추천</label>*/}
+                            {/*</div>*/}
                         </div>
 
                         <ul className={Popup.popup_check_list}>
@@ -97,14 +97,22 @@ function ReserveItem({index, inputField, onDateClick}){
 
     const value = inputField.get(index, 'rsv_dt')
 
+    const isChecked = inputField.input[index].checked;
+
+    const isDisabled = ()=>{
+        return `${!isChecked && Popup.disable}`
+    }
+
     return (
         <li className={Popup.li}>
             <input type="checkbox" name={`rsv_check${index}`} className={Popup.check_inp}  checked={inputField.get(index, 'checked')}/>
-            <label htmlFor={`rsv_check${index}`} className={Popup.check_label} onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
+            <label htmlFor={`rsv_check${index}`}
+                   className={`${Popup.check_label} ${isDisabled()}`} onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
             <div className={Popup.transfer_box}>
-                <button type="button" className={cmc(Popup.btn, Popup.btn_small)}>미리보기</button>
-                <input type="text" className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered}`)} transfer_inp`}
+                <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}>미리보기</button>
+                <input type="text" className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`) } transfer_inp`}
                        value={value} placeholder='날짜 설정' readOnly
+                       disabled={!isChecked}
                        onClick={onDateClick}/>
                 {/*value 있을 경우 entered 추가 -->*/}
             </div>

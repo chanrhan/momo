@@ -5,8 +5,8 @@ import {DateUtils} from "../../../utils/DateUtils";
 import useModal from "../../../hook/useModal";
 import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
-export function MonthSelectLayer({onSelect, children}){
-    const renderlessModal = useRenderlessModal("RDL_MONTHSELECT")
+export function MonthSelectModal({onSelect, children}){
+    const renderlessModal = useRenderlessModal(`RDL_MONTH_SELECT_${onSelect}`)
 
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());

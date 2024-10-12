@@ -4,6 +4,13 @@ import User from "../../../../css/user.module.css";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import {MenuModal} from "../MenuModal";
 
+/**
+ *
+ * @param props
+ * @returns {JSX.Element|null}
+ * @constructor
+ * @deprecated
+ */
 export function SelectModal(props){
     // useMemo(() => {
     //     if(ObjectUtils.isEmpty(props.inputField.getInput(props.name))){

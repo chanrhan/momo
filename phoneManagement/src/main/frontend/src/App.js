@@ -52,6 +52,7 @@ import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
 import {RegisterBrNo} from "./js/shop/RegisterBrNo";
+import {ComponentTest} from "./js/test/ComponentTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -81,6 +82,7 @@ function App() {
                   <Route path='async' element={<AsyncTest/>}/>
                   <Route path='event' element={<EventTest/>}/>
                   <Route path='vo' element={<VOTest/>}/>
+                  <Route path='component' element={<ComponentTest/>}/>
               </Route>
 
 

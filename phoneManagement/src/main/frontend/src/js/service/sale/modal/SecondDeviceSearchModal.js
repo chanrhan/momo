@@ -28,6 +28,8 @@ function SecondDeviceSearchModal(props){
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))
+                }else{
+                    setItems(null)
                 }
             }
         })

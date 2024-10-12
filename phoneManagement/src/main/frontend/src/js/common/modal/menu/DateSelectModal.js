@@ -5,7 +5,7 @@ import {useEffect, useRef, useState} from "react";
 import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
 export function DateSelectModal({rootClassName, onSelect, children, errorText}){
-    const renderlessModal = useRenderlessModal("RDL_DATESELECT")
+    const renderlessModal = useRenderlessModal(`RDL_DATE_SELECT_${onSelect}`)
 
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth()+1);

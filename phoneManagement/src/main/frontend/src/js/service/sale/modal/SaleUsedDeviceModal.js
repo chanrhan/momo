@@ -39,10 +39,10 @@ function SaleUsedDeviceModal(props){
                         <div className={cmc(Popup.ta_r)}>
                             <button type="button" className={`btn_blue ${cmc(Popup.btn, Popup.btn_small)}`} onClick={inputField.addItem}>항목추가</button>
                         </div>
-                        <div className={Popup.list_title}>
+                        <div className={cm(Popup.list_title, Popup.d3)}>
                             <label htmlFor="card_n1m" className={cm(Popup.form_label, User.form_label)}>모델명</label>
                             <label htmlFor="card_nm2" className={cm(Popup.form_label, User.form_label)}>용량</label>
-                            <label htmlFor="card_n1m" className={cm(Popup.form_label, User.form_label)}>판매 수수료</label>
+                            <label htmlFor="card_n1m" className={cm(Popup.form_label, User.form_label)}>중고폰 판매금액</label>
                         </div>
                         {
                             inputField.length() > 0 && inputField.input.map((_,i)=>{

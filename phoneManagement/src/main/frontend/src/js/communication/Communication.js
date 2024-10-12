@@ -2,7 +2,7 @@ import Layout from "../../css/layout.module.css";
 import Calender from "../../css/calendar.module.css";
 import {cm} from "../utils/cm";
 import {CalendarTable} from "./module/CalendarTable";
-import {MonthSelectLayer} from "../common/modal/menu/MonthSelectLayer";
+import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 import {useObjectInputField} from "../hook/useObjectInputField";
 
 export function Communication(){
@@ -62,9 +62,9 @@ export function Communication(){
                     <div className={cm(Calender.calender_date, Calender.div)}>
                         <span className={Calender.date_text}>{inputField.input.year}년 {inputField.input.month}월</span>
                         <div className={Calender.date_box}>
-                            <MonthSelectLayer onSelect={onYYMMSelect}>
+                            <MonthSelectModal onSelect={onYYMMSelect}>
                                 <button type="button" className={Calender.date_btn}>달력</button>
-                            </MonthSelectLayer>
+                            </MonthSelectModal>
                         </div>
                     </div>
 

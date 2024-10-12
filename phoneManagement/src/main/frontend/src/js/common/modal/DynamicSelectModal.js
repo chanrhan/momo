@@ -144,13 +144,12 @@ export function DynamicSelectModal(props){
 
     const addItem = (e)=>{
         e.stopPropagation()
-        let focusIndex = inputField.length();
-        if(inputField.length() === 1 && ObjectUtils.isEmpty(inputField.get(0, 'name'))){
-            focusIndex -= 1;
-        }else{
+        if(!ObjectUtils.isEmpty(inputField.get(inputField.length()-1, 'name'))){
             inputField.addItem();
+            setInputFocus(inputField.length())
+        }else{
+            setInputFocus(inputField.length()-1)
         }
-        setInputFocus(focusIndex)
     }
 
     const insertAll = async ()=>{

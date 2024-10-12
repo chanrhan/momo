@@ -12,7 +12,7 @@ import {Statistics} from "./Statistics";
 import useValidateInputField from "../hook/useValidateInputField";
 import useApi from "../hook/useApi";
 import {useSelector} from "react-redux";
-import {MonthSelectLayer} from "../common/modal/menu/MonthSelectLayer";
+import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 import {DateUtils} from "../utils/DateUtils";
 
 export function Analysis(){
@@ -90,10 +90,10 @@ export function Analysis(){
                             </div>
                         }
 
-                        <MonthSelectLayer onSelect={selectDate}>
+                        <MonthSelectModal onSelect={selectDate}>
                             <input type="text" className="inp date" value={keydate}
                                    placeholder="날짜 선택" readOnly/>
-                        </MonthSelectLayer>
+                        </MonthSelectModal>
                         <button type="button" className="btn_all">전체 보기</button>
                     </div>
                 </div>

@@ -4,7 +4,6 @@ import {useEffect, useRef, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
-import ChangeShopModal from "../../shop/modal/ChangeShopModal";
 import AddShopModal from "../../shop/modal/AddShopModal";
 import AlertModal from "./snackbar/AlertModal";
 import MenuModalTest from "../../test/MenuModalTest";
@@ -17,7 +16,7 @@ import TableHeaderSelectModal from "../../test/TableHeaderSelectModal";
 import TableValidationModal from "../../test/TableValidationModal";
 import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
-import {MonthSelectLayer} from "./menu/MonthSelectLayer";
+import {MonthSelectModal} from "./menu/MonthSelectModal";
 import {DateSelectModal} from "./menu/DateSelectModal";
 import {SelectModal} from "./menu/SelectModal";
 import {SaleWtPlanModal} from "../../service/sale/modal/SaleWtPlanModal";
@@ -36,10 +35,10 @@ import {UpdatePasswordModal} from "../../profile/modal/UpdatePasswordModal";
 import {NameCardModal} from "../../profile/modal/NameCardModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
-import {ScrollUtils} from "../../utils/ScrollUtils";
 import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModal";
 import {ImagePreviewModal} from "./layer/ImagePreviewModal";
 import {HintModal} from "./tooptip/HintModal";
+import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -71,7 +70,7 @@ const MODAL_COMPONENTS = {
 
     // Shop
     ChangeNickname: ChangeNicknameModal,
-    ChangeShop: ChangeShopModal,
+    // ChangeShop: ChangeShopModal,
     AddShop: AddShopModal,
 
     // Test
@@ -92,8 +91,8 @@ const MODAL_COMPONENTS = {
 
     SelectTableHeader: TableHeaderSelectModal,
     TableValidation: TableValidationModal,
-    Select: SelectModal,
-    SelectMonth: MonthSelectLayer,
+    // Select: SelectModal,
+    // SelectMonth: MonthSelectLayer,
     SelectDate: DateSelectModal,
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
@@ -181,9 +180,13 @@ function ModalContainer(){
     },[modalList.list])
 
     let topIndex = 0;
+    let topScrollIndex = 0;
     modalList.list.forEach(({modalName, type, props}, index)=>{
-        if(type === 'MENU' || type === 'LAYER' || type === 'RENDERLESS'){
+        if(type === M_TYPE.MENU || type === M_TYPE.LAYER || type === M_TYPE.RENDERLESS){
             topIndex = index
+        }
+        if(type === M_TYPE.LAYER || type === M_TYPE.MENU){
+            topScrollIndex = index
         }
     })
     const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
@@ -202,14 +205,20 @@ function ModalContainer(){
                     topComponentRef.current = props.ref;
                     // modal.addTopElement(props.ref)
                 }
+
                 return null;
             }
             const ModalComponent = MODAL_COMPONENTS[modalName];
             return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         }
-
         const ModalComponent = MODAL_COMPONENTS[modalName];
-        return <ModalComponent scrollable={false} key={modalName} {...props}/>
+
+        let scrollable = false;
+        if((type === M_TYPE.LAYER || type === M_TYPE.MENU) && index === topScrollIndex){
+            scrollable = true;
+        }
+
+        return <ModalComponent scrollable={scrollable} key={modalName} {...props}/>
     });
 
     return createPortal(

@@ -7,7 +7,7 @@ import useApi from "../../hook/useApi";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import {useSelector} from "react-redux";
-import {MonthSelectLayer} from "../../common/modal/menu/MonthSelectLayer";
+import {MonthSelectModal} from "../../common/modal/menu/MonthSelectModal";
 import {DateUtils} from "../../utils/DateUtils";
 import {MoreOptionLayer} from "../../common/module/MoreOptionLayer";
 import {SelectItem} from "../../common/module/SelectLayer";
@@ -266,11 +266,11 @@ export function Sale(){
                 <div className={cm(Board.board_head)}>
                     <form>
                         <div className={cm(Board.board_head_group)}>
-                            <MonthSelectLayer onSelect={setMonth}>
+                            <MonthSelectModal onSelect={setMonth}>
                                 <input type="text" className="inp date" value={inputField.get('keydate')}
                                        placeholder="날짜 선택"
                                        readOnly/>
-                            </MonthSelectLayer>
+                            </MonthSelectModal>
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                         </div>
                         <div className={cm(Board.board_head_group)}>

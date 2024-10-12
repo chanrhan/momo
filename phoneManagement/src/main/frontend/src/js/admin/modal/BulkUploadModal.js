@@ -36,9 +36,9 @@ export function BulkUploadModal(props){
 
     const [data, setData] = useState(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))
 
-    useEffect(() => {
-        console.table(data)
-    }, [data]);
+    // useEffect(() => {
+    //     console.table(data)
+    // }, [data]);
 
     // useEffect(() => {
     //     setData(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))

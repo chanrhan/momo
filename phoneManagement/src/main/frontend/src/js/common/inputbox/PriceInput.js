@@ -1,5 +1,6 @@
 import {useEffect} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
+import {NumberInput} from "./NumberInput";
 
 export function PriceInput({id, className, name, value, onChange, readOnly, placeholder}){
 
@@ -10,19 +11,17 @@ export function PriceInput({id, className, name, value, onChange, readOnly, plac
         return Number(value)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
 
-    const handlePress = (e)=>{
+    const explicitComma = (e)=>{
         const v = e.target.value;
         e.target.value = v.replaceAll(",","")
-        if(!Number.isNaN(Number(e.target.value))){
-            onChange(e)
-        }
+        return e;
     }
 
     return (
-        <input type="text" id={id} name={name}
+        <NumberInput id={id} name={name}
                className={`ta_r ${className}`}
-               maxLength={13}
-               value={addComma() ?? ''} onChange={handlePress}
+               maxLength={20}
+               value={addComma() ?? ''} preprocess={e=>explicitComma(e)} onChange={onChange}
                readOnly={readOnly}
                placeholder={placeholder}/>
     )

@@ -7,8 +7,16 @@ import {ObjectUtils} from "../../utils/objectUtil";
 import {HttpStatusCode} from "axios";
 import {userActions} from "../../store/slices/userSlice";
 import useApi from "../../hook/useApi";
+import {deprecate} from "util";
 
-function ChangeShopModal(props){
+/**
+ *
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ * @deprecated
+ */
+export function ChangeShopModal(props){
     const dispatch = useDispatch();
     const modal = useModal();
     const {userApi, shopApi} = useApi();
@@ -23,7 +31,7 @@ function ChangeShopModal(props){
     },[]);
 
     const close = ()=>{
-        modal.closeModal(ModalType.MENU.Change_Shop);
+        // modal.closeModal(ModalType.MENU.Change_Shop);
     }
 
     const changeShop = (shopId)=>{
@@ -58,5 +66,3 @@ function ChangeShopModal(props){
     )
 }
 
-
-export default ChangeShopModal;

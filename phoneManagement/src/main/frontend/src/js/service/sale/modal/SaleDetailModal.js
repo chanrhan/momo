@@ -32,6 +32,8 @@ import {Scrollable} from "../../../common/module/Scrollable";
 import {useFileLoader} from "../../../hook/useFileLoader";
 import {FileUtils} from "../../../utils/FileUtils";
 import {useHintBox} from "../../../hook/useHintBox";
+import {NumberInput} from "../../../common/inputbox/NumberInput";
+import {CustomerCodeInput} from "../../../common/inputbox/CustomerCodeInput";
 
 
 function SaleDetailModal(props){
@@ -60,7 +62,7 @@ function SaleDetailModal(props){
         {
             key: 'cust_cd',
             name: '식별번호',
-            regex: /^\d{6}$|^\d{10}$/,
+            regex: /^\d{6}$|^\d{5}$/,
             msg: '번호를 정확하게 입력해 주십시오'
         },
         {
@@ -69,19 +71,22 @@ function SaleDetailModal(props){
         },
         {
             key: 'ct_actv_div',
-            value: 0
+            value: null
         },
         {
             key: 'ct_actv_tp',
-            value: 0
+            value: null,
+            required: true
         },
         {
             key: 'device_stor',
-            value: 0
+            value: null,
+            required: true
         },
         {
             key: 'ct_istm',
-            value: 0
+            value: null,
+            required: true
         }
     ]);
     const fileLoader = useFileLoader()  ;
@@ -280,6 +285,19 @@ function SaleDetailModal(props){
 
         addInputField.input.forEach(v=>{
             rst += NumberUtils.toNumber(v.amount)
+        })
+        return rst;
+    }
+
+    const sumUsedDeviceCms = ()=>{
+        let rst = 0;
+        // console.table(addInputField)
+        if(!checkListInputField.input.ud_list){
+            return rst;
+        }
+
+        checkListInputField.input.ud_list.forEach(v=>{
+            rst += NumberUtils.toNumber(v.ud_cms)
         })
         return rst;
     }
@@ -693,13 +711,14 @@ function SaleDetailModal(props){
                                         <AddSaleItem errorText={inputField.error.cust_cd} style={{
                                             marginTop: '11.5px'
                                         }}>
-                                            <AddSaleInput maxLength={10} inputField={inputField} name='cust_cd'
-                                                          subject='생년월일 / 사업자번호'
-                                                          icon={<>
-                                                              <p className='hint_icon' onMouseOver={showHintModal}></p>
-                                                              {hintBox.component}
-                                                          </>}/>
-
+                                            <label htmlFor='cust_cd' className={Popup.customer_label}>생년월일 / 사업자번호</label>
+                                            <p className='hint_icon' onMouseOver={showHintModal}></p>
+                                            {hintBox.component}
+                                            <div className={`${Popup.customer_inp_box}`}>
+                                                <CustomerCodeInput name='cust_cd' value={inputField.get('cust_cd')}
+                                                                   className={cm(Popup.customer_inp)}
+                                                                   onChange={inputField.handleInput} />
+                                            </div>
                                         </AddSaleItem>
 
                                     </ul>
@@ -737,13 +756,13 @@ function SaleDetailModal(props){
                                             <label htmlFor='wt_actv_tp' className={Popup.customer_label}>개통
                                                 유형</label>
                                             <div className={Popup.customer_inp_box}>
-                                                <div className={`select_box ${cm(Popup.select_box, User.select_box)}`} onClick={()=>{
-                                                    console.log('123')
-                                                }}>
+                                                <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                                     <input type="hidden" id=""/>
                                                     <SelectIndexLayer cssModules={toCssModules(Popup, User)}
-                                                                      inputField={inputField} name='ct_actv_tp'
-                                                                      value={LMD.ct_actv_tp[0]}
+                                                                      inputField={inputField}
+                                                                      name='ct_actv_tp'
+                                                                      error={inputField.error.ct_actv_tp}
+                                                                      // value={LMD.ct_actv_tp[0]}
                                                                       values={LMD.ct_actv_tp}/>
                                                 </div>
                                             </div>
@@ -758,6 +777,7 @@ function SaleDetailModal(props){
                                                     <SelectIndexLayer cssModules={toCssModules(Popup, User)}
                                                                       inputField={inputField}
                                                                       name='device_stor'
+                                                                      error={inputField.error.device_stor}
                                                                       values={LMD.storage}/>
                                                 </div>
                                             </div>
@@ -772,6 +792,7 @@ function SaleDetailModal(props){
                                                     <input type="hidden" id=""/>
                                                     <SelectIndexLayer cssModules={toCssModules(Popup, User)}
                                                                       inputField={inputField}
+                                                                      error={inputField.error.ct_istm}
                                                                       name='ct_istm' values={LMD.istm}/>
                                                 </div>
                                             </div>
@@ -827,7 +848,7 @@ function SaleDetailModal(props){
                                                 <div className={Popup.price_text}>유/무선 판매 수수료</div>
                                             </li>
                                             <li className={cm(Popup.price_item, Popup.plus)}>
-                                                <div className={Popup.price_num}>0원</div>
+                                                <div className={Popup.price_num}>{NumberUtils.toPrice(sumUsedDeviceCms())}원</div>
                                                 <div className={Popup.price_text}>중고폰 판매금액</div>
                                             </li>
                                             <li className={cm(Popup.price_item, Popup.plus)}>
@@ -846,6 +867,7 @@ function SaleDetailModal(props){
                                                 <div className={Popup.price_num}>{
                                                     NumberUtils.toPrice(
                                                         sumCms() +
+                                                        sumUsedDeviceCms() +
                                                         sumAdd() -
                                                         sumSup()
                                                     )
@@ -1005,15 +1027,17 @@ function SaleDetailModal(props){
 }
 
 function PriceHalfBox({type = 0, inputField, provider}) {
-    const modal = useModal();
-    // console.table(inputField.input)
 
     return (
         <div className={Popup.half_box}>
             <div className={cm(Popup.customer_title, Popup[`n${type + 3}`])}>{type === 0 ? '지원' : '추가'}
                 <button type="button"
                         className={`btn_blue ${cmc(Popup.btn, Popup.btn_medium)}`}
-                        onClick={inputField.addItem}>항목추가
+                        onClick={()=>{
+                            if(inputField.length() < 6) {
+                                inputField.addItem()
+                            }
+                        }}>항목추가
                 </button>
             </div>
 
@@ -1028,7 +1052,7 @@ function PriceHalfBox({type = 0, inputField, provider}) {
                 <tr>
                     <th className={Popup.th} scope="col">구분</th>
                     <th className={Popup.th} scope="col">금액</th>
-                    <th className={Popup.th} scope="col">금액</th>
+                    <th className={Popup.th} scope="col"></th>
                 </tr>
                 </thead>
                 <tbody className={Popup.tbody}>
