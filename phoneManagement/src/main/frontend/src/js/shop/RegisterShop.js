@@ -4,23 +4,18 @@ import {UserCompanyItem} from "./module/UserCompanyItem";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import useApi from "../hook/useApi";
-import {useSelector} from "react-redux";
-import {shopItemReducer} from "../store/slices/shopItemSlice";
 import useValidateInputField from "../hook/useValidateInputField";
-import {bpNoRegex, telRegex} from "../utils/regex";
-import {ComponentStepper} from "../utils/ComponentStepper";
-import useModal from "../hook/useModal";
-import {ObjectUtils} from "../utils/objectUtil";
-import {ModalType} from "../common/modal/ModalType";
-import {UserFormList} from "../account/module/UserFormList";
-import {UserFormItem} from "../account/module/UserFormItem";
-import {UserFormInput} from "../account/module/UserFormInput";
-import {cmc} from "../utils/cm";
+import {telRegex} from "../utils/regex";
 import useUserInfo from "../hook/useUserInfo";
+import {useSelector} from "react-redux";
 
-// 일단 보류
 export function RegisterShop(){
-    const {shopApi} = useApi();
+    const {shopApi, userApi} = useApi();
+    const userInfo = useUserInfo();
+    const LOCAL = useSelector(s=>s.localReducer);
+
+    const brnoRef = useRef()
+
     const inputField = useValidateInputField([
         {
             key: 'provider',
@@ -44,6 +39,20 @@ export function RegisterShop(){
     ]);
 
     const nav = useNavigate()
+
+    useEffect(()=>{
+        if(LOCAL.brNo){
+            brnoRef.current = LOCAL.brNo;
+        }else{
+            userApi.getBrno().then(({status,data})=>{
+                if(status === 200 && data){
+                    brnoRef.current = data;
+                }else{
+                    nav('/shop/brno')
+                }
+            })
+        }
+    },[])
 
     const submit = async () => {
         if (inputField.validateAll()) {

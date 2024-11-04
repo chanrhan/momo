@@ -210,13 +210,13 @@ export function Task(){
                     <form>
                         <div className={Board.board_head_group}>
                                 <span className="switch">
-                                    <input type="checkbox" name='not_done' className="switch_inp"
-                                           checked={inputField.get('not_done')} readOnly/>
-                                    <label htmlFor="not_done" onClick={()=>{
-                                        inputField.put('not_done', !inputField.get('not_done'))
+                                    <input type="checkbox" name='completed' className="switch_inp"
+                                           checked={inputField.get('completed')} readOnly/>
+                                    <label htmlFor="completed" onClick={()=>{
+                                        inputField.put('completed', !inputField.get('completed'))
                                     }}><span>on/off</span></label>
                                 </span>
-                            <span className="switch_text">{inputField.get('not_done') === true ? '완료 고객 보기' : '미완료 고객 보기'}</span>
+                            <span className="switch_text">{inputField.get('completed') === true ? '완료 고객 보기' : '미완료 고객 보기'}</span>
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                         </div>
                         <div className={Board.board_head_group}>
@@ -245,6 +245,7 @@ export function Task(){
                                       onSelectSale={openSaleDetailModal}
                                       category={category}
                                       items={items}
+                                      notDone={inputField.get('not_done')}
                                       onChangeState={onChangeState}/>
                     <div className="view_more">
                         <button type="button" className="view_more_btn">더 보기</button>
@@ -255,16 +256,16 @@ export function Task(){
     )
 }
 
-function CategorySelector({checkAll, allChecked, checkedSale, onCheck, onLoad, profileImages, category, items, onChangeState, onSelectSale}){
+function CategorySelector({checkAll, allChecked, checkedSale, onCheck, onLoad, profileImages, category, items, onChangeState, onSelectSale, notDone}){
     switch (category){
         case 0:
-            return <TaskUsedDeviceBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
+            return <TaskUsedDeviceBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState} notDone={notDone}/>
         case 1:
-            return <TaskCardBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
+            return <TaskCardBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState} notDone={notDone}/>
         case 2:
-            return <TaskCombBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
+            return <TaskCombBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState} notDone={notDone}/>
         case 3:
-            return <TaskSupportBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
+            return <TaskSupportBoardTable checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} profileImages={profileImages} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState} notDone={notDone}/>
         case 4:
             return <PromiseBoardTable onLoad={onLoad} checkAll={checkAll} allChecked={allChecked} checkedSale={checkedSale} onCheck={onCheck} onSelectSale={onSelectSale} items={items} onChangeState={onChangeState}/>
     }

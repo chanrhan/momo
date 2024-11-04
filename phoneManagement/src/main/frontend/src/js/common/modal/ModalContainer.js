@@ -39,6 +39,7 @@ import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModa
 import {ImagePreviewModal} from "./layer/ImagePreviewModal";
 import {HintModal} from "./tooptip/HintModal";
 import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
+import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -103,7 +104,10 @@ const MODAL_COMPONENTS = {
 
     // error
     Warning: WarningModal,
-    Info: InfoModal
+    Info: InfoModal,
+
+    // study private
+    AddStudyNode: AddStudyNodeModal
 }
 
 function ModalContainer(){

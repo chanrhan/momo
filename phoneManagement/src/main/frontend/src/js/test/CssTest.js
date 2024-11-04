@@ -5,12 +5,20 @@ export function CssTest(){
     return (
         <div>
             <h1>CSS 테스트</h1>
-            <div className={Test.main}>
-                <div className={Test.body}>
-                    <p className={cm(Test.test, Test.blue)}>Hello</p>
-                    <p className={cm(Test.test, Test.pink)}>World!</p>
+            <li>
+                <div>
+                    <input type="checkbox" name='radio' id='hi' className={Test.inp} checked={true} readOnly/>
+                    <label htmlFor="hi" className={Test.label}></label>
+                    <input type="text" value='박희찬 한녕' className={Test.text} readOnly/>
                 </div>
-            </div>
+            </li>
+            <li>
+                <div>
+                    <input type="checkbox" name='radio' id='hi' className={Test.inp} checked={false} readOnly/>
+                    <label htmlFor="hi" className={Test.label}></label>
+                    <input type="text" value='강윤민 한녕' className={Test.text}/>
+                </div>
+            </li>
         </div>
     )
 }

@@ -24,6 +24,14 @@ function UserApi(accessToken){
             // console.table(array)
             return await axiosApiWithAccessToken.get(`/api/v1/user/brno/status?brNo=${brNo}`, accessToken);
         },
+        getBrno : async ()=>{
+            // console.table(array)
+            return await axiosApiWithAccessToken.get(`/api/v1/user/brno`, accessToken);
+        },
+        updateBrno : async (brNo)=>{
+            // console.table(array)
+            return await axiosApiWithAccessToken.post(`/api/v1/user/brno`, brNo, accessToken);
+        },
         updateNickname : async (nickname)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
         },

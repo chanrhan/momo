@@ -12,14 +12,13 @@ import {useEffect} from "react";
 
 const CARD_ITEM = {
     card_nm: null,
-    error_card_nm: false,
     card_tp: null,
-    error_card_tp: false
 }
 
 function SaleCardModal(props){
     const modal = useModal();
     const inputField = useObjectArrayInputField(CARD_ITEM, props.data)
+    const errorField = useObjectArrayInputField(CARD_ITEM, props.data ? new Array(props.data.length) : null);
 
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Sale_Card)
@@ -27,22 +26,26 @@ function SaleCardModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
-            const result = inputField.input.filter((v,i)=>{
-                console.table(v)
+            let isError = false;
+            inputField.input.forEach((v,i)=>{
                 if(v.card_nm === null){
-                    inputField.put(i, 'error_card_nm', true)
+                    isError = true;
+                    errorField.put(i, 'card_nm', true)
+                }else{
+                    errorField.put(i, 'card_nm', false)
                 }
                 if(v.card_tp === null){
-                    inputField.put(i, 'error_card_tp', true)
+                    isError = true;
+                    errorField.put(i, 'card_tp', true)
+                }else{
+                    errorField.put(i, 'card_tp', false)
                 }
-                return v.card_nm && v.card_tp
             })
-            console.table(result)
-            if(ObjectUtils.isEmptyArray(result)){
-
+            // console.table(filtered)
+            if(isError){
                 return;
             }
-            props.onSubmit(inputField.input)
+            props.onSubmit([...inputField.input])
         }
         close();
     }
@@ -54,7 +57,10 @@ function SaleCardModal(props){
                 <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)} onSubmit={e=>e.preventDefault()}>
                     <div className={Popup.popup_cont}>
                         <div className={cmc(Popup.ta_r)}>
-                            <button type="button" className={`btn_blue ${cmc(Popup.btn, Popup.btn_small)}`} onClick={inputField.addItem}>항목추가</button>
+                            <button type="button" className={`btn_blue ${cmc(Popup.btn, Popup.btn_small)}`} onClick={()=>{
+                                inputField.addItem()
+                                errorField.addItem()
+                            }}>항목추가</button>
                         </div>
                         <div className={Popup.list_title}>
                             <label htmlFor="card_nm" className={cm(Popup.form_label, User.form_label)}>카드명</label>
@@ -62,7 +68,7 @@ function SaleCardModal(props){
                         </div>
                         {
                             inputField.length() > 0 && inputField.input.map((v,i)=>{
-                                return <CardItem index={i} inputField={inputField}/>
+                                return <CardItem index={i} inputField={inputField} errorField={errorField}/>
                             })
                         }
                     </div>
@@ -77,7 +83,7 @@ function SaleCardModal(props){
     )
 }
 
-function CardItem({index, inputField}){
+function CardItem({index, inputField, errorField}){
     // console.log(`item idx: ${index}`)
     return (
         <ul className={cm(Popup.half, Popup.form_list)}>
@@ -91,9 +97,9 @@ function CardItem({index, inputField}){
                                           value={!inputField.isEmpty(index, 'card_nm') ? LMD.card_nm[inputField.get(index, 'card_nm')] : null}
                                           onChange={v => {
                                               inputField.put(index, 'card_nm', v)
-                                              inputField.put(index, 'error_card_nm', false)
+                                              errorField.put(index, 'card_nm', false)
                                           }}
-                                          error={inputField.get(index, 'error_card_nm')}
+                                          error={errorField.get(index, 'card_nm')}
                                           values={LMD.card_nm}/>
                     </div>
                 </div>
@@ -108,14 +114,15 @@ function CardItem({index, inputField}){
                                           value={LMD.card_tp[inputField.get(index, 'card_tp') ?? 0]}
                                           onChange={v => {
                                               inputField.put(index, 'card_tp', v)
-                                              inputField.put(index, 'error_card_tp', false)
+                                              errorField.put(index, 'card_tp', false)
                                           }}
-                                          error={inputField.get(index, 'error_card_tp')}
+                                          error={errorField.get(index, 'card_tp')}
                                           values={LMD.card_tp}/>
                     </div>
                     <button type="button" className={Popup.check_del}
                             onClick={() => {
                                 inputField.removeItem(index)
+                                errorField.removeItem(index)
                             }}>
                     </button>
                 </div>

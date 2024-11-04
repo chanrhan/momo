@@ -35,7 +35,10 @@ export const ModalType = {
         Used_Device_Cms: 'UsedDeviceCms',
 
         //todo
-        Todo_Add: 'TodoAdd'
+        Todo_Add: 'TodoAdd',
+
+        // study_private
+        Add_Study_Node: 'AddStudyNode'
     },
     MENU: {
         // Change_Shop: 'ChangeShop',

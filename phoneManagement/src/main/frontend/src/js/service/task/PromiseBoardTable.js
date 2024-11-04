@@ -3,7 +3,7 @@ import Board from "../../../css/board.module.css"
 import {cm, cmc} from "../../utils/cm";
 import profileImg1 from "../../../images/profile_img1.jpg"
 import {PromiseOptionItem} from "./module/PromiseOptionItem";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import useApi from "../../hook/useApi";
 import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 import {ObjectUtils} from "../../utils/objectUtil";
@@ -36,27 +36,66 @@ export function PromiseBoardTable({onLoad, items, onChangeState, onSelectSale}){
 
 function PromiseItem({onLoad, item, onUpdate, onClick}){
     const {saleApi} = useApi()
-    const modal = useModal()
-    const [content, setContent] = useState('')
+    const focusRef = useRef([])
+    const [editContent, setEditContent] = useState('')
 
-    const add = async ()=>{
-        if(ObjectUtils.isEmpty(content)){
+    const nextIndex = item.pm_list ? item.pm_list.length: -1;
+    const [focusIndex, setFocusIndex] = useState(-1);
+
+    const scrollRef = useRef(null)
+
+    useEffect(() => {
+        if(focusIndex !== -1){
+            if(focusIndex < nextIndex){
+                setEditContent(item.pm_list[focusIndex].content ?? '');
+            }
+            focusRef.current[focusIndex].focus();
+        }
+    }, [focusIndex]);
+
+    useEffect(() => {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }, [item.pm_list]);
+
+    const update = async (id)=>{
+        setFocusIndex(-1)
+        if(ObjectUtils.isEmpty(editContent)){
             return;
         }
-        await saleApi.addPromiseContent({
+        await saleApi.updatePromiseContent({
             sale_id: item.sale_id,
-            content: content
+            pm_id: id,
+            content: editContent
         }).then(({status,data})=>{
-            console.log(`${status} ${data}`)
+
             if(status === 200 && data){
                 // modal.openModal(ModalType.SNACKBAR.Info, {
                 //     msg: '추가되었습니다.'
                 // })
-                setContent('')
                 onLoad();
+                setEditContent('')
             }
         })
+    }
 
+    const add = async(v)=>{
+        setFocusIndex(-1)
+        if(ObjectUtils.isEmpty(v)){
+            return;
+        }
+
+        await saleApi.addPromiseContent({
+            sale_id: item.sale_id,
+            content: v
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                // modal.openModal(ModalType.SNACKBAR.Info, {
+                //     msg: '추가되었습니다.'
+                // })
+                onLoad();
+
+            }
+        })
     }
 
     return (
@@ -77,35 +116,60 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                 <div className={Board.promise_option} onClick={e=>{
                     e.stopPropagation()
                 }}>
-                    <div className={Board.option_scroll}>
+                    <div className={Board.option_scroll} ref={scrollRef} >
                         <ul className="option_list">
                             {
                                 item.pm_list && item.pm_list.map((v,i)=> {
                                     return <li key={i} className={Board.option_item} draggable={true}>
-                                        <div className={cmc(Board.radio_box)}>
-                                            <input type="checkbox" name="radio" id={`pr_${i}`} checked={v.checked       } disabled={v.checked}/>
-                                            <label htmlFor={`pr_${i}`} className={Board.form_label}
+                                        <div className={cm(Board.radio_box)}>
+                                            <input type="checkbox" className={Board.check_inp} name="radio" id={`pr_${i}`}
+                                                   checked={v.checked} readOnly/>
+                                            <label htmlFor={`pr_${i}`} className={Board.check_label}
                                                    onClick={() => {
                                                        onUpdate({
                                                            sale_id: item.sale_id,
                                                            state: (v.checked) ? 0 : 1,
                                                            pm_id: v.pm_id
                                                    })
-                                                   }}>{v.content}</label>
+                                                   }}></label>
+                                            <input type="text" className={Board.check_text}
+                                                   value={focusIndex === i ? editContent : v.content}
+                                                   onChange={e=>{
+                                                       setEditContent(e.target.value);
+                                                   }}
+                                                   onClick={()=>{
+                                                       setFocusIndex(i);
+                                                   }}
+                                                   ref={e=>{
+                                                       focusRef.current[i] = e;
+                                                   }}
+                                                   onBlurCapture={()=>{
+                                                       update(v.pm_id);
+                                                   }}
+                                                   readOnly={focusIndex !== i}/>
                                         </div>
                                     </li>
                                 })
                             }
                         </ul>
                     </div>
-                    <div className={Board.option_add}>
-                        <button type="button" onClick={add} className={Board.add_btn}>추가</button>
-                        <input type="text" className={cm(Board.inp)} value={content} onChange={e=>{
-                            setContent(e.target.value)
-                        }} placeholder="단계 추가"/>
+                    <div className={Board.option_add} >
+                        {
+                            focusIndex === nextIndex ? (
+                                <input type="text" className={Board.add_inp} placeholder='약속 추가하기'
+                                       onBlurCapture={e=>{
+                                           add(e.target.value)
+                                       }} ref={e=>{
+                                           focusRef.current[nextIndex] = e;
+                                }}/>
+                            ) : <button type='button' onClick={() => {
+                                    setFocusIndex(nextIndex)
+                                }}  className={Board.add_btn}>약속 추가하기
+                                </button>
+                    }
                     </div>
                 </div>
-                <button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>
+                {/*<button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>*/}
             </div>
         </li>
     )

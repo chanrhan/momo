@@ -60,6 +60,9 @@ function SaleApi(accessToken){
             return await axiosApiWithAccessToken.post('/api/v1/sale/ud/cms', body, accessToken);
         },
         addPromiseContent: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/promise/content/add', body, accessToken);
+        },
+        updatePromiseContent: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/promise/content', body, accessToken);
         },
         getSummary: async (prevMonth, month)=>{

@@ -48,8 +48,8 @@ export function SelectShop(){
                                            onChange={e=>{
                                                setKeyword(e.target.value)
                                            }}
-                                           subject='매장 검색' varName='company' search placeholder="매장명을 검색해주세요."/>
-
+                                           subject='매장 검색' search
+                                           placeholder="매장명을 검색해주세요."/>
                         </UserFormItem>
                         <div className={User.form_company_request}>
                             <ul className={User.request_list}>
@@ -69,7 +69,7 @@ export function SelectShop(){
                             </ul>
                         </div>
                     </UserFormList>
-                    <Link to='/shop/register' className={`btn btn_sky btn_add_icon ${User.btn}`}>
+                    <Link to='/shop/brno' className={`btn btn_sky btn_add_icon ${User.btn}`}>
                         매장 추가
                         {/*<button type="button" >매장 추가</button>*/}
                     </Link>

@@ -277,12 +277,19 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.updateUsedDeviceCms(vo) > 0);
 	}
 
-	@PostMapping("/promise/content")
+	@PostMapping("/promise/content/add")
 	public ResponseEntity<Boolean> insertPromiseContent(HttpSession session,
 														@RequestBody SalePromiseVO vo){
 		vo.setCurrShopId(commonService.getCurrentShopId(session));
 		saleService.insertPromiseContent(vo);
 		return ResponseEntity.ok(true);
+	}
+
+	@PostMapping("/promise/content")
+	public ResponseEntity<Boolean> updatePromiseContent(HttpSession session,
+														@RequestBody SalePromiseVO vo){
+		vo.setCurrShopId(commonService.getCurrentShopId(session));
+		return ResponseEntity.ok(saleService.updatePromiseContent(vo) > 0);
 	}
 
 	@GetMapping("/summary")

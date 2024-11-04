@@ -14,6 +14,7 @@ public interface UserMapper {
 
 	public Integer getSessionData(String userId);
 	public String getName(String id);
+	public String getBrno(String userId);
 
 	public Map<String,String> getNotificationData(String userId, int shopId);
 

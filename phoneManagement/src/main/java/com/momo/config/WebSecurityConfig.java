@@ -45,6 +45,7 @@ public class WebSecurityConfig {
 				// Stomp는 아예 에러 메시지 조차 뜨지 않아서 힘들었다..
 				.requestMatchers("/api/v1/public/**","/api/v1/auth/**","/api/v1/test/**",
 //						"/api/v1/gmd/**",
+						"/study/**",
 						"/sse/**","/ws/**","/**")
 				.permitAll()
 				.requestMatchers("/api/v1/**")

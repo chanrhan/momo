@@ -31,8 +31,8 @@ public class JwtProvider {
 	private final UserService userService;
 
 	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 10L; // 단위(ms), 1000ms(1초) x 60 x 10 = 10분
-	private static final long REFRESH_TOKEN_EXPIRE_TIME_SHORT = 1000 * 60 * 60L; // 60분 = 1시간
-	private static final long REFRESH_TOKEN_EXPIRE_TIME_LONG = 1000 * 60 * 60 * 24 * 7L; // 7일
+	private static final long REFRESH_TOKEN_EXPIRE_TIME_SHORT = 1000 * 60 * 60L; // 60분 = 1시간 (자동로그인 X)
+	private static final long REFRESH_TOKEN_EXPIRE_TIME_LONG = 1000 * 60 * 60 * 24 * 7L; // 7일 (자동로그인 O)
 
 	static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes()); // test
 

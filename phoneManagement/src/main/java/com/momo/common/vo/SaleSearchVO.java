@@ -22,7 +22,8 @@ public class SaleSearchVO extends BaseVO {
 //    private String keydate;
 //    private Integer order;
 //    private boolean asc = false;
-    private Boolean notDone;
+//    private Boolean notDone;
+    private Boolean completed;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
     private SaleSearchFilter[] filters;
 

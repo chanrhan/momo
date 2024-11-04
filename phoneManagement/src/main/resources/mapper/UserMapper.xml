@@ -176,6 +176,14 @@
         WHERE id=#{id}
     </select>
 
+    <select id="getBrno">
+        SELECT IF(sf.role = 1, sh.br_no, '')
+        FROM tb_account ac
+        left outer join tb_staff sf on ac.id=sf.staff_id and ac.curr_shop_id=sf.shop_id
+        left outer join tb_shop sh on ac.curr_shop_id=sh.shop_id
+        where ac.id=#{userId}
+    </select>
+
     <update id="updateApprovalState">
         UPDATE tb_staff
         SET approval_st=#{state}

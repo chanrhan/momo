@@ -110,13 +110,23 @@ public class UserController {
 		if(!BusinessmanApiUtil.status(brNo)){
 			return ResponseEntity.ok(false);
 		}
-		String username = SecurityContextUtil.getUsername();
-		userService.updateBrNo(username, brNo);
+//		String username = SecurityContextUtil.getUsername();
+//		userService.updateBrNo(username, brNo);
 
 		return ResponseEntity.ok(true);
 	}
 
+	@GetMapping("/brno")
+	public ResponseEntity<String> getBrno(){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.getBrno(username));
+	}
 
+	@PostMapping("/brno")
+	public ResponseEntity<Boolean> updateBrNo(@RequestBody String brNo){
+		String username = SecurityContextUtil.getUsername();
+		return ResponseEntity.ok(userService.updateBrNo(username, brNo) > 0);
+	}
 
 //	사용자 정보 수정할때 함께 데이터 받을 예정
 //	@PutMapping("/pfp")

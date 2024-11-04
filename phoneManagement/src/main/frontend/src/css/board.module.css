@@ -98,7 +98,12 @@
 .board .td_board .tbody .td_num{display:inline-block; width:24px; height:24px; margin-right:6px; background:url(../images/num_icon.png) no-repeat center / 24px; font-weight:600; text-align:center; line-height:24px; vertical-align:middle;}
 .board .td_board .tbody .board_profile .profile_name{line-height:27px;}
 .board .td_board .tbody .board_profile .profile_name .profile_img{display:inline-block; overflow:hidden; width:27px; height:27px; margin-right:8px; border-radius:50%; vertical-align:top;}
-.board .td_board .tbody .td .select_btn{height:26px; padding:5px 32px 7px 7px; font-size:12px; line-height:14px;}
+.board .td_board .tbody .td .select_btn{
+    text-align: center;
+    min-width: 80%;
+    max-width: 100%;
+    height:26px; padding:5px 32px 7px 7px; font-size:12px; line-height:14px;
+}
 .board .td_board .tbody .td .select_btn:before{top:4px; right:7px;}
 .btn.btn_medium{float:right; padding-right:16px; padding-left:16px; border-radius:4px; font-size:14px; font-weight:400;}
 
@@ -122,9 +127,66 @@
 .board .promise .promise_option .option_scroll::-webkit-scrollbar-thumb{border-radius:3px; background:#dde1e8;}
 .board .promise .promise_option .option_scroll::-webkit-scrollbar-track{background:transparent;}
 .board .promise .promise_option .option_item + .option_item{margin-top:16px;}
-.board .promise .promise_option .option_item .radio_box .form_label{color:#28272c;}
-.board .promise .promise_option .option_add{margin-top:16px; font-size:0; line-height:0;}
-.board .promise .promise_option .option_add .add_btn{width:24px; height:32px; margin-right:8px; background:url(../images/add_icon.png) no-repeat center / 24px;}
+/*.board .promise .promise_option .option_item .radio_box .form_label{color:#28272c;}*/
+
+.board .promise .promise_option .option_item .radio_box{
+    display: block;
+}
+.board .promise .promise_option .option_item .radio_box .check_inp{
+    position:absolute; top:5px; left:5px; font-size: 0;
+    display: none;
+}
+
+.board .promise .promise_option .option_item .radio_box .check_label:before{
+    display:block; position:absolute; top:0; left:0;
+    width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 24px;
+}
+
+.board .promise .promise_option .option_item .radio_box .check_label{
+    position:relative; padding-left:32px;
+    color:#28272c; font-size:0; font-weight:500; line-height:24px; min-height:24px;
+}
+
+.board .promise .promise_option .option_item .radio_box .check_text{
+    display:inline-block; width:calc(100% - 32px);
+    height:24px; border:0; color:#28272c;
+    font-size:14px; font-weight:500; vertical-align:top;
+    cursor: text;
+}
+.board .promise .promise_option .option_item .radio_box .check_text:read-only{
+    cursor: pointer;
+}
+
+.board .promise .promise_option .option_item .radio_box .check_inp:checked ~ .check_text:read-only{
+    text-decoration:line-through;
+}
+
+.board .promise .promise_option .option_item .radio_box .check_inp:checked + .check_label:before{
+    background-image:url(../images/radio_icon_disabled.png);
+}
+
+.board .promise .promise_option .option_add{margin-top:12px; font-size:0; line-height:0;}
+
+.board .promise .promise_option .option_add .add_btn{
+    cursor: pointer;
+    margin:0 0; padding-left:30px;
+    background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
+    color:#4275e8;
+    font-size:15px; line-height:36px;
+}
+.board .promise .promise_option .option_add .add_inp{
+    cursor: text;
+    margin:0 0; padding-left:30px;
+    color:#91939f;
+    background:url(../images/check_icon.png) no-repeat left top 5px / 24px;
+    font-size:15px; line-height:36px;
+}
+
+/*.board .promise .promise_option .option_add .add_btn{*/
+/*    width:24px; height:32px; */
+/*    margin-right:8px; */
+/*    background:url(../images/add_icon.png) no-repeat center / 24px;*/
+/*}*/
 .board .promise .promise_option .option_add .inp{width:calc(100% - 32px); padding:0 8px; border-radius:4px; font-size:14px; line-height:30px;}
 .board .promise .promise_option .option_add .inp:focus{padding:0 7px; line-height:28px;}
 .board .promise .btn_promise{width:100%; margin-top:24px; border-radius:8px;}

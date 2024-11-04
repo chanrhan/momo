@@ -82,9 +82,15 @@ public class UserService  implements UserDetailsService{
 		return userMapper.getStaffByShopId(shopId);
 	}
 
+	public String getBrno(String userId){
+		return userMapper.getBrno(userId);
+	}
+
 	public int updateCurrentShop(String userId, int shopId){
 		return userMapper.updateCurrentShop(userId, shopId);
 	}
+
+
 
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);

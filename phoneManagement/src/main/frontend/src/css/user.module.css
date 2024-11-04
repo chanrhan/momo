@@ -50,7 +50,7 @@
 .user_form .form_auto .label:before{display:block; position:absolute; top:0; left:0; width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 100%;}
 .user_form .form_auto .input:checked + .label:before{background-image:url(../images/check_icon_on.png);}
 
-.user_form .form_btn_box{display:flex; margin-top:40px;}
+.user_form .form_btn_box{display:flex; margin-top:15px;}
 .user_form .form_btn_box .btn.w30,
 .user_form .form_item_box.w30{width:calc(30% - 6px);}
 .user_form .form_btn_box .btn.w50,
@@ -95,6 +95,11 @@
 
 /* 매장 검색하기 */
 .form_company_request{margin-top:12px;}
+.form_company_request .request_list{
+    margin-bottom: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
 .form_company_request .request_list .li{position:relative; padding:34px 116px 34px 96px; border-radius:8px; background-color:#f4f5f9;}
 .form_company_request .request_list .li + .li{
     margin-top: 5px;
@@ -131,7 +136,8 @@
 
 /* form select */
 .user_form .select_box{width:100%;}
-.select_box .select_btn{width:100%; height:60px; padding:10px 24px; padding-right:56px; border-radius:8px; font-size:16px;}
+.select_box .select_btn{
+    width:100%; height:60px; padding:10px 24px; padding-right:56px; border-radius:8px; font-size:16px;}
 .select_box .select_btn:before{top:8px; width:44px; height:44px; background-image:url(../images/arrow_icon.png);}
 
 /* 아이디, 비밀번호 찾기 */

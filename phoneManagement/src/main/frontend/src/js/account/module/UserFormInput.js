@@ -11,10 +11,6 @@ export function UserFormInput({value, type = 'text', subject, name, inputField, 
         }
     }
 
-    if(typeof inputField !== 'object' && ObjectUtils.isEmpty(value)){
-        return null;
-    }
-
     return (
         <>
             {
@@ -33,7 +29,6 @@ export function UserFormInput({value, type = 'text', subject, name, inputField, 
                     <p className={User.error_text} style={{marginBottom: '15px'}}>{errorText}</p>
                 </>
             }
-
         </>
     )
 }

@@ -10,8 +10,9 @@ import {useRef} from "react";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import useApi from "../../../hook/useApi";
+import {NumberUtils} from "../../../utils/NumberUtils";
 
-export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onCheck, profileImages, items, onChangeState, onSelectSale}){
+export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onCheck, profileImages, items, onChangeState, onSelectSale, notDone}){
     const modal = useModal()
     const tableRef = useRef()
     const {saleApi} = useApi()
@@ -133,8 +134,8 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
                             <Btd className="ta_c">{v.cust_tel}</Btd>
                             <Btd className="ta_r">{v.cust_cd}</Btd>
                             <Btd className="ta_r">{v.ud_nm}</Btd>
-                            <Btd className="ta_r">{v.ud_cms}</Btd>
-                            <Btd className="ta_r">{v.total_cms}</Btd>
+                            <Btd className="ta_r">{NumberUtils.toPrice(v.ud_cms)}</Btd>
+                            <Btd className="ta_r">{NumberUtils.toPrice(v.total_cms)}</Btd>
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
                             <Btd className="ta_c">
                                 <button type="button" className="btn_kakao">전송</button>

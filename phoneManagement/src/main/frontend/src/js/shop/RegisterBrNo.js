@@ -12,25 +12,29 @@ import User from "../../css/user.module.css";
 import {cmc} from "../utils/cm";
 import {useObjectInputField} from "../hook/useObjectInputField";
 import {bpNoRegex} from "../utils/regex";
+import {useDispatch} from "react-redux";
+import {localActions} from "../store/slices/localStorageSlice";
+import useValidateInputField from "../hook/useValidateInputField";
 
 export function RegisterBrNo(){
     const modal = useModal();
     const nav = useNavigate();
     const {userApi, shopApi} = useApi();
     const userInfo = useUserInfo();
+    const dispatch = useDispatch();
     const [bpNoChecked, setBpNoChecked] = useState(false)
-    const inputField = useObjectInputField([
-        {
-            key: 'br_nm',
-            name: '상호명',
-            // msg: '상호명을 입력해주세요'
-        },
-        {
-            key: 'br_no',
-            name: '사업자번호',
-            regex: bpNoRegex,
-            msg: '사업자번호를 정확하게 입력해주세요',
-        }
+    const inputField = useValidateInputField([
+            {
+                key: 'br_nm',
+                name: '상호명',
+                // msg: '상호명을 입력해주세요'
+            },
+            {
+                key: 'br_no',
+                name: '사업자번호',
+                regex: bpNoRegex,
+                msg: '사업자번호를 정확하게 입력해주세요',
+            }
         ]
     );
 
@@ -39,7 +43,6 @@ export function RegisterBrNo(){
             await userApi.checkBrNoStatus(inputField.get('br_no')).then(({status,data})=>{
                 if(status === 200){
                     let msg = null;
-                    // console.table(data)
                     if(data === true){
                         msg = '사업자번호 인증에 성공하였습니다.'
                         setBpNoChecked(true)
@@ -62,6 +65,7 @@ export function RegisterBrNo(){
         if(!bpNoChecked){
             inputField.handleError('br_no','사업자번호를 인증해야 합니다.');
         }else if(inputField.validateOne('br_nm')){
+            dispatch(localActions.setBrno(inputField.get('br_no')))
             nav('/shop/register')
         }
     }

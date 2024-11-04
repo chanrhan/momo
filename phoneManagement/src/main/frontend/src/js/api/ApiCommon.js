@@ -73,7 +73,7 @@ export const AxiosApi = ()=> {
 
     const get = async(url, option)=>{
         return await axiosInstance.get(url, option).catch(e=>{
-            console.log(123)
+            // console.log(123)
         })
     }
 

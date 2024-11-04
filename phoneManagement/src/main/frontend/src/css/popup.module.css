@@ -244,7 +244,9 @@
 .popup .popup_check_list > .li{display:block; position:relative; width:100%; margin:0;}
 .popup .popup_check_list > .li + .li{margin-top:15px;}
 .popup .popup_check_list > .li .check_inp{position:absolute; top:5px; left:5px;}
-.popup .popup_check_list > .li .check_label{position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;}
+.popup .popup_check_list > .li .check_label{
+    position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;
+}
 .popup .popup_check_list > .li .check_label.disable{
     color: #B3B3BEFF
 }
@@ -597,13 +599,35 @@
     padding:0 16px; border:1px solid #dde1e8; border-radius:8px; color:#141218; font-size:14px; text-align:left; line-height:52px;}
 .select_box2 .select_inp:disabled{color:#91939f;}
 .select_box2 .select_inp:before{display:block; position:absolute; top:10px; right:12px; width:16px; height:16px; background:url(../images/select_arrow.png) no-repeat center / 100%}
-.select_box2 .select_layer{opacity:0; visibility:hidden; position:absolute; top:100%; left:0; right:0; padding:8px 6px; border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16); font-size:0; line-height:0; transition:all .25s ease-in-out;}
+.select_box2 .select_layer{
+    opacity:0;
+    visibility:hidden;
+    position:absolute; top:100%; left:0; right:0; padding:8px 6px;
+    border-radius:8px; background-color:#fff; box-shadow:0 16px 24px rgba(20, 18, 24, 0.16);
+    font-size:0; line-height:0;
+    transition:all .25s ease-in-out;
+    text-align: center;
+}
 .select_box2 .select_layer.active{opacity:1; visibility:inherit; top:calc(100% + 8px); z-index:1;}
+.select_box2 .select_layer .layer_title:before{
+    position: relative; display: inline-block;
+    top:4px; right:2px; width:17px; height:17px;
+    background: url(../images/btn_add_icon.png) no-repeat center / 100%;
+}
+
 .select_box2 .select_layer .layer_title{
-    padding:11px 14px 11px 10px; color:#91939f; font-size:12px; line-height:14px;
+    width: 100%;
+    padding:7px 14px 9px 10px;
+    color:#4781ff;
+    font-size:12px; line-height:14px;
     word-break:keep-all;
     /*background-color: #91939f;*/
 }
+.select_box2 .select_layer .layer_title:hover{
+    background-color: rgba(113, 154, 241, 0.27);
+    border-radius: 10px;
+}
+
 .select_box2 .select_layer .layer_item{position:relative; padding:0 42px;}
 .select_box2 .select_layer .layer_item.active,
 .select_box2 .select_layer .layer_item:hover,
