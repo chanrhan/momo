@@ -123,8 +123,9 @@ function ModalContainer(){
 
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
         const onClickCaptureEvent = (e: MouseEvent)=>{
+            // console.log(`capture before_${modalName} ${topComponentRef.current}`)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                // console.log('capture')
+                // console.log(`capture_${modalName}`)
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -166,6 +167,7 @@ function ModalContainer(){
                 // }, 10);
                 window.addEventListener('click', onClickBubbleEvent, false)
                 window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
+                // window.addEventListener('keydown', onKeydownCaptureEvent, true)
             }
 
             if(type === M_TYPE.MENU || type === M_TYPE.LAYER || type === M_TYPE.RENDERLESS){
@@ -204,7 +206,7 @@ function ModalContainer(){
         //     }
         // }
         if(index === topIndex){
-            if(type === 'RENDERLESS'){
+            if(type === M_TYPE.RENDERLESS){
                 if(props.ref){
                     topComponentRef.current = props.ref;
                     // modal.addTopElement(props.ref)

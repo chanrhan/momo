@@ -86,7 +86,7 @@ export const LMD = {
       '현대카드','국민카드','신한카드','우리카드'
     ],
     card_tp: [
-        'DC','AC'
+        'DC','할부'
     ],
 
     // Reservation

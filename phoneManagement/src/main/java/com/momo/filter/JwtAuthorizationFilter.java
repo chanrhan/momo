@@ -28,6 +28,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 //		log.info("{} - successfulAuthentication -> 인증이나 권한이 필요한 주소 요청이 됨", this.getClass());
+		log.info("security filter: {}", request.getRequestURL());
 
 		String bearerAccessToken = request.getHeader("X-ACCESS-TOKEN");
 		String accessToken = jwtProvider.getBearerTokenToString(bearerAccessToken);

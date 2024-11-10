@@ -59,6 +59,20 @@ export function useObjectArrayInputField(init, arr){
         setInput(copy)
     }
 
+    const addItemOf = (value)=>{
+        const copy = [...input];
+        copy.push(value);
+        setInput(copy);
+    }
+
+    const firstItem = (key)=>{
+        return input ? input[0][key] : null;
+    }
+
+    const lastItem = (key)=>{
+        return input ? input[input.length-1][key] : null;
+    }
+
     const removeItem = (index)=>{
         const copy = [...input]
         copy.splice(index,1)
@@ -86,7 +100,10 @@ export function useObjectArrayInputField(init, arr){
         putAsObject,
         append,
         addItem,
+        addItemOf,
         removeItem,
+        firstItem,
+        lastItem,
         clear,
         isEmpty
     }

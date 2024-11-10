@@ -14,6 +14,19 @@ public interface GMDMapper {
     public Map<String,Object> getSecondDevice(GMDVO vo);
     public Map<String,Object> getCtPlan(GMDVO vo);
 
+    // insert one
+    public void insertDevice(GMDVO vo);
+    public void insertSecondDevice(GMDVO vo);
+    public void insertCtPlan(GMDVO vo);
+
+    public void insertInternetPlan(GMDVO vo);
+    public void insertTvPlan(GMDVO vo);
+    public void insertExtraService(GMDVO vo);
+    public void insertSupportDiv(GMDVO vo);
+    public void insertAddDiv(GMDVO vo);
+    public void insertComb(GMDVO vo);
+
+    // insert all
     public void insertDeviceAll(List<GMDVO> list);
     public void insertSecondDeviceAll(List<GMDVO> list);
     public void insertCtPlanAll(List<GMDVO> list);

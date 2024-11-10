@@ -76,9 +76,9 @@
             from tb_sale s
             left outer join tb_account ac on s.seller_id=ac.id
             where shop_id=#{currShopId}
-        <if test="order != null and !order.equals('')">
-            order by ${order} ${asc}
-        </if>
+            <if test="order != null and !order.equals('')">
+                order by ${order} ${asc}
+            </if>
         ), search as (
             select *
             from sale

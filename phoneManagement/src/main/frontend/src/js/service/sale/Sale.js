@@ -365,7 +365,7 @@ export function Sale(){
                         {
                             saleItems && saleItems.map((v1, i) => {
                                 // console.table(v1)
-                                return <tr key={i} onClick={(e) => {
+                                return <tr className={Board.tr} key={i} onClick={(e) => {
                                     openSaleDetail(v1.sale_id)
                                 }}>
                                     <Btd name={`check${v1.sale_id}`} checked={checkedSale[i]} onCheck={(e) => {
@@ -412,15 +412,15 @@ function TdChoice({column_index, data, image}){
         case 1:
             return <Btd>{data.actv_dt}</Btd>
         case 2:
-            return <Btd>
+            return <Btd className='ta_l'>
                 <span className={cm(Board.td_num)}>1</span>{data.cust_nm}
             </Btd>
         case 3:
             return <Btd className="ta_c">{data.cust_tel}</Btd>;
         case 4:
-            return <Btd className="ta_r">{data.cust_cd}</Btd>
+            return <Btd className="ta_c">{data.cust_cd}</Btd>
         case 5:
-            return <Btd className="ta_r">{data.device_nm}</Btd>;
+            return <Btd className="ta_c">{data.device_nm}</Btd>;
         case 6:
             return <Btd className="ta_r">{NumberUtils.toPrice(data.total_cms)} 원</Btd>;
         case 7:

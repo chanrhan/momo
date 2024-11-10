@@ -9,6 +9,7 @@ export const LayerModal = ({modalRef, scrollable, children, top, left, width,
 
     const scrollRef = useRef(null)
 
+
     useEffect(() => {
         let prevScrollY = null;
         if(!scrollable){
@@ -26,23 +27,32 @@ export const LayerModal = ({modalRef, scrollable, children, top, left, width,
         }
     }, []);
 
+    // const clickAwayToClose = (e)=>{
+    //     if(contentRef.current && !contentRef.current.contains(e.target)){
+    //         close();
+    //     }
+    // }
+
 
     return (
-        <div className={`scroll-hidden ${cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}`} ref={scrollRef}>
-            <div className={Popup.popup} style={
-                {
-                    top: `${60+top}px`,
-                    left: `${left}px`,
-                    width: `${width}px`,
-                    height: `${height}px`,
-                    minWidth: `${minWidth}px`,
-                    maxWidth: `${maxWidth}px`,
-                    minHeight: `${minHeight}px`,
-                    maxHeight: `${maxHeight}px`
-                }
-            }>
-                {children}
+        <>
+            <div className={`scroll-hidden ${cm(Popup.popup_mask, `${fadeIn && Popup.active}`)}`} ref={scrollRef}>
+                <div className={Popup.popup} ref={modalRef} style={
+                    {
+                        top: `${60 + top}px`,
+                        left: `${left}px`,
+                        width: `${width}px`,
+                        height: `${height}px`,
+                        minWidth: `${minWidth}px`,
+                        maxWidth: `${maxWidth}px`,
+                        minHeight: `${minHeight}px`,
+                        maxHeight: `${maxHeight}px`
+                    }
+                }>
+                    {children}
+                </div>
             </div>
-        </div>
+        </>
+
     )
 }

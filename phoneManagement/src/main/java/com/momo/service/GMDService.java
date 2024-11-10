@@ -56,8 +56,37 @@ public class GMDService {
         return gmdMapper.getAddDiv(vo);
     }
 
-    // 추가
+    // Insert
+    public void insertDevice(GMDVO vo){
+        gmdMapper.insertDevice(vo);
+    }
+    public void insertSecondDevice(GMDVO vo){
+        gmdMapper.insertSecondDevice(vo);
+    }
+    public void insertCtPlan(GMDVO vo){
+        gmdMapper.insertCtPlan(vo);
+    }
 
+    public void insertInternetPlan(GMDVO vo){
+        gmdMapper.insertInternetPlan(vo);
+    }
+    public void insertTvPlan(GMDVO vo){
+        gmdMapper.insertTvPlan(vo);
+    }
+    public void insertExtraService(GMDVO vo){
+        gmdMapper.insertExtraService(vo);
+    }
+    public void insertSupportDiv(GMDVO vo){
+        gmdMapper.insertSupportDiv(vo);
+    }
+    public void insertAddDiv(GMDVO vo){
+        gmdMapper.insertAddDiv(vo);
+    }
+    public void insertComb(GMDVO vo){
+        gmdMapper.insertComb(vo);
+    }
+
+    // Insert All
     public void insertDeviceAll(List<GMDVO> list){
          gmdMapper.insertDeviceAll(list);
     }

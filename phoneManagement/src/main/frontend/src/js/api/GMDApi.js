@@ -12,8 +12,11 @@ function GMDApi(accessToken){
         getSecondDeviceById: async (id)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
         },
-        insertAll: async (type, body)=>{
+        insert: async (type, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/gmd?type=${type}`, body, accessToken);
+        },
+        insertAll: async (type, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/all?type=${type}`, body, accessToken);
         },
         deleteAll: async (type, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/gmd/del?type=${type}`, body, accessToken);

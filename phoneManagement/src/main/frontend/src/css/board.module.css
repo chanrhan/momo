@@ -83,19 +83,35 @@
 .board .td_board .check_box{display:inline-block; vertical-align:top;}
 .board .td_board .check_box .label{width:16px; height:16px; padding-left:0; font-size:0; line-height:16px !important;}
 .board .td_board .check_box .label:before{width:16px; height:16px; background-size:24px;}
-.board .td_board .tbody{
-
+.board .td_board .tbody .tr{
+    cursor: pointer;
+}
+.board .td_board .tbody .tr:hover{
+    background-color: rgba(127, 152, 210, 0.18);
 }
 .board .td_board .tbody .td{padding:10px; border-right:2px solid #f4f4f5; border-bottom:1px solid rgba(227, 227, 227, 0.9); color:#28272c; font-size:14px; text-align:center; line-height:16px;}
 .board .td_board .tbody .td:last-child{border-right:0;}
 .board .td_board .tbody.br_none .td{border-right:0;}
-.board .td_board .tbody .td_type{padding:4px; border-radius:4px; font-size:12px; line-height:14px; vertical-align:top;}
+.board .td_board .tbody .td_type{
+    padding:4px; border-radius:4px; font-size:12px;
+    line-height:14px; vertical-align:top;
+}
 .board .td_board .tbody .td_type + .td_type{margin-left:1px;}
 .board .td_board .tbody .td_type.blue{background-color:#e3ecff; color:#4275e8;}
 .board .td_board .tbody .td_type.orange{background-color:#ffeadd; color:#ff741d;}
 .board .td_board .tbody .td_type.pink{background-color:#fee5f8; color:#f959cd;}
 .board .td_board .tbody .td_type.purple{background-color:#eee5ff; color:#8b55ff;}
-.board .td_board .tbody .td_num{display:inline-block; width:24px; height:24px; margin-right:6px; background:url(../images/num_icon.png) no-repeat center / 24px; font-weight:600; text-align:center; line-height:24px; vertical-align:middle;}
+.board .td_board .tbody .td_num{
+    display:inline-block; width:24px; height:24px;
+    margin-right:8px;
+    /*background:url(../images/num_icon.png) no-repeat center / 24px; */
+    font-weight:600; text-align:center;
+    font-size: 12px;
+    padding: 4px;
+    border-radius: 4px;
+    background-color:#e3ecff; color:#4275e8;
+    line-height:14px; vertical-align:middle;
+}
 .board .td_board .tbody .board_profile .profile_name{line-height:27px;}
 .board .td_board .tbody .board_profile .profile_name .profile_img{display:inline-block; overflow:hidden; width:27px; height:27px; margin-right:8px; border-radius:50%; vertical-align:top;}
 .board .td_board .tbody .td .select_btn{
@@ -111,6 +127,9 @@
 .board .promise{margin-top:24px;}
 .board .promise .promise_list{font-size:0; line-height:0;}
 .board .promise .promise_item{display:inline-block; width:calc(25% - 16px); margin:8px; padding:24px 20px 20px 20px; border-radius:8px; background-color:#fff; box-shadow:0 8px 24px rgba(221, 225, 232, 0.8); vertical-align:top;}
+.board .promise .promise_box{
+    cursor: pointer;
+}
 .board .promise .promise_profile > .div{display:inline-block; vertical-align:top;}
 .board .promise .promise_profile .profile_img{overflow:hidden; width:58px; height:58px; margin-right:20px; border-radius:50%;}
 .board .promise .promise_profile .profile_img .img{width:100%;}
@@ -128,6 +147,7 @@
 .board .promise .promise_option .option_scroll::-webkit-scrollbar-track{background:transparent;}
 .board .promise .promise_option .option_item + .option_item{margin-top:16px;}
 /*.board .promise .promise_option .option_item .radio_box .form_label{color:#28272c;}*/
+
 
 .board .promise .promise_option .option_item .radio_box{
     display: block;
@@ -148,10 +168,15 @@
 }
 
 .board .promise .promise_option .option_item .radio_box .check_text{
-    display:inline-block; width:calc(100% - 32px);
+    padding: 10px;
+    display:inline-block; max-width:calc(80% - 32px);
     height:24px; border:0; color:#28272c;
     font-size:14px; font-weight:500; vertical-align:top;
     cursor: text;
+    border-radius: 8px;
+}
+.board .promise .promise_option .option_item .radio_box .check_text:hover{
+    background-color: rgba(197, 197, 197, 0.22);
 }
 .board .promise .promise_option .option_item .radio_box .check_text:read-only{
     cursor: pointer;
@@ -169,14 +194,14 @@
 
 .board .promise .promise_option .option_add .add_btn{
     cursor: pointer;
-    margin:0 0; padding-left:30px;
+    margin:0 0; padding-left:40px;
     background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
     color:#4275e8;
     font-size:15px; line-height:36px;
 }
 .board .promise .promise_option .option_add .add_inp{
     cursor: text;
-    margin:0 0; padding-left:30px;
+    margin:0 0; padding-left:40px;
     color:#91939f;
     background:url(../images/check_icon.png) no-repeat left top 5px / 24px;
     font-size:15px; line-height:36px;

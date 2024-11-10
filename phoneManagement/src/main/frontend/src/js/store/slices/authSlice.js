@@ -29,6 +29,9 @@ export const authSlice = createSlice({
         },
         clear: (state)=>{
             state = initialState
+        },
+        getAccessToken: (state)=>{
+
         }
     }
 })

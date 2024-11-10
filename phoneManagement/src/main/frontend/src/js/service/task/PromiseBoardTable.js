@@ -9,6 +9,7 @@ import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
+import {EditableAddButton} from "../../common/module/EditableAddButton";
 
 export function PromiseBoardTable({onLoad, items, onChangeState, onSelectSale}){
     return (
@@ -53,9 +54,9 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
         }
     }, [focusIndex]);
 
-    useEffect(() => {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }, [item.pm_list]);
+    // useEffect(() => {
+    //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    // }, [item.pm_list]);
 
     const update = async (id)=>{
         setFocusIndex(-1)
@@ -93,14 +94,17 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                 //     msg: '추가되었습니다.'
                 // })
                 onLoad();
+                setTimeout(()=>{
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }, 50)
 
             }
         })
     }
 
     return (
-        <li className={Board.promise_item} onClick={onClick}>
-            <div className="promise_box">
+        <li className={Board.promise_item} >
+            <div className={Board.promise_box} onClick={onClick}>
                 <div className={Board.promise_profile}>
                     <div className={cm(Board.profile_img, Board.div)}>
                         {/*<img className={Board.img} src={img} alt="프로필 이미지"/>*/}
@@ -146,6 +150,11 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                                    onBlurCapture={()=>{
                                                        update(v.pm_id);
                                                    }}
+                                                   onKeyDown={e=>{
+                                                       if(e.key === 'Enter') {
+                                                           update(v.pm_id)
+                                                       }
+                                                   }}
                                                    readOnly={focusIndex !== i}/>
                                         </div>
                                     </li>
@@ -154,19 +163,29 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                         </ul>
                     </div>
                     <div className={Board.option_add} >
-                        {
-                            focusIndex === nextIndex ? (
-                                <input type="text" className={Board.add_inp} placeholder='약속 추가하기'
-                                       onBlurCapture={e=>{
-                                           add(e.target.value)
-                                       }} ref={e=>{
-                                           focusRef.current[nextIndex] = e;
-                                }}/>
-                            ) : <button type='button' onClick={() => {
-                                    setFocusIndex(nextIndex)
-                                }}  className={Board.add_btn}>약속 추가하기
-                                </button>
-                    }
+                        <EditableAddButton inpClassName={Board.add_inp}
+                                           btnClassName={Board.add_btn}
+                                           value='약속 추가하기' onUpdate={v=>{
+                                               add(v);
+                        }}/>
+                    {/*    {*/}
+                    {/*        focusIndex === nextIndex ? (*/}
+                    {/*            <input type="text" className={Board.add_inp} placeholder='약속 추가하기'*/}
+                    {/*                   onBlurCapture={e=>{*/}
+                    {/*                       add(e.target.value)*/}
+                    {/*                   }} onKeyDown={e=>{*/}
+                    {/*                        if(e.key == 'Enter') {*/}
+                    {/*                            add(e.target.value)*/}
+                    {/*                        }*/}
+                    {/*                    }}*/}
+                    {/*                   ref={e=>{*/}
+                    {/*                       focusRef.current[nextIndex] = e;*/}
+                    {/*            }}/>*/}
+                    {/*        ) : <button type='button' onClick={() => {*/}
+                    {/*                setFocusIndex(nextIndex)*/}
+                    {/*            }}  className={Board.add_btn}>약속 추가하기*/}
+                    {/*            </button>*/}
+                    {/*}*/}
                     </div>
                 </div>
                 {/*<button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>*/}

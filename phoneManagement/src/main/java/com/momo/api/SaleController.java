@@ -154,8 +154,10 @@ public class SaleController {
 		List<FileVO> orgFileList = saleService.getFiles(vo);
 		if(orgFileList == null || orgFileList.isEmpty()){
 			// 기존 파일이 없다면, 그냥 추가하는 것과 다름이 없음
-			for(MultipartFile mf : files){
-				insertList.add(imageService.upload("sale", mf));
+			if(files != null){
+				for(MultipartFile mf : files){
+					insertList.add(imageService.upload("sale", mf));
+				}
 			}
 		}else{
 			// 기존 파일이 있다면, 어떤걸 수정하고, 어떤 걸 삭제할지 결정해야함

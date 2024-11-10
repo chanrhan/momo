@@ -59,7 +59,15 @@
 .calender .tb_calender .thead .th{padding:27px 8px; border-right:1px solid #dde1e8; background-color:#f8f8f9; color:#62626e; font-size:14px; font-weight:500; line-height:16px;}
 .calender .tb_calender .thead .th:first-child{color:#f34432;}
 .calender .tb_calender .thead .th:last-child{border-right:0; color:#4781ff;}
-.calender .tb_calender .tbody .td{position:relative; height:133px; padding:10px 8px; border-top:1px solid #dde1e8; border-right:1px solid #dde1e8; vertical-align:top;}
+.calender .tb_calender .tbody .td{
+    position:relative; height:133px;
+    padding:10px 8px; border-top:1px solid #dde1e8;
+    border-right:1px solid #dde1e8; vertical-align:top;
+    cursor: pointer;
+}
+.calender .tb_calender .tbody .td:hover{
+    background-color: rgba(200, 217, 255, 0.34) !important;
+}
 .calender .tb_calender .tbody .td.out{background-color: rgba(206, 206, 206, 0.59)
 }
 
@@ -73,7 +81,8 @@
 .calender .tb_calender .tbody .td .stat:before{display:block; position:absolute; top:6px; left:0; width:6px; height:6px; border-radius:50%; background-color:#62626e;}
 .calender .tb_calender .tbody .td .stat.blue:before{background-color:#4781ff;}
 .calender .tb_calender .tbody .td .stat.red:before{background-color:#f34432;}
-.calender .tb_calender .tbody .td.today:before{display:block; position:absolute; top:8px; right:8px; padding:2px 6px; border-radius:9px; background-color:#c5dcfc; content:'오늘'; color:#4781ff; font-size:12px; line-height:14px;}
+.calender .tb_calender .tbody .td.today:before{display:block; position:absolute; top:8px; right:8px; padding:2px 6px; border-radius:9px;
+    background-color: #e1ecfc; content:'오늘'; color:#4781ff; font-size:12px; line-height:14px;}
 .calender .tb_calender .tbody .td.active{background-color:#e8f2fe;}
 .calender .calender_detail{overflow:hidden; position:absolute; top:0; right:0; bottom:0; width:532px; margin-left:16px; border:1px solid #dde1e8; border-radius:8px; text-align:center;}
 .calender .calender_detail .detail_head{position:relative; padding:20px 8px; background-color:#4781ff;}

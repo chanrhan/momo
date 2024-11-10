@@ -12,7 +12,8 @@ import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 function SaleCombModal(props){
     const inputField = useObjectInputField({
         comb_tp: 0,
-        comb_memo: ''
+        comb_name: props.comb_name ?? null,
+        comb_memo: props.comb_memo ?? ''
     });
     const modal = useModal();
 
@@ -40,7 +41,12 @@ function SaleCombModal(props){
                                 <div className={User.form_inp}>
                                     <div className={`select_box ${cm(User.select_box, Popup.select_box)}`}>
                                         <input type="hidden" id="type"/>
-                                        <DynamicSelectButton type={DYNAMIC_TYPE.comb_tp}/>
+                                        <DynamicSelectButton type={DYNAMIC_TYPE.comb_tp}
+                                                             value={inputField.get('comb_name')}
+                                                             onChange={v=>{
+                                            inputField.put('comb_tp', v.id);
+                                            inputField.put('comb_name', v.name)
+                                        }}/>
                                         {/*<SelectIndexLayer values={[1,2,3]} name='comb_tp' inputField={inputField} cssModules={toCssModules(Popup, User)}/>*/}
                                     </div>
                                 </div>

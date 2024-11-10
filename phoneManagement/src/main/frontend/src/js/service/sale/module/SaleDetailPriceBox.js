@@ -71,6 +71,7 @@ export function SaleDetailPriceBox({type = 0, inputField, provider}) {
                             </td>
                             <td className={Popup.td}>
                                 <PriceInput className={`ta_r ${cmc(Popup.inp)}`}
+                                            maxLength={8}
                                             value={inputField.get(i, `amount`)} onChange={(e) => {
                                     inputField.put(i, `amount`, e.target.value)
                                 }}/>

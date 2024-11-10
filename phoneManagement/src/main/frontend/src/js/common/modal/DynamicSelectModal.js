@@ -9,6 +9,7 @@ import {MouseEventUtils} from "../../utils/MouseEventUtils";
 import {ModalType} from "./ModalType";
 import useModal from "../../hook/useModal";
 import {ObjectUtils} from "../../utils/objectUtil";
+import {EditableAddButton} from "../module/EditableAddButton";
 
 export const DYNAMIC_TYPE = {
     device: 0,
@@ -24,17 +25,13 @@ export const DYNAMIC_TYPE = {
 
 export function DynamicSelectModal(props){
     const modal = useModal();
-    const userInfo = useUserInfo();
-
     const {gmdApi} = useApi();
 
     const [keyword, setKeyword] = useState('')
-
     const [orgCount, setOrgCount] = useState(0)
 
-    // const [items, setItems] = useState(null)
     const [boxWidth, setBoxWidth] = useState(150)
-    const [boxHeight, setBoxHeight] = useState(250)
+    const [boxHeight, setBoxHeight] = useState(100)
 
     const scrollRef = useRef()
 
@@ -42,9 +39,9 @@ export function DynamicSelectModal(props){
         name: ''
     }, null)
 
-    const [selected, setSelected] = useState(null)
+    const [selected, setSelected] = useState(null) // 옵션 버튼 클릭 중인 인덱스
 
-    const [inputFocus, setInputFocus] = useState(null)
+    const [inpFocus, setInpFocus] = useState(null) // 수정 모드, 입력 필드 포커싱 인덱스
     const prevFocus = useRef(null)
     const focusRef = useRef([])
 
@@ -65,6 +62,7 @@ export function DynamicSelectModal(props){
                     maxLength = v.name.length
                 }
             })
+            setBoxHeight(inputField.length() * 36 + 44 + 16);
         }
         if(maxLength !== 0){
             setBoxWidth(maxLength * 18)
@@ -82,16 +80,16 @@ export function DynamicSelectModal(props){
     }, [props.scrollable]);
 
     useEffect(() => {
-        if(prevFocus.current !== null && inputFocus === null){
+        if(prevFocus.current !== null && inpFocus === null){
             onUpdate(prevFocus.current)
         }
-        if(inputFocus){
-            focusRef.current[inputFocus].focus();
+        if(inpFocus){
+            focusRef.current[inpFocus].focus();
         }
         return ()=>{
-            prevFocus.current = inputFocus
+            prevFocus.current = inpFocus
         }
-    }, [inputFocus]);
+    }, [inpFocus]);
 
     const close = ()=>{
         modal.closeModal(ModalType.MENU.Dynamic_Select)
@@ -99,7 +97,7 @@ export function DynamicSelectModal(props){
 
     const getItems = async ()=>{
         // console.log(props.type)
-        console.log(props.provider)
+        // console.log(props.provider)
         await gmdApi.getData(props.type, keyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
@@ -142,14 +140,22 @@ export function DynamicSelectModal(props){
         inputField.setInput(copy)
     }
 
-    const addItem = (e)=>{
-        e.stopPropagation()
-        if(!ObjectUtils.isEmpty(inputField.get(inputField.length()-1, 'name'))){
-            inputField.addItem();
-            setInputFocus(inputField.length())
-        }else{
-            setInputFocus(inputField.length()-1)
+    const addItem = async (v)=>{
+        if(ObjectUtils.isEmpty(v)){
+            return;
         }
+
+        await gmdApi.insert(props.type, {
+            provider: props.provider,
+            name: v
+        }).then(({status, data})=>{
+            if(status === 200 && data){
+                getItems();
+                setTimeout(()=>{
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }, 50)
+            }
+        })
     }
 
     const insertAll = async ()=>{
@@ -167,7 +173,7 @@ export function DynamicSelectModal(props){
         await gmdApi.insertAll(props.type, body).then(({status,data})=>{
             if(status === 200 && data){
                 getItems();
-                setInputFocus(null)
+                setInpFocus(null)
                 setSelected(null)
             }
         })
@@ -177,7 +183,7 @@ export function DynamicSelectModal(props){
         await gmdApi.deleteAll(props.type, [id]).then(({status,data})=>{
             if(status === 200 && data){
                 getItems();
-                setInputFocus(null)
+                setInpFocus(null)
                 setSelected(null)
                 // e.blur();
             }
@@ -194,7 +200,7 @@ export function DynamicSelectModal(props){
         await gmdApi.updateItem(props.type, body).then(({status,data})=>{
             if(status === 200 && data){
                 getItems();
-                setInputFocus(null)
+                setInpFocus(null)
                 setSelected(null)
             }
         })
@@ -206,11 +212,11 @@ export function DynamicSelectModal(props){
         setSelected(i)
 
         modal.openModal(ModalType.MENU.More_Option, {
-            top: `${top-10}px`,
-            left: `${left-150}px`,
+            top: top-10,
+            left: left - 150,
             onSubmit: (action)=>{
                 if(action === 0){ // 수정
-                    setInputFocus(i)
+                    setInpFocus(i)
                 }else if(action === 1){ // 삭제
                     deleteItem(id)
                 }
@@ -222,73 +228,72 @@ export function DynamicSelectModal(props){
     return (
         <MenuModal modalRef={props.modalRef} top={props.top} left={props.left}>
             <div className={cm(Popup.select_box2, Popup.active)}
-                 style={{
-                     width: `${boxWidth}px`,
-                     // height: `${boxHeight}px`,
-                     // overflowY: 'scroll'
-                 }}  onClick={e=>{
-                setInputFocus(null)
+                  onClick={e=>{
+                setInpFocus(null)
             }}>
-                <input type="text" className={cm(Popup.select_inp)}
+                <input type="text" className={cm(Popup.select_inp)} style={{
+                    width: `${props.width ?? 160}px`,
+                    lineHeight: `${props.height ?? 40}px`
+                }}
                        value={keyword}
                        onChange={e => {
                            setKeyword(e.target.value)
                        }}
                        placeholder="옵션 검색"/>
-                <div className={cm(Popup.select_layer, Popup.active)}>
-                    <button type='button' className={Popup.layer_title} onClick={addItem}>옵션 추가하기</button>
+                <div className={cm(Popup.select_layer, Popup.active)} style={{
+                    width: `${boxWidth}px`,
+                }} >
+                    {/*<button type='button' className={Popup.layer_title} onClick={addItem}>옵션 추가하기</button>*/}
                     <ul className="layer_list" ref={scrollRef} style={{
                         overflowY: "scroll",
-                        height: `${boxHeight}px`
+                        height: `${boxHeight}px`,
+                        maxHeight: '400px'
                     }}>
                         {
                             inputField.input && inputField.input.map((v, i) => {
-                                return <li key={i} className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inputFocus === i && Popup.focus_input}`)}>
+                                return <li key={i} className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
                                     <span className={Popup.layer_type}></span>
                                     <input type="text" className={Popup.layer_btn}
                                            value={v.name}
+                                           maxLength={20}
                                            placeholder='입력해주세요'
                                            ref={v=>{
                                                focusRef.current[i] = v
                                            }}
                                            // autoFocus={i === inputFocus}
                                            onClick={e => {
-                                               if (i === inputFocus) {
+                                               console.log(`click ${i} ${inpFocus}`)
+                                               if (i === inpFocus) {
                                                    e.stopPropagation()
-                                                   setInputFocus(i)
-                                               } else if(inputFocus !== null){
+                                               } else if(inpFocus !== null){
+                                                   setInpFocus(null)
 
                                                }else {
                                                    e.stopPropagation()
                                                    selectItem(i, v.id)
                                                }
                                            }}
-                                        // onBlur={e=>{
-                                        //     console.log(`blur: ${inputField.get(i, 'name')}`)
-                                        // }}
-                                        //    onFocusCapture={e=>{
-                                        //        console.log(`focus capture: ${inputField.get(i, 'name')}`)
-                                        //    }}
                                            onKeyDown={e => {
-                                               if (inputFocus === i && e.keyCode === 13) {
-                                                   setInputFocus(null)
+                                               if (inpFocus === i && e.key === 'Enter') {
+                                                   setInpFocus(null)
                                                }
                                            }}
                                            onChange={e => {
                                                inputField.put(i, 'name', e.target.value)
-                                           }} readOnly={i !== inputFocus}/>
-                                    {/*<button type="button" className={Popup.layer_btn} onClick={() => {*/}
-                                    {/*    selectItem(i, v.id);*/}
-                                    {/*}}>{v.name}</button>*/}
+                                           }} readOnly={i !== inpFocus}/>
                                     <button type="button" className={Popup.layer_more_btn} onClick={(e) => {
                                         openMoreModal(e, i, v.id)
                                     }}>더보기
                                     </button>
-                                    {/*<MoreItem/>*/}
                                 </li>
                             })
                         }
                     </ul>
+                    <div className={Popup.dynamic_add_box}>
+                        <EditableAddButton inpClassName={Popup.add_inp}
+                                           btnClassName={Popup.add_btn}
+                                           value='옵션 추가하기' onUpdate={addItem}/>
+                    </div>
                 </div>
             </div>
         </MenuModal>

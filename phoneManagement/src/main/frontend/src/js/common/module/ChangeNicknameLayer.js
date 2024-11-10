@@ -26,9 +26,9 @@ export function ChangeNicknameLayer({initValue, value, values, onChange}){
         }
     }, [renderlessModal.active]);
 
-    useEffect(() => {
-        console.log(selectedIndex)
-    }, [selectedIndex]);
+    // useEffect(() => {
+    //     console.log(selectedIndex)
+    // }, [selectedIndex]);
 
     const submit = ()=>{
         if(onChange){

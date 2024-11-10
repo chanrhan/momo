@@ -202,7 +202,7 @@ export function DashboardSchedule({userInfo}){
                             return <li key={i} className={cm(Dashboard.schedule_item)}>
                                 <div className='radio_box'>
                                     {/*<span className={cm(Dashboard.schedule_mark, Dashboard[LMD.color[v.color]])}></span>*/}
-                                    <input type="checkbox" name={`pm_${i}`} id={`pm_${i}`} checked={v.checked} disabled={v.checked}/>
+                                    <input type="checkbox" name={`pm_${i}`} id={`pm_${i}`} readOnly checked={v.checked} disabled={v.checked}/>
                                     <label htmlFor={`pm_${i}`} className={Dashboard.form_label} onClick={()=>{
                                         checkTodo(v.todo_id, !v.checked)
                                     }}>

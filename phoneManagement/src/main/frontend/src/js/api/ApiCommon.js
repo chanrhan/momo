@@ -4,9 +4,12 @@ import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {errorMonitor} from "form-data";
 import axiosInstance from "../utils/axiosInstance";
+import {authActions} from "../store/slices/authSlice";
+import {useSelector} from "react-redux";
 
 export const AxiosApi = ()=> {
     const modal = useModal();
+    const {authenticated, accessToken, expireTime} = useSelector(s=>s.authReducer);
 
     // const axiosInstance = axios.create({
     //     baseURL: "http://localhost:8080",
@@ -20,31 +23,13 @@ export const AxiosApi = ()=> {
     //     withCredentials: true,
     // });
 
-    // // axiosInstance.interceptors.request.use(()=>{
-    // //     // access, refresh 판별해서 재발급하는 함수
-    // //
-    // //
-    // // }, ()=>{
-    // //
-    // })
-
     axiosInstance.interceptors.response.use((response)=>{
-        // const status = response.status;
-        // if(status !== 200){
-        //     throw response
-        // }
-        // console.log(111)
-        // console.log('success')
-        // console.table(response)
         return {
             status: response.status,
             data: response.data,
             headers: response.headers
         }
     }, (error)=>{
-        // console.error("error")
-        // console.table(error)
-        // console.log(222)
         if(!error){
             return error.response;
         }
@@ -54,9 +39,6 @@ export const AxiosApi = ()=> {
         }else if(error.response && error.response.data){
             msg = error.response.data.message;
         }
-        // if(msg){
-        //
-        // }
         modal.openModal(ModalType.SNACKBAR.Warn, {
             msg: msg ?? "문제가 발생했습니다. 다시 한번 시도해 주세요."
         })

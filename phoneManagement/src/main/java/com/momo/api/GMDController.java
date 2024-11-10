@@ -22,8 +22,6 @@ public class GMDController {
     private final CommonService commonService;
 
     // 정적 목록
-
-    // 핸드폰 기기
     @GetMapping("")
     public ResponseEntity<Map<String,Object>> getAll(HttpSession session,
                                                         @RequestParam int type,
@@ -54,10 +52,32 @@ public class GMDController {
         return ResponseEntity.ok(gmdService.getSecondDeviceById(id));
     }
 
-
-    // 추가
-
+    // insert
     @PostMapping("")
+    public ResponseEntity<Boolean> insert(HttpSession session,
+                                             @RequestParam int type,
+                                             @RequestBody GMDVO vo){
+        int currShopId  = commonService.getCurrentShopId(session);
+        vo.setCurrShopId(currShopId);
+        switch (type){
+            case 0: gmdService.insertDevice(vo); break;
+            case 1: gmdService.insertSecondDevice(vo);  break;
+            case 2: gmdService.insertCtPlan(vo); break;
+            //
+            case 3: gmdService.insertInternetPlan(vo); break;
+            case 4: gmdService.insertTvPlan(vo); break;
+            case 5: gmdService.insertExtraService(vo); break;
+            case 6: gmdService.insertSupportDiv(vo); break;
+            case 7: gmdService.insertAddDiv(vo); break;
+            case 8: gmdService.insertComb(vo); break;
+            default: return ResponseEntity.badRequest().build();
+
+        }
+        return ResponseEntity.ok(true);
+    }
+
+    // Insert All
+    @PostMapping("/all")
     public ResponseEntity<Boolean> insertAll(HttpSession session,
                                              @RequestParam int type,
                                              @RequestBody List<GMDVO> list){

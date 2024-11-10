@@ -388,8 +388,116 @@
         ) as list
     </select>
 
-
 <!--    insert-->
+    <insert id="insertDevice">
+        set @next_id := (
+            select IFNULL(max(device_id),0)+1
+            from tb_device
+        );
+
+        insert into tb_device
+            (device_id, device_nm, device_cd)
+        VALUES
+            (@next_id, #{provider},#{device_nm},#{device_cd})
+    </insert>
+
+    <insert id="insertSecondDevice">
+        set @next_id := (
+        select IFNULL(max(sd_id),0)+1
+        from tb_second_device
+        );
+
+        insert into tb_second_device
+        (sd_id, sd_nm, sd_cd)
+        VALUES
+            (@next_id,#{name},#{code})
+    </insert>
+
+    <insert id="insertCtPlan">
+        set @next_id := (
+        select IFNULL(max(ct_plan_id),0)+1
+        from tb_ct_plan
+        );
+
+        insert into tb_ct_plan
+        (ct_plan_id, provider, ct_plan_nm)
+        VALUES
+            (@next_id),#{provider},#{name}
+    </insert>
+
+    <insert id="insertInternetPlan">
+        set @next_id := (
+        select IFNULL(max(internet_plan_id),0)+1
+        from tb_internet_plan
+        );
+
+        insert into tb_internet_plan
+        (shop_id, internet_plan_id, provider, internet_plan_nm)
+        VALUES
+           (#{currShopId},@next_id,#{provider},#{name})
+    </insert>
+
+    <insert id="insertTvPlan">
+        set @next_id := (
+        select IFNULL(max(tv_plan_id),0)+1
+        from tb_tv_plan
+        );
+
+        insert into tb_tv_plan
+        (shop_id, tv_plan_id, provider, tv_plan_nm)
+        VALUES
+            (#{currShopId},@next_id,#{provider},#{name})
+    </insert>
+
+    <insert id="insertExtraService">
+        set @next_id := (
+        select IFNULL(max(exsvc_id),0)+1
+        from tb_extra_service
+        );
+
+        insert into tb_extra_service
+        (shop_id, exsvc_id, provider, exsvc_nm)
+        VALUES
+            (#{currShopId},@next_id,#{provider},#{name})
+    </insert>
+
+    <insert id="insertSupportDiv">
+        set @next_id := (
+        select IFNULL(max(sup_div_id),0)+1
+        from tb_sup_div
+        );
+
+        insert into tb_sup_div
+        (shop_id, sup_div_id, sup_div_nm)
+        VALUES
+            (#{currShopId},@next_id,#{name})
+    </insert>
+
+    <insert id="insertAddDiv">
+        set @next_id := (
+        select IFNULL(max(add_div_id),0)+1
+        from tb_add_div
+        );
+
+        insert into tb_add_div
+        (shop_id, add_div_id, add_div_nm)
+        VALUES
+            (#{currShopId},@next_id,#{name})
+    </insert>
+
+    <insert id="insertComb">
+        set @next_id := (
+        select IFNULL(max(comb_tp_id),0)+1
+        from tb_comb_tp
+        );
+
+        insert into tb_comb_tp
+        (shop_id, comb_tp_id, comb_tp_nm)
+        VALUES
+            (#{currShopId},@next_id,#{name})
+    </insert>
+
+<!--    insert all-->
     <insert id="insertDeviceAll">
         set @next_id := (
             select IFNULL(max(device_id),0)+1
@@ -397,10 +505,10 @@
         );
 
         insert into tb_device
-        (device_id, provider, device_nm, device_cd)
+        (device_id, device_nm, device_cd)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            (@next_id+#{index}),#{item.provider},#{item.name},#{item.code}
+            (@next_id+#{index}),#{item.name},#{item.code}
         </foreach>
     </insert>
 
@@ -411,10 +519,10 @@
         );
 
         insert into tb_second_device
-        (sd_id, provider, sd_nm, sd_cd)
+        (sd_id, sd_nm, sd_cd)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            (@next_id+#{index}),#{item.provider},#{item.name},#{item.code}
+            (@next_id+#{index}),#{item.name},#{item.code}
         </foreach>
     </insert>
 
@@ -504,7 +612,7 @@
 
     <insert id="insertCombAll">
         set @next_id := (
-        select IFNULL(max(tv_plan_id),0)+1
+        select IFNULL(max(comb_tp_id),0)+1
         from tb_comb_tp
         );
 

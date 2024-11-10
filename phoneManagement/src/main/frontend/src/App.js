@@ -129,7 +129,7 @@ function App() {
                   <Route element={
                       <Authorization redirectTo='/account/login'>
                           <Allowance condition={()=>{
-                              return userInfo.curr_shop_id === -1
+                              return !userInfo || userInfo.curr_shop_id === -1
                           }} redirectTo='/service'>
                               <AdminLayout/>
                           </Allowance>

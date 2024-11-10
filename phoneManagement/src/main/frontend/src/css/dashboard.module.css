@@ -17,21 +17,59 @@
 .dashboard .panel_body .panel_group:nth-child(3){margin-top:11px;}
 .dashboard .panel_body .panel{display:inline-block; position:relative; vertical-align:top;}
 
-.dashboard .panel_body .panel.n1{width:calc(100% - 308px);}
-.dashboard .panel_body .panel.n1 .panel_list{margin:0 -11px; text-align:center;}
-.dashboard .panel_body .panel.n1 .panel_item{display:inline-block; width:calc(20% - 20px); margin:0 10px; padding:18px 8px 12px 8px; border-radius:8px; background-color:#fff; vertical-align:top;}
+.dashboard .panel_body .panel.n1{width:calc(100% - 308px);
+    height: 172px;
+}
+.dashboard .panel_body .panel.n1 .panel_list{
+    margin:0 -11px;
+    height: 100%;
+    text-align:center;
+}
+.dashboard .panel_body .panel .panel_item{
+    cursor: pointer;
+}
+.dashboard .panel_body .panel.n1 .panel_item:hover{
+    background-color: #edf4ff;
+}
+.dashboard .panel_body .panel.n1 .panel_item{
+    display:inline-block;
+    width:calc(20% - 20px);
+    height: 100%;
+    margin:0 10px;
+    padding:18px 8px 12px 8px; border-radius:8px;
+    background-color:#fff; vertical-align:top;
+}
 .dashboard .panel_body .panel.n1 .panel_item .panel_title{color:#141218; font-size:20px; font-weight:600; line-height:23px;}
-.dashboard .panel_body .panel.n1 .panel_item .panel_num{margin-top:18px; color:#141218; font-size:30px; font-weight:600; line-height:32px;}
-.dashboard .panel_body .panel.n1 .panel_item .panel_price{margin-top:18px; color:#141218; font-size:18px; font-weight:600; line-height:32px;}
-.dashboard .panel_body .panel.n1 .panel_item .panel_per{display:inline-block; position:relative; margin-top:17px; padding-left:19px; font-size:17px; text-align:left; line-height:20px;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_num{margin-top:22px;
+    color:#141218; font-size:30px; font-weight:600; line-height:32px;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_price{margin-top:22px;
+    color:#141218; font-size:18px; font-weight:600; line-height:32px;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_per{
+    display:inline-block;
+    position:relative; margin-top:22px; padding-left:19px; font-size:17px;
+    text-align:left; line-height:20px;
+}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per.up{color:#f34432;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per.down{color:#4781ff;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per.none{color: #b2b2b2;}
 .dashboard .panel_body .panel.n1 .panel_item .panel_per .per_arrow{position:absolute; top:0; left:0; font-size:14px;}
-.dashboard .panel_body .panel.n1 .panel_item .panel_per .per_text{display:block; color:#91939f; font-size:8px; line-height:10px;}
+.dashboard .panel_body .panel.n1 .panel_item .panel_per .per_text{
+    display:block; color:#91939f; font-size:8px; line-height:10px;
+    /*margin-left: calc(20% - 1px);*/
+}
 
-.dashboard .panel_body .panel.n2{width:288px; margin-left:20px; padding:21px 21px 21px 21px; border-radius:8px; background-color:#fff;}
-.dashboard .panel_body .panel.n2 .panel_item + .panel_item{margin-top:21px;}
+.dashboard .panel_body .panel.n2{width:288px;
+    margin-left:20px; padding:12px 12px 12px 12px;
+    border-radius:8px; background-color:#fff;
+}
+.dashboard .panel_body .panel.n2 .panel_item{
+    padding: 10px;
+}
+.dashboard .panel_body .panel.n2 .panel_item:hover{
+    border-radius:8px;
+    background-color: #edf4ff;
+}
+.dashboard .panel_body .panel.n2 .panel_item + .panel_item{margin-top:11px;}
 .dashboard .panel_body .panel.n2 .panel_item > .span{line-height:22px; vertical-align:top;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_title{width:calc(100% - 140px); color:#141218; font-size:15px;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_num{width:50px; color:#b2b4c0; font-size:16px; font-weight:600; text-align:center;}
@@ -63,10 +101,21 @@
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item .tab_btn{padding:0 14px; color:#62626e; font-size:14px; line-height:30px;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item.active .tab_btn{border-radius:4px; background-color:rgba(221, 225, 232, 0.3); color:#141218;}
 
-.dashboard .panel_body .panel.n4{width:288px; margin-left:20px; padding:21px; border-radius:8px; background-color:#fff;}
+.dashboard .panel_body .panel.n4{width:288px; margin-left:20px;
+    padding:21px; border-radius:8px; background-color:#fff;}
 .dashboard .panel_body .panel.n4 .panel_name{color:#141218; font-size:17px; line-height:21px;}
-.dashboard .panel_body .panel.n4 .panel_list{margin-top:43px; padding:0 11px;}
-.dashboard .panel_body .panel.n4 .panel_item + .panel_item{margin-top:17px; padding-top:21px; border-top:1px solid #dde1e8;}
+.dashboard .panel_body .panel.n4 .panel_list{margin-top:15px; padding:0 0;}
+.dashboard .panel_body .panel.n4 .panel_item:hover{
+    border-radius:8px;
+    background-color: #edf4ff;
+}
+.dashboard .panel_body .panel.n4 .panel_item{
+    /*margin:14px 0 14px 0;*/
+    padding: 18px 12px 18px 12px;
+}
+.dashboard .panel_body .panel.n4 .panel_item + .panel_item{
+    border-top:1px solid #dde1e8;
+}
 .dashboard .panel_body .panel.n4 .panel_item > .span{line-height:22px; vertical-align:top;}
 .dashboard .panel_body .panel.n4 .panel_item .panel_title{width:calc(100% - 129px); color:#141218; font-size:15px;}
 .dashboard .panel_body .panel.n4 .panel_item .panel_num{width:50px; color:#b2b4c0; font-size:16px; font-weight:600; text-align:center;}
@@ -206,8 +255,15 @@
     .dashboard .panel_body .panel.n1 .panel_list{margin:0 -5px;}
     .dashboard .panel_body .panel.n1 .panel_item{width:calc(20% - 10px); margin:0 5px;}
     .dashboard .panel_body .panel.n1 .panel_item .panel_title{font-size:16px; line-height:18px;}
-    .dashboard .panel_body .panel.n1 .panel_item .panel_num{margin-top:12px; font-size:22px; line-height:24px;}
-    .dashboard .panel_body .panel.n1 .panel_item .panel_per{margin-top:12px; padding-left:15px;}
+    .dashboard .panel_body .panel.n1 .panel_item .panel_num{
+        margin-top:22px;
+        font-size:22px; line-height:24px;
+    }
+    .dashboard .panel_body .panel.n1 .panel_item .panel_price{
+        margin-top:22px;
+        font-size:22px; line-height:24px;
+    }
+    .dashboard .panel_body .panel.n1 .panel_item .panel_per{margin-top:22px; padding-left:15px;}
     .dashboard .panel_body .panel.n1 .panel_item .panel_per .per_arrow{font-size:12px;}
     .dashboard .panel_body .panel.n2 .panel_item + .panel_item{margin-top:12px;}
     .dashboard .panel_body .panel.n2 .panel_item .panel_title{font-size:14px;}

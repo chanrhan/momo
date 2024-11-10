@@ -94,12 +94,10 @@ function SaleDetailModal(props){
     const fileLoader = useFileLoader()  ;
 
     const supportInputField = useObjectArrayInputField({
-        name: '선택없음',
         div: 0,
         amount: 0
     })
     const addInputField = useObjectArrayInputField({
-        name: '선택없음',
         div: 0,
         amount: 0
     })
@@ -410,9 +408,12 @@ function SaleDetailModal(props){
     const openCombModal = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Comb, {
             provider: inputField.get('provider'),
-            onSubmit: ({comb_tp, comb_memo})=>{
-                // console.log(`comb: ${comb_tp} ${comb_memo}`)
+            comb_name: checkListInputField.get('comb_name'),
+            comb_memo: checkListInputField.get('comb_memo'),
+            onSubmit: ({comb_tp, comb_name, comb_memo})=>{
+                console.log(`comb: ${comb_tp} ${comb_name} ${comb_memo}`)
                 checkListInputField.put('comb_tp',comb_tp)
+                checkListInputField.put('comb_name',comb_name)
                 checkListInputField.put('comb_memo',comb_memo)
                 if(!ObjectUtils.isEmpty(comb_tp) || !ObjectUtils.isEmpty(comb_memo)){
                     checkBit.on(5)
@@ -503,7 +504,6 @@ function SaleDetailModal(props){
             })
         }
 
-
         let pm_list = null
         if(promiseInputField.input.length > 0){
             pm_list = promiseInputField.input.filter(v=>!ObjectUtils.isEmpty(v.content));
@@ -514,7 +514,7 @@ function SaleDetailModal(props){
             ...checkListInputField.input,
             sup_list: supportInputField.input.filter(v=>v.div && v.div !== 0),
             add_list: addInputField.input.filter(v=>v.div && v.div !== 0),
-            total_cms: inputField.get('ct_cms') +
+            total_cms: Number(inputField.get('ct_cms')) +
                 sumAdd() -
                 sumSup(),
             pm_list: pm_list,
@@ -804,6 +804,7 @@ function SaleDetailModal(props){
                                                 수수료(정책)</label>
                                             <div className={Popup.customer_inp_box}>
                                                 <PriceInput name='ct_cms' value={inputField.get('ct_cms')}
+                                                            maxLength={9}
                                                             className={`ta_r ${Popup.customer_inp}`}
                                                             onChange={inputField.handleInput}/>
                                             </div>
@@ -865,7 +866,7 @@ function SaleDetailModal(props){
                                                 </div>
                                                 <div className={Popup.price_text}>지원</div>
                                             </li>
-                                            <li className={cm(Popup.price_item, Popup.sum)}>
+                                            <div className={cm(Popup.price_item, Popup.sum)}>
                                                 <div className={Popup.price_num}>{
                                                     NumberUtils.toPrice(
                                                         sumCms() +
@@ -876,7 +877,7 @@ function SaleDetailModal(props){
                                                 }원
                                                 </div>
                                                 <div className={Popup.price_text}>총이익</div>
-                                            </li>
+                                            </div>
                                         </ul>
                                     </div>
 

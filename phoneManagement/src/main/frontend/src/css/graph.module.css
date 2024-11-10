@@ -32,8 +32,11 @@
 .graph .graph_group{font-size:0; line-height:0;}
 .graph .graph1 + .graph_group{margin-top:40px;}
 
-.graph_group > .div{display:inline-block; overflow:hidden; padding:32px;
-    border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
+.graph_group > .div{
+    border: 2px solid #4781ff;
+    display:inline-block; overflow:hidden; padding:32px;
+    border-radius:8px; background-color:#f8f8f9; vertical-align:top;
+}
 .graph .graph2{position:relative; width:100%;}
 .graph .graph2 .graph_top{position:relative;}
 .graph .graph2 .graph_top .tab.type4{position:relative; float: right; top:0; right:0;}

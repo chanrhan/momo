@@ -73,7 +73,9 @@ export function DataGraph({userId, date}){
                 <PieChartArea date={date} userId={userId}/>
 
             </div>
-            <div className={Graph.graph_group}>
+            <div className={Graph.graph_group} style={{
+                marginTop: '25px'
+            }}>
                 <LineChartArea date={date} userId={userId}/>
             </div>
 
