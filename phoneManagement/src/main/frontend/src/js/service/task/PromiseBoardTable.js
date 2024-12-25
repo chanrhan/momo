@@ -168,24 +168,6 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                            value='약속 추가하기' onUpdate={v=>{
                                                add(v);
                         }}/>
-                    {/*    {*/}
-                    {/*        focusIndex === nextIndex ? (*/}
-                    {/*            <input type="text" className={Board.add_inp} placeholder='약속 추가하기'*/}
-                    {/*                   onBlurCapture={e=>{*/}
-                    {/*                       add(e.target.value)*/}
-                    {/*                   }} onKeyDown={e=>{*/}
-                    {/*                        if(e.key == 'Enter') {*/}
-                    {/*                            add(e.target.value)*/}
-                    {/*                        }*/}
-                    {/*                    }}*/}
-                    {/*                   ref={e=>{*/}
-                    {/*                       focusRef.current[nextIndex] = e;*/}
-                    {/*            }}/>*/}
-                    {/*        ) : <button type='button' onClick={() => {*/}
-                    {/*                setFocusIndex(nextIndex)*/}
-                    {/*            }}  className={Board.add_btn}>약속 추가하기*/}
-                    {/*            </button>*/}
-                    {/*}*/}
                     </div>
                 </div>
                 {/*<button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>*/}

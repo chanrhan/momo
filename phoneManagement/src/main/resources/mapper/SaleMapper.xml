@@ -79,17 +79,10 @@
             <if test="order != null and !order.equals('')">
                 order by ${order} ${asc}
             </if>
-        ), search as (
+        ), filters as (
             select *
             from sale
             where
-            <if test="keyword != null and !keyword.equals('')">
-                (
-                cust_nm like '%${keyword}%' or
-                cust_tel like '%${keyword}%' or
-                cust_cd like '%${keyword}%'
-                ) and
-            </if>
             <if test="keydate != null">
                 (
                 actv_dt like '%${keydate}%'
@@ -100,6 +93,18 @@
             <if test="limit != null and !limit.equals('')">
                 limit ${limit}
             </if>
+        ), search as (
+            select *
+            from filters
+            where
+            <if test="keyword != null and !keyword.equals('')">
+                (
+                cust_nm like '%${keyword}%' or
+                cust_tel like '%${keyword}%' or
+                cust_cd like '%${keyword}%'
+                ) and
+            </if>
+            1=1
         ), result as (
                 select json_arrayagg(json_object(
                 'sale_id',sale_id,
@@ -121,7 +126,7 @@
 
         select (
             select count(*)
-            from sale
+            from filters
         ) as total_cnt,
             (
                 select *
@@ -283,7 +288,7 @@
                    ac.pfp as seller_pfp
             from tb_sale_used_device sud
             left outer join tb_sale sl on sud.sale_id=sl.sale_id
-        left outer join tb_account ac on ac.id=sl.seller_id
+            left outer join tb_account ac on ac.id=sl.seller_id
             WHERE sud.shop_id=#{currShopId}
         ), search as (
             SELECT *
@@ -1765,7 +1770,8 @@
                         end
                     )
         ), final as (
-            select count(internet_plan) as cnt
+            select  count(internet_plan) as it_cnt,
+                    count(tv_plan) as tv_cnt
             from date_table dd
                      left outer join date_sale ds on dd._year=ds._year and
                                                      ${dateType} = dt
@@ -1774,9 +1780,13 @@
 
         select
             (
-                select json_arrayagg(cnt)
+                select json_arrayagg(it_cnt)
                 from final
-            ) as value,
+            ) as value1,
+            (
+                select json_arrayagg(tv_cnt)
+                from final
+            ) as value2,
             (
                 select json_arrayagg(date_format(it, '%Y-%m-%d'))
                 from org_date_table

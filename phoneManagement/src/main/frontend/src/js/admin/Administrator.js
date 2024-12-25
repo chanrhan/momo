@@ -11,7 +11,7 @@ import {useObjectInputField} from "../hook/useObjectInputField";
 import {LMD} from "../common/LMD";
 import {cm, cmc} from "../utils/cm";
 import {useNavigate} from "react-router-dom";
-import {useFileLoader} from "../hook/useFileLoader";
+import {ImageProxy} from "../hook/imageProxy";
 
 export function Administrator(){
     const {userApi} = useApi();
@@ -20,7 +20,7 @@ export function Administrator(){
         keyword: ''
     });
     const nav = useNavigate();
-    const fileLoader = useFileLoader();
+    const fileLoader = ImageProxy();
 
     const [totalCount, setTotalCount] = useState(0)
     const [items, setItems] = useState(null)

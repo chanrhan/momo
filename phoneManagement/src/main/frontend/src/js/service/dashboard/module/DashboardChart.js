@@ -89,7 +89,7 @@ export function DashboardChart({userInfo}){
                          onChange={setTab1}
                          theme={Dashboard}
                          values={
-                    ['무선','인터넷','TV','총이익','평균이익']
+                    ['무선','인터넷/TV (유선)','총이익','평균이익']
                 }/>
             </div>
 

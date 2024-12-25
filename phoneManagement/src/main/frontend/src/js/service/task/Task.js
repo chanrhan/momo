@@ -12,12 +12,14 @@ import {TaskCombBoardTable} from "./module/TaskCombBoardTable";
 import {TaskSupportBoardTable} from "./module/TaskSupportBoardTable";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
-import {useFileLoader} from "../../hook/useFileLoader";
+import {ImageProxy} from "../../hook/imageProxy";
 import {useLocation} from "react-router-dom";
+import {MoreOptionLayer} from "../../common/module/MoreOptionLayer";
+import {SelectItem} from "../../common/module/SelectLayer";
 
 export function Task(){
     const modal = useModal();
-    const fileLoader = useFileLoader();
+    const fileLoader = ImageProxy();
     const {saleApi} = useApi();
 
     const pathname = window.location.pathname;
@@ -220,16 +222,24 @@ export function Task(){
                             <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
                         </div>
                         <div className={Board.board_head_group}>
-                        <div className={Board.board_count}>
+                            <div className={Board.board_count}>
                                 <span className={Board.count_text}>전체 <em className={Board.em}>{totalCount}</em>건</span>
                                 <span className={Board.count_text}><em className={Board.em}>{items.length}</em>건</span>
                             </div>
 
                             <div className={Board.board_search}>
-                                <input type="search" className={Board.input} title="검색" name='keyword' onChange={inputField.handleInput}
+                                <input type="search" className={Board.input} title="검색" name='keyword'
+                                       onChange={inputField.handleInput}
                                        value={inputField.get('keyword')}
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
                                 <button type="submit" className={Board.button}>검색</button>
+                            </div>
+                            <div className={`select_box ${cm(Board.board_btn_box)}`}>
+                                <MoreOptionLayer cssModule={Board}>
+                                    <SelectItem onClick={deleteSale}>판매일보 삭제</SelectItem>
+                                    <SelectItem>검색 결과 다운로드</SelectItem>
+                                </MoreOptionLayer>
+                                {/*<button type="button" className={cm(Board.board_btn, Board.board_more)}>더보기</button>*/}
                             </div>
                         </div>
                     </form>

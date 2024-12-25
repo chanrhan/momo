@@ -32,8 +32,7 @@
             select JSON_ARRAYAGG(json_object(
             'id',device_id,
             'name',device_nm,
-            'code',device_cd,
-            'provider',provider
+            'code',device_cd
             ))
             from    search
         )
@@ -76,8 +75,7 @@
             select JSON_ARRAYAGG(JSON_OBJECT(
             'id',sd_id,
             'name',sd_nm,
-            'code',sd_cd,
-            'provider',provider
+            'code',sd_cd
             ))
             from search
         )

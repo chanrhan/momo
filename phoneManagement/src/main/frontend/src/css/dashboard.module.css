@@ -87,7 +87,9 @@
 .dashboard .panel_body .panel.n3 .chart_tab .tab_item{display:inline-block; vertical-align:top;}
 .dashboard .panel_body .panel.n3 .chart_tab .tab_item + .tab_item{margin-left:14px;}
 .dashboard .panel_body .panel.n3 .chart_tab .tab_item .tab_btn{padding:0 8px; color:#62626e; font-size:14px; line-height:30px;}
-.dashboard .panel_body .panel.n3 .chart_tab .tab_item.active .tab_btn{border-radius:4px; background-color:#4781ff; color:#fff; font-weight:500;}
+.dashboard .panel_body .panel.n3 .chart_tab .tab_item.active .tab_btn{
+    border-radius:4px; background-color:#4781ff; color:#fff; font-weight:500;
+}
 .dashboard .panel_body .panel.n3 .chart_panel_wrap{height:100%;}
 .dashboard .panel_body .panel.n3 .chart_panel{display:none; height:100%; padding:110px 20px 60px 20px;}
 .dashboard .panel_body .panel.n3 .chart_panel.active{display:block;}
@@ -143,6 +145,15 @@
 .dashboard .info_company .company_profile .profile_btn{float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:14px;}
 .dashboard .info_company .company_select{margin-top:24px;}
 .dashboard .info_company .company_select .select_box .select_btn{width:100%;}
+.dashboard .info_company .company_select .select_layer .custom_title{
+    height: 20px;
+    float: left;
+    margin-top: 5px;
+    padding-left: 5px;
+    line-height: 20px;
+    font-size: 12px;
+    color: grey;
+}
 
 /*20240724 nickname change */
 .dashboard .dashboard_info .info_company .company_select .select_box .select_layer .confirm_btn{
@@ -187,9 +198,11 @@
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td{padding:0 1px;border-radius:7px;}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:first-child{color: red}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:last-child{color: #4781ff}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:hover{background-color:#e8f2fe;}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td:hover:not(.disabled){background-color:#e8f2fe;}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button.active{background-color: #c1dbff;}
-.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td.today{border: 2px solid #4781ff; border-radius: 15px}
+.dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td.today .button{
+    border: 2px solid #4781ff; border-radius: 7px
+}
 .dashboard .info_schedule .schedule_body .schedule_calender .tb_calender .tbody .td .button{position:relative; width:100%;
     border-radius: 5px;
     padding:8px 4px 12px 4px;
@@ -235,14 +248,104 @@
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_mark.yellow{background-color:#ffd700;}
 .dashboard .info_schedule .schedule_body .schedule_item .schedule_text{font-size:14px; line-height:24px;}
 .dashboard .info_schedule .schedule_body .schedule_item.active .schedule_text{color:#141218; font-weight:500;}
-.dashboard .info_schedule .schedule_body .schedule_item .schedule_del{
-    position:absolute; top:1px; right:-4px; width:24px;
-    height:24px; background:url(../images/del_icon.png) no-repeat center / 24px;}
+
 
 .dashboard .info_schedule .schedule_body .schedule_item .form_label{
     color:#28272c;
     font-size: 14px;
 }
+
+
+/*20241224 수정*/
+.dashboard .info_schedule .schedule_body{margin-top:28px;}
+.dashboard .info_schedule .schedule_body .option_scroll{
+    margin: 10px 0 0 5px;
+    border-top:1px solid #dde1e8;
+    padding-top: 10px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.dashboard .info_schedule .schedule_body .option_item + .option_item{margin-top:16px;}
+/*.dashboard .info_schedule .schedule_body .option_item .radio_box .form_label{color:#28272c;}*/
+
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box{
+    display: block;
+    position: relative;
+}
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_inp{
+    position:absolute; top:5px; left:5px; font-size: 0;
+    display: none;
+}
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_label:before{
+    display:block; position:absolute; top:0; left:0;
+    width:24px; height:24px; background:#fff url(../images/check_icon.png) no-repeat center / 24px;
+}
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_label{
+    position:relative; padding-left:32px;
+    color:#28272c; font-size:0; font-weight:500; line-height:24px; min-height:24px;
+}
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_text{
+    padding: 10px;
+    display:inline-block; max-width:calc(80% - 32px);
+    height:24px; border:0; color:#28272c;
+    font-size:14px; font-weight:500; vertical-align:top;
+    cursor: text;
+    border-radius: 8px;
+}
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_text:hover{
+    background-color: rgba(197, 197, 197, 0.22);
+}
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_text:read-only{
+    cursor: pointer;
+}
+
+.dashboard .info_schedule .schedule_bodyn .option_item .radio_box .check_inp:checked ~ .check_text:read-only{
+    text-decoration:line-through;
+}
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_inp:checked + .check_label:before{
+    background-image:url(../images/radio_icon_disabled.png);
+}
+
+/*.dashboard .info_schedule .schedule_body .option_scroll{height:104px; margin-right:-14px; overflow-x:hidden;overflow-y:auto;}*/
+/*.dashboard .info_schedule .schedule_body .option_scroll::-webkit-scrollbar{width:6px;}*/
+/*.dashboard .info_schedule .schedule_body .option_scroll::-webkit-scrollbar-thumb{border-radius:3px; background:#dde1e8;}*/
+/*.dashboard .info_schedule .schedule_body .option_scroll::-webkit-scrollbar-track{background:transparent;}*/
+
+.dashboard .info_schedule .schedule_body .option_item .radio_box .schedule_del{
+    position:absolute; top:1px; right:-4px; width:24px;
+    height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 18px;
+}
+
+.dashboard .info_schedule .schedule_body .option_add{
+    margin:5px 0 0 5px;
+    font-size:0;
+    line-height:0;
+}
+
+.dashboard .info_schedule .schedule_body .option_add .add_btn2{
+    cursor: pointer;
+    /*margin:0 0; */
+    padding-left:40px;
+    background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
+    color:#4275e8;
+    font-size:14px; line-height:36px;
+}
+.dashboard .info_schedule .schedule_body .option_add .add_inp{
+    cursor: text;
+    /*margin:0 0; */
+    padding-left:40px;
+    color:#91939f;
+    background:url(../images/check_icon.png) no-repeat left top 5px / 24px;
+    font-size:14px; line-height:36px;
+}
+.dashboard .info_schedule .schedule_body .option_add .inp{width:calc(100% - 32px); padding:0 8px; border-radius:4px; font-size:14px; line-height:30px;}
+.dashboard .info_schedule .schedule_body .option_add .inp:focus{padding:0 7px; line-height:28px;}
+/*.board .promise .btn_promise{width:100%; margin-top:24px; border-radius:8px;}*/
 
 /*반응형*/
 

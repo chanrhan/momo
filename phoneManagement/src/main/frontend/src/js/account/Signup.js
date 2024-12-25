@@ -261,11 +261,11 @@ function Step2({inputField, setStep}) {
             <ul className={User.form_list}>
                 <UserFormItem errorText={inputField.error.name}>
                     <UserFormInput subject='이름' name='name' inputField={inputField}
-                                   placeholder='이름을 입력해주세요'/>
+                                   placeholder='이름을 입력해주세요' maxLength={20}/>
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.email}>
                     <UserFormInput subject='이메일' name='email' inputField={inputField}
-                                   placeholder='이메일을 입력해주세요'/>
+                                   placeholder='이메일을 입력해주세요' maxLength={30}/>
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.tel}>
                     <label htmlFor='tel' className={User.form_label}>휴대폰 번호</label>
@@ -307,7 +307,7 @@ function Step2({inputField, setStep}) {
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.recommend_code}>
                     <UserFormInput subject='추천인 코드 (선택)' name='recommend_code' inputField={inputField}
-                                   placeholder='추천인 코드를 입력해주세요'/>
+                                   placeholder='추천인 코드를 입력해주세요' maxLength={10}/>
                 </UserFormItem>
             </ul>
             <div className={User.form_agree}>

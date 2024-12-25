@@ -11,17 +11,18 @@ import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import useUserInfo from "../hook/useUserInfo";
 import {useObjectInputField} from "../hook/useObjectInputField";
-import {useFileLoader} from "../hook/useFileLoader";
+import {ImageProxy} from "../hook/imageProxy";
 
 export function Profile(){
     const modal = useModal();
+    const imageProxy = ImageProxy();
     const {userApi, fileApi} = useApi();
     const userInfo = useUserInfo()
     const inputField = useObjectInputField({
         name: userInfo.name,
         tel: userInfo.tel
     });
-    const loader = useFileLoader();
+    const loader = ImageProxy();
 
     const [pfp, setPfp] = useState(null)
     const [imgPreview, setImgPreview] = useState(null)
@@ -32,8 +33,9 @@ export function Profile(){
     }, []);
 
     const getPfp = async ()=>{
-        const url = await userInfo.getPfp();
-        setImgPreview(url)
+        imageProxy.pfp(userInfo.pfp).then((data)=>{
+            setImgPreview(data);
+        })
     }
 
     const handleFileInput = e=>{

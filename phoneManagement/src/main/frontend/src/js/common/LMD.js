@@ -20,6 +20,13 @@ export const LMD = {
         '남자','여자','법인'
     ],
 
+    cat_type: {
+      CT: 0,
+      WT: 1,
+      TOTAL_MARGIN: 2,
+        AVG_MARGIN: 3
+    },
+
     // sale
     main_div: [
       '무선','유선','세컨'

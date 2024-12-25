@@ -824,7 +824,9 @@
 .list_title.d3 .form_label + .form_label{margin-left: calc(30% - 14px);}
 
 
-.card_form .check_del{position:relative; top:13px; left:10px; width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
+.card_form .check_del{
+    position:relative; top:13px; left:10px;
+    width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
 
 /*반응형*/
 .popup .customer .customer_head .head_box .select_box .select_btn:before{right:8px;}

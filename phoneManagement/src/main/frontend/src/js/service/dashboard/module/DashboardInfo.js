@@ -1,7 +1,7 @@
 import {cm, cmc} from "../../../utils/cm";
 import Dashboard from "../../../../css/dashboard.module.css";
 import {DashboardSchedule} from "./DashboardSchedule";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
 import useModal from "../../../hook/useModal";
@@ -9,10 +9,14 @@ import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {ChangeNicknameLayer} from "../../../common/module/ChangeNicknameLayer";
 import {ModalType} from "../../../common/modal/ModalType";
 import useUserInfo from "../../../hook/useUserInfo";
+import {ImageProxy} from "../../../hook/imageProxy";
 
 export function DashboardInfo({}){
     const {fileApi} = useApi();
     const modal = useModal();
+    const nav = useNavigate()
+
+    const fileLoader = ImageProxy();
 
     const userInfo = useUserInfo()
     const [profileImg, setProfileImg] = useState(null)
@@ -44,10 +48,9 @@ export function DashboardInfo({}){
 
     const getPhp = async ()=>{
         if(userInfo.pfp){
-            await fileApi.load("pfp", userInfo.pfp).then(({status,data})=>{
-                if(status === 200 && data){
-                    const url = window.URL.createObjectURL(data)
-                    setProfileImg(url)
+            await fileLoader.pfp(userInfo.pfp).then((data)=>{
+                if(data){
+                    setProfileImg(data)
                 }
             })
         }
@@ -96,7 +99,9 @@ export function DashboardInfo({}){
                         <span className={cm(Dashboard.profile_img)}><img src={profileImg}
                                                            alt="프로필 이미지"/></span>
                     <span className={cm(Dashboard.profile_name)}>{userInfo.name}<button type="button"
-                                                              className={cm(Dashboard.profile_edit)}>수정</button></span>
+                                                              className={cm(Dashboard.profile_edit)} onClick={()=>{
+                                                                  nav("/profile")
+                    }}>수정</button></span>
                     <button type="button" className={`btn btn_blue btn_medium ${Dashboard.profile_btn}`}
                             onClick={openInviteModal}>초대하기</button>
                 </div>

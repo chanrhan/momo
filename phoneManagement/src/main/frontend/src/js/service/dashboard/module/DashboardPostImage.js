@@ -3,7 +3,7 @@ import Dashboard from "../../../../css/dashboard.module.css";
 import {useEffect, useState} from "react";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import useApi from "../../../hook/useApi";
-import {useFileLoader} from "../../../hook/useFileLoader";
+import {ImageProxy} from "../../../hook/imageProxy";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
@@ -13,7 +13,7 @@ import {useSelector} from "react-redux";
 export function DashboardPostImage({}){
     const userInfo = useSelector(state=>state.userReducer);
     const modal = useModal();
-    const fileLoader = useFileLoader()
+    const fileLoader = ImageProxy()
     const {pimgApi} = useApi();
     const inputField = useObjectArrayInputField({
         id: 0,

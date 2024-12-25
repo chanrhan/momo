@@ -11,7 +11,7 @@ import {MonthSelectModal} from "../../common/modal/menu/MonthSelectModal";
 import {DateUtils} from "../../utils/DateUtils";
 import {MoreOptionLayer} from "../../common/module/MoreOptionLayer";
 import {SelectItem} from "../../common/module/SelectLayer";
-import {useFileLoader} from "../../hook/useFileLoader";
+import {ImageProxy} from "../../hook/imageProxy";
 import {LMD} from "../../common/LMD";
 import {useBitArray} from "../../hook/useBitArray";
 import {ColumnSelectLayer} from "./module/ColumnSelectLayer";
@@ -21,6 +21,7 @@ import {FILTER_INPUT_TYPE} from "./modal/SaleFilterModal";
 import {useObjectInputField} from "../../hook/useObjectInputField";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
+import {ImageListProxy} from "../../common/module/ImageListProxy";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
@@ -42,7 +43,10 @@ export function Sale(){
 
     const filterInputField = useObjectArrayInputField()
 
-    const fileLoader = useFileLoader();
+    const fileLoader = ImageProxy();
+    const ilp = ImageListProxy();
+
+
     const [totalCount, setTotalCount] = useState(0)
     const [asc, setAsc] = useState(new Array(10).fill(false))
 
@@ -89,11 +93,16 @@ export function Sale(){
                     setSaleItems(parsed)
                     setCheckedSale(new Array(parsed.length).fill(false))
 
-                    getProfimeImages(parsed).then((data)=>{
+                    ilp.pfp(parsed, "seller_pfp").then((data)=>{
                         if(data){
                             setProfileImages(data)
                         }
                     })
+                    // getProfimeImages(parsed).then((data)=>{
+                    //     if(data){
+                    //         setProfileImages(data)
+                    //     }
+                    // })
                 }else{
                     setSaleItems(null)
                     setCheckedSale(null)

@@ -1,18 +1,23 @@
 import useApi from "./useApi";
 import defaultProfileImage from "../../images/profile_img1.jpg"
 
-export function useFileLoader(){
+export function ImageProxy(){
     const {fileApi} = useApi();
 
     const load = async (dir, fileName)=>{
-        if(!fileName){
-            return null;
-        }
         let url = defaultProfileImage;
+
+        if(!fileName){
+            return url;
+        }
 
         const res = await fileApi.load(dir, fileName);
         if(res.status === 200 && res.data){
-            url = window.URL.createObjectURL(res.data)
+            const _url = window.URL.createObjectURL(res.data)
+
+            if(_url != null){
+                url = _url;
+            }
         }
         return url;
     }
@@ -28,6 +33,7 @@ export function useFileLoader(){
     const saleFile = async (fileName)=>{
         return await load('sale',fileName);
     }
+
 
     return {
         pfp,

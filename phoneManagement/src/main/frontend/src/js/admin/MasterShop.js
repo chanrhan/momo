@@ -18,7 +18,7 @@ import {LMD} from "../common/LMD";
 import {NumberUtils} from "../utils/NumberUtils";
 import {ProfileTableColumn} from "../service/sale/module/ProfileTableColumn";
 import profileImg1 from "../../images/profile_img1.jpg";
-import {useFileLoader} from "../hook/useFileLoader";
+import {ImageProxy} from "../hook/imageProxy";
 
 const PROVIDER = [
     true,true,true,true,true,true,false,false,false
@@ -31,7 +31,7 @@ const CODE = [
 ]
 
 export function MasterShop(){
-    const fileLoader = useFileLoader()
+    const fileLoader = ImageProxy()
     const {shopApi} = useApi();
     const [tab, setTab] = useState(0)
     const [keywowrd, setKeyword] = useState('')

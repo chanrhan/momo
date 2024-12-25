@@ -26,11 +26,12 @@ ChartJS.register(
 
 
 
-export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled,
+export function MultiLineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled,
                                       x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled,
                                       yAxisCallback}){
+    const blueColor = getChartColor(color);
+    const redColor = getChartColor('red');
 
-    const {borderColor, bgStartColor} = getChartColor(color);
 
     if(ObjectUtils.isEmpty(data)){
         return null;
@@ -40,34 +41,39 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
         labels = new Array(data.length).fill('')
     }
 
-    console.log('aaa')
+
+    const colors = [
+        blueColor,
+        redColor
+    ]
+
+
     const chartData = {
         labels,
-        datasets: [
-            {
+        datasets: data.map((item,i)=>{
+            const color = colors[i]
+            return {
                 label: labelName, //그래프 분류되는 항목
-                data: data.map(v=>{
+                data: item.map(v=>{
                     return v;
                 }), //실제 그려지는 데이터(Y축 숫자)
                 fill: true,
-                borderColor: borderColor, //그래프 선 color
+                borderColor: color.borderColor, //그래프 선 color
                 backgroundColor: (context)=>{
-                    console.log(444)
                     const bgColor = [
-                        bgStartColor,
+                        color.bgStartColor,
                         'rgba(255,255,255,0.07)'
                     ];
+
                     if(!context.chart.chartArea){
                         return;
                     }
-                    console.log(111)
                     const {ctx, chartArea: {top, bottom}} = context.chart;
                     const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
                     const colorTranches = 1 / (bgColor.length - 1);
                     for(let i=0;i < bgColor.length;++i){
                         gradientBg.addColorStop(i*colorTranches, bgColor[i])
                     }
-                    console.log(222)
                     // return 'rgba(255,255,255,0)'
                     return gradientBg;
                 }, //마우스 호버시 나타나는 분류네모 표시 bg, fill=true일 시 선 아래쪽 배경색이 채워진다
@@ -75,9 +81,8 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 pointRadius: pointRadius, // 데이터 꼭짓점 동그라미 크기
                 pointHoverRadius: 1.2 // 마우스  호버 시 동그라미 크기
             }
-        ]
+        })
     };
-    console.table(chartData)
 
     const options = {
         // line 타입의 경우 중간에 누락된 데이터가 있을 경우 이어그릴지 여부를 정합니다
@@ -132,7 +137,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
             }
         },
     }
-    console.log(555)
 
     return (
         <Line data={chartData} options={options}/>

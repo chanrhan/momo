@@ -76,7 +76,7 @@ export function UpdatePasswordModal(props){
                         <UserFormItem errorText={inputField.error.pwd2}>
                             <label htmlFor='pwd2' className={User.form_label}>새 비밀번호 확인</label>
                             <div className={`${User.form_inp} ${User.div}`}>
-                                <PasswordInput name='pwd' value={inputField.get('pwd2')}
+                                <PasswordInput name='pwd2' value={inputField.get('pwd2')}
                                                className={`inp ${User.inp}`}
                                                placeholder='새 비밀번호를 한 번 더 입력해주세요.'
                                                onChange={inputField.handleConfirmPassword} autoComplete={false}/>

@@ -29,7 +29,7 @@ import {telRegex} from "../../../utils/regex";
 import {PriceInput} from "../../../common/inputbox/PriceInput";
 import {DYNAMIC_TYPE} from "../../../common/modal/DynamicSelectModal";
 import {Scrollable} from "../../../common/module/Scrollable";
-import {useFileLoader} from "../../../hook/useFileLoader";
+import {ImageProxy} from "../../../hook/imageProxy";
 import {FileUtils} from "../../../utils/FileUtils";
 import {useHintBox} from "../../../hook/useHintBox";
 import {NumberInput} from "../../../common/inputbox/NumberInput";
@@ -91,7 +91,7 @@ function SaleDetailModal(props){
             required: true
         }
     ]);
-    const fileLoader = useFileLoader()  ;
+    const fileLoader = ImageProxy()  ;
 
     const supportInputField = useObjectArrayInputField({
         div: 0,

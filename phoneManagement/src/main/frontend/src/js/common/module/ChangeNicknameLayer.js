@@ -83,6 +83,9 @@ export function ChangeNicknameLayer({initValue, value, values, onChange}){
                         </li>
                     })
                 }
+                {/*<div className={Dashboard.custom_title}>*/}
+                {/*    사용자 임의 별칭*/}
+                {/*</div>*/}
                 <input type="text" className="select_inp" value={custom}
                        onChange={handleCustomChange}
                        placeholder="직접 입력" style={{

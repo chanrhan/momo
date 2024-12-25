@@ -7,16 +7,19 @@ import useApi from "../../../hook/useApi";
 import {TabList} from "../../../common/module/TabList";
 import {NumberUtils} from "../../../utils/NumberUtils";
 import {value} from "lodash/seq";
+import {LMD} from "../../../common/LMD";
+import {MultiLineChartInstance} from "../../../analysis/module/MultiLineChartInstance";
 
 const DATE_TYPE = [
     'd','w','m'
 ]
 
 export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelClassName}){
+    console.log(`tab:${categoryTab}`)
     const {saleApi} = useApi();
     const [tab2, setTab2] = useState(0) // 일별, 주별, 월별
 
-    const [graphData, setGraphData] = useState(null)
+    const [graphData, setGraphData] = useState([])
     const [graphLabel, setGraphLabel] = useState(null)
     const [graphTooltip, setGraphTooltip] = useState(null)
 
@@ -51,19 +54,19 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
         let rst = null;
 
         switch (categoryTab){
-            case 0:
+            case LMD.cat_type.CT: // 무선
                 rst = await saleApi.getCtGraphByDateType(DATE_TYPE[tab2], body);
                 break;
-            case 1:
+            case LMD.cat_type.WT: // 인터넷
                 rst = await saleApi.getInternetGraphByDateType(DATE_TYPE[tab2], body);
                 break;
-            case 2:
-                rst = await saleApi.getTvGraphByDateType(DATE_TYPE[tab2], body);
-                break;
-            case 3:
+            // case LMD.cat_type.WT: // TV
+            //     rst = await saleApi.getTvGraphByDateType(DATE_TYPE[tab2], body);
+            //     break;
+            case LMD.cat_type.TOTAL_MARGIN: // 총 이익
                 rst = await saleApi.getMarginGraphByDateType(DATE_TYPE[tab2], body);
                 break;
-            case 4:
+            case LMD.cat_type.AVG_MARGIN: // 평균 이익
                 rst = await saleApi.getAvgMarginGraphByDateType(DATE_TYPE[tab2], body);
                 break;
         }
@@ -71,8 +74,14 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
         if(rst != null){
             const {status, data}  = rst;
             if(status === 200 && data){
+                console.table(data.value1);
                 if(data.value){
-                    setGraphData(JSON.parse(data.value))
+                    setGraphData([JSON.parse(data.value)])
+                }else if(data.value1 && data.value2){
+                    setGraphData([
+                        JSON.parse(data.value1),
+                        JSON.parse(data.value2)
+                    ])
                 }
                 if(data.date){
                     const dateList: Array = JSON.parse(data.date)
@@ -102,60 +111,10 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
         return labels;
     }
 
-    //
-    // const getDayLabelArray = (fromDate, toDate)=>{
-    //     const startDate = new Date(fromDate);
-    //     const endDate = new Date(toDate);
-    //
-    //     let arr = [];
-    //     while(startDate < endDate){
-    //         // const year = startDate.getFullYear() - 2000;
-    //         const month = startDate.getMonth()+1;
-    //         const day = startDate.getDate();
-    //         arr.push(`${month}/${day}`);
-    //         startDate.setDate(day+1);
-    //     }
-    //     // console.table(arr)
-    //     return arr;
-    // }
-    //
-    // const getWeekLabelArray = (fromDate, toDate)=>{
-    //     const startDate = new Date(fromDate);
-    //     let endDate = new Date(toDate);
-    //     endDate.setDate(endDate.getDate() + (7-endDate.getDay()))
-    //
-    //     let arr = [];
-    //     while(startDate <= endDate){
-    //         // const {month, weekOfMonth} = DateUtils.getMonthAndWeek(startDate.getFullYear(), DateUtils.getYearWeek(startDate))
-    //         // arr.push(`${month}월 ${weekOfMonth}주`);
-    //         arr.push(`${startDate.getMonth()+1}/${startDate.getDate()}`)
-    //         startDate.setDate(startDate.getDate()+7);
-    //     }
-    //     // console.table(arr)
-    //     return arr;
-    // }
-    //
-    // const getMonthLabelArray = (fromDate, toDate)=>{
-    //     const startDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
-    //     const endDate = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
-    //     // console.log(startDate)
-    //     // console.log(endDate)
-    //
-    //     let arr = [];
-    //     while(startDate < endDate){
-    //         // const year = startDate.getFullYear();
-    //         const month = startDate.getMonth()+1;
-    //         arr.push(`${month}월`);
-    //         startDate.setMonth(month);
-    //     }
-    //     // console.table(arr)
-    //     return arr;
-    // }
-
     return (
         <>
             <div className={chartClassName}>
-                <LineChartInstance tooltip_disabled color='blue'
+                <MultiLineChartInstance tooltip_disabled color='blue'
                                    tooltips={graphTooltip} labels={graphLabel}
                                    data={graphData} yAxisCallback={v=>{
                                        if(!Number.isInteger(v)) {

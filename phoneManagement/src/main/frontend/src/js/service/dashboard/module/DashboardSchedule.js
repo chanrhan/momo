@@ -8,6 +8,7 @@ import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LMD} from "../../../common/LMD";
+import {TodoAddBox} from "./TodoAddBox";
 
 export function DashboardSchedule({userInfo}){
     const {todoApi} = useApi();
@@ -143,6 +144,11 @@ export function DashboardSchedule({userInfo}){
         setDay(today.getDate())
     }
 
+    const refresh = ()=>{
+        getTodoDetail()
+        getTodoForCalendar()
+    }
+
     return (
         <div className={cm(Dashboard.info_schedule, Dashboard.div)}>
             <div className={Dashboard.schedule_head}>
@@ -181,7 +187,7 @@ export function DashboardSchedule({userInfo}){
                                         new Array(7).fill(0).map((v, _day) => {
                                             const d = (week * 7) + _day - monthInfo.startDay + 1;
                                             return <DateItem key={_day} today={DateUtils.isToday(year, month, d)}
-                                                             day={(d > 0 && d <= monthInfo.totalDays) && d}
+                                                             day={(d > 0 && d <= monthInfo.totalDays) ? d : null}
                                                              active={year === cYear && month === cMonth && d === day}
                                                              has={items && items[d]}
                                                              onClick={handleDate}/>
@@ -194,32 +200,7 @@ export function DashboardSchedule({userInfo}){
                     </table>
                 </div>
 
-                <button type="button" className={`btn btn_blue btn_medium ${Dashboard.add_btn}`}
-                        onClick={openTodoAddModal}>일정 추가</button>
-                <ul className={cm(Dashboard.schedule_list)}>
-                    {
-                        detail.input ? detail.input.map((v, i) => {
-                            return <li key={i} className={cm(Dashboard.schedule_item)}>
-                                <div className='radio_box'>
-                                    {/*<span className={cm(Dashboard.schedule_mark, Dashboard[LMD.color[v.color]])}></span>*/}
-                                    <input type="checkbox" name={`pm_${i}`} id={`pm_${i}`} readOnly checked={v.checked} disabled={v.checked}/>
-                                    <label htmlFor={`pm_${i}`} className={Dashboard.form_label} onClick={()=>{
-                                        checkTodo(v.todo_id, !v.checked)
-                                    }}>
-                                        {v.content}
-                                    </label>
-
-                                    {/*<span className={cm(Dashboard.schedule_text)}>{v.content}</span>*/}
-                                    <button type="button" className={cm(Dashboard.schedule_del)}
-                                            onClick={() => {
-                                                removeTodo(v.todo_id)
-                                            }}>삭제
-                                    </button>
-                                </div>
-                            </li>
-                        }) : <div>dd</div>
-                    }
-                </ul>
+                <TodoAddBox list={detail.input} year={cYear} month={cMonth} day={day} onRefresh={refresh}/>
             </div>
         </div>
     )
@@ -227,10 +208,12 @@ export function DashboardSchedule({userInfo}){
 
 function DateItem({day, today, active, onClick, has}) {
     return (
-        <td className={cm(Dashboard.td, `${today && Dashboard.today}`)}>
+        <td className={cm(Dashboard.td, `${today && Dashboard.today}`,`${day == null && Dashboard.disabled}`)}>
             <button className={cm(Dashboard.button, `${active && Dashboard.active}`, `${has && Dashboard.has}`)}
                     type="button" onClick={() => {
-                onClick(day)
+                        if(day != null) {
+                            onClick(day)
+                        }
             }}>{day}</button>
         </td>
     )
