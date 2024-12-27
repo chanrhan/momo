@@ -51,16 +51,16 @@ export function TaskCombBoardTable({allChecked, checkAll, checkedSale, onCheck,p
                 <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 4)
                 }}>휴대폰 번호</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 5)
                 }}>식별 번호</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 6)
                 }}>결합명</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
-                    resizeColumn(e, 7)
-                }}>유형</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                {/*<Bth className="ta_r" onMouseDown={e=>{*/}
+                {/*    resizeColumn(e, 7)*/}
+                {/*}}>유형</Bth>*/}
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 8)
                 }}>담당자</Bth>
                 <Bth className="ta_c" onMouseDown={e=>{
@@ -72,7 +72,7 @@ export function TaskCombBoardTable({allChecked, checkAll, checkedSale, onCheck,p
                     items && items.map((v, i)=>{
                         return <tr key={i} onClick={()=>{
                             onSelectSale(v.sale_id)
-                        }}>
+                        }} className={Board.tr}>
                             <Btd name={`check_${v.sale_id}`} checked={checkedSale[i]} onCheck={()=>{
                                 onCheck(i)
                             }} checkbox/>
@@ -95,8 +95,8 @@ export function TaskCombBoardTable({allChecked, checkAll, checkedSale, onCheck,p
                             <Btd className="ta_c">{v.cust_tel}</Btd>
                             <Btd className="ta_r">{v.cust_cd}</Btd>
                             <Btd className="ta_r">{v.comb_tp}</Btd>
-                            <Btd className="ta_r">유형</Btd>
-                            <Btd className="ta_r">{v.total_cms}</Btd>
+                            {/*<Btd className="ta_r">유형</Btd>*/}
+                            {/*<Btd className="ta_r">{v.total_cms}</Btd>*/}
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
                             <Btd className="ta_c">
                                 <button type="button" className="btn_kakao">전송</button>

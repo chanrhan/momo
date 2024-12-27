@@ -268,7 +268,7 @@ export function Sale(){
     return (
         <div className={cm(Layout.sub)}>
             <div className={cm(Layout.sub_head)}>
-                <h2 className={cm(Layout.sub_title)}>판매일보</h2>
+                <h2 className={cm(Layout.sub_title)}>고객관리</h2>
             </div>
 
             <div className={cm(Board.board, "board_list")}>

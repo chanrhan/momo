@@ -10,6 +10,7 @@ import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import {ModalType} from "../../common/modal/ModalType";
 import {EditableAddButton} from "../../common/module/EditableAddButton";
+import Dashboard from "../../../css/dashboard.module.css";
 
 export function PromiseBoardTable({onLoad, items, onChangeState, onSelectSale}){
     return (
@@ -102,6 +103,17 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
         })
     }
 
+    const remove = async (id)=>{
+        await saleApi.removePromise({
+            sale_id: item.sale_id,
+            pm_id: id
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+               onLoad();
+            }
+        })
+    }
+
     return (
         <li className={Board.promise_item} >
             <div className={Board.promise_box} onClick={onClick}>
@@ -126,7 +138,8 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                 item.pm_list && item.pm_list.map((v,i)=> {
                                     return <li key={i} className={Board.option_item} draggable={true}>
                                         <div className={cm(Board.radio_box)}>
-                                            <input type="checkbox" className={Board.check_inp} name="radio" id={`pr_${i}`}
+                                            <input type="checkbox" className={Board.check_inp} name="radio"
+                                                   id={`pr_${i}`}
                                                    checked={v.checked} readOnly/>
                                             <label htmlFor={`pr_${i}`} className={Board.check_label}
                                                    onClick={() => {
@@ -134,35 +147,40 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                                            sale_id: item.sale_id,
                                                            state: (v.checked) ? 0 : 1,
                                                            pm_id: v.pm_id
-                                                   })
+                                                       })
                                                    }}></label>
                                             <input type="text" className={Board.check_text}
                                                    value={focusIndex === i ? editContent : v.content}
-                                                   onChange={e=>{
+                                                   onChange={e => {
                                                        setEditContent(e.target.value);
                                                    }}
-                                                   onClick={()=>{
+                                                   onClick={() => {
                                                        setFocusIndex(i);
                                                    }}
-                                                   ref={e=>{
+                                                   ref={e => {
                                                        focusRef.current[i] = e;
                                                    }}
-                                                   onBlurCapture={()=>{
+                                                   onBlurCapture={() => {
                                                        update(v.pm_id);
                                                    }}
-                                                   onKeyDown={e=>{
-                                                       if(e.key === 'Enter') {
+                                                   onKeyDown={e => {
+                                                       if (e.key === 'Enter') {
                                                            update(v.pm_id)
                                                        }
                                                    }}
                                                    readOnly={focusIndex !== i}/>
+                                            <button type="button" className={Board.btn_del}
+                                                    onClick={() => {
+                                                        remove(v.pm_id)
+                                                    }}>삭제
+                                            </button>
                                         </div>
                                     </li>
                                 })
                             }
                         </ul>
                     </div>
-                    <div className={Board.option_add} >
+                    <div className={Board.option_add}>
                         <EditableAddButton inpClassName={Board.add_inp}
                                            btnClassName={Board.add_btn}
                                            value='약속 추가하기' onUpdate={v=>{

@@ -421,7 +421,12 @@
                    sl.cust_nm,
                    sl.cust_tel,
                    sl.cust_cd,
-                   sl.comb_tp,
+                   (
+                       select comb_tp_nm
+                       from tb_comb_tp
+                       where shop_id=#{currShopId} and
+                             comb_tp_id=sl.comb_tp
+                    ) as comb_tp,
                    sl.comb_memo,
                    ac.name as seller_nm,
                    ac.pfp as seller_pfp
@@ -862,6 +867,13 @@
               sale_id=#{saleId} and
               pm_id=#{pmId}
     </update>
+
+    <delete id="deletePromise">
+        delete from tb_promise
+        where shop_id=#{currShopId} and
+              sale_id=#{saleId} and
+              pm_id=#{pmId}
+    </delete>
 
 
 <!--    insert-->

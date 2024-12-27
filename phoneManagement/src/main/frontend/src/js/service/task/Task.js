@@ -198,7 +198,7 @@ export function Task(){
     return (
         <div className={Layout.sub}>
             <div className={Layout.sub_head}>
-                <h2 className={Layout.sub_title}>고객관리</h2>
+                <h2 className={Layout.sub_title}>업무관리</h2>
             </div>
 
             <div className={Layout.sub_tab}>

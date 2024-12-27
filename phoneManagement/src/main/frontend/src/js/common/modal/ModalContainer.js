@@ -17,7 +17,7 @@ import TableValidationModal from "../../test/TableValidationModal";
 import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
 import {MonthSelectModal} from "./menu/MonthSelectModal";
-import {DateSelectModal} from "./menu/DateSelectModal";
+import {DateSelectModule} from "./menu/DateSelectModule";
 import {SelectModal} from "./menu/SelectModal";
 import {SaleWtPlanModal} from "../../service/sale/modal/SaleWtPlanModal";
 import {SaleFilterModal} from "../../service/sale/modal/SaleFilterModal";
@@ -94,7 +94,7 @@ const MODAL_COMPONENTS = {
     TableValidation: TableValidationModal,
     // Select: SelectModal,
     // SelectMonth: MonthSelectLayer,
-    SelectDate: DateSelectModal,
+    SelectDate: DateSelectModule,
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
     ReserveDate: ReserveDateModal,

@@ -11,6 +11,7 @@ import java.util.Map;
 public interface UserMapper {
 	public Map<String,Object> getUserAll(UserVO vo);
 
+	public int updateStaffStartDate(UserVO vo);
 
 	public Integer getSessionData(String userId);
 	public String getName(String id);
@@ -25,11 +26,11 @@ public interface UserMapper {
 
 	public List<Map<String,Object>> getStaffByShopId(String shopId);
 
-	public int updateApprovalState(int shopId, String staffId, int state);
+	public int updateApprovalState(UserVO vo);
 
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
-	public int updateBrNo(String userId, String brNo);
+	public int updateBusinessInfo(UserVO vo);
 
 	public String getPassword(String id);
 	public int updatePassword(UserVO vo);

@@ -4,11 +4,16 @@ export const localSlice = createSlice({
     name: 'local_storage',
     initialState: {
         unreadNotif: 0,
-        brNo: null
+        brNo: null,
+        corpNm: null
     },
     reducers:{
         updateUnreadNotif: (state, action)=>{
             state.unreadNote = action.payload;
+        },
+        setCorpName: (state, action)=>{
+            state.brNm = action.payload;
+            return state;
         },
         setBrno: (state, action)=>{
             state.brNo = action.payload;

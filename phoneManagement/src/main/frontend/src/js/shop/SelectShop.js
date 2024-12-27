@@ -49,7 +49,7 @@ export function SelectShop(){
                                                setKeyword(e.target.value)
                                            }}
                                            subject='매장 검색' search
-                                           placeholder="매장명을 검색해주세요."/>
+                                           placeholder="매장명 또는 회사명으로 검색해주세요."/>
                         </UserFormItem>
                         <div className={User.form_company_request}>
                             <ul className={User.request_list}>

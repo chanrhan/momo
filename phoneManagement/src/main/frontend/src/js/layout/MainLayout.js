@@ -52,6 +52,7 @@ function MainLayout(){
 }
 
 function LayoutSelector({approval_state}){
+    console.log(`approval: ${approval_state}`)
     if(approval_state === null){
         return (
             <div className={cm(User.approval)}>
@@ -78,7 +79,7 @@ function LayoutSelector({approval_state}){
                 <div className={cm(User.approval)}>
                     <h2 className={cm(User.approval_title)}>승인 대기중</h2>
                     <p className={cm(User.approval_text)}>승인이 늦어지는 경우 대표님에게 직접 문의해주세요.</p>
-                    <span className={cm(User.approval_stat)}>...</span>
+                    {/*<span className={cm(User.approval_stat)}>...</span>*/}
                 </div>
             )
         case 1:
@@ -90,7 +91,7 @@ function LayoutSelector({approval_state}){
                 <div className={cm(User.approval)}>
                     <h2 className={cm(User.approval_title)}>승인 거절됨</h2>
                     <p className={cm(User.approval_text)}>매장으로부터 승인이 거절되었습니다.</p>
-                    <span className={cm(User.approval_stat)}>...</span>
+                    {/*<span className={cm(User.approval_stat)}>...</span>*/}
                 </div>
             )
     }

@@ -28,9 +28,9 @@ function UserApi(accessToken){
             // console.table(array)
             return await axiosApiWithAccessToken.get(`/api/v1/user/brno`, accessToken);
         },
-        updateBrno : async (brNo)=>{
+        updateBusinessInfo : async (body)=>{
             // console.table(array)
-            return await axiosApiWithAccessToken.post(`/api/v1/user/brno`, brNo, accessToken);
+            return await axiosApiWithAccessToken.post(`/api/v1/user/business-info`, body, accessToken);
         },
         updateNickname : async (nickname)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/nickname?nickname=${nickname}`,accessToken);
@@ -77,8 +77,11 @@ function UserApi(accessToken){
         // sendShopRequest: async (shopId)=>{
         //     return await axiosApiWithAccessToken.post(`/api/v1/user/shop/request?shopId=${shopId}`,accessToken)
         // },
-        updateApprovalState: async (staffId, shopId, state)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/user/${staffId}/${shopId}/state`, state, accessToken);
+        updateApprovalState: async (data)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/user/staff/approval`, data, accessToken);
+        },
+        updateStaffStartDate: async (data)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/user/staff/start-date`, data, accessToken);
         },
         invite: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/user/invite', body, accessToken);

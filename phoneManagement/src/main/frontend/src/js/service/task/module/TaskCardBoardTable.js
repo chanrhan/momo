@@ -51,16 +51,16 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                 <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 4)
                 }}>휴대폰 번호</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 5)
                 }}>식별 번호</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 6)
                 }}>카드명</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 7)
                 }}>구분</Bth>
-                <Bth className="ta_r" onMouseDown={e=>{
+                <Bth className="ta_c" onMouseDown={e=>{
                     resizeColumn(e, 8)
                 }}>담당자</Bth>
                 <Bth className="ta_c" onMouseDown={e=>{
@@ -72,7 +72,7 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                     items && items.map((v, i)=>{
                         return <tr key={i} onClick={()=>{
                             onSelectSale(v.sale_id)
-                        }}>
+                        }} className={Board.tr}>
                             <Btd name={`check_${v.sale_id}`} checked={checkedSale[i]} onCheck={()=>{
                                 onCheck(i)
                             }} checkbox/>

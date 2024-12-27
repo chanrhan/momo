@@ -4,7 +4,7 @@ import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useRef, useState} from "react";
 import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
-export function DateSelectModal({rootClassName, onSelect, children, errorText}){
+export function DateSelectModule({rootClassName, onSelect, children, errorText}){
     const renderlessModal = useRenderlessModal(`RDL_DATE_SELECT_${onSelect}`)
 
     const today = new Date();

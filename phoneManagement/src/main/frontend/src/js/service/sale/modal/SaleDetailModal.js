@@ -17,7 +17,7 @@ import {SelectIndexLayer} from "../../../common/module/SelectIndexLayer";
 import {NumberUtils} from "../../../utils/NumberUtils";
 import {LMD} from "../../../common/LMD";
 import useUserInfo from "../../../hook/useUserInfo";
-import {DateSelectModal} from "../../../common/modal/menu/DateSelectModal";
+import {DateSelectModule} from "../../../common/modal/menu/DateSelectModule";
 import {DateUtils} from "../../../utils/DateUtils";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {useBitArray} from "../../../hook/useBitArray";
@@ -655,12 +655,12 @@ function SaleDetailModal(props){
                 <div className={Popup.popup_cont}>
                     <div className={Popup.customer_head}>
                         <div className={Popup.head_box}>
-                            <DateSelectModal errorText={inputField.error.actv_dt} rootClassName={Popup.head_box}
-                                             onSelect={setDate}>
+                            <DateSelectModule errorText={inputField.error.actv_dt} rootClassName={Popup.head_box}
+                                              onSelect={setDate}>
                                 <input type="text" className={`date ${cmc(Popup.inp)}`}
                                        value={inputField.get('actv_dt')}
                                        placeholder='개통 날짜' readOnly/>
-                            </DateSelectModal>
+                            </DateSelectModule>
                             <div className={`${cm(Popup.select_box, User.select_box)} select_box`}>
                                 {/*<input type="hidden" id=""/>*/}
                                 {/*<SelectOptionLayer initValue='개통 타입' cssModules={toCssModules(Popup, User)}*/}

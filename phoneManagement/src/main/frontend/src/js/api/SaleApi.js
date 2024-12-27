@@ -65,6 +65,9 @@ function SaleApi(accessToken){
         updatePromiseContent: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/promise/content', body, accessToken);
         },
+        removePromise: async (body)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/promise/del', body, accessToken);
+        },
         getSummary: async (prevMonth, month)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/summary?prevMonth=${prevMonth}&month=${month}`, accessToken);
         },

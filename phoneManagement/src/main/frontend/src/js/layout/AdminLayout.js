@@ -2,7 +2,7 @@ import {MainHeader} from "./MainHeader";
 import {Sidebar} from "./Sidebar";
 import Layout from "../../css/layout.module.css";
 import {Link, Outlet, useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import logo from "../../images/logo.png";
 import {HeaderSearchLayer} from "./module/HeaderSearchLayer";
 import {cm} from "../utils/cm";
@@ -10,6 +10,8 @@ import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
 import {AdminSidebar} from "./AdminSidebar";
 import {useAuthentication} from "../hook/useAuthentication";
 import {useRenderlessModal} from "../hook/useRenderlessModal";
+import useUserInfo from "../hook/useUserInfo";
+import {useSelector} from "react-redux";
 
 export function AdminLayout(){
     // console.log(`layout: ${window.location.pathname}`)
@@ -17,6 +19,14 @@ export function AdminLayout(){
     const authentication = useAuthentication()
     const renderlessModal = useRenderlessModal(`RDL_${Date.now()}`)
 
+
+    const userInfo = useUserInfo();
+    // const nav = useNavigate()
+    const {accessToken} = useSelector(state=>state.authReducer)
+
+    useEffect(()=>{
+        userInfo.updateUser();
+    },[accessToken]);
 
     return (
         <div className='container'>

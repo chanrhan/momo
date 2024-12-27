@@ -5,7 +5,7 @@ import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LayerModal} from "../../../common/modal/LayerModal";
 import {useState} from "react";
-import {DateSelectModal} from "../../../common/modal/menu/DateSelectModal";
+import {DateSelectModule} from "../../../common/modal/menu/DateSelectModule";
 import {DateUtils} from "../../../utils/DateUtils";
 import {LMD} from "../../../common/LMD";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
@@ -104,12 +104,12 @@ export function ReserveDateModal(props){
                                        checked={selected === 0}/>
                                 <label htmlFor="rsv_radio_0" className={Popup.label}>선택</label>
                             </div>
-                            <DateSelectModal rootClassName={Popup.reservation_date} onSelect={setDate}>
+                            <DateSelectModule rootClassName={Popup.reservation_date} onSelect={setDate}>
                                 <input type="text" className={cmc(Popup.inp)} value={inputField.get('rsv_dt')}
                                        placeholder="직접입력"
                                        readOnly/>
                                 <button type="button" className={Popup.date_btn}>달력</button>
-                            </DateSelectModal>
+                            </DateSelectModule>
                         </li>
                         <li key={1} className={cm(Popup.reservation_item, Popup.reservation_text)}
                             onClick={() => {

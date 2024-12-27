@@ -30,7 +30,7 @@ export function ManageStaff(){
 
                 if(data.list){
                     const parsed = JSON.parse(data.list)
-                    console.table(parsed)
+                    // console.table(parsed)
                     setItems(parsed)
                 }else{
                     setItems(null)
@@ -47,19 +47,17 @@ export function ManageStaff(){
         })
     }
 
-    const updateApprovalState = async (staffId, shopId, state)=>{
-        await userApi.updateApprovalState(staffId, shopId,state).then(({status,data})=>{
-            if(status === 200 && data){
-                getStaff();
-                getInnerStaffTotalCount();
-            }
-        })
+
+
+    const refresh = ()=>{
+        getStaff();
+        getInnerStaffTotalCount();
     }
 
     return (
         <div className={cm(Layout.sub)}>
             <div className={cm(Layout.sub_head)}>
-                <h2 className={cm(Layout.sub_title)}>직원 현황</h2>
+                <h2 className={cm(Layout.sub_title)}>직원 관리</h2>
                 {/*<button type="button" className={`${cmc(Board.btn, Board.btn_medium)} btn_blue ${Layout.sub_head_btn}`}>저장하기</button>*/}
             </div>
 
@@ -104,12 +102,12 @@ export function ManageStaff(){
                         <Bth>권한</Bth>
                         <Bth>마지막 로그인</Bth>
                         <Bth>입사일</Bth>
-                        <Bth>승인요청</Bth>
+                        <Bth>상태</Bth>
                     </Bthead>
                     <Btbody>
                         {
                             items && items.map((v,i)=>{
-                                return <StaffTableData key={i} data={v} onChangeState={updateApprovalState}/>
+                                return <StaffTableData key={i} data={v} onUpdate={refresh}/>
                             })
                         }
 

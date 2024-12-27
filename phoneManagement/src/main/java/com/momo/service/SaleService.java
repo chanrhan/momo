@@ -35,6 +35,10 @@ public class SaleService  {
 		return saleMapper.updatePromiseContent(vo);
 	}
 
+	public int deletePromise(SalePromiseVO vo){
+		return saleMapper.deletePromise(vo);
+	}
+
 	public int insertSale(SaleVO vo) {
 		saleMapper.insertSale(vo);
 		int maxSaleId = saleMapper.getMaxSaleId(vo.getCurrShopId());

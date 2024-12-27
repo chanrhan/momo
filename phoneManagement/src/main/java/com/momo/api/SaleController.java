@@ -294,6 +294,13 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.updatePromiseContent(vo) > 0);
 	}
 
+	@PostMapping("/promise/del")
+	public ResponseEntity<Boolean> deletePromise(HttpSession session,
+														@RequestBody SalePromiseVO vo){
+		vo.setCurrShopId(commonService.getCurrentShopId(session));
+		return ResponseEntity.ok(saleService.deletePromise(vo) > 0);
+	}
+
 	@GetMapping("/summary")
 	public ResponseEntity<List<Map<String,Object>>> getSummary(HttpSession session,
 															   @RequestParam String prevMonth,

@@ -74,7 +74,11 @@ export function Administrator(){
     }
 
     const changeState = async (id, shopId, state)=>{
-        await userApi.updateApprovalState(id, shopId, state).then(({status,data})=>{
+        await userApi.updateApprovalState({
+            user_id: id,
+            shop_id: shopId,
+            approval: state
+        }).then(({status,data})=>{
             if(status === 200 && data){
                 getUserAll();
             }

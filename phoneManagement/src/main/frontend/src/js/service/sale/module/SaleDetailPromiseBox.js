@@ -12,17 +12,9 @@ export function SaleDetailPromiseBox({promiseInputField}){
 
     const [focusIndex, setFocusIndex] = useState(-1);
 
-    const nextIndex = promiseInputField ? promiseInputField.length() : -1;
-
-    useEffect(() => {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }, [promiseInputField.input]);
 
     useEffect(() => {
         if(focusIndex !== -1){
-            // if(focusIndex < nextIndex){
-            //     setEditContent(promiseInputField.get(focusIndex, 'content') ?? '');
-            // }
             focusRef.current[focusIndex].focus();
         }
     }, [focusIndex]);
@@ -37,6 +29,11 @@ export function SaleDetailPromiseBox({promiseInputField}){
             content: v
         });
         setEditContent('')
+
+        // 추가하면 목록이 밀릴 것이므로 다시 스크롤 조정
+        setTimeout(()=>{
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }, 10)
     }
 
     return (
@@ -75,9 +72,6 @@ export function SaleDetailPromiseBox({promiseInputField}){
                                        focusRef.current[i] = e;
                                    }}
                                    placeholder='내용을 입력해주세요'/>
-                            {/*<input type="text" className={Popup.inp} value={apmInputField.contents[i]} onChange={e=>{*/}
-                            {/*    apmInputField.putContent(i, e.target.value)*/}
-                            {/*}}/>*/}
                             <button type="button" className={Popup.check_del}
                                     onClick={() => {
                                         promiseInputField.removeItem(i)
@@ -92,41 +86,6 @@ export function SaleDetailPromiseBox({promiseInputField}){
                     <EditableAddButton inpClassName={Popup.add_inp}
                                        btnClassName={Popup.btn_add_icon}
                                        value='약속 추가하기' onUpdate={addItem}/>
-                    {/*{*/}
-                    {/*    focusIndex === nextIndex ? (*/}
-                    {/*            <input type="text" className={Popup.add_inp}*/}
-                    {/*                   value={editContent}*/}
-                    {/*                   onChange={e => {*/}
-                    {/*                       setEditContent(e.target.value)*/}
-                    {/*                   }}*/}
-                    {/*                   onBlurCapture={e=>{*/}
-                    {/*                        addItem();*/}
-                    {/*                   }}*/}
-                    {/*                   onKeyDown={e => {*/}
-                    {/*                       if (e.key === 'Enter') {*/}
-                    {/*                            addItem()*/}
-                    {/*                       }*/}
-                    {/*                   }}*/}
-                    {/*                   ref={e => {*/}
-                    {/*                       if(e){*/}
-                    {/*                            e.focus();*/}
-                    {/*                           focusRef.current[nextIndex] = e;*/}
-                    {/*                       }*/}
-                    {/*                   }}*/}
-                    {/*                   placeholder='내용을 입력해주세요'/>*/}
-                    {/*        )*/}
-                    {/*        : (*/}
-                    {/*            <button type="button"*/}
-                    {/*                    className={`${cmc(Popup.btn, Popup.btn_add_icon)}`}*/}
-                    {/*                    onClick={() => {*/}
-                    {/*                        const content = promiseInputField.lastItem('content');*/}
-                    {/*                        if(!ObjectUtils.isEmpty(content)){*/}
-                    {/*                            setFocusIndex(nextIndex)*/}
-                    {/*                        }*/}
-                    {/*                    }}>추가하기*/}
-                    {/*            </button>*/}
-                    {/*        )*/}
-                    {/*}*/}
                 </div>
             </ul>
 

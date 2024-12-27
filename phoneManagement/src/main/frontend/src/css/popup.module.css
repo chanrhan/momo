@@ -382,7 +382,7 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_area{
     overflow:hidden;
     position:relative;
-    padding:24px 16px; border-radius:8px; background-color:#fff;}
+    padding:16px 16px; border-radius:8px; background-color:#fff;}
 .popup .customer .customer_body .customer_box.price .price_data .data_half{display:inline-block; width:calc(50% - 6px); vertical-align:top;}
 .popup .customer .customer_body .customer_box.price .price_data .data_half + .data_half{margin-left:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box{display:inline-block; vertical-align:top;}
@@ -402,7 +402,21 @@
 }
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .data_area{height:300px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .check_label{max-width:calc(100% - 24px);}
-.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .check_del{position:absolute; top:0; right:0; width:24px; height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li{
+    padding: 3px;
+}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover,
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover .check_del,
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover .check_text,
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover .check_label:before,
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover .check_inp{
+    background-color: #eaf2ff;
+    border-radius: 8px;
+}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .popup_check_list .li:hover .check_del{
+    position:absolute; top:3px; right:4px; width:22px; height:22px;
+    background:url(../images/popup/popup_close.png) no-repeat center / 100%;
+}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon{
     cursor: pointer;
     margin:0 0; padding-left:30px;

@@ -2,7 +2,7 @@ import useModal from "../hook/useModal";
 import {useNavigate} from "react-router-dom";
 import useApi from "../hook/useApi";
 import useUserInfo from "../hook/useUserInfo";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ModalType} from "../common/modal/ModalType";
 import {UserFormBox} from "../account/module/UserFormBox";
 import {UserFormList} from "../account/module/UserFormList";
@@ -25,9 +25,9 @@ export function RegisterBrNo(){
     const [bpNoChecked, setBpNoChecked] = useState(false)
     const inputField = useValidateInputField([
             {
-                key: 'br_nm',
-                name: '상호명',
-                // msg: '상호명을 입력해주세요'
+                key: 'corp_nm',
+                name: '회사명',
+                msg: '회사명을 입력해주세요'
             },
             {
                 key: 'br_no',
@@ -37,6 +37,12 @@ export function RegisterBrNo(){
             }
         ]
     );
+
+    useEffect(() => {
+        if(userInfo.br_no){
+            nav('/shop/register')
+        }
+    }, [userInfo]);
 
     const checkBrNoStatus = async ()=>{
         if(inputField.validateOne('br_no')){
@@ -64,9 +70,14 @@ export function RegisterBrNo(){
     const submit = async()=>{
         if(!bpNoChecked){
             inputField.handleError('br_no','사업자번호를 인증해야 합니다.');
-        }else if(inputField.validateOne('br_nm')){
-            dispatch(localActions.setBrno(inputField.get('br_no')))
-            nav('/shop/register')
+        }else if(inputField.validateOne('corp_nm')){
+            userApi.updateBusinessInfo(inputField.input).then(({status,data})=>{
+                if(status === 200 && data){
+                    userInfo.updateUser().finally(()=>{
+                        nav('/shop/register')
+                    })
+                }
+            })
         }
     }
 
@@ -75,9 +86,9 @@ export function RegisterBrNo(){
             <div>
                 <UserFormBox title='사업자 등록하기'>
                     <UserFormList>
-                        <UserFormItem errorText={inputField.error.br_nm}>
-                            <UserFormInput name='br_nm' inputField={inputField} subject='사업자 등록'
-                                           placeholder='상호명을 입력하세요.'/>
+                        <UserFormItem errorText={inputField.error.corp_nm}>
+                            <UserFormInput name='corp_nm' inputField={inputField} subject='사업자 등록'
+                                           placeholder='회사명을 입력하세요.'/>
                         </UserFormItem>
                         <UserFormItem style={{marginTop: 10}} errorText={inputField.error.br_no}>
                             <UserFormInput readOnly={bpNoChecked} name='br_no' inputField={inputField}

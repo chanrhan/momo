@@ -10,11 +10,8 @@ import useUserInfo from "../hook/useUserInfo";
 import {useSelector} from "react-redux";
 
 export function RegisterShop(){
-    const {shopApi, userApi} = useApi();
+    const {shopApi} = useApi();
     const userInfo = useUserInfo();
-    const LOCAL = useSelector(s=>s.localReducer);
-
-    const brnoRef = useRef()
 
     const inputField = useValidateInputField([
         {
@@ -41,18 +38,10 @@ export function RegisterShop(){
     const nav = useNavigate()
 
     useEffect(()=>{
-        if(LOCAL.brNo){
-            brnoRef.current = LOCAL.brNo;
-        }else{
-            userApi.getBrno().then(({status,data})=>{
-                if(status === 200 && data){
-                    brnoRef.current = data;
-                }else{
-                    nav('/shop/brno')
-                }
-            })
+        if(!userInfo.br_no){
+            nav('/shop/brno')
         }
-    },[])
+    },[userInfo])
 
     const submit = async () => {
         if (inputField.validateAll()) {

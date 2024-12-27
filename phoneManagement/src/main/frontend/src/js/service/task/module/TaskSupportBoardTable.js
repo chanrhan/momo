@@ -53,16 +53,16 @@ export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onChec
                 }} className="ta_c">휴대폰 번호</Bth>
                 <Bth onMouseDown={e=>{
                     resizeColumn(e, 5)
-                }} className="ta_r">식별 번호</Bth>
+                }} className="ta_c">식별 번호</Bth>
                 <Bth onMouseDown={e=>{
                     resizeColumn(e, 6)
-                }} className="ta_r">지원 구분</Bth>
+                }} className="ta_c">지원 구분</Bth>
                 <Bth onMouseDown={e=>{
                     resizeColumn(e, 7)
-                }} className="ta_r">지원 금액</Bth>
+                }} className="ta_c">지원 금액</Bth>
                 <Bth onMouseDown={e=>{
                     resizeColumn(e, 8)
-                }} className="ta_r">담당자</Bth>
+                }} className="ta_c">담당자</Bth>
                 <Bth onMouseDown={e=>{
                     resizeColumn(e, 9)
                 }} className="ta_c">전송</Bth>
@@ -72,7 +72,7 @@ export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onChec
                     items && items.map((v, i)=>{
                         return <tr key={i} onClick={()=>{
                             onSelectSale(v.sale_id)
-                        }}>
+                        }} className={Board.tr}>
                             <Btd name={`check_${v.sale_id}`} checked={checkedSale[i]} onCheck={()=>{
                                 onCheck(i)
                             }} checkbox/>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -122,10 +121,11 @@ public class UserController {
 		return ResponseEntity.ok(userService.getBrno(username));
 	}
 
-	@PostMapping("/brno")
-	public ResponseEntity<Boolean> updateBrNo(@RequestBody String brNo){
+	@PostMapping("/business-info")
+	public ResponseEntity<Boolean> updateBusinessInfo(@RequestBody UserVO vo){
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.updateBrNo(username, brNo) > 0);
+		vo.setUserId(username);
+		return ResponseEntity.ok(userService.updateBusinessInfo(vo) > 0);
 	}
 
 //	사용자 정보 수정할때 함께 데이터 받을 예정
@@ -201,17 +201,16 @@ public class UserController {
 	 * 사용자 매장 가입 요청 승인
 	 * @return Boolean
 	 */
-	@PostMapping("/{staffId}/{shopId}/state")
+	@PostMapping("/staff/approval")
 	@Transactional
 	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
-													   @PathVariable Integer shopId,
-													   @PathVariable String staffId,
-													   @RequestBody Integer state){
+													   @RequestBody UserVO vo){
 //		int currShopId = commonService.getCurrentShopId(session);
 //		if(state == 1){
 //			userService.updateCurrentShop(staffId, currShopId);
 //		}
-		return ResponseEntity.ok(userService.updateApprovalState(shopId,staffId,state)> 0);
+//		vo.setCurrShopId(currShopId);
+		return ResponseEntity.ok(userService.updateApprovalState(vo)> 0);
 	}
 
 	/**
@@ -251,6 +250,13 @@ public class UserController {
 	public ResponseEntity<List<String>> getInnerStaffName(HttpSession session){
 		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(userService.getInnerStaffName(currShopId));
+	}
+
+	@PostMapping("/staff/start-date")
+	public ResponseEntity<Boolean> updateStaffStartDate(HttpSession session, @RequestBody UserVO vo){
+		int currShopId = commonService.getCurrentShopId(session);
+		vo.setCurrShopId(currShopId);
+		return ResponseEntity.ok(userService.updateStaffStartDate(vo) > 0);
 	}
 
 	@PostMapping("/invite")

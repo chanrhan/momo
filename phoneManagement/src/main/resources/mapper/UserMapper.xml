@@ -3,11 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.UserMapper">
+    <update id="updateStaffStartDate">
+        update tb_staff
+        set start_dt=#{startDt}
+        where shop_id=#{currShopId} and
+              staff_id=#{userId}
+    </update>
+
     <select id="getUserAll">
         with users as (
             select ac.*,
                    sf.role,
-                   IF(sf.role = 1, sh.br_no, '') as br_no,
+                   IF(sf.role = 1, ac.br_no, '') as br_no,
                     sf.approval_st,
                     sf.shop_id,
                     sh.shop_nm
@@ -177,17 +184,16 @@
     </select>
 
     <select id="getBrno">
-        SELECT IF(sf.role = 1, sh.br_no, '')
+        SELECT IF(sf.role = 1, ac.br_no, '')
         FROM tb_account ac
         left outer join tb_staff sf on ac.id=sf.staff_id and ac.curr_shop_id=sf.shop_id
-        left outer join tb_shop sh on ac.curr_shop_id=sh.shop_id
         where ac.id=#{userId}
     </select>
 
     <update id="updateApprovalState">
         UPDATE tb_staff
-        SET approval_st=#{state}
-        WHERE staff_id=#{staffId} and
+        SET approval_st=#{approval}
+        WHERE staff_id=#{userId} and
               shop_id=#{shopId}
     </update>
 
@@ -224,10 +230,11 @@
         WHERE   id=#{id}
     </update>
 
-    <update id="updateBrNo">
+    <update id="updateBusinessInfo">
         UPDATE tb_account
-        SET br_no=#{brNo}
-        WHERE   id=#{id}
+        SET br_no=#{brNo},
+            corp_nm=#{corpNm}
+        WHERE id=#{userId}
     </update>
 
     <update id="resetPassword" parameterType="com.momo.common.vo.UserVO">
@@ -382,17 +389,18 @@
                sh.shop_nm,
                sh.shop_addr,
                sh.provider,
-               (
-                   select IF(count(*),
-                              IFNULL((
-                                  select sf2.approval_st
-                                  from tb_staff sf2
-                                  where sf2.shop_id=ac.curr_shop_id and
-                                      sf2.staff_id=ac.id
-                              ),0), -1)
-                   from tb_staff sf
-                   where sf.staff_id=ac.id
-               ) as approval_st
+               IF(ac.curr_shop_id = 0, (
+                   select sf2.approval_st
+                   from tb_staff sf2
+                   where sf2.staff_id=ac.id
+               ), (
+                   select sf2.approval_st
+                   from tb_staff sf2
+                   where sf2.shop_id=ac.curr_shop_id and
+                       sf2.staff_id=ac.id
+               )) as approval_st,
+                ac.corp_nm,
+                ac.br_no
         FROM tb_account ac
         LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
         WHERE id = #{userId}
@@ -487,7 +495,7 @@
         <if test='shopId != null'>
             shop_id=#{shopId},
         </if>
-        approval_st=#{approvalSt}
+        approval_st=#{approval}
         where
         user_id=#{staffId}
     </update>

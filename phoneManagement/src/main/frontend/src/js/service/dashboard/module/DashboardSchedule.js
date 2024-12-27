@@ -34,6 +34,7 @@ export function DashboardSchedule({userInfo}){
 
     useEffect(() => {
         getTodoForCalendar();
+        getTodoDetail()
     }, [month, userInfo]);
 
     useEffect(() => {

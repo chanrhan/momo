@@ -35,6 +35,7 @@ public interface SaleMapper{
 
 	public void insertPromiseContent(SalePromiseVO vo);
 	public Integer updatePromiseContent(SalePromiseVO vo);
+	public int deletePromise(SalePromiseVO vo);
 
 	public void insertSalePromise(int currShopId, int saleId, List<SalePromiseVO> list);
 	public void insertSaleSupport(int currShopId, int saleId, List<SaleSupportVO> list);
