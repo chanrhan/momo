@@ -46,7 +46,7 @@ export function InviteModal(props){
     }
 
     return (
-        <LayerModal maxWidth={595} top={30}>
+        <LayerModal {...props} maxWidth={595} top={30}>
             {/*활성화시 active 추가 -->*/}
             <form className={cm(Popup.user_form, User.user_form)}>
                 <div className={Popup.popup_cont}>

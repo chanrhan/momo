@@ -54,7 +54,7 @@ function SaleUsedDeviceModal(props){
     }
 
     return (
-        <LayerModal top={30} minWidth={600} maxWidth={600}>
+        <LayerModal {...props} top={30} minWidth={600} maxWidth={600}>
                 <div className={Popup.popup_title}>중고폰</div>
 
                 <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)}>

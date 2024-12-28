@@ -11,8 +11,10 @@ export function ImagePreviewModal(props){
         modal.closeModal(ModalType.LAYER.Image_Preview)
     }
 
+
     return (
-        <LayerModal top={props.top} maxWidth={1000} maxHeight={700}>
+        <LayerModal {...props} maxWidth={800} maxHeight={700}
+                    top={window.pageYOffset+25} width={props.width+500} height={props.height+500}>
             {/*<div className={Popup.popup} style={*/}
             {/*    {*/}
             {/*        top: `${60+props.top}px`,*/}
@@ -23,7 +25,7 @@ export function ImagePreviewModal(props){
             {/*</div>*/}
             <div className={Popup.popup_title}>사진 미리보기</div>
             <div className={Popup.preview_img_box} style={{
-                width: `${props.width * 1}px`,
+                width: `${props.width}px`,
                 height: `${props.height}px`
             }}>
                 {

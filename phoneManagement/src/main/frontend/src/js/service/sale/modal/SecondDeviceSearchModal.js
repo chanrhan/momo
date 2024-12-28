@@ -60,7 +60,7 @@ function SecondDeviceSearchModal(props){
 
 
     return (
-        <LayerModal top={30}>
+        <LayerModal {...props} top={30}>
                 <div className={Popup.popup_title}>세컨 디바이스 선택</div>
 
                 <form className={Popup.service} onSubmit={e=>e.preventDefault()}>

@@ -32,7 +32,7 @@ export function ChargePointModal(props){
     }
 
     return (
-        <LayerModal maxWidth={548} top={10}>
+        <LayerModal {...props} maxWidth={548} top={10}>
             <div className={Popup.popup_title}>문자 포인트 충전</div>
             <div className={Popup.popup_text}>문자, 알림톡 푸시 메시지 비용은 충전 금액에서 차감됩니다.<br/>아무 조건 상관없이 사용량에 따라 자동으로 충전해서 사용하세요.
             </div>

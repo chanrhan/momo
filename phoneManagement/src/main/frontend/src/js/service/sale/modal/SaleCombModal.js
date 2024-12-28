@@ -30,7 +30,7 @@ function SaleCombModal(props){
 
 
     return (
-        <LayerModal top={30}>
+        <LayerModal {...props} top={30}>
                 <div className={Popup.popup_title}>결합</div>
 
                 <form className={cm(Popup.inp_type2, Popup.user_form, User.user_form)} onSubmit={e=>e.preventDefault()}>

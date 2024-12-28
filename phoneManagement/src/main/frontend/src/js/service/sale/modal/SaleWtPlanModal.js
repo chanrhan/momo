@@ -36,7 +36,7 @@ export function SaleWtPlanModal(props){
     }
 
     return (
-        <LayerModal top={30} maxWidth={548}>
+        <LayerModal {...props} top={30} maxWidth={548}>
                 <div className={Popup.popup_title}>유선</div>
 
                 <form className={cm(Popup.user_form, User.user_form, Popup.inp_type2)} onSubmit={(e)=>{

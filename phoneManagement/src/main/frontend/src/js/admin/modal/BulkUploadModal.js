@@ -190,7 +190,7 @@ export function BulkUploadModal(props){
     }
 
     return (
-        <LayerModal maxWidth={1060} top={-45}>
+        <LayerModal {...props} maxWidth={1060} top={-45}>
             <div className={Popup.popup_title}>데이터 추가</div>
             <div className={Popup.bulk_upload_box}>
                 <div className={Popup.bulk_upload_header_group}>

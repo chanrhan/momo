@@ -83,7 +83,7 @@ export function ReserveDateModal(props){
     }
 
     return (
-        <LayerModal top={30}>
+        <LayerModal {...props} top={30}>
             <div className={Popup.popup_title}>예약 날짜 설정</div>
 
             <form className={Popup.reservation}>

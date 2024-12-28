@@ -4,11 +4,10 @@ import {useEffect, useRef, useState} from "react";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 
 export const LayerModal = ({modalRef, scrollable, children, top, left, width,
-                               height, minWidth, maxWidth, minHeight, maxHeight}) => {
+                               height, windowBlocked, minWidth, maxWidth, minHeight, maxHeight}) => {
     const [fadeIn, setFadeIn] = useState(false);
 
     const scrollRef = useRef(null)
-
 
     useEffect(() => {
         let prevScrollY = null;
@@ -18,12 +17,24 @@ export const LayerModal = ({modalRef, scrollable, children, top, left, width,
         const timer = setTimeout(() => {
             setFadeIn(true)
         }, 100)
+
         return () => {
             if(prevScrollY){
                 ScrollUtils.allowScroll(scrollRef.current.body, prevScrollY)
             }
             prevScrollY = null;
             clearTimeout(timer);
+        }
+    }, []);
+
+
+    useEffect(() => {
+        let prevScrollY = null;
+        if(windowBlocked){
+            prevScrollY = ScrollUtils.preventScroll(document.body);
+        }
+        return ()=>{
+            ScrollUtils.allowScroll(document.body, prevScrollY)
         }
     }, []);
 

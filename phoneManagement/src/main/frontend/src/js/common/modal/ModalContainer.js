@@ -123,9 +123,7 @@ function ModalContainer(){
 
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
         const onClickCaptureEvent = (e: MouseEvent)=>{
-            // console.log(`capture before_${modalName} ${topComponentRef.current}`)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                // console.log(`capture_${modalName}`)
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -134,7 +132,6 @@ function ModalContainer(){
 
         const onClickBubbleEvent = (e)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                // console.log('bubble')
                 modal.unlockModal()
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
@@ -152,7 +149,7 @@ function ModalContainer(){
 
         // 모든 흐름이 끝난 후 이벤트 리스너를 붙이도록 비동기적으로 처리
         const attachListenerTimer = setTimeout(()=>{
-            if(type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
+            if(type === M_TYPE.LAYER || type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
                 // onclickDelayTimer = setTimeout(()=>{
                 //     // onclick 함수를 추가하자마자, 이게 호출된다
                 //     // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
@@ -195,6 +192,7 @@ function ModalContainer(){
             topScrollIndex = index
         }
     })
+    const lastIndex = modalList.list.length - 1;
     const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
         if(!modalName){
             return null;
@@ -205,6 +203,11 @@ function ModalContainer(){
         //         return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
         //     }
         // }
+        let windowBlocked = false;
+        if(type === M_TYPE.LAYER && index === lastIndex){
+            windowBlocked = true;
+        }
+
         if(index === topIndex){
             if(type === M_TYPE.RENDERLESS){
                 if(props.ref){
@@ -215,7 +218,7 @@ function ModalContainer(){
                 return null;
             }
             const ModalComponent = MODAL_COMPONENTS[modalName];
-            return <ModalComponent scrollable={true} modalRef={topComponentRef} key={modalName} {...props}/>
+            return <ModalComponent scrollable={true} modalRef={topComponentRef} windowBlocked={windowBlocked} key={modalName} {...props}/>
         }
         const ModalComponent = MODAL_COMPONENTS[modalName];
 
@@ -224,7 +227,8 @@ function ModalContainer(){
             scrollable = true;
         }
 
-        return <ModalComponent scrollable={scrollable} key={modalName} {...props}/>
+
+        return <ModalComponent scrollable={scrollable} windowBlocked={windowBlocked} key={modalName} {...props}/>
     });
 
     return createPortal(

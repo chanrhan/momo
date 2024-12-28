@@ -641,7 +641,7 @@ function SaleDetailModal(props){
 
 
     return (
-        <LayerModal modalRef={props.modalRef} maxWidth={1060}>
+        <LayerModal {...props} maxWidth={1060}>
             {/*<div className={Popup.popup} style={*/}
             {/*    {*/}
             {/*        maxWidth: '1060px',*/}

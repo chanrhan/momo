@@ -39,7 +39,10 @@
 /*.popup.active{opacity:1; visibility:inherit;}*/
 .popup .popup_title{color:#141218; font-size:16px; line-height:20px;}
 .popup .preview_img_box{
-    width: 1000px;
+    /*margin-top: 10px;*/
+    max-width: 550px;
+    max-height: 550px;
+    margin: 40px auto;
 }
 
 .popup .preview_img_box .img{

@@ -17,7 +17,7 @@ export function PaymentCardModal(props){
     }
 
     return (
-        <LayerModal maxWidth={548} top={10}>
+        <LayerModal {...props} maxWidth={548} top={10}>
             {/*활성화시 active 추가 -->*/}
             <div className={Popup.popup_title}>결제 카드 등록</div>
             <div className={Popup.popup_text}>결제하실 카드를 등록해주세요.</div>

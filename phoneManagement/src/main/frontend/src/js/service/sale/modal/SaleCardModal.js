@@ -51,7 +51,7 @@ function SaleCardModal(props){
     }
 
     return (
-        <LayerModal top={30}>
+        <LayerModal  {...props} top={30}>
                 <div className={Popup.popup_title}>카드</div>
 
                 <form className={cm(Popup.user_form, Popup.inp_type2, User.user_form)} onSubmit={e=>e.preventDefault()}>

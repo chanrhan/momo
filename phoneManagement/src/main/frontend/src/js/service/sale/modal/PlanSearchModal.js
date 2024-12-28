@@ -49,7 +49,7 @@ export function PlanSearchModal(props){
     }
 
     return (
-        <LayerModal top={30}>
+        <LayerModal {...props} top={30}>
             <div className={Popup.popup_title}>{props.title}</div>
 
             <form className={Popup.service} onSubmit={e=>e.preventDefault()}>

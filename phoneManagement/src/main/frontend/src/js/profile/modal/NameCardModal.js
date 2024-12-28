@@ -16,7 +16,7 @@ export function NameCardModal(props){
     }
 
     return (
-        <LayerModal top={100}>
+        <LayerModal {...props} top={100}>
             {/*활성화시 active 추가 -->*/}
             <div className={Popup.popup_title}>명함</div>
 

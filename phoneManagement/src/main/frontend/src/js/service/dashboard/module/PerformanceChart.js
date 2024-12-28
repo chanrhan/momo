@@ -15,7 +15,7 @@ const DATE_TYPE = [
 ]
 
 export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelClassName}){
-    console.log(`tab:${categoryTab}`)
+    // console.log(`tab:${categoryTab}`)
     const {saleApi} = useApi();
     const [tab2, setTab2] = useState(0) // 일별, 주별, 월별
 
@@ -74,7 +74,7 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
         if(rst != null){
             const {status, data}  = rst;
             if(status === 200 && data){
-                console.table(data.value1);
+                // console.table(data.value1);
                 if(data.value){
                     setGraphData([JSON.parse(data.value)])
                 }else if(data.value1 && data.value2){

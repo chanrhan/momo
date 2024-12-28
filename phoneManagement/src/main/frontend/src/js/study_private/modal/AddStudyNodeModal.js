@@ -11,7 +11,7 @@ export function AddStudyNodeModal(props){
     }
 
     return (
-        <LayerModal>
+        <LayerModal {...props}>
             <p>Hello </p>
 
             <div>

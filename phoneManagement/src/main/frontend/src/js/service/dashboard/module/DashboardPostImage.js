@@ -77,7 +77,7 @@ export function DashboardPostImage({}){
     const handleClickPreviewImage = (e, i)=>{
         const previewFile = preview.get(i)
         if(!ObjectUtils.isEmpty(previewFile)){
-            console.table(previewFile)
+            // console.table(previewFile)
             const image = new Image();
             image.onload = ()=>{
                 const yOffset = window.pageYOffset;

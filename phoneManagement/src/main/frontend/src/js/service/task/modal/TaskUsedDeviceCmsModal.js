@@ -27,7 +27,7 @@ export function UsedDeviceCmsModal(props){
     }
 
     return (
-        <LayerModal maxWidth={348} top={200}>
+        <LayerModal {...props} maxWidth={348} top={200}>
             <div className={Popup.popup_title}>중고폰 판매 수수료 입력</div>
             {/*<div className={Popup.popup_text}>판매 수수료를 입력해주세요</div>*/}
 

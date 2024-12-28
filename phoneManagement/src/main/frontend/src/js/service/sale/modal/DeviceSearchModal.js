@@ -49,7 +49,7 @@ export function DeviceSearchModal(props){
     }
 
     return (
-        <LayerModal top={30} maxWidth={600}>
+        <LayerModal {...props} top={30} maxWidth={600}>
             <div className={Popup.popup_title}>{props.title}</div>
 
             <form className={Popup.service} onSubmit={e=>e.preventDefault()}>

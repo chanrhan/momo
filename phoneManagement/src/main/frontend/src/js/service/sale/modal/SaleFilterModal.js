@@ -45,7 +45,7 @@ export function SaleFilterModal(props){
     }
 
     return (
-        <LayerModal top={130} left={props.left} maxWidth={609}>
+        <LayerModal {...props} top={130} left={props.left} maxWidth={609}>
                 <div className={Popup.popup_title}>필터</div>
 
                 <form className={Popup.filter}>
