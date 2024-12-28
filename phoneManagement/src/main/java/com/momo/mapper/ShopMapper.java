@@ -10,15 +10,16 @@ import java.util.Map;
 @Mapper
 public interface ShopMapper {
 	// Shop
-	public int insertShop(ShopVO vo);
+	public void insertShop(ShopVO vo);
 	public int updateShop(ShopVO vo);
 	public int deleteShop(int shopId);
 	public List<Map<String,Object>> getShop(ShopVO vo);
+	public List<Map<String,Object>> getShopItems(String userId);
 
-	// Corperation
-	public int insertCorp(ShopVO vo);
-	public int updateCorp(ShopVO vo);
-	public int updateCorpPoint(int id, int amount);
-	public int deleteCorp(int id);
-	public List<Map<String,Object>> getCorp(ShopVO vo);
+	public void joinShop(String userId, int shopId);
+
+	public Map<String,Object> getShopAdmin(ShopVO vo);
+
+	// 데이터 초기화
+//	public void initializeShopData()
 }

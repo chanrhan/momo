@@ -20,6 +20,11 @@ public class UserDetailsImpl implements UserDetails {
 	@Delegate
 	private List<GrantedAuthority> authorities = new ArrayList<>();
 
+	public UserDetailsImpl(String username, String password){
+		this.username=username;
+		this.password=password;
+	}
+
 	@Builder
 	public UserDetailsImpl(String username, String password, String role){
 		this.username=username;

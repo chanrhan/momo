@@ -1,45 +1,101 @@
 package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
+import com.momo.common.enums.codes.CommonErrorCode;
+import com.momo.common.util.AligoApiUtil;
+import com.momo.common.vo.ApiVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;
+import com.momo.exception.BusinessException;
 import com.momo.mapper.UserMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends CommonService implements UserDetailsService{
+public class UserService  implements UserDetailsService{
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 	private final PasswordEncoder  passwordEncoder;
 	private final UserMapper       userMapper;
 
-	// Authentication
-	public List<Map<String,Object>> getUserAsStaff(String id){
-		return userMapper.getUserAsStaff(id);
+	public int updateStaffStartDate(UserVO vo){
+		return userMapper.updateStaffStartDate(vo);
+	}
+
+	public int getSessionData(String userId){
+		return userMapper.getSessionData(userId);
+	}
+
+	public Integer sendAuthNumber(String tel){
+		Random random = new Random();
+		int authNumber = random.nextInt(1000, 9000);
+		ApiVO vo = ApiVO.builder()
+				.msg("[모모] 인증번호는 [" + authNumber +"] 입니다")
+				.msgType("SMS")
+				.receiver(tel)
+				.build();
+		Map<String,Object> res = AligoApiUtil.sendMessage(vo);
+		log.info("send auth: {}", res);
+		if(!res.get("result_code").toString().equals("1")){
+			return null;
+		}
+		return authNumber;
+	}
+
+
+	public Map<String,Object> getUserAll(UserVO vo){
+		return userMapper.getUserAll(vo);
+	}
+
+	public String getInnerStaff(int currShopId){
+		return userMapper.getInnerStaff(currShopId);
+	}
+
+	public Map<String,Object> getInnerStaffAll(UserVO vo){
+		return userMapper.getInnerStaffAll(vo);
+	}
+
+	public Integer getInnerStaffTotalCount(int currShopId){
+		return userMapper.getInnerStaffTotalCount(currShopId);
+	}
+
+	public List<String> getInnerStaffName(int currShopId){
+		return userMapper.getInnerStaffName(currShopId);
+	}
+
+	@Deprecated
+	public List<Map<String,Object>> getStaffByShopId(String shopId){
+		return userMapper.getStaffByShopId(shopId);
+	}
+
+	public String getBrno(String userId){
+		return userMapper.getBrno(userId);
 	}
 
 	public int updateCurrentShop(String userId, int shopId){
 		return userMapper.updateCurrentShop(userId, shopId);
 	}
+
+
+
 	public int updateNickname(String id, String nickname){
 		return userMapper.updateNickname(id, nickname);
+	}
+	public int updateBusinessInfo(UserVO vo){
+		return userMapper.updateBusinessInfo(vo);
 	}
 
 	public int resetPassword(UserVO vo){
@@ -58,24 +114,10 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.findUserByTelEmail(tel, email);
 	}
 
-	public String getUserByBpNo(String bpNo){
-		String userId = userMapper.getUserByBpNo(bpNo);
-		if(!StringUtils.hasText(userId)){
-			return null;
-		}
-		int length = userId.length();
-		StringBuilder sb = new StringBuilder(userId);
-		sb.replace(length-5, length-1, "****");
-		return sb.toString();
+	public boolean inviteAll(String senderId, List<String> telList){
+		return false;
 	}
 
-	public void sendAuthNumberByEmailForUpdatePassword(String id){
-
-	}
-
-	public void sendAuthNumberByTelForUpdatePassword(String id){
-
-	}
 
 	public Map<String,Object> getProtectedTelAndEmail(String id){
 		Map<String,Object> map = userMapper.findTelEmailById(id);
@@ -100,19 +142,16 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.matchUserId(vo);
 	}
 
-	public void loginNow(String id){
-		userMapper.loginNow(id);
-	}
 
 	public int updateUserToDormant(int date){
 		return userMapper.updateUserToDormant(date);
 	}
 
-	public Map<String,Object> getUserById(String id){
-		return userMapper.getUserById(id);
+	public Map<String,Object> getUserInfo(String id){
+		return userMapper.getUserInfo(id);
 	}
 
-	public Map<String,String> getUserAsAuthorization(String id){
+	public Map<String,Object> getUserAsAuthorization(String id){
 		return userMapper.getUserAsAuthorization(id);
 	}
 
@@ -139,18 +178,19 @@ public class UserService extends CommonService implements UserDetailsService{
 	}
 
 	public int updatePassword(UserVO vo){
+		String orgPwd = userMapper.getPassword(vo.getId());
+		if(!passwordEncoder.matches(vo.getPwd(), orgPwd)){
+			return 0;
+		}
+		vo.setPwd(orgPwd);
 		vo.setUpdatePwd(passwordEncoder.encode(vo.getUpdatePwd()));
 		return userMapper.updatePassword(vo);
 	}
-	public int updateApproval(String id, boolean state){
-		UserVO vo = UserVO.builder().empId(id).approvalSt(state).build();
-		return updateEmp(vo);
+	public int updateApprovalState(UserVO vo){
+		return userMapper.updateApprovalState(vo);
 	}
-	public int updatePfp(UserVO vo){
-		return userMapper.updatePfp(vo);
-	}
-	public String getPfpFilePath(String id){
-		return userMapper.getProfilePicture(id);
+	public int updatePfp(String userId, String pfpPath){
+		return userMapper.updatePfp(userId, pfpPath);
 	}
 	public int deleteUser(String id) {
 		return userMapper.deleteUser(id);
@@ -164,92 +204,66 @@ public class UserService extends CommonService implements UserDetailsService{
 		return userMapper.getChatInvitableUser(vo);
 	}
 
-	public int updateRole(String id, String role){
-		UserVO vo = UserVO.builder().id(id).role(role).build();
-		return userMapper.updateUser(vo);
-	}
 
+//	public void replaceAuthority(String role){
+//		replaceAuthority(role, false);
+//	}
 
-	// Employee
-	public int insertEmp(UserVO vo){
-		if(vo.getApprovalSt() == null){
-			vo.setApprovalSt(false);
-		}
-		// 이거 임시 코드임. 나중에 수정
-		if(vo.getShopId() == null){
-			vo.setShopId(0);
-		}
-
-		return userMapper.insertEmp(vo);
-	}
-	public int updateEmp(UserVO vo){
-		return userMapper.updateEmp(vo);
-	}
-
-	public int deleteEmp(String id) {
-		return userMapper.deleteEmp(id);
-	}
-
-	public List<Map<String,Object>> fetchStaff(UserVO vo) {
-		return userMapper.getUserAsStaff(vo);
-	}
-	public Map<String,Object> fetchStaffById(String id){
-		UserVO                   vo   = UserVO.builder().empId(id).build();
-		List<Map<String,Object>> list = fetchStaff(vo);
-		if(list == null || list.isEmpty()){
-			return null;
-		}
-		return list.get(0);
-	}
-
-	public List<Map<String,Object>> searchEmp(SearchVO vo) {
-		return userMapper.searchEmp(vo);
-	}
-
-	public void replaceAuthority(String role){
-		replaceAuthority(role, false);
-	}
-
-	public void replaceAuthority(String role, boolean approve){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
-
-		updateAuthorities.add(new SimpleGrantedAuthority(role));
-		if(approve){
-			updateAuthorities.add(new SimpleGrantedAuthority("APPROVE"));
-		}
-
-		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
-
-		SecurityContextHolder.getContext().setAuthentication(newAuth);
-	}
+//	public void replaceAuthority(String role, boolean approve){
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		List<GrantedAuthority> updateAuthorities = new ArrayList<>();
+//
+//		updateAuthorities.add(new SimpleGrantedAuthority(role));
+//		if(approve){
+//			updateAuthorities.add(new SimpleGrantedAuthority("APPROVE"));
+//		}
+//
+//		Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),auth.getCredentials(),updateAuthorities);
+//
+//		SecurityContextHolder.getContext().setAuthentication(newAuth);
+//	}
 
 	public Authentication login(String username, String password){
 		Authentication authentication = authenticate(username, password);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
+		userMapper.loginNow(username);
 
 		return authentication;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String,String > user = getUserAsAuthorization(username);
+	public UserDetails loadUserByUsername(String username) throws BusinessException{
+		Map<String,Object> user = getUserAsAuthorization(username);
+//		log.info("load user: {}",user);
 		if(user == null){
-			throw new UsernameNotFoundException(String.format("User %s Not Founded!",username));
+			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
 		}
 
-		String id = user.get("id");
-		String pwd = user.get("pwd");
-		String role = user.get("role");
+		String id = user.get("id").toString();
+		String pwd = user.get("pwd").toString();
+//		System.out.println("role: "+Integer.parseInt(user.get("role")));
+
+		String role = null;
+		try {
+			role = switch (Integer.parseInt(user.get("role").toString())) {
+				case 1 -> "STF";
+				case 2 -> "BM";
+				case 3 -> "ADMIN";
+				default -> "NONE";
+			};
+		}catch (NullPointerException e){
+			role = "NONE";
+		}
+
+
+		if(Objects.equals(role, "NONE")){
+			return new UserDetailsImpl(id, pwd, "ROLE_NONE");
+		}
 
 		UserDetailsImpl userDetails = new UserDetailsImpl(id, pwd, "ROLE_"+role);
 
-		if(role.equals("NONE")){
-			return userDetails;
-		}
-
-		if(!role.equals("ADMIN") && !role.equals("CUSTOMER") ){
+		if(!Objects.equals(role, "ADMIN")){
 //			Map<String,Object> emp = selectEmp(UserVO.builder().empId(id).build()).get(0);
 			if(userMapper.isApproved(id)){
 //				System.out.println("success!");
@@ -264,14 +278,14 @@ public class UserService extends CommonService implements UserDetailsService{
 	private Authentication authenticate(String username, String password) {
 		UserDetails userDetails = loadUserByUsername(username);
 
-		if (userDetails == null) {
-			System.out.println("Login details - null " + userDetails);
-			throw new BadCredentialsException("Invalid username and password");
-		}
+//		if (userDetails == null) {
+//			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
+////			throw new BadCredentialsException("Invalid username and password");
+//		}
 
 		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-			System.out.println("Login userDetails - password mismatch" + userDetails);
-			throw new BadCredentialsException("Invalid password");
+			throw new BusinessException(CommonErrorCode.LOGIN_FAILED);
+//			throw new BadCredentialsException("Invalid password");
 		}
 		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}

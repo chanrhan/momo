@@ -14,8 +14,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class NotificationService extends CommonService {
-	private final ShopService shopService;
+public class NotificationService  {
 	private final NotificationEmitter notificationEmitter;
 	private final NotificationMapper  notificationMapper;
 
@@ -56,54 +55,53 @@ public class NotificationService extends CommonService {
 		return notificationMapper.read(alarmId);
 	}
 
-	public void sendMessage(String senderId, String receiverId, String title, String content){
+//	public void sendMessage(String senderId, String receiverId, String title, String content){
+//		Map<String,Object> data = new HashMap<>();
+//		data.put("title", title);
+//		data.put("content", content);
+//		notify(senderId, receiverId, 0, data);
+//	}
+
+	public void sendRequest(String senderId, String receiverId, String content){
 		Map<String,Object> data = new HashMap<>();
-		data.put("title", title);
 		data.put("content", content);
-		notify(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, 1, data);
 	}
 
 	public void sendMessage(String senderId, String receiverId, String content){
 		Map<String,Object> data = new HashMap<>();
 		data.put("content", content);
-		notify(senderId, receiverId, "message", data);
+		notify(senderId, receiverId, 0, data);
 	}
 
-	public void approvalRequestToAdmin(String senderId, int corpId){
-		Map<String,Object> data = new HashMap<>();
-		data.put("corp_id", corpId);
-		notify(senderId, "admin", "approval", data);
-	}
-
-	public void approvalRequestToReps(String senderId, int corpId, int shopId){
-		Map<String,Object> data = new HashMap<>();
-		data.put("shop_id", shopId);
-
-		Map<String,Object> corp = shopService.getCorp(corpId);
-		String repsId = corp.get("reps_id").toString();
-		notify(senderId, repsId, "approval", data);
-	}
+//	public void approvalRequestToReps(String senderId, int corpId, int shopId){
+//		Map<String,Object> data = new HashMap<>();
+//		data.put("shop_id", shopId);
+//
+//		Map<String,Object> corp = shopService.getCorp(corpId);
+//		String repsId = corp.get("reps_id").toString();
+//		notify(senderId, repsId, "approval", data);
+//	}
 
 	public void sendChatInvitation(int roomId, String receiverId){
 		notificationEmitter.sendToClient(receiverId, "chat/invite", roomId);
 	}
 
 	// Private
-	private void notify(String senderId, String receiverId, String alertTp, Map<String,Object> data){
+	private void notify(String senderId, String receiverId, int type, Map<String,Object> data){
 		data.put("sender_id", senderId);
-		data.put("type", alertTp);
+		data.put("type", type);
 
 		String content = data.containsKey("content") ? data.get("content").toString() : null;
 
 		NotifVO vo = NotifVO.builder()
 				.senderId(senderId)
 				.receiverId(receiverId)
-				.noteTp(alertTp)
+				.noteTp(type)
 				.content(content)
 				.build();
 
-		if(notificationMapper.insertNotification(vo) != 0){
-			notificationEmitter.sendToClient(receiverId, "notif", data);
-		}
+		notificationMapper.insertNotification(vo);
+//		notificationEmitter.sendToClient(receiverId, "notif", data);
 	}
 }

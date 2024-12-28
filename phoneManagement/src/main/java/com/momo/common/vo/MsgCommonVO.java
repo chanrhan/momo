@@ -15,7 +15,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class MsgCommonVO extends CommonQueryVO {
+public class MsgCommonVO extends BaseVO {
 	private Integer formId;
 	private String  formNm;
 	private Integer typeId;

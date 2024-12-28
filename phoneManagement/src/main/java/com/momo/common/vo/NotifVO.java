@@ -12,11 +12,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class NotifVO extends CommonQueryVO {
+public class NotifVO extends BaseVO {
 	private Integer noteId;
 	private String  senderId;
 	private String  receiverId;
-	private String  noteTp;
+	private Integer  noteTp;
 	private String  content;
 	private Boolean readSt;
 	private String  sendDt;

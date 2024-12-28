@@ -5,6 +5,7 @@ import net.minidev.json.JSONObject;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 // 국세청_사업자등록정보 진위확인 및 상태조회 서비스
@@ -75,12 +76,10 @@ public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 		List<String> array = new ArrayList<>();
 		array.add(bpNo);
 		body.put("b_no", array);
-		String json = JSONObject.toJSONString(body);
-		log.info("status body json: {}", json);
-		StringBuilder urlBuilder = new StringBuilder("https://api.odcloud.kr/api/nts-businessman/v1/status");
-		try{
-			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + SERVICE_KEY); /*Service Key*/
 
+		StringBuilder urlBuilder = new StringBuilder("https://api.odcloud.kr/api/nts-businessman/v1/status");
+		urlBuilder.append("?").append(URLEncoder.encode("serviceKey", StandardCharsets.UTF_8)).append("=").append(SERVICE_KEY); /*Service Key*/
+		try{
 			URL url = new URL(urlBuilder.toString());
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -88,33 +87,15 @@ public class BusinessmanApiUtil extends PublicDataOpenApiUtil{
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-type", "application/json; utf-8");
 
-			// 데이터 본문에 싣기
-			try(DataOutputStream dos = new DataOutputStream(conn.getOutputStream())){
-				dos.write(json.getBytes("UTF-8"));
-			}
+			Map<String,Object> result = ExternalApiUtils.post(conn, body);
 
-
-			BufferedReader br;
-			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-				br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			} else {
-				br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-			}
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-			br.close();
-			conn.disconnect();
-			Map<String,Object> result = objectMapper.readValue(sb.toString(), Map.class);
 			log.info("result: {}", result);
 			Object matchCnt = result.get("match_cnt");
 			return matchCnt != null && Integer.parseInt(matchCnt.toString()) > 0;
 		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void search(){
 

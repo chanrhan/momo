@@ -9,14 +9,30 @@ import java.util.Map;
 
 @Mapper
 public interface UserMapper {
-	public String getUserByBpNo(String bpNo);
+	public Map<String,Object> getUserAll(UserVO vo);
+
+	public int updateStaffStartDate(UserVO vo);
+
+	public Integer getSessionData(String userId);
+	public String getName(String id);
+	public String getBrno(String userId);
+
+	public Map<String,String> getNotificationData(String userId, int shopId);
+
+	public String getInnerStaff(int currShopId);
+	public Map<String,Object> getInnerStaffAll(UserVO vo);
+	public List<String> getInnerStaffName(int currShopId);
 	public List<Map<String,Object>> findUserByTelEmail(String tel, String email);
 
-	public List<Map<String,Object>> getUserAsStaff(String id);
+	public List<Map<String,Object>> getStaffByShopId(String shopId);
+
+	public int updateApprovalState(UserVO vo);
 
 	public int updateCurrentShop(String userId, int shopId);
 	public int updateNickname(String id, String nickname);
+	public int updateBusinessInfo(UserVO vo);
 
+	public String getPassword(String id);
 	public int updatePassword(UserVO vo);
 	public int resetPassword(UserVO vo);
 
@@ -28,7 +44,7 @@ public interface UserMapper {
 	public boolean matchUserId(UserVO vo);
 
 	public String getProfilePicture(String id);
-	public int updatePfp(UserVO vo);
+	public int updatePfp(String id, String path);
 
 	public Map<String,Object> getConnectedUser(String id);
 
@@ -41,27 +57,19 @@ public interface UserMapper {
 	public int insertUser(UserVO vo);
 	public int updateUser(UserVO vo);
 	public int deleteUser(String id);
-	public Map<String,String> getUserAsAuthorization(String userId);
+	public Map<String,Object> getUserAsAuthorization(String userId);
 
-	/**
-	 *
-	 * @param userId string
-	 * @return {
-	 * 	   아이디
-	 *     이름
-	 *     역할
-	 *     회사명
-	 *     매장명
-	 * }
-	 */
-	public Map<String,Object> getUserById(String userId);
+	public Map<String,Object> getUserInfo(String userId);
 	public List<Map<String,Object>> getUser(UserVO vo);
 
-	// Employee
-	public int insertEmp(UserVO vo);
-	public int updateEmp(UserVO vo);
-	public int deleteEmp(String id);
-	public List<Map<String,Object>> getUserAsStaff(UserVO vo);
-	public List<Map<String,Object>> searchEmp(SearchVO vo);
+	// Staff
+	public int insertStaff(UserVO vo);
+	public int updateStaff(UserVO vo);
+	public int deleteStaff(String id);
+
+	public Integer getInnerStaffTotalCount(int currShopId);
+
+//	public List<Map<String,Object>> getUserAsStaff(UserVO vo);
+//	public List<Map<String,Object>> searchEmp(SearchVO vo);
 	public boolean isApproved(String id);
 }

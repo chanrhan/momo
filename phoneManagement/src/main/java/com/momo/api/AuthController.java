@@ -1,11 +1,14 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
+import com.momo.common.vo.LoginVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
+import com.momo.service.CommonService;
 import com.momo.service.JwtService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,14 +27,19 @@ import java.util.Map;
 public class AuthController {
 	private final JwtService  jwtService;
 	private final JwtProvider jwtProvider;
+	private final CommonService commonService;
 
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(HttpServletResponse response,
-						 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken) throws AccessDeniedException {
-		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken);
+	public ResponseEntity<?> refresh(HttpSession session,
+									 HttpServletResponse response,
+									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken, @RequestBody LoginVO vo) throws AccessDeniedException {
+		log.info("refresh");
+		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken, vo.isRememberMe());
+		log.info("jwt: {}", jwtVO);
+		commonService.setCurrentShopId(session);
 
-		jwtProvider.setHeaderJwtToken(response, jwtVO);
+		jwtProvider.setHeaderAccessToken(response, jwtVO.getAccessToken());
 
 		return  ResponseEntity.status(HttpStatus.OK).build();
 	}
@@ -42,7 +50,6 @@ public class AuthController {
 		if(jwtVO == null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-
 		return ResponseEntity.ok("Bearer "+jwtVO.getAccessToken());
 	}
 

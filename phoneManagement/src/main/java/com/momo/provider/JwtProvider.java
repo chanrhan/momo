@@ -30,21 +30,55 @@ import java.util.stream.Collectors;
 public class JwtProvider {
 	private final UserService userService;
 
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L; // 단위(ms), 1000ms(1초) x 60 x 30 = 30분
-	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7L; // 7일
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 10L; // 단위(ms), 1000ms(1초) x 60 x 10 = 10분
+	private static final long REFRESH_TOKEN_EXPIRE_TIME_SHORT = 1000 * 60 * 60L; // 60분 = 1시간 (자동로그인 X)
+	private static final long REFRESH_TOKEN_EXPIRE_TIME_LONG = 1000 * 60 * 60 * 24 * 7L; // 7일 (자동로그인 O)
 
 	static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes()); // test
 
-	public JwtVO generateToken(Authentication auth){
+	public JwtVO generateToken(Authentication auth, boolean rememberMe){
 		String authorities = auth.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
+		String username = ((UserDetailsImpl)auth.getPrincipal()).getUsername();
+
+		return buildToken(username, authorities, rememberMe);
+	}
+
+	public JwtVO generateAccessToken(Authentication auth){
+		String authorities = auth.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(","));
 
 		String username = ((UserDetailsImpl)auth.getPrincipal()).getUsername();
 
-		return buildToken(username, authorities);
+		String accessToken = Jwts.builder()
+				.setSubject(username)
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_EXPIRE_TIME))
+				.claim("authorities",authorities)
+				.signWith(key, SignatureAlgorithm.HS256)
+				.compact();
+
+		return JwtVO.builder()
+				.grantType("Bearer ")
+				.username(username)
+				.accessToken(accessToken)
+				.build();
 	}
+
+//	public JwtVO generateRefreshToken(boolean rememberMe){
+//		return JwtVO.builder()
+//				.grantType("Bearer")
+//				.refreshToken(Jwts.builder()
+//						.setExpiration(new Date(new Date().getTime() + (rememberMe ? REFRESH_TOKEN_EXPIRE_TIME_LONG : REFRESH_TOKEN_EXPIRE_TIME_SHORT)))
+//						.signWith(key, SignatureAlgorithm.HS256)
+//						.compact())
+//				.expireTime(rememberMe ? REFRESH_TOKEN_EXPIRE_TIME_LONG : REFRESH_TOKEN_EXPIRE_TIME_SHORT)
+//				.build();
+//	}
+
 
 	public JwtVO generateTokenForResetPassword(String username){
 		if(!userService.existUserId(username)){
@@ -52,10 +86,10 @@ public class JwtProvider {
 		}
 		String authorities = new SimpleGrantedAuthority("RESET_PWD").getAuthority();
 		log.info("generate token auth: {}",authorities);
-		return buildToken(username, authorities);
+		return buildToken(username, authorities, false);
 	}
 
-	private JwtVO buildToken(String username, String authorities){
+	private JwtVO buildToken(String username, String authorities, boolean rememberMe){
 		String accessToken = Jwts.builder()
 				.setSubject(username)
 				.setIssuedAt(new Date())
@@ -64,7 +98,7 @@ public class JwtProvider {
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 		String refreshToken = Jwts.builder()
-				.setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_EXPIRE_TIME))
+				.setExpiration(new Date(new Date().getTime() + (rememberMe ? REFRESH_TOKEN_EXPIRE_TIME_LONG : REFRESH_TOKEN_EXPIRE_TIME_SHORT)))
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 
@@ -77,6 +111,7 @@ public class JwtProvider {
 				.accessToken(accessToken)
 				.refreshToken(refreshToken)
 				.username(username)
+				.expireTime(rememberMe ? REFRESH_TOKEN_EXPIRE_TIME_LONG : REFRESH_TOKEN_EXPIRE_TIME_SHORT)
 				.build();
 	}
 
@@ -133,6 +168,11 @@ public class JwtProvider {
 		response.setHeader("Access-Control-Expose-Headers","authorization, refreshtoken");
 		response.setHeader("authorization","Bearer "+ jwtVO.getAccessToken());
 		response.setHeader("refreshtoken","Bearer "+ jwtVO.getRefreshToken());
+		response.setHeader("refreshexpiretime",jwtVO.getExpireTime().toString());
+	}
+
+	public void setHeaderAccessToken(HttpServletResponse response, String accessToken){
+		response.setHeader("authorization", "Bearer "+accessToken);
 	}
 
 	public Authentication getAuthenticationByUsername(String username){

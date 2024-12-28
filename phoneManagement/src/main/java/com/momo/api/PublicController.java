@@ -1,7 +1,8 @@
 package com.momo.api;
 
 import com.momo.common.response.JwtVO;
-import com.momo.common.util.BusinessmanApiUtil;
+import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.LoginVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,28 +29,39 @@ import java.util.Map;
 @RequestMapping("/api/v1/public")
 public class PublicController {
 	private final UserService userService;
-	private final ShopService shopService;
 	private final JwtProvider jwtProvider;
 	private final JwtService jwtService;
 
 	/**
 	 * 로그인
-	 * @param user map
+	 * @param vo map
 	 * @return ResponseEntity
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<?> login(HttpServletResponse response, @RequestBody Map<String, String> user) {
-		String username = user.get("username");
-		String password = user.get("password");
+	public ResponseEntity<Boolean> login(HttpSession session,
+								   HttpServletResponse response, @RequestBody LoginVO vo) {
+		Authentication authentication = userService.login(vo.getUsername(), vo.getPassword());
 
-		Authentication authentication = userService.login(username, password);
-
-		JwtVO jwtVO = jwtProvider.generateToken(authentication);
+		JwtVO jwtVO = jwtProvider.generateToken(authentication, vo.isRememberMe());
+		System.out.println(jwtVO);
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		session.setAttribute("curr_shop_id", userService.getSessionData(vo.getUsername()));
+
+		return ResponseEntity.ok(vo.isRememberMe());
+	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<?> logout(HttpSession session,
+									@RequestParam String refreshToken){
+		String username = SecurityContextUtil.getUsername();
+		if(StringUtils.hasText(username)){
+			jwtService.revokeToken(username, refreshToken);
+			session.removeAttribute("curr_shop_id");
+		}
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -61,19 +72,26 @@ public class PublicController {
 	@PostMapping("/signup")
 	@Transactional
 	public ResponseEntity<?> signup(HttpServletResponse response, HttpSession session, @RequestBody UserVO vo){
+//		boolean existed = userService.existUserId(vo.getId());
+////		log.info("existed: {}", existed);
+//		if(existed){
+//			return ResponseEntity.ok(2);
+//		}
 		int result = userService.insertUser(vo);
 		if (result == 0) {
 			return ResponseEntity.notFound().build();
 		}
 
+		// 즉시 로그인
 		Authentication authentication = userService.loginDirectly(vo.getId(), session);
-		JwtVO          jwtVO          = jwtProvider.generateToken(authentication);
+		JwtVO          jwtVO          = jwtProvider.generateToken(authentication, false);
 
 		jwtService.saveRefreshToken(jwtVO);
 		jwtProvider.setHeaderJwtToken(response, jwtVO);
 
-		return ResponseEntity.ok().body(true);
+		return ResponseEntity.ok(true);
 	}
+
 
 	/**
 	 * 휴대폰 인증번호 전송
@@ -83,7 +101,7 @@ public class PublicController {
 	@GetMapping("/auth/send")
 	public ResponseEntity<Integer> sendAuthNumber(@RequestParam String tel){
 		// 휴대폰 인증번호 보내는 api
-		return null;
+		return ResponseEntity.ok(userService.sendAuthNumber(tel));
 	}
 
 	/**
@@ -141,34 +159,19 @@ public class PublicController {
 	 * }
 	 */
 	@GetMapping("/user/find")
-	public ResponseEntity<List<Map<String,Object>>> findUser(@RequestParam(required = false) String tel,
-										   @RequestParam(required = false) String email){
-		return ResponseEntity.ok(userService.findUserByTelEmail(tel, email));
-	}
-
-
-
-
-	/**
-	 * 사업자 인증
-	 * @param bpNo string
-	 * @return boolean
-	 */
-	@GetMapping("/bpno/status")
-	public ResponseEntity<?> checkBpNoStatus(@RequestParam String bpNo) {
-//		log.info("validate bno: {}", bpNo);
-		Map<String,Object> res = new HashMap<>();
-
-		String userId = userService.getUserByBpNo(bpNo);
-		if(StringUtils.hasText(userId)){
-			res.put("matched", false);
-			res.put("id", userId);
+	public ResponseEntity<List<Map<String,Object>>> findUser(@RequestParam String by,
+										   @RequestParam(required = false) String data){
+		if("tel".equals(by)){
+			return ResponseEntity.ok(userService.findUserByTelEmail(data, ""));
 		}else{
-			res.put("matched", BusinessmanApiUtil.status(bpNo));
+			return ResponseEntity.ok(userService.findUserByTelEmail("", data));
 		}
-
-		return ResponseEntity.ok(res);
 	}
+
+
+
+
+
 
 	/**
 	 * 비밀번호 재설정
@@ -189,5 +192,6 @@ public class PublicController {
 
 		return ResponseEntity.ok(userService.resetPassword(vo) != 0);
 	}
+
 
 }

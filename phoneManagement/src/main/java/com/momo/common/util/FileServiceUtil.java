@@ -3,6 +3,8 @@ package com.momo.common.util;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +18,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -47,12 +52,17 @@ public class FileServiceUtil {
 		return LOCAL_STORAGE_PATH + dir + '/';
 	}
 
-	public static UrlResource getFileResource(String dir, String path) throws MalformedURLException {
+	public static UrlResource getUrlResource(String dir, String path) throws MalformedURLException {
 		return new UrlResource("file:" + LOCAL_STORAGE_PATH + dir + '/' + path);
 	}
 
-	public static String getSaveFilePath(String fileName){
-		return LOCAL_STORAGE_PATH + fileName;
+	public static Resource getResource(String dir,String path) throws IOException {
+		Path path1 = Paths.get("file:" + LOCAL_STORAGE_PATH + dir + '/' + path);
+		return new InputStreamResource(Files.newInputStream(path1));
+	}
+
+	public static String getFilePath(String dir, String fileName){
+		return getFileSavePath(dir) + fileName;
 	}
 
 	// 대충 리사이징한 이미지 비율만큼 용량도 줄어듬

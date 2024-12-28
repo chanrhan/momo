@@ -14,6 +14,11 @@ public enum CommonErrorCode implements ErrorCode {
 	 * 500 : Internal Server Error
 	 * *********************************************************************************************
 	 */
+	LOGIN_FAILED(413, "아이디 또는 비밀번호가 일치하지 않습니다"),
+
+	UNMATCHED_PASSWORD(401, "비밀번호가 일치하지 않습니다"),
+	SESSION_NOT_FOUND(404, "세션을 찾을 수 없습니다"),
+
 	// 잘못된 서버 요청
 	BAD_REQUEST_ERROR(400,  "Bad Request Exception"),
 
@@ -50,6 +55,8 @@ public enum CommonErrorCode implements ErrorCode {
 	// @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
 	NOT_VALID_HEADER_ERROR(404,  "Header에 데이터가 존재하지 않는 경우 "),
 
+	//
+	ALREADY_EXISTED(405, "이미 존재하는 데이터"),
 	// 서버가 처리 할 방법을 모르는 경우 발생
 	INTERNAL_SERVER_ERROR(500,  "Internal Server Error Exception"),
 

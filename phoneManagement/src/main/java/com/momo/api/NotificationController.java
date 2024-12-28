@@ -24,7 +24,7 @@ public class NotificationController {
 	 *     알림 내용
 	 * }
 	 */
-	@GetMapping("/")
+	@GetMapping("/all")
 	public ResponseEntity<List<Map<String,Object>>> getNotification(){
 		String username = SecurityContextUtil.getUsername();
 		return ResponseEntity.ok(notificationService.getNotification(username));
@@ -42,18 +42,18 @@ public class NotificationController {
 		return ResponseEntity.ok(notificationService.readAll(username) != 0);
 	}
 
-	@PostMapping("/send/test")
-	public ResponseEntity<?> sendTest(@RequestBody Map<String,Object> map){
-		String senderId = "admin";
-		log.info("send map: {}",map);
-		String receiverId = map.get("receiver_id").toString();
-		String content = map.get("content").toString();
-		String noteTp = map.get("alert_tp").toString();
-		if(noteTp.equals("message")){
-			notificationService.sendMessage(senderId, receiverId, content);
-		}else{
-			notificationService.approvalRequestToReps(senderId, 1, 1);
-		}
-		return ResponseEntity.ok().build();
-	}
+//	@PostMapping("/send/test")
+//	public ResponseEntity<?> sendTest(@RequestBody Map<String,Object> map){
+//		String senderId = "admin";
+//		log.info("send map: {}",map);
+//		String receiverId = map.get("receiver_id").toString();
+//		String content = map.get("content").toString();
+//		String noteTp = map.get("alert_tp").toString();
+//		if(noteTp.equals("message")){
+//			notificationService.sendMessage(senderId, receiverId, content);
+//		}else{
+////			notificationService.approvalRequestToReps(senderId, 1, 1);
+//		}
+//		return ResponseEntity.ok().build();
+//	}
 }
