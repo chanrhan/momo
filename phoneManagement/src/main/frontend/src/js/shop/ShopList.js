@@ -8,8 +8,10 @@ import {UserFormInput} from "../account/module/UserFormInput";
 import useValidateInputField from "../hook/useValidateInputField";
 import useApi from "../hook/useApi";
 import {useEffect, useState} from "react";
+import {LMD} from "../common/LMD";
+import {ObjectUtils} from "../utils/objectUtil";
 
-export function SelectShop(){
+export function ShopList(){
     const {shopApi} = useApi();
     const [shopItems, setShopItems] = useState([])
     const nav = useNavigate()
@@ -55,9 +57,22 @@ export function SelectShop(){
                             <ul className={User.request_list}>
                                 {
                                     shopItems && shopItems.map((v,i)=> {
+                                        let provider = LMD.provier[v.provider];
+                                        if(ObjectUtils.isEmpty(provider)){
+                                            provider = "판매점"
+                                        }
                                         return <li key={i} className={User.li}>
-                                            <span className={User.company_text}><span className={User.company_name}>{v.shop_nm}
-                                            </span>({v.shop_addr})</span>
+                                            <span className={User.company_text}>
+                                                <span className={User.corp_name}>{v.corp_nm}  |</span>
+                                                <span className={User.provider_name}> {provider}</span>
+                                                <span className={User.company_name}>
+                                                    {v.shop_nm}
+                                                </span>
+                                                <span className={User.company_addr}>
+                                                    {v.shop_addr}
+                                                </span>
+
+                                            </span>
                                             <button type="button"
                                                     className={`btn btn_medium btn_line ${User.company_btn}`} onClick={()=>{
                                                         select(v.shop_id);

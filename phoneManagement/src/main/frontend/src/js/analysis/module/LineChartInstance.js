@@ -40,7 +40,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
         labels = new Array(data.length).fill('')
     }
 
-    console.log('aaa')
     const chartData = {
         labels,
         datasets: [
@@ -52,7 +51,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                 fill: true,
                 borderColor: borderColor, //그래프 선 color
                 backgroundColor: (context)=>{
-                    console.log(444)
                     const bgColor = [
                         bgStartColor,
                         'rgba(255,255,255,0.07)'
@@ -60,14 +58,12 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
                     if(!context.chart.chartArea){
                         return;
                     }
-                    console.log(111)
                     const {ctx, chartArea: {top, bottom}} = context.chart;
                     const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
                     const colorTranches = 1 / (bgColor.length - 1);
                     for(let i=0;i < bgColor.length;++i){
                         gradientBg.addColorStop(i*colorTranches, bgColor[i])
                     }
-                    console.log(222)
                     // return 'rgba(255,255,255,0)'
                     return gradientBg;
                 }, //마우스 호버시 나타나는 분류네모 표시 bg, fill=true일 시 선 아래쪽 배경색이 채워진다
@@ -77,7 +73,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
             }
         ]
     };
-    console.table(chartData)
 
     const options = {
         // line 타입의 경우 중간에 누락된 데이터가 있을 경우 이어그릴지 여부를 정합니다
@@ -132,7 +127,6 @@ export function LineChartInstance({labelName, labels, pointRadius=1, tooltips, d
             }
         },
     }
-    console.log(555)
 
     return (
         <Line data={chartData} options={options}/>

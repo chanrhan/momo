@@ -6,7 +6,7 @@ import {AccountLayout} from "./js/layout/AccountLayout";
 import Login from "./js/account/Login";
 import {Signup} from "./js/account/Signup";
 import {Role} from "./js/account/Role";
-import {SelectShop} from "./js/shop/SelectShop";
+import {ShopList} from "./js/shop/ShopList";
 import MainLayout from "./js/layout/MainLayout";
 import Authorization from "./common/Authorization";
 import {RegisterShop} from "./js/shop/RegisterShop";
@@ -122,7 +122,7 @@ function App() {
                       <Route path='/shop'>
                           <Route path='register' element={<RegisterShop/>}/>
                           <Route path='brno' element={<RegisterBrNo/>}/>
-                          <Route path='list' element={<SelectShop/>}/>
+                          <Route path='list' element={<ShopList/>}/>
                       </Route>
                   </Route>
 

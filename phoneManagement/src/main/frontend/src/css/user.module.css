@@ -100,17 +100,39 @@
     max-height: 500px;
     overflow-y: auto;
 }
-.form_company_request .request_list .li{position:relative; padding:34px 116px 34px 96px; border-radius:8px; background-color:#f4f5f9;}
+.form_company_request .request_list .li{
+    position:relative; padding:20px 116px 20px 96px;
+    border-radius:8px;
+    background-color:#f4f5f9;}
 .form_company_request .request_list .li + .li{
-    margin-top: 5px;
+    margin-top: 7px;
 }
 .form_company_request .request_list .li:last-child{
     margin-bottom: 20px;
 }
-.form_company_request .request_list .li:before{display:block; position:absolute; top:21px; left:24px; width:48px; height:48px; background:url(../images/company_icon.png) no-repeat center / 100%;}
+.form_company_request .request_list .li:before{
+    display:block; position:absolute;
+    top:calc(25%); left:24px; width:48px;
+    height:48px; background:url(../images/company_icon.png) no-repeat center / 100%;}
 .form_company_request .request_list .li .company_text{color:#141218; font-size:14px; font-weight:200; line-height:22px; word-break:keep-all;}
-.form_company_request .request_list .li .company_text .company_name{font-size: 17px; margin-right:8px; font-weight:500;}
-.form_company_request .request_list .li .company_btn{position:absolute; top:27px; right:24px;}
+
+.form_company_request .request_list .li .company_text .corp_name{
+    font-size: 15px;
+}
+.form_company_request .request_list .li .company_text .provider_name{
+    padding-left: 8px;
+    color: #626262;
+}
+.form_company_request .request_list .li .company_text .company_name{
+    margin-top: 2px;
+    display: block;
+    font-size: 17px; margin-right:8px; font-weight:500;
+}
+.form_company_request .request_list .li .company_text .company_addr{
+    margin-top: 2px;
+}
+.form_company_request .request_list .li .company_btn{
+    position:absolute; top:calc(28% + 5px); right:24px;}
 
 /* 매장 등록 */
 .form_company + .form_btn_box{margin-top:24px;}
@@ -183,8 +205,27 @@
 .approval{position:absolute; top:0; left:0; right:0; bottom:0; height:324px; margin:auto 0; text-align:center;}
 .approval .approval_title{position:relative; padding-top:190px; color:#141218; font-size:24px; font-weight:500; line-height:30px;}
 .approval .approval_title:before{display:block; position:absolute; top:0; left:0; right:0; width:150px; height:150px; margin:0 auto; background:url(../images/approval_icon.png) no-repeat center top / 100%;}
+.approval .approval_title .shop_name{
+    font-size: 25px;
+    color:#4781ff;
+}
 .approval .approval_text{margin-top:12px; color:#91939f; font-size:16px; line-height:20px;}
-.approval .approval_stat{margin-top:24px; padding:0 24px; border-radius:8px; background-color:#e8f2fe; color:#4781ff; font-size:18px; font-weight:600; line-height:48px;}
+.approval .approval_stat{
+    margin-top:24px; padding:0 24px;
+    cursor: pointer;
+    border-radius:8px; background-color:#e8f2fe; color:#4781ff; font-size:18px; font-weight:600; line-height:48px;
+}
+.approval .approval_stat:hover{
+    background-color: #c5d6ff;
+}
+
+.approval .approval_stat.denied:hover{
+    background-color: #ffc5c5;
+}
+.approval .approval_stat.denied{
+    background-color: #fee8e8;
+    color: #ff4747;
+}
 
 /*반응형*/
 @media (max-width:1000px){

@@ -15,14 +15,11 @@ import User from "../../css/user.module.css";
 
 function MainLayout(){
     const userInfo = useUserInfo();
-    // const nav = useNavigate()
     const {accessToken} = useSelector(state=>state.authReducer)
 
     useEffect(()=>{
         userInfo.updateUser();
     },[accessToken]);
-
-
 
     // if(userInfo.curr_shop_id === -1){
     //     nav('/admin')
@@ -39,7 +36,7 @@ function MainLayout(){
                     {/*    userInfo.curr_shop_id === -1 ? <Outlet/>*/}
                     {/*        : <LayoutSelector approval_state={userInfo.approval_st}/>*/}
                     {/*}*/}
-                    <LayoutSelector approval_state={userInfo.approval_st}/>
+                    <LayoutSelector shopName={userInfo.shop_nm} approval_state={userInfo.approval_st}/>
                     {/*{*/}
                     {/*    (userInfo && userInfo.approval_st && userInfo.approval_st !== 'NONE') ?*/}
                     {/*        <Outlet/> : <WaitingApproval/>*/}
@@ -51,14 +48,15 @@ function MainLayout(){
 )
 }
 
-function LayoutSelector({approval_state}){
-    console.log(`approval: ${approval_state}`)
+function LayoutSelector({shopName, approval_state}){
+    const nav = useNavigate()
+
     if(approval_state === null){
         return (
             <div className={cm(User.approval)}>
-                <h2 className={cm(User.approval_title)}>내 정보 설정111</h2>
+                <h2 className={cm(User.approval_title)}>내 정보 설정</h2>
                 <p className={cm(User.approval_text)}>승인이 늦어지는 경우 대표님에게 직접 문의해주세요.</p>
-                <span className={cm(User.approval_stat)}>승인 대기중</span>
+                {/*<span className={cm(User.approval_stat)}>승인 대기중</span>*/}
             </div>
         )
     }
@@ -77,9 +75,12 @@ function LayoutSelector({approval_state}){
         case 0:
             return (
                 <div className={cm(User.approval)}>
-                    <h2 className={cm(User.approval_title)}>승인 대기중</h2>
+                    <h2 className={cm(User.approval_title)}>
+                        <span className={User.shop_name}>
+                            {shopName}
+                        </span> 승인 대기중</h2>
                     <p className={cm(User.approval_text)}>승인이 늦어지는 경우 대표님에게 직접 문의해주세요.</p>
-                    {/*<span className={cm(User.approval_stat)}>...</span>*/}
+                    {/*<span className={cm(User.approval_stat)}>다른 매장 요청</span>*/}
                 </div>
             )
         case 1:
@@ -89,9 +90,15 @@ function LayoutSelector({approval_state}){
         case 2:
             return (
                 <div className={cm(User.approval)}>
-                    <h2 className={cm(User.approval_title)}>승인 거절됨</h2>
-                    <p className={cm(User.approval_text)}>매장으로부터 승인이 거절되었습니다.</p>
-                    {/*<span className={cm(User.approval_stat)}>...</span>*/}
+                    <h2 className={cm(User.approval_title)}>
+                        <span className={User.shop_name}>
+                            {shopName}
+                        </span> 승인 거절됨</h2>
+                    <p className={cm(User.approval_text)}>
+                        매장으로부터 승인이 거절되었습니다.</p>
+                    <span className={cm(User.approval_stat, User.denied)} onClick={()=>{
+                        nav('/shop/list')
+                    }}>매장 재선택하기</span>
                 </div>
             )
     }

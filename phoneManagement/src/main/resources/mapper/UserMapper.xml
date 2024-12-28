@@ -389,16 +389,14 @@
                sh.shop_nm,
                sh.shop_addr,
                sh.provider,
-               IF(ac.curr_shop_id = 0, (
-                   select sf2.approval_st
-                   from tb_staff sf2
-                   where sf2.staff_id=ac.id
-               ), (
-                   select sf2.approval_st
-                   from tb_staff sf2
-                   where sf2.shop_id=ac.curr_shop_id and
-                       sf2.staff_id=ac.id
-               )) as approval_st,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
                 ac.corp_nm,
                 ac.br_no
         FROM tb_account ac

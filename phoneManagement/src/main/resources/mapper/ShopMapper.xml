@@ -11,16 +11,16 @@
             );
 
         INSERT INTO tb_shop
-            (shop_id, shop_nm, shop_addr, shop_tel, provider, br_nm, br_no)
-        VALUES (@next_shopId, #{shopNm}, #{shopAddr}, #{shopTel},#{provider},#{brNo},#{brNo});
+            (shop_id, shop_nm, shop_addr, shop_tel, provider)
+        VALUES (@next_shopId, #{shopNm}, #{shopAddr}, #{shopTel},#{provider});
 
         UPDATE tb_account
         SET     curr_shop_id = @next_shopId
         WHERE   curr_shop_id = 0 and id=#{userId};
 
         INSERT INTO tb_staff
-            (shop_id, staff_id, role)
-        VALUES (@next_shopId, #{userId}, 1);
+            (shop_id, staff_id, role, approval_st)
+        VALUES (@next_shopId, #{userId}, 1, 1);
 
         set @size1 := (
             select IFNULL(count(*),0)
@@ -142,10 +142,21 @@
     </delete>
 
     <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
-        SELECT shop_id,
-               shop_nm,
-               shop_addr
-        from tb_shop
+        SELECT sh.shop_id,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   select corp_nm
+                   from tb_account
+                   where id = (
+                                select staff_id
+                                from tb_staff sf
+                                where sf.role = 1 and
+                                sf.shop_id = sh.shop_id
+                            )
+                ) as corp_nm
+        from tb_shop sh
         where
         <if test="keyword != null and !keyword.equals('')">
             shop_nm like '%${keyword}%' and
@@ -163,6 +174,10 @@
     </select>
 
     <insert id="joinShop">
+        UPDATE tb_account
+        set curr_shop_id=#{shopId}
+        where id=#{userId};
+
         INSERT INTO tb_staff
             (shop_id, staff_id, role, approval_st)
         VALUES (#{shopId}, #{userId}, 0, 0);

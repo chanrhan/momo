@@ -225,6 +225,16 @@ export function DynamicSelectModal(props){
         })
     }
 
+    const clearSelectedOption = ()=>{
+        if(props.onSubmit){
+            props.onSubmit({
+                id: null,
+                name: ''
+            })
+        }
+        close();
+    }
+
     return (
         <MenuModal modalRef={props.modalRef} top={props.top} left={props.left}>
             <div className={cm(Popup.select_box2, Popup.active)}
@@ -249,9 +259,12 @@ export function DynamicSelectModal(props){
                         height: `${boxHeight}px`,
                         maxHeight: '400px'
                     }}>
+                        <li key={0} className={cm(Popup.layer_header)}>
+                            <button className={Popup.btn_del} onClick={clearSelectedOption}>선택된 옵션 제거하기</button>
+                        </li>
                         {
                             inputField.input && inputField.input.map((v, i) => {
-                                return <li key={i} className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
+                                return <li key={i+1} className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
                                     <span className={Popup.layer_type}></span>
                                     <input type="text" className={Popup.layer_btn}
                                            value={v.name}
