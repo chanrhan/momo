@@ -7,6 +7,9 @@ export const ModalType = {
         Charge_Point: 'ChargePoint',
         Image_Preview: 'ImagePreview',
 
+        // shop
+        Address: 'Address',
+
         // Profile
         Update_Password: 'UpdatePassword',
         Name_Card: 'NameCard',

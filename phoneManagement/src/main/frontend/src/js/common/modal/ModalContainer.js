@@ -40,6 +40,7 @@ import {ImagePreviewModal} from "./layer/ImagePreviewModal";
 import {HintModal} from "./tooptip/HintModal";
 import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
 import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
+import {AddressApiModal} from "../../shop/modal/AddressApiModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -57,6 +58,9 @@ const MODAL_COMPONENTS = {
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
     ImagePreview: ImagePreviewModal,
+
+    // shop
+    Address: AddressApiModal,
 
     // tooltip
     Hint: HintModal,

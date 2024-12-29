@@ -13,7 +13,7 @@
 .user_form .user_title{color:#141218; font-size:34px; font-weight:700; text-align:center; line-height:40px;}
 .user_form .form_list{margin-top:40px; font-size:0; line-height:0;}
 .user_form .form_item + .form_item{margin-top:40px;}
-.user_form .form_label{color:#50505c; font-size:14px; line-height:16px;}
+.user_form .form_label{color:#50505c; font-size:14px; line-height:16px;margin-left: 4px}
 .user_form .form_inp{display:flex; position:relative;}
 .user_form .form_inp + .form_inp{margin-top:12px;}
 .user_form .form_label + .form_inp{margin-top:12px;}
@@ -92,6 +92,123 @@
 .user_permission .permission_list .li .a .permission_img{display:block; overflow:hidden; width:82px; height:82px; margin:0 auto; border-radius:50%;}
 .user_permission .permission_list .li .a .permission_text{display:block; margin-top:16px; color:#141218; font-size:18px; font-weight:500; line-height:22px;}
 .user_permission .permission_list .li .a .permission_btn{display:inline-block; margin-top:8px; padding:0 8px; border-radius:14px; background-color:#f0f5ff; color:#4781ff; font-size:14px; font-weight:500; line-height:28px;}
+
+/*주소 검색하기*/
+.address_search{
+
+}
+.address_search .address_list{
+    margin-bottom: 5px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+.address_search .address_list .li:first-child{
+    margin-top: 10px;
+}
+.address_search .address_list .li:hover{
+    background-color: rgba(206, 222, 255, 0.34);
+}
+.address_search .address_list .li{
+    cursor: pointer;
+    position:relative;
+    padding:10px 116px 10px 22px;
+    border-radius:8px;
+    background-color:#f4f5f9;
+    /*vertical-align: center;*/
+}
+.address_search .address_list .li + .li{
+    margin-top: 8px;
+}
+.address_search .address_list .li:last-child{
+    margin-bottom: 20px;
+}
+.address_search .address_list .li .address_text{
+    display: inline-block;
+    color:#141218; font-size:15px; font-weight:400; line-height:22px; word-break:keep-all;
+    max-width: 400px;
+}
+
+.address_search .address_list .li .address_text .jibun_addr:before{
+    background-color: #d7d7d7;
+    border-radius: 6px;
+    font-size: 10px;
+    content: "지번";
+    width: 30px;
+    /*height: 12px;*/
+    position: relative;
+    padding: 1px;
+    text-align: center;
+    line-height: 16px;
+    display: inline-block;
+    top: -1px;
+    color: black;
+    margin-right: 8px;
+}
+.address_search .address_list .li .address_text .road_addr:before{
+    background-color: #d7d7d7;
+    border-radius: 6px;
+    font-size: 10px;
+    content: "도로명";
+    width: 30px;
+    /*height: 12px;*/
+    position: relative;
+    padding: 1px;
+    text-align: center;
+    line-height: 16px;
+    display: inline-block;
+    top: -1px;
+    margin-right: 8px;
+}
+.address_search .address_list .li .address_text .road_addr:hover,
+.address_search .address_list .li .address_text .jibun_addr:hover{
+    background-color: rgba(206, 222, 255, 0.86);
+    border-radius: 6px;
+    /*padding: 2px;*/
+}
+
+.address_search .address_list .li .address_text .jibun_addr{
+    margin-top: 2px;
+    display: block;
+    padding: 4px;
+    /*color: #727272; font-size:12px;*/
+}
+.address_search .address_list .li .address_text .road_addr{
+    display: block;
+    padding: 4px;
+}
+
+.address_search .address_list .li .zip_num{
+    /*color: #4781ff;*/
+    font-size: 14px;
+    display: inline-block;
+    /*position: relative;*/
+    position: absolute;
+    margin-left: 14px;
+    top: calc(45% + 2px);
+    right: 50px;
+    float: right;
+}
+
+
+
+
+.address_search .address_list .li .address_btn{
+    font-size: 12px;
+    padding: 3px;
+    width: 80px;
+    top: calc(25%);
+    position:absolute; right:16px;
+
+}
+.address_search .address_list .li .address_btn:disabled{
+    color: red;
+    background-color: #fdf0f0;
+    border-color: #ff9d9d;
+    pointer-events: none;
+}
+.address_search .address_list .li .address_btn:not(:disabled):hover{
+
+}
 
 /* 매장 검색하기 */
 .form_company_request{margin-top:12px;}

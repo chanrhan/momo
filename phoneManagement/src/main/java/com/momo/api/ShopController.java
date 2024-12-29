@@ -1,16 +1,15 @@
 package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.util.AddressApiUtil;
 import com.momo.common.vo.ShopVO;
 import com.momo.service.ShopService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -116,6 +115,11 @@ public class ShopController {
 	@PostMapping("/shop/admin")
 	public ResponseEntity<Map<String,Object>> getShopAdmin(@RequestBody ShopVO vo){
 		return ResponseEntity.ok(shopService.getShopAdmin(vo));
+	}
+
+	@GetMapping("/shop/address")
+	public ResponseEntity<Map<String ,Object>> searchShopAddress(@RequestParam String keyword){
+		return ResponseEntity.ok(AddressApiUtil.getAddress(keyword, 1));
 	}
 
 }

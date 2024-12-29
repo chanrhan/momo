@@ -25,6 +25,9 @@ function ShopApi(accessToken){
         },
         getShopAdmin: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/shop/admin`, body, accessToken);
+        },
+        getAddress: async (keyword)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/shop/address?keyword=${keyword}`, accessToken);
         }
     }
 }

@@ -5,9 +5,19 @@ import {UserFormInput} from "../../account/module/UserFormInput";
 import {cm, cmc} from "../../utils/cm";
 import {SelectIndexLayer} from "../../common/module/SelectIndexLayer";
 import {TelePhoneInput} from "../../common/inputbox/TelePhoneInput";
+import useModal from "../../hook/useModal";
+import {ModalType} from "../../common/modal/ModalType";
 
 export function UserCompanyItem({inputField, close}){
+    const modal = useModal();
+    const openAddressModal = ()=>{
+        modal.openModal(ModalType.LAYER.Address, {
+            onSubmit: (value)=>{
+                inputField.put('shop_addr', value)
+            }
 
+        })
+    }
     return (
         <li className={`${User.company_item}`}>
             <UserFormList>
@@ -27,7 +37,10 @@ export function UserCompanyItem({inputField, close}){
                     </div>
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.shop_addr}>
-                    <UserFormInput inputField={inputField} subject='매장 주소' name='shop_addr' placeholder='주소를 검색해주세요.' search/>
+                    <UserFormInput readOnly inputField={inputField} subject='매장 주소' name='shop_addr'
+                                   placeholder='주소를 검색해주세요.' search onClick={openAddressModal} style={{
+                                       cursor: "pointer"
+                    }}/>
                     <UserFormInput inputField={inputField} name='shop_addr_detail' placeholder='상세 주소를 입력해주세요.'/>
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.shop_tel}>
