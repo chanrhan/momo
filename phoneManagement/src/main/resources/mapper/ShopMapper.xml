@@ -155,7 +155,13 @@
                                 where sf.role = 1 and
                                 sf.shop_id = sh.shop_id
                             )
-                ) as corp_nm
+                ) as corp_nm,
+                IF((
+                        select sf.approval_st
+                        from tb_staff sf
+                        where sf.staff_id=#{userId} and
+                                sf.shop_id = sh.shop_id
+                ) = 2, true, false) as approval_denied
         from tb_shop sh
         where
         <if test="keyword != null and !keyword.equals('')">
