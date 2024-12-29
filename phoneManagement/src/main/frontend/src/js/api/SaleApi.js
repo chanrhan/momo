@@ -80,8 +80,8 @@ function SaleApi(accessToken){
         getCtChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/ct`, body, accessToken);
         },
-        getInternetChangeAmount: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/internet`, body, accessToken);
+        getWtChangeAmount: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/wt`, body, accessToken);
         },
         getTvChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/tv`, body, accessToken);

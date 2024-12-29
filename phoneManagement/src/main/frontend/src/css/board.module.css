@@ -229,10 +229,15 @@
 
 .board .promise .promise_option .option_add{margin-top:12px; font-size:0; line-height:0;}
 
+.board .promise .promise_option .option_add .add_btn:hover{
+    background-color: rgba(236, 243, 255, 0.81);
+}
 .board .promise .promise_option .option_add .add_btn{
     cursor: pointer;
-    margin:0 0; padding-left:40px;
-    background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
+    margin:0 0;
+    padding: 0 40px 0 40px;
+    border-radius: 6px;
+    background:url(../images/btn_add_icon.png) no-repeat left 5px top 6px / 24px;
     color:#4275e8;
     font-size:15px; line-height:36px;
 }

@@ -35,17 +35,17 @@ export function DashboardChart({userInfo}){
         }
 
         let rst = null;
-        if(tab1 < 3){
+        if(tab1 < 2){
             switch (tab1){
                 case 0:
                     rst = await saleApi.getCtChangeAmount(body);
                     break;
                 case 1:
-                    rst = await saleApi.getInternetChangeAmount(body);
+                    rst = await saleApi.getWtChangeAmount(body);
                     break;
-                case 2:
-                    rst = await saleApi.getTvChangeAmount(body);
-                    break;
+                // case 2:
+                //     rst = await saleApi.getTvChangeAmount(body);
+                //     break;
             }
             if(rst != null){
                 const {status,data} = rst;
@@ -57,10 +57,10 @@ export function DashboardChart({userInfo}){
             }
         }else{
             switch (tab1){
-                case 3:
+                case 2:
                     rst = await saleApi.getTotalCmsChangeAmount(body);
                     break;
-                case 4:
+                case 3:
                     rst = await saleApi.getAvgCmsChangeAmount(body);
                     break;
             }

@@ -335,9 +335,10 @@ public class SaleService  {
 	public Integer getCtChangeAmount(CommonVO vo){
 		return saleMapper.getCtChangeAmount(vo);
 	}
-	public Integer getInternetChangeAmount(CommonVO vo){
-		return saleMapper.getInternetChangeAmount(vo);
+	public Integer getWtChangeAmount(CommonVO vo){
+		return saleMapper.getWtChangeAmount(vo);
 	}
+	@Deprecated
 	public Integer getTvChangeAmount(CommonVO vo){
 		return saleMapper.getTvChangeAmount(vo);
 	}

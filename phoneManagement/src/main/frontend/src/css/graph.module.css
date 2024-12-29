@@ -92,6 +92,55 @@
 .graph .graph_table .tb_calender .tbody .tr.bb .th,
 .graph .graph_table .tb_calender .tbody .tr.bb .td{border-bottom:1px solid #707070;}
 
+/*20241229 툴팁 관련*/
+.tooltip{
+    background-color: rgba(255, 255, 255, 0.89);
+    border-radius: 6px;
+    color: black;
+    border: 0.12em solid #4781ff;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    transform: translate(-50%, 0);
+    transition: all .25s ease;
+    /*min-width: 120px;*/
+    z-index: 1000;
+    max-width: none;
+    max-height: none;
+}
+
+.tooltip .tooltip_box{
+    /*background-color: #5a8ff7;*/
+    font-size: 14px;
+    padding: 1px 4px 1px 4px;
+}
+
+.tooltip .tooltip_box .tooltip_title{
+    font-size: 12px;
+}
+
+.tooltip .tooltip_box .tooltip_body{
+    margin-top: 4px;
+    text-align: left;
+}
+
+.tooltip .tooltip_box .tooltip_body .value_text{
+    margin-top: 2px;
+}
+.tooltip .tooltip_box .tooltip_body .value_text .color_box{
+    font-size: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    margin-right: 4px;
+}
+.tooltip .tooltip_box .tooltip_body .value_text .num{
+    margin-left: 8px;
+    float: right;
+    font-weight: bold;
+}
+
+
 /*반응형*/
 @media all and (max-width:1423px){
     .graph_group > div{padding:20px;}

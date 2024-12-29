@@ -12,6 +12,9 @@ export function SaleDetailPromiseBox({promiseInputField}){
 
     const [focusIndex, setFocusIndex] = useState(-1);
 
+    useEffect(() => {
+        promiseInputField.removeItem(0)
+    }, []);
 
     useEffect(() => {
         if(focusIndex !== -1){

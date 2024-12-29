@@ -1304,21 +1304,27 @@
         FROM tb
     </select>
 
-    <select id="getInternetChangeAmount" resultType="java.lang.Integer">
+    <select id="getWtChangeAmount" resultType="java.lang.Integer">
         with tb as (
             SELECT
                 (
                     SELECT count(*)
                     FROM tb_sale
                     WHERE shop_id=#{currShopId} and
-                        internet_plan != 0 and
+                        (
+                            internet_plan != 0 or
+                            tv_plan != 0
+                            ) and
                         actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
                 ) as prev,
                 (
                     SELECT count(*)
                     FROM tb_sale
                     WHERE shop_id=#{currShopId} and
-                        internet_plan != 0 and
+                        (
+                            internet_plan != 0 or
+                            tv_plan != 0
+                        ) and
                         actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
                 ) as curr
             FROM DUAL

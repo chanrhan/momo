@@ -102,10 +102,13 @@ function SaleDetailModal(props){
         amount: 0
     })
 
-    const promiseInputField = useObjectArrayInputField({
-        checked: false,
-        content: ''
-    })
+    const promiseInputField = useObjectArrayInputField(
+        {
+            checked: false,
+            content: ''
+        }
+    )
+
 
     const {saleApi, userApi} = useApi();
 

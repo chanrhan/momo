@@ -326,12 +326,16 @@
     font-size:0;
     line-height:0;
 }
-
+.dashboard .info_schedule .schedule_body .option_add .add_btn2:hover{
+    background-color: rgba(221, 232, 255, 0.65);
+}
 .dashboard .info_schedule .schedule_body .option_add .add_btn2{
+    border-radius: 8px;
     cursor: pointer;
+    /*width: 50%;*/
     /*margin:0 0; */
-    padding-left:40px;
-    background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
+    padding: 0 20px 0 40px;
+    background:url(../images/btn_add_icon.png) no-repeat left 5px top 6px / 24px;
     color:#4275e8;
     font-size:14px; line-height:36px;
 }

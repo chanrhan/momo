@@ -84,7 +84,8 @@ public interface SaleMapper{
 
 	// 각 항목별 전월 대비 증가/감소량
 	public Integer getCtChangeAmount(CommonVO vo);
-	public Integer getInternetChangeAmount(CommonVO vo);
+	public Integer getWtChangeAmount(CommonVO vo); // 유선 증감량 (인터넷 + TV)
+
 	public Integer getTvChangeAmount(CommonVO vo);
 	public Float getTotalCmsChangeAmount(CommonVO vo);
 	public Float getAvgCmsChangeAmount(CommonVO vo);

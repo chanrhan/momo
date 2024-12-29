@@ -331,12 +331,12 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.getCtChangeAmount(vo));
 	}
 
-	@PostMapping("/change/internet")
-	public ResponseEntity<Integer> getInternetChangeAmount(HttpSession session,
+	@PostMapping("/change/wt")
+	public ResponseEntity<Integer> getWtChangeAmount(HttpSession session,
 														   @RequestBody CommonVO vo){
 		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
-		return ResponseEntity.ok(saleService.getInternetChangeAmount(vo));
+		return ResponseEntity.ok(saleService.getWtChangeAmount(vo));
 	}
 
 	@PostMapping("/change/tv")

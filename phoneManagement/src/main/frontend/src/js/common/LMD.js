@@ -28,6 +28,9 @@ export const LMD = {
     },
 
     // sale
+    cat_names: [
+        '무선', '인터넷','TV','총 이익','평균 이익'
+    ],
     main_div: [
       '무선','유선','세컨'
     ],

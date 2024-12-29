@@ -86,7 +86,7 @@ export function DateSelectModule({rootClassName, onSelect, children, errorText})
                                         new Array(7).fill(0).map((v, day) => {
                                             const d = (week * 7) + day - monthInfo.startDay + 1;
                                             return <DateItem key={day} today={DateUtils.isToday(year, month, d)}
-                                                             day={(d > 0 && d <= monthInfo.totalDays) && d}
+                                                             day={(d > 0 && d <= monthInfo.totalDays) ? d : null}
                                                              onClick={handleDate}>
                                                 {/*do something*/}
                                                 {/*<span className="stat blue">전송완료 5건</span>*/}
@@ -106,9 +106,11 @@ export function DateSelectModule({rootClassName, onSelect, children, errorText})
 
 function DateItem({day, today, onClick}) {
     return (
-        <td className={cm(Popup.td, `${today && Popup.today}`)}>
+        <td className={cm(Popup.td, `${day == null && Popup.disable}`,`${today && Popup.today}`)}>
             <button type='button' className={Popup.button} onClick={() => {
-                onClick(day)
+                if(day != null) {
+                    onClick(day)
+                }
             }}>{day}</button>
         </td>
     )

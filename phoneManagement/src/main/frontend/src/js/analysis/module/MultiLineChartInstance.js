@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {ObjectUtils} from "../../utils/objectUtil";
+import ReactDOM from 'react-dom'
+import Graph from "../../../css/graph.module.css"
 import {random} from "lodash";
 
 ChartJS.register(
@@ -28,7 +30,7 @@ ChartJS.register(
 
 export function MultiLineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled,
                                       x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled,
-                                      yAxisCallback}){
+                                      yAxisCallback, onCreateTooltip}){
     const blueColor = getChartColor(color);
     const redColor = getChartColor('red');
 
@@ -53,7 +55,7 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
         datasets: data.map((item,i)=>{
             const color = colors[i]
             return {
-                label: labelName, //그래프 분류되는 항목
+                label: i, //그래프 분류되는 항목
                 data: item.map(v=>{
                     return v;
                 }), //실제 그려지는 데이터(Y축 숫자)
@@ -106,11 +108,12 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
             y: {
                 display: !y_axis_disabled, // y축 표시 여부
                 grid: { // y축 격자
-                    display: false
+                    display: true
                 },
                 ticks:{
                     // stepSize: 1,
                     callback: (value)=>{
+                        // console.log(`ticks: ${value}`)
                         if(yAxisCallback){
                             return yAxisCallback(value)
                         }
@@ -131,9 +134,12 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
                 offset: 100,
             },
             tooltip: {
-                enabled: !tooltip_disabled, // 마우스 호버 시 나타나는 툴팁 비활성화
+                mode: 'index',
+                enabled: !tooltip_disabled, // 마우스 호버 시 나타나는 기본 툴팁 비활성화
                 position: 'nearest',
-                external: externalTooltipHandler
+                external: (context)=>{
+                    externalTooltipHandler(context, onCreateTooltip);
+                }
             }
         },
     }
@@ -143,54 +149,57 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
     )
 }
 
-const externalTooltipHandler = (context)=>{
-    const {chart, tooltip} = context;
-    const tooltipEl = getOrCreateTooltip(chart)
-    // Hide if no tooltip
+const externalTooltipHandler = (context, onCreateTooltip)=>{
+    const { chart, tooltip } = context;
+    const tooltipEl = getOrCreateTooltip(chart);
+    // const tooltipEl = chart.canvas.parentNode.querySelector('div');
+    //  const tooltipEl = document.createElement('div');
+    // chart.canvas.parentNode.appendChild(tooltipEl);
+
+    // 툴팁 숨기기
     if (tooltip.opacity === 0) {
         tooltipEl.style.opacity = 0;
         return;
     }
 
-    // Set Text
+    // 툴팁 내용 설정
     if (tooltip.body) {
         const titleLines = tooltip.title || [];
-        const bodyLines = tooltip.body.map(b => b.lines);
+        const bodyLines = tooltip.body.map((b) => b.lines);
 
-        const rootChild = document.createElement('div');
-
-        const titleChild = document.createElement('div');
-        titleLines.forEach(title => {
-            const text = document.createTextNode(title);
-
-            titleChild.appendChild(text);
-        });
-
-        const bodyChild = document.createElement('div');
-        bodyChild.append(document.createElement('br'))
-        bodyLines.forEach((body, i) => {
-            const text = document.createTextNode(body);
-
-            bodyChild.appendChild(text);
-        });
-        rootChild.append(titleChild)
-        rootChild.append(bodyChild)
-
-        if(tooltipEl.firstChild){
-            tooltipEl.firstChild.remove();
+        let tooltipContent = null;
+        if(onCreateTooltip){
+            console.table(tooltip)
+            // console.table(bodyLines)
+            tooltipContent = onCreateTooltip(titleLines, tooltip.dataPoints);
+        }else{
+            tooltipContent = (
+                <div className={Graph.tooltip_box}>
+                    <div className={Graph.tooltip_title}>
+                        {titleLines.map((title, i) => (
+                            <div key={i}>{title}</div>
+                        ))}
+                    </div>
+                    <div className={Graph.tooltip_body}>
+                        {bodyLines.map((body, i) => (
+                            <div key={i}>{body}</div>
+                        ))}
+                    </div>
+                </div>
+            )
         }
 
-        tooltipEl.appendChild(rootChild);
+        ReactDOM.render(tooltipContent, tooltipEl);
     }
 
-    const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+    const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
-    // Display, position, and set styles for font
+    // 스타일 적용
     tooltipEl.style.opacity = 1;
     tooltipEl.style.left = positionX + tooltip.caretX + 'px';
     tooltipEl.style.top = positionY + tooltip.caretY + 'px';
     tooltipEl.style.font = tooltip.options.bodyFont.string;
-    tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+    tooltipEl.style.padding = `${tooltip.options.padding}px`;
 }
 
 const getOrCreateTooltip = (chart) => {
@@ -198,14 +207,17 @@ const getOrCreateTooltip = (chart) => {
 
     if (!tooltipEl) {
         tooltipEl = document.createElement('div');
-        tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
-        tooltipEl.style.borderRadius = '3px';
-        tooltipEl.style.color = 'white';
-        tooltipEl.style.opacity = 1;
-        tooltipEl.style.pointerEvents = 'none';
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.style.transform = 'translate(-50%, 0)';
-        tooltipEl.style.transition = 'all .25s ease';
+        tooltipEl.className = Graph.tooltip
+        // tooltipEl.style.background = 'rgba(255,255,255,0.81)';
+        // tooltipEl.style.borderRadius = '6px';
+        // tooltipEl.style.color = 'black';
+        // tooltipEl.style.border = `1px solid`
+        // tooltipEl.style.borderColor = `rgba(154, 194, 255, 0.91)`
+        // tooltipEl.style.opacity = 1;
+        // tooltipEl.style.pointerEvents = 'none';
+        // tooltipEl.style.position = 'absolute';
+        // tooltipEl.style.transform = 'translate(-50%, 0)';
+        // tooltipEl.style.transition = 'all .25s ease';
 
         // const table = document.createElement('table');
         // table.style.margin = '0px';

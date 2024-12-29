@@ -12,7 +12,7 @@ export function useObjectArrayInputField(init, arr){
     const [input, setInput] = useState(!ObjectUtils.isEmptyArray(arr) ? copyArr : (init ? [{...init}] : null));
 
     const length = ()=>{
-        return input.length;
+        return input ? input.length : 0;
     }
 
     const get = (index, key)=>{

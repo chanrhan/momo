@@ -83,7 +83,7 @@ export function LineChartArea({date, userId}){
             <div className={Graph.graph_top}>
                 <div className={cmc(Graph.tab, Graph.type4)}>
                     <TabList name='tab2' value={tab2} onChange={setTab2} values={
-                        ['무선', '인터넷', 'TV', '총이익', '평균이익']
+                        ['무선', '인터넷/TV(유선)', '총이익', '평균이익']
                     }/>
                 </div>
             </div>

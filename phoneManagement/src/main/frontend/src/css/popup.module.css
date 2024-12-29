@@ -195,7 +195,7 @@
     /*background-color:#4781ff;*/
     /*color:#fff;*/
 }
-.date_popup .tb_date .tbody .td .button:hover{
+.date_popup .tb_date .tbody .td:not(.disable) .button:hover{
     border-radius:10px; background-color: #5b8dfd; color:#fff;
 }
 
@@ -420,11 +420,16 @@
     position:absolute; top:3px; right:4px; width:22px; height:22px;
     background:url(../images/popup/popup_close.png) no-repeat center / 100%;
 }
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon:hover{
+    background-color: rgba(236, 243, 255, 0.81);
+}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n4 .btn_add_icon{
     cursor: pointer;
-    margin:0 0; padding-left:30px;
-    background:url(../images/btn_add_icon.png) no-repeat left top 5px / 24px;
+    margin:0 0;
+    padding: 0 40px 0 40px;
+    background:url(../images/btn_add_icon.png) no-repeat left 5px top 6px / 24px;
     color:#4275e8;
+    border-radius: 6px;
     font-size:16px; line-height:34px;
 }
 
