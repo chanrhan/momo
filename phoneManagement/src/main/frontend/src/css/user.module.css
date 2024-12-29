@@ -132,7 +132,19 @@
     margin-top: 2px;
 }
 .form_company_request .request_list .li .company_btn{
-    position:absolute; top:calc(28% + 5px); right:24px;}
+    font-size: 14px;
+    position:absolute; top:calc(28% + 5px); right:24px;
+}
+.form_company_request .request_list .li .company_btn:disabled{
+    color: red;
+    background-color: #fdf0f0;
+    border-color: #ff9d9d;
+    pointer-events: none;
+}
+.form_company_request .request_list .li .company_btn:not(:disabled):hover{
+
+}
+
 
 /* 매장 등록 */
 .form_company + .form_btn_box{margin-top:24px;}

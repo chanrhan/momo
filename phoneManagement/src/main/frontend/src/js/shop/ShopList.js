@@ -74,9 +74,10 @@ export function ShopList(){
 
                                             </span>
                                             <button type="button"
+                                                    disabled={v.approval_denied}
                                                     className={`btn btn_medium btn_line ${User.company_btn}`} onClick={()=>{
                                                         select(v.shop_id);
-                                            }}>승인요청
+                                            }}>{v.approval_denied ? "승인 거절됨" : "승인 요청"}
                                             </button>
                                         </li>
                                     })

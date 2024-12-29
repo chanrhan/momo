@@ -3,6 +3,7 @@ package com.momo.api;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.ShopVO;
 import com.momo.service.ShopService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +82,9 @@ public class ShopController {
 	 */
 	@GetMapping("/shop")
 	public ResponseEntity<List<Map<String,Object>>> getShop(@RequestParam(required = false)String keyword){
+		String username = SecurityContextUtil.getUsername();
 		ShopVO vo = ShopVO.builder().keyword(keyword).build();
+		vo.setUserId(username);
 		return ResponseEntity.ok(shopService.getShop(vo));
 	}
 
