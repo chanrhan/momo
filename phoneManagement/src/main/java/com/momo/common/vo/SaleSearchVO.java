@@ -24,6 +24,7 @@ public class SaleSearchVO extends BaseVO {
 //    private boolean asc = false;
 //    private Boolean notDone;
     private Boolean completed;
+    private Integer viewOpt;
 //    private int[] columns = {1,2,3,4,5,6,7,8,9};
     private SaleSearchFilter[] filters;
 

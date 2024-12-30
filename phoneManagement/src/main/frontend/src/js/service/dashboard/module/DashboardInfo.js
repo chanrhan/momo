@@ -109,7 +109,7 @@ export function DashboardInfo({}){
                 <div className={cm(Dashboard.company_select)}>
                     <div className={cmc(Dashboard.select_box)}>
                         {/*<input type="hidden" id=""/>*/}
-                        <SelectIndexLayer cssModules={Dashboard}
+                        <SelectIndexLayer cssModule={Dashboard}
                                           value={shopName}
                                           onChange={updateShop}
                                           values={getShopItems()} name='shop_nm'/>

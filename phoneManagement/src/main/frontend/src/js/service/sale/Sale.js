@@ -385,7 +385,7 @@ export function Sale(){
                                             return <TdChoice key={j} image={profileImages && profileImages[i]} column_index={v2} data={v1}/>
                                         })
                                     }
-                                    <Btd className="ta_r" stopPropagation>
+                                    <Btd className="ta_c" stopPropagation>
                                         <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}>예약 확인</button>
                                     </Btd>
                                 </tr>

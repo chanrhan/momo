@@ -293,9 +293,10 @@
         ), search as (
             SELECT *
             from sale
-            WHERE case
-                    when #{completed} is true then (ud_st=2)
-                    when #{completed} is not true then (ud_st != 2)
+            WHERE case #{viewOpt}
+                    when 0 then 1=1
+                    when  1 then (ud_st=2)
+                    when  2 then (ud_st != 2)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -363,9 +364,10 @@
         ), search as (
             SELECT *
             from sale
-            WHERE case
-                    when #{completed} is true then (card_st=2)
-                    when #{completed} is not true then (card_st != 2)
+            WHERE case #{viewOpt}
+                    when 0 then 1=1
+                    when 1 then (card_st=2)
+                    when 2 then (card_st != 2)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -437,9 +439,10 @@
         ), search as (
             SELECT *
             from sale
-            WHERE case
-                    when #{completed} is true then (comb_st=1)
-                    when #{completed} is not true then (comb_st != 1)
+            WHERE case #{viewOpt}
+                    when 0 then 1=1
+                    when 1 then (comb_st=1)
+                    when 2 then (comb_st != 1)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -507,9 +510,10 @@
         ), search as (
                 SELECT *
                 from sale
-                WHERE case
-                        when #{completed} is true then (sup_st=1)
-                        when #{completed} is not true then (sup_st != 1)
+                WHERE case #{viewOpt}
+                        when 0 then 1=1
+                        when 1 then (sup_st=1)
+                        when 2 then (sup_st != 1)
                     end
                 and
                 <if test="keyword != null and !keyword.equals('')">
@@ -594,9 +598,10 @@
                   ) > 0 or
                 cust_nm like '%${keyword}%' or
                 cust_tel like '%${keyword}%') and
-            case
-                when #{completed} is true then (done=true)
-                when #{completed} is not true then (done != true)
+            case #{viewOpt}
+                when 0 then 1=1
+                when 1 then (done=true)
+                when 2 then (done != true)
             end
         and
         1=1

@@ -1,6 +1,6 @@
 import Board from "../../../css/board.module.css"
 import Layout from "../../../css/layout.module.css"
-import {cm} from "../../utils/cm";
+import {cm, cmc} from "../../utils/cm";
 import {TaskUsedDeviceBoardTable} from "./module/TaskUsedDeviceBoardTable";
 import {PromiseBoardTable} from "./PromiseBoardTable";
 import {TabList} from "../../common/module/TabList";
@@ -16,6 +16,10 @@ import {ImageProxy} from "../../hook/imageProxy";
 import {useLocation} from "react-router-dom";
 import {MoreOptionLayer} from "../../common/module/MoreOptionLayer";
 import {SelectItem} from "../../common/module/SelectLayer";
+import Dashboard from "../../../css/dashboard.module.css";
+import {SelectIndexLayer} from "../../common/module/SelectIndexLayer";
+
+const VIEW_OPTION = ["전체 보기","미완료 고객 보기","완료 고객 보기"]
 
 export function Task(){
     const modal = useModal();
@@ -71,7 +75,7 @@ export function Task(){
     const [items, setItems] = useState([]);
     const [totalCount, setTotalCount] = useState(0)
     const inputField = useObjectInputField({
-        completed: false,
+        view_opt: 0,
         keyword: '',
         order: null,
         asc: false
@@ -168,7 +172,7 @@ export function Task(){
 
     const refresh = ()=>{
         inputField.clearOf({
-            completed: false,
+            view_opt: 0,
             keyword: '',
             order: null,
             asc: false
@@ -211,15 +215,25 @@ export function Task(){
                 <div className={Board.board_head}>
                     <form>
                         <div className={Board.board_head_group}>
-                                <span className="switch">
-                                    <input type="checkbox" name='completed' className="switch_inp"
-                                           checked={inputField.get('completed')} readOnly/>
-                                    <label htmlFor="completed" onClick={()=>{
-                                        inputField.put('completed', !inputField.get('completed'))
-                                    }}><span>on/off</span></label>
-                                </span>
-                            <span className="switch_text">{inputField.get('completed') === true ? '완료 고객 보기' : '미완료 고객 보기'}</span>
-                            <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
+                            <div className={cmc(Board.select_box)}>
+                                <SelectIndexLayer cssModule={Board}
+                                                  inputField={inputField}
+                                                  // value={"전체 보기"}
+                                                  // onChange={(v)=>{
+                                                  //       inputField.put("view_opt", v);
+                                                  // }}
+                                                  values={VIEW_OPTION} name='view_opt'/>
+                            </div>
+
+                            {/*<span className="switch">*/}
+                            {/*    <input type="checkbox" name='completed' className="switch_inp"*/}
+                            {/*           checked={inputField.get('completed')} readOnly/>*/}
+                            {/*    <label htmlFor="completed" onClick={()=>{*/}
+                            {/*        inputField.put('completed', !inputField.get('completed'))*/}
+                            {/*    }}><span>on/off</span></label>*/}
+                            {/*</span>*/}
+                            {/*<span className="switch_text">{inputField.get('completed') === true ? '완료 고객 보기' : '미완료 고객 보기'}</span>*/}
+                            {/*<button type="button" className="btn_all" onClick={refresh}>전체 보기</button>*/}
                         </div>
                         <div className={Board.board_head_group}>
                             <div className={Board.board_count}>
