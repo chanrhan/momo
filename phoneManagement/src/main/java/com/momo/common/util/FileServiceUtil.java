@@ -70,6 +70,10 @@ public class FileServiceUtil {
 	public static void resizeImageAndSave(MultipartFile file, String filePath, String formatName) throws IOException {
 		BufferedImage inputImage = ImageIO.read(file.getInputStream());
 
+		if (inputImage == null) {
+			throw new IOException("Unsupported or invalid image format");
+		}
+
 		int orgWidth = inputImage.getWidth();
 		int orgHeight = inputImage.getHeight();
 

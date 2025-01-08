@@ -295,8 +295,8 @@
             from sale
             WHERE case #{viewOpt}
                     when 0 then 1=1
-                    when  1 then (ud_st=2)
-                    when  2 then (ud_st != 2)
+                    when  1 then (ud_st !=2)
+                    when  2 then (ud_st = 2)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -366,8 +366,8 @@
             from sale
             WHERE case #{viewOpt}
                     when 0 then 1=1
-                    when 1 then (card_st=2)
-                    when 2 then (card_st != 2)
+                    when 1 then (card_st !=2)
+                    when 2 then (card_st = 2)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -441,8 +441,8 @@
             from sale
             WHERE case #{viewOpt}
                     when 0 then 1=1
-                    when 1 then (comb_st=1)
-                    when 2 then (comb_st != 1)
+                    when 1 then (comb_st !=1)
+                    when 2 then (comb_st = 1)
                 end
             and
             <if test="keyword != null and !keyword.equals('')">
@@ -512,8 +512,8 @@
                 from sale
                 WHERE case #{viewOpt}
                         when 0 then 1=1
-                        when 1 then (sup_st=1)
-                        when 2 then (sup_st != 1)
+                        when 1 then (sup_st !=1)
+                        when 2 then (sup_st = 1)
                     end
                 and
                 <if test="keyword != null and !keyword.equals('')">
@@ -576,13 +576,7 @@
                                 where pm2.shop_id=#{currShopId} and
                                     pm2.sale_id=pm.sale_id
                             ) as pm_list,
-                            (
-                                select if(count(*) = 0, true, false)
-                                from tb_promise pm3
-                                where pm3.shop_id=#{currShopId} and
-                                        pm3.sale_id=pm.sale_id and
-                                        pm3.checked = false
-                            ) as done
+                            sl.pm_st
             from tb_promise pm
              left outer join tb_sale sl on pm.sale_id=sl.sale_id
             WHERE pm.shop_id=#{currShopId}
@@ -600,8 +594,8 @@
                 cust_tel like '%${keyword}%') and
             case #{viewOpt}
                 when 0 then 1=1
-                when 1 then (done=true)
-                when 2 then (done != true)
+                when 1 then (pm_st = 0)
+                when 2 then (pm_st = 1)
             end
         and
         1=1
@@ -937,6 +931,13 @@
     </insert>
 
 <!--    update-->
+    <update id="updateSalePromiseState">
+        UPDATE tb_sale
+        set pm_st=#{pmSt}
+        WHERE shop_id = #{currShopId} and
+            sale_id=#{saleId}
+    </update>
+
     <update id="updateSaleAsPromise">
         UPDATE tb_promise
         SET checked=#{checked},

@@ -38,7 +38,9 @@ export function UserCompanyItem({inputField, close}){
                 </UserFormItem>
                 <UserFormItem errorText={inputField.error.shop_addr}>
                     <UserFormInput readOnly inputField={inputField} subject='매장 주소' name='shop_addr'
-                                   placeholder='주소를 검색해주세요.' search onClick={openAddressModal} style={{
+                                   placeholder='주소를 검색해주세요.' search
+                                   onSearch={openAddressModal} onClick={openAddressModal}
+                                   style={{
                                        cursor: "pointer"
                     }}/>
                     <UserFormInput inputField={inputField} name='shop_addr_detail' placeholder='상세 주소를 입력해주세요.'/>

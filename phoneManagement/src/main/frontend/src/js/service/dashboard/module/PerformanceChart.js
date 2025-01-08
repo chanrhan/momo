@@ -1,12 +1,9 @@
-import {cm} from "../../../utils/cm";
 import Dashboard from "../../../../css/dashboard.module.css";
-import {LineChartInstance} from "../../../analysis/module/LineChartInstance";
 import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
 import {TabList} from "../../../common/module/TabList";
 import {NumberUtils} from "../../../utils/NumberUtils";
-import {value} from "lodash/seq";
 import {LMD} from "../../../common/LMD";
 import {MultiLineChartInstance} from "../../../analysis/module/MultiLineChartInstance";
 import Graph from "../../../../css/graph.module.css";
@@ -43,11 +40,11 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
                 // setGraphLabel(getDayLabelArray(fromDate, toDate))
                 break;
             case 1:
-                fromDate.setDate(fromDate.getDate()-(7*(range-2))-(toDate.getDay()))
+                fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
                 // setGraphLabel(getWeekLabelArray(fromDate, toDate))
                 break;
             case 2:
-                fromDate.setMonth(fromDate.getMonth()-range)
+                fromDate.setMonth(fromDate.getMonth()-5)
                 // setGraphLabel(getMonthLabelArray(fromDate, toDate))
                 break;
         }

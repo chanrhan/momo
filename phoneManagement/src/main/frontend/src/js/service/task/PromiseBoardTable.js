@@ -115,27 +115,28 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
     }
 
     return (
-        <li className={Board.promise_item} >
+        <li className={Board.promise_item}>
             <div className={Board.promise_box} onClick={onClick}>
                 <div className={Board.promise_profile}>
                     <div className={cm(Board.profile_img, Board.div)}>
                         {/*<img className={Board.img} src={img} alt="프로필 이미지"/>*/}
                     </div>
                     <div className={cm(Board.profile_text, Board.div)}>
-                        <div className={Board.profile_name}>{item.cust_nm}<span className={Board.span}>{item.cust_cd}</span></div>
+                        <div className={Board.profile_name}>{item.cust_nm}<span
+                            className={Board.span}>{item.cust_cd}</span></div>
                         <ul className={Board.profile_info}>
                             <li className={Board.li}><span className={Board.span}>개통일</span>{item.actv_dt}</li>
                             <li className={Board.li}><span className={Board.span}>연락처</span>{item.cust_tel}</li>
                         </ul>
                     </div>
                 </div>
-                <div className={Board.promise_option} onClick={e=>{
+                <div className={Board.promise_option} onClick={e => {
                     e.stopPropagation()
                 }}>
-                    <div className={Board.option_scroll} ref={scrollRef} >
+                    <div className={Board.option_scroll} ref={scrollRef}>
                         <ul className="option_list">
                             {
-                                item.pm_list && item.pm_list.map((v,i)=> {
+                                item.pm_list && item.pm_list.map((v, i) => {
                                     return <li key={i} className={Board.option_item} draggable={true}>
                                         <div className={cm(Board.radio_box)}>
                                             <input type="checkbox" className={Board.check_inp} name="radio"
@@ -183,13 +184,22 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                     <div className={Board.option_add}>
                         <EditableAddButton inpClassName={Board.add_inp}
                                            btnClassName={Board.add_btn}
-                                           value='약속 추가하기' onUpdate={v=>{
-                                               add(v);
+                                           value='약속 추가하기' onUpdate={v => {
+                            add(v);
                         }}/>
                     </div>
                 </div>
-                {/*<button type="button" className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>완료</button>*/}
+
             </div>
+            <button type="button" onClick={() => {
+                        onUpdate({
+                            sale_id: item.sale_id,
+                            pm_st: 1
+                        })
+                    }}
+                    className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>
+                완료
+            </button>
         </li>
     )
 }

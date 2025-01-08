@@ -295,6 +295,13 @@
             <artifactId>thumbnailator</artifactId>
             <version>0.4.19</version>
         </dependency>
+
+<!--        이미지 처리 시 png 형식 지원-->
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-core</artifactId>
+            <version>3.8.2</version>
+        </dependency>
     </dependencies>
 
     <build>

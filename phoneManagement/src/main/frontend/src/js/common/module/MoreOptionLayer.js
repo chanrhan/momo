@@ -29,6 +29,7 @@ export function MoreOptionLayer({className, children, cssModule, cssModules}) {
             <ul ref={renderlessModal.ref}
                 className={`select_layer add_icon left ${renderlessModal.active && `active ${fromCssModule('active')}`}`}
                 onClick={()=>{
+                    // console.log('close')
                     renderlessModal.close()
                 }}>
                 {children}

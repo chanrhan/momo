@@ -12,7 +12,7 @@ import sectionImg5 from "../../images/landing/section_img5.png"
 import sectionImg6 from "../../images/landing/section_img6.png"
 import profileImg1 from "../../images/profile_img1.jpg"
 import footerLogo from "../../images/landing/footer_logo.png"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {cm} from "../utils/cm";
 import {LandingReviewCard} from "./module/LandingReviewCard";
 import {LandingSectionWrap} from "./module/LandingSectionWrap";
@@ -59,7 +59,7 @@ const vocItems = [
 ]
 
 export function LandingPage(){
-
+    const nav = useNavigate()
     const smoothScrollTop = e=>{
         window.scrollTo({
             top: 0,
@@ -171,7 +171,7 @@ export function LandingPage(){
 
                         <LandingSectionWrap num={7}>
                             <h2 className={cm(Landing.section_title, Landing.add_icon)}>모모를 <br/>지금 바로 사용해보세요!</h2>
-                            <Link to='' className={Landing.section_btn}>무료로 시작하기</Link>
+                            <a className={Landing.section_btn} href='/account/signup'>무료로 시작하기</a>
                         </LandingSectionWrap>
                     </article>
                 </main>

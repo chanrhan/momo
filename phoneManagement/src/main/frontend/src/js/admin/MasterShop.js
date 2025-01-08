@@ -134,13 +134,14 @@ export function MasterShop(){
                 </div>
 
                 <BoardTable style={{
-                    width: '1400px'
+                    // width: '1300px'
+                    overflowY: 'auto'
                 }}>
                     <Bthead>
                         {/*<Bth className="ta_c" checkbox></Bth>*/}
-                        <Bth>No.</Bth>
+                        {/*<Bth>No.</Bth>*/}
                         <Bth>매장명</Bth>
-                        <Bth>대표 아이디</Bth>
+                        {/*<Bth>대표 아이디</Bth>*/}
                         <Bth>대표명</Bth>
                         <Bth>사업자번호</Bth>
                         <Bth>주소</Bth>
@@ -148,26 +149,26 @@ export function MasterShop(){
                         <Bth>총 실적</Bth>
                         <Bth>마지막 판매일보</Bth>
                         <Bth>가입일</Bth>
-                        <Bth>관리</Bth>
+                        {/*<Bth>관리</Bth>*/}
                     </Bthead>
                     <Btbody br>
                         {
                             items && items.map((v,i)=> {
                                 return <tr className={Board.tr} key={i}>
                                     {/*<Btd checkbox/>*/}
-                                    <Btd>{i+1}</Btd>
+                                    {/*<Btd>{i+1}</Btd>*/}
                                     <Btd>{v.shop_nm}</Btd>
-                                    <Btd>{v.id}</Btd>
+                                    {/*<Btd>{v.id}</Btd>*/}
                                     <ProfileTableColumn name={v.reps_nm} src={profileImages ? profileImages[i] : profileImg1}/>
                                     <Btd>{v.br_no}</Btd>
                                     <Btd>{v.shop_addr}</Btd>
                                     <Btd>{v.shop_tel}</Btd>
-                                    <Btd>{NumberUtils.toPrice(v.total_cms)}원</Btd>
+                                    <Btd className="ta_r">{NumberUtils.toPrice(v.total_cms)}원</Btd>
                                     <Btd>{v.last_sale_dt}</Btd>
                                     <Btd>{v.regi_dt}</Btd>
-                                    <Btd className="ta_c">
-                                        <a href="#" className="btn btn_grey btn_small btn_line">관리</a>
-                                    </Btd>
+                                    {/*<Btd className="ta_c">*/}
+                                    {/*    <a href="#" className="btn btn_grey btn_small btn_line">관리</a>*/}
+                                    {/*</Btd>*/}
                                 </tr>
                             })
                         }

@@ -90,6 +90,7 @@ public class SaleVO extends BaseVO {
 
 	// 고객 약속
 	private List<SalePromiseVO> pmList;
+	private Integer pmSt;
 
 	// 예약 문자
 	private List<ReserveMessageVO> rsvMsgList;

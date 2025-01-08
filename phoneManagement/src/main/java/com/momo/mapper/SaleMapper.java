@@ -31,7 +31,7 @@ public interface SaleMapper{
 	public Integer getMaxSaleId(int currShopId);
 
 	public boolean isDuplicatedTel(SaleVO vo);
-	public String getSpecFilePath(int id);
+//	public String getSpecFilePath(int id);
 
 	public void insertPromiseContent(SalePromiseVO vo);
 	public Integer updatePromiseContent(SalePromiseVO vo);
@@ -44,6 +44,7 @@ public interface SaleMapper{
 	public void insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
 	public void insertSaleFiles(int currShopId, int saleId, List<String> list);
 
+	public int updateSalePromiseState(SaleVO vo);
 	public int updateSaleAsPromise(int currShopId, int saleId, int pmId, boolean checked, String content);
 	public int updateSaleSupport(int currShopId, int saleId, int supId, int div, int amount);
 	public int updateSaleAdd(int currShopId, int saleId, int addId, int div, int amount);

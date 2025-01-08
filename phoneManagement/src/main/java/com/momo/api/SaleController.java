@@ -266,6 +266,9 @@ public class SaleController {
 				return ResponseEntity.ok(saleService.changeSupportState(vo) > 0);
 			}
 			case 4 -> {
+				if(vo.getPmSt() != null){
+					return ResponseEntity.ok(saleService.updateSalePromiseState(vo) > 0);
+				}
 				return ResponseEntity.ok(saleService.changePromiseState(vo) > 0);
 			}
 		}

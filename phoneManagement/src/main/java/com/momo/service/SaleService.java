@@ -109,7 +109,7 @@ public class SaleService  {
 	@Transactional
 	public int updateSale(SaleVO vo) {
 		int rst = saleMapper.updateSale(vo);
-		rst += updateSaleAppointment(vo);
+		rst += updateSalePromise(vo);
 		rst += updateSaleSupport(vo);
 		rst += updateSaleAdd(vo);
 		rst += updateSaleCard(vo);
@@ -118,8 +118,11 @@ public class SaleService  {
 		return rst;
 	}
 
+	public int updateSalePromiseState(SaleVO vo){
+		return saleMapper.updateSalePromiseState(vo);
+	}
 
-	public int updateSaleAppointment(SaleVO vo){
+	public int updateSalePromise(SaleVO vo){
 		List<SalePromiseVO> apmList = vo.getPmList();
 
 		if(apmList == null || apmList.isEmpty()){

@@ -22,7 +22,7 @@ export function EditableAddButton({inpClassName, btnClassName, onUpdate, value})
         <>
             {
                 editable ? (
-                    <input type="text" className={inpClassName} placeholder={value}
+                    <input type="text" className={inpClassName}
                            onBlurCapture={e=>{
                                submit(e.target.value)
                                e.stopPropagation();

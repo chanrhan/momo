@@ -256,7 +256,20 @@
 /*}*/
 .board .promise .promise_option .option_add .inp{width:calc(100% - 32px); padding:0 8px; border-radius:4px; font-size:14px; line-height:30px;}
 .board .promise .promise_option .option_add .inp:focus{padding:0 7px; line-height:28px;}
-.board .promise .btn_promise{width:100%; margin-top:24px; border-radius:8px;}
+.board .promise .promise_item .btn_promise{
+    font-size: 16px;
+    color: white;
+    background-color: #4781ff;
+    /*padding: 10px;*/
+    width:100%;
+    height: 40px;
+    margin-top:12px;
+    border-radius:8px;
+}
+.board .promise .promise_item .btn_promise:hover{
+    background-color: rgba(71, 129, 255, 0.87);
+
+}
 
 /*20241226*/
 .td_date_inp{
@@ -295,6 +308,46 @@
 /*    color: grey;*/
 /*}*/
 
+/*20250106 대량 업로드*/
+.board .bulk_upload{
+
+}
+
+.board .board_body.bulk_upload .td_board .tbody2{
+}
+
+.board .bulk_upload .td_board .tbody2 .tr{
+    /*background-color: red;*/
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td{
+    /*background-color: red;*/
+    border: 1px black solid;
+    width: 120px;
+    height: 40px;
+}
+.board .bulk_upload .td_board .tbody2 .tr .td:focus{
+
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td .inp:focus{
+    background-color: rgb(234, 242, 255);
+    border: 1px solid #4781ff;
+    border-radius: 2px;
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td .inp:hover{
+    background-color: rgb(234, 242, 255);
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td .inp{
+    padding: 4px;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    text-align: right;
+
+}
 
 
 /*반응형*/

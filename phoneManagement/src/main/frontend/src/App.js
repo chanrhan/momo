@@ -55,6 +55,7 @@ import {RegisterBrNo} from "./js/shop/RegisterBrNo";
 import {ComponentTest} from "./js/test/ComponentTest";
 import {StudyMain} from "./js/study_private/StudyMain";
 import {StudyLayout} from "./js/study_private/StudyLayout";
+import {SaleBulkUpload} from "./js/service/sale/SaleBulkUpload";
 
 function App() {
     const userInfo = useUserInfo();
@@ -154,6 +155,7 @@ function App() {
                       <Route path='/service'>
                           <Route path='' element={<DashboardMain/>}/>
                           <Route path='sale' element={<Sale/>}/>
+                          <Route path='sale/bulk-upload' element={<SaleBulkUpload/>}/>
                           <Route path='task/*' element={<Task/>}/>
                           <Route path='communication' element={<Communication/>}/>
                           <Route path='analysis' element={<Analysis/>}/>

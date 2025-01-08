@@ -652,7 +652,7 @@ function SaleDetailModal(props){
             {/*}>*/}
 
             {/*</div>*/}
-            <div className={Popup.popup_title}>판매일보 추가</div>
+            {/*<div className={Popup.popup_title}>판매일보 추가</div>*/}
 
             <form className={cm(Popup.user_form, Popup.customer)}>
                 <div className={Popup.popup_cont}>
@@ -672,10 +672,13 @@ function SaleDetailModal(props){
                             </div>
                         </div>
 
+
                         <div className={cmc(Popup.tab, Popup.type2)}>
-                            <TabList name='provider' inputField={inputField} theme={Popup} values={
-                                LMD.provier
-                            }/>
+                            {
+                                inputField.provider === null && <TabList name='provider' inputField={inputField} theme={Popup} values={
+                                    LMD.provier
+                                }/>
+                            }
                         </div>
 
                         <div className={cm(Popup.head_box, Popup.fr)}>
@@ -909,7 +912,7 @@ function SaleDetailModal(props){
                                                                                name={`file_${i}`}
                                                                                onChange={handleFileInput} style={{
                                                                             visibility: "hidden"
-                                                                        }}/>
+                                                                        }} accept=".png, .jpg, .jpeg, .psd"/>
                                                                         <img src={v.preview} alt='' style={{
                                                                             display: "inline-block",
                                                                             top: 0,

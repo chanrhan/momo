@@ -1,12 +1,12 @@
-import useModal from "../hook/useModal";
-import DEFAULT_HEADERS from "./DEFAULT_HEADERS";
+import useModal from "../../../hook/useModal";
+import DEFAULT_HEADERS from "../../../test/DEFAULT_HEADERS";
 import {useEffect, useState} from "react";
-import {useMapper} from "../utils/useMapper";
+import {useMapper} from "../../../utils/useMapper";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import {ObjectUtils} from "../utils/objectUtil";
-import {SAMPLE_PHONE_MODEL} from "./SAMPLE_DATA";
-import {ModalType} from "../common/modal/ModalType";
-import {LayerModal} from "../common/modal/LayerModal";
+import {ObjectUtils} from "../../../utils/objectUtil";
+import {SAMPLE_PHONE_MODEL} from "../../../test/SAMPLE_DATA";
+import {ModalType} from "../../../common/modal/ModalType";
+import {LayerModal} from "../../../common/modal/LayerModal";
 
 const GENDER = [
     '남',
@@ -14,10 +14,7 @@ const GENDER = [
     '법인'
 ]
 
-function TableValidationModal({headerIndex, headerType, data, fails= [], onCancel = null, onConfirm = null}){
-    const mapper = useMapper(headerType);
-    const types = mapper.types(headerType);
-
+function SaleDataValidationModal(props){
     const modal = useModal();
     const [defaultValue, setDefaultValue] = useState(0);
     const [result, setResult] = useState({
@@ -27,77 +24,46 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
     // { froms, to }
 
     useEffect(() => {
-        validate();
-        return ()=>{
-            setResult({
-            })
+        if(props.data){
+            validate();
         }
     }, []);
 
     const validate = ()=>{
-        const mapfail = [];
-        setResult(prev=>{
-            const copy = {...prev};
-            fails.map(index=>{
-                const mappedValue = mapper.matchMap(data[index]);
-                // console.log(`mapped: ${matchedValue}`)
-                if(mappedValue === null){
-                    // copy['fail'].push(index)
-                    mapfail.push(index)
-                    return;
-                }
-                if(!copy[mappedValue]){
-                    copy[mappedValue] = [];
-                }
-                if(!copy[mappedValue][data[index]]){
-                    copy[mappedValue][data[index]] = [];
-                }
-                copy[mappedValue][data[index]].push(index);
-            })
-            // console.table(copy)
-            return copy;
-        });
-        setMappedFails(mapfail);
+        const data = props.data;
+        const transpose = data => data.reduce(
+            (result, row) => row.map((_, i) => [...(result[i] || []), row[i]]),
+            []
+        );
+        // const cols = new Array(props.columnLength).fill(Array(data.length));
+        // data.forEach(((row, rowIdx)=>{
+        //     row.forEach(((col, colIdx)=>{
+        //         console.log(`c:${colIdx},r:${rowIdx} -> ${col}`)
+        //         cols[colIdx][rowIdx] = col;
+        //     }))
+        // }))
+        console.table(data)
     }
 
     const cancel = ()=>{
-        if(onCancel !== null){
-            onCancel();
-        }
-        modal.closeModal(ModalType.LAYER.Table_Validation)
+        modal.closeModal(ModalType.LAYER.SaleData_Validation)
     }
 
     const confirm = ()=>{
-        if(onConfirm !== null){
-            const modifyData = {}
 
-            for(const mappedValue in result){
-                for(const k in result[mappedValue]){
-                    for(const i in result[mappedValue][k]){
-                        // console.log(`i: ${i}, r: ${result[mappedValue][k][i]}`)
-                        modifyData[result[mappedValue][k][i]] = mappedValue
-                    }
-                }
-            }
-            // console.table(modifyData)
-
-            mappedFails.map(f=>{
-                modifyData[f] = types[defaultValue];
-            })
-            onConfirm(modifyData);
-        }
-        modal.closeModal(ModalType.LAYER.Table_Validation)
     }
 
+    // 열 잠금 기능도 있으면 좋을듯?
+
     return (
-        <LayerModal>
+        <LayerModal {...props} top={100}>
             <div className='d-flex flex-column justify-content-center align-items-center scrollbar'>
                 <div className='mt-5'>
-                    <h1 className='mt-5 text-black'><b className='text-primary'>[{DEFAULT_HEADERS.get(headerType)}]</b> 에 대한 유효성 검사</h1>
-                    <h2 className='mt-4 text-black'>데이터 유형과 일치하지 않는 값이 <b className='text-danger'>{fails.length}</b>개 발견되었습니다</h2>
+                    <h1 className='mt-6 text-black'>유효성 검사</h1>
+                    <h2 className='mt-4 text-black'>데이터 유형과 일치하지 않는 값이 <b className='text-danger'>{}</b>개 발견되었습니다</h2>
                     <hr/>
                     <div className='mt-4'>
-                        <h3 className='text-black'>임의로 변경한 데이터 <b className='text-danger'>{fails.length - mappedFails.length}</b>개</h3>
+                        <h3 className='text-black'>임의로 변경한 데이터 <b className='text-danger'>{}</b>개</h3>
                         {
                             result && Object.keys(result).map(key => {
                                 // if (key === 'fail') {
@@ -124,7 +90,8 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
                                     </div>
                                     <h4 className='ms-4'>| <b className='text-danger'>{failCount}</b>개의 데이터</h4>
                                     <MdKeyboardDoubleArrowRight size='50px'/>
-                                    <h3><b className='text-primary'><ValueSelector type={headerType} value={key}/></b></h3>
+                                    <h3><b className='text-primary'>
+                                        <ValueSelector value={key}/></b></h3>
 
                                 </div>
                             })
@@ -139,14 +106,14 @@ function TableValidationModal({headerIndex, headerType, data, fails= [], onCance
                                         <h3 className='text-black'>변경하지 못한 데이터 <b className='text-danger'>{mappedFails.length}</b>개
                                         </h3>
                                         <h4>이 데이터들은 자동으로 <select className='text-success' value={defaultValue} onChange={e=>{
-                                            console.log(types[e.target.value])
+                                            // console.log(types[e.target.value])
                                             setDefaultValue(e.target.value);
                                         }}>
-                                            {
-                                                types.map((type, index)=>{
-                                                    return <option value={index}>{type}</option>
-                                                })
-                                            }
+                                            {/*{*/}
+                                            {/*    types.map((type, index)=>{*/}
+                                            {/*        return <option value={index}>{type}</option>*/}
+                                            {/*    })*/}
+                                            {/*}*/}
                                         </select>(으)로 초기화됩니다</h4>
                                     </>
                                 )
@@ -174,4 +141,4 @@ function ValueSelector({type, value}){
     }
 }
 
-export default TableValidationModal;
+export default SaleDataValidationModal;

@@ -77,11 +77,16 @@ export function DashboardChart({userInfo}){
         }
     }
 
-
+    const getPrevMonth = ()=>{
+        if(month - 1 <= 0){
+            return 12
+        }
+        return month-1;
+    }
 
     return (
         <div className={cm(Dashboard.panel_chart)}>
-            <p className={cm(Dashboard.chart_text)}>{month-1}월 1일 ~ {month-1}월 {day}일 실적 대비<br/>{amount}{isPrice ? '원':'대'} {isInclined ? '늘었어요':'줄었어요'}.</p>
+            <p className={cm(Dashboard.chart_text)}>{getPrevMonth()}월 1일 ~ {getPrevMonth()}월 {day}일 실적 대비<br/>{amount}{isPrice ? '원':'대'} {isInclined ? '늘었어요':'줄었어요'}.</p>
 
             <div className={cm(Dashboard.chart_tab)}>
                 <TabList name='tab1'

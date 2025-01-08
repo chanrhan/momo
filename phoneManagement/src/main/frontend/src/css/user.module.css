@@ -106,7 +106,7 @@
     margin-top: 10px;
 }
 .address_search .address_list .li:hover{
-    background-color: rgba(206, 222, 255, 0.34);
+    background-color: rgba(206, 222, 255, 0.65);
 }
 .address_search .address_list .li{
     cursor: pointer;
@@ -159,12 +159,12 @@
     top: -1px;
     margin-right: 8px;
 }
-.address_search .address_list .li .address_text .road_addr:hover,
-.address_search .address_list .li .address_text .jibun_addr:hover{
-    background-color: rgba(206, 222, 255, 0.86);
-    border-radius: 6px;
-    /*padding: 2px;*/
-}
+/*.address_search .address_list .li .address_text .road_addr:hover,*/
+/*.address_search .address_list .li .address_text .jibun_addr:hover{*/
+/*    background-color: rgba(206, 222, 255, 0.86);*/
+/*    border-radius: 6px;*/
+/*    !*padding: 2px;*!*/
+/*}*/
 
 .address_search .address_list .li .address_text .jibun_addr{
     margin-top: 2px;

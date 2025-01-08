@@ -85,6 +85,9 @@ export function TodoAddBox({list, year, month, day, onRefresh}){
         }).then(({status,data})=>{
             if(status === 200 && data){
                 onRefresh();
+                setTimeout(()=>{
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }, 10)
             }
         })
     }

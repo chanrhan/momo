@@ -98,10 +98,15 @@ export function DashboardInfo({}){
                 <div className={cm(Dashboard.company_profile)}>
                         <span className={cm(Dashboard.profile_img)}><img src={profileImg}
                                                            alt="프로필 이미지"/></span>
-                    <span className={cm(Dashboard.profile_name)}>{userInfo.name}<button type="button"
-                                                              className={cm(Dashboard.profile_edit)} onClick={()=>{
-                                                                  nav("/profile")
-                    }}>수정</button></span>
+                    <span className={cm(Dashboard.profile_name)}>{userInfo.name}
+                        {
+                            userInfo.role === 1 && <span className={Dashboard.crown}></span>
+                        }
+                        <button type="button" className={cm(Dashboard.profile_edit)}
+                                onClick={()=>{
+                                    nav("/profile")
+                        }}>수정</button>
+                    </span>
                     <button type="button" className={`btn btn_blue btn_medium ${Dashboard.profile_btn}`}
                             onClick={openInviteModal}>초대하기</button>
                 </div>

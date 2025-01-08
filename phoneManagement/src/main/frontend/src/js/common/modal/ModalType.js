@@ -29,7 +29,7 @@ export const ModalType = {
         Device_Search: 'DeviceSearch',
         Plan_Search: 'PlanSearch',
 
-        Table_Validation: 'TableValidation',
+        SaleData_Validation: 'SaleDataValidation',
         Sale_Filter: 'SaleFilter',
         Reserve_Message: 'ReserveMessage',
         Reserve_Date: 'ReserveDate',

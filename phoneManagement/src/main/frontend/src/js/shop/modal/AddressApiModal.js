@@ -70,14 +70,12 @@ export function AddressApiModal(props){
                             <ul className={User.address_list}>
                                 {
                                     items && items.map((v,i)=> {
-                                        return <li key={i} className={User.li} >
+                                        return <li key={i} className={User.li} onClick={()=>{
+                                            onSelect(v.roadAddr)
+                                        }}>
                                             <span className={User.address_text}>
-                                                <span className={User.road_addr} onClick={()=>{
-                                                    onSelect(v.roadAddr)
-                                                }}>{v.roadAddr}</span>
-                                                <span className={User.jibun_addr} onClick={()=>{
-                                                    onSelect(v.jibunAddr)
-                                                }}>{v.jibunAddr}</span>
+                                                <span className={User.road_addr} >{v.roadAddr}</span>
+                                                <span className={User.jibun_addr}>{v.jibunAddr}</span>
                                             </span>
                                             <span className={User.zip_num}>[{v.zipNo}]</span>
                                             {/*<button type="button"*/}

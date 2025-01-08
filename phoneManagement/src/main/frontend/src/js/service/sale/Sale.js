@@ -22,6 +22,7 @@ import {useObjectInputField} from "../../hook/useObjectInputField";
 import {ScrollUtils} from "../../utils/ScrollUtils";
 import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 import {ImageListProxy} from "../../common/module/ImageListProxy";
+import {useNavigate} from "react-router-dom";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
@@ -33,6 +34,7 @@ const INIT_LIMIT = 30;
 
 export function Sale(){
     const modal = useModal();
+    const nav = useNavigate();
     const {saleApi} = useApi();
     const inputField = useObjectInputField({
         order: 1,
@@ -310,8 +312,10 @@ export function Sale(){
                                 <MoreOptionLayer cssModule={Board}>
                                     <SelectItem onClick={deleteSale}>판매일보 삭제</SelectItem>
                                     <SelectItem>검색 결과 다운로드</SelectItem>
+                                    {/*<SelectItem onClick={()=>{*/}
+                                    {/*    nav("/service/sale/bulk-upload")*/}
+                                    {/*}}>대량 업로드하기</SelectItem>*/}
                                 </MoreOptionLayer>
-                                {/*<button type="button" className={cm(Board.board_btn, Board.board_more)}>더보기</button>*/}
                             </div>
 
                             <button onClick={addSale} type="button"

@@ -204,7 +204,7 @@
                         where ac.id=sf.staff_id
                 ) as pfp,
                 sf.staff_id as id,
-                  br_no,
+                  ac.br_no,
                   shop_addr,
                   shop_tel,
                   (
@@ -220,6 +220,7 @@
                   DATE_FORMAT(sh.regi_dt, '%Y-%m-%d') as regi_dt
             from tb_shop sh
             left outer join tb_staff sf on sf.shop_id=sh.shop_id and role=1
+            left outer join tb_account ac on ac.id=sf.staff_id
         ), search as (
             select *
             from base

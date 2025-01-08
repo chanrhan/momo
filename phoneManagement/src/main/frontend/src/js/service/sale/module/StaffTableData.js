@@ -57,7 +57,7 @@ export function StaffTableData({data, onUpdate}){
                                   onSelect={updateStartDate}>
                     <input type="text" className={Board.td_date_inp}
                            value={data.start_dt}
-                           placeholder='개통 날짜' readOnly/>
+                           placeholder='입사 날짜' readOnly/>
                 </DateSelectModule>
             </Btd>
             <Btd>

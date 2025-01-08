@@ -136,12 +136,19 @@
 .dashboard .panel_body .panel.n5 .panel_item_body .panel_item_add{position:absolute; top:0; left:0; right:0; bottom:0; background:url(../images/plus_icon.png) no-repeat center / 40px;}
 
 .dashboard .dashboard_info{width:412px; padding:40px 46px; border-left:1px solid #dde1e8;}
-.dashboard .dashboard_info > .div{padding:32px 24px; border-radius:8px; background-color:#fff;}
+.dashboard .dashboard_info > .div{padding:32px 24px 12px 24px; border-radius:8px; background-color:#fff;}
 .dashboard .info_company{text-align:right;}
 .dashboard .info_company .company_profile{text-align:left;}
 .dashboard .info_company .company_profile .profile_img{display:inline-block; overflow:hidden; width:48px; height:48px; border-radius:50%; vertical-align:top;}
 .dashboard .info_company .company_profile .profile_name{padding:15px 16px; color:#141218; font-size:16px; font-weight:600; line-height:20px;}
-.dashboard .info_company .company_profile .profile_name .profile_edit{width:20px; height:20px; margin:-1px 0 0 4px; background:url(../images/modify_icon.png) no-repeat center / 16px; font-size:0; vertical-align:top;}
+.dashboard .info_company .company_profile .profile_name .crown{
+    position: absolute;
+    width:20px; height:20px;
+    margin:-20px 0 0 -42px;
+    background:url(../images/user/crown.png) no-repeat center / 20px;
+    vertical-align:top;
+}
+.dashboard .info_company .company_profile .profile_name .profile_edit{width:20px; height:20px; margin:0 0 0 4px; background:url(../images/modify_icon.png) no-repeat center / 16px; font-size:0; vertical-align:top;}
 .dashboard .info_company .company_profile .profile_btn{float:right; margin-top:8px; padding:6px 12px; border-radius:4px; font-size:14px;}
 .dashboard .info_company .company_select{margin-top:24px;}
 .dashboard .info_company .company_select .select_box .select_btn{width:100%;}
@@ -180,7 +187,7 @@
     /*.dashboard .info_company .company_select .select_box .select_btn{width:100%;}*/
 .dashboard .info_company .company_add{margin-top:12px; color:#62626e; font-size:12px; line-height:14px;}
 
-.dashboard .info_schedule{min-height:370px !important; max-height: 600px; margin-top:23px; }
+.dashboard .info_schedule{min-height:370px !important; max-height: 600px; margin-top:23px;}
 .dashboard .info_schedule .schedule_head .schedule_title{display:inline-block; color:#141218; font-size:18px; font-weight:600; line-height:21px;}
 .dashboard .info_schedule .schedule_head .schedule_control{float:right; margin-top:-4px;}
 .dashboard .info_schedule .schedule_head .schedule_control .schedule_btn{overflow:hidden; position:relative; height:30px; border:1px solid #dde1e8; border-radius:4px;}
@@ -262,8 +269,9 @@
     margin: 10px 0 0 5px;
     border-top:1px solid #dde1e8;
     padding-top: 10px;
-    overflow-x:hidden;
+    /*overflow-x:hidden;*/
     overflow-y:auto;
+    max-height: 200px;
 }
 .dashboard .info_schedule .schedule_body .option_item + .option_item{margin-top:16px;}
 /*.dashboard .info_schedule .schedule_body .option_item .radio_box .form_label{color:#28272c;}*/
@@ -303,7 +311,7 @@
     cursor: pointer;
 }
 
-.dashboard .info_schedule .schedule_bodyn .option_item .radio_box .check_inp:checked ~ .check_text:read-only{
+.dashboard .info_schedule .schedule_body .option_item .radio_box .check_inp:checked ~ .check_text:read-only{
     text-decoration:line-through;
 }
 
@@ -317,8 +325,8 @@
 /*.dashboard .info_schedule .schedule_body .option_scroll::-webkit-scrollbar-track{background:transparent;}*/
 
 .dashboard .info_schedule .schedule_body .option_item .radio_box:hover .schedule_del{
-    position:absolute; top:1px; right:-4px; width:24px;
-    height:24px; background:url(../images/popup/popup_close.png) no-repeat center / 18px;
+    position:absolute; top:0px; right:4px; width:22px;
+    height:22px; background:url(../images/popup/popup_close.png) no-repeat center / 22px;
 }
 
 .dashboard .info_schedule .schedule_body .option_add{
@@ -334,8 +342,8 @@
     cursor: pointer;
     /*width: 50%;*/
     /*margin:0 0; */
-    padding: 0 20px 0 40px;
-    background:url(../images/btn_add_icon.png) no-repeat left 5px top 6px / 24px;
+    padding: 0 20px 0 42px;
+    background:url(../images/btn_add_icon.png) no-repeat left 0px top 6px / 24px;
     color:#4275e8;
     font-size:14px; line-height:36px;
 }
@@ -395,7 +403,7 @@
     .dashboard .panel_body .panel.n5 .panel_list{margin:10px -5px 0 -5px;}
     .dashboard .panel_body .panel.n5 .panel_item{width:calc(50% - 10px); margin:0 5px 10px 5px;}
     .dashboard .panel_body .panel.n5 .panel_item_head .panel_item_text{font-size:14px;}
-    .dashboard .dashboard_info > .div{padding:20px;}
+    .dashboard .dashboard_info > .div{padding:20px 20px 10px 20px;}
     .dashboard .info_schedule{min-height:auto; margin-top:10px;}
 }
 @media all and (max-width:1000px){

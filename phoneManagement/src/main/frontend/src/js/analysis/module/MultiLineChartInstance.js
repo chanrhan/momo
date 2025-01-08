@@ -92,9 +92,9 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
         // true면 부모의 container에 맞게 크기가 변함
         responsive: true,
         maintainAspectRatio: false,
-        // (hover) 그래프에 커서를 올렸을 때 나타나는 박스에 대한 옵션
-        interaction: {
-            mode: 'nearest',  // index, dataset, point, nearest(defalut), x, y
+
+        interaction: { // (hover) 그래프에 커서를 올렸을 때 나타나는 박스에 대한 옵션
+            // mode: 'nearest',  // index, dataset, point, nearest(defalut), x, y
             intersect: false // false면 마우스를 정확히 올리지 않고 가까이 대기만 해도 박스가 나타난다
         },
         // 척도 옵션
@@ -189,6 +189,9 @@ const externalTooltipHandler = (context, onCreateTooltip)=>{
             )
         }
 
+        // Warning: ReactDOM.render is no longer supported in React 18.
+        // Use createRoot instead. Until you switch to the new API,
+        // your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot
         ReactDOM.render(tooltipContent, tooltipEl);
     }
 
@@ -223,6 +226,12 @@ const getOrCreateTooltip = (chart) => {
         // table.style.margin = '0px';
         //
         // tooltipEl.appendChild(table);
+
+        // const mouseEvent = chart.canvas.ownerDocument.defaultView.event
+        // tooltipEl.style.opacity = 1;
+        // tooltipEl.style.left = mouseEvent.pageX + 'px';
+        // tooltipEl.style.top = mouseEvent.pageY + 'px';
+
         chart.canvas.parentNode.appendChild(tooltipEl);
     }
 
