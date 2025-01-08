@@ -75,7 +75,7 @@ export function DashboardMain(){
         await saleApi.getSummary(prev, curr).then(({status,data})=>{
             if(status === 200 && data){
                 setSummary(data)
-                // console.table(data)
+                console.table(data)
             }
         })
     }
@@ -119,7 +119,7 @@ export function DashboardMain(){
                                             return null;
                                         }
                                         return <DashboardPanelItem1 key={i} index={i} title={SUMMARY_NAMES[i]}
-                                                                    num={i < 3 ? v.value : NumberUtils.toPrice(summary[3].value)}
+                                                                    num={i < 3 ? v.value : NumberUtils.toPrice(summary[i].value)}
                                                                     per={v.per} price={i > 2} onClick={()=>{
                                                                         nav('/service/analysis')
                                         }}/>

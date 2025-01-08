@@ -6,8 +6,11 @@ import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LMD} from "../../../common/LMD";
 import {ObjectUtils} from "../../../utils/objectUtil";
+import {useEffect} from "react";
+import useApi from "../../../hook/useApi";
 
 export function ReserveMessageModal(props){
+    const {rsvMsgApi} = useApi()
     const arrayInputField = useObjectArrayInputField({
         checked: false,
         msg_tp: null
@@ -15,9 +18,30 @@ export function ReserveMessageModal(props){
     // console.table(arrayInputField.input)
     const modal = useModal()
 
+    useEffect(() => {
+            console.log(props.sale_id)
+        if(props.sale_id){
+            getReservedMessage();
+        }
+    }, []);
+
+    const getReservedMessage = ()=>{
+        rsvMsgApi.getReserveMsgBySale(props.sale_id).then(({status,data})=>{
+            if(status === 200 && data){
+                console.table(data);
+                data.map(v=>{
+                    v.checked = true;
+                    return v;
+                })
+                arrayInputField.putAll(data)
+            }
+        })
+    }
+
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Reserve_Message)
     }
+
 
 
     const openReserveDateModal =(index)=>{
@@ -35,20 +59,32 @@ export function ReserveMessageModal(props){
     }
 
     const submit = ()=>{
-        if(props.onSubmit){
-            const body = arrayInputField.input.filter(v=>{
-                return v.checked && v.dday && v.rsv_dt
-            }).map(v=>{
-                return {
-                    msg_tp: v.msg_tp,
-                    dday: v.dday,
-                    rsv_tp: v.rsv_tp,
-                    rsv_dt: v.rsv_dt
+        const body = arrayInputField.input.filter(v=>{
+            return v.checked && v.dday && v.rsv_dt
+        }).map(v=>{
+            return {
+                msg_tp: v.msg_tp,
+                dday: v.dday,
+                rsv_tp: v.rsv_tp,
+                rsv_dt: v.rsv_dt
+            }
+        })
+        if(props.sale_id){
+            rsvMsgApi.insertReserveMsg({
+                sale_id: props.sale_id,
+                rsv_msg_list: body
+            }).then(({status,data})=>{
+                if(status === 200 && data){
+                    close();
                 }
             })
-            props.onSubmit(body);
+        }else{
+            if(props.onSubmit){
+                props.onSubmit(body);
+            }
             close();
         }
+
     }
 
 

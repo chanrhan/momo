@@ -7,7 +7,7 @@ import {DateUtils} from "../../utils/DateUtils";
 import DataNotFound from "../../../images/no_data_icon.png"
 import {ObjectUtils} from "../../utils/objectUtil";
 
-export function SliderChartArea({date, userId}){
+export function SliderChartArea({fromDate, toDate, userId}){
     const {saleApi} = useApi()
     const [tab, setTab] = useState(0)
 
@@ -15,14 +15,9 @@ export function SliderChartArea({date, userId}){
 
     useEffect(() => {
         getItems()
-    }, [date, userId, tab]);
+    }, [fromDate, userId, tab]);
 
     const getItems = async ()=>{
-        let fromDate = new Date(date)
-        fromDate.setMonth(fromDate.getMonth()-1);
-        fromDate.setDate(1)
-        let toDate = new Date(date)
-        toDate.setDate(0)
 
         const body = {
             user_id: userId,

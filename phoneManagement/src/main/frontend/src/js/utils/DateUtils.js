@@ -10,8 +10,11 @@ export const DateUtils = {
     dateToStringYYMMdd: (date: Date)=>{
         return DateUtils.formatYYMMdd(date.getFullYear(), date.getMonth()+1,date.getDate())
     },
+    equalYM: (date1: Date, date2: Date)=>{
+        return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
+    },
     getMonthInfo: (year, month)=>{
-        const date = new Date(year, month-1);
+        const date = new Date(year, month);
 
         const firstDayOfMonth = startOfMonth(date);
 
@@ -93,5 +96,77 @@ export const DateUtils = {
         const weekOfMonth = Math.ceil(adjustedDay / 7); // 몇째 주인지 계산
 
         return { month, weekOfMonth };
+    },
+    addMonth: (date: Date, month)=>{
+        const orgMonth = date.getMonth()+1;
+        if(month > (12 - orgMonth)){
+            const diff = month - (12 - orgMonth);
+            date.setFullYear(date.getFullYear()+1);
+            date.setMonth(diff);
+        }else{
+            date.setMonth(month-1);
+        }
+    },
+    addWeek: (date: Date, week)=>{
+        const orgMonth = date.getMonth()+1;
+        const orgDate = date.getDate();
+
+        const {totalDays} = this.getMonthInfo(date.getFullYear(), date.getMonth());
+
+        if(orgMonth === 12 && (week*7) >= (totalDays - orgDate)){
+            date.setFullYear(date.getFullYear()+1);
+            date.setMonth(1);
+            date.setDate((week*7) - (totalDays - orgDate));
+        }else{
+            date.setDate(orgDate + (week*7));
+        }
+    },
+    addDate: (date: Date, days)=>{
+        const orgMonth = date.getMonth()+1;
+        const orgDate = date.getDate();
+
+        const {totalDays} = DateUtils.getMonthInfo(date.getFullYear(), date.getMonth());
+
+        if(orgMonth === 12 && (days) >= (totalDays - orgDate)){
+            date.setFullYear(date.getFullYear()+1);
+            date.setMonth(1);
+            date.setDate((days) - (totalDays - orgDate));
+        }else{
+            date.setDate(orgDate + (days));
+        }
+    },
+    subMonth: (date: Date, month)=>{
+        const orgMonth = date.getMonth()+1;
+        if(month >= orgMonth){
+            const diff =  12 - (month - orgMonth);
+            date.setFullYear(date.getFullYear()-1);
+            date.setMonth(diff);
+        }else{
+            date.setMonth(month-1);
+        }
+    },
+    subWeek: (date: Date, week)=>{
+        const orgMonth = date.getMonth()+1;
+        const orgDate = date.getDate();
+
+        if(orgMonth === 1 && (week*7) >= orgDate){
+            date.setFullYear(date.getFullYear()-1);
+            date.setMonth(12);
+            date.setDate(orgDate - (week*7));
+        }else{
+            date.setDate(orgDate - (week*7));
+        }
+    },
+    subDate: (date: Date, days)=>{
+        const orgMonth = date.getMonth()+1;
+        const orgDate = date.getDate();
+
+        if(orgMonth === 1 && days >= orgDate){
+            date.setFullYear(date.getFullYear()-1);
+            date.setMonth(11);
+            date.setDate(31 - (days - orgDate));
+        }else{
+            date.setDate(orgDate - (days));
+        }
     }
 }

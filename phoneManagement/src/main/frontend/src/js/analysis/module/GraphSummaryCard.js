@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {LineChartInstance} from "./LineChartInstance";
 import {NumberUtils} from "../../utils/NumberUtils";
 
-export const GraphSummaryCard = ({title, value, per, data, price})=>{
+export const GraphSummaryCard = ({index, title, value, per, data, price})=>{
     let arrow = '';
     if(per > 0){
         arrow = '▲';
@@ -12,9 +12,8 @@ export const GraphSummaryCard = ({title, value, per, data, price})=>{
         arrow = '▼';
     }
 
-
     return (
-        <li className={cm(Graph.graph_item, `${per > 0 ? Graph.up : Graph.down}`)}>
+        <li key={index} className={cm(Graph.graph_item, `${per > 0 ? Graph.up : Graph.down}`)}>
             <div className={Graph.graph_title}>{title}</div>
             <div className={Graph.graph_count}><span className={Graph.span}>{price ? NumberUtils.toPrice(value) : value}</span>{price ? '원':'대'}</div>
             <div className={Graph.graph_per}><span className={Graph.span}>{arrow}</span> {per}% (전월대비)</div>

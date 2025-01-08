@@ -1,6 +1,7 @@
 package com.momo.service;
 
 import com.momo.common.vo.ReserveMessageVO;
+import com.momo.common.vo.SaleVO;
 import com.momo.mapper.ReserveMsgMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,10 @@ public class ReserveMsgService {
 			vo.setCurrShopId(currShopId);
 			reserveMsgMapper.insertMsg(vo);
 		}
+	}
+
+	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo){
+		return reserveMsgMapper.getReserveMsgBySale(vo);
 	}
 
 	public List<String> getReserveMsgForCalendar(int currShopId, String date){

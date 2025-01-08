@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {MouseEventUtils} from "../utils/MouseEventUtils";
 
-export function useHintBox(content) {
+export function useHintBox(content, props) {
     const componentRef = useRef(null)
     const [active, setActive] = useState(false)
     const [pos, setPos] = useState({
@@ -25,7 +25,7 @@ export function useHintBox(content) {
         }
     }, [active]);
 
-    const COMPONENT = <HintBox active={active} top={pos.top} componentRef={componentRef}>
+    const COMPONENT = <HintBox {...props} active={active} top={pos.top} componentRef={componentRef}>
         {content}
     </HintBox>
 
@@ -49,13 +49,17 @@ export function useHintBox(content) {
     }
 }
 
-function HintBox({active, top, left, width, height, children, componentRef}){
+function HintBox({active, top, left, width, height, maxWidth, maxHeight, minWidth, minHeight, children, componentRef}){
     return (
         <div className={`hint_box ${!active && 'disabled'}`} style={{
             top: `${top}px`,
             left: `${left}px`,
             width: `${width}px`,
             height: `${height}px`,
+            maxWidth: `${maxWidth}px`,
+            maxHeight: `${maxHeight}px`,
+            minWidth: `${minWidth}px`,
+            minHeight: `${minHeight}px`
         }} ref={componentRef}>
             {children}
         </div>

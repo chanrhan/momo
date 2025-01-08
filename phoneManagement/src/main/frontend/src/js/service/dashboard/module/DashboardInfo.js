@@ -16,7 +16,7 @@ export function DashboardInfo({}){
     const modal = useModal();
     const nav = useNavigate()
 
-    const fileLoader = ImageProxy();
+    const imageProxy = ImageProxy();
 
     const userInfo = useUserInfo()
     const [profileImg, setProfileImg] = useState(null)
@@ -48,7 +48,7 @@ export function DashboardInfo({}){
 
     const getPhp = async ()=>{
         if(userInfo.pfp){
-            await fileLoader.pfp(userInfo.pfp).then((data)=>{
+            await imageProxy.pfp(userInfo.pfp).then((data)=>{
                 if(data){
                     setProfileImg(data)
                 }

@@ -5,8 +5,9 @@ import {BarChartInstance} from "./BarChartInstance";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
+import {NumberUtils} from "../../utils/NumberUtils";
 
-export function BarChartArea({date, userId}){
+export function BarChartArea({fromDate, toDate, userId}){
     const {saleApi} = useApi();
     const [tab, setTab] = useState(0)
 
@@ -23,20 +24,17 @@ export function BarChartArea({date, userId}){
             case 1:
                 setLabels(['월','화','수','목','금','토','일'])
         }
-    }, [tab, date, userId]);
+    }, [tab, fromDate, userId]);
 
     const getGraph = async ()=>{
-        let fromDate = new Date(date)
-        fromDate.setMonth(fromDate.getMonth()-1);
-        fromDate.setDate(1)
-        let toDate = new Date(date)
-        toDate.setDate(0)
 
         const body = {
             user_id: userId,
             from_ymd: DateUtils.dateToStringYYMMdd(fromDate),
             to_ymd: DateUtils.dateToStringYYMMdd(toDate)
         }
+
+        console.table(body)
 
         await saleApi.getCtCountBySelectType(tab, body).then(({status,data})=>{
             if(status === 200 && data){
@@ -58,9 +56,14 @@ export function BarChartArea({date, userId}){
 
             <div className={Graph.graph_box}>
                 <BarChartInstance labels={labels} color={`#4781ff`}
-                                  hoverColor={`#88adff`} data={data} yAxisCallback={v=>{
+                                  hoverColor={`#88adff`} data={data}
+                                  yAxisCallback={v=>{
+                                        if (!Number.isInteger(v)) {
+                                            return;
+                                        }
                                       return `${Math.round(v)}개`
-                }}/>
+
+                }} />
             </div>
         </div>
     )

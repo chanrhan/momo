@@ -169,7 +169,7 @@ const externalTooltipHandler = (context, onCreateTooltip)=>{
 
         let tooltipContent = null;
         if(onCreateTooltip){
-            console.table(tooltip)
+            // console.table(tooltip)
             // console.table(bodyLines)
             tooltipContent = onCreateTooltip(titleLines, tooltip.dataPoints);
         }else{

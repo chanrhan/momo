@@ -1,6 +1,7 @@
 package com.momo.api;
 
 import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.SaleVO;
 import com.momo.service.CommonService;
 import com.momo.service.ReserveMsgService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +26,21 @@ public class ReserveMsgController {
                                                                               @RequestParam String date){
         int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(reserveMsgService.getReserveMsgForCalendar(currShopId, date));
+    }
+
+    @GetMapping("/sale")
+    public ResponseEntity<List<Map<String,Object>>> getReserveMsgBySale(HttpSession session,
+                                                                  @RequestParam int saleId){
+        SaleVO vo = SaleVO.builder().saleId(saleId).currShopId(commonService.getCurrentShopId(session)).build();
+       return ResponseEntity.ok(reserveMsgService.getReserveMsgBySale(vo));
+    }
+
+    @PostMapping("/sale")
+    public ResponseEntity<Boolean> insertReserveMsgBySale(HttpSession session,
+                                                                  @RequestBody SaleVO vo){
+        int currShopId = commonService.getCurrentShopId(session);
+        reserveMsgService.insertMsgList(currShopId, vo.getSaleId(), vo.getRsvMsgList());
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/detail")

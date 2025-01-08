@@ -79,11 +79,12 @@ export function BarChartInstance({labelName, labels, data, color, hoverColor,
             y: {
                 display: !y_axis_disabled, // y축 표시 여부
                 grid: { // y축 격자
-                    display: false
+                    display: true
                 },
                 ticks:{
                     // stepSize: 1,
                     callback: (value)=>{
+                        // console.log(`ticks: ${value}`)
                         if(yAxisCallback){
                             return yAxisCallback(value)
                         }

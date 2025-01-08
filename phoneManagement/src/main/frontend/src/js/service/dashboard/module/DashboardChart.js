@@ -100,9 +100,9 @@ export function DashboardChart({userInfo}){
 
             <div className={cm(Dashboard.chart_panel_wrap)}>
                 <div className={cm(Dashboard.chart_panel, Dashboard.active)}>
-                    <PerformanceChart userInfo={userInfo} categoryTab={tab1}
+                    <PerformanceChart userInfo={userInfo} categoryTab={tab1} date={today}
                                       chartClassName={cm(Dashboard.chart_map)}
-                                      pannelClassName={cm(Dashboard.chart_panel_tab)}/>
+                                      pannelClassName={cm(Dashboard.chart_panel_tab)} />
                 </div>
             </div>
         </div>

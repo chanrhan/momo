@@ -23,6 +23,7 @@ import {ScrollUtils} from "../../utils/ScrollUtils";
 import {useObjectArrayInputField} from "../../hook/useObjectArrayInputField";
 import {ImageListProxy} from "../../common/module/ImageListProxy";
 import {useNavigate} from "react-router-dom";
+import {useHintBox} from "../../hook/useHintBox";
 
 const COLUMNS_SORT = [
     false,true,false,false,false,true,true,true
@@ -266,6 +267,12 @@ export function Sale(){
         }
     }
 
+    const openReservationModal = (saleId)=>{
+        modal.openModal(ModalType.LAYER.Reserve_Message, {
+            sale_id: saleId
+        })
+    }
+
 
     return (
         <div className={cm(Layout.sub)}>
@@ -390,7 +397,10 @@ export function Sale(){
                                         })
                                     }
                                     <Btd className="ta_c" stopPropagation>
-                                        <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}>예약 확인</button>
+                                        <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}
+                                                onClick={()=>{
+                                                    openReservationModal(v1.sale_id)
+                                                }}>예약 확인</button>
                                     </Btd>
                                 </tr>
                             })
@@ -409,6 +419,18 @@ export function Sale(){
 }
 
 function TdChoice({column_index, data, image}){
+    const hintBox = useHintBox("해당 고객이 개통한 횟수입니다.", {
+        maxWidth: 200,
+    })
+    const showHintModal = (e)=>{
+        // modal.openModal(ModalType.TOOLTIP.Hint, {
+        //     msg: '하하하'
+        // });
+        hintBox.open(e);
+    }
+
+
+
     switch (column_index) {
         case 0:
             return <Btd>
@@ -426,7 +448,8 @@ function TdChoice({column_index, data, image}){
             return <Btd>{data.actv_dt}</Btd>
         case 2:
             return <Btd className='ta_l'>
-                <span className={cm(Board.td_num)}>1</span>{data.cust_nm}
+                <span className={cm(Board.td_num)} onMouseOver={showHintModal}>1</span>{data.cust_nm}
+                {hintBox.component}
             </Btd>
         case 3:
             return <Btd className="ta_c">{data.cust_tel}</Btd>;

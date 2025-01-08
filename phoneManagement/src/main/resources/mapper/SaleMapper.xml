@@ -1113,10 +1113,12 @@
                 (
                     SELECT IFNULL(SUM(total_cms),0)
                     FROM prevMonth
+                    where device_id is not null
                 ) as prev,
                 (
                     SELECT IFNULL(SUM(total_cms),0)
                     FROM currMonth
+                    where device_id is not null
                 ) as curr
             from dual
             UNION ALL
@@ -2350,59 +2352,61 @@
                      left outer join tb_account ac on ac.id=staff_id
             where approval_st = 1 and
                 shop_id=#{currShopId}
-            order by ac.regi_dt
-        ), sale as (select *
-                    from tb_sale
-                    where shop_id = #{currShopId}
-                      and actv_dt like '${date}%'),
-             tb_avg_margin as (select shop_id,
-                                      sale_id,
-                                      total_cms
-                               from sale
-                               where device_id is not null),
-             tb_both as (select shop_id,
-                                sale_id,
-                                device_id
-                         from sale
-                         where device_id is not null
-                           and wt_cms is not null
-                           and wt_cms > 0),
-             stat as (
-                 select id,
-                        name,
-                        nickname,
-                        IFNULL(sum(sl.ct_cms), 0)           as ct_cms,
-                        IFNULL(sum(sl.wt_cms), 0)           as wt_cms,
-                        IFNULL(sum(sa.add_amount), 0)       as sum_add,
-                        IFNULL(sum(sud.ud_cms), 0)          as sum_ud_cms,
-                        IFNULL(sum(ss.sup_amount), 0)       as sum_sup,
-                        IFNULL(sum(sl.total_cms), 0)        as total_cms,
-                        IFNULL(count(sl.device_id), 0)      as ct_cnt,
-                        IFNULL(count(sl.internet_plan), 0)  as internet_cnt,
-                        IFNULL(count(sl.tv_plan), 0)        as tv_cnt,
-                        IFNULL(FLOOR(avg(am.total_cms)), 0) as avg_margin,
-                        IFNULL(count(b.device_id), 0)       as dongsi,
-                        TRUNCATE(
-                                IF((count(*) > 0 and count(b.device_id) > 0), (count(b.device_id) / count(*)) * 100, 0)
-                            , 1)                            as dongsi_per,
-                        IFNULL(count(sud.ud_id), 0)         as ud_cnt,
-                        IFNULL(count(sl.sd_id), 0)          as sd_cnt,
-                        TRUNCATE(
-                                IF((count(*) > 0 and count(sl.sd_id) > 0), (count(sl.sd_id) / count(*)) * 100, 0)
-                            , 1)                            as sd_per,
-                        IFNULL(count(sl.exsvc_id), 0)       as exsvc_cnt,
-                        TRUNCATE(
-                                IF((count(*) > 0 and count(sl.exsvc_id) > 0), (count(sl.exsvc_id) / count(*)) * 100, 0)
-                            , 1)                            as exsvc_per
-                 from staff
-                          left outer join sale sl on sl.seller_id=id
-                          left outer join tb_sale_support ss on ss.sale_id = sl.sale_id and ss.shop_id = #{currShopId}
-                          left outer join tb_sale_add sa on sa.sale_id = sl.sale_id and sa.shop_id = #{currShopId}
-                          left outer join tb_sale_used_device sud on sud.sale_id = sl.sale_id and sud.shop_id = #{currShopId}
-                          left outer join tb_avg_margin am on am.sale_id = sl.sale_id and am.shop_id = #{currShopId}
-                          left outer join tb_both b on b.sale_id = sl.sale_id and b.shop_id = #{currShopId}
-                 group by id
-             )
+            order by role
+        ), sale as (
+                select *
+                from tb_sale
+                where shop_id = #{currShopId}
+                  and actv_dt like '${date}%'
+        ),tb_avg_margin as (select shop_id,
+                                  sale_id,
+                                  total_cms
+                           from sale
+                           where device_id is not null
+        ),tb_both as (
+                select shop_id,
+                            sale_id,
+                            device_id
+                 from sale
+                 where device_id is not null
+                   and wt_cms is not null
+                   and wt_cms > 0
+         ),stat as (
+             select id,
+                    name,
+                    nickname,
+                    IFNULL(sum(sl.ct_cms), 0)           as ct_cms,
+                    IFNULL(sum(sl.wt_cms), 0)           as wt_cms,
+                    IFNULL(sum(sa.add_amount), 0)       as sum_add,
+                    IFNULL(sum(sud.ud_cms), 0)          as sum_ud_cms,
+                    IFNULL(sum(ss.sup_amount), 0)       as sum_sup,
+                    IFNULL(sum(sl.total_cms), 0)        as total_cms,
+                    IFNULL(count(sl.device_id), 0)      as ct_cnt,
+                    IFNULL(count(sl.internet_plan), 0)  as internet_cnt,
+                    IFNULL(count(sl.tv_plan), 0)        as tv_cnt,
+                    IFNULL(FLOOR(avg(am.total_cms)), 0) as avg_margin,
+                    IFNULL(count(b.device_id), 0)       as dongsi,
+                    TRUNCATE(
+                            IF((count(*) > 0 and count(b.device_id) > 0), (count(b.device_id) / count(*)) * 100, 0)
+                        , 1)                            as dongsi_per,
+                    IFNULL(count(sud.ud_id), 0)         as ud_cnt,
+                    IFNULL(count(sl.sd_id), 0)          as sd_cnt,
+                    TRUNCATE(
+                            IF((count(*) > 0 and count(sl.sd_id) > 0), (count(sl.sd_id) / count(*)) * 100, 0)
+                        , 1)                            as sd_per,
+                    IFNULL(count(sl.exsvc_id), 0)       as exsvc_cnt,
+                    TRUNCATE(
+                            IF((count(*) > 0 and count(sl.exsvc_id) > 0), (count(sl.exsvc_id) / count(*)) * 100, 0)
+                        , 1)                            as exsvc_per
+             from staff
+                      left outer join sale sl on sl.seller_id=id
+                      left outer join tb_sale_support ss on ss.sale_id = sl.sale_id and ss.shop_id = #{currShopId}
+                      left outer join tb_sale_add sa on sa.sale_id = sl.sale_id and sa.shop_id = #{currShopId}
+                      left outer join tb_sale_used_device sud on sud.sale_id = sl.sale_id and sud.shop_id = #{currShopId}
+                      left outer join tb_avg_margin am on am.sale_id = sl.sale_id and am.shop_id = #{currShopId}
+                      left outer join tb_both b on b.sale_id = sl.sale_id and b.shop_id = #{currShopId}
+             group by id
+         )
 
 
         select json_arrayagg(json_object(

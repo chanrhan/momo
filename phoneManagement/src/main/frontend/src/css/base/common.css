@@ -253,8 +253,8 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
     margin-left: 35px;
     position: absolute;
     /*width: 100%;*/
-    min-height: 50px;
-    width: 180px;
+    min-height: 20px;
+    /*max-width: 180px;*/
     font-size: 14px;
     line-height: 18px;
     visibility: visible;

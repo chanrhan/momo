@@ -15,36 +15,39 @@ const ITEM_NAMES = [
 
 export function DataGraph({userId, date}){
     const {saleApi} = useApi();
-
-    const toDate = new Date();
-
     const [summary, setSummary] = useState(null)
 
     useEffect(() => {
-        console.log(`userId: ${userId}`)
-        getGraphSummary(6);
-    }, [userId]);
+        getGraphSummary(6)
+    }, [userId, date]);
 
 
     const getGraphSummary = async (range)=>{
-        console.log(`id: ${userId}`)
-        let fromDate = new Date();
-        fromDate.setMonth(fromDate.getMonth()+1-range)
+        let toDt = new Date(date);
+        let fromDate = new Date(toDt);
+        DateUtils.subMonth(fromDate, range);
+        // fromDate.setMonth(toDt.getMonth()+1-range)
         fromDate.setDate(1)
-        let toDt = new Date(toDate);
+
         const body = {
             user_id: userId,
             from_ymd: DateUtils.dateToStringYYMMdd(fromDate),
             to_ymd: DateUtils.dateToStringYYMMdd(toDt),
         }
+        // console.table(body)
         await saleApi.getGraphSummary(body).then(({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
+                console.table(data)
                 setSummary(data)
             }
         })
     }
 
+    let fromDate = new Date(date)
+    fromDate.setDate(1)
+    const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
+    let toDate = new Date(date)
+    toDate.setDate(monthInfo.totalDays);
 
 
     return (
@@ -55,8 +58,8 @@ export function DataGraph({userId, date}){
                     <ul className={Graph.graph_list}>
                         {
                             summary && summary.map((v, i) => {
-                                return <GraphSummaryCard title={ITEM_NAMES[i]}
-                                                         value={v.value}
+                                return <GraphSummaryCard index={i} title={ITEM_NAMES[i]}
+                                                         value={v.value ?? 0}
                                                          price={i >= 3 && i <= 4}
                                                          per={v.per}
                                                          data={v.list && JSON.parse(v.list)}/>
@@ -66,18 +69,19 @@ export function DataGraph({userId, date}){
                 </div>
             </div>
 
-
-            <div className={cm(Graph.graph_group, Graph.graph4_group)}>
-                <BarChartArea date={date} userId={userId}/>
-                <SliderChartArea date={date} userId={userId}/>
-                <PieChartArea date={date} userId={userId}/>
-
-            </div>
             <div className={Graph.graph_group} style={{
                 marginTop: '25px'
             }}>
                 <LineChartArea date={date} userId={userId}/>
             </div>
+
+            <div className={cm(Graph.graph_group, Graph.graph4_group)}>
+                <BarChartArea fromDate={fromDate} toDate={toDate} userId={userId}/>
+                <SliderChartArea fromDate={fromDate} toDate={toDate} userId={userId}/>
+                <PieChartArea fromDate={fromDate} toDate={toDate} userId={userId}/>
+
+            </div>
+
 
         </div>
     )

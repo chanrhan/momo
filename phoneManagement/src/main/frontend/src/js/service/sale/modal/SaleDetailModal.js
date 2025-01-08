@@ -131,7 +131,9 @@ function SaleDetailModal(props){
 
     const [staff, setStaff] = useState([])
 
-    const hintBox = useHintBox("법인인 경우 사업자등록번호 5자리를 입력해주세요.")
+    const hintBox = useHintBox("법인인 경우 사업자등록번호 5자리를 입력해주세요.", {
+        maxWidth: 180
+    })
 
 
     useEffect(()=>{
@@ -672,13 +674,15 @@ function SaleDetailModal(props){
                             </div>
                         </div>
 
-
                         <div className={cmc(Popup.tab, Popup.type2)}>
-                            {
-                                inputField.provider === null && <TabList name='provider' inputField={inputField} theme={Popup} values={
-                                    LMD.provier
-                                }/>
-                            }
+                            {/*{*/}
+                            {/*    inputField.provider === null && <TabList name='provider' inputField={inputField} theme={Popup} values={*/}
+                            {/*        LMD.provier*/}
+                            {/*    }/>*/}
+                            {/*}*/}
+                            <TabList name='provider' inputField={inputField} theme={Popup} values={
+                                LMD.provier
+                            }/>
                         </div>
 
                         <div className={cm(Popup.head_box, Popup.fr)}>

@@ -33,7 +33,7 @@
 .graph .graph1 + .graph_group{margin-top:40px;}
 
 .graph_group > .div{
-    border: 2px solid #4781ff;
+    border: 1px solid #4781ff;
     display:inline-block; overflow:hidden; padding:32px;
     border-radius:8px; background-color:#f8f8f9; vertical-align:top;
 }
@@ -44,13 +44,15 @@
 .graph .graph2 .tab.type5{position:inherit; top: 15px; left:-10px; right:-10px; bottom:32px;}
 .graph .graph2 .tab.type5 .tab_item{width:16.66%;}
 
+.graph .graph2 .chart_text{position:absolute; top:26px; left:10px; padding-left:60px; color:#4781ff; font-size:22px; font-weight:600; line-height:24px; letter-spacing:-0.04em;}
+
 .graph .graph3{width:400px; height:289px; margin-left:24px;}
 .graph .graph3 .graph_top{text-align:right;}
 .graph .graph3 .graph_title{display:inline-block; float:left; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
 .graph .graph3 .tab.type4{display:inline-block; vertical-align:top;}
 .graph .graph3 .graph_box{overflow:hidden; height:170px; margin-top:24px; font-size:14px; line-height:16px;}
 
-.graph .graph4_group{display:flex; margin:32px -12px 0 -12px;}
+.graph .graph4_group{display:flex; margin:32px -12px 0 -12px; height: 400px}
 .graph .graph4{width:calc(33.33% - 24px); margin:0 12px;}
 .graph .graph4 .graph_top .graph_title{display:inline-block; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
 .graph .graph4 .graph_bar{

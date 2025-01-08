@@ -37,7 +37,7 @@ export function Statistics({date}){
                     <Sth/>
                     {
                         items && items.profile && JSON.parse(items.profile).map((v,i)=>{
-                            return <Sth profile={v} sub='평촌역점'/>
+                            return <Sth profile={v}/>
                         })
                     }
                 </tr>

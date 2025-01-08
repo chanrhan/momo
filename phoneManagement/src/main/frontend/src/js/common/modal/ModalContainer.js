@@ -127,9 +127,9 @@ function ModalContainer(){
 
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
         const onClickCaptureEvent = (e: MouseEvent)=>{
-            console.log(`before capture: ${modalName}`)
+            // console.log(`before capture: ${modalName}`)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                console.log('capture')
+                // console.log('capture')
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('click', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -138,7 +138,7 @@ function ModalContainer(){
 
         const onClickBubbleEvent = (e)=>{
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                console.log('bubble')
+                // console.log('bubble')
 
                 modal.unlockModal()
                 window.removeEventListener('click', onClickBubbleEvent, false)

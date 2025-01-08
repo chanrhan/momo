@@ -17,6 +17,16 @@
         VALUES (#{currShopId}, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt}, #{rsvTp}, #{dday})
     </insert>
 
+    <select id="getReserveMsgBySale">
+        select msg_id,
+               rsv_dt,
+               rsv_tp,
+               msg_tp
+        from tb_rsv_msg
+        where shop_id=#{currShopId} and
+              sale_id=#{saleId}
+    </select>
+
     <select id="getReserveMsgForCalendar">
         <![CDATA[
 

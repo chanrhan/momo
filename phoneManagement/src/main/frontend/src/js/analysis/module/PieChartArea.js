@@ -7,7 +7,7 @@ import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
 import {LMD} from "../../common/LMD";
 
-export function PieChartArea({date, userId}){
+export function PieChartArea({fromDate, toDate, userId}){
     const {saleApi} = useApi()
     const [tab, setTab] = useState(0)
 
@@ -16,14 +16,9 @@ export function PieChartArea({date, userId}){
 
     useEffect(() => {
         getItems();
-    }, [date, userId, tab]);
+    }, [fromDate, userId, tab]);
 
     const getItems = async ()=>{
-        let fromDate = new Date(date)
-        fromDate.setMonth(fromDate.getMonth()-1);
-        fromDate.setDate(1)
-        let toDate = new Date(date)
-        toDate.setDate(0)
 
         const body = {
             user_id: userId,
