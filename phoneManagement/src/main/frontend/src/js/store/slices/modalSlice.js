@@ -40,6 +40,7 @@ const modalSlice = createSlice({
         closeAndLock: (state, action)=>{
             const modalName = action.payload;
             // console.log('close and lock')
+            // console.log(`close and lock: ${action.payload}`)
             const target = state.list.filter(v=>v.modalName === modalName).at(0);
             if(target && target.onclose){
                 target.onclose();
@@ -51,7 +52,7 @@ const modalSlice = createSlice({
             }
         },
         lock: (state, action)=>{
-            // console.log('lock')
+            // console.log(`lock: ${action.payload}`)
             return {
                 lock: action.payload,
                 list: [...state.list]

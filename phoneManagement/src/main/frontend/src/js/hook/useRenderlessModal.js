@@ -19,6 +19,8 @@ export function useRenderlessModal(modalName){
             }, {
                 ref: componentRef.current
             })
+            console.log(`open: ref`)
+            console.table(componentRef.current.className)
         }
     }, [active]);
 
@@ -31,6 +33,7 @@ export function useRenderlessModal(modalName){
     const open = ()=>{
         const keyname = modalName.split('__')[0];
         if(lock && lock.startsWith(keyname)){
+            console.log(`locked: ${keyname}, open: ${lock}`)
            return;
         }
         setActive(true)

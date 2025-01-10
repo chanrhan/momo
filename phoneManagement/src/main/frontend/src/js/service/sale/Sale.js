@@ -135,7 +135,7 @@ export function Sale(){
         setLimit(INIT_LIMIT)
         if(tableRef.current){
             tableRef.current.scrollTop = 200;
-            console.table(tableRef.current.scrollTop)
+            // console.table(tableRef.current.scrollTop)
         }
         // getSaleTotalCount()
     }, [inputField.input, filterInputField.input]);

@@ -14,8 +14,7 @@ const DATE_TYPE = [
 
 const Y_AXIS_TICKS_PER = 20;
 
-export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelClassName, date}){
-    // console.log(`tab:${categoryTab}`)
+export function PerformanceChart({userId, categoryTab, chartClassName, pannelClassName}){
     const {saleApi} = useApi();
     const [dateTab, setDateTab] = useState(0) // 일별, 주별, 월별
 
@@ -29,61 +28,81 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
 
     useEffect(() => {
         getGraph(20)
-    }, [userInfo, categoryTab, dateTab, date]);
+    }, [userId, categoryTab, dateTab]);
 
     const getGraph = async (range)=>{
-        let toDate = new Date(date);
+        let toDate = new Date();
         toDate.setDate(today.getDate())
-        let fromDate = new Date(date);
+        let fromDate = new Date();
 
-        if(!DateUtils.equalYM(today, toDate)){
-            fromDate.setDate(1)
-            const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
-            switch (dateTab){
-                case 0:
-                    // fromDate.setDate(fromDate.getDate()-range)
-                    toDate.setDate(monthInfo.totalDays)
-                    // setGraphLabel(getDayLabelArray(fromDate, toDate))
-                    break;
-                case 1:
-                    // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
-                    // DateUtils.addWeek(toDate, monthInfo.totalWeek);
-                    toDate.setDate(monthInfo.totalDays)
-                    // setGraphLabel(getWeekLabelArray(fromDate, toDate))
-                    break;
-                case 2:
-                    // fromDate.setMonth(fromDate.getMonth()-5)
-                    DateUtils.addMonth(toDate, 6);
-                    const monthInfo2 = DateUtils.getMonthInfo(toDate.getFullYear(), toDate.getMonth());
-                    toDate.setDate(monthInfo2.totalDays);
-                    // setGraphLabel(getMonthLabelArray(fromDate, toDate))
-                    break;
-            }
-        }else{
-            toDate.setDate(today.getDate())
-            fromDate.setDate(today.getDate())
-            switch (dateTab){
-                case 0:
-                    // fromDate.setDate(fromDate.getDate()-range)
-                    DateUtils.subDate(fromDate, range);
-                    // setGraphLabel(getDayLabelArray(fromDate, toDate))
-                    break;
-                case 1:
-                    // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
-                    DateUtils.subWeek(fromDate, 6);
-                    // setGraphLabel(getWeekLabelArray(fromDate, toDate))
-                    break;
-                case 2:
-                    // fromDate.setMonth(fromDate.getMonth()-5)
-                    DateUtils.subMonth(fromDate, 6);
-                    fromDate.setDate(1)
-                    // setGraphLabel(getMonthLabelArray(fromDate, toDate))
-                    break;
-            }
+        // if(!DateUtils.equalYM(today, toDate)){
+        //     fromDate.setDate(1)
+        //     const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
+        //     switch (dateTab){
+        //         case 0:
+        //             // fromDate.setDate(fromDate.getDate()-range)
+        //             toDate.setDate(monthInfo.totalDays)
+        //             // setGraphLabel(getDayLabelArray(fromDate, toDate))
+        //             break;
+        //         case 1:
+        //             // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
+        //             // DateUtils.addWeek(toDate, monthInfo.totalWeek);
+        //             toDate.setDate(monthInfo.totalDays)
+        //             // setGraphLabel(getWeekLabelArray(fromDate, toDate))
+        //             break;
+        //         case 2:
+        //             // fromDate.setMonth(fromDate.getMonth()-5)
+        //             DateUtils.addMonth(toDate, 6);
+        //             const monthInfo2 = DateUtils.getMonthInfo(toDate.getFullYear(), toDate.getMonth());
+        //             toDate.setDate(monthInfo2.totalDays);
+        //             // setGraphLabel(getMonthLabelArray(fromDate, toDate))
+        //             break;
+        //     }
+        // }else{
+        //     toDate.setDate(today.getDate())
+        //     fromDate.setDate(today.getDate())
+        //     switch (dateTab){
+        //         case 0:
+        //             // fromDate.setDate(fromDate.getDate()-range)
+        //             DateUtils.subDate(fromDate, range);
+        //             // setGraphLabel(getDayLabelArray(fromDate, toDate))
+        //             break;
+        //         case 1:
+        //             // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
+        //             DateUtils.subWeek(fromDate, 6);
+        //             // setGraphLabel(getWeekLabelArray(fromDate, toDate))
+        //             break;
+        //         case 2:
+        //             // fromDate.setMonth(fromDate.getMonth()-5)
+        //             DateUtils.subMonth(fromDate, 6);
+        //             fromDate.setDate(1)
+        //             // setGraphLabel(getMonthLabelArray(fromDate, toDate))
+        //             break;
+        //     }
+        // }
+        toDate.setDate(today.getDate())
+        fromDate.setDate(today.getDate())
+        switch (dateTab){
+            case 0:
+                // fromDate.setDate(fromDate.getDate()-range)
+                DateUtils.subDate(fromDate, range);
+                // setGraphLabel(getDayLabelArray(fromDate, toDate))
+                break;
+            case 1:
+                // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
+                DateUtils.subWeek(fromDate, 6);
+                // setGraphLabel(getWeekLabelArray(fromDate, toDate))
+                break;
+            case 2:
+                // fromDate.setMonth(fromDate.getMonth()-5)
+                DateUtils.subMonth(fromDate, 6);
+                fromDate.setDate(1)
+                // setGraphLabel(getMonthLabelArray(fromDate, toDate))
+                break;
         }
 
-
         const body = {
+            user_id: userId,
             from_ymd: DateUtils.dateToStringYYMMdd(fromDate),
             to_ymd: DateUtils.dateToStringYYMMdd(toDate)
         }
@@ -111,7 +130,6 @@ export function PerformanceChart({userInfo, categoryTab, chartClassName, pannelC
             const {status, data}  = rst;
             let unit = 1;
             if(status === 200 && data){
-                // console.table(data.value1);
                 if(data.value){
                     const parsed = JSON.parse(data.value)
                     setGraphData([parsed])

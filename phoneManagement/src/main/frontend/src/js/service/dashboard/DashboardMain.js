@@ -75,7 +75,6 @@ export function DashboardMain(){
         await saleApi.getSummary(prev, curr).then(({status,data})=>{
             if(status === 200 && data){
                 setSummary(data)
-                console.table(data)
             }
         })
     }

@@ -1662,6 +1662,15 @@
 
     <select id="getCtGraphByDateType" resultType="java.util.Map">
     <![CDATA[
+        set @limit_cond := (
+               case #{dateType}
+                   when 'h' then '2000-01-24'
+                   when 'd' then #{toYmd}
+                   when 'w' then #{toYmd}
+                   when 'm' then date_sub(#{toYmd}, interval 1 month)
+               end
+        );
+
         with recursive org_date_table as (
             select (
                        case
@@ -1679,12 +1688,7 @@
                            end
                        ) as it
             from org_date_table
-            where it < (
-                case
-                    when #{dateType} = 'h' then '2000-01-24'
-                    when #{dateType} != 'h' then #{toYmd}
-                    end
-                )
+            where it < @limit_cond
         ), date_table as (
             select
                 year(it) as _year,
@@ -1740,6 +1744,14 @@
 
     <select id="getInternetGraphByDateType" resultType="java.util.Map">
     <![CDATA[
+        set @limit_cond := (
+               case #{dateType}
+                   when 'h' then '2000-01-24'
+                   when 'd' then #{toYmd}
+                   when 'w' then #{toYmd}
+                   when 'm' then date_sub(#{toYmd}, interval 1 month)
+               end
+        );
         with recursive org_date_table as (
             select (
                        case
@@ -1757,12 +1769,7 @@
                            end
                        ) as it
             from org_date_table
-            where it < (
-                case
-                    when #{dateType} = 'h' then '2000-01-24'
-                    when #{dateType} != 'h' then #{toYmd}
-                    end
-                )
+            where it < @limit_cond
         ), date_table as (
             select
                 year(it) as _year,
@@ -1823,6 +1830,14 @@
 
     <select id="getTvGraphByDateType" resultType="java.util.Map">
     <![CDATA[
+        set @limit_cond := (
+               case #{dateType}
+                   when 'h' then '2000-01-24'
+                   when 'd' then #{toYmd}
+                   when 'w' then #{toYmd}
+                   when 'm' then date_sub(#{toYmd}, interval 1 month)
+               end
+        );
         with recursive org_date_table as (
             select (
                        case
@@ -1840,12 +1855,7 @@
                            end
                        ) as it
             from org_date_table
-            where it < (
-                case
-                    when #{dateType} = 'h' then '2000-01-24'
-                    when #{dateType} != 'h' then #{toYmd}
-                    end
-                )
+            where it < @limit_cond
         ), date_table as (
             select
                 year(it) as _year,
@@ -1901,6 +1911,15 @@
 
     <select id="getMarginGraphByDateType" resultType="java.util.Map">
     <![CDATA[
+        set @limit_cond := (
+               case #{dateType}
+                   when 'h' then '2000-01-24'
+                   when 'd' then #{toYmd}
+                   when 'w' then #{toYmd}
+                   when 'm' then date_sub(#{toYmd}, interval 1 month)
+               end
+        );
+
         with recursive org_date_table as (
             select (
                        case
@@ -1918,12 +1937,7 @@
                            end
                        ) as it
             from org_date_table
-            where it < (
-                case
-                    when #{dateType} = 'h' then '2000-01-24'
-                    when #{dateType} != 'h' then #{toYmd}
-                    end
-                )
+            where it < @limit_cond
         ), date_table as (
             select
                 year(it) as _year,
@@ -1981,6 +1995,14 @@
 
     <select id="getAvgMarginGraphByDateType" resultType="java.util.Map">
     <![CDATA[
+        set @limit_cond := (
+               case #{dateType}
+                   when 'h' then '2000-01-24'
+                   when 'd' then #{toYmd}
+                   when 'w' then #{toYmd}
+                   when 'm' then date_sub(#{toYmd}, interval 1 month)
+               end
+        );
         with recursive org_date_table as (
             select (
                        case
@@ -1998,12 +2020,7 @@
                            end
                        ) as it
             from org_date_table
-            where it < (
-                case
-                    when #{dateType} = 'h' then '2000-01-24'
-                    when #{dateType} != 'h' then #{toYmd}
-                    end
-                )
+            where it < @limit_cond
         ), date_table as (
             select
                 year(it) as _year,

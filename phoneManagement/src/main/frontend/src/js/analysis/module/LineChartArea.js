@@ -8,7 +8,7 @@ import useApi from "../../hook/useApi";
 import {PerformanceChart} from "../../service/dashboard/module/PerformanceChart";
 import Dashboard from "../../../css/dashboard.module.css";
 
-export function LineChartArea({date, userId}){
+export function LineChartArea({userId}){
     const {saleApi} = useApi();
     const [tab1, setTab1] = useState(0)
     const [tab2, setTab2] = useState(0)
@@ -18,11 +18,11 @@ export function LineChartArea({date, userId}){
 
     useEffect(() => {
         getGraphData()
-    }, [date, userId, tab1, tab2, tab3]);
+    }, [userId, tab1, tab2, tab3]);
 
     const getGraphData = async ()=>{
-        let fromDate = new Date(date);
-        let toDate = new Date(date)
+        let fromDate = new Date();
+        let toDate = new Date()
         toDate.setDate(toDate.getDate()-1);
         let rst = null;
         let dateType = 'd';
@@ -81,7 +81,7 @@ export function LineChartArea({date, userId}){
 
      return (
          <div className={cm(Graph.graph2, Graph.div)}>
-             <p className={cm(Graph.chart_text)}>{new Date(date).getFullYear()}년</p>
+             <p className={cm(Graph.chart_text)}>{new Date().getFullYear()}년</p>
 
              <div className={Graph.graph_top}>
                  <div className={cmc(Graph.tab, Graph.type4)}>
@@ -91,10 +91,10 @@ export function LineChartArea({date, userId}){
                  </div>
              </div>
 
-             <PerformanceChart userInfo={userId}
+             <PerformanceChart userId={userId}
                                categoryTab={tab2}
                                pannelClassName={cmc(Graph.tab, Graph.type5)}
-                               chartClassName={Graph.graph_box} date={date}
+                               chartClassName={Graph.graph_box}
              />
 
              {/*<div className={Graph.graph_box}>*/}

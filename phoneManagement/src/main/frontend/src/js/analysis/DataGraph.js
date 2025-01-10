@@ -8,14 +8,24 @@ import {DateUtils} from "../utils/DateUtils";
 import {LineChartArea} from "./module/LineChartArea";
 import {BarChartArea} from "./module/BarChartArea";
 import {PieChartArea} from "./module/PieChartArea";
+import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 
 const ITEM_NAMES = [
     '무선','인터넷','TV','총 이익','개인 평균 마진','중고 개통','세컨'
 ]
 
-export function DataGraph({userId, date}){
+export function DataGraph({userId}){
     const {saleApi} = useApi();
     const [summary, setSummary] = useState(null)
+    const today = new Date();
+
+    const [date, setDate] = useState(DateUtils.formatYYMM(today.getFullYear(),today.getMonth()+1))
+
+    let fromDate = new Date(date)
+    fromDate.setDate(1)
+    const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
+    let toDate = new Date(date)
+    toDate.setDate(monthInfo.totalDays);
 
     useEffect(() => {
         getGraphSummary(6)
@@ -43,18 +53,38 @@ export function DataGraph({userId, date}){
         })
     }
 
-    let fromDate = new Date(date)
-    fromDate.setDate(1)
-    const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
-    let toDate = new Date(date)
-    toDate.setDate(monthInfo.totalDays);
+
+
+    const selectDate = (year,month)=>{
+        setDate(DateUtils.formatYYMM(year,month))
+    }
 
 
     return (
         <div className={Graph.graph_panel}>
+            <div className={Graph.graph_group} style={{
+                marginBottom: '20px'
+            }}>
+                <LineChartArea userId={userId}/>
+            </div>
 
-            <div className={Graph.graph1}>
-                <div className={Graph.graph_scroll}>
+            <div className={Graph.graph_group} style={{
+                marginBottom: '-24px',
+                textAlign: "right",
+            }}>
+                <MonthSelectModal onSelect={selectDate}>
+                    <input type="text" className="inp date" value={date}
+                           placeholder="날짜 선택" readOnly/>
+                </MonthSelectModal>
+                <button type="button" className="btn_all" style={{
+                    marginLeft: 0
+                }}>전체 보기</button>
+            </div>
+
+            <div className={Graph.graph1} >
+                <div className={Graph.graph_scroll}  style={{
+                    marginTop: '44px'
+                }}>
                     <ul className={Graph.graph_list}>
                         {
                             summary && summary.map((v, i) => {
@@ -67,12 +97,6 @@ export function DataGraph({userId, date}){
                         }
                     </ul>
                 </div>
-            </div>
-
-            <div className={Graph.graph_group} style={{
-                marginTop: '25px'
-            }}>
-                <LineChartArea date={date} userId={userId}/>
             </div>
 
             <div className={cm(Graph.graph_group, Graph.graph4_group)}>

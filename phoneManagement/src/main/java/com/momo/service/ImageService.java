@@ -106,7 +106,8 @@ public class ImageService {
 		String filePath = savePath + fileName;
 
 		try{
-			FileServiceUtil.resizeImageAndSave(mf, filePath, formatName);
+//			FileServiceUtil.resizeImageAndSave(mf, filePath, formatName);
+			mf.transferTo(new File(filePath));
 //			FileServiceUtil.compress(mf.getInputStream(), filePath);
 //			mf.transferTo(FileServiceUtil.compressWithThumbnails(mf.getInputStream(), filePath));
 		}catch (IOException e){

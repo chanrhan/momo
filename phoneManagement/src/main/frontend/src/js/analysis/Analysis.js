@@ -23,9 +23,6 @@ export function Analysis(){
     const [groupTab, setGroupTab ] = useState(0)
     const [userTab, setUserTab ] = useState(0)
 
-    const today = new Date();
-    const [keydate, setKeydate] = useState(DateUtils.formatYYMM(today.getFullYear(),today.getMonth()+1))
-
     const [staffIdList, setStaffIdList] = useState([])
     const [staffNameList, setStaffNameList] = useState([])
 
@@ -57,9 +54,7 @@ export function Analysis(){
         }
     }
 
-    const selectDate = (year,month)=>{
-        setKeydate(DateUtils.formatYYMM(year,month))
-    }
+
 
     return (
         <div className={Layout.sub}>
@@ -90,15 +85,11 @@ export function Analysis(){
                             </div>
                         }
 
-                        <MonthSelectModal onSelect={selectDate}>
-                            <input type="text" className="inp date" value={keydate}
-                                   placeholder="날짜 선택" readOnly/>
-                        </MonthSelectModal>
-                        <button type="button" className="btn_all">전체 보기</button>
+
                     </div>
                 </div>
                 {
-                    graphTab === 0 ? <DataGraph userId={groupTab === 0 ? staffIdList[userTab] : null} date={keydate}/> : <Statistics date={keydate}/>
+                    graphTab === 0 ? <DataGraph userId={groupTab === 0 ? staffIdList[userTab] : null} /> : <Statistics/>
                 }
             </div>
 

@@ -3,20 +3,20 @@
 /* graph */
 
 .graph .graph_head .tab.type2{margin-top:32px; border-bottom:1px solid #f8f8f9;}
-.graph .graph_head .graph_head_group{margin-top:23px; text-align:right;
-    /*position: relative;*/
-}
+.graph .graph_head .graph_head_group,
+.graph .graph_table .graph_head_group{margin-top:23px; text-align:right;}
 .graph .graph_head .graph_head_group .tab.type3{display:inline-block; float:left; vertical-align:top;}
 
 .graph .graph_panel{margin-top:24px;}
-.graph .graph1 .graph_scroll{overflow-x:auto; overflow-y:hidden; padding-bottom:8px;}
+.graph .graph1 .graph_scroll{overflow-x:auto; overflow-y:hidden; padding-bottom:2px; margin-top: 24px;}
 .graph .graph1 .graph_scroll::-webkit-scrollbar{height:8px;}
 .graph .graph1 .graph_scroll::-webkit-scrollbar-track{background-color:transparent;}
 .graph .graph1 .graph_scroll::-webkit-scrollbar-thumb{background-color:#bcbcbc;}
 .graph .graph1 .graph_scroll::-webkit-scrollbar-track,
 .graph .graph1 .graph_scroll::-webkit-scrollbar-thumb{border-radius:4px;}
 .graph .graph1 .graph_list{font-size:0; line-height:0; white-space:nowrap;}
-.graph .graph1 .graph_item{display:inline-block; overflow:hidden; position:relative; width:242px; padding:16px 24px 15px 24px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
+.graph .graph1 .graph_item{display:inline-block; overflow:hidden;
+    position:relative; width:140px; padding:16px 24px 15px 24px; border-radius:8px; background-color:#f8f8f9; vertical-align:top;}
 .graph .graph1 .graph_item + .graph_item{margin-left:16px;}
 .graph .graph1 .graph_item .graph_title{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph1 .graph_item .graph_count{margin-top:10px; font-size:18px; font-weight:500; line-height:20px;}
@@ -37,7 +37,7 @@
     display:inline-block; overflow:hidden; padding:32px;
     border-radius:8px; background-color:#f8f8f9; vertical-align:top;
 }
-.graph .graph2{position:relative; width:100%;}
+.graph .graph2{position:relative; width:100%; margin-top: 18px}
 .graph .graph2 .graph_top{position:relative;}
 .graph .graph2 .graph_top .tab.type4{position:relative; float: right; top:0; right:0;}
 .graph .graph2 .graph_box{position: inherit; height: 512px; margin-top:14px;font-size:14px;line-height:16px;}

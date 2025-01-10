@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {createPortal} from "react-dom";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
 import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
@@ -114,11 +114,19 @@ const MODAL_COMPONENTS = {
     AddStudyNode: AddStudyNodeModal
 }
 
+
+
 function ModalContainer(){
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
 
+    const handleRef = (node) => {
+        if (node) {
+            // console.log('Callback ref:', node);
+            topComponentRef.current = node;
+        }
+    };
 
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList.list)){
@@ -126,8 +134,10 @@ function ModalContainer(){
         }
 
         const {type, modalName, onopen, onclose} = modalList.list[modalList.list.length-1];
+        // console.log(`Before capture: ${topComponentRef.current?.className}`)
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
+            // console.log(`${topComponentRef.current} and ${e.target}`)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                 // console.log('capture')
                 modal.closeAndLockModal(modalName)
@@ -137,12 +147,16 @@ function ModalContainer(){
         }
 
         const onClickBubbleEvent = (e)=>{
-            if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                // console.log('bubble')
-
-                modal.unlockModal()
-                window.removeEventListener('click', onClickBubbleEvent, false)
-            }
+            // console.log(`Before bubble: ${topComponentRef.current?.className}`)
+            // console.log(`target: ${e.target?.className}`)
+            // if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
+            //     console.log('bubble')
+            //
+            //     modal.unlockModal()
+            //     window.removeEventListener('click', onClickBubbleEvent, false)
+            // }
+            modal.unlockModal()
+            window.removeEventListener('click', onClickBubbleEvent, false)
         }
 
         const onKeydownCaptureEvent = (e: KeyboardEvent)=>{
@@ -158,19 +172,6 @@ function ModalContainer(){
         // 모든 흐름이 끝난 후 이벤트 리스너를 붙이도록 비동기적으로 처리
         const attachListenerTimer = setTimeout(()=>{
             if(type === M_TYPE.LAYER || type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
-            // if(type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
-                // onclickDelayTimer = setTimeout(()=>{
-                //     // onclick 함수를 추가하자마자, 이게 호출된다
-                //     // 버튼을 눌러서 해당 useEffect 를 실행하니 아래 onclick 도 거의 동시에 실행되서 생기는 문제인 듯 싶다
-                //     // Timeout 으로 해결
-                //
-                //     // 이벤트 흐름 중 캡처링을 사용하여 이벤트를 등록하였다
-                //     // 이 클릭이벤트는 최상단 계층인 window에서 발생되므로
-                //     // 가장 먼저 이벤트가 발생해야 한다
-                //     // 버블링으로 이벤트를 추가하면,
-                //     // 하나의 모달이 열린 상태에서 다른 (클릭이벤트가 있는) 버튼을 눌렀을 시
-                //     // 해당 이벤트가 발생하기 전에 버튼 이벤트가 먼저 발생하게 되어 문제가 발생한다.
-                // }, 10);
                 window.addEventListener('click', onClickBubbleEvent, false)
                 window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
                 // window.addEventListener('keydown', onKeydownCaptureEvent, true)
@@ -183,6 +184,7 @@ function ModalContainer(){
         }, 10)
 
         return ()=>{
+            // console.log('clean, ref:', topComponentRef.current?.className);
             clearTimeout(attachListenerTimer);
             window.removeEventListener('keydown', onKeydownCaptureEvent, true)
             window.removeEventListener('click', onClickCaptureEvent, true)
@@ -201,6 +203,7 @@ function ModalContainer(){
             topScrollIndex = index
         }
     })
+
     const lastIndex = modalList.list.length - 1;
     const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
         if(!modalName){
@@ -216,19 +219,23 @@ function ModalContainer(){
         if(type === M_TYPE.LAYER && index === lastIndex){
             windowBlocked = true;
         }
-
         if(index === topIndex){
             if(type === M_TYPE.RENDERLESS){
                 if(props.ref){
+                    // console.log('props ref')
+                    // console.table(topComponentRef.current?.className)
                     topComponentRef.current = props.ref;
+                    // console.log('after')
+                    // console.table(topComponentRef.current?.className)
                     // modal.addTopElement(props.ref)
                 }
 
                 return null;
             }
             const ModalComponent = MODAL_COMPONENTS[modalName];
-            return <ModalComponent scrollable={true} modalRef={topComponentRef} windowBlocked={windowBlocked} key={modalName} {...props}/>
+            return <ModalComponent scrollable={true} modalRef={handleRef} windowBlocked={windowBlocked} key={modalName} {...props}/>
         }
+
         const ModalComponent = MODAL_COMPONENTS[modalName];
 
         let scrollable = false;

@@ -3,9 +3,15 @@ import {cm} from "../utils/cm";
 import {useEffect, useState} from "react";
 import useApi from "../hook/useApi";
 import {NumberUtils} from "../utils/NumberUtils";
+import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
+import {DateUtils} from "../utils/DateUtils";
 
-export function Statistics({date}){
+export function Statistics(){
     const {saleApi} = useApi()
+
+    const today = new Date();
+
+    const [date, setDate] = useState(DateUtils.formatYYMM(today.getFullYear(),today.getMonth()+1))
 
     const [items, setItems] = useState(null)
 
@@ -24,8 +30,22 @@ export function Statistics({date}){
         })
     }
 
+    const selectDate = (year,month)=>{
+        setDate(DateUtils.formatYYMM(year,month))
+    }
+
     return (
         <div className={Graph.graph_table}>
+            <div className={Graph.graph_head_group} style={{
+
+            }}>
+                <MonthSelectModal onSelect={selectDate}>
+                    <input type="text" className="inp date" value={date}
+                           placeholder="날짜 선택" readOnly/>
+                </MonthSelectModal>
+                <button type="button" className="btn_all">전체 보기</button>
+            </div>
+
             <table className={Graph.tb_calender}>
                 <caption>통계 테이블 - 김모모 실장(평촌역점), 김모모 팀장(평촌역점)... 정보 제공</caption>
                 <colgroup>
