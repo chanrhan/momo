@@ -13,10 +13,11 @@ import java.util.Map;
 public interface ReserveMsgMapper {
 	// Message Reserve
 	public int insertMsg(ReserveMessageVO vo);
+	public int deleteMsg(ReserveMessageVO vo);
 
 	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo);
 
 	public List<String> getReserveMsgForCalendar(int currShopId, String date);
 
-	public List<Map<String,Object>> getReserveMsgDetail(int currShopId, String date,int state);
+	public List<Map<String,Object>> getReserveMsgDetail(int currShopId, String date);
 }

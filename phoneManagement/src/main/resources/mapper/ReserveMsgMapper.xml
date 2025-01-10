@@ -17,11 +17,19 @@
         VALUES (#{currShopId}, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt}, #{rsvTp}, #{dday})
     </insert>
 
+    <delete id="deleteMsg">
+        delete from tb_rsv_msg
+        where shop_id=#{currShopId} and
+              sale_id=#{saleId} and
+              rsv_dt=#{rsvDt}
+    </delete>
+
     <select id="getReserveMsgBySale">
         select msg_id,
                rsv_dt,
                rsv_tp,
-               msg_tp
+               msg_tp,
+               msg_st
         from tb_rsv_msg
         where shop_id=#{currShopId} and
               sale_id=#{saleId}
@@ -62,13 +70,13 @@
 
     <select id="getReserveMsgDetail">
         SELECT sl.cust_nm,
+               msg_st,
                msg_tp,
                IF(rm.rsv_tp != 2, 'D', 'M') as dday_tp,
                dday
         FROM tb_rsv_msg rm
         LEFT OUTER JOIN tb_sale sl on sl.sale_id= rm.sale_id
         WHERE rm.shop_id= #{currShopId} and
-            rsv_dt=#{date} and
-            msg_st=#{state}
+            rsv_dt=#{date}
     </select>
 </mapper>

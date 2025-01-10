@@ -296,6 +296,32 @@
 .popup .popup_check_list > .li .check_label{
     position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;
 }
+.popup .popup_check_list > .li .msg_st{
+    display: inline-block;
+    position: absolute;
+    /*min-width: 80px;*/
+    margin-left: 12px;
+    top: 0;
+    padding: 0px 6px 0px 6px;
+    font-size: 12px;
+    /*border: 1px solid black;*/
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    /*height: 20px;*/
+}
+
+.popup .popup_check_list > .li .msg_st.reserved{
+    background-color: rgba(72, 130, 255, 0.9);
+    /*border-color: #4781ff;*/
+}
+/*.popup .popup_check_list > .li .msg_st.reserved:hover{*/
+/*    border-color: red;*/
+/*}*/
+.popup .popup_check_list > .li .msg_st.completed{
+    background-color: #00bb35;
+}
+
 .popup .popup_check_list > .li .check_label.disable{
     color: #B3B3BEFF
 }

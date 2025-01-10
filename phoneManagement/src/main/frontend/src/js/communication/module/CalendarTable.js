@@ -28,20 +28,34 @@ export function CalendarTable({inputField}){
     const [tab, setTab] = useState(0);
 
     const [detail, setDetail] = useState(null)
+    const [showDetail, setShowDetail] = useState(null)
 
     useEffect(() => {
         getReserveMsgDetail()
-    }, [day, tab]);
+    }, [day]);
 
+    useEffect(() => {
+        setShowDetail(detail ? detail.filter(v=>v.msg_st === tab) : null)
+    }, [tab]);
 
     useEffect(() => {
         getReserveMsgForCalendar();
     }, [inputField]);
 
     const getReserveMsgDetail = async ()=>{
-        await  rsvMsgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day), tab).then(({status,data})=>{
+        await  rsvMsgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day)).then(({status,data})=>{
             if(status === 200 && data){
+                // console.table(data)
                 setDetail(data)
+                const stateList = data.map(v=>v.msg_st);
+                let _tab = 0;
+                for(let i=0;i<3;++i){
+                    if(stateList.includes(i)){
+                        _tab = i;
+                        break;
+                    }
+                }
+                setTab(_tab);
             }
         })
     }
@@ -145,7 +159,7 @@ export function CalendarTable({inputField}){
                                         if(items && calDay-1 > 0 && items[calDay-1]){
                                             parsed = JSON.parse(items[calDay-1])
                                         }
-                                        return <Cdate key={d} today={DateUtils.isToday(cYear, cMonth, calDay)}
+                                        return <Cdate index={d} today={DateUtils.isToday(cYear, cMonth, calDay)}
                                                       active={cYear === year && cMonth === month && day === calDay}
                                                       day={getCalendarDay(calDay)}
                                                       out={calDay <= 0 || calDay > totalDays}
@@ -165,8 +179,7 @@ export function CalendarTable({inputField}){
                                                     if(ObjectUtils.isEmpty(v)){
                                                         return null;
                                                     }
-                                                    return <span
-                                                        className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[v.msg_st]} {v.cnt}건</span>
+                                                    return <span key={d} className={cm(Calender.stat, Calender.blue)}>{LMD.msg_st[v.msg_st]} {v.cnt}건</span>
                                                 })
 
                                             }
@@ -207,7 +220,7 @@ export function CalendarTable({inputField}){
                             </colgroup>
                             <tbody>
                             {
-                                detail && detail.map((v, i) => {
+                                showDetail && showDetail.map((v, i) => {
                                     return <CalendarDetail username={v.cust_nm} type={v.msg_tp}
                                                            dday={v.dday}
                                                            dday_type={v.dday_tp}/>
@@ -230,9 +243,9 @@ function Cth({children}) {
     )
 }
 
-function Cdate({day, today, active, onClick, children, out}) {
+function Cdate({index, day, today, active, onClick, children, out}) {
     return (
-        <td onClick={onClick}
+        <td key={index} onClick={onClick}
             className={`${Calender.td} ${today && Calender.today} ${active && Calender.active} ${out && Calender.out}`}>
             <span className={Calender.num}>{day}</span>
             {children}

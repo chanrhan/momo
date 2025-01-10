@@ -22,6 +22,16 @@ public class ReserveMsgService {
 		}
 	}
 
+	public boolean deleteMsgList(int currShopId, int saleId, List<ReserveMessageVO> list){
+		int result = 0;
+		for(ReserveMessageVO vo : list){
+			vo.setSaleId(saleId);
+			vo.setCurrShopId(currShopId);
+			result += reserveMsgMapper.deleteMsg(vo);
+		}
+		return result == list.size();
+	}
+
 	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo){
 		return reserveMsgMapper.getReserveMsgBySale(vo);
 	}
@@ -30,7 +40,7 @@ public class ReserveMsgService {
 		return reserveMsgMapper.getReserveMsgForCalendar(currShopId,date);
 	}
 
-	public List<Map<String ,Object>> getReserveMsgDetail(int currShopId, String date, int state){
-		return reserveMsgMapper.getReserveMsgDetail(currShopId, date, state);
+	public List<Map<String ,Object>> getReserveMsgDetail(int currShopId, String date){
+		return reserveMsgMapper.getReserveMsgDetail(currShopId, date);
 	}
 }

@@ -6,8 +6,9 @@ import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {LMD} from "../../../common/LMD";
 import {ObjectUtils} from "../../../utils/objectUtil";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
+import {writeFileAsync} from "xlsx";
 
 export function ReserveMessageModal(props){
     const {rsvMsgApi} = useApi()
@@ -18,8 +19,9 @@ export function ReserveMessageModal(props){
     // console.table(arrayInputField.input)
     const modal = useModal()
 
+    const [orgData, setOrgData] = useState(null)
+
     useEffect(() => {
-            console.log(props.sale_id)
         if(props.sale_id){
             getReservedMessage();
         }
@@ -27,13 +29,22 @@ export function ReserveMessageModal(props){
 
     const getReservedMessage = ()=>{
         rsvMsgApi.getReserveMsgBySale(props.sale_id).then(({status,data})=>{
-            if(status === 200 && data){
-                console.table(data);
-                data.map(v=>{
-                    v.checked = true;
-                    return v;
+            if(status === 200 && !ObjectUtils.isEmpty(data)){
+                // console.table(data)
+                setOrgData(data)
+                arrayInputField.setInput(prev=>{
+                    const typeList = data.map(v=>v.msg_tp);
+                    return [...prev].map(v=>{
+                        const find = typeList.indexOf(v.msg_tp);
+                        if(find !== -1){
+                            v.rsv_dt = data[find].rsv_dt;
+                            v.rsv_tp = data[find].rsv_tp
+                            v.msg_st = data[find].msg_st;
+                            v.checked = true;
+                        }
+                        return v;
+                    })
                 })
-                arrayInputField.putAll(data)
             }
         })
     }
@@ -59,8 +70,8 @@ export function ReserveMessageModal(props){
     }
 
     const submit = ()=>{
-        const body = arrayInputField.input.filter(v=>{
-            return v.checked && v.dday && v.rsv_dt
+        let body = arrayInputField.input.filter(v=>{
+            return v.checked && v.rsv_dt
         }).map(v=>{
             return {
                 msg_tp: v.msg_tp,
@@ -70,14 +81,46 @@ export function ReserveMessageModal(props){
             }
         })
         if(props.sale_id){
-            rsvMsgApi.insertReserveMsg({
-                sale_id: props.sale_id,
-                rsv_msg_list: body
-            }).then(({status,data})=>{
-                if(status === 200 && data){
-                    close();
+            const msgTypeList = orgData?.map(v=>v.msg_tp) ?? []
+            const deleteList = [];
+            body = arrayInputField.input.filter(v=>{
+                if(msgTypeList.includes(v.msg_tp) || !v.checked || !v.rsv_dt){
+                    if(!v.checked && msgTypeList.includes(v.msg_tp)){
+                        deleteList.push(v);
+                    }
+                    return false;
                 }
+
+                return true;
             })
+
+            // console.table(deleteList)
+            // console.table(body)
+            // return;
+
+            deleteMsgList(deleteList).then((cond)=>{
+                if(cond){
+                    if(!ObjectUtils.isEmptyArray(body)){
+                        rsvMsgApi.insertReserveMsg({
+                            sale_id: props.sale_id,
+                            rsv_msg_list: body
+                        }).then(({status,data})=>{
+                            if(status === 200 && data){
+                                modal.openModal(ModalType.SNACKBAR.Info, {
+                                    msg: "수정되었습니다."
+                                })
+                            }
+                        })
+                    }else{
+                        modal.openModal(ModalType.SNACKBAR.Info, {
+                            msg: "수정되었습니다."
+                        })
+                    }
+                }
+                close();
+            })
+
+
         }else{
             if(props.onSubmit){
                 props.onSubmit(body);
@@ -87,9 +130,25 @@ export function ReserveMessageModal(props){
 
     }
 
+    const deleteMsgList = async (list)=>{
+        let result = true;
+        if(!ObjectUtils.isEmptyArray(list)){
+            await rsvMsgApi.deleteReserveMsg({
+                sale_id: props.sale_id,
+                rsv_msg_list: list
+            }).then(({status,data})=>{
+                if(status !== 200 || !data){
+
+                    result = false;
+                }
+            })
+        }
+        return result;
+    }
+
 
     return (
-        <LayerModal top={10} maxWidth={548}>
+        <LayerModal {...props} top={50} maxWidth={548}>
                 {/*활성화시 active 추가 -->*/}
                 <div className={Popup.popup_title}>연락 전송 등록</div>
                 <div className={Popup.popup_text}>전송하고 싶은 문자를 선택해주세요.</div>
@@ -115,8 +174,11 @@ export function ReserveMessageModal(props){
                         </ul>
                     </div>
 
-                    <div className={cm(Popup.popup_btn_box, Popup.half)}>
-                        <button type="button" className={`btn_grey ${cmc(Popup.btn)}`} onClick={submit}>건너뛰기</button>
+                    <div className={cm(Popup.popup_btn_box, `${!props.sale_id && Popup.half}`)}>
+                        {
+                            !props.sale_id && <button type="button" className={`btn_grey ${cmc(Popup.btn)}`}
+                                    onClick={submit}>건너뛰기</button>
+                        }
                         <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
                     </div>
                 </form>
@@ -135,18 +197,40 @@ function ReserveItem({index, inputField, onDateClick}){
 
     const isChecked = inputField.input[index].checked;
 
+
     const isDisabled = ()=>{
         return `${!isChecked && Popup.disable}`
     }
 
+    const getMessageStateBox = ()=>{
+        const msgSendState = inputField.get(index, 'msg_st');
+        switch (msgSendState){
+            case 1:
+                return (
+                    <div className={cm(Popup.msg_st, Popup.reserved)}>예약됨</div>
+                )
+            case 2:
+                return (
+                    <div className={cm(Popup.msg_st, Popup.completed)}>전송 완료</div>
+                )
+        }
+    }
+
     return (
         <li className={Popup.li}>
-            <input type="checkbox" name={`rsv_check${index}`} className={Popup.check_inp}  checked={inputField.get(index, 'checked')}/>
+            <input type="checkbox" name={`rsv_check${index}`} className={Popup.check_inp}
+                   checked={inputField.get(index, 'checked')}/>
             <label htmlFor={`rsv_check${index}`}
-                   className={`${Popup.check_label} ${isDisabled()}`} onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
+                   className={`${Popup.check_label} ${isDisabled()}`}
+                   onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
+            {
+                getMessageStateBox()
+            }
             <div className={Popup.transfer_box}>
-                <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}>미리보기</button>
-                <input type="text" className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`) } transfer_inp`}
+                <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}>미리보기
+                </button>
+                <input type="text"
+                       className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`)} transfer_inp`}
                        value={value} placeholder='날짜 설정' readOnly
                        disabled={!isChecked}
                        onClick={onDateClick}/>

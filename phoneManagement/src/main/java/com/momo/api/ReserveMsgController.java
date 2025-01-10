@@ -35,7 +35,7 @@ public class ReserveMsgController {
        return ResponseEntity.ok(reserveMsgService.getReserveMsgBySale(vo));
     }
 
-    @PostMapping("/sale")
+    @PostMapping("/add")
     public ResponseEntity<Boolean> insertReserveMsgBySale(HttpSession session,
                                                                   @RequestBody SaleVO vo){
         int currShopId = commonService.getCurrentShopId(session);
@@ -43,11 +43,17 @@ public class ReserveMsgController {
         return ResponseEntity.ok(true);
     }
 
+    @PostMapping("/del")
+    public ResponseEntity<Boolean> deleteReserveMsgBySale(HttpSession session,
+                                                          @RequestBody SaleVO vo){
+        int currShopId = commonService.getCurrentShopId(session);
+        return ResponseEntity.ok(reserveMsgService.deleteMsgList(currShopId, vo.getSaleId(), vo.getRsvMsgList()));
+    }
+
     @GetMapping("/detail")
     public ResponseEntity<List<Map<String,Object>>> getReserveMsgDetail(HttpSession session,
-                                                                        @RequestParam String date,
-                                                                        @RequestParam int state){
+                                                                        @RequestParam String date){
         int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(currShopId, date, state));
+        return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(currShopId, date));
     }
 }
