@@ -123,6 +123,28 @@ public class GMDController {
         return ResponseEntity.ok(result > 0);
     }
 
+    // 수정
+    @PostMapping("/change-order")
+    public ResponseEntity<Boolean> changeOrder(HttpSession session,
+                                              @RequestParam int type,
+                                              @RequestBody List<GMDVO> list){
+        int currShopId = commonService.getCurrentShopId(session);
+        int result = switch (type){
+            case 0 -> gmdService.changeOrderDevice(currShopId, list);
+            case 1 -> gmdService.changeOrderSecondDevice(currShopId, list);
+            case 2 -> gmdService.changeOrderCtPlan(currShopId, list);
+            //
+            case 3 -> gmdService.changeOrderInternetPlan(currShopId, list);
+            case 4 -> gmdService.changeOrderTvPlan(currShopId, list);
+            case 5 -> gmdService.changeOrderExsvc(currShopId, list);
+            case 6 -> gmdService.changeOrderSupportDiv(currShopId, list);
+            case 7 -> gmdService.changeOrderAddDiv(currShopId, list);
+            case 8 -> gmdService.changeOrderCombTp(currShopId, list);
+            default -> 0;
+        };
+        return ResponseEntity.ok(result > 0);
+    }
+
     // 삭제
     @PostMapping("/del")
     public ResponseEntity<Boolean> deleteAll(HttpSession session,

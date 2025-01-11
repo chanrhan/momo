@@ -176,4 +176,33 @@ public class GMDService {
         return gmdMapper.updateCombTp(vo);
     }
 
+    // 순서 변경
+    public int changeOrderDevice(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderDevice(currShopId, list);
+    }
+    public int changeOrderSecondDevice(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderSecondDevice(currShopId, list);
+    }
+    public int changeOrderCtPlan(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderCtPlan(currShopId, list);
+    }
+    //
+    public int changeOrderInternetPlan(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderInternetPlan(currShopId, list);
+    }
+    public int changeOrderTvPlan(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderTvPlan(currShopId, list);
+    }
+    public int changeOrderSupportDiv(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderSupportDiv(currShopId, list);
+    }
+    public int changeOrderAddDiv(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderAddDiv(currShopId, list);
+    }
+    public int changeOrderExsvc(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderExsvc(currShopId, list);
+    }
+    public int changeOrderCombTp(int currShopId, List<GMDVO> list){
+        return gmdMapper.changeOrderCombTp(currShopId, list);
+    }
 }

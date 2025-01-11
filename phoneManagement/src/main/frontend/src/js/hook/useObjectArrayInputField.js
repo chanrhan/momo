@@ -1,8 +1,8 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
 import {object} from "prop-types";
 
-export function useObjectArrayInputField(init, arr){
+export function useObjectArrayInputField(init, arr, dragListRef){
     let copyArr = [];
     if(arr && typeof arr === "object"){
         for(const v of arr){
@@ -10,6 +10,28 @@ export function useObjectArrayInputField(init, arr){
         }
     }
     const [input, setInput] = useState(!ObjectUtils.isEmptyArray(arr) ? copyArr : (init ? [{...init}] : null));
+
+    const [draggingIndex, setDraggingIndex] = useState(null);
+
+    const handleDragStart = (e, index) => {
+        setDraggingIndex(index);
+
+        if (dragListRef.current[index]) {
+            e.dataTransfer.setDragImage(dragListRef.current[index], 0, 0);
+        }
+        e.dataTransfer.effectAllowed = "move";
+    };
+
+    const handleDragOver = (e, index) => {
+        e.preventDefault(); // Allow drop
+        if (index !== draggingIndex) {
+            const updatedItems = [...input];
+            const draggedItem = updatedItems.splice(draggingIndex, 1)[0];
+            updatedItems.splice(index, 0, draggedItem);
+            setInput(updatedItems);
+            setDraggingIndex(index);
+        }
+    };
 
     const length = ()=>{
         return input ? input.length : 0;
@@ -105,6 +127,8 @@ export function useObjectArrayInputField(init, arr){
         firstItem,
         lastItem,
         clear,
-        isEmpty
+        isEmpty,
+        handleDragStart,
+        handleDragOver
     }
 }

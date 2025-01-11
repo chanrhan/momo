@@ -195,9 +195,27 @@
     /*background-color:#4781ff;*/
     /*color:#fff;*/
 }
-.date_popup .tb_date .tbody .td:not(.disable) .button:hover{
+.date_popup .tb_date .tbody .td.blocked{
+    background-color: rgba(210, 210, 210, 0.78);
+}
+
+.date_popup .tb_date .tbody .td.blocked.block_start{
+    border-top-left-radius: 4px;
+}
+
+.date_popup .tb_date .tbody .td.blocked.block_end{
+    border-bottom-right-radius: 4px;
+}
+
+.date_popup .tb_date .tbody .td.blocked .button{
+    color: #c0c0c0;
+}
+
+/*.date_popup .tb_date .tbody .td:not(.blocked) .button:hover,*/
+.date_popup .tb_date .tbody .td:not(.disable):not(.blocked) .button:hover{
     border-radius:10px; background-color: #5b8dfd; color:#fff;
 }
+
 
 .date_btn_box{margin-top:26px; font-size:0; text-align:right; line-height:0;}
 .date_btn_box .btn{width:58px; font-size:14px; line-height:29px;}
@@ -768,7 +786,13 @@
     border: 2px #4781ff solid;
     border-radius: 5px;
 }
-.select_box2 .select_layer .layer_item .layer_type{position:absolute; top:6px; left:10px; width:24px; height:24px; background:url(../images/select2_type.png) no-repeat center / 100%;}
+.select_box2 .select_layer .layer_item .drag_handle{
+    position:absolute;
+    top:6px; left:10px;
+    width:24px; height:24px;
+    background:url(../images/select2_type.png) no-repeat center / 100%;
+    cursor: pointer;
+}
 
 .select_box2 .select_layer .layer_header{position:relative; padding:0 18px;border-radius: 6px;}
 .select_box2 .select_layer .layer_header.active,
@@ -820,7 +844,7 @@
 .layer_more .more_inp .more_icon{position:absolute; top:8px; right:10px; width:20px; height:20px; background:url(../images/more_icon2.png) no-repeat center / 100%;}
 .layer_more .more_del{position:relative; padding-left:48px; color:#62626e; font-size:14px; line-height:48px;}
 .layer_more .more_del:before{display:block; opacity:.3; position:absolute; top:2px; left:8px; width:42px; height:42px; background:url(../images/popup/filter_del.png) no-repeat center / 100%;}
-.select_box2 .select_layer .layer_item.create .layer_type{width:30px; padding:0; background:none; color:#62626e; font-size:14px; line-height:24px;}
+.select_box2 .select_layer .layer_item.create .drag_handle{width:30px; padding:0; background:none; color:#62626e; font-size:14px; line-height:24px;}
 .select_box2 .select_layer .layer_item.create .layer_btn{width:auto; padding:10px 6px; border-radius:4px; background-color:#f0f5ff;}
 
 /* 결제 카드 등록 */
@@ -849,10 +873,10 @@
 .popup .filter .filter_list.type2{margin-top:8px;}
 .popup .filter .filter_list.type2 .filter_item + .filter_item{margin-top:4px;}
 .popup .filter .filter_item .select_box{display:inline-block; text-align:left; vertical-align:top;}
-.popup .filter .filter_item .select_box:nth-child(1){width:15%;}
-.popup .filter .filter_item .select_box:nth-child(2){width:calc(21% - 8px);}
-.popup .filter .filter_item .select_box:nth-child(3){width:calc(30% - 8px);}
-.popup .filter .filter_item .select_box:nth-child(4){width:calc(28% - 8px);}
+.popup .filter .filter_item .select_box:nth-child(1){min-width:calc(15% - 24px);max-width: calc(21%)}
+.popup .filter .filter_item .select_box:nth-child(2){min-width:calc(21% - 24px);max-width: calc(21%)}
+.popup .filter .filter_item .select_box:nth-child(3){min-width:calc(30% - 8px);max-width: calc(30% + 20px)}
+.popup .filter .filter_item .select_box:nth-child(4){width:calc(22% - 10px);}
 .popup .filter .filter_item .select_box:nth-child(5){width:6%;}
 .popup .filter .filter_item .select_box + .select_box{margin-top:0; margin-left:8px;}
 .popup .filter .filter_item .select_box.add{margin-left:0;}

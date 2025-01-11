@@ -23,6 +23,9 @@ function GMDApi(accessToken){
         },
         updateItem: async (type, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/gmd/update?type=${type}`, body, accessToken);
+        },
+        changeOrder: async (type, body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/change-order?type=${type}`, body, accessToken);
         }
     }
 }

@@ -73,4 +73,15 @@ public interface GMDMapper {
     public int updateExsvc(GMDVO vo);
     public int updateCombTp(GMDVO vo);
 
+    // 순서 바꾸기
+    public int changeOrderDevice(int currShopId, List<GMDVO> list);
+    public int changeOrderSecondDevice(int currShopId, List<GMDVO> list);
+    public int changeOrderCtPlan(int currShopId, List<GMDVO> list);
+
+    public int changeOrderInternetPlan(int currShopId, List<GMDVO> list);
+    public int changeOrderTvPlan(int currShopId, List<GMDVO> list);
+    public int changeOrderSupportDiv(int currShopId, List<GMDVO> list);
+    public int changeOrderAddDiv(int currShopId, List<GMDVO> list);
+    public int changeOrderExsvc(int currShopId, List<GMDVO> list);
+    public int changeOrderCombTp(int currShopId, List<GMDVO> list);
 }

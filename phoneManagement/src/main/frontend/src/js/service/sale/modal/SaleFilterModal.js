@@ -45,7 +45,7 @@ export function SaleFilterModal(props){
     }
 
     return (
-        <LayerModal {...props} top={130} left={props.left} maxWidth={609}>
+        <LayerModal {...props} top={130} left={props.left} maxWidth={620}>
                 <div className={Popup.popup_title}>필터</div>
 
                 <form className={Popup.filter}>
@@ -79,7 +79,9 @@ export function SaleFilterModal(props){
                                                               value={LMD.filter_type[v.type]}
                                                               onChange={(v) => {
                                                                   inputField.put(i, 'type', v);
-                                                              }}/>
+                                                              }} buttonStyle={{
+                                                                  width: '100%'
+                                            }}/>
                                         </div>
                                         <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                             <input type="hidden" id=""/>
@@ -88,7 +90,9 @@ export function SaleFilterModal(props){
                                                               value={LMD.filter_option[v.option]}
                                                               onChange={(v) => {
                                                                   inputField.put(i, 'option', v);
-                                                              }}/>
+                                                              }} buttonStyle={{
+
+                                            }}/>
                                         </div>
                                         <div className={`select_box ${cm(Popup.select_box, User.select_box)}`}>
                                             {/*<DynamicSelectLayer type={inputField.get(i, 'type')}/>*/}

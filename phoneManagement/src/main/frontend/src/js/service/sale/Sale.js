@@ -116,18 +116,6 @@ export function Sale(){
         })
     }
 
-    const getProfimeImages = async (list)=>{
-        if(list){
-            const copy = new Array(list.length)
-            for(let i=0;i<list.length; ++i){
-               await fileLoader.pfp(list[i].seller_pfp).then(d=>{
-                    copy[i] = d;
-                })
-            }
-            return copy;
-        }
-        return null;
-    }
 
 
     useEffect(() => {
@@ -140,9 +128,6 @@ export function Sale(){
         // getSaleTotalCount()
     }, [inputField.input, filterInputField.input]);
 
-    // const getSaleCount = ()=>{
-    //     return saleItems ? saleItems.length : 0;
-    //
 
     const addSale = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Detail, {
@@ -267,9 +252,10 @@ export function Sale(){
         }
     }
 
-    const openReservationModal = (saleId)=>{
+    const openReservationModal = (saleId, date)=>{
         modal.openModal(ModalType.LAYER.Reserve_Message, {
-            sale_id: saleId
+            sale_id: saleId,
+            actv_dt: date
         })
     }
 
@@ -399,7 +385,7 @@ export function Sale(){
                                     <Btd className="ta_c" stopPropagation>
                                         <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}
                                                 onClick={()=>{
-                                                    openReservationModal(v1.sale_id)
+                                                    openReservationModal(v1.sale_id, v1.actv_dt)
                                                 }}>예약 확인</button>
                                     </Btd>
                                 </tr>

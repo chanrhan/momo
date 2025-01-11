@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class GMDVO extends BaseVO {
     private Integer provider;
     private Integer id;
+    private Integer itemOrder;
 
     private String name;
     private String code;

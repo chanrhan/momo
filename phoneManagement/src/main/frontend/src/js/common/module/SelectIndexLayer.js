@@ -58,6 +58,7 @@ export function SelectIndexLayer({initValue, inputField, cssModule, cssModules=[
         <>
             <button type="button" className={`select_btn ${error && 'error'} ${!buttonName && 'empty_value'} ${buttonClassName} ${fromCssModule('select_btn')} `}
                     onClick={renderlessModal.clickToOpen} style={{
+                        ...buttonStyle,
                         pointerEvents: "auto"
             }}>{buttonName ?? '선택하세요'}</button>
             <ul ref={renderlessModal.ref}

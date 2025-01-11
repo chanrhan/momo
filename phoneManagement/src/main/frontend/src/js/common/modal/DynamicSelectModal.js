@@ -10,6 +10,7 @@ import {ModalType} from "./ModalType";
 import useModal from "../../hook/useModal";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {EditableAddButton} from "../module/EditableAddButton";
+import {useDragAndDrop} from "../../hook/useDragAndDrop";
 
 export const DYNAMIC_TYPE = {
     device: 0,
@@ -35,9 +36,11 @@ export function DynamicSelectModal(props){
 
     const scrollRef = useRef()
 
+    const dragListRefs = useRef([])
+
     const inputField = useObjectArrayInputField({
         name: ''
-    }, null)
+    }, null, dragListRefs)
 
     const [selected, setSelected] = useState(null) // 옵션 버튼 클릭 중인 인덱스
 
@@ -45,8 +48,11 @@ export function DynamicSelectModal(props){
     const prevFocus = useRef(null)
     const focusRef = useRef([])
 
+
+
     useEffect(() => {
         setKeyword('')
+        // MouseEventUtils.attachDragAndDropEvent(scrollRef.current, "drag_handle");
     }, []);
 
     useEffect(() => {
@@ -103,8 +109,8 @@ export function DynamicSelectModal(props){
                 if(data.list){
                     // console.table(data)
                     const parsed = JSON.parse(data.list)
-                    // console.table(parsed)
-                    inputField.setInput(parsed)
+                    const sorted =  parsed.sort((v1,v2)=>{return v1.order - v2.order})
+                    inputField.setInput(sorted)
                     setOrgCount(parsed.length)
                 }else{
                     inputField.putAll([{
@@ -195,9 +201,27 @@ export function DynamicSelectModal(props){
             ...inputField.input[i],
             provider: props.provider
         }
-        console.table(body)
+        // console.table(body)
         // return;
         await gmdApi.updateItem(props.type, body).then(({status,data})=>{
+            if(status === 200 && data){
+                getItems();
+                setInpFocus(null)
+                setSelected(null)
+            }
+        })
+    }
+
+    const changeOrder = async ()=>{
+        const copy = [...inputField.input];
+        const body = copy.map((v,i)=>{
+            return {
+                id: v.id,
+                item_order: i
+            }
+        });
+        // return;
+        await gmdApi.changeOrder(props.type, body).then(({status,data})=>{
             if(status === 200 && data){
                 getItems();
                 setInpFocus(null)
@@ -257,15 +281,22 @@ export function DynamicSelectModal(props){
                     <ul className="layer_list" ref={scrollRef} style={{
                         overflowY: "scroll",
                         height: `${boxHeight}px`,
-                        maxHeight: '400px'
+                        maxHeight: '300px'
                     }}>
-                        <li key={0} className={cm(Popup.layer_header)}>
+                        <li draggable={false} key={0} className={cm(Popup.layer_header)}>
                             <button className={Popup.btn_del} onClick={clearSelectedOption}>선택된 옵션 제거하기</button>
                         </li>
                         {
                             inputField.input && inputField.input.map((v, i) => {
-                                return <li key={i+1} className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
-                                    <span className={Popup.layer_type}></span>
+                                return <li  key={i+1}
+                                            ref={(el) => (dragListRefs.current[i] = el)}
+                                            onDragOver={e=>{
+                                    inputField.handleDragOver(e, i);
+                                }}
+                                            className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
+                                    <span draggable={true} className={Popup.drag_handle} onDragStart={(e)=>{
+                                        inputField.handleDragStart(e, i)
+                                    }} onDragEnd={changeOrder}></span>
                                     <input type="text" className={Popup.layer_btn}
                                            value={v.name}
                                            maxLength={20}
