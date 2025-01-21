@@ -23,6 +23,6 @@ export function PriceInput({id, className, name, value, onChange, readOnly, plac
                maxLength={maxLength}
                value={addComma() ?? ''} preprocess={e=>explicitComma(e)} onChange={onChange}
                readOnly={readOnly}
-               placeholder={placeholder}/>
+               placeholder={placeholder ?? '금액을 입력해주세요'}/>
     )
 }

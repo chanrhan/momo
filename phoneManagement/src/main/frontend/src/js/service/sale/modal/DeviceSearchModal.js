@@ -20,8 +20,8 @@ export function DeviceSearchModal(props){
 
 
     const getDevice = async ()=>{
-        console.log(123)
-        await gmdApi.getData(DYNAMIC_TYPE.device, keyword, props.provider).then(({status,data})=>{
+        const encodedKeyword = encodeURIComponent(keyword);
+        await gmdApi.getData(DYNAMIC_TYPE.device, encodedKeyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))
@@ -40,7 +40,7 @@ export function DeviceSearchModal(props){
         modal.closeModal(ModalType.LAYER.Device_Search)
     }
 
-    const submit = ()=>{
+    const submit = (selected)=>{
         if(props.onSubmit){
             console.table(items[selected])
             props.onSubmit(items[selected])
@@ -66,7 +66,7 @@ export function DeviceSearchModal(props){
                                                        device_nm={v.name}
                                                        device_cd={v.code}
                                                        onClick={()=>{
-                                                           setSelected(i)
+                                                           submit(i)
                                                        }}/>
                                 })
                             }
@@ -74,9 +74,9 @@ export function DeviceSearchModal(props){
                     </div>
                 </div>
 
-                <div className={Popup.popup_btn_box}>
-                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
-                </div>
+                {/*<div className={Popup.popup_btn_box}>*/}
+                {/*    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>*/}
+                {/*</div>*/}
             </form>
 
             <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>

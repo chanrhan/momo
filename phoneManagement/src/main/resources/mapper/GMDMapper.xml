@@ -32,10 +32,10 @@
             select JSON_ARRAYAGG(json_object(
             'id',device_id,
             'name',device_nm,
-            'code',device_cd
+            'code',device_cd,
+        'order', `order`
             ))
             from    search
-            order by `order`
         )
 
         select (
@@ -76,10 +76,10 @@
             select JSON_ARRAYAGG(JSON_OBJECT(
             'id',sd_id,
             'name',sd_nm,
-            'code',sd_cd
+            'code',sd_cd,
+        'order', `order`
             ))
             from search
-        order by `order`
         )
 
         select (
@@ -126,10 +126,10 @@
             select json_arrayagg(json_object(
             'id',ct_plan_id,
             'name',ct_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
-        order by `order`
         )
 
         select (
@@ -171,10 +171,10 @@
             select json_arrayagg(json_object(
             'id',exsvc_id,
             'name',exsvc_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
-        order by `order`
         )
 
         select (
@@ -215,10 +215,10 @@
             select json_arrayagg(json_object(
             'id',internet_plan_id,
             'name',internet_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
-        order by `order`
         )
 
         select (
@@ -259,10 +259,10 @@
             select json_arrayagg(json_object(
             'id',tv_plan_id,
             'name',tv_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
-        order by `order`
         )
 
         select (
@@ -299,7 +299,8 @@
         ), result as (
             select json_arrayagg(json_object(
             'id',comb_tp_id,
-            'name',comb_tp_nm
+            'name',comb_tp_nm,
+        'order', `order`
             ))
             from    search
         order by `order`
@@ -382,10 +383,10 @@
         ), result as (
             select json_arrayagg(json_object(
             'id',add_div_id,
-            'name',add_div_nm
+            'name',add_div_nm,
+        'order', `order`
             ))
             from    search
-        order by `order`
         )
 
         select (

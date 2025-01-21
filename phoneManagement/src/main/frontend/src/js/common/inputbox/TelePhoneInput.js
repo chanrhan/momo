@@ -12,10 +12,10 @@ export function TelePhoneInput({id, className, name, value, onChange, readOnly, 
         }
         if (value.length === 10) {
             e.target.value = value.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        }else if(value.length >= 11 && value.length <= 13){
+            e.target.value = value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
         }
-        if (value.length === 13) {
-            e.target.value = value.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-        }
+        console.log('handle input')
         onChange(e)
     }
 

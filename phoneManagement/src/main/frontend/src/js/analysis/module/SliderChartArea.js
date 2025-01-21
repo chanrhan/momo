@@ -45,7 +45,7 @@ export function SliderChartArea({fromDate, toDate, userId}){
                 <ul className={Graph.bar_list}>
                     {
                         items && items.map((v,i)=> {
-                            return <li key={i} className={Graph.bar_item}>
+                            return <li key={i} className={Graph.bar_item} >
                                 <div className={Graph.bar_text}>{v.name}<span className={Graph.bar_per}>{v.per}%</span></div>
                                 <div className={Graph.bar}><span className={Graph.span} style={{width: `${v.per}%`}}></span>
                                 </div>

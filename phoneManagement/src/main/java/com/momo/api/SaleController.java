@@ -477,7 +477,7 @@ public class SaleController {
 
         return switch (selectType) {
             case 0 -> ResponseEntity.ok(saleService.getIstmRatio(vo));
-            case 1 -> ResponseEntity.ok(saleService.getProviderRatio(vo));
+            case 1 -> ResponseEntity.ok(saleService.getMakerRatio(vo));
             case 2 -> ResponseEntity.ok(saleService.getActvTpRatio(vo));
             case 3 -> ResponseEntity.ok(saleService.getGenderRatio(vo));
             default -> ResponseEntity.badRequest().build();

@@ -43,7 +43,7 @@ export function PieChartArea({fromDate, toDate, userId}){
                             std = LMD.istm
                             break;
                         case 1:
-                            std = LMD.provier
+                            std = LMD.maker
                             break;
                         case 2:
                             std = LMD.ct_actv_tp

@@ -30,7 +30,6 @@ export function DashboardPostImage({}){
     const getPostImages = async ()=>{
         await pimgApi.getPostImageAll().then(async ({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
                 inputField.setInput(data)
 
                 getImage(data).then(arr=>{
@@ -43,9 +42,12 @@ export function DashboardPostImage({}){
     const getImage = async (list)=>{
         const copy = new Array(list.length);
         for(let i=0;i<list.length;++i){
-            await fileLoader.pimg(list[i].file).then(url=>{
-                copy[i] = url;
-            })
+            if(list[i].file !== null){
+                await fileLoader.pimg(list[i].file).then(url=>{
+                    copy[i] = url;
+                })
+            }
+
         }
         return copy;
     }
@@ -56,8 +58,7 @@ export function DashboardPostImage({}){
         if(ObjectUtils.isEmpty(text)){
             return;
         }
-
-        updatePostImage(i)
+        updatePostText(i, text);
     }
 
     const handleFileInput = (e, i)=>{
@@ -97,58 +98,76 @@ export function DashboardPostImage({}){
         }
     }
 
+    const addEmptyPost = async ()=>{
+        await pimgApi.addEmptyPostImage().then(({status,data})=>{
+            if(status === 200 && data){
+                getPostImages()
+            }
+        })
+    }
+
+    const updatePostText = async (i, text)=>{
+        const id = inputField.get(i, 'id')
+        pimgApi.updatePostText({
+            pimg_id: id,
+            text: text
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                getPostImages()
+            }
+        })
+    }
+
     const updatePostImage = async (i, file)=>{
         const id = inputField.get(i, 'id')
-        const text = inputField.get(i, 'text');
         const formData = new FormData();
         if(file){
             formData.append('file', file)
         }
 
         const body = {
-            pimg_id: id,
-            text: text
+            pimg_id: id
         };
-        // console.table(body)
-        // return;
 
         formData.append('body', new Blob([JSON.stringify(body)], {
             type: 'application/json'
         }))
 
-        if(id === 0 || id === null){
-            pimgApi.addPostImage(formData).then(({status,data})=>{
-                if(status === 200 && data){
-                    inputField.put(i, 'id', data);
-                }
-            })
-        }else{
-            pimgApi.updatePostImage(formData);
-        }
+        pimgApi.updatePostImage(formData).then(({status,data})=>{
+            if(status === 200 && data){
+                getPostImages()
+            }
+        })
     }
 
-    const deletePostImage = async (i)=>{
+    const deletePost = async (i)=>{
         const id = inputField.get(i, 'id');
-        if(id === 0){
-            inputField.removeItem(i)
-            preview.removeItem(i)
-        }else{
-            await pimgApi.deletePostImage(id).then(({status,data})=>{
-                if(status === 200 && data){
-                    inputField.removeItem(i)
-                    preview.removeItem(i)
-                }
-            })
-        }
+        await pimgApi.deletePost(id).then(({status,data})=>{
+            if(status === 200 && data){
+                // inputField.removeItem(i)
+                // preview.removeItem(i)
+                getPostImages()
+            }
+        })
     }
+
+    const deleteOnlyImage = async (i)=>{
+        const id = inputField.get(i, 'id');
+        await pimgApi.deletePostImage(id).then(({status,data})=>{
+            if(status === 200 && data){
+                // inputField.removeItem(i)
+                // preview.removeItem(i)
+                getPostImages()
+            }
+        })
+    }
+
+
 
     return (
         <div className={cm(Dashboard.panel_group)}>
             <div className={cm(Dashboard.panel, Dashboard.n5)}>
-                <button type="button" className="btn btn_blue btn_small btn_add_icon" onClick={()=>{
-                    inputField.addItem();
-                    preview.addItem();
-                }}>추가</button>
+                <button type="button" className="btn btn_blue btn_small btn_add_icon" onClick={addEmptyPost}>추가</button>
                 <ul className={cm(Dashboard.panel_list)}>
                     {
                         inputField.input && inputField.input.map((v,i)=> {
@@ -164,7 +183,7 @@ export function DashboardPostImage({}){
                                                onInputBlur(i)
                                     }}/>
                                     <button type="button" className={cm(Dashboard.panel_item_del)} onClick={()=>{
-                                        deletePostImage(i)
+                                        deletePost(i)
                                     }}>삭제</button>
                                 </div>
                                 <div className={cm(Dashboard.panel_item_body)}>
@@ -180,6 +199,20 @@ export function DashboardPostImage({}){
                                         handleClickPreviewImage(e, i)
                                     }}/>
                                     <label htmlFor={`pimg_${i}`} className={`${!src && Dashboard.panel_item_add}`}>추가</label>
+                                    <div className={cm(Dashboard.panel_img_opt, `${!inputField.isEmpty(i, 'file') && Dashboard.has_file}`)}>
+                                        <input type="file" id={`pimg_edit_${i}`} onChange={e => {
+                                            handleFileInput(e, i)
+                                        }} style={{
+                                            display: 'none'
+                                        }}/>
+                                        <label htmlFor={`pimg_edit_${i}`} className={Dashboard.btn_edit}>
+
+                                        </label>
+
+                                        <button className={Dashboard.btn_del} onClick={() => {
+                                            deleteOnlyImage(i)
+                                        }}></button>
+                                    </div>
                                 </div>
                             </li>
                         })

@@ -10,11 +10,14 @@ import {InternetPlanTable} from "./module/InternetPlanTable";
 import {ExsvcTable} from "./module/ExsvcTable";
 import useApi from "../hook/useApi";
 import {TvPlanTable} from "./module/TvPlanTable";
-import {cmc} from "../utils/cm";
+import {cm, cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {useNavigate} from "react-router-dom";
 import {LMD} from "../common/LMD";
+import {useBitArray} from "../hook/useBitArray";
+import {MoreOptionLayer} from "../common/module/MoreOptionLayer";
+import {SelectItem} from "../common/module/SelectLayer";
 
 const PROVIDER = [
     true,true,true,true,true,true,false,false,false
@@ -31,30 +34,57 @@ export function MasterData(){
     const nav = useNavigate();
     const {gmdApi} = useApi();
     const [tab, setTab] = useState(0)
-    const [keywowrd, setKeyword] = useState('')
+    const [keyword, setKeyword] = useState('')
 
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(20)
+
+    const [checkMap, setCheckMap] = useState({
+
+    })
 
     const [items, setItems] = useState(null)
     const [totalCount, setTotalCount] = useState(0)
 
     useEffect(() => {
+        setCheckMap({})
+    }, [tab]);
+
+    useEffect(() => {
         getItems()
-    }, [tab, keywowrd]);
+    }, [tab, keyword]);
 
     const getItems = async ()=>{
-        await gmdApi.getData(tab, keywowrd).then(({status,data})=>{
+        const encodedKeyword = encodeURIComponent(keyword);
+        await gmdApi.getData(tab, encodedKeyword).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
+                }else{
+                    setTotalCount(0)
                 }
                 if(data.list){
-                    setItems(JSON.parse(data.list))
+                    const parsed = JSON.parse(data.list)
+                    setItems(parsed)
                 }else{
                     setItems(null)
+                    // setCheckMap({})
                 }
+            }
+        })
+    }
+
+    const deleteCheckedData = async ()=>{
+        const body = [];
+        for(const i in checkMap){
+            if(checkMap[i]){
+                body.push(i)
+            }
+        }
+        await gmdApi.deleteAll(tab, body).then(({status,data})=>{
+            if(status === 200 && data){
+                getItems()
             }
         })
     }
@@ -63,6 +93,12 @@ export function MasterData(){
         modal.openModal(ModalType.LAYER.Bulk_Upload, {
             type: tab
         })
+    }
+
+    const handleCheck = (id)=>{
+        const copy = {...checkMap};
+        copy[id] = checkMap[id] ? !checkMap[id] : true
+        setCheckMap(copy);
     }
 
     return (
@@ -94,18 +130,27 @@ export function MasterData(){
                         </div>
                         <div className={Board.board_head_group}>
                             <div className={Board.board_count}>
-                            <span className={Board.count_text}>전체 <em className={Board.em}>{totalCount}</em>건</span>
-                                <span className={Board.count_text}><em className={Board.em}>{items ? items.length : 0}</em>건</span>
+                                <span className={Board.count_text}>전체 <em className={Board.em}>{totalCount}</em>건</span>
+                                <span className={Board.count_text}><em
+                                    className={Board.em}>{items ? items.length : 0}</em>건</span>
                             </div>
 
                             <div className={Board.board_search}>
-                                <input className={Board.input} type="search" value={keywowrd} onChange={e=>{
+                                <input className={Board.input} type="search" value={keyword} onChange={e => {
                                     setKeyword(e.target.value)
                                 }} title="검색" id="board_search"
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
-                                <button className={Board.button} type="submit">검색</button>
+                                <button className={Board.button} type="button">검색</button>
                             </div>
-
+                            <div className={`select_box ${cm(Board.board_btn_box)}`}>
+                                <MoreOptionLayer cssModule={Board}>
+                                    <SelectItem onClick={deleteCheckedData}>선택된 항목 삭제</SelectItem>
+                                    {/*<SelectItem>검색 결과 다운로드</SelectItem>*/}
+                                    {/*<SelectItem onClick={()=>{*/}
+                                    {/*    nav("/service/sale/bulk-upload")*/}
+                                    {/*}}>대량 업로드하기</SelectItem>*/}
+                                </MoreOptionLayer>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -118,15 +163,17 @@ export function MasterData(){
                         }
                         <Bth>{NAME[tab]}</Bth>
                         {
-                            CODE[tab] &&  <Bth>모델명</Bth>
+                            CODE[tab] && <Bth>모델명</Bth>
                         }
                         {/*<Bth>등록일자</Bth>*/}
                     </Bthead>
                     <Btbody br>
                         {
-                            items && items.map((v,i)=> {
-                                return <tr className={Board.tr} key={i}>
-                                    <Btd checkbox/>
+                        items && items.map((v,i)=> {
+                                return <tr className={Board.tr} key={i} onClick={()=>{
+                                    handleCheck(v.id)
+                                }}>
+                                    <Btd checkbox checked={checkMap[v.id] ?? false}/>
                                     {
                                        PROVIDER[tab] && <Btd>{LMD.provier[v.provider]}</Btd>
                                     }

@@ -213,6 +213,10 @@ public class SaleService  {
 		return rst;
 	}
 
+	public int changeOrderSaleFiles(int currShopId, int saleId, List<Integer> list){
+		return saleMapper.changeOrderSaleFiles(currShopId, saleId, list);
+	}
+
 	public int deleteSaleFileAll(SaleVO vo){
 		return saleMapper.deleteAllSaleFiles(vo);
 	}
@@ -391,8 +395,8 @@ public class SaleService  {
 	public Map<String,Object> getIstmRatio(CommonVO vo){
 		return saleMapper.getIstmRatio(vo);
 	}
-	public Map<String,Object> getProviderRatio(CommonVO vo){
-		return saleMapper.getProviderRatio(vo);
+	public Map<String,Object> getMakerRatio(CommonVO vo){
+		return saleMapper.getMakerRatio(vo);
 	}
 	public Map<String,Object> getActvTpRatio(CommonVO vo){
 		return saleMapper.getActvTpRatio(vo);

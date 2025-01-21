@@ -3,6 +3,7 @@ package com.momo.service;
 import com.momo.common.vo.GMDVO;
 import com.momo.mapper.GMDMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

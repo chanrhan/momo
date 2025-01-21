@@ -6,13 +6,14 @@ import {
     LineElement,
     Title,
     Tooltip,
-    Legend, LineController,Filler
+    Legend, LineController,Filler,
+    registerables
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {ObjectUtils} from "../../utils/objectUtil";
 import ReactDOM from 'react-dom'
 import Graph from "../../../css/graph.module.css"
-import {random} from "lodash";
+import zoomPlugin from "chartjs-plugin-zoom"
 
 ChartJS.register(
     CategoryScale,
@@ -22,7 +23,8 @@ ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    Filler
+    Filler,
+    zoomPlugin
     // PluginService
 );
 
@@ -139,6 +141,21 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
                 position: 'nearest',
                 external: (context)=>{
                     externalTooltipHandler(context, onCreateTooltip);
+                }
+            },
+            zoom: {
+                zoom: {
+                    wheel: {
+                        enabled: false // 마우스 휠 줌 비활성화
+                    },
+                    pinch: {
+                        enabled: false // 터치 줌 활성화
+                    },
+                    mode: 'x', // x축 줌만 활성화
+                },
+                pan: {
+                    enabled: true,
+                    mode: 'x', // x축으로만 팬 가능
                 }
             }
         },

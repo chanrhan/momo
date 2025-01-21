@@ -7,7 +7,7 @@ import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
 import AddShopModal from "../../shop/modal/AddShopModal";
 import AlertModal from "./snackbar/AlertModal";
 import MenuModalTest from "../../test/MenuModalTest";
-import SaleDetailModal from "../../service/sale/modal/SaleDetailModal";
+import SaleDetailModal from "../../service/sale/detail/SaleDetailModal";
 import SecondDeviceSearchModal from "../../service/sale/modal/SecondDeviceSearchModal";
 import SaleCardModal from "../../service/sale/modal/SaleCardModal";
 import SaleCombModal from "../../service/sale/modal/SaleCombModal";
@@ -138,10 +138,11 @@ function ModalContainer(){
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
             // console.log(`${topComponentRef.current} and ${e.target}`)
+            // console.log('before capture')
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                 // console.log('capture')
                 modal.closeAndLockModal(modalName)
-                window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
             }
         }
@@ -155,6 +156,7 @@ function ModalContainer(){
             //     modal.unlockModal()
             //     window.removeEventListener('click', onClickBubbleEvent, false)
             // }
+            // console.log('bubble')
             modal.unlockModal()
             window.removeEventListener('click', onClickBubbleEvent, false)
         }
@@ -164,7 +166,7 @@ function ModalContainer(){
                 modal.closeModal(modalName);
 
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
-                window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
         }
@@ -173,7 +175,7 @@ function ModalContainer(){
         const attachListenerTimer = setTimeout(()=>{
             if(type === M_TYPE.LAYER || type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
                 window.addEventListener('click', onClickBubbleEvent, false)
-                window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
+                window.addEventListener('mousedown', onClickCaptureEvent, true) // true: capturing, false: bubbling
                 // window.addEventListener('keydown', onKeydownCaptureEvent, true)
             }
 
@@ -187,7 +189,7 @@ function ModalContainer(){
             // console.log('clean, ref:', topComponentRef.current?.className);
             clearTimeout(attachListenerTimer);
             window.removeEventListener('keydown', onKeydownCaptureEvent, true)
-            window.removeEventListener('click', onClickCaptureEvent, true)
+            window.removeEventListener('mousedown', onClickCaptureEvent, true)
             // window.removeEventListener('click', onClickBubbleEvent, false)
             // bubbling의 경우에는 미리 삭제하면 안되기 때문에 주석처리
         }

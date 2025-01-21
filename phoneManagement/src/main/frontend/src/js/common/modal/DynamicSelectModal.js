@@ -11,6 +11,7 @@ import useModal from "../../hook/useModal";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {EditableAddButton} from "../module/EditableAddButton";
 import {useDragAndDrop} from "../../hook/useDragAndDrop";
+import {useDraggableInputField} from "../../hook/useDraggableInputField";
 
 export const DYNAMIC_TYPE = {
     device: 0,
@@ -38,7 +39,7 @@ export function DynamicSelectModal(props){
 
     const dragListRefs = useRef([])
 
-    const inputField = useObjectArrayInputField({
+    const inputField = useDraggableInputField({
         name: ''
     }, null, dragListRefs)
 
@@ -294,7 +295,8 @@ export function DynamicSelectModal(props){
                                     inputField.handleDragOver(e, i);
                                 }}
                                             className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
-                                    <span draggable={true} className={Popup.drag_handle} onDragStart={(e)=>{
+                                    <span draggable={true} className={Popup.drag_handle}
+                                          onDragStart={(e)=>{
                                         inputField.handleDragStart(e, i)
                                     }} onDragEnd={changeOrder}></span>
                                     <input type="text" className={Popup.layer_btn}

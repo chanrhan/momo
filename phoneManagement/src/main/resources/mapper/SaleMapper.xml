@@ -923,12 +923,22 @@
 
     <insert id="insertSaleFiles">
         INSERT INTO tb_sale_files
-        (shop_id, sale_id, file_id, path)
+        (shop_id, sale_id, file_id, path, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},#{saleId},#{index}+1,#{item}
+            #{currShopId},#{saleId},#{index}+1,#{item},#{index}+1
         </foreach>
     </insert>
+
+    <update id="changeOrderSaleFiles">
+        <foreach collection="list" index="index" item="item" >
+            update tb_sale_files
+            set `order`=#{index}
+            where shop_id=#{currShopId} and
+                  sale_id=#{saleId} and
+                  file_id=#{item}
+        </foreach>
+    </update>
 
 <!--    update-->
     <update id="updateSalePromiseState">
@@ -1430,10 +1440,12 @@
                    device_id,
                    internet_plan,
                    tv_plan,
+                    exsvc_id,
                    total_cms,
                    wt_cms,
                    sale_id,
-                   sd_id
+                   sd_id,
+                    shop_id
             from tb_sale
             where shop_id=#{currShopId} and
                 ]]>
@@ -1462,6 +1474,24 @@
             FROM months
                      LEFT OUTER JOIN filtered_sale on actv_month = m  and
                                                       tv_plan is not null
+            group by m
+        ), card as ( # 카드 데이터
+            SELECT m,
+                   (
+                    select count(*)
+                    from tb_sale_card sc
+                    left outer join filtered_sale fs on fs.shop_id = sc.shop_id and
+                                                        fs.sale_id = sc.sale_id
+                   )  as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m
+            group by m
+        ), exsvc as ( # 부가서비스 데이터
+            SELECT m,
+                   count(exsvc_id) as cnt
+            FROM months
+                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
+                                                      exsvc_id is not null
             group by m
         ), tc_graph as ( # 총 이익 그래프 데이터
             SELECT m,
@@ -1526,6 +1556,32 @@
                 (
                     select cnt
                     from tv_graph
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_card as (
+            select
+                (
+                    select cnt
+                    from card
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from card
+                    limit 5,1
+                ) as curr
+            from dual
+        ), diff_exsvc as (
+            select
+                (
+                    select cnt
+                    from exsvc
+                    limit 4,1
+                ) as prv,
+                (
+                    select cnt
+                    from exsvc
                     limit 5,1
                 ) as curr
             from dual
@@ -1608,6 +1664,24 @@
                     from tv_graph
                 ) as list
             from diff_tv
+             union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from card
+                ) as list
+            from diff_card
+             union all
+            select
+                curr,
+                prv,
+                (
+                    select json_arrayagg(cnt)
+                    from exsvc
+                ) as list
+            from diff_exsvc
             union all
             select
                 curr,
@@ -2220,7 +2294,7 @@
             from istm_range
                      left outer join base on base.ct_istm=istm_range.i
             group by i
-            order by cnt desc
+            order by istm desc
         )
 
         select json_arrayagg(istm) as type,
@@ -2236,17 +2310,18 @@
         ]]>
     </select>
 
-    <select id="getProviderRatio" resultType="java.util.Map">
+    <select id="getMakerRatio" resultType="java.util.Map">
         <![CDATA[
-        with recursive provider_range as (
+        with recursive maker_range as (
             select 0 as i
             union all
             select i+1
-            from provider_range
+            from maker_range
             where i<2
         ), base as (
-            select provider
-            from tb_sale
+            select dc.maker
+            from tb_sale sl
+            left outer join tb_device dc on sl.device_id=dc.device_id
             where shop_id=#{currShopId} and
                   ]]>
         <if test="userId != null and !userId.equals('')">
@@ -2255,21 +2330,21 @@
         <![CDATA[
                 actv_dt between #{fromYmd} and #{toYmd}
         ), final as (
-            select i as provider,
-                   IFNULL(count(base.provider),0) as cnt
-            from provider_range
-                     left outer join base on base.provider=provider_range.i
+            select i as maker,
+                   IFNULL(count(base.maker),0) as cnt
+            from maker_range
+                     left outer join base on base.maker=maker_range.i
             group by i
-            order by cnt desc
+            order by maker asc
         )
 
-        select json_arrayagg(provider) as type,
+        select json_arrayagg(maker) as type,
                json_arrayagg(cnt) as cnt,
                json_arrayagg(IF((
-                      select IFNULL(count(provider), 0)
+                      select IFNULL(count(maker), 0)
                       from base
                   ) = 0 or cnt = 0, 0, TRUNCATE((cnt/(
-                   select IFNULL(count(provider), 0)
+                   select IFNULL(count(maker), 0)
                    from base
                )) * 100, 1))) as per
         from final;
@@ -2300,7 +2375,7 @@
             from actv_tp_range
                      left outer join base on base.ct_actv_tp=actv_tp_range.i
             group by i
-           order by cnt desc
+           order by ct_actv_tp asc
         )
 
         select json_arrayagg(ct_actv_tp) as type,
@@ -2340,7 +2415,7 @@
             from gender_range
                      left outer join base on base.cust_gd=gender_range.i
             group by i
-            order by cnt desc
+            order by gender asc
         )
 
         select json_arrayagg(gender) as type,

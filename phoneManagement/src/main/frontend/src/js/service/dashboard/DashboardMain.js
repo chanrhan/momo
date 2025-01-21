@@ -150,18 +150,17 @@ export function DashboardMain(){
                         <div className={cm(Dashboard.panel, Dashboard.n4)}>
                             <div className={cm(Dashboard.panel_name)}>미완료 업무</div>
                             <ul className={cm(Dashboard.panel_list)}>
-                                {
-                                    wip && wip.map((v,i)=>{
-                                        if(ObjectUtils.isEmpty(v)){
-                                            return null
-                                        }
-                                        return <DashboardPannelItem4 key={i} title={WIP_NAMES[i]}
-                                                                     value={v.value} total={v.total}
-                                                                     per={v.per} onClick={()=>{
-                                                                         nav(`/service/task/${TASK_URL[i]}`)
-                                        }}/>
-                                    })
-                                }
+                            {
+                                wip && wip.map((v,i)=>{
+                                    if(ObjectUtils.isEmpty(v)){
+                                        return null
+                                    }
+                                    return <DashboardPannelItem4 key={i} title={WIP_NAMES[i]}
+                                                                 value={v.value}  onClick={()=>{
+                                                                     nav(`/service/task/${TASK_URL[i]}`)
+                                    }}/>
+                                })
+                            }
                             </ul>
                         </div>
                     </div>

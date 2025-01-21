@@ -126,7 +126,7 @@ export function MasterShop(){
                                     setKeyword(e.target.value)
                                 }} title="검색" id="board_search"
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
-                                <button className={Board.button} type="submit">검색</button>
+                                <button className={Board.button} type="button">검색</button>
                             </div>
 
                         </div>

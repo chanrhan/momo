@@ -21,7 +21,8 @@ export function PlanSearchModal(props){
 
 
     const getCtPlan = async ()=>{
-        await gmdApi.getData(DYNAMIC_TYPE.ct_plan, keyword, props.provider).then(({status,data})=>{
+        const encodedKeyword = encodeURIComponent(keyword);
+        await gmdApi.getData(DYNAMIC_TYPE.ct_plan, encodedKeyword, props.provider).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))
@@ -41,7 +42,7 @@ export function PlanSearchModal(props){
         modal.closeModal(ModalType.LAYER.Plan_Search)
     }
 
-    const submit = ()=>{
+    const submit = (selected)=>{
         if(props.onSubmit && items[selected]){
             props.onSubmit(items[selected])
         }
@@ -63,9 +64,9 @@ export function PlanSearchModal(props){
                         <ul className="service_list">
                             {
                                 items && items.map((v,i)=>{
-                                    return <CtPlanItem active={i === selected} key={i}
+                                    return <CtPlanItem key={i}
                                                        plan_nm={v.name} onClick={()=>{
-                                        setSelected(i)
+                                        submit(i)
                                     }}/>
                                 })
                             }
@@ -73,9 +74,9 @@ export function PlanSearchModal(props){
                     </div>
                 </div>
 
-                <div className={Popup.popup_btn_box}>
-                    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
-                </div>
+                {/*<div className={Popup.popup_btn_box}>*/}
+                {/*    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>*/}
+                {/*</div>*/}
             </form>
 
             <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
@@ -85,7 +86,7 @@ export function PlanSearchModal(props){
 
 function CtPlanItem({key, active, plan_nm, onClick}){
     return (
-        <li key={key} className={cm(Popup.service_item, `${active && Popup.active}`)} onClick={onClick}>
+        <li key={key} className={Popup.service_item} onClick={onClick}>
             <button className={Popup.button} type="button">{plan_nm}</button>
         </li>
     )

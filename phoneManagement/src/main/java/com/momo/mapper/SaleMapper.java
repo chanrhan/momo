@@ -44,6 +44,8 @@ public interface SaleMapper{
 	public void insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
 	public void insertSaleFiles(int currShopId, int saleId, List<String> list);
 
+	public int changeOrderSaleFiles(int currShopId, int saleId, List<Integer> list);
+
 	public int updateSalePromiseState(SaleVO vo);
 	public int updateSaleAsPromise(int currShopId, int saleId, int pmId, boolean checked, String content);
 	public int updateSaleSupport(int currShopId, int saleId, int supId, int div, int amount);
@@ -109,7 +111,7 @@ public interface SaleMapper{
 
 	// 파이 그래프: 할부,제조사,개통유형,성별 판매일보 개수, 비율
 	public Map<String,Object> getIstmRatio(CommonVO vo);
-	public Map<String,Object> getProviderRatio(CommonVO vo);
+	public Map<String,Object> getMakerRatio(CommonVO vo);
 	public Map<String,Object> getActvTpRatio(CommonVO vo);
 	public Map<String,Object> getGenderRatio(CommonVO vo);
 

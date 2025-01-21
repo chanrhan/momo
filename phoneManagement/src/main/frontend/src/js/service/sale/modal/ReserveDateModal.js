@@ -108,6 +108,7 @@ export function ReserveDateModal(props){
                     </div>
                     <ul className="reservation_List" style={{
                         overflowY: 'auto',
+                        overflowX: 'hidden',
                         maxHeight: '380px'
                     }}>
                         <li key={0} className={cm(Popup.reservation_item)}>

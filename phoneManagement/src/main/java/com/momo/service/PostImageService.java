@@ -2,7 +2,6 @@ package com.momo.service;
 
 import com.momo.common.vo.PostImageVO;
 import com.momo.mapper.PostImageMapper;
-import com.momo.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,20 @@ public class PostImageService {
         return postImageMapper.insertPostImage(vo);
     }
 
+    public Integer insertEmptyPostImage(int currShopId){
+        return postImageMapper.insertEmptyPostImage(currShopId);
+    }
+
     public int updatePostImage( PostImageVO vo){
         return postImageMapper.updatePostImage(vo);
+    }
+
+    public int updatePostText(PostImageVO vo){
+        return postImageMapper.updatePostText(vo);
+    }
+
+    public int deletePost(int currShopId, int pimgId){
+        return postImageMapper.deletePost(currShopId, pimgId);
     }
 
     public int deletePostImage(int currShopId, int pimgId){

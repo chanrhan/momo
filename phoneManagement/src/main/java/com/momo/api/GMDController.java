@@ -29,6 +29,7 @@ public class GMDController {
                                                               @RequestParam(required = false)Integer provider){
         int currShopId = commonService.getCurrentShopId(session);
         GMDVO vo = GMDVO.builder().currShopId(currShopId).keyword(keyword).provider(provider).build();
+        log.info("keyword: {}", vo.getKeyword());
         Map<String,Object> result = switch (type){
             case 0 -> gmdService.getDevice(vo);
             case 1 -> gmdService.getSecondDevice(vo);

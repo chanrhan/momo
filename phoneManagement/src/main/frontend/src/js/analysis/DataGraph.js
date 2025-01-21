@@ -11,7 +11,7 @@ import {PieChartArea} from "./module/PieChartArea";
 import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 
 const ITEM_NAMES = [
-    '무선','인터넷','TV','총 이익','개인 평균 마진','중고 개통','세컨'
+    '무선','인터넷','TV','카드','부가서비스','총 이익','개인 평균 마진','중고 개통','세컨'
 ]
 
 export function DataGraph({userId}){
@@ -90,9 +90,10 @@ export function DataGraph({userId}){
                             summary && summary.map((v, i) => {
                                 return <GraphSummaryCard index={i} title={ITEM_NAMES[i]}
                                                          value={v.value ?? 0}
-                                                         price={i >= 3 && i <= 4}
+                                                         price={i >= 5 && i <= 6}
                                                          per={v.per}
-                                                         data={v.list && JSON.parse(v.list)}/>
+                                                         // data={v.list && JSON.parse(v.list)}
+                                />
                             })
                         }
                     </ul>

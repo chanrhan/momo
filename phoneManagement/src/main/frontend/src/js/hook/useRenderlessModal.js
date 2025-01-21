@@ -23,15 +23,18 @@ export function useRenderlessModal(modalName){
     }, [active]);
 
     const clickToOpen = (e: MouseEvent)=>{
+        console.log('click to open')
         if(!active && componentRef.current && !componentRef.current.contains(e.target)){
+
             open()
         }
     }
 
     const open = ()=>{
+        console.log('opened!')
         const keyname = modalName.split('__')[0];
         if(lock && lock.startsWith(keyname)){
-            // console.log(`locked: ${keyname}, open: ${lock}`)
+            console.log(`locked: ${keyname}, open: ${lock}`)
            return;
         }
         setActive(true)

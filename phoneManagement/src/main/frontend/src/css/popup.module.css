@@ -53,6 +53,8 @@
 .popup > .popup_text{margin-top:18px; color:#50505c; font-size:14px; line-height:20px;}
 .popup .popup_cont{margin-top:36px;}
 .popup .popup_cont .popup_text{color:#141218; font-size:18px; text-align:center; line-height:32px;}
+.popup .popup_cont .sub_title{color:#4781ff; font-size:14px; margin-left: 4px; line-height:32px;}
+
 .popup .popup_cont .popup_text .span{color:#4781ff;}
 .popup .form:not(.user_form) .popup_cont .inp{line-height:50px;}
 .popup .form:not(.user_form) .popup_cont .inp:focus{line-height:48px;}
@@ -284,7 +286,7 @@
 .popup .customer .customer_body .customer_box .customer_list{font-size:0; line-height:0;}
 .popup .customer .customer_body .customer_box .customer_item{display:inline-block; width:calc(25% - 12px); margin:16px 0 0 0; vertical-align:top;}
 .popup .customer .customer_body .customer_box .customer_item + .customer_item{margin-left:12px;}
-.popup .customer .customer_body .customer_box .customer_item .customer_label{color:#50505c; font-size:14px; line-height:16px;}
+.popup .customer .customer_body .customer_box .customer_item .customer_label{color:#50505c; font-size:14px; line-height:16px; margin-left: 3px}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp_box{margin-top:12px;}
 .popup .customer .customer_body .customer_box .customer_item.error .customer_inp_box{
     border-radius: 8px;
@@ -295,7 +297,7 @@
 .popup .customer .customer_body .customer_box .customer_item .customer_inp_box .inp_search{padding:0 16px; background:url(../images/search_icon.png) #fff no-repeat right 12px center / 34px;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp_box .inp_search:focus{padding:0 15px;}
 
-.popup .customer .customer_body .customer_box .customer_item .customer_inp{width:100%; padding:0 16px; border:1px solid #dde1e8; border-radius:8px; font-size:16px; line-height:50px; transition:border-color .25s ease-in-out;}
+.popup .customer .customer_body .customer_box .customer_item .customer_inp{cursor: pointer; width:100%; padding:0 16px; border:1px solid #dde1e8; border-radius:8px; font-size:16px; line-height:50px; transition:border-color .25s ease-in-out;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp:focus{padding:0 15px; line-height:48px;}
 .popup .customer .customer_body .customer_box .customer_item:not(.error) .customer_inp:focus{border:2px solid #4781ff;}
 .popup .customer .customer_body .customer_box .customer_item .customer_inp:read-only{background-color:#f8f8f9;}
@@ -313,6 +315,18 @@
 .popup .popup_check_list > .li .check_inp{position:absolute; top:5px; left:5px;}
 .popup .popup_check_list > .li .check_label{
     position:relative; padding-left:32px; color:#28272c; font-size:16px; font-weight:500; line-height:24px; min-height:24px;
+}
+.popup .popup_check_list > .li:hover .btn_clear{
+    position: absolute;
+    top: 25%;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    background:url(../images/all_icon.png) no-repeat center / 28px;
+}
+.popup .popup_check_list > .li:hover .btn_clear:hover{
+    background-color: rgba(164, 164, 164, 0.26);
+    border-radius: 8px;
 }
 .popup .popup_check_list > .li .msg_st{
     display: inline-block;
@@ -505,8 +519,8 @@
 /*CUSTOM*/
 .popup_cont .org_head_box .button{
     width:100%;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: #edf2fd;
     color: #5a8ff7;
     font-size: 16px; text-align:left; line-height:52px;
@@ -712,7 +726,7 @@
 .popup .service .service_scroll .service_item .button{width:100%; padding:0 20px; color:#62626e; font-size:14px; text-align:left; line-height:52px;}
 .popup .service .service_scroll .service_item .button:hover{background-color:#f4f5f9;}
 .popup .service .service_scroll .service_item .button .span{float:right;}
-.popup .service .service_scroll .service_item.active .button{color:#4781ff;}
+.popup .service .service_scroll .service_item:hover .button{color:#4781ff;}
 .popup .service .service_scroll .member_item{position:relative;}
 .popup .service .service_scroll .member_item .input{position:absolute; top:30px; left:30px;}
 .popup .service .service_scroll .member_item .label{display:block;}
