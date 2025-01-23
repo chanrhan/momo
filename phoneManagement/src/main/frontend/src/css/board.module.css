@@ -63,6 +63,8 @@
 .board .board_head .filter_layer .filter_item:hover .check_box .label:before{background-color:#f4f5f9;}
 .board .td_board{
     /*background-color: red;*/
+    width: 100%;
+    /*table-layout: fixed;*/
     border-collapse: collapse;
 }
 .board .td_board .thead .th{
@@ -71,6 +73,7 @@
     font-size:14px; font-weight:400; text-align:center;
     line-height:16px;
     user-select: none;
+    left: 0;
 }
 .board .td_board .thead .th .resize_handle{
     position: absolute;
@@ -80,6 +83,7 @@
     width: 5px;
     cursor: col-resize;
     background-color: transparent;
+    /*transform-origin: left;*/
 }
 .board .td_board .thead .th.sort{cursor:pointer;}
 .board .td_board .thead .th.sort:after{display:inline-block; width:5px; height:9px; margin-left:4px; background:url(../images/sort_icon.png) no-repeat center / 5px auto;}
@@ -349,6 +353,13 @@
 
 }
 
+.board .td_board .tbody .tr .td > .btn_approval{
+    color: #3b3b3b;
+    border: 0.09rem solid #7c7c7c;
+}
+.board .td_board .tbody .tr .td > .btn_approval:hover{
+    background-color: #ff5e5e;
+}
 
 /*반응형*/
 @media all and (max-width:1423px){

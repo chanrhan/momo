@@ -215,41 +215,10 @@ export function Sale(){
         })
     }
 
-    const resizeColumn = (e, index) => {
-        const startX = e.clientX;
-        const table = tableRef.current;
-        const th = table.querySelectorAll('th')[index];
-        const startWidth = th.offsetWidth;
-
-        const onMouseMove = (e) => {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 50) {  // 최소 너비 설정
-                th.style.width = `${newWidth}px`;
-            }
-        };
-
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
-
-    const handleScroll = (e: UIEvent)=>{
-        const target = e.target;
-
-        const scrollTop = target.scrollTop;
-        const scrollHeight = target.scrollHeight;
-        const clientHeight = target.clientHeight;
-
-        if(scrollTop + clientHeight >= scrollHeight){
-            // const scrollPos = scrollTop + clientHeight;
-            const _limit = (limit ?? 0) + 30;
-            getSale(_limit)
-            setLimit(_limit)
-        }
+    const handleScrollLimit = ()=>{
+        const _limit = (limit ?? 0) + 30;
+        getSale(_limit)
+        setLimit(_limit)
     }
 
     const openReservationModal = (saleId, date)=>{
@@ -347,11 +316,9 @@ export function Sale(){
                                 </>
                             } tableRef={tableRef} style={{
                                 height: '620px'
-                }} onScroll={handleScroll}>
+                }} onScrollLimit={handleScrollLimit}>
                     <Bthead>
-                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox onMouseDown={e => {
-                            resizeColumn(e, 0)
-                        }}/>
+                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox/>
                         {
                             columns && columns.toArray().map((v, i) => {
                                 // const sort =
@@ -360,9 +327,7 @@ export function Sale(){
                                                 if(COLUMNS_SORT[v]){
                                                     setOrder(v)
                                                 }
-                                            }} onMouseDown={e=>{
-                                        resizeColumn(e, i+1)
-                                }}>{LMD.sale_column_names[v]}</Bth>
+                                            }}>{LMD.sale_column_names[v]}</Bth>
                             })
                         }
                         <Bth>예약</Bth>

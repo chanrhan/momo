@@ -32,7 +32,7 @@ ChartJS.register(
 
 export function MultiLineChartInstance({labelName, labels, pointRadius=1, tooltips, data, color, tooltip_disabled,
                                       x_axis_disabled, y_axis_disabled, borderWidth=1, label_disabled,
-                                      yAxisCallback, onCreateTooltip}){
+                                      yAxisCallback, onCreateTooltip, initMinIndex, initMaxIndex, onPan}){
     const blueColor = getChartColor(color);
     const redColor = getChartColor('red');
 
@@ -99,20 +99,29 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
             // mode: 'nearest',  // index, dataset, point, nearest(defalut), x, y
             intersect: false // false면 마우스를 정확히 올리지 않고 가까이 대기만 해도 박스가 나타난다
         },
+        animation:{
+            x:{
+                duration: 0
+            }
+        },
         // 척도 옵션
         scales: {
             x: {
                 display: !x_axis_disabled, // x축 표시 여부
                 grid: { // x축 격자
                     display: false
-                }
+                },
+                min: initMinIndex,
+                max: initMaxIndex
             },
             y: {
                 display: !y_axis_disabled, // y축 표시 여부
                 grid: { // y축 격자
                     display: true
                 },
+
                 ticks:{
+                    maxTicksLimit: 5,
                     // stepSize: 1,
                     callback: (value)=>{
                         // console.log(`ticks: ${value}`)
@@ -145,17 +154,14 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
             },
             zoom: {
                 zoom: {
-                    wheel: {
-                        enabled: false // 마우스 휠 줌 비활성화
-                    },
-                    pinch: {
-                        enabled: false // 터치 줌 활성화
-                    },
+                    enabled: true,
                     mode: 'x', // x축 줌만 활성화
                 },
                 pan: {
                     enabled: true,
                     mode: 'x', // x축으로만 팬 가능
+                    speed: 10,
+                    onPan: onPan
                 }
             }
         },

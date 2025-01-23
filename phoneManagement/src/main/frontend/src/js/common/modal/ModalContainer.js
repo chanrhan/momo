@@ -41,6 +41,8 @@ import {HintModal} from "./tooptip/HintModal";
 import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
 import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 import {AddressApiModal} from "../../shop/modal/AddressApiModal";
+import {useLocation} from "react-router-dom";
+import {ConfirmModal} from "./snackbar/ConfirmModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -110,13 +112,13 @@ const MODAL_COMPONENTS = {
     Warning: WarningModal,
     Info: InfoModal,
 
+    Confirm: ConfirmModal,
     // study private
     AddStudyNode: AddStudyNodeModal
 }
 
-
-
 function ModalContainer(){
+    const location = useLocation()
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
@@ -127,6 +129,10 @@ function ModalContainer(){
             topComponentRef.current = node;
         }
     };
+
+    useEffect(() => {
+
+    }, [location]);
 
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList.list)){

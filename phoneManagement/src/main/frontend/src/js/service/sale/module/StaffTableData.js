@@ -9,10 +9,50 @@ import {DateSelectModule} from "../../../common/modal/menu/DateSelectModule";
 import Popup from "../../../../css/popup.module.css";
 import useApi from "../../../hook/useApi";
 import {DateUtils} from "../../../utils/DateUtils";
+import useModal from "../../../hook/useModal";
+import {ModalType} from "../../../common/modal/ModalType";
+
+
+const PROPS_STATE = [
+    {
+        msg: '정말로 추방하시겠습니까?',
+        btn_submit_name: '추방',
+        bar_color: `#ff4747`,
+        btn_color: `#ff4747`,
+    },
+    {
+        msg: '정말로 승인하시겠습니까?',
+        btn_submit_name: '승인',
+        bar_color: `#4781ff`,
+        btn_color: `#4781ff`,
+    },
+    {
+        msg: '정말로 거절하시겠습니까?',
+        btn_submit_name: '거절',
+        bar_color: `#ff4747`,
+        btn_color: `#ff4747`,
+    }
+]
 
 export function StaffTableData({data, onUpdate}){
     const {userApi} = useApi();
     const state= data.approval_st;
+    const modal = useModal()
+
+    const openConfirmModal = (state)=>{
+        modal.openModal(ModalType.MENU.Confirm, {
+            msg: PROPS_STATE[state].msg,
+            top: 100,
+            btn_submit_name: PROPS_STATE[state].btn_submit_name,
+            btn_color: PROPS_STATE[state].btn_color,
+            // progress: {
+            //   bar_color: PROPS_STATE[state].bar_color
+            // },
+            onSubmit: ()=>{
+                updateApprovalState((state === 1) ? 1: 2)
+            }
+        })
+    }
 
     const updateApprovalState = async (state)=>{
         await userApi.updateApprovalState({
@@ -46,11 +86,11 @@ export function StaffTableData({data, onUpdate}){
     return (
         <tr className={Board.tr}>
             {/*<Btd checkbox name='check1'/>*/}
-            <Btd>{data.id}</Btd>
+            {/*<Btd>{data.id}</Btd>*/}
             <ProfileTableColumn src={profileImg1} name={data.name}/>
             <Btd width={160}>{data.email}</Btd>
             <Btd>{data.tel}</Btd>
-            <Btd>{LMD.role[data.role]}</Btd>
+            {/*<Btd>{LMD.role[data.role]}</Btd>*/}
             <Btd>{data.last_login_dt}</Btd>
             <Btd>
                 <DateSelectModule rootClassName={Popup.head_box}
@@ -63,16 +103,18 @@ export function StaffTableData({data, onUpdate}){
             <Btd>
                 {
                     state !== 0 ?
-                        <button type="button" className={`btn ${state === 1 ? 'btn_blue':'btn_red'} btn_small btn_line`}>
-                            {state === 1 ? '승인완료':'승인거절'}
+                        <button type="button" className={`btn btn_grey btn_small btn_line ${Board.btn_approval}`} onClick={()=>{
+                            openConfirmModal(0);
+                        }}>
+                            추방하기
                         </button>
                         :  (
                             <>
-                                <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
-                                    updateApprovalState(1);
+                                <button type="button" className="btn btn_blue btn_small btn_line btn_half" onClick={()=>{
+                                    openConfirmModal(1);
                                 }}>승인</button>
-                                <button type="button" className="btn btn_red btn_small btn_line" onClick={()=>{
-                                    updateApprovalState(2);
+                                <button type="button" className="btn btn_red btn_small btn_line btn_half" onClick={()=>{
+                                    openConfirmModal(2);
                                 }}>거절</button>
                             </>
                         )

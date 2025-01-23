@@ -66,9 +66,9 @@
 }
 .popup .popup_cont .ta_r .btn.btn_small{padding:1px 12px; border-radius:8px; font-size:16px; font-weight:400;}
 .popup .popup_btn_box{margin-top:32px;}
-.popup .popup_btn_box.half{font-size:0; line-height:0;}
-.popup .popup_btn_box.half .btn{display:inline-block; width:calc(48% - 6px);}
-.popup .popup_btn_box.half .btn + .btn{margin-left:12px;}
+.popup .popup_btn_box.btn_half{font-size:0; line-height:0;}
+.popup .popup_btn_box.btn_half .btn{display:inline-block; width:calc(48% - 6px);}
+.popup .popup_btn_box.btn_half .btn + .btn{margin-left:12px;}
 .popup .popup_close{position:absolute; top:12px; right:24px; width:32px; height:32px; background:url(../images/popup/popup_close.png) no-repeat center / 32px; font-size:0;}
 .popup .form_right_btn{margin-top:15px; text-align:right;}
 .popup .form_right_btn .btn{display:inline-block; width:auto; min-width:149px;}
@@ -118,10 +118,10 @@
 .popup .user_form .popup_text + .form_list{margin-top:32px;}
 .popup .user_form .form_list + .form_list{margin-top:28px;}
 .popup .user_form .form_list + .form_text{margin-top:10px; color:#91939f; font-size:12px; line-height:14px;}
-.popup .user_form .ta_r + .form_list.half{margin-top:17px;}
-.popup .user_form .form_list.half .form_item{
+.popup .user_form .ta_r + .form_list.btn_half{margin-top:17px;}
+.popup .user_form .form_list.btn_half .form_item{
     display:inline-block; width:calc(48% - 6px); vertical-align:top;}
-.popup .user_form .form_list.half .form_item + .form_item{margin-top:0; margin-left:12px;}
+.popup .user_form .form_list.btn_half .form_item + .form_item{margin-top:0; margin-left:12px;}
 
 .popup .user_form .form_list.third .form_item{
     display:inline-block; width:calc(32% - 6px); vertical-align:top;}
@@ -998,8 +998,8 @@
     .popup .service .service_scroll .service_item .button{padding:0 12px; line-height:42px;}
     .popup .user_form .popup_text + .form_list{margin-top:20px;}
     .popup .user_form .form_list + .form_list{margin-top:20px;}
-    .popup .user_form .form_list.half .form_item{display:block; width:100%;}
-    .popup .user_form .form_list.half .form_item + .form_item{margin:20px 0 0 0;}
+    .popup .user_form .form_list.btn_half .form_item{display:block; width:100%;}
+    .popup .user_form .form_list.btn_half .form_item + .form_item{margin:20px 0 0 0;}
     .select_box2 .select_inp{padding:0 12px; border-radius:5px; line-height:42px;}
     .popup > .popup_text{margin-top:12px; font-size:12px; line-height:18px; word-break:keep-all;}
     .popup .form.card .card_info .card_title{font-size:13px;}

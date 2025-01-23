@@ -184,7 +184,7 @@ export function Administrator(){
                                                     )
                                                 ) :
                                                 <button type="button"
-                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_red'} btn_small btn_line`}>
+                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_cancel'} btn_small btn_line`}>
                                                     {state === 1 ? '승인완료': (state === 2 ? '승인거절':'관리자')}
                                                 </button>
                                         }

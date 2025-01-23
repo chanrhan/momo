@@ -37,11 +37,13 @@ export const ModalType = {
         // Task
         Used_Device_Cms: 'UsedDeviceCms',
 
+        Confirm: 'Confirm',
+
         //todo
         Todo_Add: 'TodoAdd',
 
         // study_private
-        Add_Study_Node: 'AddStudyNode'
+        Add_Study_Node: 'AddStudyNode',
     },
     MENU: {
         // Change_Shop: 'ChangeShop',
@@ -51,12 +53,14 @@ export const ModalType = {
         Select_Date: 'SelectDate',
         // Select: 'Select',
         Dynamic_Select: 'DynamicSelect',
-        More_Option: 'MoreOption'
+        More_Option: 'MoreOption',
+        Confirm: 'Confirm'
     },
     SNACKBAR: {
         Alert: 'Alert',
         Warn: 'Warning',
-        Info: 'Info'
+        Info: 'Info',
+
     },
     TOAST: {
 

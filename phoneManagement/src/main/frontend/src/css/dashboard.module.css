@@ -152,7 +152,7 @@
 .dashboard .panel_body .panel.n5 .panel_item_body:hover .panel_img_opt.has_file{
     position: absolute;
     display: inline-block;
-    background-color: rgba(128, 128, 128, 0.73);
+    background-color: rgb(215, 215, 215);
     border-radius: 6px;
     width: 30px;
     height: 60px;
@@ -165,14 +165,23 @@
     position: relative;
     width: 100%;
     height: 50%;
-    background:url(../images/del_icon.png) no-repeat center / 24px;
+    background:url(../images/del_icon_no_bg.png) no-repeat center / 28px;
+}
+.dashboard .panel_body .panel.n5 .panel_item_body:hover .panel_img_opt.has_file .btn_del:hover{
+    background-color: rgba(236, 236, 236, 0.89);
+    border-radius: 6px;
 }
 .dashboard .panel_body .panel.n5 .panel_item_body:hover .panel_img_opt.has_file .btn_edit{
     display: block;
     position: relative;
     width: 100%;
     height: 50%;
-    background:url(../images/modify_icon.png) no-repeat center / 24px;
+    background:url(../images/modify_black_icon.png) no-repeat center / 28px;
+}
+
+.dashboard .panel_body .panel.n5 .panel_item_body:hover .panel_img_opt.has_file .btn_edit:hover{
+    background-color: rgba(236, 236, 236, 0.89);
+    border-radius: 6px;
 }
 
 

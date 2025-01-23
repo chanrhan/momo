@@ -234,8 +234,9 @@ public class UserController {
 	@GetMapping("/staff/inner/all")
 	public ResponseEntity<Map<String,Object>> getInnerStaffAll(HttpSession session,
 															 @RequestParam(required = false) String keyword){
+		String username = SecurityContextUtil.getUsername();
 		int currShopId = commonService.getCurrentShopId(session);
-		UserVO vo = UserVO.builder().keyword(keyword).currShopId(currShopId).build();
+		UserVO vo = UserVO.builder().keyword(keyword).currShopId(currShopId).userId(username).build();
 		return ResponseEntity.ok(userService.getInnerStaffAll(vo));
 	}
 

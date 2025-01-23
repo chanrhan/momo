@@ -191,20 +191,20 @@ export function DashboardPostImage({}){
                                         handleFileInput(e, i)
                                     }} style={{
                                         visibility: "hidden"
-                                    }}/>
+                                    }} accept='.jpg,.png,.jpeg'/>
                                     <img src={src} alt="" style={{
                                         maxWidth: '100%',
                                         height: '100%'
                                     }} onClick={e=>{
                                         handleClickPreviewImage(e, i)
-                                    }}/>
+                                    }} />
                                     <label htmlFor={`pimg_${i}`} className={`${!src && Dashboard.panel_item_add}`}>추가</label>
                                     <div className={cm(Dashboard.panel_img_opt, `${!inputField.isEmpty(i, 'file') && Dashboard.has_file}`)}>
                                         <input type="file" id={`pimg_edit_${i}`} onChange={e => {
                                             handleFileInput(e, i)
                                         }} style={{
                                             display: 'none'
-                                        }}/>
+                                        }} accept='.jpg,.png,.jpeg'/>
                                         <label htmlFor={`pimg_edit_${i}`} className={Dashboard.btn_edit}>
 
                                         </label>
