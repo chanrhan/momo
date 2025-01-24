@@ -9,6 +9,7 @@ import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
 import {useArrayInputField} from "../../../hook/useArrayInputField";
 import {useSelector} from "react-redux";
+import {FileInput} from "../../../common/module/FileInput";
 
 export function DashboardPostImage({}){
     const userInfo = useSelector(state=>state.userReducer);
@@ -61,8 +62,8 @@ export function DashboardPostImage({}){
         updatePostText(i, text);
     }
 
-    const handleFileInput = (e, i)=>{
-        const file = e.target.files[0]
+    const handleFileInput = (files, i)=>{
+        const file = files[0];
         inputField.put(i, 'file', file);
         if(file) {
             const reader = new FileReader();
@@ -75,7 +76,7 @@ export function DashboardPostImage({}){
         }
     }
 
-    const handleClickPreviewImage = (e, i)=>{
+    const handleClickPreviewImage = (i)=>{
         const previewFile = preview.get(i)
         if(!ObjectUtils.isEmpty(previewFile)){
             // console.table(previewFile)
@@ -187,27 +188,20 @@ export function DashboardPostImage({}){
                                     }}>삭제</button>
                                 </div>
                                 <div className={cm(Dashboard.panel_item_body)}>
-                                    <input type="file" id={`pimg_${i}`} onChange={e=>{
-                                        handleFileInput(e, i)
-                                    }} style={{
-                                        visibility: "hidden"
-                                    }} accept='.jpg,.png,.jpeg'/>
-                                    <img src={src} alt="" style={{
-                                        maxWidth: '100%',
-                                        height: '100%'
-                                    }} onClick={e=>{
-                                        handleClickPreviewImage(e, i)
-                                    }} />
-                                    <label htmlFor={`pimg_${i}`} className={`${!src && Dashboard.panel_item_add}`}>추가</label>
-                                    <div className={cm(Dashboard.panel_img_opt, `${!inputField.isEmpty(i, 'file') && Dashboard.has_file}`)}>
-                                        <input type="file" id={`pimg_edit_${i}`} onChange={e => {
-                                            handleFileInput(e, i)
-                                        }} style={{
-                                            display: 'none'
-                                        }} accept='.jpg,.png,.jpeg'/>
-                                        <label htmlFor={`pimg_edit_${i}`} className={Dashboard.btn_edit}>
-
-                                        </label>
+                                    <FileInput className={`${!src && Dashboard.panel_item_add}`}
+                                               dragEnterClassName={Dashboard.active}
+                                               previewClassName={Dashboard.preview_cont}
+                                               onChange={files => {
+                                        handleFileInput(files, i)
+                                    }} onClickPreview={()=>{
+                                        handleClickPreviewImage(i)
+                                    }} src={src}/>
+                                    <div
+                                        className={cm(Dashboard.panel_img_opt, `${!inputField.isEmpty(i, 'file') && Dashboard.has_file}`)}>
+                                        <FileInput className={Dashboard.btn_edit}
+                                                   onChange={files => {
+                                                       handleFileInput(files, i)
+                                                   }}/>
 
                                         <button className={Dashboard.btn_del} onClick={() => {
                                             deleteOnlyImage(i)

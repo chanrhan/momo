@@ -189,6 +189,14 @@ export function ReserveMessageModal(props){
 }
 
 function ReserveItem({index, inputField, onDateClick}){
+    const modal = useModal();
+
+    const openMessagePreviewModal = ()=>{
+        modal.openModal(ModalType.LAYER.Message_Preview, {
+            msg: '안녕하세요 고객님. 개통해주셔서 감사합니다~'
+        })
+    }
+
     const toggleCheck = ()=>{
         inputField.put(index, 'checked', !inputField.input[index].checked ?? false)
     }
@@ -227,7 +235,9 @@ function ReserveItem({index, inputField, onDateClick}){
                 getMessageStateBox()
             }
             <div className={Popup.transfer_box}>
-                <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}>미리보기
+                <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}
+                        onClick={openMessagePreviewModal}>
+                    미리보기
                 </button>
                 <input type="text"
                        className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`)} transfer_inp`}

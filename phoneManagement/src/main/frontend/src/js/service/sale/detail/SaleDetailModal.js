@@ -871,7 +871,7 @@ function SaleDetailModal(props){
 
                                     <div className={Popup.price_data}>
                                         <div className={Popup.data_half}>
-                                                <SaleDetailFileBox fileInputField={fileInputField} dragListRefs={dragListRefs}/>
+                                            <SaleDetailFileBox fileInputField={fileInputField} dragListRefs={dragListRefs}/>
 
                                             <div className={cm(Popup.data_box, Popup.n3)}>
                                                 <div className={Popup.data_title}>비고</div>

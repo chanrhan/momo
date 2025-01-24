@@ -147,8 +147,33 @@
 .dashboard .panel_body .panel.n5 .panel_item_head:hover .panel_item_del:hover{
     background-color: #fd1d1d;
 }
-.dashboard .panel_body .panel.n5 .panel_item_body{position:relative; height:218px; margin-top:7px; border-radius:8px; background-color:#fff;}
-.dashboard .panel_body .panel.n5 .panel_item_body .panel_item_add{position:absolute; top:0; left:0; right:0; bottom:0; background:url(../images/plus_icon.png) no-repeat center / 40px;}
+.dashboard .panel_body .panel.n5 .panel_item_body{
+    text-align: center;
+    position:relative;
+    height:218px; margin-top:7px; border-radius:8px; background-color:#fff;
+}
+.dashboard .panel_body .panel.n5 .panel_item_body .panel_item_add{
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    background:url(../images/plus_icon.png) no-repeat center / 40px;
+}
+
+.dashboard .panel_body .panel.n5 .panel_item_body .panel_item_add.active{
+    border-radius: 8px  ;
+    background-color: #4781ff;
+    opacity: 0.3;
+}
+
+.dashboard .panel_body .panel.n5 .panel_item_body .preview_cont{
+    max-width: 100%;
+    height: 100%;
+}
+
+.dashboard .panel_body .panel.n5 .panel_item_body .preview_cont.active{
+    border-radius: 8px  ;
+    background-color: rgba(71, 129, 255, 0.27);
+    opacity: 0.7;
+}
+
 .dashboard .panel_body .panel.n5 .panel_item_body:hover .panel_img_opt.has_file{
     position: absolute;
     display: inline-block;

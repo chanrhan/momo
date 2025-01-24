@@ -444,6 +444,7 @@
     overflow:hidden;
     position:relative;
     padding:16px 16px; border-radius:8px; background-color:#fff;}
+
 .popup .customer .customer_body .customer_box.price .price_data .data_half{display:inline-block; width:calc(50% - 6px); vertical-align:top;}
 .popup .customer .customer_body .customer_box.price .price_data .data_half + .data_half{margin-left:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box{display:inline-block; vertical-align:top;}
@@ -451,11 +452,29 @@
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box.n1 .data_area{height:100px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box.n2{width:calc(32% - 12px); margin-left:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_box.n2 .data_area{height:100px;}
-.popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload{position:absolute; top:0; left:0; right:0; bottom:0;}
+.popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload{
+    /*position:absolute; top:0; left:0; right:0; bottom:0;*/
+    text-align: center;
+    display: block;
+    position:relative;
+}
 .popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload .upload_btn{
     width:100%;
     height:100%;
-    background:url(../images/popup/upload_icon.png) no-repeat center / 48px;}
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background:url(../images/popup/upload_icon.png) no-repeat center / 40px;
+}
+.popup .customer .customer_body .customer_box.price .price_data .data_group .data_upload .preview_cont{
+    /*display: inline-block;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*position: absolute;*/
+    max-width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3{margin-top:12px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n3 .data_area .data_textarea{
     width:100%; height:88px; font-size:16px; line-height:20px; resize:none;
@@ -494,6 +513,20 @@
 /*20240829 추가*/
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5{display:block; width:100%;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_area{padding:16px;}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_area .drop_window{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: #5888ff;
+
+}
+.popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_area .drop_window.active{
+    opacity: 0.2;
+    z-index: 99;
+}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text{position:relative; padding-left:100px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text div{position:absolute; top:3px; left:0; color:#28272c; font-size:15px; font-weight:600; line-height:20px;}
 .popup .customer .customer_body .customer_box.price .price_data .data_box.n5 .data_text div span{margin-left:10px; color:#acacac; font-size:15px; font-weight:400;}
@@ -926,6 +959,67 @@
 .card_form .check_del{
     position:relative; top:13px; left:10px;
     width:30px; height:30px; background:url(../images/popup/popup_close.png) no-repeat center / 100%;}
+
+/*20250123*/
+.popup .message_preview_cont{
+    position: relative;
+    width: 100%;
+    /*min-height: 140px;*/
+    background-color: #abc1d1;
+    padding: 18px 14px 18px 14px;
+    text-align: left;
+}
+
+.popup .message_preview_cont .sender_box{
+    /*background-color: #ffc0c0;*/
+}
+
+.popup .message_preview_cont .sender_box .sender_icon{
+    position: absolute;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background:url(../images/profile_img3.jpg) no-repeat center / 36px;
+    border-radius: 10px;
+}
+.popup .message_preview_cont .sender_box .sender_name{
+    display: inline-block;
+    position: absolute;
+    margin-left: 46px;
+    top: 13px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+.popup .message_preview_cont .sender_box .chat_box{
+    display: inline-block;
+    max-width: 80%;
+    /*top: 20px;*/
+    margin-top: 18px;
+    margin-left: 48px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.popup .message_preview_cont .sender_box .chat_box .chat_box_tail{
+    position: absolute;
+    /*position: relative;*/
+    margin-left: -14px;
+    margin-top: -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0px 12px 12px 0px;
+    border-color: transparent #ffffff transparent transparent;
+}
+
+.popup .message_preview_cont .sender_box .chat_box .chat_message{
+    font-size: 14px;
+    line-height: 20px;
+}
+
 
 /*반응형*/
 .popup .customer .customer_head .head_box .select_box .select_btn:before{right:8px;}

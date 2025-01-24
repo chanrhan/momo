@@ -33,6 +33,7 @@ export const ModalType = {
         Sale_Filter: 'SaleFilter',
         Reserve_Message: 'ReserveMessage',
         Reserve_Date: 'ReserveDate',
+        Message_Preview: 'MessagePreview',
 
         // Task
         Used_Device_Cms: 'UsedDeviceCms',

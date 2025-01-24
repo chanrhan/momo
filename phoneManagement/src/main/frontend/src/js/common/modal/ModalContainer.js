@@ -43,6 +43,7 @@ import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 import {AddressApiModal} from "../../shop/modal/AddressApiModal";
 import {useLocation} from "react-router-dom";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
+import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -104,6 +105,7 @@ const MODAL_COMPONENTS = {
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
     ReserveDate: ReserveDateModal,
+    MessagePreview: MessagePreviewModal,
 
     // Task
     UsedDeviceCms: UsedDeviceCmsModal,

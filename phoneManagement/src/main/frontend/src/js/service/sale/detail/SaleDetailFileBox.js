@@ -4,30 +4,31 @@ import {FileUtils} from "../../../utils/FileUtils";
 import {ModalType} from "../../../common/modal/ModalType";
 import useModal from "../../../hook/useModal";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
-import {useRef} from "react";
+import {useRef, useState} from "react";
+import {FileInput} from "../../../common/module/FileInput";
 
 export function SaleDetailFileBox({fileInputField, dragListRefs}){
 
     const modal = useModal();
+    const [isActive, setActive] = useState(false);
 
-    const handleFileInput = async (e)=>{
-        // const currFiles = fileInputField.input.filter(v=>v.preview)
-        // const files = FileUtils.handleFilesInput(currFiles, e.target.files, 5);
-        // fileInputField.putAll(files);
-        if(e.target.files && e.target.files.length){
-            const fileLength = e.target.files.length;
+    const [isHolding, setHolding] = useState(false)
+
+    const handleFileInput = async (files)=>{
+        if(files && files.length){
+            const fileLength = files.length;
             if(fileLength > 0){
                 const currFiles = fileInputField.input.filter(v=>v.preview)
                 const orgLength = currFiles.length;
-                let files = [...e.target.files].slice(0, Math.min(5 - orgLength, fileLength))
-                const convertFiles = await FileUtils.encodeFileToBase64(files);
+                let slicedFiles = [...files].slice(0, Math.min(5 - orgLength, fileLength))
+                const convertFiles = await FileUtils.encodeFileToBase64(slicedFiles);
                 // files = files.map(async(f)=>{
                 //     return await FileUtils.compressImage(f);
                 // })
                 let arr = [...currFiles];
                 for(const index in convertFiles){
                     arr.push({
-                        file: files[index],
+                        file: slicedFiles[index],
                         preview: convertFiles[index]
                     })
                 }
@@ -44,7 +45,7 @@ export function SaleDetailFileBox({fileInputField, dragListRefs}){
         }
     }
 
-    const handleClickPreviewImage = (e, i)=>{
+    const handleClickPreviewImage = (i)=>{
         const previewFile = fileInputField.get(i, 'preview');
         if(previewFile !== null){
             const image = new Image();
@@ -69,7 +70,7 @@ export function SaleDetailFileBox({fileInputField, dragListRefs}){
     }
 
     const removeFile = (i)=>{
-        const currFiles = [...fileInputField.input].filter(v=>v.preview)
+        const currFiles = [...fileInputField.input].filter(v=>v.file)
 
         currFiles.splice(i, 1);
         if(currFiles.length < 5){
@@ -82,53 +83,94 @@ export function SaleDetailFileBox({fileInputField, dragListRefs}){
         fileInputField.putAll(currFiles)
     }
 
-    const changeOrder = (e)=>{
 
+    const handleDragStart = ()=>{
+        setActive(true)
+    }
+
+    const handleDragEnd = ()=>{
+        setActive(false)
+    }
+
+    const handleDragOver = (e)=>{
+        e.preventDefault();
+    }
+
+    const handleDrop = (e)=>{
+        e.preventDefault();
+        handleFileInput(e.dataTransfer.files)
+
+        setActive(false)
+    }
+
+    const handleFileChange = (e)=>{
+        e.target.value = ''
     }
 
     return (
         <div className={Popup.data_group}>
             <div className={cm(Popup.data_box, Popup.n5)}>
                 <div className={Popup.data_title}>서류 및 견적서</div>
-                <div className={Popup.data_area}>
+
+                <div className={cm(Popup.data_area)}>
+                    <div className={cm(Popup.drop_window, `${isActive && !isHolding && Popup.active}`)}
+                         onDragEnter={handleDragStart}
+                         onDragLeave={handleDragEnd}
+                         onDragOver={handleDragOver}
+                         onDrop={handleDrop}>
+                    </div>
                     <div className={Popup.data_text}>
                         <div>사진<span>({getFileCount()}/5)</span></div>
                         <p>* 30MB 미만의 .jpg, .peg, .png 파일을 올릴 수 있어요<br/>
                             * 사진을 섞어서 배치할 수 있어요.
                         </p>
                     </div>
-                    <ul className={Popup.data_upload_box}>
+                    <ul className={cm(Popup.data_upload_box)}>
                         {
                             fileInputField.input && fileInputField.input.map((v, i) => {
+                                const src = fileInputField.get(i, "preview");
                                 return <li key={i}
                                            draggable={i < fileInputField.length() - 1}
-                                           onDragOver={e=>{
-                                               fileInputField.handleDragOver(e, i);
+                                           onDragOver={e => {
+                                               fileInputField.handleDragOver(e, i)
                                            }}
-                                           onDragStart={(e)=>{
+                                           onDragEnd={()=>{
+                                               setHolding(false)
+                                           }}
+                                           onDragStart={(e) => {
+                                               // e.preventDefault()
+                                               setHolding(true)
                                                fileInputField.handleDragStart(e, i)
                                            }}
-                                           onDragEnd={changeOrder}
                                            ref={(el) => (dragListRefs.current[i] = el)}
                                            className={Popup.data_upload}>
-                                    <label htmlFor={`file_${i}`}
-                                           className={Popup.upload_btn} style={{
-                                        display: v.preview ? 'none' : ''
-                                    }}>업로드
-                                    </label>
-                                    <input type="file" id={`file_${i}`} multiple
-                                           name={`file_${i}`}
-                                           onChange={handleFileInput} style={{
-                                        visibility: "hidden"
-                                    }} accept=".png, .jpg, .jpeg, .psd"/>
-                                    <img src={v.preview} alt='' style={{
-                                        display: "inline-block",
-                                        top: 0,
-                                        left: 0,
-                                        position: "absolute"
-                                    }} onClick={e => {
-                                        handleClickPreviewImage(e, i)
-                                    }}/>
+                                    <FileInput multiple
+                                               enableDrop={false}
+                                               className={cm(`${!src && Popup.upload_btn}`)}
+                                               previewClassName={Popup.preview_cont}
+                                               src={src}
+                                               onClickPreview={() => {
+                                                   handleClickPreviewImage(i)
+                                               }}
+                                               onChange={files => {
+                                                   handleFileInput(files)
+                                               }}/>
+                                    {/*<label htmlFor={`file_${i}`}*/}
+                                    {/*       className={Popup.upload_btn} style={{*/}
+                                    {/*    display: v.preview ? 'none' : ''*/}
+                                    {/*}}>업로드*/}
+                                    {/*</label>*/}
+                                    {/*<input type="file" id={`file_${i}`} multiple*/}
+                                    {/*       name={`file_${i}`}*/}
+                                    {/*       onChange={handleFileInput} style={{*/}
+                                    {/*    visibility: "hidden"*/}
+                                    {/*}} accept=".png, .jpg, .jpeg, .psd"/>*/}
+                                    {/*<img src={v.preview} alt='' style={{*/}
+                                    {/*    display: "inline-block",*/}
+                                    {/*    top: 0,*/}
+                                    {/*    left: 0,*/}
+                                    {/*    position: "absolute"*/}
+                                    {/*}}/>*/}
                                     {
                                         (i < fileInputField.length() && v.preview) &&
                                         <button type="button"

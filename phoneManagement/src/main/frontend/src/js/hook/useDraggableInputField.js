@@ -20,7 +20,7 @@ export function useDraggableInputField(init, arr, dragListRef, onDragOver){
         e.preventDefault(); // Allow drop
         if(onDragOver){
             if(!onDragOver(index, inputField)){
-                return;
+                return false;
             }
         }
         if (index !== draggingIndex) {
@@ -29,7 +29,10 @@ export function useDraggableInputField(init, arr, dragListRef, onDragOver){
             updatedItems.splice(index, 0, draggedItem);
             inputField.setInput(updatedItems);
             setDraggingIndex(index);
+            return true;
         }
+
+        return false;
     };
 
     return {
