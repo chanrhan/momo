@@ -318,15 +318,17 @@
 }
 
 .board .board_body.bulk_upload .td_board .tbody2{
+
 }
 
 .board .bulk_upload .td_board .tbody2 .tr{
     /*background-color: red;*/
+
 }
 
 .board .bulk_upload .td_board .tbody2 .tr .td{
     /*background-color: red;*/
-    border: 1px black solid;
+    border: 0.01rem black solid;
     width: 120px;
     height: 40px;
 }

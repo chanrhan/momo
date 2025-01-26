@@ -39,7 +39,7 @@ export function SaleBulkUpload(){
     }, []);
 
     const handleCellClick = (r, c)=>{
-        console.log(`(${r}, ${c})`)
+        // console.log(`(${r}, ${c})`)
         setSelectedCell({row: r, col: c})
     }
 
@@ -71,7 +71,7 @@ export function SaleBulkUpload(){
                 const currRow = startRow+rowIdx;
 
                 if(!newData[currRow]){ // 기존 테이블에 해당 행이 없다면, 새로 행을 추가
-                    console.log(`empty: ${currRow}`)
+                    // console.log(`empty: ${currRow}`)
                     newData[currRow] = new Array(maxLength).fill(null);
                 }else{
                     newData[currRow] = [...prev[currRow]];
@@ -89,7 +89,7 @@ export function SaleBulkUpload(){
                     if(currCol >= maxLength){
                         return;
                     }
-                    console.log(`currRow:${currRow}, currCol:${currCol}`)
+                    // console.log(`currRow:${currRow}, currCol:${currCol}`)
                     newData[currRow][currCol]= col; // 알맞은 열에 데이터 입력
                 })
             })
@@ -155,34 +155,8 @@ export function SaleBulkUpload(){
     }
 
 
-
-    const resizeColumn = (e, index) => {
-        const startX = e.clientX;
-        const table = tableRef.current;
-        const th = table.querySelectorAll('th')[index];
-        const startWidth = th.offsetWidth;
-
-        const onMouseMove = (e) => {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 50) {  // 최소 너비 설정
-                th.style.width = `${newWidth}px`;
-            }
-        };
-
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
-
     const submit = ()=>{
-        modal.openModal(ModalType.LAYER.SaleData_Validation, {
-            data: data,
-            columnLength: COLUMN_NAMES.length
-        })
+        
     }
 
     return (
@@ -214,10 +188,7 @@ export function SaleBulkUpload(){
                     {
                             COLUMN_NAMES.map((v, i) => {
                                 // const sort =
-                                return <Bth key={i} name={v}
-                                            onMouseDown={e => {
-                                                resizeColumn(e, i + 1)
-                                            }}>{v}</Bth>
+                                return <Bth key={i} name={v} >{v}</Bth>
                             })
                         }
                     </Bthead>

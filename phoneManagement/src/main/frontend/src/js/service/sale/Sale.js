@@ -274,9 +274,9 @@ export function Sale(){
                                 <MoreOptionLayer cssModule={Board}>
                                     <SelectItem onClick={deleteSale}>판매일보 삭제</SelectItem>
                                     <SelectItem>검색 결과 다운로드</SelectItem>
-                                    {/*<SelectItem onClick={()=>{*/}
-                                    {/*    nav("/service/sale/bulk-upload")*/}
-                                    {/*}}>대량 업로드하기</SelectItem>*/}
+                                    <SelectItem onClick={()=>{
+                                        nav("/service/sale/bulk-upload")
+                                    }}>대량 업로드하기</SelectItem>
                                 </MoreOptionLayer>
                             </div>
 
