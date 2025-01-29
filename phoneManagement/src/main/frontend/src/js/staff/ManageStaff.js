@@ -19,7 +19,7 @@ export function ManageStaff(){
     }, [keyword]);
 
     const getStaff = async ()=>{
-        await userApi.getInnerStaffAll(keyword).then(({status,data})=>{
+        await userApi.getInnerStaffAllExceptSelf(keyword).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)

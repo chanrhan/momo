@@ -27,7 +27,7 @@ import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
-import {BulkUploadModal} from "../../admin/modal/BulkUploadModal";
+import {AdminBulkUploadModal} from "../../admin/modal/AdminBulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
 import {ChargePointModal} from "../../profile/modal/ChargePointModal";
 import {PaymentCardModal} from "../../profile/modal/PaymentCardModal";
@@ -44,6 +44,7 @@ import {AddressApiModal} from "../../shop/modal/AddressApiModal";
 import {useLocation} from "react-router-dom";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
+import {DeviceRecommendModal} from "../../service/bulk_upload/DeviceRecommendModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -56,7 +57,7 @@ const MODAL_COMPONENTS = {
     // common
     DynamicSelect: DynamicSelectModal,
     MoreOption: MoreOptionModal,
-    BulkUpload: BulkUploadModal,
+    BulkUpload: AdminBulkUploadModal,
     Invite: InviteModal,
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
@@ -91,6 +92,8 @@ const MODAL_COMPONENTS = {
     SaleExsvc: SaleExsvcModal,
     SaleWtPlan: SaleWtPlanModal,
     SaleUsedPhone: SaleUsedDeviceModal,
+
+    DeviceRecommend: DeviceRecommendModal,
 
     // sale common
     DeviceSearch: DeviceSearchModal,

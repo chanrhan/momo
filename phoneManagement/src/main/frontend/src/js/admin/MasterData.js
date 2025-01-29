@@ -90,7 +90,7 @@ export function MasterData(){
     }
 
     const openBulkUploadModal =()=>{
-        modal.openModal(ModalType.LAYER.Bulk_Upload, {
+        modal.openModal(ModalType.LAYER.Admin_Bulk_Upload, {
             type: tab
         })
     }

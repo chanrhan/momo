@@ -40,7 +40,9 @@ public class UserController {
 	@GetMapping("/info")
 	public ResponseEntity<Map<String,Object>> getUserInfo() throws IOException {
 		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getUserInfo(username));
+		Map<String,Object> map = userService.getUserInfo(username);
+		log.info("User: {}", map);
+		return ResponseEntity.ok(map);
 	}
 
 	/**
@@ -231,12 +233,20 @@ public class UserController {
 		return ResponseEntity.ok(userService.getInnerStaff(currShopId));
 	}
 
-	@GetMapping("/staff/inner/all")
-	public ResponseEntity<Map<String,Object>> getInnerStaffAll(HttpSession session,
-															 @RequestParam(required = false) String keyword){
+	@GetMapping("/staff/inner/all/except-self")
+	public ResponseEntity<Map<String,Object>> getInnerStaffExceptSelf(HttpSession session,
+																	  @RequestParam(required = false) String keyword){
 		String username = SecurityContextUtil.getUsername();
 		int currShopId = commonService.getCurrentShopId(session);
 		UserVO vo = UserVO.builder().keyword(keyword).currShopId(currShopId).userId(username).build();
+		return ResponseEntity.ok(userService.getInnerStaffExceptSelf(vo));
+	}
+
+	@GetMapping("/staff/inner/all")
+	public ResponseEntity<Map<String,Object>> getInnerStaffAll(HttpSession session){
+		String username = SecurityContextUtil.getUsername();
+		int currShopId = commonService.getCurrentShopId(session);
+		UserVO vo = UserVO.builder().currShopId(currShopId).userId(username).build();
 		return ResponseEntity.ok(userService.getInnerStaffAll(vo));
 	}
 

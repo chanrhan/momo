@@ -2,7 +2,7 @@ import {cm, cmc} from "../../utils/cm";
 import Board from "../../../css/board.module.css";
 import {useRef} from "react";
 
-export function BoardTable({caption, colgroup, children, tableRef, style, onScrollLimit, className}){
+export function BoardTable({caption, colgroup, children, tableRef, style, onScrollLimit, className, onKeyDown}){
     const handleScroll = (e: UIEvent)=>{
         const target = e.target;
 
@@ -19,7 +19,7 @@ export function BoardTable({caption, colgroup, children, tableRef, style, onScro
 
     return (
         <div className={`board_body ${Board.sticky} ${className}`} style={style} onScroll={handleScroll}>
-            <table className={Board.td_board} ref={tableRef}>
+            <table className={Board.td_board} ref={tableRef} onKeyDown={onKeyDown}>
                 <caption>{caption}</caption>
                 <colgroup>
                     {colgroup}

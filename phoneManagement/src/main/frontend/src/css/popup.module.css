@@ -24,6 +24,9 @@
     margin: 0;
     padding: 0;
 }
+.popup.menu .device_recommend{
+    border-radius: 8px;
+}
 .tooltip{
     opacity:1; visibility:inherit;
     position:absolute;

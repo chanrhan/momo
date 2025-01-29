@@ -64,6 +64,10 @@ public class UserService  implements UserDetailsService{
 		return userMapper.getInnerStaff(currShopId);
 	}
 
+	public Map<String,Object> getInnerStaffExceptSelf(UserVO vo){
+		return userMapper.getInnerStaffExceptSelf(vo);
+	}
+
 	public Map<String,Object> getInnerStaffAll(UserVO vo){
 		return userMapper.getInnerStaffAll(vo);
 	}

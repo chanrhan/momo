@@ -27,7 +27,7 @@ const displayProvider = [
 ]
 
 
-export function BulkUploadModal(props){
+export function AdminBulkUploadModal(props){
     const {gmdApi} = useApi();
     const modal = useModal()
     // const [header, setHeader] = useState(new Array(DEFAULT_HEADERS.length()).fill('empty'))
@@ -36,13 +36,6 @@ export function BulkUploadModal(props){
 
     const [data, setData] = useState(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))
 
-    // useEffect(() => {
-    //     console.table(data)
-    // }, [data]);
-
-    // useEffect(() => {
-    //     setData(Array(20).fill(Array(HEADERS[dataType].length).fill(null)))
-    // }, [dataType]);
 
     const submit = async ()=>{
         let res = null;
@@ -73,7 +66,7 @@ export function BulkUploadModal(props){
     }
 
     const close = ()=>{
-        modal.closeModal(ModalType.LAYER.Bulk_Upload)
+        modal.closeModal(ModalType.LAYER.Admin_Bulk_Upload)
     }
 
     const [selectedCell, setSelectedCell] = useState({

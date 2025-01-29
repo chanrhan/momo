@@ -1,6 +1,6 @@
 package com.momo.config;
 
-import com.momo.filter.CustomCharacterEncodingFilter;
+//import com.momo.filter.CustomCharacterEncodingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -54,9 +54,7 @@ export const AxiosApi = ()=> {
     }
 
     const get = async(url, option)=>{
-        return await axiosInstance.get(url, option).catch(e=>{
-            // console.log(123)
-        })
+        return await axiosInstance.get(url, option)
     }
 
     const del = async(url, option)=>{

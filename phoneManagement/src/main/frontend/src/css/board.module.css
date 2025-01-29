@@ -67,6 +67,9 @@
     /*table-layout: fixed;*/
     border-collapse: collapse;
 }
+.board .td_board .thead{
+    z-index: 2;
+}
 .board .td_board .thead .th{
     position: relative;
     padding:10px; background-color:#f8f8f9; color:#62626e;
@@ -96,7 +99,9 @@
 .board .td_board .tbody .tr:hover{
     background-color: rgba(127, 152, 210, 0.18);
 }
-.board .td_board .tbody .td{padding:10px;
+.board .td_board .tbody .td{
+    position: relative;
+    padding:10px;
     border-right:2px solid #f4f4f5;
     border-bottom:1px solid rgba(227, 227, 227, 0.9);
     color:#28272c; font-size:14px; text-align:center;
@@ -314,7 +319,52 @@
 
 /*20250106 대량 업로드*/
 .board .bulk_upload{
+    /*position: relative;*/
+}
 
+.device_recommend{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 150px;
+    background-color: #d9d9d9;
+    z-index: 1;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.device_recommend.active{
+    display: block;
+}
+
+.device_recommend .search_cont{
+    background-color: #f3f3f3;
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    padding: 2px 4px 2px 14px;
+}
+
+.device_recommend .recommend_list{
+    margin-top: 2px;
+    padding: 5px 8px 5px 8px;
+    overflow-y: auto;
+}
+
+.device_recommend .recommend_list .recommend_item{
+    font-size: 14px;
+    height: 25px;
+    background-color: #f3f3f3;
+    padding: 1px 4px 1px 4px;
+    border-radius: 6px  ;
+    cursor: pointer;
+}
+.device_recommend .recommend_list .recommend_item + .recommend_item{
+    margin-top: 4px;
 }
 
 .board .board_body.bulk_upload .td_board .tbody2{
@@ -323,17 +373,64 @@
 
 .board .bulk_upload .td_board .tbody2 .tr{
     /*background-color: red;*/
-
 }
+
+.board .bulk_upload .td_board .tbody2 .tr .td_drag{
+    width: 120px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    text-align: center;
+    border-radius: 8px;
+}
+.board .bulk_upload .td_board .tbody2 .tr .td_drag .drag_handle{
+    position:relative;
+    top:4px;
+    /*left:10px;*/
+    width: 28px;
+    height: 28px;
+    background:url(../images/drag_handle_horizontal.png) no-repeat center / 100%;
+    cursor: pointer;
+}
+
+
 
 .board .bulk_upload .td_board .tbody2 .tr .td{
     /*background-color: red;*/
+    position: relative;
     border: 0.01rem black solid;
     width: 120px;
     height: 40px;
 }
 .board .bulk_upload .td_board .tbody2 .tr .td:focus{
 
+}
+.board .bulk_upload .td_board .tbody2 .tr .td.error{
+    border: 0.12rem solid red;
+}
+.board .bulk_upload .td_board .tbody2 .tr .td.error .inp{
+    background-color: rgba(255, 0, 0, 0.18);
+    cursor: pointer;
+    color: red;
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td.error .inp:hover{
+    background-color: rgba(255, 190, 190, 0.27);
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td.error .icon_del{
+    opacity: 0;
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td.error .inp:hover ~ .icon_del{
+    opacity: 1;
+    position: absolute;
+    cursor: pointer;
+    top: 3px;
+    left: 6px;
+    width: 32px;
+    height: 32px;
+    background:url(../images/del_rect_icon.png) no-repeat center / 32px;
 }
 
 .board .bulk_upload .td_board .tbody2 .tr .td .inp:focus{
@@ -347,12 +444,23 @@
 }
 
 .board .bulk_upload .td_board .tbody2 .tr .td .inp{
+    position: relative;
     padding: 4px;
     font-size: 16px;
     width: 100%;
     height: 100%;
     text-align: right;
+}
 
+.board .bulk_upload .td_board .tbody2 .tr .td .unknown_user{
+    /*display:block; */
+    position:absolute;
+    top:10px;
+    left:14px   ;
+    width:22px;
+    height:22px;
+    cursor: pointer;
+    background:url(../images/unknown_fill_icon.png) no-repeat center / 22px;
 }
 
 .board .td_board .tbody .tr .td > .btn_approval{

@@ -55,7 +55,8 @@ import {RegisterBrNo} from "./js/shop/RegisterBrNo";
 import {ComponentTest} from "./js/test/ComponentTest";
 import {StudyMain} from "./js/study_private/StudyMain";
 import {StudyLayout} from "./js/study_private/StudyLayout";
-import {SaleBulkUpload} from "./js/service/sale/SaleBulkUpload";
+import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
+import {StringTest} from "./js/test/StringTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -90,6 +91,7 @@ function App() {
                   <Route path='event' element={<EventTest/>}/>
                   <Route path='vo' element={<VOTest/>}/>
                   <Route path='component' element={<ComponentTest/>}/>
+                  <Route path='string' element={<StringTest/>}/>
               </Route>
 
 

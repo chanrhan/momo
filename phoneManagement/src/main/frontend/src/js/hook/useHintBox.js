@@ -30,10 +30,10 @@ export function useHintBox(content, props) {
     </HintBox>
 
     const open = (e: MouseEvent)=>{
-        const {top, left} = MouseEventUtils.getAbsolutePos(e)
-        setPos({
-            top: top-80
-        })
+        // const {top, left} = MouseEventUtils.getAbsolutePos(e)
+        // setPos({
+        //     top: top-80
+        // })
         setActive(true)
     }
 

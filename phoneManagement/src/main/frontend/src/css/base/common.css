@@ -281,10 +281,12 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
     opacity: 1;
     /*z-index: 111;*/
     transition:opacity .1s ease-in-out;
+    z-index: 199;
 }
 
 .hint_box.disabled{
     opacity: 0;
+    display: none;
 }
 
 /* chatbot */

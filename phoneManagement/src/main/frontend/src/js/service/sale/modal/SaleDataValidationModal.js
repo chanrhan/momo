@@ -10,7 +10,7 @@ import {LayerModal} from "../../../common/modal/LayerModal";
 import {RegexUtils} from "../../../utils/regex";
 import Popup from "../../../../css/popup.module.css"
 import {cm} from "../../../utils/cm";
-import {Validate_Actions} from "../Validate_Actions";
+import {Validate_Actions} from "../../bulk_upload/Validate_Actions";
 
 const GENDER = [
     '남',

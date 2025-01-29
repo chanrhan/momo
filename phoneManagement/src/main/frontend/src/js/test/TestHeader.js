@@ -69,6 +69,9 @@ function TestHeader(){
                 <Link to='component'>
                     <button className='btn btn-outline-success ms-1'>Component 테스트</button>
                 </Link>
+                <Link to='string'>
+                    <button className='btn btn-outline-success ms-1'>String 테스트</button>
+                </Link>
             </div>
             <Outlet/>
         </div>
