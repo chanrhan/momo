@@ -371,6 +371,8 @@ export function Sale(){
 
 function TdChoice({column_index, data, image}){
     const hintBox = useHintBox("해당 고객이 개통한 횟수입니다.", {
+        top: -15,
+        // left: -2,
         minWidth: 190,
     })
     const showHintModal = (e)=>{

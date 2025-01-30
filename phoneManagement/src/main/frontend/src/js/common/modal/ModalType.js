@@ -6,6 +6,7 @@ export const ModalType = {
         Payment_Card: 'Payment_Card',
         Charge_Point: 'ChargePoint',
         Image_Preview: 'ImagePreview',
+        Select_Sheet: 'SelectSheet',
 
         // shop
         Address: 'Address',
@@ -34,6 +35,8 @@ export const ModalType = {
         Reserve_Message: 'ReserveMessage',
         Reserve_Date: 'ReserveDate',
         Message_Preview: 'MessagePreview',
+
+        // bulk-upload
 
         // Task
         Used_Device_Cms: 'UsedDeviceCms',

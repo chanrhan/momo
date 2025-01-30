@@ -322,76 +322,87 @@
     /*position: relative;*/
 }
 
-.device_recommend{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 150%;
-    max-height: 250px;
-    background-color: #d9d9d9;
-    z-index: 1;
-    border-radius: 12px;
-    overflow: hidden;
-    padding: 0 0 8px 0
-}
+/*.board .bulk_upload .thead .th_option{*/
+/*    width: 15px;*/
+/*    background-color: white;*/
+/*}*/
 
-.device_recommend.active{
-    display: block;
-}
 
-.device_recommend .search_cont{
-    background-color: #f3f3f3;
-    position: relative;
-    top: 0;
-    width: 100%;
-    height: 40px;
-    text-align: left;
-    padding: 2px 4px 2px 14px;
-}
-
-.device_recommend .recommend_list{
-    margin-top: 4px;
-    padding: 5px 8px 5px 8px;
-    overflow-y: auto;
-    /*height: 200px;*/
-    max-height: 200px;
-}
-
-.device_recommend .recommend_list .recommend_item{
-    font-size: 14px;
-    height: 25px;
-    background-color: #f3f3f3;
-    padding: 1px 4px 1px 4px;
-    border-radius: 6px  ;
+.board .bulk_upload .td_board .tbody2 .tr:hover .td_del_row{
+    /*position:relative;*/
+    top:8px;
+    left:5px;
+    width:24px;
+    height:24px;
     cursor: pointer;
+    background:url(../images/del_rect_icon.png) no-repeat center / 100%;
+    z-index: 199;
 }
-.device_recommend .recommend_list .recommend_item + .recommend_item{
-    margin-top: 4px;
+
+.board .bulk_upload .td_board .tbody2 .tr:hover .td_del_row:hover{
+    background:url(../images/del_rect_icon.png) no-repeat center / 100%;
+}
+
+/*.board .bulk_upload .td_board .thead .th{*/
+/*    !*position: relative;*!*/
+/*}*/
+
+.board .bulk_upload .td_board .thead .th_option{
+    /*background-color: white;*/
+    width: 25px;
+}
+
+.board .bulk_upload .td_board .thead .th .column_hint_icon{
+    position:relative;
+    top:1px;
+    /*left:22px   ;*/
+    width:12px;
+    height:12px;
+    cursor: pointer;
+    background:url(../images/hint_icon1.png) no-repeat center / 100%;
+    z-index: 5;
+    margin-left: 4px;
+}
+
+.board .bulk_upload{
+    /*overflow-y: auto !important;*/
 }
 
 .board .board_body.bulk_upload .td_board .tbody2{
-
+    overflow-y: auto;
 }
 
-.board .bulk_upload .td_board .tbody2 .tr{
-    /*background-color: red;*/
+.board .bulk_upload .td_board .thead .th{
+    /*position: absolute;*/
+    /*top: 15px;*/
+    padding-bottom: 0;
+    padding-left: 0px;
+    padding-right: 0px;
+    overflow: hidden;
+    /*border: 1px solid white;*/
 }
 
-.board .bulk_upload .td_board .tbody2 .tr .td_drag{
-    width: 120px;
-    height: 20px;
+.board .bulk_upload .td_board .thead .th .th_drag{
+    margin-top: 8px;
+    width: 100%;
+    height: 16px;
     cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: #ececec;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
+    /*overflow: hidden;*/
 }
-.board .bulk_upload .td_board .tbody2 .tr .td_drag .drag_handle{
+
+/*.board .bulk_upload .td_board .tbody2 .tr .td_drag:-moz-drag-over{*/
+/*    background-color: #a7c2ff;*/
+/*}*/
+
+.board .bulk_upload .td_board .thead .th .th_drag .drag_handle{
     position:relative;
-    top:4px;
+    /*top:3px;*/
     /*left:10px;*/
-    width: 28px;
-    height: 28px;
+    width: 16px;
+    height: 16px;
     background:url(../images/drag_handle_horizontal.png) no-repeat center / 100%;
     cursor: pointer;
 }
@@ -477,6 +488,55 @@
 .board .td_board .tbody .tr .td > .btn_approval:hover{
     background-color: #ff5e5e;
 }
+
+.device_recommend{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    max-height: 250px;
+    background-color: #d9d9d9;
+    z-index: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 0 0 8px 0
+}
+
+.device_recommend.active{
+    display: block;
+}
+
+.device_recommend .search_cont{
+    background-color: #f3f3f3;
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    padding: 2px 4px 2px 14px;
+}
+
+.device_recommend .recommend_list{
+    margin-top: 4px;
+    padding: 5px 8px 5px 8px;
+    overflow-y: auto;
+    /*height: 200px;*/
+    max-height: 200px;
+}
+
+.device_recommend .recommend_list .recommend_item{
+    font-size: 14px;
+    height: 25px;
+    background-color: #f3f3f3;
+    padding: 1px 4px 1px 4px;
+    border-radius: 6px  ;
+    cursor: pointer;
+}
+.device_recommend .recommend_list .recommend_item + .recommend_item{
+    margin-top: 4px;
+}
+
 
 /*반응형*/
 @media all and (max-width:1423px){

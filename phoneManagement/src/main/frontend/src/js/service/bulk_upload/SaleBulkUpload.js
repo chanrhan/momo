@@ -12,6 +12,7 @@ import {Validate_Actions} from "./Validate_Actions";
 import useApi from "../../hook/useApi";
 import {useRenderlessModal} from "../../hook/useRenderlessModal";
 import {useHintBox} from "../../hook/useHintBox";
+import {ModalType} from "../../common/modal/ModalType";
 
 
 const COLUMN_NAMES = [
@@ -36,12 +37,33 @@ const COLUMN_INDEX = {
 
 export function SaleBulkUpload(){
     const modal = useModal()
-    const rdl = useRenderlessModal("device_recommend")
     const {gmdApi, userApi} = useApi()
     const tableRef = useRef()
     const [prevScrollY, setPrevScrollY] = useState(null)
 
+    const hintOption = {
+        top: -45,
+        // minWidth: 200,
+        maxWidth: 220
+    }
 
+    const actvDtHintBox = useHintBox("날짜 형식만 가능합니다", hintOption)
+    const telHintBox = useHintBox("전화번호 형식만 가능합니다", hintOption)
+    const codeHintBox = useHintBox("생년월일 8자리 또는 사업자등록번호 5자리만 가능합니다", {
+        ...hintOption,
+        top: -65
+    })
+    const deviceHintBox = useHintBox("일치하는 모델명만 가능합니다. ", hintOption)
+
+    const COLUMN_HINT = [
+        actvDtHintBox,
+        null,
+        telHintBox,
+        codeHintBox,
+        deviceHintBox,
+        null,
+        null
+    ]
 
     const [data, setData] = useState(Array(20).fill(Array(COLUMN_NAMES.length).fill('')))
     const [error, setError] = useState(Array(20).fill(Array(COLUMN_NAMES.length).fill(false)))
@@ -110,6 +132,7 @@ export function SaleBulkUpload(){
     useEffect(() => {
         const onClickAway = (e)=>{
             if(drmRef.current && !drmRef.current.contains(e.target)){
+                console.log(444)
                 setDrmOpenIndex(-1);
                 setSearchResults(null)
                 window.removeEventListener('click', onClickAway, true)
@@ -157,6 +180,9 @@ export function SaleBulkUpload(){
     const clearData = ()=>{
         setData(Array(20).fill(Array(COLUMN_NAMES.length).fill('')))
         setError(Array(20).fill(Array(COLUMN_NAMES.length).fill(false)))
+        setSearchResults(null)
+        setDeviceCells([])
+        setSellerCells([])
     }
 
     const toggleMode = ()=>{
@@ -194,6 +220,19 @@ export function SaleBulkUpload(){
                 })
             }
         }
+    }
+
+    const deleteRow = (index)=>{
+        setData(prev=>{
+            const newData = [...prev];
+            newData.splice(index, 1)
+            return newData
+        })
+        setError(prev=>{
+            const newError = [...prev];
+            newError.splice(index, 1)
+            return newError
+        })
     }
 
     const insertRow = ()=>{
@@ -238,6 +277,7 @@ export function SaleBulkUpload(){
 
     // 테이블에 json형식의 table 데이터를 통째로 입력하는 함수
     const handleInputTable = (table)=>{
+        // console.table(table)
         const {row: startRow, col: startCol} = selectedCell;
         // console.log(`r:${startRow}, c:${startCol}`)
         // console.table(table)
@@ -339,6 +379,7 @@ export function SaleBulkUpload(){
         const acceptFiles = e.target.files;
         if (acceptFiles.length > 0) {
             const file = acceptFiles[0];
+            console.table(file)
 
             const reader = new FileReader();
             reader.onload = async (e) => {
@@ -349,37 +390,51 @@ export function SaleBulkUpload(){
                     // raw: true
                 })
 
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                // console.table(sheet)
-                // const jsonData = XLSX.utils.sheet_to_json(sheet);
-                const jsonData = [];
-
-
-                // 불러온 데이터를 행, 열에 맞추기 위해 공백도 빠짐없이 불러온다
-                for(let cellAddress in sheet){
-                    if(cellAddress[0] === '!'){
-                        continue;
-                    }
-                    const cell = sheet[cellAddress];
-                    if(cell.v !== undefined && cell.v !== null && cell.v !== ''){
-                        // const d = XLSX.utils.decode_cell(cellAddress);
-                        // console.table(d)
-                        const {c, r} = XLSX.utils.decode_cell(cellAddress);
-                        // console.log(`col: ${c}, row: ${r}`)
-                        if(!jsonData[r]){
-                            jsonData[r] = [];
+                if(workbook.SheetNames.length > 1){
+                    modal.openModal(ModalType.LAYER.Select_Sheet, {
+                        sheets: workbook.SheetNames,
+                        onSubmit: (index)=>{
+                            const sheetName = workbook.SheetNames[index];
+                            const sheet = workbook.Sheets[sheetName];
+                            loadSheetData(sheet);
                         }
-                        jsonData[r][c] = cell.v;
-                    }
+                    })
+                }else{
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    loadSheetData(sheet);
                 }
-
-                handleInputTable(jsonData)
             }
 
             reader.readAsArrayBuffer(file);
         }
+        e.target.value = ""
     }
+
+    const loadSheetData = (sheet)=>{
+        const jsonData = [];
+
+        // 불러온 데이터를 행, 열에 맞추기 위해 공백도 빠짐없이 불러온다
+        for(let cellAddress in sheet){
+            if(cellAddress[0] === '!'){
+                continue;
+            }
+            const cell = sheet[cellAddress];
+            if(cell.v !== undefined && cell.v !== null && cell.v !== ''){
+                // const d = XLSX.utils.decode_cell(cellAddress);
+                // console.table(d)
+                const {c, r} = XLSX.utils.decode_cell(cellAddress);
+                // console.log(`col: ${c}, row: ${r}`)
+                if(!jsonData[r]){
+                    jsonData[r] = [];
+                }
+                jsonData[r][c] = cell.v;
+            }
+        }
+
+        handleInputTable(jsonData)
+    }
+
 
     // endRow/Col is inclusive index of element
     const validateCellRange = (startRow, startCol, endRow, endCol)=>{
@@ -474,15 +529,17 @@ export function SaleBulkUpload(){
 
     const showDeviceRecommendModal = (e: FocusEvent<HTMLTableDataCellElement>, rowIdx)=>{
         if(error[rowIdx][COLUMN_INDEX.DEVICE] && deviceCells[rowIdx]?.recommends){
+            const divs = e.currentTarget.querySelectorAll("div")
             const inputs = e.currentTarget.querySelectorAll("input")
-            const targetEl: HTMLElement = inputs[1]
+            const targetDivEl: HTMLElement = divs[0]
+            const targetInputEl: HTMLElement = inputs[1]
             // console.log(targetEl.outerHTML)
 
             setDrmOpenIndex(rowIdx)
-            if(targetEl){
-                drmRef.current = targetEl;
+            if(targetDivEl && targetInputEl){
+                drmRef.current = targetDivEl;
                 setTimeout(()=>{
-                    targetEl.focus()
+                    targetInputEl.focus()
                 }, 50)
             }
         }else{
@@ -596,6 +653,13 @@ export function SaleBulkUpload(){
                                 className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>
                             {errorMode ? "전체 보기" : "오류만 보기"}
                         </button>
+
+                        <label className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>
+                            파일 업로드
+                            <input type="file" accept=".xlsx,.xls,.csv" onChange={handleUploadSheet} style={{
+                                display: "none"
+                            }}/>
+                        </label>
                     </div>
                     <div className={cm(Board.board_head_group)}>
                         <button onClick={validateAll}
@@ -610,46 +674,57 @@ export function SaleBulkUpload(){
                     // width: '100$',
                     height: '620px'
                 }}>
-
                     <Bthead>
+                        <Bth index={0} className={Board.th_option}/>
                         {
                             COLUMN_NAMES.map((v, i) => {
                                 // const sort =
-                                return <Bth key={i} name={v}>{v}</Bth>
+                                return (
+                                    <>
+                                        <Bth index={i + 1} name={v}>
+                                            {v}
+                                            {
+                                                COLUMN_HINT[i] && (
+                                                    <>
+                                                        <span className={Board.column_hint_icon} onMouseOver={e => {
+                                                            COLUMN_HINT[i].open(e);
+                                                        }}></span>
+                                                        {COLUMN_HINT[i].component}
+                                                    </>
+                                                )
+                                            }
+                                            <div key={i} className={cm(Board.th_drag)}
+                                                draggable
+                                                ref={el => {
+                                                    dragListRef.current[i] = el;
+                                                }} onDragOver={e => {
+                                                handleDragOver(e, i)
+                                            }} onDragStart={(e) => {
+                                                handleDragStart(e, i)
+                                            }} onDragEnd={changeColumnOrder}>
+                                                <span className={Board.drag_handle}></span>
+                                            </div>
+                                        </Bth>
+                                    </>
+                                )
                             })
                         }
                     </Bthead>
 
                     <tbody className={Board.tbody2} onKeyDown={handleKeydown}>
-                    <tr className={Board.tr}>
-                        {
-                            COLUMN_NAMES.map((v,i)=>{
-                                return (
-                                    <td className={cm(Board.td_drag)}
-                                        draggable
-                                        ref={el=>{
-                                        dragListRef.current[i] = el;
-                                    }} onDragOver={e=>{
-                                        handleDragOver(e, i)
-                                    }} onDragStart={(e)=>{
-                                        handleDragStart(e, i)
-                                    }} onDragEnd={changeColumnOrder}>
-                                        <span className={Board.drag_handle}></span>
-                                    </td>
-                                )
-                            })
-                        }
-                    </tr>
                     {
                         data && data.map((r, rowIdx) => {
                             if(errorMode){
-                                if(error[rowIdx].filter(c=>c).length < COLUMN_NAMES.length){
+                                if(error[rowIdx].filter(c=>c).length <= 0){
                                     return null;
                                 }
                             }
                             return <tr key={rowIdx} className={Board.tr}>
+                                <td className={Board.td_del_row} onClick={()=>{
+                                    deleteRow(rowIdx)
+                                }}/>
                                 {
-                                    r.map((c, colIdx) => {
+                                   r && r.map((c, colIdx) => {
                                         // const colIdx = ci
                                         let currIdx = colIdx;
                                         if(gripIndex !== null){
@@ -696,23 +771,24 @@ export function SaleBulkUpload(){
                                                         }}/>
                                                         <ul className={Board.recommend_list}>
                                                             {
-                                                                !searchResults && deviceCells[rowIdx]?.recommends && deviceCells[rowIdx].recommends.map(v => {
+                                                                !searchResults && deviceCells[rowIdx]?.recommends && deviceCells[rowIdx].recommends.map((v,i) => {
                                                                     const deviceInfo = deviceDataset[v.index];
                                                                     return (
-                                                                        <li className={Board.recommend_item} onClick={(e) => {
+                                                                        <li key={i} className={Board.recommend_item} onClick={(e) => {
                                                                             selectDeviceRecommend(deviceInfo.id, deviceInfo.name, rowIdx)
                                                                             e.stopPropagation()
                                                                         }}>
-                                                                            {deviceInfo.name} {v.similarity}
+                                                                            {deviceInfo.name}
+                                                                            {/*{v.similarity}*/}
                                                                         </li>
                                                                     )
                                                                 })
                                                             }
                                                             {
-                                                                searchResults && searchResults.map(v => {
+                                                                searchResults && searchResults.map((v,i) => {
                                                                     const deviceInfo = deviceDataset[v];
                                                                     return (
-                                                                        <li className={Board.recommend_item} onClick={(e) => {
+                                                                        <li key={i} className={Board.recommend_item} onClick={(e) => {
                                                                             selectDeviceRecommend(deviceInfo.id, deviceInfo.name, rowIdx)
                                                                             e.stopPropagation()
                                                                         }}>
@@ -746,10 +822,11 @@ export function SaleBulkUpload(){
 }
 
 function SellerHintBoxArea({}){
-    const width = 180;
+    const width = 230;
     const unknownUserHintBox = useHintBox("매장에 등록되지 않은 사용자입니다", {
-        minWidth: width,
-        left: -(width+65),
+        maxWidth: width,
+        top: -45,
+        left: -75
     })
     return (
         <>

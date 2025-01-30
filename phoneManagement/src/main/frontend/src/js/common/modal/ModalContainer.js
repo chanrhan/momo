@@ -45,6 +45,7 @@ import {useLocation} from "react-router-dom";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
 import {DeviceRecommendModal} from "../../service/bulk_upload/DeviceRecommendModal";
+import {SelectSheetModal} from "../../service/bulk_upload/SelectSheetModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -62,6 +63,7 @@ const MODAL_COMPONENTS = {
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
     ImagePreview: ImagePreviewModal,
+    SelectSheet: SelectSheetModal,
 
     // shop
     Address: AddressApiModal,

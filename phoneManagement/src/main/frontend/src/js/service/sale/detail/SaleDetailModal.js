@@ -143,7 +143,8 @@ function SaleDetailModal(props){
     const [staff, setStaff] = useState([])
 
     const hintBox = useHintBox("법인인 경우 사업자등록번호 5자리를 입력해주세요.", {
-        maxWidth: 180
+        maxWidth: 180,
+        top: -60
     })
 
 
@@ -701,9 +702,11 @@ function SaleDetailModal(props){
                                         <AddSaleItem errorText={inputField.error.cust_cd} style={{
                                             marginTop: '11.5px'
                                         }}>
-                                            <label htmlFor='cust_cd' className={Popup.customer_label}>생년월일 / 사업자번호*</label>
-                                            <p className='hint_icon' onMouseOver={showHintModal}></p>
-                                            {hintBox.component}
+                                            <label htmlFor='cust_cd' className={Popup.customer_label}>생년월일 / 사업자번호*
+                                                <p className='hint_icon' onMouseOver={showHintModal}></p>
+                                                {hintBox.component}
+                                            </label>
+
                                             <div className={`${Popup.customer_inp_box}`}>
                                                 <CustomerCodeInput name='cust_cd' value={inputField.get('cust_cd')}
                                                                    className={cm(Popup.customer_inp)}

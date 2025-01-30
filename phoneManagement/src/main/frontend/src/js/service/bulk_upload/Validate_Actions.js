@@ -128,7 +128,7 @@ export const Validate_Actions = [
             return regex.test(str)
         },
         replace: (str: string)=>{
-            str = str.replaceAll(",","")
+            str = str.replace(/[\s원]/g,"").replaceAll(",","")
             return Number(str)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }
     },
