@@ -104,14 +104,19 @@ export function SaleBulkUpload(){
         setDraggingIndex(index);
 
         if (dragListRef && dragListRef.current[index]) {
-            // e.dataTransfer.setDragImage(dragListRef.current[index], 0, 0);
+            // e.dataTransfer.setDragImage(dragListRef.current[index], 0, 10);
             // e.dataTransfer.setDragImage(null, 0, 0);
+            // dragListRef.current[index].style.top = '10px'
         }
         e.dataTransfer.effectAllowed = "move";
     };
 
     const handleDragOver = (e, index) => {
         e.preventDefault(); // Allow drop
+        // console.table(dragListRef.current[index].style)
+        dragListRef.current[index].style.y = '10px'
+        console.log(dragListRef.current[index].style.y)
+
         if (index !== draggingIndex) {
             // const updatedItems = [...inputField.input];
             // const draggedItem = updatedItems.splice(draggingIndex, 1)[0];
@@ -663,10 +668,6 @@ export function SaleBulkUpload(){
 
     }
 
-    useEffect(() => {
-        console.log('update sellerCells')
-        console.table(sellerCells)
-    }, [sellerCells]);
 
     return (
         <div className={cm(Layout.sub)}>
