@@ -328,11 +328,12 @@
     top: 0;
     left: 0;
     width: 150%;
-    height: 150px;
+    max-height: 250px;
     background-color: #d9d9d9;
     z-index: 1;
     border-radius: 12px;
     overflow: hidden;
+    padding: 0 0 8px 0
 }
 
 .device_recommend.active{
@@ -350,9 +351,11 @@
 }
 
 .device_recommend .recommend_list{
-    margin-top: 2px;
+    margin-top: 4px;
     padding: 5px 8px 5px 8px;
     overflow-y: auto;
+    /*height: 200px;*/
+    max-height: 200px;
 }
 
 .device_recommend .recommend_list .recommend_item{
@@ -405,24 +408,28 @@
 .board .bulk_upload .td_board .tbody2 .tr .td:focus{
 
 }
-.board .bulk_upload .td_board .tbody2 .tr .td.error{
+.board .bulk_upload .td_board .tbody2 .tr .td.dragging .inp{
+    background-color: rgb(234, 242, 255);
+}
+
+.board .bulk_upload .td_board .tbody2 .tr .td.error:not(.dragging){
     border: 0.12rem solid red;
 }
-.board .bulk_upload .td_board .tbody2 .tr .td.error .inp{
+.board .bulk_upload .td_board .tbody2 .tr .td.error:not(.dragging) .inp{
     background-color: rgba(255, 0, 0, 0.18);
     cursor: pointer;
     color: red;
 }
 
-.board .bulk_upload .td_board .tbody2 .tr .td.error .inp:hover{
+.board .bulk_upload .td_board .tbody2 .tr .td.error:not(.dragging) .inp:hover{
     background-color: rgba(255, 190, 190, 0.27);
 }
 
-.board .bulk_upload .td_board .tbody2 .tr .td.error .icon_del{
+.board .bulk_upload .td_board .tbody2 .tr .td.error:not(.dragging) .icon_del{
     opacity: 0;
 }
 
-.board .bulk_upload .td_board .tbody2 .tr .td.error .inp:hover ~ .icon_del{
+.board .bulk_upload .td_board .tbody2 .tr .td.error:not(.dragging) .inp:hover ~ .icon_del{
     opacity: 1;
     position: absolute;
     cursor: pointer;

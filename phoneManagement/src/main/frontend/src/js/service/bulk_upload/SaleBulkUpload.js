@@ -59,6 +59,8 @@ export function SaleBulkUpload(){
     const [deviceCells, setDeviceCells] = useState([])
     const [sellerCells, setSellerCells] = useState([])
 
+    const [searchResults, setSearchResults] = useState(null)
+
     // drm: device recommend modal
     const [drmOpenIndex, setDrmOpenIndex] = useState(-1)
     const drmRef = useRef(null)
@@ -66,19 +68,18 @@ export function SaleBulkUpload(){
     const [errorMode, setErrorMode] = useState(false)
 
     const [draggingIndex, setDraggingIndex] = useState(null);
+    const [gripIndex, setGripIndex] = useState(null)
 
     const dragListRef = useRef([])
 
 
-    useEffect(() => {
-        console.log(draggingIndex)
-    }, [draggingIndex]);
-
     const handleDragStart = (e, index) => {
+        setGripIndex(index)
         setDraggingIndex(index);
 
         if (dragListRef && dragListRef.current[index]) {
-            e.dataTransfer.setDragImage(dragListRef.current[index], 0, 0);
+            // e.dataTransfer.setDragImage(dragListRef.current[index], 0, 0);
+            // e.dataTransfer.setDragImage(null, 0, 0);
         }
         e.dataTransfer.effectAllowed = "move";
     };
@@ -110,6 +111,7 @@ export function SaleBulkUpload(){
         const onClickAway = (e)=>{
             if(drmRef.current && !drmRef.current.contains(e.target)){
                 setDrmOpenIndex(-1);
+                setSearchResults(null)
                 window.removeEventListener('click', onClickAway, true)
             }
         }
@@ -310,6 +312,20 @@ export function SaleBulkUpload(){
         });
     }
 
+    const searchRecommends = (keyword)=>{
+        let results = [];
+        if(keyword){
+            deviceDataset.forEach((v,i)=>{
+                if(v.name.includes(keyword)){
+                    results.push(i)
+                }
+            })
+            setSearchResults(results)
+        }else{
+            setSearchResults(null)
+        }
+    }
+
     // 테이블의 단일 셀의 값을 변경하는 함수
     const handleInputData = (e,i,j)=>{
         const copy = [...data];
@@ -399,6 +415,8 @@ export function SaleBulkUpload(){
                         id: null,
                         recommends: null
                     };
+                }else if(type === COLUMN_INDEX.SELLER){
+                    copySellerCells[i] = undefined;
                 }
                 err[i] = true;
                 continue;
@@ -458,7 +476,7 @@ export function SaleBulkUpload(){
         if(error[rowIdx][COLUMN_INDEX.DEVICE] && deviceCells[rowIdx]?.recommends){
             const inputs = e.currentTarget.querySelectorAll("input")
             const targetEl: HTMLElement = inputs[1]
-            console.log(targetEl.outerHTML)
+            // console.log(targetEl.outerHTML)
 
             setDrmOpenIndex(rowIdx)
             if(targetEl){
@@ -473,7 +491,6 @@ export function SaleBulkUpload(){
     }
 
     const selectDeviceRecommend = (id, name, rowIdx)=>{
-        console.log('select recommend')
         setDrmOpenIndex(-1)
         setCellData(rowIdx, COLUMN_INDEX.DEVICE, name);
         setDeviceCells(prev=>{
@@ -484,11 +501,65 @@ export function SaleBulkUpload(){
             }
             return copy;
         })
+        setSearchResults(null)
         setCellError(rowIdx, COLUMN_INDEX.DEVICE, false)
     }
 
     const changeColumnOrder = (e)=>{
+        setData(prev=>{
+            let copy = [...prev]
+            const tempGripCol = copy.map((r, rowIdx)=>{
+                return r[gripIndex]
+            })
+            if(gripIndex < draggingIndex){
+                copy = copy.map((r:Array, rowIdx)=>{
+                    for(let i=0;i<r.length;++i){
+                        if(i >= gripIndex && i < draggingIndex){
+                            r[i] = r[i+1]
+                        }
+                    }
+                    r[draggingIndex] = tempGripCol[rowIdx]
+                    return r;
+                })
+            }else if(gripIndex > draggingIndex){
+                copy = copy.map((r:Array, rowIdx)=>{
+                    for(let i=r.length-1;i>0;--i){
+                        if(i <= gripIndex && i > draggingIndex){
+                            r[i] = r[i-1]
+                        }
+                    }
+                    r[draggingIndex] = tempGripCol[rowIdx]
+                    return r;
+                })
+            }
+            return copy;
+        })
+        setError(prev=>{
+            let copy = [...prev]
+            if(gripIndex < draggingIndex){
+                copy = copy.map((r: Array,rowIdx)=>{
+                    for(let i=0;i<r.length;++i){
+                        if(i >= gripIndex && i <= draggingIndex){
+                            r[i] = false;
+                        }
+                    }
+                    return r;
+                })
+            }else if(gripIndex > draggingIndex){
+                copy = copy.map((r: Array,rowIdx)=>{
+                    for(let i=0;i<r.length;++i){
+                        if(i <= gripIndex && i >= draggingIndex){
+                            r[i] = false;
+                        }
+                    }
+                    return r;
+                })
+            }
+            return copy;
+        })
 
+        setGripIndex(null)
+        setDraggingIndex(null)
     }
 
 
@@ -576,25 +647,35 @@ export function SaleBulkUpload(){
                                     return null;
                                 }
                             }
-                            console.log('------')
                             return <tr key={rowIdx} className={Board.tr}>
                                 {
-                                    r.map((c, ci) => {
+                                    r.map((c, colIdx) => {
                                         // const colIdx = ci
-                                        const colIdx = (ci + draggingIndex) % COLUMN_NAMES.length;
-                                        console.log(colIdx)
-                                        return <td key={colIdx} onClick={e => {
+                                        let currIdx = colIdx;
+                                        if(gripIndex !== null){
+                                            if(currIdx === draggingIndex){
+                                                currIdx = gripIndex
+                                            }else if(gripIndex < draggingIndex && currIdx >= gripIndex && currIdx <= draggingIndex){
+                                                currIdx = colIdx+1
+                                            }else if(gripIndex > draggingIndex && currIdx <= gripIndex && currIdx >= draggingIndex){
+                                                currIdx = colIdx-1
+                                            }
+                                        }
+
+                                        // console.log(colIdx)
+                                        return <td key={colIdx}
+                                                   className={cm(Board.td, `${error[rowIdx] && error[rowIdx][currIdx] && Board.error}`, `${currIdx === gripIndex && Board.dragging}`)}
+                                                   onClick={e => {
                                             if (colIdx === COLUMN_INDEX.DEVICE) {
                                                 // e.stopPropagation()
                                                 showDeviceRecommendModal(e, rowIdx)
                                             }
                                         }} onFocus={(e) => {
-                                            if (colIdx !== COLUMN_INDEX.DEVICE || !error[rowIdx][colIdx]) {
-                                                handleCellClick(rowIdx, colIdx)
+                                            if (colIdx !== COLUMN_INDEX.DEVICE || !error[rowIdx][currIdx]) {
+                                                handleCellClick(rowIdx, currIdx)
                                             }
-                                        }} onPaste={handlePaste}
-                                                   className={cm(Board.td, `${error[rowIdx] && error[rowIdx][colIdx] && Board.error}`)}>
-                                            <input value={data[rowIdx][colIdx]}
+                                        }} onPaste={handlePaste}>
+                                            <input value={data[rowIdx][currIdx]}
                                                    className={cm(Board.inp)}
                                                    maxLength={30}
                                                    onChange={(e) => {
@@ -610,11 +691,12 @@ export function SaleBulkUpload(){
                                                     <div className={cm(Board.device_recommend, `${rowIdx === drmOpenIndex && Board.active}`)}>
                                                         <input type="text" className={Board.search_cont}
                                                                value={data[rowIdx][colIdx]} onChange={e => {
+                                                                   searchRecommends(e.target.value)
                                                             setCellData(rowIdx, colIdx, e.target.value);
                                                         }}/>
                                                         <ul className={Board.recommend_list}>
                                                             {
-                                                                deviceCells[rowIdx]?.recommends && deviceCells[rowIdx].recommends.map(v => {
+                                                                !searchResults && deviceCells[rowIdx]?.recommends && deviceCells[rowIdx].recommends.map(v => {
                                                                     const deviceInfo = deviceDataset[v.index];
                                                                     return (
                                                                         <li className={Board.recommend_item} onClick={(e) => {
@@ -622,6 +704,19 @@ export function SaleBulkUpload(){
                                                                             e.stopPropagation()
                                                                         }}>
                                                                             {deviceInfo.name} {v.similarity}
+                                                                        </li>
+                                                                    )
+                                                                })
+                                                            }
+                                                            {
+                                                                searchResults && searchResults.map(v => {
+                                                                    const deviceInfo = deviceDataset[v];
+                                                                    return (
+                                                                        <li className={Board.recommend_item} onClick={(e) => {
+                                                                            selectDeviceRecommend(deviceInfo.id, deviceInfo.name, rowIdx)
+                                                                            e.stopPropagation()
+                                                                        }}>
+                                                                            {deviceInfo.name}
                                                                         </li>
                                                                     )
                                                                 })
