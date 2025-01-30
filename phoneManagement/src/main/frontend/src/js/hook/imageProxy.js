@@ -1,5 +1,6 @@
 import useApi from "./useApi";
 import defaultProfileImage from "../../images/profile_img1.jpg"
+import UnknownUserImage from "../../images/unknown_fill_icon.png"
 
 export function ImageProxy(){
     const {fileApi} = useApi();
@@ -9,6 +10,11 @@ export function ImageProxy(){
 
         if(!fileName){
             return url;
+        }
+
+
+        if(fileName == 0){
+            return UnknownUserImage;
         }
 
         const res = await fileApi.load(dir, fileName);

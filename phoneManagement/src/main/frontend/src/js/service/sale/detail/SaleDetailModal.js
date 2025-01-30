@@ -523,7 +523,9 @@ function SaleDetailModal(props){
 
 
     const onSubmit = ()=>{
+        console.log('on submit')
         if(inputField.validateAll()){
+            console.log('validated')
             if(props.sale_id){
                 submit()
                 return;
@@ -537,6 +539,7 @@ function SaleDetailModal(props){
 
 
     const submit = async (rsvMsgList)=>{
+        console.log('submit')
         const formData = new FormData();
         // return ;
 
@@ -602,7 +605,7 @@ function SaleDetailModal(props){
             })
         }else{
             // add
-            await saleApi.addSale(formData).then(({status,data})=>{
+            await saleApi.insertSale(formData).then(({status,data})=>{
                 // console.log(`${status} ${data}`)
                 if(status === 200 && data === true){
                     modal.openModal(ModalType.SNACKBAR.Info, {
@@ -730,7 +733,7 @@ function SaleDetailModal(props){
                                                           inputField={inputField} name='device_id' subject='모델명*'
                                                           search readOnly onClick={openDeviceSearchModal}/>
                                         </AddSaleItem>
-                                        <AddSaleItem error={inputField.error.device_nm}>
+                                        <AddSaleItem error={inputField.error.ct_actv_plan_nm}>
                                             <AddSaleInput value={inputField.get('ct_actv_plan_nm')}
                                                           inputField={inputField} name='ct_actv_plan'
                                                           subject='개통 요금제*'

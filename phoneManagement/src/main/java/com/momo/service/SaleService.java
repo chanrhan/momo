@@ -52,6 +52,10 @@ public class SaleService  {
 		return maxSaleId;
 	}
 
+	public void insertSaleAll(int currShopId, List<SaleVO> list){
+		saleMapper.insertSaleAll(currShopId, list);
+	}
+
 	public void insertAppointmentList(SaleVO vo){
 		List<SalePromiseVO> apmList = vo.getPmList();
 		if(apmList == null || apmList.isEmpty()){

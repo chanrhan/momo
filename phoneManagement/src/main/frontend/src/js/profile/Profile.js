@@ -137,7 +137,9 @@ export function Profile(){
                 {/*</label>*/}
                 <FileInput onChange={handleFileInput} enableDrop={false} className={User.profile_upload}
                            previewClassName={User.profile_img}
-                           src={imgPreview}/>
+                           src={imgPreview}>
+                    <button className={User.btn_del}></button>
+                </FileInput>
             </div>
 
             <button type="button" className={`${User.profile_view} btn btn_blue btn_medium`} onClick={openNameCardModal}>내 명함 보기</button>

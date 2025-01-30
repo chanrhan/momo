@@ -6,7 +6,7 @@ function SaleApi(accessToken){
     const axiosApi = AxiosApi();
 
     return {
-        addSale: async (data)=>{
+        insertSale: async (data)=>{
             const option = {
                 headers:{
                     'X-ACCESS-TOKEN': accessToken,
@@ -14,6 +14,9 @@ function SaleApi(accessToken){
                 }
             }
             return await axiosApi.post('/api/v1/sale/add',data,option);
+        },
+        insertSaleAll: async (data)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/add/bulk',data,accessToken);
         },
         getSaleAll : async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/all`, body, accessToken);

@@ -13,7 +13,9 @@ import useApi from "../../hook/useApi";
 import {useRenderlessModal} from "../../hook/useRenderlessModal";
 import {useHintBox} from "../../hook/useHintBox";
 import {ModalType} from "../../common/modal/ModalType";
+import saleApi from "../../api/SaleApi";
 
+const INIT_ROW_LENGTH = 10;
 
 const COLUMN_NAMES = [
     '개통날짜', // 0
@@ -37,7 +39,7 @@ const COLUMN_INDEX = {
 
 export function SaleBulkUpload(){
     const modal = useModal()
-    const {gmdApi, userApi} = useApi()
+    const {gmdApi, userApi, saleApi} = useApi()
     const tableRef = useRef()
     const [prevScrollY, setPrevScrollY] = useState(null)
 
@@ -65,8 +67,8 @@ export function SaleBulkUpload(){
         null
     ]
 
-    const [data, setData] = useState(Array(20).fill(Array(COLUMN_NAMES.length).fill('')))
-    const [error, setError] = useState(Array(20).fill(Array(COLUMN_NAMES.length).fill(false)))
+    const [data, setData] = useState(Array(INIT_ROW_LENGTH).fill(Array(COLUMN_NAMES.length).fill('')))
+    const [error, setError] = useState(Array(INIT_ROW_LENGTH).fill(Array(COLUMN_NAMES.length).fill(false)))
 
     const [selectedCell, setSelectedCell] = useState({
         row: 0,
@@ -93,6 +95,8 @@ export function SaleBulkUpload(){
     const [gripIndex, setGripIndex] = useState(null)
 
     const dragListRef = useRef([])
+
+    const [isSubmitting, setSubmitting] = useState(false)
 
 
     const handleDragStart = (e, index) => {
@@ -458,10 +462,18 @@ export function SaleBulkUpload(){
         return isError;
     }
 
+
+
     const validate = (type, arr: Array<string>)=>{
         let err = new Array(arr.length).fill(false);
-        let copyDeviceCells = [...deviceCells]
-        let copySellerCells = [...sellerCells]
+        let copyDeviceCells = null;
+        let copySellerCells = null;
+        if(type === COLUMN_INDEX.DEVICE){
+            copyDeviceCells = [...deviceCells]
+        }else if(type === COLUMN_INDEX.SELLER){
+            copySellerCells = [...sellerCells]
+        }
+
         for(const i in arr){
             const item = arr[i];
             if(ObjectUtils.isEmpty(item)){
@@ -523,9 +535,15 @@ export function SaleBulkUpload(){
     const validateAll = ()=>{
         const isError = validateCellRange(0,0, data.length-1, data[0].length-1)
         if(!isError){
-            submit()
+            setSubmitting(true)
         }
     }
+
+    useEffect(() => {
+        if(isSubmitting){
+            submit();
+        }
+    }, [isSubmitting]);
 
     const showDeviceRecommendModal = (e: FocusEvent<HTMLTableDataCellElement>, rowIdx)=>{
         if(error[rowIdx][COLUMN_INDEX.DEVICE] && deviceCells[rowIdx]?.recommends){
@@ -620,7 +638,7 @@ export function SaleBulkUpload(){
     }
 
 
-    const submit = () => {
+    const submit = async () => {
         const body = data.map((r, rowIdx)=>{
             return {
                 actv_dt: r[0],
@@ -628,12 +646,27 @@ export function SaleBulkUpload(){
                 cust_tel: r[2],
                 cust_cd: r[3],
                 device_id: deviceCells[rowIdx].id,
-                total_cms: r[5],
-                seller_id: r[6]
+                total_cms: r[5] ? r[5].replaceAll(",","") : 0,
+                seller_id: sellerCells[rowIdx] ?? r[6]
             }
         })
         console.table(body)
+        setSubmitting(false)
+        // return;
+        await saleApi.insertSaleAll(body).then(({status,data})=>{
+            if(status === 200 && data){
+                modal.openModal(ModalType.SNACKBAR.Info,{
+                    msg: "추가되었습니다."
+                })
+            }
+        })
+
     }
+
+    useEffect(() => {
+        console.log('update sellerCells')
+        console.table(sellerCells)
+    }, [sellerCells]);
 
     return (
         <div className={cm(Layout.sub)}>

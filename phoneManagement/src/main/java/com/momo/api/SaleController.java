@@ -228,6 +228,21 @@ public class SaleController {
 		return ResponseEntity.ok(true);
 	}
 
+	/**
+	 * 판매일보 추가=
+	 * @return
+	 */
+	@PostMapping("/add/bulk")
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Boolean> insertSaleAll(HttpSession session,
+											  @RequestBody List<SaleVO> list) {
+		int currShopId = commonService.getCurrentShopId(session);
+
+		saleService.insertSaleAll(currShopId, list);
+		return ResponseEntity.ok(true);
+	}
+
 
 
 

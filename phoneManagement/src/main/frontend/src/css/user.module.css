@@ -332,6 +332,22 @@
     z-index: 99;
     font-size:0;
 }
+.user_form.form_set .user_profile .profile_upload:hover .btn_del{
+    /*cursor: pointer;*/
+    /*position:absolute;*/
+    /*top: 0;*/
+    /*left: 35px;*/
+    /*width:30px;*/
+    /*height:30px;*/
+    /*background:#00bb35 url(../images/del_icon.png) no-repeat center / 100%;*/
+    /*z-index: 99;*/
+    /*font-size:0;*/
+}
+
+.user_form.form_set .user_profile .profile_upload:hover .btn_del:before{
+
+}
+
 .user_form.form_set .profile_view{position:relative; z-index:1; margin-top:14px; padding-top:10px; padding-bottom:10px; font-size:14px; font-weight:400;}
 .user_form.form_set .form_list{margin-top:22px; text-align:left;}
 .user_form.form_set .form_item + .form_item{margin-top:17px;}

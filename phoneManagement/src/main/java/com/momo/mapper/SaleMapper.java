@@ -10,6 +10,7 @@ import java.util.Map;
 public interface SaleMapper{
 	// Sale
 	public void insertSale(SaleVO vo);
+	public void insertSaleAll(int currShopId, List<SaleVO> list);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int currShopId, int saleId);
 	public int deleteSaleBulk(int currShopId, List<Integer> ids);
