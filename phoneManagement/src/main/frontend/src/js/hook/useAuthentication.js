@@ -33,11 +33,14 @@ export const useAuthentication = ()=>{
 
     const logout = ()=>{
         const refreshToken = localStorage.getItem('refresh_token')
+
         console.log('logout')
         localStorage.removeItem('authorization') // 웹페이지 Accesstoekn 쿠키 제거
-        publicApi.logout(refreshToken).then(({status,data})=>{
-            removeRefreshToken() // 웹페이지 Refresh 쿠키 제거
-        })
+        if(refreshToken){
+            publicApi.logout(refreshToken).then(({status,data})=>{
+                removeRefreshToken() // 웹페이지 Refresh 쿠키 제거
+            })
+        }
         dispatch(authActions.clear()) // 리액트 내장 변수 제거
         dispatch(userActions.deleteUserInfo())
     }
