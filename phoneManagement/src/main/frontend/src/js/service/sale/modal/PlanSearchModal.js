@@ -22,7 +22,7 @@ export function PlanSearchModal(props){
 
     const getCtPlan = async ()=>{
         const encodedKeyword = encodeURIComponent(keyword);
-        await gmdApi.getData(DYNAMIC_TYPE.ct_plan, encodedKeyword, props.provider).then(({status,data})=>{
+        await gmdApi.getData(DYNAMIC_TYPE.ct_plan, encodedKeyword, props.provider ?? '').then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))

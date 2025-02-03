@@ -9,10 +9,60 @@
 .dashboard .panel_head .panel_greeting{color:#141218; font-size:24px; font-weight:600;
     /*font-weight:700;*/
     line-height:30px;}
-.dashboard .panel_head .panel_standard{float:right; color:#2f2f3b; font-size:18px; font-weight:500; line-height:30px;}
-.dashboard .panel_head .panel_standard .span{color:#4781ff;}
+.dashboard .panel_body .panel_date_box{
+    position: relative;
+    height: 30px;
+}
+.dashboard .panel_body .panel_date_box .panel_standard{
+    float:right; color:#2f2f3b; font-size:18px; font-weight:500; line-height:30px;}
+.dashboard .panel_body .panel_date_box .panel_standard .span{
+    color:#4781ff;
+}
 
-.dashboard .panel_body{margin-top:28px;}
+.dashboard .panel_body .panel_date_box .panel_standard .span {
+    top: -1px;
+}
+
+.dashboard .panel_body .panel_date_box .panel_standard .span  .date_inp{
+    /*position: relative;*/
+    padding: 0 8px 0 8px;
+    background-color: white;
+    width: 145px;
+    border-radius: 8px;
+    text-align: right;
+    cursor: pointer;
+    color: black;
+}
+
+.dashboard .panel_body .panel_date_box .panel_standard .span  .date_inp .text_blue{
+    color: #4781ff;
+    margin-right: 1px;
+}
+
+.dashboard .panel_body .panel_date_box .panel_standard .span  .date_inp:hover{
+    background-color: #f3f3f3;
+}
+.dashboard .panel_body .panel_date_box .panel_standard .span .date_inp:before{
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 6px;
+    width: 24px;
+    height: 24px;
+    background: url("../images/date_icon.png") no-repeat center / 24px;
+    z-index: 199;
+    cursor: pointer;
+}
+
+.dashboard .panel_body{margin-top:10px;}
+.dashboard .panel_body .current_month_box{
+    border: 2px solid #4781ff;
+    border-radius: 14px;
+    padding: 5px 8px 12px 6px;
+}
+.dashboard .panel_body .panel_group{
+    margin-left: 8px;
+}
 .dashboard .panel_body .panel_group:nth-child(2){margin-top:19px;}
 .dashboard .panel_body .panel_group:nth-child(3){margin-top:11px;}
 .dashboard .panel_body .panel{display:inline-block; position:relative; vertical-align:top;}
@@ -96,6 +146,7 @@
 .dashboard .panel_body .panel.n3 .chart_panel .chart_map{
     font-size:14px; text-align:center; line-height:16px;
     height: 210px;
+    cursor: pointer;
 }
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab{position:absolute; left:0; right:0; bottom:16px; text-align:center;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item{display:inline-block; vertical-align:top;}

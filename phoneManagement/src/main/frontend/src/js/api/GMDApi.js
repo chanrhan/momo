@@ -6,7 +6,7 @@ function GMDApi(accessToken){
     // const axiosApiWithAccessToken = AxiosApiWithAccessToken();
 
     return {
-        getData: async (type, keyword, provider = '')=>{
+        getData: async (type, keyword = '', provider = '')=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd?type=${type}&keyword=${keyword}&provider=${provider}`, accessToken);
         },
         getSecondDeviceById: async (id)=>{

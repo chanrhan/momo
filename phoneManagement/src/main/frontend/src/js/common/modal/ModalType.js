@@ -1,11 +1,12 @@
 export const ModalType = {
     LAYER: {
         // common
-        Bulk_Upload: 'BulkUpload',
+        Admin_Bulk_Upload: 'BulkUpload',
         Invite: 'Invite',
         Payment_Card: 'Payment_Card',
         Charge_Point: 'ChargePoint',
         Image_Preview: 'ImagePreview',
+        Select_Sheet: 'SelectSheet',
 
         // shop
         Address: 'Address',
@@ -35,6 +36,8 @@ export const ModalType = {
         Reserve_Date: 'ReserveDate',
         Message_Preview: 'MessagePreview',
 
+        // bulk-upload
+
         // Task
         Used_Device_Cms: 'UsedDeviceCms',
 
@@ -55,7 +58,8 @@ export const ModalType = {
         // Select: 'Select',
         Dynamic_Select: 'DynamicSelect',
         More_Option: 'MoreOption',
-        Confirm: 'Confirm'
+        Confirm: 'Confirm',
+        Device_Recommend: 'DeviceRecommend'
     },
     SNACKBAR: {
         Alert: 'Alert',

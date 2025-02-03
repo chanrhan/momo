@@ -107,7 +107,7 @@
           AND pwd = #{pwd}
     </update>
 
-    <select id="getInnerStaffAll">
+    <select id="getInnerStaffExceptSelf">
         WITH sale as (
             SELECT sf.staff_id as id,
                     sf.role,
@@ -159,6 +159,50 @@
             (
                 select *
                 from result
+        ) as list
+
+    </select>
+
+    <select id="getInnerStaffAll">
+        WITH sale as (
+        SELECT sf.staff_id as id,
+        sf.role,
+        ac.name,
+        ac.tel,
+        ac.email,
+        sf.start_dt,
+        ac.last_login_dt,
+        sf.shop_id,
+        sf.approval_st
+        from tb_staff sf
+        left outer join tb_account ac on ac.id = sf.staff_id
+        where sf.shop_id = #{currShopId} and
+        sf.approval_st != 2
+        ), search as (
+        SELECT *
+        from sale
+        ), result as (
+        SELECT json_arrayagg(json_object(
+        'id',id,
+        'role',role,
+        'name',name,
+        'tel',tel,
+        'email',email,
+        'last_login_dt',last_login_dt,
+        'start_dt',start_dt,
+        'shop_id',shop_id,
+        'approval_st',approval_st
+        ))
+        from search
+        )
+
+        select (
+        select IFNULL(count(*),0)
+        from sale
+        ) as total_cnt,
+        (
+        select *
+        from result
         ) as list
 
     </select>

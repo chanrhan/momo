@@ -150,9 +150,6 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
         }
     }
 
-    useEffect(() => {
-        console.log(yAxisTicksUnit)
-    }, [yAxisTicksUnit]);
 
     const getLabelArray = (dateArray)=>{
         const labels = [];

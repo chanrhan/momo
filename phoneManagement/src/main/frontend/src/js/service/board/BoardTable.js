@@ -2,7 +2,7 @@ import {cm, cmc} from "../../utils/cm";
 import Board from "../../../css/board.module.css";
 import {useRef} from "react";
 
-export function BoardTable({caption, colgroup, children, tableRef, style, onScrollLimit, className}){
+export function BoardTable({caption, colgroup, children, tableRef, style, onScrollLimit, className, onKeyDown}){
     const handleScroll = (e: UIEvent)=>{
         const target = e.target;
 
@@ -19,7 +19,7 @@ export function BoardTable({caption, colgroup, children, tableRef, style, onScro
 
     return (
         <div className={`board_body ${Board.sticky} ${className}`} style={style} onScroll={handleScroll}>
-            <table className={Board.td_board} ref={tableRef}>
+            <table className={Board.td_board} ref={tableRef} onKeyDown={onKeyDown}>
                 <caption>{caption}</caption>
                 <colgroup>
                     {colgroup}
@@ -49,7 +49,8 @@ export function Btbody({br, children}){
     )
 }
 
-export function Bth({children, className, checked, checkbox, name, sort, onClick, onCheck}){
+export function Bth({index, children, className, checked,
+                        checkbox, name, sort, onClick, onCheck, onMouseOver}){
     const thRef = useRef()
 
     const resizeColumn = (e) => {
@@ -76,8 +77,8 @@ export function Bth({children, className, checked, checkbox, name, sort, onClick
     };
 
     return (
-        <th className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`}
-            scope='col' onClick={onClick} ref={thRef}>
+        <th key={index} className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`}
+            scope='col' onClick={onClick} onMouseOver={onMouseOver} ref={thRef}>
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>
@@ -94,11 +95,12 @@ export function Bth({children, className, checked, checkbox, name, sort, onClick
     )
 }
 
-export function Btd({children, width, className, stopPropagation, checkbox, onCheck, checked, name}) {
+export function Btd({children, width, className, stopPropagation, checkbox, onCheck, checked, name, style}) {
     return (
         <td className={`${Board.td} ${checkbox && 'ta_c'} ${className ? className : ''}`}
             style={{
-                width: `${width}px`
+                width: `${width}px`,
+                ...style
             }}
             onClick={e=>{
             if(checkbox || stopPropagation)

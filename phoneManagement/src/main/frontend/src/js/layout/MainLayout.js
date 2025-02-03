@@ -31,7 +31,9 @@ function MainLayout(){
             <MainHeader/>
             <main>
                 <Sidebar/>
+
                 <div className={Layout.contents}>
+
                     {/*{*/}
                     {/*    userInfo.curr_shop_id === -1 ? <Outlet/>*/}
                     {/*        : <LayoutSelector approval_state={userInfo.approval_st}/>*/}
@@ -65,7 +67,7 @@ function LayoutSelector({shopName, approval_state}){
         case -1:
             return (
                 <div className={cm(User.approval)}>
-                    <h2 className={cm(User.approval_title)}>매장 없음</h2>
+                <h2 className={cm(User.approval_title)}>매장 없음</h2>
                     <p className={cm(User.approval_text)}>새로운 매장을 추가하거나 기존 매장에 승인 요청을 보내세요.</p>
                     <Link to='/shop/list'>
                         <span className={cm(User.approval_stat)}>매장 등록하기</span>

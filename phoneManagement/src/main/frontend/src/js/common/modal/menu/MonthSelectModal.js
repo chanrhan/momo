@@ -5,7 +5,7 @@ import {DateUtils} from "../../../utils/DateUtils";
 import useModal from "../../../hook/useModal";
 import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
-export function MonthSelectModal({onSelect, children}){
+export function MonthSelectModal({className, onSelect, children}){
     const renderlessModal = useRenderlessModal(`RDL_MONTH_SELECT_${onSelect}`)
 
     const today = new Date();
@@ -26,7 +26,7 @@ export function MonthSelectModal({onSelect, children}){
     }
 
     return (
-        <div style={{
+        <div className={className} style={{
             display: "inline-block",
             position: "relative",
             zIndex: 100
@@ -36,7 +36,7 @@ export function MonthSelectModal({onSelect, children}){
                 <div className={Calender.popup_control}>
                     <span className={Calender.popup_year}>{year}년</span>
                     <button type="button" className={cm(Calender.control_btn, Calender.btn_prev)} onClick={prevYear}>이전</button>
-                    <button type="button" className={cm(Calender.control_btn, Calender.btn_next)} onClick={nextYear} disabled={!DateUtils.hasNextYear(year)}>다음</button>
+                    <button type="button" className={cm(Calender.control_btn, Calender.btn_next)} onClick={nextYear} disabled={!DateUtils.hasNextYear(year)}></button>
                 </div>
                 <ul className={Calender.popup_list}>
                     {

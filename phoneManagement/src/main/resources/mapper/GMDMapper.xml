@@ -112,7 +112,7 @@
                 ct_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -157,7 +157,7 @@
                 exsvc_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -201,7 +201,7 @@
                 internet_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -245,7 +245,7 @@
                 tv_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
