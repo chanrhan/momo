@@ -25,14 +25,27 @@ export function useHintBox(content, props) {
         }
     }, [active]);
 
-    const COMPONENT = <HintBox {...props} active={active} top={pos.top} componentRef={componentRef}>
+    let top = pos.top ;
+    let left = pos.left;
+    if(props){
+        if(props.top){
+            top += props.top
+        }
+        if(props.left){
+            left += props.left
+        }
+    }
+
+
+    const COMPONENT = <HintBox {...props} top={top} left={left} active={active} componentRef={componentRef}>
         {content}
     </HintBox>
 
     const open = (e: MouseEvent)=>{
         const {top, left} = MouseEventUtils.getAbsolutePos(e)
         setPos({
-            top: top-80
+            top: top,
+            left: left
         })
         setActive(true)
     }

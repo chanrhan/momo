@@ -15,6 +15,9 @@ public class SecurityContextUtil {
 	public static String getUsername(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("principal: {}", authentication.getPrincipal());
+		if(authentication.getPrincipal().equals("anonymousUser")){
+			return "";
+		}
 		return ((UserDetailsImpl) authentication.getPrincipal()).getUsername();
 	}
 

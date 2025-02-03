@@ -11,7 +11,7 @@ import {ModalType} from "../../../common/modal/ModalType";
 import useUserInfo from "../../../hook/useUserInfo";
 import {ImageProxy} from "../../../hook/imageProxy";
 
-export function DashboardInfo({}){
+export function DashboardInfo(){
     const {fileApi} = useApi();
     const modal = useModal();
     const nav = useNavigate()
@@ -126,13 +126,11 @@ export function DashboardInfo({}){
                                              onChange={updateNickname}/>
                     </div>
                 </div>
-
                 {
                     userInfo.role === 1 && <Link to='/shop/register'>
                         <button type="button" className={cm(Dashboard.company_add)}>매장 추가하기</button>
                     </Link>
                 }
-
             </div>
             <DashboardSchedule userInfo={userInfo}/>
         </div>

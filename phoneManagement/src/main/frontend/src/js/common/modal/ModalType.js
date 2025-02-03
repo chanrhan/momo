@@ -1,11 +1,12 @@
 export const ModalType = {
     LAYER: {
         // common
-        Bulk_Upload: 'BulkUpload',
+        Admin_Bulk_Upload: 'BulkUpload',
         Invite: 'Invite',
         Payment_Card: 'Payment_Card',
         Charge_Point: 'ChargePoint',
         Image_Preview: 'ImagePreview',
+        Select_Sheet: 'SelectSheet',
 
         // shop
         Address: 'Address',
@@ -33,15 +34,20 @@ export const ModalType = {
         Sale_Filter: 'SaleFilter',
         Reserve_Message: 'ReserveMessage',
         Reserve_Date: 'ReserveDate',
+        Message_Preview: 'MessagePreview',
+
+        // bulk-upload
 
         // Task
         Used_Device_Cms: 'UsedDeviceCms',
+
+        Confirm: 'Confirm',
 
         //todo
         Todo_Add: 'TodoAdd',
 
         // study_private
-        Add_Study_Node: 'AddStudyNode'
+        Add_Study_Node: 'AddStudyNode',
     },
     MENU: {
         // Change_Shop: 'ChangeShop',
@@ -51,12 +57,15 @@ export const ModalType = {
         Select_Date: 'SelectDate',
         // Select: 'Select',
         Dynamic_Select: 'DynamicSelect',
-        More_Option: 'MoreOption'
+        More_Option: 'MoreOption',
+        Confirm: 'Confirm',
+        Device_Recommend: 'DeviceRecommend'
     },
     SNACKBAR: {
         Alert: 'Alert',
         Warn: 'Warning',
-        Info: 'Info'
+        Info: 'Info',
+
     },
     TOAST: {
 

@@ -39,10 +39,17 @@
 }
 .graph .graph2{position:relative; width:100%; margin-top: 18px}
 .graph .graph2 .graph_top{position:relative;}
-.graph .graph2 .graph_top .tab.type4{position:relative; float: right; top:0; right:0;}
+.graph .graph2 .graph_top .tab.type4{position:relative; float: right; top:-10px; right:0;}
+.graph .graph2 .graph_top .tab.type4 .tab_btn{
+    /*z-index: 100;*/
+}
+
+
 .graph .graph2 .graph_box{position: inherit; height: 512px; margin-top:14px;font-size:14px;line-height:16px;}
 .graph .graph2 .tab.type5{position:inherit; top: 15px; left:-10px; right:-10px; bottom:32px;}
 .graph .graph2 .tab.type5 .tab_item{width:16.66%;}
+
+
 
 .graph .graph2 .chart_text{position:absolute; top:26px; left:10px; padding-left:60px; color:#4781ff; font-size:22px; font-weight:600; line-height:24px; letter-spacing:-0.04em;}
 

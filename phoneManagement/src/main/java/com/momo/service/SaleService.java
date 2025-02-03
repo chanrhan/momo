@@ -52,6 +52,10 @@ public class SaleService  {
 		return maxSaleId;
 	}
 
+	public void insertSaleAll(int currShopId, List<SaleVO> list){
+		saleMapper.insertSaleAll(currShopId, list);
+	}
+
 	public void insertAppointmentList(SaleVO vo){
 		List<SalePromiseVO> apmList = vo.getPmList();
 		if(apmList == null || apmList.isEmpty()){
@@ -213,6 +217,10 @@ public class SaleService  {
 		return rst;
 	}
 
+	public int changeOrderSaleFiles(int currShopId, int saleId, List<Integer> list){
+		return saleMapper.changeOrderSaleFiles(currShopId, saleId, list);
+	}
+
 	public int deleteSaleFileAll(SaleVO vo){
 		return saleMapper.deleteAllSaleFiles(vo);
 	}
@@ -330,7 +338,7 @@ public class SaleService  {
 	}
 
 	// 각 항목별 진행 현황 (완료 개수, 총 개수)
-	public List<Map<String,Object>> getWorkInProcess(int currShopId, String date){
+	public List<Integer> getWorkInProcess(int currShopId, String date){
 		return saleMapper.getWorkInProcess(currShopId, date);
 	}
 
@@ -391,8 +399,8 @@ public class SaleService  {
 	public Map<String,Object> getIstmRatio(CommonVO vo){
 		return saleMapper.getIstmRatio(vo);
 	}
-	public Map<String,Object> getProviderRatio(CommonVO vo){
-		return saleMapper.getProviderRatio(vo);
+	public Map<String,Object> getMakerRatio(CommonVO vo){
+		return saleMapper.getMakerRatio(vo);
 	}
 	public Map<String,Object> getActvTpRatio(CommonVO vo){
 		return saleMapper.getActvTpRatio(vo);

@@ -14,6 +14,8 @@ const DATE_TYPE = [
 
 const Y_AXIS_TICKS_PER = 20;
 
+const DAYS_RANGE = 90;
+
 export function PerformanceChart({userId, categoryTab, chartClassName, pannelClassName}){
     const {saleApi} = useApi();
     const [dateTab, setDateTab] = useState(0) // 일별, 주별, 월별
@@ -24,10 +26,38 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
 
     const [yAxisTicksUnit, setYAxisTicksUnit] = useState(1)
 
+    const [initIndex, setInitIndex] = useState({
+        min: DAYS_RANGE - 15,
+        max: DAYS_RANGE
+    })
+
     const today = new Date();
 
     useEffect(() => {
-        getGraph(20)
+        switch (dateTab){
+            case 0:
+                setInitIndex({
+                    min: DAYS_RANGE - 15,
+                    max: DAYS_RANGE
+                })
+                break;
+            case 1:
+                setInitIndex({
+                    min: 18,
+                    max: 24
+                })
+                break;
+            case 2:
+                setInitIndex({
+                    min: 18,
+                    max: 24
+                })
+                break;
+        }
+    }, [dateTab]);
+
+    useEffect(() => {
+        getGraph(DAYS_RANGE)
     }, [userId, categoryTab, dateTab]);
 
     const getGraph = async (range)=>{
@@ -35,67 +65,21 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
         toDate.setDate(today.getDate())
         let fromDate = new Date();
 
-        // if(!DateUtils.equalYM(today, toDate)){
-        //     fromDate.setDate(1)
-        //     const monthInfo = DateUtils.getMonthInfo(fromDate.getFullYear(), fromDate.getMonth());
-        //     switch (dateTab){
-        //         case 0:
-        //             // fromDate.setDate(fromDate.getDate()-range)
-        //             toDate.setDate(monthInfo.totalDays)
-        //             // setGraphLabel(getDayLabelArray(fromDate, toDate))
-        //             break;
-        //         case 1:
-        //             // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
-        //             // DateUtils.addWeek(toDate, monthInfo.totalWeek);
-        //             toDate.setDate(monthInfo.totalDays)
-        //             // setGraphLabel(getWeekLabelArray(fromDate, toDate))
-        //             break;
-        //         case 2:
-        //             // fromDate.setMonth(fromDate.getMonth()-5)
-        //             DateUtils.addMonth(toDate, 6);
-        //             const monthInfo2 = DateUtils.getMonthInfo(toDate.getFullYear(), toDate.getMonth());
-        //             toDate.setDate(monthInfo2.totalDays);
-        //             // setGraphLabel(getMonthLabelArray(fromDate, toDate))
-        //             break;
-        //     }
-        // }else{
-        //     toDate.setDate(today.getDate())
-        //     fromDate.setDate(today.getDate())
-        //     switch (dateTab){
-        //         case 0:
-        //             // fromDate.setDate(fromDate.getDate()-range)
-        //             DateUtils.subDate(fromDate, range);
-        //             // setGraphLabel(getDayLabelArray(fromDate, toDate))
-        //             break;
-        //         case 1:
-        //             // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
-        //             DateUtils.subWeek(fromDate, 6);
-        //             // setGraphLabel(getWeekLabelArray(fromDate, toDate))
-        //             break;
-        //         case 2:
-        //             // fromDate.setMonth(fromDate.getMonth()-5)
-        //             DateUtils.subMonth(fromDate, 6);
-        //             fromDate.setDate(1)
-        //             // setGraphLabel(getMonthLabelArray(fromDate, toDate))
-        //             break;
-        //     }
-        // }
         toDate.setDate(today.getDate())
         fromDate.setDate(today.getDate())
         switch (dateTab){
             case 0:
                 // fromDate.setDate(fromDate.getDate()-range)
                 DateUtils.subDate(fromDate, range);
-                // setGraphLabel(getDayLabelArray(fromDate, toDate))
                 break;
             case 1:
                 // fromDate.setDate(fromDate.getDate()-(7*(6-2))-(toDate.getDay()))
-                DateUtils.subWeek(fromDate, 6);
+                DateUtils.subWeek(fromDate, 24);
                 // setGraphLabel(getWeekLabelArray(fromDate, toDate))
                 break;
             case 2:
                 // fromDate.setMonth(fromDate.getMonth()-5)
-                DateUtils.subMonth(fromDate, 6);
+                DateUtils.subMonth(fromDate, 24);
                 fromDate.setDate(1)
                 // setGraphLabel(getMonthLabelArray(fromDate, toDate))
                 break;
@@ -129,16 +113,17 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
         if(rst != null){
             const {status, data}  = rst;
             let unit = 1;
+            let max = 0;
             if(status === 200 && data){
                 if(data.value){
                     const parsed = JSON.parse(data.value)
                     setGraphData([parsed])
 
-                    unit = Math.max(...parsed) / Y_AXIS_TICKS_PER;
+                    max = Math.max(...parsed)
                 }else if(data.value1 && data.value2){
                     const parsed1 = JSON.parse(data.value1)
                     const parsed2 = JSON.parse(data.value2)
-                    unit = Math.max(...parsed1, ...parsed2) / Y_AXIS_TICKS_PER;
+                    max = Math.max(...parsed1, ...parsed2)
 
                     setGraphData([
                         parsed1,
@@ -151,15 +136,21 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
                     setGraphLabel(getLabelArray(parsed))
                     setGraphTooltip(parsed)
                 }
-                if(unit > 10000){
-                    unit = Math.ceil(unit /= 10000) * 10000;
-                }
-                unit = Math.ceil(unit)
-                setYAxisTicksUnit(unit);
+                // set unit
+                // console.log(`before unit: ${unit}`)
+                // if(max >= 10000){
+                //     unit = 10000;
+                // }else if(max >= 5000){
+                //     unit = 5000;
+                // }
+                // // unit = Math.ceil(unit)
+                // setYAxisTicksUnit(unit);
 
             }
         }
     }
+
+
     const getLabelArray = (dateArray)=>{
         const labels = [];
         for(const idx in dateArray){
@@ -211,8 +202,6 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
                                 <div key={i}>{title}</div>
                             )
                         }
-
-
                     })}
                 </div>
                 <div className={Graph.tooltip_body}>
@@ -245,20 +234,36 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
             </div>
         )
     }
+
+    const onPan = ({chart})=>{
+        const xScale = chart.scales.x;
+        const min = xScale.min; // 현재 X축 최소값
+        const max = xScale.max; // 현재 X축 최대값
+
+        // console.log(`X-axis range: ${min} - ${max}`);
+
+        // 왼쪽 끝으로 도달했을 때 처리
+        if (min <= 0) {
+            // console.log('Left edge reached!');
+            // 추가 동작: 데이터 로드 또는 알림 표시
+        }
+    }
+
     return (
         <>
             <div className={chartClassName}>
                 <MultiLineChartInstance tooltip_disabled color='blue'
                                         tooltips={graphTooltip} labels={graphLabel}
                                         data={graphData} yAxisCallback={v => {
-                    if (!Number.isInteger(v) || v % yAxisTicksUnit !== 0) {
+                    if (!Number.isInteger(v)) {
                         return;
                     }
                                        if(categoryTab < 2) {
                                            return `${Math.round(v)}개`
                                        }
                                        return `${NumberUtils.toPrice(v)}원`
-                }} onCreateTooltip={onCreateTooltip}/>
+                }} onCreateTooltip={onCreateTooltip} onPan={onPan}
+                                        initMinIndex={initIndex.min} initMaxIndex={initIndex.max}/>
             </div>
 
             <div className={pannelClassName}>

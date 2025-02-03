@@ -12,6 +12,7 @@ import {ModalType} from "../common/modal/ModalType";
 import useUserInfo from "../hook/useUserInfo";
 import {useObjectInputField} from "../hook/useObjectInputField";
 import {ImageProxy} from "../hook/imageProxy";
+import {FileInput} from "../common/module/FileInput";
 
 export function Profile(){
     const modal = useModal();
@@ -27,6 +28,9 @@ export function Profile(){
     const [pfp, setPfp] = useState(null)
     const [imgPreview, setImgPreview] = useState(null)
 
+    const [isActive, setActive] = useState(false);
+
+
 
     useEffect(() => {
         getPfp()
@@ -38,10 +42,9 @@ export function Profile(){
         })
     }
 
-    const handleFileInput = e=>{
-        const files = e.target.files
-        console.table(files)
-        setPfp(files)
+    const handleFileInput = (files)=>{
+        // const files = e.target.files
+        setPfp(files[0])
         if(files){
             const reader = new FileReader()
             reader.readAsDataURL(files[0])
@@ -72,10 +75,8 @@ export function Profile(){
             if(status === 200 && data){
                 if(pfp){
                     const formData = new FormData();
-                    const files = Array.prototype.slice.call(pfp);
-                    files.forEach((file)=>{
-                        formData.append('file', file);
-                    })
+                    formData.append('file', pfp);
+                    // console.table(formData)
                     userApi.updatePfp(formData).then(({status,data})=>{
                         if(status === 200 && data){
                             modal.openModal(ModalType.SNACKBAR.Info, {
@@ -93,6 +94,24 @@ export function Profile(){
         })
     }
 
+    const handleDragStart = ()=>{
+        setActive(true)
+    }
+
+    const handleDragEnd = ()=>{
+        setActive(false)
+    }
+
+    const handleDragOver = (e)=>{
+        e.preventDefault();
+    }
+
+    const handleDrop = (e)=>{
+        e.preventDefault();
+
+        setActive(false)
+    }
+
     return (
         <form className={cm(User.user_form, User.form_set)}>
             <div className={cm(User.user_logo)}>
@@ -101,17 +120,23 @@ export function Profile(){
 
             <h2 className={cm(User.user_title)}>내 정보 설정</h2>
 
-            <div className={cm(User.user_profile)}>
-                <div className={cm(User.profile_img)}>
-                    <img className={cm(User.img)} src={imgPreview} alt="프로필 이미지"/>
-                </div>
+            <div className={cm(User.user_profile, `${isActive && User.active}`)}
+                 onDragEnter={handleDragStart}
+                 onDragLeave={handleDragEnd}
+                 onDragOver={handleDragOver}
+                 onDrop={handleDrop}>
+                {/*<div className={cm(User.profile_img)}>*/}
+                {/*    <img className={cm(User.img)} src={imgPreview} alt="프로필 이미지"/>*/}
+                {/*</div>*/}
 
-                <label htmlFor='pfp' className={cm(User.profile_upload)}>
-                    프로필 업로드
-                </label>
-                <input type='file' id='pfp' onChange={handleFileInput} style={{
-                    visibility: "hidden"
-                }}/>
+                {/*<label htmlFor='pfp' className={cm(User.profile_upload)}>*/}
+                {/*    프로필 업로드*/}
+                {/*</label>*/}
+                <FileInput onChange={handleFileInput} enableDrop={false} className={User.profile_upload}
+                           previewClassName={User.profile_img}
+                           src={imgPreview}>
+                    {/*<button className={User.btn_del}></button>*/}
+                </FileInput>
             </div>
 
             <button type="button" className={`${User.profile_view} btn btn_blue btn_medium`} onClick={openNameCardModal}>내 명함 보기</button>

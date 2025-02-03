@@ -17,20 +17,18 @@ export function ReserveDateModal(props){
     const [isFromToday, setIsFromToday] = useState(true);
     const [selected, setSelected] = useState(0)
 
-    console.log(props.actv_dt)
-
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Reserve_Date)
     }
 
     const setDate = (year,month, day)=>{
         const today = new Date();
-        if(year < today.getFullYear() || month < today.getMonth()+1 || day < today.getDate()){
-            modal.openModal(ModalType.SNACKBAR.Warn,{
-                msg: "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
-            })
-            return;
-        }
+        // if(year < today.getFullYear() || month < today.getMonth()+1 || day < today.getDate()){
+        //     modal.openModal(ModalType.SNACKBAR.Warn,{
+        //         msg: "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
+        //     })
+        //     return;
+        // }
         inputField.put('rsv_dt', DateUtils.formatYYMMdd(year,month, day));
         setSelected(0)
     }
@@ -38,7 +36,7 @@ export function ReserveDateModal(props){
 
     const submit = ()=>{
         if(props.onSubmit){
-            const rsv_tp = selected <=2 ? selected : 3;
+            const rsv_tp = selected <= 2 ? selected : 3;
             let rsv_dt = '';
             let dday = 0;
 
@@ -51,8 +49,8 @@ export function ReserveDateModal(props){
                 }
             }else {
                 const rd = isFromToday ? new Date() : new Date(props.actv_dt);
-                console.log(props.actv_dt)
-                console.log(rd)
+                // console.log(props.actv_dt)
+                // console.log(rd)
                 if (selected === 1 || selected >= 3) {
                     if (selected === 1) {
                         dday = Number(inputField.get('dday_tp_d'));
@@ -65,7 +63,7 @@ export function ReserveDateModal(props){
                 } else if (selected === 2) {
                     dday = Number(inputField.get('dday_tp_m'));
                     const afterDate = new Date(rd);
-                    afterDate.setMonth(rd.getMonth() + 1 + dday);
+                    afterDate.setMonth(rd.getMonth() + dday);
                     const dplus = DateUtils.dateDiff(rd, afterDate);
                     rd.setDate(rd.getDate() + dplus);
                     rsv_dt = DateUtils.formatYYMMdd(rd.getFullYear(), rd.getMonth() + 1, rd.getDate())
@@ -82,11 +80,22 @@ export function ReserveDateModal(props){
         }
     }
 
+    const handleBlock = (year, month, day)=>{
+        const date = new Date(DateUtils.formatYYMMdd(year, month,day));
+        let diff = 0;
+        if(isFromToday){
+            diff =  DateUtils.dateDiffFromToday(date);
+        }else{
+            diff = DateUtils.dateDiff(new Date(props.actv_dt), date)
+        }
+        return diff < -1;
+    }
+
     return (
         <LayerModal {...props} top={30}>
             <div className={Popup.popup_title}>예약 날짜 설정</div>
 
-            <form className={Popup.reservation}>
+            <div className={Popup.reservation}>
                 <div className={Popup.popup_cont}>
                     <div className={Popup.popup_head_box}>
                             <span className={cm(Popup.today_switch)}>
@@ -97,14 +106,21 @@ export function ReserveDateModal(props){
                                     }}><span className={Popup.span}>on/off</span></label>
                             </span>
                     </div>
-                    <ul className="reservation_List">
+                    <ul className="reservation_List" style={{
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        maxHeight: '380px'
+                    }}>
                         <li key={0} className={cm(Popup.reservation_item)}>
                             <div className={Popup.reservation_radio}>
                                 <input type="radio" name='rsv_radio_0' className={Popup.input}
                                        checked={selected === 0}/>
                                 <label htmlFor="rsv_radio_0" className={Popup.label}>선택</label>
                             </div>
-                            <DateSelectModule rootClassName={Popup.reservation_date} onSelect={setDate}>
+                            <DateSelectModule rootClassName={Popup.reservation_date}
+                                              onSelect={setDate}
+                                              blockCallback={handleBlock}
+                            >
                                 <input type="text" className={cmc(Popup.inp)} value={inputField.get('rsv_dt')}
                                        placeholder="직접입력"
                                        readOnly/>
@@ -152,7 +168,7 @@ export function ReserveDateModal(props){
                 <div className={Popup.popup_btn_box}>
                     <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
                 </div>
-            </form>
+            </div>
 
             <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>
         </LayerModal>

@@ -11,7 +11,7 @@ function useUserInfo(){
         await userApi.getUser().then(({status,data})=>{
             if(status === 200 && data){
                 dispatch(userActions.setUserInfo(data))
-                console.table(data)
+                // console.table(data)
             }
         })
     }

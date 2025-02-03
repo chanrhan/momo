@@ -7,7 +7,7 @@ import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
 import AddShopModal from "../../shop/modal/AddShopModal";
 import AlertModal from "./snackbar/AlertModal";
 import MenuModalTest from "../../test/MenuModalTest";
-import SaleDetailModal from "../../service/sale/modal/SaleDetailModal";
+import SaleDetailModal from "../../service/sale/detail/SaleDetailModal";
 import SecondDeviceSearchModal from "../../service/sale/modal/SecondDeviceSearchModal";
 import SaleCardModal from "../../service/sale/modal/SaleCardModal";
 import SaleCombModal from "../../service/sale/modal/SaleCombModal";
@@ -27,7 +27,7 @@ import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
 import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
 import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
 import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
-import {BulkUploadModal} from "../../admin/modal/BulkUploadModal";
+import {AdminBulkUploadModal} from "../../admin/modal/AdminBulkUploadModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
 import {ChargePointModal} from "../../profile/modal/ChargePointModal";
 import {PaymentCardModal} from "../../profile/modal/PaymentCardModal";
@@ -41,6 +41,11 @@ import {HintModal} from "./tooptip/HintModal";
 import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
 import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 import {AddressApiModal} from "../../shop/modal/AddressApiModal";
+import {useLocation} from "react-router-dom";
+import {ConfirmModal} from "./snackbar/ConfirmModal";
+import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
+import {DeviceRecommendModal} from "../../service/bulk_upload/DeviceRecommendModal";
+import {SelectSheetModal} from "../../service/bulk_upload/SelectSheetModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -53,11 +58,12 @@ const MODAL_COMPONENTS = {
     // common
     DynamicSelect: DynamicSelectModal,
     MoreOption: MoreOptionModal,
-    BulkUpload: BulkUploadModal,
+    BulkUpload: AdminBulkUploadModal,
     Invite: InviteModal,
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
     ImagePreview: ImagePreviewModal,
+    SelectSheet: SelectSheetModal,
 
     // shop
     Address: AddressApiModal,
@@ -89,6 +95,8 @@ const MODAL_COMPONENTS = {
     SaleWtPlan: SaleWtPlanModal,
     SaleUsedPhone: SaleUsedDeviceModal,
 
+    DeviceRecommend: DeviceRecommendModal,
+
     // sale common
     DeviceSearch: DeviceSearchModal,
     PlanSearch: PlanSearchModal,
@@ -102,6 +110,7 @@ const MODAL_COMPONENTS = {
     SaleFilter: SaleFilterModal,
     ReserveMessage: ReserveMessageModal,
     ReserveDate: ReserveDateModal,
+    MessagePreview: MessagePreviewModal,
 
     // Task
     UsedDeviceCms: UsedDeviceCmsModal,
@@ -110,13 +119,13 @@ const MODAL_COMPONENTS = {
     Warning: WarningModal,
     Info: InfoModal,
 
+    Confirm: ConfirmModal,
     // study private
     AddStudyNode: AddStudyNodeModal
 }
 
-
-
 function ModalContainer(){
+    const location = useLocation()
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
@@ -128,6 +137,10 @@ function ModalContainer(){
         }
     };
 
+    useEffect(() => {
+
+    }, [location]);
+
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList.list)){
             return;
@@ -138,10 +151,11 @@ function ModalContainer(){
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
             // console.log(`${topComponentRef.current} and ${e.target}`)
+            // console.log('before capture')
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                 // console.log('capture')
                 modal.closeAndLockModal(modalName)
-                window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
             }
         }
@@ -155,6 +169,7 @@ function ModalContainer(){
             //     modal.unlockModal()
             //     window.removeEventListener('click', onClickBubbleEvent, false)
             // }
+            // console.log('bubble')
             modal.unlockModal()
             window.removeEventListener('click', onClickBubbleEvent, false)
         }
@@ -164,7 +179,7 @@ function ModalContainer(){
                 modal.closeModal(modalName);
 
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
-                window.removeEventListener('click', onClickCaptureEvent, true)
+                window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('click', onClickBubbleEvent, false)
             }
         }
@@ -173,7 +188,7 @@ function ModalContainer(){
         const attachListenerTimer = setTimeout(()=>{
             if(type === M_TYPE.LAYER || type === M_TYPE.MENU || type === M_TYPE.RENDERLESS){
                 window.addEventListener('click', onClickBubbleEvent, false)
-                window.addEventListener('click', onClickCaptureEvent, true) // true: capturing, false: bubbling
+                window.addEventListener('mousedown', onClickCaptureEvent, true) // true: capturing, false: bubbling
                 // window.addEventListener('keydown', onKeydownCaptureEvent, true)
             }
 
@@ -187,7 +202,7 @@ function ModalContainer(){
             // console.log('clean, ref:', topComponentRef.current?.className);
             clearTimeout(attachListenerTimer);
             window.removeEventListener('keydown', onKeydownCaptureEvent, true)
-            window.removeEventListener('click', onClickCaptureEvent, true)
+            window.removeEventListener('mousedown', onClickCaptureEvent, true)
             // window.removeEventListener('click', onClickBubbleEvent, false)
             // bubbling의 경우에는 미리 삭제하면 안되기 때문에 주석처리
         }

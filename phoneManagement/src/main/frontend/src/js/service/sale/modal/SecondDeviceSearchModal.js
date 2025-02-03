@@ -24,7 +24,8 @@ function SecondDeviceSearchModal(props){
     }, [keyword]);
 
     const getSecondDevice = async ()=>{
-        await gmdApi.getData(DYNAMIC_TYPE.sec_device, keyword).then(({status,data})=>{
+        const encodedKeyword = encodeURIComponent(keyword);
+        await gmdApi.getData(DYNAMIC_TYPE.sec_device, encodedKeyword).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.list){
                     setItems(JSON.parse(data.list))
@@ -45,7 +46,7 @@ function SecondDeviceSearchModal(props){
         modal.closeModal(ModalType.LAYER.Sale_Second)
     }
 
-    const submit = ()=>{
+    const submit = (selected)=>{
         if(props.onSubmit){
             props.onSubmit(items[selected])
         }
@@ -65,27 +66,32 @@ function SecondDeviceSearchModal(props){
 
                 <form className={Popup.service} onSubmit={e=>e.preventDefault()}>
                     <div className={Popup.popup_cont}>
-                        <div className={Popup.org_head_box}>
-                            <button className={Popup.button} type="button">
-                                {!ObjectUtils.isEmpty(buttonName.name) ? buttonName.name : '선택없음'}
-                                <span className={Popup.span}>{buttonName.code}</span>
-                            </button>
-                        </div>
+                        {
+                            buttonName.name && <>
+                                <div className={Popup.sub_title}>현재 선택된 디바이스</div>
+                                <div className={Popup.org_head_box}>
+                                    <button className={Popup.button} type="button">
+                                        {!ObjectUtils.isEmpty(buttonName.name) ? buttonName.name : '선택없음'}
+                                        <span className={Popup.span}>{buttonName.code}</span>
+                                    </button>
+                                </div>
+                            </>
+                        }
+
                         <div className={Popup.service_search}>
                             <input type="text" name='keyword' value={keyword} onChange={handleKeyword}
                                    className={`inp ${Popup.inp_search}`} placeholder="검색어를 입력해주세요."/>
                         </div>
 
 
-
                         <div className={Popup.service_scroll}>
-                            <ul className="service_list">
+                        <ul className="service_list">
                                 {
                                     items && items.map((v, i) => {
                                         return <li key={i}
                                                    className={`${cm(Popup.service_item)} ${i === selected && Popup.active}`}
                                                    onClick={()=>{
-                                                       selectItem(i)
+                                                       submit(i)
                                                    }}>
                                             <button className={Popup.button} type="button">{v.name}<span
                                                 className={Popup.span}>{v.code}</span>
@@ -97,9 +103,9 @@ function SecondDeviceSearchModal(props){
                         </div>
                     </div>
 
-                    <div className={Popup.popup_btn_box}>
-                        <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>
-                    </div>
+                    {/*<div className={Popup.popup_btn_box}>*/}
+                    {/*    <button type="button" className={`btn_blue ${cmc(Popup.btn)}`} onClick={submit}>저장</button>*/}
+                    {/*</div>*/}
                 </form>
 
                 <button type="button" className={Popup.popup_close} onClick={close}>닫기</button>

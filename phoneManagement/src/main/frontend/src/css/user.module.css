@@ -312,7 +312,15 @@
 .user_form.form_set{padding:0 100px 60px 100px; text-align:center;}
 .user_form.form_set .user_logo{height:48px; margin-left:-100px; text-align:left;}
 .user_form.form_set .user_title{margin-top:43px;}
-.user_form.form_set .user_profile{position:relative; width:100px; height:100px; margin:20px auto 0 auto; text-align:center;}
+.user_form.form_set .user_profile{
+    position:relative;
+    width:100px; height:100px; margin:20px auto 0 auto; text-align:center;
+    cursor: pointer;}
+.user_form.form_set .user_profile.active{
+    background-color: #4781ff;
+    opacity: 0.2;
+    border-radius: 50%;
+}
 .user_form.form_set .user_profile .profile_img{overflow:hidden; position:relative; width:100%; height:100%; border-radius:50%; font-size:0;}
 .user_form.form_set .user_profile .profile_img .img{width:100%;}
 .user_form.form_set .user_profile .profile_upload{
@@ -321,8 +329,25 @@
     right:0; bottom:0;
     width:30px; height:30px;
     background:url(../images/profile_upload_icon.png) no-repeat center / 100%;
+    z-index: 99;
     font-size:0;
 }
+.user_form.form_set .user_profile .profile_upload:hover .btn_del{
+    /*cursor: pointer;*/
+    /*position:absolute;*/
+    /*top: 0;*/
+    /*left: 35px;*/
+    /*width:30px;*/
+    /*height:30px;*/
+    /*background:#00bb35 url(../images/del_icon.png) no-repeat center / 100%;*/
+    /*z-index: 99;*/
+    /*font-size:0;*/
+}
+
+.user_form.form_set .user_profile .profile_upload:hover .btn_del:before{
+
+}
+
 .user_form.form_set .profile_view{position:relative; z-index:1; margin-top:14px; padding-top:10px; padding-bottom:10px; font-size:14px; font-weight:400;}
 .user_form.form_set .form_list{margin-top:22px; text-align:left;}
 .user_form.form_set .form_item + .form_item{margin-top:17px;}

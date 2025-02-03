@@ -10,6 +10,7 @@ import java.util.Map;
 public interface SaleMapper{
 	// Sale
 	public void insertSale(SaleVO vo);
+	public void insertSaleAll(int currShopId, List<SaleVO> list);
 	public int updateSale(SaleVO vo);
 	public int deleteSale(int currShopId, int saleId);
 	public int deleteSaleBulk(int currShopId, List<Integer> ids);
@@ -43,6 +44,8 @@ public interface SaleMapper{
 	public void insertSaleCard(int currShopId, int saleId, List<SaleCardVO> list);
 	public void insertSaleUsedDevice(int currShopId, int saleId, List<SaleUsedDeviceVO> list);
 	public void insertSaleFiles(int currShopId, int saleId, List<String> list);
+
+	public int changeOrderSaleFiles(int currShopId, int saleId, List<Integer> list);
 
 	public int updateSalePromiseState(SaleVO vo);
 	public int updateSaleAsPromise(int currShopId, int saleId, int pmId, boolean checked, String content);
@@ -81,7 +84,7 @@ public interface SaleMapper{
 	public List<Map<String, Object>> getSaleRatio(int currShopId, String date);
 
 	// 각 항목별 진행 현황 (완료 개수, 총 개수)
-	public List<Map<String,Object>> getWorkInProcess(int currShopId, String date);
+	public List<Integer> getWorkInProcess(int currShopId, String date);
 
 	// 각 항목별 전월 대비 증가/감소량
 	public Integer getCtChangeAmount(CommonVO vo);
@@ -109,7 +112,7 @@ public interface SaleMapper{
 
 	// 파이 그래프: 할부,제조사,개통유형,성별 판매일보 개수, 비율
 	public Map<String,Object> getIstmRatio(CommonVO vo);
-	public Map<String,Object> getProviderRatio(CommonVO vo);
+	public Map<String,Object> getMakerRatio(CommonVO vo);
 	public Map<String,Object> getActvTpRatio(CommonVO vo);
 	public Map<String,Object> getGenderRatio(CommonVO vo);
 

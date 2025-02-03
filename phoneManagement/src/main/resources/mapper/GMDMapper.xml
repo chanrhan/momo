@@ -32,7 +32,8 @@
             select JSON_ARRAYAGG(json_object(
             'id',device_id,
             'name',device_nm,
-            'code',device_cd
+            'code',device_cd,
+        'order', `order`
             ))
             from    search
         )
@@ -75,7 +76,8 @@
             select JSON_ARRAYAGG(JSON_OBJECT(
             'id',sd_id,
             'name',sd_nm,
-            'code',sd_cd
+            'code',sd_cd,
+        'order', `order`
             ))
             from search
         )
@@ -110,7 +112,7 @@
                 ct_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -124,7 +126,8 @@
             select json_arrayagg(json_object(
             'id',ct_plan_id,
             'name',ct_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
         )
@@ -154,7 +157,7 @@
                 exsvc_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -168,7 +171,8 @@
             select json_arrayagg(json_object(
             'id',exsvc_id,
             'name',exsvc_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
         )
@@ -197,7 +201,7 @@
                 internet_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -211,7 +215,8 @@
             select json_arrayagg(json_object(
             'id',internet_plan_id,
             'name',internet_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
         )
@@ -240,7 +245,7 @@
                 tv_plan_nm like '%${keyword}%'
                 ) and
             </if>
-            <if test="provider != null and !provider.equals('')">
+            <if test="provider != null and !provider.equals('') and provider != 3">
                 provider = #{provider} and
             </if>
             1=1
@@ -254,7 +259,8 @@
             select json_arrayagg(json_object(
             'id',tv_plan_id,
             'name',tv_plan_nm,
-            'provider',provider
+            'provider',provider,
+        'order', `order`
             ))
             from    search
         )
@@ -293,9 +299,11 @@
         ), result as (
             select json_arrayagg(json_object(
             'id',comb_tp_id,
-            'name',comb_tp_nm
+            'name',comb_tp_nm,
+        'order', `order`
             ))
             from    search
+        order by `order`
         )
 
         select (
@@ -323,18 +331,22 @@
                 ) and
             </if>
             1=1
-            <if test="order != null and !order.equals('')">
-                order by ${order} ${asc}
-            </if>
+<!--            <if test="order != null and !order.equals('')">-->
+<!--                order by ${order} ${asc}-->
+<!--            </if>-->
             <if test="limit != null and !limit.equals('')">
                 limit ${limit}
             </if>
         ), result as (
-            select json_arrayagg(json_object(
-            'id',sup_div_id,
-            'name',sup_div_nm
-            ))
+            select json_arrayagg(
+                    json_object(
+                    'id',sup_div_id,
+                    'name',sup_div_nm,
+                    'order', `order`
+                    )
+                )
             from    search
+
         )
 
         select (
@@ -371,7 +383,8 @@
         ), result as (
             select json_arrayagg(json_object(
             'id',add_div_id,
-            'name',add_div_nm
+            'name',add_div_nm,
+        'order', `order`
             ))
             from    search
         )
@@ -394,9 +407,9 @@
         );
 
         insert into tb_device
-            (device_id, device_nm, device_cd)
+            (device_id, device_nm, device_cd, `order`)
         VALUES
-            (@next_id, #{provider},#{device_nm},#{device_cd})
+            (@next_id, #{provider},#{device_nm},#{device_cd}, @next_id)
     </insert>
 
     <insert id="insertSecondDevice">
@@ -406,9 +419,9 @@
         );
 
         insert into tb_second_device
-        (sd_id, sd_nm, sd_cd)
+        (sd_id, sd_nm, sd_cd, `order`)
         VALUES
-            (@next_id,#{name},#{code})
+            (@next_id,#{name},#{code}, @next_id)
     </insert>
 
     <insert id="insertCtPlan">
@@ -418,9 +431,9 @@
         );
 
         insert into tb_ct_plan
-        (ct_plan_id, provider, ct_plan_nm)
+        (ct_plan_id, provider, ct_plan_nm, `order`)
         VALUES
-            (@next_id),#{provider},#{name}
+            (@next_id),#{provider},#{name}, @next_id
     </insert>
 
     <insert id="insertInternetPlan">
@@ -430,9 +443,9 @@
         );
 
         insert into tb_internet_plan
-        (shop_id, internet_plan_id, provider, internet_plan_nm)
+        (shop_id, internet_plan_id, provider, internet_plan_nm, `order`)
         VALUES
-           (#{currShopId},@next_id,#{provider},#{name})
+           (#{currShopId},@next_id,#{provider},#{name}, @next_id)
     </insert>
 
     <insert id="insertTvPlan">
@@ -442,9 +455,9 @@
         );
 
         insert into tb_tv_plan
-        (shop_id, tv_plan_id, provider, tv_plan_nm)
+        (shop_id, tv_plan_id, provider, tv_plan_nm, `order`)
         VALUES
-            (#{currShopId},@next_id,#{provider},#{name})
+            (#{currShopId},@next_id,#{provider},#{name}, @next_id)
     </insert>
 
     <insert id="insertExtraService">
@@ -454,9 +467,9 @@
         );
 
         insert into tb_extra_service
-        (shop_id, exsvc_id, provider, exsvc_nm)
+        (shop_id, exsvc_id, provider, exsvc_nm, `order`)
         VALUES
-            (#{currShopId},@next_id,#{provider},#{name})
+            (#{currShopId},@next_id,#{provider},#{name}, @next_id)
     </insert>
 
     <insert id="insertSupportDiv">
@@ -466,9 +479,9 @@
         );
 
         insert into tb_sup_div
-        (shop_id, sup_div_id, sup_div_nm)
+        (shop_id, sup_div_id, sup_div_nm, `order`)
         VALUES
-            (#{currShopId},@next_id,#{name})
+            (#{currShopId},@next_id,#{name}, @next_id)
     </insert>
 
     <insert id="insertAddDiv">
@@ -478,9 +491,9 @@
         );
 
         insert into tb_add_div
-        (shop_id, add_div_id, add_div_nm)
+        (shop_id, add_div_id, add_div_nm, `order`)
         VALUES
-            (#{currShopId},@next_id,#{name})
+            (#{currShopId},@next_id,#{name}, @next_id)
     </insert>
 
     <insert id="insertComb">
@@ -490,9 +503,9 @@
         );
 
         insert into tb_comb_tp
-        (shop_id, comb_tp_id, comb_tp_nm)
+        (shop_id, comb_tp_id, comb_tp_nm, `order`)
         VALUES
-            (#{currShopId},@next_id,#{name})
+            (#{currShopId},@next_id,#{name}, @next_id)
     </insert>
 
 <!--    insert all-->
@@ -503,10 +516,10 @@
         );
 
         insert into tb_device
-        (device_id, device_nm, device_cd)
+        (device_id, device_nm, device_cd, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            (@next_id+#{index}),#{item.name},#{item.code}
+            (@next_id+#{index}),#{item.name},#{item.code}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -517,10 +530,10 @@
         );
 
         insert into tb_second_device
-        (sd_id, sd_nm, sd_cd)
+        (sd_id, sd_nm, sd_cd, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            (@next_id+#{index}),#{item.name},#{item.code}
+            (@next_id+#{index}),#{item.name},#{item.code},  (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -531,10 +544,10 @@
         );
 
         insert into tb_ct_plan
-       (ct_plan_id, provider, ct_plan_nm)
+       (ct_plan_id, provider, ct_plan_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            (@next_id+#{index}),#{item.provider},#{item.name}
+            (@next_id+#{index}),#{item.provider},#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -545,10 +558,10 @@
         );
 
         insert into tb_internet_plan
-        (shop_id, internet_plan_id, provider, internet_plan_nm)
+        (shop_id, internet_plan_id, provider, internet_plan_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -559,10 +572,10 @@
         );
 
         insert into tb_tv_plan
-        (shop_id, tv_plan_id, provider, tv_plan_nm)
+        (shop_id, tv_plan_id, provider, tv_plan_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -573,10 +586,10 @@
         );
 
         insert into tb_extra_service
-        (shop_id, exsvc_id, provider, exsvc_nm)
+        (shop_id, exsvc_id, provider, exsvc_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.provider},#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -587,10 +600,10 @@
         );
 
         insert into tb_sup_div
-        (shop_id, sup_div_id, sup_div_nm)
+        (shop_id, sup_div_id, sup_div_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -601,10 +614,10 @@
         );
 
         insert into tb_add_div
-        (shop_id, add_div_id, add_div_nm)
+        (shop_id, add_div_id, add_div_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.name},  (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -615,10 +628,10 @@
         );
 
         insert into tb_comb_tp
-        (shop_id, comb_tp_id, comb_tp_nm)
+        (shop_id, comb_tp_id, comb_tp_nm, `order`)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
-            #{currShopId},(@next_id+#{index}),#{item.name}
+            #{currShopId},(@next_id+#{index}),#{item.name}, (@next_id+#{index})
         </foreach>
     </insert>
 
@@ -779,5 +792,81 @@
         set comb_tp_nm=#{name}
         where comb_tp_id=#{id} and
             shop_id=#{currShopId}
+    </update>
+
+<!--    change order-->
+    <update id="changeOrderDevice">
+        <foreach collection="list" item="item" index="index">
+            update tb_device
+            set `order`=#{item.itemOrder}
+            where device_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderSecondDevice">
+        <foreach collection="list" item="item" index="index">
+            update tb_second_device
+            set `order`=#{item.itemOrder}
+            where sd_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderCtPlan">
+        <foreach collection="list" item="item" index="index">
+            update tb_ct_plan
+            set `order`=#{item.itemOrder}
+            where ct_plan_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderInternetPlan">
+        <foreach collection="list" item="item" index="index">
+            update tb_internet_plan
+            set `order`=#{item.itemOrder}
+            where internet_plan_id=#{item.id};
+        </foreach>
+    </update>
+
+
+    <update id="changeOrderTvPlan">
+        <foreach collection="list" item="item" index="index">
+            update tb_tv_plan
+            set `order`=#{item.itemOrder}
+            where tv_plan_id=#{item.id};
+        </foreach>
+    </update>
+
+
+
+    <update id="changeOrderSupportDiv">
+        <foreach collection="list" item="item" index="index">
+            update tb_sup_div
+            set `order`=#{item.itemOrder}
+            where sup_div_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderAddDiv">
+        <foreach collection="list" item="item" index="index">
+            update tb_add_div
+            set `order`=#{item.itemOrder}
+            where add_div_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderExsvc">
+        <foreach collection="list" item="item" index="index">
+            update tb_extra_service
+            set `order`=#{item.itemOrder}
+            where exsvc_id=#{item.id};
+        </foreach>
+    </update>
+
+    <update id="changeOrderCombTp">
+        <foreach collection="list" item="item" index="index">
+            update tb_comb_tp
+            set `order`=#{item.itemOrder}
+            where comb_tp_id=#{item.id};
+        </foreach>
     </update>
 </mapper>

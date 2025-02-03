@@ -29,8 +29,12 @@ export const ObjectUtils = {
         })
         return str;
     },
+    transposeArray: (arr) => arr.reduce(
+        (result, row) => row.map((_, i) => [...(result[i] || []), row[i]]),
+        []
+    ),
     toggleOf,
-    varToString
+    varToString,
 }
 
 function toggleOf(arr, index){

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {ObjectUtils} from "../utils/objectUtil";
 import {object} from "prop-types";
 
@@ -105,6 +105,6 @@ export function useObjectArrayInputField(init, arr){
         firstItem,
         lastItem,
         clear,
-        isEmpty
+        isEmpty,
     }
 }

@@ -62,8 +62,11 @@ function UserApi(accessToken){
         getInnerStaffAsObject: async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/user/staff/inner', accessToken);
         },
-        getInnerStaffAll: async (keyword)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/all?keyword=${keyword}`, accessToken);
+        getInnerStaffAllExceptSelf: async (keyword='')=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/all/except-self?keyword=${keyword}`, accessToken);
+        },
+        getInnerStaffAll: async ()=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/all`, accessToken);
         },
         getInnerStaffTotalCount: async ()=>{
             return await axiosApiWithAccessToken.get(`/api/v1/user/staff/inner/count`, accessToken);

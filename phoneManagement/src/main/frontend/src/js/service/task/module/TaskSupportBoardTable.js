@@ -11,61 +11,20 @@ import {useRef} from "react";
 export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onCheck,profileImages, items, onChangeState, onSelectSale}){
     const tableRef = useRef()
 
-    const resizeColumn = (e, index) => {
-        const startX = e.clientX;
-        const table = tableRef.current;
-        const th = table.querySelectorAll('th')[index];
-        const startWidth = th.offsetWidth;
-
-        const onMouseMove = (e) => {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 50) {  // 최소 너비 설정
-                th.style.width = `${newWidth}px`;
-            }
-        };
-
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
 
     return (
         <BoardTable tableRef={tableRef} caption='고객관리 테이블 - 선택, 진행 사항, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 중고폰, 판매 금액, 총 이익, 담당자, 전송 정보 제공'>
             <Bthead>
-                <Bth checked={allChecked} onCheck={checkAll} checkbox onMouseDown={e=>{
-                    resizeColumn(e, 0)
-                }}/>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 1)
-                }}>진행 사항</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 2)
-                }} sort>개통날짜</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 3)
-                }}>이름</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 4)
-                }} className="ta_c">휴대폰 번호</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 5)
-                }} className="ta_c">식별 번호</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 6)
-                }} className="ta_c">지원 구분</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 7)
-                }} className="ta_c">지원 금액</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 8)
-                }} className="ta_c">담당자</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 9)
-                }} className="ta_c">전송</Bth>
+                <Bth checked={allChecked} onCheck={checkAll} checkbox/>
+                <Bth>진행 사항</Bth>
+                <Bth sort>개통날짜</Bth>
+                <Bth>이름</Bth>
+                <Bth className="ta_c">휴대폰 번호</Bth>
+                <Bth className="ta_c">식별 번호</Bth>
+                <Bth className="ta_c">지원 구분</Bth>
+                <Bth className="ta_c">지원 금액</Bth>
+                <Bth className="ta_c">담당자</Bth>
+                <Bth className="ta_c">전송</Bth>
             </Bthead>
             <Btbody br>
                 {

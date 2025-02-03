@@ -4,7 +4,7 @@ import {DateUtils} from "../../../utils/DateUtils";
 import {useEffect, useRef, useState} from "react";
 import {useRenderlessModal} from "../../../hook/useRenderlessModal";
 
-export function DateSelectModule({rootClassName, onSelect, children, errorText}){
+export function DateSelectModule({rootClassName, onSelect, children, errorText, blockCallback}){
     const renderlessModal = useRenderlessModal(`RDL_DATE_SELECT_${onSelect}`)
 
     const today = new Date();
@@ -85,9 +85,29 @@ export function DateSelectModule({rootClassName, onSelect, children, errorText})
                                     {
                                         new Array(7).fill(0).map((v, day) => {
                                             const d = (week * 7) + day - monthInfo.startDay + 1;
+
+                                            let isBlocked = false;
+                                            let isBlockStart = false;
+                                            let isBlockEnd = false;
+                                            if(blockCallback && blockCallback(year, month, d)){
+                                                isBlocked = true;
+                                                if(d === 1){
+                                                    isBlockStart = true;
+                                                }else{
+                                                    if(d === monthInfo.totalDays){
+                                                        isBlockEnd = true;
+                                                    }else{
+                                                        const diff = DateUtils.dateFromDiffYmdFromToday(year, month, d);
+                                                        if(diff > -3 && diff <= 0){
+                                                            isBlockEnd = true;
+                                                        }
+                                                    }
+
+                                                }
+                                            }
                                             return <DateItem key={day} today={DateUtils.isToday(year, month, d)}
                                                              day={(d > 0 && d <= monthInfo.totalDays) ? d : null}
-                                                             onClick={handleDate}>
+                                                             onClick={handleDate} blocked={isBlocked} blockStart={isBlockStart} blockEnd={isBlockEnd}>
                                                 {/*do something*/}
                                                 {/*<span className="stat blue">전송완료 5건</span>*/}
                                             </DateItem>
@@ -104,14 +124,15 @@ export function DateSelectModule({rootClassName, onSelect, children, errorText})
     )
 }
 
-function DateItem({day, today, onClick}) {
+function DateItem({day, today, onClick, blocked, blockStart, blockEnd}) {
     return (
-        <td className={cm(Popup.td, `${day == null && Popup.disable}`,`${today && Popup.today}`)}>
+        <td className={cm(Popup.td, `${day == null && Popup.disable}`,
+            `${today && Popup.today}`, `${blocked && Popup.blocked}`,`${blockStart && Popup.block_start}`,`${blockEnd && Popup.block_end}`)}>
             <button type='button' className={Popup.button} onClick={() => {
                 if(day != null) {
                     onClick(day)
                 }
-            }}>{day}</button>
+            }} disabled={blocked}>{day}</button>
         </td>
     )
 }

@@ -16,11 +16,10 @@ export function ManageStaff(){
 
     useEffect(() => {
         getStaff()
-        getInnerStaffTotalCount();
     }, [keyword]);
 
     const getStaff = async ()=>{
-        await userApi.getInnerStaffAll(keyword).then(({status,data})=>{
+        await userApi.getInnerStaffAllExceptSelf(keyword).then(({status,data})=>{
             if(status === 200 && data){
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
@@ -39,19 +38,18 @@ export function ManageStaff(){
         })
     }
 
-    const getInnerStaffTotalCount = async ()=>{
-        await userApi.getInnerStaffTotalCount().then(({status,data})=>{
-            if(status === 200 && data){
-                setTotalCount(data)
-            }
-        })
-    }
+    // const getInnerStaffTotalCount = async ()=>{
+    //     await userApi.getInnerStaffTotalCount().then(({status,data})=>{
+    //         if(status === 200 && data){
+    //             setTotalCount(data)
+    //         }
+    //     })
+    // }
 
 
 
     const refresh = ()=>{
         getStaff();
-        getInnerStaffTotalCount();
     }
 
     return (
@@ -95,11 +93,11 @@ export function ManageStaff(){
                 }>
                     <Bthead>
                         {/*<Bth checkbox/>*/}
-                        <Bth>아이디</Bth>
+                        {/*<Bth>아이디</Bth>*/}
                         <Bth>이름</Bth>
                         <Bth>이메일</Bth>
                         <Bth>연락처</Bth>
-                        <Bth>권한</Bth>
+                        {/*<Bth>권한</Bth>*/}
                         <Bth>마지막 로그인</Bth>
                         <Bth>입사일</Bth>
                         <Bth>상태</Bth>

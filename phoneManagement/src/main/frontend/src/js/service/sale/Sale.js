@@ -116,18 +116,6 @@ export function Sale(){
         })
     }
 
-    const getProfimeImages = async (list)=>{
-        if(list){
-            const copy = new Array(list.length)
-            for(let i=0;i<list.length; ++i){
-               await fileLoader.pfp(list[i].seller_pfp).then(d=>{
-                    copy[i] = d;
-                })
-            }
-            return copy;
-        }
-        return null;
-    }
 
 
     useEffect(() => {
@@ -140,9 +128,6 @@ export function Sale(){
         // getSaleTotalCount()
     }, [inputField.input, filterInputField.input]);
 
-    // const getSaleCount = ()=>{
-    //     return saleItems ? saleItems.length : 0;
-    //
 
     const addSale = ()=>{
         modal.openModal(ModalType.LAYER.Sale_Detail, {
@@ -230,46 +215,16 @@ export function Sale(){
         })
     }
 
-    const resizeColumn = (e, index) => {
-        const startX = e.clientX;
-        const table = tableRef.current;
-        const th = table.querySelectorAll('th')[index];
-        const startWidth = th.offsetWidth;
-
-        const onMouseMove = (e) => {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 50) {  // 최소 너비 설정
-                th.style.width = `${newWidth}px`;
-            }
-        };
-
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
-
-    const handleScroll = (e: UIEvent)=>{
-        const target = e.target;
-
-        const scrollTop = target.scrollTop;
-        const scrollHeight = target.scrollHeight;
-        const clientHeight = target.clientHeight;
-
-        if(scrollTop + clientHeight >= scrollHeight){
-            // const scrollPos = scrollTop + clientHeight;
-            const _limit = (limit ?? 0) + 30;
-            getSale(_limit)
-            setLimit(_limit)
-        }
+    const handleScrollLimit = ()=>{
+        const _limit = (limit ?? 0) + 30;
+        getSale(_limit)
+        setLimit(_limit)
     }
 
-    const openReservationModal = (saleId)=>{
+    const openReservationModal = (saleId, date)=>{
         modal.openModal(ModalType.LAYER.Reserve_Message, {
-            sale_id: saleId
+            sale_id: saleId,
+            actv_dt: date
         })
     }
 
@@ -319,9 +274,9 @@ export function Sale(){
                                 <MoreOptionLayer cssModule={Board}>
                                     <SelectItem onClick={deleteSale}>판매일보 삭제</SelectItem>
                                     <SelectItem>검색 결과 다운로드</SelectItem>
-                                    {/*<SelectItem onClick={()=>{*/}
-                                    {/*    nav("/service/sale/bulk-upload")*/}
-                                    {/*}}>대량 업로드하기</SelectItem>*/}
+                                    <SelectItem onClick={()=>{
+                                        nav("/service/sale/bulk-upload")
+                                    }}>대량 업로드하기</SelectItem>
                                 </MoreOptionLayer>
                             </div>
 
@@ -361,11 +316,9 @@ export function Sale(){
                                 </>
                             } tableRef={tableRef} style={{
                                 height: '620px'
-                }} onScroll={handleScroll}>
+                }} onScrollLimit={handleScrollLimit}>
                     <Bthead>
-                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox onMouseDown={e => {
-                            resizeColumn(e, 0)
-                        }}/>
+                        <Bth name='check_all' onCheck={checkAll} checked={allChecked} checkbox/>
                         {
                             columns && columns.toArray().map((v, i) => {
                                 // const sort =
@@ -374,9 +327,7 @@ export function Sale(){
                                                 if(COLUMNS_SORT[v]){
                                                     setOrder(v)
                                                 }
-                                            }} onMouseDown={e=>{
-                                        resizeColumn(e, i+1)
-                                }}>{LMD.sale_column_names[v]}</Bth>
+                                            }}>{LMD.sale_column_names[v]}</Bth>
                             })
                         }
                         <Bth>예약</Bth>
@@ -399,7 +350,7 @@ export function Sale(){
                                     <Btd className="ta_c" stopPropagation>
                                         <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}
                                                 onClick={()=>{
-                                                    openReservationModal(v1.sale_id)
+                                                    openReservationModal(v1.sale_id, v1.actv_dt)
                                                 }}>예약 확인</button>
                                     </Btd>
                                 </tr>
@@ -420,7 +371,9 @@ export function Sale(){
 
 function TdChoice({column_index, data, image}){
     const hintBox = useHintBox("해당 고객이 개통한 횟수입니다.", {
-        maxWidth: 200,
+        top: -15,
+        // left: -2,
+        minWidth: 190,
     })
     const showHintModal = (e)=>{
         // modal.openModal(ModalType.TOOLTIP.Hint, {

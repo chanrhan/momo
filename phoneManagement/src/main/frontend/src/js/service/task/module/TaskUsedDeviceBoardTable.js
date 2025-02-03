@@ -15,7 +15,6 @@ import {NumberUtils} from "../../../utils/NumberUtils";
 export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onCheck, profileImages, items, onChangeState, onSelectSale, notDone}){
     const modal = useModal()
     const tableRef = useRef()
-    const {saleApi} = useApi()
 
     const changeState = (saleId, state, udId, udNm, cms)=>{
         if(state === 2) {
@@ -49,65 +48,21 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
         });
     }
 
-    const resizeColumn = (e, index) => {
-        const startX = e.clientX;
-        const table = tableRef.current;
-        const th = table.querySelectorAll('th')[index];
-        const startWidth = th.offsetWidth;
-
-        const onMouseMove = (e) => {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 50) {  // 최소 너비 설정
-                th.style.width = `${newWidth}px`;
-            }
-        };
-
-        const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    };
-
     return (
         <BoardTable caption='고객관리 테이블 - 선택, 진행 사항, 개통날짜, 이름, 휴대폰 번호, 식별 번호, 중고폰, 판매 금액, 총 이익, 담당자, 전송 정보 제공'
                     tableRef={tableRef}>
             <Bthead>
-                <Bth checked={allChecked} onCheck={checkAll} checkbox onMouseDown={e=>{
-                    resizeColumn(e, 0)
-                }}/>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 1)
-                }}>진행 사항</Bth>
-                <Bth sort onMouseDown={e=>{
-                    resizeColumn(e, 2)
-                }}>개통날짜</Bth>
-                <Bth onMouseDown={e=>{
-                    resizeColumn(e, 3)
-                }}>이름</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 4)
-                }}>휴대폰 번호</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 5)
-                }}>식별 번호</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 6)
-                }}>중고폰</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 7)
-                }}>판매 금액</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 8)
-                }}>총 이익</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 9)
-                }}>담당자</Bth>
-                <Bth className="ta_c" onMouseDown={e=>{
-                    resizeColumn(e, 10)
-                }}>전송</Bth>
+                <Bth checked={allChecked} onCheck={checkAll} checkbox/>
+                <Bth>진행 사항</Bth>
+                <Bth sort>개통날짜</Bth>
+                <Bth>이름</Bth>
+                <Bth className="ta_c">휴대폰 번호</Bth>
+                <Bth className="ta_c">식별 번호</Bth>
+                <Bth className="ta_c">중고폰</Bth>
+                <Bth className="ta_c">판매 금액</Bth>
+                <Bth className="ta_c">총 이익</Bth>
+                <Bth className="ta_c" >담당자</Bth>
+                <Bth className="ta_c" >전송</Bth>
             </Bthead>
             <Btbody br>
                 {

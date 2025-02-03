@@ -46,12 +46,25 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor,
                 data: data, //실제 그려지는 데이터(Y축 숫자)
                 fill: true,
                 borderColor: `rgb(0, 0, 0)`, //그래프 선 color
-                backgroundColor: [
-                    '#4781FF',
-                    '#4A5BCF',
-                  '#7EB1FA',
-                  '#C5DCFC',
-                ],
+                backgroundColor: ()=>{
+                  const len = labels.length;
+                  if(len <= 3){
+                      return [
+                          '#59a1ff',
+                          '#ff5959',
+                          '#ffd059',
+                      ]
+                  }else{
+                      return [
+                          '#59a1ff',
+                          '#a8cfff',
+                          '#ff5959',
+                          '#ffb7b7',
+                          '#ffd059',
+                          '#ffe9b6',
+                      ]
+                  }
+                },
                 hoverBackgroundColor: hoverColor,
                 borderRadius: 0,
                 borderWidth: 0,
@@ -62,7 +75,7 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor,
                 // circular: true
                 rotation: 360,
                 // circumference: 1,
-                // spacing: 0,
+                // spacing: 10,
                 weight: 1,
                 cutoutPercentage: 70,
                 // offset: 1
@@ -71,6 +84,8 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor,
     };
 
     const options = {
+        radius: 90,
+        height: 10,
         // line 타입의 경우 중간에 누락된 데이터가 있을 경우 이어그릴지 여부를 정합니다
         spanGaps: true,
         // true면 부모의 container에 맞게 크기가 변함
@@ -82,11 +97,31 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor,
             intersect: false // false면 마우스를 정확히 올리지 않고 가까이 대기만 해도 박스가 나타난다
         },
         legend: {
-
+            position: 'right',
+            labels: {
+                boxWidth: 20,
+                font: {
+                    size: 14
+                },
+            },
         },
         // 척도 옵션
         scales: {
 
+        },
+        layout: {
+          padding: {
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0
+          }
+        },
+        elements: {
+          arc: {
+              // radius: 200,
+              // borderWidth: 2
+          }
         },
         plugins: {
             emptyDataPlugin: emptyDataPlugin,
@@ -103,6 +138,9 @@ export function PieChartInstance({labelName, labels, data, color, hoverColor,
                 },
                 labels: {
                     // padding: 10
+                },
+                onClick: ()=>{
+
                 }
             },
             datalabels: {

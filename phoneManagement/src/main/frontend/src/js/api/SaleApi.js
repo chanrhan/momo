@@ -6,7 +6,7 @@ function SaleApi(accessToken){
     const axiosApi = AxiosApi();
 
     return {
-        addSale: async (data)=>{
+        insertSale: async (data)=>{
             const option = {
                 headers:{
                     'X-ACCESS-TOKEN': accessToken,
@@ -14,6 +14,9 @@ function SaleApi(accessToken){
                 }
             }
             return await axiosApi.post('/api/v1/sale/add',data,option);
+        },
+        insertSaleAll: async (data)=>{
+            return await axiosApiWithAccessToken.post('/api/v1/sale/add/bulk',data,accessToken);
         },
         getSaleAll : async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/all`, body, accessToken);
@@ -74,8 +77,8 @@ function SaleApi(accessToken){
         getSaleRatio: async (date)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/ratio?date=${date}`, accessToken);
         },
-        getWorkInProcess: async (date)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/sale/wip?date=${date}`, accessToken);
+        getWorkInProcess: async ()=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/wip`, accessToken);
         },
         getCtChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/ct`, body, accessToken);

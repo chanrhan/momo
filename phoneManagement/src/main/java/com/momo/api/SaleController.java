@@ -228,6 +228,21 @@ public class SaleController {
 		return ResponseEntity.ok(true);
 	}
 
+	/**
+	 * 판매일보 추가=
+	 * @return
+	 */
+	@PostMapping("/add/bulk")
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Boolean> insertSaleAll(HttpSession session,
+											  @RequestBody List<SaleVO> list) {
+		int currShopId = commonService.getCurrentShopId(session);
+
+		saleService.insertSaleAll(currShopId, list);
+		return ResponseEntity.ok(true);
+	}
+
 
 
 
@@ -320,8 +335,8 @@ public class SaleController {
 	}
 
 	@GetMapping("/wip")
-	public ResponseEntity<List<Map<String,Object>>> getWorkInProcess(HttpSession session,
-																	 @RequestParam String date){
+	public ResponseEntity<List<Integer>> getWorkInProcess(HttpSession session,
+																	 @RequestParam(required = false) String date){
 		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getWorkInProcess(currShopId, date));
 	}
@@ -477,7 +492,7 @@ public class SaleController {
 
         return switch (selectType) {
             case 0 -> ResponseEntity.ok(saleService.getIstmRatio(vo));
-            case 1 -> ResponseEntity.ok(saleService.getProviderRatio(vo));
+            case 1 -> ResponseEntity.ok(saleService.getMakerRatio(vo));
             case 2 -> ResponseEntity.ok(saleService.getActvTpRatio(vo));
             case 3 -> ResponseEntity.ok(saleService.getGenderRatio(vo));
             default -> ResponseEntity.badRequest().build();

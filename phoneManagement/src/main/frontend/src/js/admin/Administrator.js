@@ -37,6 +37,8 @@ export function Administrator(){
                 // console.table(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
+                }else{
+                    setTotalCount(0)
                 }
                 if(data.list){
                     const parsed = JSON.parse(data.list);
@@ -121,7 +123,7 @@ export function Administrator(){
                                        value={inputField.get('keyword')}
                                        onChange={inputField.handleInput}
                                        placeholder="이름, 전화번호, 식별번호 검색"/>
-                                <button className={Board.button} type="submit">검색</button>
+                                <button className={Board.button} type="button">검색</button>
                             </div>
                         </div>
                     </form>
@@ -182,7 +184,7 @@ export function Administrator(){
                                                     )
                                                 ) :
                                                 <button type="button"
-                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_red'} btn_small btn_line`}>
+                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_cancel'} btn_small btn_line`}>
                                                     {state === 1 ? '승인완료': (state === 2 ? '승인거절':'관리자')}
                                                 </button>
                                         }

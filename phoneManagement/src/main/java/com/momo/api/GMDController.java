@@ -29,6 +29,7 @@ public class GMDController {
                                                               @RequestParam(required = false)Integer provider){
         int currShopId = commonService.getCurrentShopId(session);
         GMDVO vo = GMDVO.builder().currShopId(currShopId).keyword(keyword).provider(provider).build();
+        log.info("keyword: {}", vo.getKeyword());
         Map<String,Object> result = switch (type){
             case 0 -> gmdService.getDevice(vo);
             case 1 -> gmdService.getSecondDevice(vo);
@@ -118,6 +119,28 @@ public class GMDController {
             case 6 -> gmdService.updateSupportDiv(vo);
             case 7 -> gmdService.updateAddDiv(vo);
             case 8 -> gmdService.updateCombTp(vo);
+            default -> 0;
+        };
+        return ResponseEntity.ok(result > 0);
+    }
+
+    // 수정
+    @PostMapping("/change-order")
+    public ResponseEntity<Boolean> changeOrder(HttpSession session,
+                                              @RequestParam int type,
+                                              @RequestBody List<GMDVO> list){
+        int currShopId = commonService.getCurrentShopId(session);
+        int result = switch (type){
+            case 0 -> gmdService.changeOrderDevice(currShopId, list);
+            case 1 -> gmdService.changeOrderSecondDevice(currShopId, list);
+            case 2 -> gmdService.changeOrderCtPlan(currShopId, list);
+            //
+            case 3 -> gmdService.changeOrderInternetPlan(currShopId, list);
+            case 4 -> gmdService.changeOrderTvPlan(currShopId, list);
+            case 5 -> gmdService.changeOrderExsvc(currShopId, list);
+            case 6 -> gmdService.changeOrderSupportDiv(currShopId, list);
+            case 7 -> gmdService.changeOrderAddDiv(currShopId, list);
+            case 8 -> gmdService.changeOrderCombTp(currShopId, list);
             default -> 0;
         };
         return ResponseEntity.ok(result > 0);

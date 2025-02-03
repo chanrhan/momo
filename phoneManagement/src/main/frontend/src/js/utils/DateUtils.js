@@ -7,6 +7,9 @@ export const DateUtils = {
     formatYYMM: (year:number, month:number)=>{
         return `${year}-${month.toString().padStart(2, 0)}`
     },
+    dateToStringYYMM: (date: Date)=>{
+        return DateUtils.formatYYMM(date.getFullYear(), date.getMonth()+1)
+    },
     dateToStringYYMMdd: (date: Date)=>{
         return DateUtils.formatYYMMdd(date.getFullYear(), date.getMonth()+1,date.getDate())
     },
@@ -54,24 +57,28 @@ export const DateUtils = {
         return year === today.getFullYear() && month === today.getMonth()+1 && day === today.getDate();
     },
     dateDiff: (date1, date2)=>{
-        console.log(`date diff: *${date1} *${date2}`)
+        // console.log(`date diff: *${date1} *${date2}`)
         const before_date = Math.floor(new Date(date1).getTime() / 1000);
         const after_date = Math.floor(new Date(date2).getTime() / 1000);
 
         const tmp = after_date - before_date;
-        if(tmp <= 0){
-            throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
-        }
+        // if(tmp <= 0){
+        //     throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
+        // }
 
         return Math.floor(tmp / (60 * 60 * 24));
+    },
+    dateFromDiffYmdFromToday: (year, month, day)=>{
+      const date = new Date(DateUtils.formatYYMMdd(year, month, day));
+      return DateUtils.dateDiffFromToday(date);
     },
     dateDiffFromToday: (date)=>{
         const d_date = Math.floor(new Date(date).getTime() / 1000);
         const now_date = Math.floor(new Date().getTime() / 1000);
         const tmp = d_date - now_date;
-        if(tmp <= 0){
-            throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
-        }
+        // if(tmp <= 0){
+        //     throw "기준 날짜 이후의 날짜는 선택할 수 없습니다!"
+        // }
         return Math.floor(tmp / (60 * 60 * 24));
     },
     // dateAdd: (date, add)=>{

@@ -2,13 +2,14 @@ import useModal from "./useModal";
 import {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import {useLoggingRef} from "./useLoggingRef";
+import {MutableRefObject} from "react";
 
 export function useRenderlessModal(modalName){
     const modal = useModal();
     const {lock} : Object<string> = useSelector(s=>s.modalReducer)
     const [active, setActive] = useState(false)
 
-    const componentRef = useRef(null)
+    const componentRef: MutableRefObject<HTMLElement> = useRef(null)
 
     useEffect(() => {
         // console.log(`active: ${active}`)
@@ -19,13 +20,12 @@ export function useRenderlessModal(modalName){
             }, {
                 ref: componentRef.current
             })
-            console.log(`open: ref`)
-            console.table(componentRef.current.className)
         }
     }, [active]);
 
     const clickToOpen = (e: MouseEvent)=>{
         if(!active && componentRef.current && !componentRef.current.contains(e.target)){
+
             open()
         }
     }
@@ -33,7 +33,7 @@ export function useRenderlessModal(modalName){
     const open = ()=>{
         const keyname = modalName.split('__')[0];
         if(lock && lock.startsWith(keyname)){
-            console.log(`locked: ${keyname}, open: ${lock}`)
+            // console.log(`locked: ${keyname}, open: ${lock}`)
            return;
         }
         setActive(true)
@@ -44,12 +44,20 @@ export function useRenderlessModal(modalName){
         modal.closeModal(modalName)
     }
 
+    const setPos = (top, left)=>{
+        const el = componentRef.current;
+        // el.style.position = "absolute"
+        el.style.top = `${top}px`
+        el.style.left = `${left}px`
+    }
+
     return {
         active,
         setActive,
         ref: componentRef,
         clickToOpen,
         open,
-        close
+        close,
+        setPos
     }
 }

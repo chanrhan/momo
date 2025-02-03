@@ -1,7 +1,16 @@
+import imageCompression from "browser-image-compression";
+
 
 export const FileUtils = {
     encodeFileToBase64 : async (fileList: Array<File>)=>{
-        const encodingFiles = fileList.map((file)=>{
+        const encodingFiles = fileList.map(async (file)=>{
+            if(!file){
+                return null;
+            }
+            // if(file.size > 512 * 512){
+            //     console.log('compressed!')
+            //     file = await FileUtils.compressImage(file)
+            // }
             const reader = new FileReader();
             reader.readAsDataURL(file)
             return new Promise((resolve)=>{
@@ -13,32 +22,17 @@ export const FileUtils = {
 
         return await Promise.all(encodingFiles);
     },
-    handleFilesInput: async (currFiles: Array, orgFiles: Array, maxFileCount)=>{
-        if(orgFiles && orgFiles.length){
-            const fileLength = orgFiles.length;
-            if(fileLength > 0){
-                // const currFiles = fileInputField.input.filter(v=>v.preview)
-                const orgLength = currFiles.length;
-                const files = [...orgFiles].slice(0, Math.min(5 - orgLength, fileLength))
-                const convertFiles = await FileUtils.encodeFileToBase64(files);
-                let arr = [...currFiles];
-                for(const index in convertFiles){
-                    arr.push({
-                        file: files[index],
-                        preview: convertFiles[index]
-                    })
-                }
-
-                if(orgLength + fileLength < maxFileCount){
-                    // 추가
-                    arr.push({
-                        file: null,
-                        preview: null
-                    })
-                }
-                return arr;
-            }
+    compressImage: async (file: File)=>{
+        const options = {
+            maxSizeMB: 0.2,
+            maxWidthOrHeight: 512,
+            useWebWorker: true
         }
-        return null;
+        try{
+            return await imageCompression(file, options);
+        }catch (e){
+            console.log(e);
+            throw new Error("[Error] Image Compressing");
+        }
     }
 }
