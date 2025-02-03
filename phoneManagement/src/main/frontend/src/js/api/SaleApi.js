@@ -77,8 +77,8 @@ function SaleApi(accessToken){
         getSaleRatio: async (date)=>{
             return await axiosApiWithAccessToken.get(`/api/v1/sale/ratio?date=${date}`, accessToken);
         },
-        getWorkInProcess: async (date)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/sale/wip?date=${date}`, accessToken);
+        getWorkInProcess: async ()=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/sale/wip`, accessToken);
         },
         getCtChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/ct`, body, accessToken);

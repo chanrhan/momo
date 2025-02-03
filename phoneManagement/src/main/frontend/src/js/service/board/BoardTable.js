@@ -95,11 +95,12 @@ export function Bth({index, children, className, checked,
     )
 }
 
-export function Btd({children, width, className, stopPropagation, checkbox, onCheck, checked, name}) {
+export function Btd({children, width, className, stopPropagation, checkbox, onCheck, checked, name, style}) {
     return (
         <td className={`${Board.td} ${checkbox && 'ta_c'} ${className ? className : ''}`}
             style={{
-                width: `${width}px`
+                width: `${width}px`,
+                ...style
             }}
             onClick={e=>{
             if(checkbox || stopPropagation)

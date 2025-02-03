@@ -320,12 +320,41 @@
 /*20250106 대량 업로드*/
 .board .bulk_upload{
     /*position: relative;*/
+
 }
 
-/*.board .bulk_upload .thead .th_option{*/
-/*    width: 15px;*/
-/*    background-color: white;*/
-/*}*/
+
+.board .board_head .board_head_group .btn_upload{
+    position: relative;
+    top: -12px;
+    width:24px;
+    height:24px;
+    cursor: pointer;
+    background:url(../images/upload_icon.png) no-repeat center / 24px;
+}
+
+.board .board_head .board_head_group .btn_clear{
+    width:36px;
+    height:36px;
+    cursor: pointer;
+    margin-left: 5px;
+    background:url(../images/all_icon.png) no-repeat center / 36px;
+}
+
+.board .board_head .board_head_group .btn_error_mode{
+    width:24px;
+    height:24px;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 15px;
+    background:url(../images/menu_communication_icon.png) no-repeat center / 48px;
+}
+
+
+
+
+
+
 
 
 .board .bulk_upload .td_board .tbody2 .tr:hover .td_del_row{
@@ -348,7 +377,7 @@
 /*}*/
 
 .board .bulk_upload .td_board .thead .th_option{
-    /*background-color: white;*/
+    background-color: white;
     width: 25px;
 }
 
@@ -390,7 +419,12 @@
     background-color: #ececec;
     text-align: center;
     border-radius: 8px 8px 0 0;
-    /*overflow: hidden;*/
+    /*-webkit-user-drag: element;*/
+    /*overflow: hidden  ;*/
+}
+
+.board .bulk_upload .td_board .thead .th .th_drag.active{
+    background-color: #86acff;
 }
 
 /*.board .bulk_upload .td_board .tbody2 .tr .td_drag:-moz-drag-over{*/

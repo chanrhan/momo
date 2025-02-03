@@ -84,7 +84,7 @@ public interface SaleMapper{
 	public List<Map<String, Object>> getSaleRatio(int currShopId, String date);
 
 	// 각 항목별 진행 현황 (완료 개수, 총 개수)
-	public List<Map<String,Object>> getWorkInProcess(int currShopId, String date);
+	public List<Integer> getWorkInProcess(int currShopId, String date);
 
 	// 각 항목별 전월 대비 증가/감소량
 	public Integer getCtChangeAmount(CommonVO vo);

@@ -335,8 +335,8 @@ public class SaleController {
 	}
 
 	@GetMapping("/wip")
-	public ResponseEntity<List<Map<String,Object>>> getWorkInProcess(HttpSession session,
-																	 @RequestParam String date){
+	public ResponseEntity<List<Integer>> getWorkInProcess(HttpSession session,
+																	 @RequestParam(required = false) String date){
 		int currShopId = commonService.getCurrentShopId(session);
 		return ResponseEntity.ok(saleService.getWorkInProcess(currShopId, date));
 	}

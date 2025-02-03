@@ -15,7 +15,7 @@ import {useHintBox} from "../../hook/useHintBox";
 import {ModalType} from "../../common/modal/ModalType";
 import saleApi from "../../api/SaleApi";
 
-const INIT_ROW_LENGTH = 10;
+const INIT_ROW_LENGTH = 15;
 
 const COLUMN_NAMES = [
     '개통날짜', // 0
@@ -99,23 +99,22 @@ export function SaleBulkUpload(){
     const [isSubmitting, setSubmitting] = useState(false)
 
 
-    const handleDragStart = (e, index) => {
+    const handleDragStart = (e: DragEvent, index) => {
         setGripIndex(index)
         setDraggingIndex(index);
 
+
+
         if (dragListRef && dragListRef.current[index]) {
-            // e.dataTransfer.setDragImage(dragListRef.current[index], 0, 10);
-            // e.dataTransfer.setDragImage(null, 0, 0);
-            // dragListRef.current[index].style.top = '10px'
+            // const img = dragListRef.current[index];
+            // img.style.opacity = 0.5
+            // e.dataTransfer.setDragImage(img, 0, 0);
         }
         e.dataTransfer.effectAllowed = "move";
     };
 
-    const handleDragOver = (e, index) => {
+    const handleDragOver = (e: DragEvent, index) => {
         e.preventDefault(); // Allow drop
-        // console.table(dragListRef.current[index].style)
-        dragListRef.current[index].style.y = '10px'
-        console.log(dragListRef.current[index].style.y)
 
         if (index !== draggingIndex) {
             // const updatedItems = [...inputField.input];
@@ -128,6 +127,9 @@ export function SaleBulkUpload(){
 
         return false;
     };
+
+    const handleDrag = (e: DragEvent, index)=>{
+    }
 
     useEffect(() => {
         getDeviceDataset()
@@ -585,7 +587,7 @@ export function SaleBulkUpload(){
         setCellError(rowIdx, COLUMN_INDEX.DEVICE, false)
     }
 
-    const changeColumnOrder = (e)=>{
+    const handleDragEnd = (e: DragEvent, index)=>{
         setData(prev=>{
             let copy = [...prev]
             const tempGripCol = copy.map((r, rowIdx)=>{
@@ -670,32 +672,37 @@ export function SaleBulkUpload(){
 
 
     return (
-        <div className={cm(Layout.sub)}>
-            <div className={cm(Layout.sub_head)}>
+        <div className={cm(Layout.sub)} style={{
+            paddingLeft: '0px'
+        }}>
+            <div className={cm(Layout.sub_head)} style={{
+                marginLeft: '38px'
+            }}>
                 <h2 className={cm(Layout.sub_title)}>판매일보 대량 업로드</h2>
             </div>
             <div className={cm(Board.board, "board_list")} style={{
                 position: "relative"
             }}>
 
-                <div className={cm(Board.board_head)}>
+                <div className={cm(Board.board_head)} style={{
+                    marginLeft: '38px'
+                }}>
                     <div className={cm(Board.board_head_group)}>
-                        <button onClick={clearData}
-                                className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>전체 초기화
-                        </button>
-                        <button onClick={toggleMode}
-                                className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>
-                            {errorMode ? "전체 보기" : "오류만 보기"}
-                        </button>
+                        <div className={Board.bulk_header}>
 
-                        <label className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>
+                        </div>
+                    </div>
+                    <div className={cm(Board.board_head_group)}>
+                        <label className={Board.btn_upload}>
                             파일 업로드
                             <input type="file" accept=".xlsx,.xls,.csv" onChange={handleUploadSheet} style={{
                                 display: "none"
                             }}/>
                         </label>
-                    </div>
-                    <div className={cm(Board.board_head_group)}>
+                        <button onClick={clearData} className={Board.btn_clear}>전체 초기화</button>
+                        <button onClick={toggleMode} className={Board.btn_error_mode}>
+                            {errorMode ? "전체 보기" : "오류만 보기"}
+                        </button>
                         <button onClick={validateAll}
                                 className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>저장
                         </button>
@@ -716,7 +723,7 @@ export function SaleBulkUpload(){
                                 return (
                                     <>
                                         <Bth index={i + 1} name={v}>
-                                            {v}
+                                        {v}
                                             {
                                                 COLUMN_HINT[i] && (
                                                     <>
@@ -727,15 +734,19 @@ export function SaleBulkUpload(){
                                                     </>
                                                 )
                                             }
-                                            <div key={i} className={cm(Board.th_drag)}
+                                            <div key={i} className={cm(Board.th_drag, `${i === draggingIndex && Board.active}`)}
                                                 draggable
                                                 ref={el => {
                                                     dragListRef.current[i] = el;
-                                                }} onDragOver={e => {
+                                                }} onDrag={e=>{
+                                                handleDrag(e, i)
+                                            }} onDragOver={e => {
                                                 handleDragOver(e, i)
                                             }} onDragStart={(e) => {
-                                                handleDragStart(e, i)
-                                            }} onDragEnd={changeColumnOrder}>
+                                                    handleDragStart(e, i)
+                                            }} onDragEnd={(e)=>{
+                                                handleDragEnd(e, i)
+                                            }}>
                                                 <span className={Board.drag_handle}></span>
                                             </div>
                                         </Bth>
@@ -813,7 +824,7 @@ export function SaleBulkUpload(){
                                                                             e.stopPropagation()
                                                                         }}>
                                                                             {deviceInfo.name}
-                                                                            {/*{v.similarity}*/}
+                                                                            {v.similarity}
                                                                         </li>
                                                                     )
                                                                 })

@@ -338,7 +338,7 @@ public class SaleService  {
 	}
 
 	// 각 항목별 진행 현황 (완료 개수, 총 개수)
-	public List<Map<String,Object>> getWorkInProcess(int currShopId, String date){
+	public List<Integer> getWorkInProcess(int currShopId, String date){
 		return saleMapper.getWorkInProcess(currShopId, date);
 	}
 

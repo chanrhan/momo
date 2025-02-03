@@ -44,8 +44,7 @@ export function Profile(){
 
     const handleFileInput = (files)=>{
         // const files = e.target.files
-        // console.table(files)
-        setPfp(files)
+        setPfp(files[0])
         if(files){
             const reader = new FileReader()
             reader.readAsDataURL(files[0])
@@ -76,10 +75,8 @@ export function Profile(){
             if(status === 200 && data){
                 if(pfp){
                     const formData = new FormData();
-                    const files = Array.prototype.slice.call(pfp);
-                    files.forEach((file)=>{
-                        formData.append('file', file);
-                    })
+                    formData.append('file', pfp);
+                    // console.table(formData)
                     userApi.updatePfp(formData).then(({status,data})=>{
                         if(status === 200 && data){
                             modal.openModal(ModalType.SNACKBAR.Info, {
@@ -138,7 +135,7 @@ export function Profile(){
                 <FileInput onChange={handleFileInput} enableDrop={false} className={User.profile_upload}
                            previewClassName={User.profile_img}
                            src={imgPreview}>
-                    <button className={User.btn_del}></button>
+                    {/*<button className={User.btn_del}></button>*/}
                 </FileInput>
             </div>
 

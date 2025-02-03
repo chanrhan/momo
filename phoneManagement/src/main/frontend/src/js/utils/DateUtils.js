@@ -7,6 +7,9 @@ export const DateUtils = {
     formatYYMM: (year:number, month:number)=>{
         return `${year}-${month.toString().padStart(2, 0)}`
     },
+    dateToStringYYMM: (date: Date)=>{
+        return DateUtils.formatYYMM(date.getFullYear(), date.getMonth()+1)
+    },
     dateToStringYYMMdd: (date: Date)=>{
         return DateUtils.formatYYMMdd(date.getFullYear(), date.getMonth()+1,date.getDate())
     },

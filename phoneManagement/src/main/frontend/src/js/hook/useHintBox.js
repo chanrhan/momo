@@ -25,7 +25,19 @@ export function useHintBox(content, props) {
         }
     }, [active]);
 
-    const COMPONENT = <HintBox {...props} top={props.top+pos.top} left={props.left+pos.left} active={active} componentRef={componentRef}>
+    let top = pos.top ;
+    let left = pos.left;
+    if(props){
+        if(props.top){
+            top += props.top
+        }
+        if(props.left){
+            left += props.left
+        }
+    }
+
+
+    const COMPONENT = <HintBox {...props} top={top} left={left} active={active} componentRef={componentRef}>
         {content}
     </HintBox>
 

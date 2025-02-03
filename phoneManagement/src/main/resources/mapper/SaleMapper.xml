@@ -1186,23 +1186,24 @@
             SELECT count(*)
             FROM tb_sale
             WHERE shop_id=#{currShopId} and
+                device_id is not null and
                 actv_dt like '${date}%'
         );
 
         with tb as (
-            SELECT IFNULL(count(*),0) as curr
+            SELECT count(*) as curr
             FROM tb_sale_card sc
                      LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
             WHERE sc.shop_id=#{currShopId} and
                 actv_dt like '${date}%'
             UNION ALL
-            SELECT IFNULL(count(*),0) as curr
+            SELECT count(*) as curr
             FROM tb_sale
             WHERE shop_id= #{currShopId} and
                 actv_dt like '${date}%' and
                 sd_id is not null
             UNION ALL
-            SELECT IFNULL(count(*) ,0) as curr
+            SELECT count(*) as curr
             FROM tb_sale
             WHERE shop_id= #{currShopId} and
                 actv_dt like '${date}%' and
@@ -1222,101 +1223,78 @@
     </select>
 
 <!--    각 항목별 진행 현황 (완료 개수, 총 개수)-->
-    <select id="getWorkInProcess" resultType="java.util.Map">
+    <select id="getWorkInProcess">
         with table_ud as (
             SELECT ud_st
             FROM tb_sale_used_device sud
             LEFT OUTER JOIN tb_sale sl on sl.sale_id=sud.sale_id
-            WHERE sud.shop_id=#{currShopId} and
-                actv_dt like '${date}%'
+            WHERE sud.shop_id=#{currShopId}
+--               and
+--                 actv_dt like '${date}%'
         ), table_card as (
             SELECT card_st
             FROM tb_sale_card sc
             LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
-            WHERE sc.shop_id=#{currShopId} and
-                actv_dt like '${date}%'
+            WHERE sc.shop_id=#{currShopId}
+--               and
+--                 actv_dt like '${date}%'
         ), table_comb as (
             SELECT comb_st
             FROM tb_sale
-            WHERE shop_id=#{currShopId} and
-                actv_dt like '%${date}%'
+            WHERE shop_id=#{currShopId}
+--               and
+--                 actv_dt like '%${date}%'
         ), table_sup as (
             SELECT sup_st
             FROM tb_sale_support sc LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
-            WHERE sc.shop_id=#{currShopId} and
-                actv_dt like '%${date}%'
+            WHERE sc.shop_id=#{currShopId}
+--               and
+--                 actv_dt like '%${date}%'
         ), table_pm as (
             SELECT checked
             FROM tb_promise sc
                 LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
-            WHERE sc.shop_id=#{currShopId} and
-                actv_dt like '%${date}%'
+            WHERE sc.shop_id=#{currShopId}
+--               and
+--                 actv_dt like '%${date}%'
         ), rst as (
             SELECT
                 (
                     SELECT count(*)
                     FROM table_ud
-                    WHERE ud_st=2
-                ) as value,
-                (
-                    SELECT count(*)
-                    FROM table_ud
-                ) as total
+                    WHERE ud_st!=2
+                )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_card
-                    WHERE card_st=2
-                ) as value,
-                (
-                    SELECT count(*)
-                    FROM table_card
-                ) as total
+                    WHERE card_st!=2
+                )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_comb
-                    WHERE comb_st=1
-                ) as value,
-                (
-                    SELECT count(*)
-                    FROM table_comb
-                ) as total
+                    WHERE comb_st!=1
+                )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_sup
-                    WHERE sup_st=1
-                ) as value,
-                (
-                    SELECT count(*)
-                    FROM table_sup
-                ) as total
+                    WHERE sup_st!=1
+                )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_pm
-                    WHERE checked=1
-                ) as value,
-                (
-                    SELECT count(*)
-                    FROM table_pm
-                ) as total
+                    WHERE checked!=1
+                )
         )
 
-        SELECT value,
-               total,
-               (
-                   CASE
-                       WHEN total = 0 and value !=0 THEN 100
-                       WHEN total = 0 and value =0 THEN 0
-                       WHEN total != 0 THEN TRUNCATE(((rst.value/total))*100, 1)
-                       END
-                   ) as per
+        SELECT *
         FROM rst
     </select>
 
