@@ -168,6 +168,9 @@ public class GMDController {
         return ResponseEntity.ok(result > 0);
     }
 
-
+    @GetMapping("/msg/template")
+    public ResponseEntity<List<Map<String,String>>> getMessageTemplate(){
+        return ResponseEntity.ok(gmdService.getMessageTemplate());
+    }
 
 }

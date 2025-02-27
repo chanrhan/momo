@@ -3,6 +3,38 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.GMDMapper">
+<!--    문자메세지 템플릿-->
+    <select id="getMessageTemplate">
+        SELECT title,
+               content
+        FROM tb_msg_template
+    </select>
+
+
+    <insert id="insertMessageTemplate">
+        SET @last_id := (
+            SELECT max(msg_id)+1
+            FROM tb_msg_template
+        );
+
+        INSERT INTO tb_msg_template
+        (msg_id, content)
+        VALUES
+        (@last_id, #{content})
+
+    </insert>
+
+    <update id="updateMessageTemplate">
+        UPDATE tb_msg_template
+        SET content=#{content}
+        WHERE msg_id=#{msgId}
+    </update>
+
+    <delete id="deleteMessageTemplate">
+        DELETE FROM tb_msg_template
+        WHERE msg_id=#{msgId}
+    </delete>
+
 <!--    정적 목록-->
     <select id="getDevice">
         with base as (

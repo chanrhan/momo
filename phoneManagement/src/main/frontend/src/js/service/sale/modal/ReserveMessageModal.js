@@ -11,42 +11,64 @@ import useApi from "../../../hook/useApi";
 import {writeFileAsync} from "xlsx";
 
 export function ReserveMessageModal(props){
-    const {rsvMsgApi} = useApi()
-    const arrayInputField = useObjectArrayInputField({
-        checked: false,
-        msg_tp: null
-    }, RESERVE_INPUT)
+    const {rsvMsgApi, gmdApi} = useApi()
+    const arrayInputField = useObjectArrayInputField();
     // console.table(arrayInputField.input)
     const modal = useModal()
 
-    const [orgData, setOrgData] = useState(null)
+    const [reservedMessages, setReservedMessages] = useState([])
 
     useEffect(() => {
-        if(props.sale_id){
-            getReservedMessage();
-        }
+        getMessageTemplate()
     }, []);
 
-    const getReservedMessage = ()=>{
-        rsvMsgApi.getReserveMsgBySale(props.sale_id).then(({status,data})=>{
-            if(status === 200 && !ObjectUtils.isEmpty(data)){
-                // console.table(data)
-                setOrgData(data)
-                arrayInputField.setInput(prev=>{
-                    const typeList = data.map(v=>v.msg_tp);
-                    return [...prev].map(v=>{
-                        const find = typeList.indexOf(v.msg_tp);
-                        if(find !== -1){
-                            v.rsv_dt = data[find].rsv_dt;
-                            v.rsv_tp = data[find].rsv_tp
-                            v.msg_st = data[find].msg_st;
-                            v.checked = true;
-                        }
-                        return v;
-                    })
-                })
+    const getMessageTemplate = async ()=>{
+        console.log(111)
+        const templates = await gmdApi.getMessageTemplate().then(({status,d})=>{
+                console.table(d)
+            if(status === 200 && d){
+                return d;
             }
+            return null;
         })
+        console.log(222)
+        const orgData =  await getReservedMessage()
+        console.log(333)
+        const newData = [];
+        for(const i: Number in templates){
+            newData[i] = {
+                title: templates[i].title,
+                content: templates[i].content,
+                checked: false,
+                msg_tp: i,
+                msg_st: 0,
+                rsv_tp: 0,
+                rsv_dt: ''
+            }
+        }
+        for(const i: Number in orgData){
+            newData[orgData[i].msg_tp] = {
+                checked: true,
+                msg_st: orgData[i].msg_st,
+                rsv_tp: orgData[i].rsv_tp,
+                rsv_dt: orgData[i].rsv_dt
+            }
+        }
+        setReservedMessages(orgData)
+        arrayInputField.setInput(newData)
+    }
+
+    const getReservedMessage = async ()=>{
+        let result = null;
+        if(props.sale_id){
+            await rsvMsgApi.getReserveMsgBySale(props.sale_id).then(({status,data})=>{
+                if(status === 200 && !ObjectUtils.isEmpty(data)){
+                    result = data;
+                }
+            })
+        }
+
+        return result;
     }
 
     const close = ()=>{
@@ -81,7 +103,7 @@ export function ReserveMessageModal(props){
             }
         })
         if(props.sale_id){
-            const msgTypeList = orgData?.map(v=>v.msg_tp) ?? []
+            const msgTypeList = reservedMessages?.map(v=>v.msg_tp) ?? []
             const deleteList = [];
             body = arrayInputField.input.filter(v=>{
                 if(msgTypeList.includes(v.msg_tp) || !v.checked || !v.rsv_dt){
@@ -193,7 +215,7 @@ function ReserveItem({index, inputField, onDateClick}){
 
     const openMessagePreviewModal = ()=>{
         modal.openModal(ModalType.LAYER.Message_Preview, {
-            msg: '안녕하세요 고객님. 개통해주셔서 감사합니다~'
+            id: index
         })
     }
 
@@ -250,29 +272,3 @@ function ReserveItem({index, inputField, onDateClick}){
     )
 }
 
-const RESERVE_INPUT = [
-    {
-        checked: false,
-        msg_tp: 0,
-        rsv_tp: 0,
-        rsv_dt: ''
-    },
-    {
-        checked: false,
-        msg_tp: 1,
-        rsv_tp: 1,
-        rsv_dt: ''
-    },
-    {
-        checked: false,
-        msg_tp: 2,
-        rsv_tp: 0,
-        rsv_dt: ''
-    },
-    {
-        checked: false,
-        msg_tp: 3,
-        rsv_tp: 0,
-        rsv_dt: ''
-    }
-]

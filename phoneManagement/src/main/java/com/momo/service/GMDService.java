@@ -3,7 +3,6 @@ package com.momo.service;
 import com.momo.common.vo.GMDVO;
 import com.momo.mapper.GMDMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GMDService {
     private final GMDMapper gmdMapper;
+    // 문자메세지 템플릿
+    public List<Map<String, String>> getMessageTemplate(){
+        return gmdMapper.getMessageTemplate();
+    }
+
+    public void insertMessageTemplate(String content){
+        gmdMapper.insertMessageTemplate(content);
+    }
+
+    public int updateMessageTemplate(int msgId, String content){
+        return gmdMapper.updateMessageTemplate(msgId, content);
+    }
+
+    public int deleteMessageTemplate(int msgId){
+        return gmdMapper.deleteMessageTemplate(msgId);
+    }
 
     // 정적 목록
     public Map<String,Object> getDevice(GMDVO vo){

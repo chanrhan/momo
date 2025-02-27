@@ -35,6 +35,7 @@ export const Validate_Actions = [
     },
     { // 이름 (Name)
         test: (str: string)=>{
+            console.log(`name test: ${str}`)
             return str.length <= 20
         },
         replace: (str: string)=>{

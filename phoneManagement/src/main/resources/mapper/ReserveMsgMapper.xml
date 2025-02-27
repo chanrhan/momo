@@ -33,6 +33,7 @@
         from tb_rsv_msg
         where shop_id=#{currShopId} and
               sale_id=#{saleId}
+        order by msg_tp
     </select>
 
     <select id="getReserveMsgForCalendar">

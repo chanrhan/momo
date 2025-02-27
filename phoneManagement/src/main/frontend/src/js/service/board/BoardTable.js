@@ -50,7 +50,8 @@ export function Btbody({br, children}){
 }
 
 export function Bth({index, children, className, checked,
-                        checkbox, name, sort, onClick, onCheck, onMouseOver}){
+                        checkbox, name, sort, onClick, onCheck, onMouseOver, draggable,
+                        onDrag, onDragStart, onDragEnd, onDragOver}){
     const thRef = useRef()
 
     const resizeColumn = (e) => {
@@ -78,7 +79,8 @@ export function Bth({index, children, className, checked,
 
     return (
         <th key={index} className={`${cm(Board.th)} ${className} ${(sort && !checkbox) && Board.sort} ${checkbox && 'ta_c'}`}
-            scope='col' onClick={onClick} onMouseOver={onMouseOver} ref={thRef}>
+            scope='col' onClick={onClick} onMouseOver={onMouseOver} ref={thRef} draggable={draggable}
+            onDrag={onDrag} onDragEnd={onDragEnd} onDragStart={onDragStart} onDragOver={onDragOver}>
             {
                 checkbox && (
                     <div className={cmc(Board.check_box)}>

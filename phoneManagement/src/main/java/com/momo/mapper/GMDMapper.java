@@ -9,6 +9,14 @@ import java.util.Map;
 // Global Master Data
 @Mapper
 public interface GMDMapper {
+    // 문자메세지 템플릿
+    public List<Map<String, String>> getMessageTemplate();
+    public void insertMessageTemplate(String content);
+    public int updateMessageTemplate(int msgId, String content);
+    public int deleteMessageTemplate(int msgId);
+
+
+
     // 정적 목록
     public Map<String,Object> getDevice(GMDVO vo);
     public Map<String,Object> getSecondDevice(GMDVO vo);
