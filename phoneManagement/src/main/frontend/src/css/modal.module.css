@@ -53,24 +53,50 @@
     vertical-align: top;
 }
 
-.confirm{
+/*confirm*/
+
+.menu_confirm{
+    display: inline-block;
+    position: fixed;
+    left: 400px;
+    /*transition: opacity 0.5s ease, visibility 0.5s ease;*/
+    animation: fade-In 0.3s
+}
+
+.menu_confirm.fade_out{
+    animation: fade-Out 0.5s;
+}
+
+.menu_confirm .confirm{
     position: relative;
     /*min-width: 150px;*/
     min-height: 100px;
     padding: 0px 16px 0 16px;
     overflow: hidden;
     box-shadow: 0 16px 24px rgba(40, 39, 44, 0.14);
-    border-radius: 0 0 8px 8px;
+    border-radius: 20px;
 }
 
+.menu_confirm .confirm .confirm_msg_box{
+    display: flex;
+}
 
-.confirm .confirm_msg{
+.menu_confirm .confirm .confirm_msg_box .warning_icon{
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    background: url(../images/alert_icon.png) no-repeat left -3px top 0 / 24px;
+    vertical-align: top;
+}
+
+.confirm .confirm_msg_box .confirm_msg{
     font-size: 16px;
 }
 .confirm .btn_box{
     width: 100%;
     margin-top: 15px;
     text-align: center;
+    margin-bottom: 15px;
 }
 .confirm .btn_box .btn{
     display: inline-block;
@@ -93,14 +119,7 @@
 .confirm .btn_box .btn_grey{
     background-color: #9d9d9d;
 }
-.confirm .confirm_msg:before{
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    background: url(../images/alert_icon.png) no-repeat left top / 24px auto;
-    vertical-align: top;
-}
+
 .confirm .progress_cont{
     display: block;
     margin-bottom: 10px;
@@ -122,15 +141,7 @@
     animation: fade-Out 0.5s;
 }
 
-.menu_confirm{
-    left: 40%;
-    /*transition: opacity 0.5s ease, visibility 0.5s ease;*/
-    animation: fade-In 0.3s
-}
 
-.menu_confirm.fade_out{
-    animation: fade-Out 0.5s;
-}
 
 @keyframes fade-In {
     from{

@@ -23,36 +23,41 @@ export function ReserveMessageModal(props){
     }, []);
 
     const getMessageTemplate = async ()=>{
-        console.log(111)
-        const templates = await gmdApi.getMessageTemplate().then(({status,d})=>{
-                console.table(d)
-            if(status === 200 && d){
-                return d;
+        const templates = await gmdApi.getMessageTemplate().then(({status,data})=>{
+            if(status === 200 && data){
+                return data;
             }
             return null;
         })
-        console.log(222)
         const orgData =  await getReservedMessage()
-        console.log(333)
         const newData = [];
         for(const i: Number in templates){
             newData[i] = {
                 title: templates[i].title,
                 content: templates[i].content,
                 checked: false,
-                msg_tp: i,
+                msg_tp: templates[i].msg_id,
                 msg_st: 0,
                 rsv_tp: 0,
                 rsv_dt: ''
             }
         }
         for(const i: Number in orgData){
-            newData[orgData[i].msg_tp] = {
-                checked: true,
-                msg_st: orgData[i].msg_st,
-                rsv_tp: orgData[i].rsv_tp,
-                rsv_dt: orgData[i].rsv_dt
+            const idx: Number = newData.map((v,i)=>{
+                return {
+                    msg_tp: v.msg_tp,
+                    index: i
+                }
+            }).filter(v=>v.msg_tp === orgData[i].msg_tp)?.[0]?.index
+            console.table(idx)
+            // continue;
+            if(idx !== undefined){
+                newData[idx][`checked`] = true
+                newData[idx][`msg_st`] = orgData[i].msg_st
+                newData[idx][`rsv_tp`] = orgData[i].rsv_tp
+                newData[idx][`rsv_dt`] = orgData[i].rsv_dt
             }
+
         }
         setReservedMessages(orgData)
         arrayInputField.setInput(newData)
@@ -102,6 +107,7 @@ export function ReserveMessageModal(props){
                 rsv_dt: v.rsv_dt
             }
         })
+        // console.table(body)
         if(props.sale_id){
             const msgTypeList = reservedMessages?.map(v=>v.msg_tp) ?? []
             const deleteList = [];
@@ -187,6 +193,9 @@ export function ReserveMessageModal(props){
                         <ul className={Popup.popup_check_list}>
                             {
                                 arrayInputField.length() > 0 && arrayInputField.input.map((v,i)=>{
+                                    if(ObjectUtils.isEmpty(v)){
+                                        return null
+                                    }
                                     return <ReserveItem index={i} inputField={arrayInputField} onDateClick={()=>{
                                         openReserveDateModal(i)
                                     }}/>
@@ -215,7 +224,7 @@ function ReserveItem({index, inputField, onDateClick}){
 
     const openMessagePreviewModal = ()=>{
         modal.openModal(ModalType.LAYER.Message_Preview, {
-            id: index
+            content: inputField.get(index, "content")
         })
     }
 
@@ -252,7 +261,7 @@ function ReserveItem({index, inputField, onDateClick}){
                    checked={inputField.get(index, 'checked')}/>
             <label htmlFor={`rsv_check${index}`}
                    className={`${Popup.check_label} ${isDisabled()}`}
-                   onClick={toggleCheck}>{LMD.rsv_msg_tp[inputField.get(index, 'msg_tp')]}</label>
+                   onClick={toggleCheck}>{inputField.get(index, "title")}</label>
             {
                 getMessageStateBox()
             }

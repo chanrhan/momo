@@ -1,7 +1,10 @@
 export const ModalType = {
     LAYER: {
+        // admin
+        Admin_Bulk_Upload: 'AdminBulkUpload',
+        Admin_Message_Template: 'AdminMessageTemplate',
+
         // common
-        Admin_Bulk_Upload: 'BulkUpload',
         Invite: 'Invite',
         Payment_Card: 'Payment_Card',
         Charge_Point: 'ChargePoint',

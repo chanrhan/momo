@@ -5,7 +5,6 @@ import {useState} from "react";
 
 
 export function MessagePreviewModal(props){
-    const {gmdApi} = useApi();
 
     return (
         <LayerModal {...props} top={120} maxWidth={500}>

@@ -5,29 +5,32 @@
 <mapper namespace="com.momo.mapper.GMDMapper">
 <!--    문자메세지 템플릿-->
     <select id="getMessageTemplate">
-        SELECT title,
+        SELECT msg_id,
+               title,
                content
         FROM tb_msg_template
+        order by regi_dt desc
     </select>
 
 
     <insert id="insertMessageTemplate">
         SET @last_id := (
-            SELECT max(msg_id)+1
+            SELECT IFNULL(max(msg_id), 0) + 1
             FROM tb_msg_template
         );
 
         INSERT INTO tb_msg_template
-        (msg_id, content)
+        (msg_id, title, content)
         VALUES
-        (@last_id, #{content})
+        (@last_id,#{title}, #{content})
 
     </insert>
 
     <update id="updateMessageTemplate">
         UPDATE tb_msg_template
-        SET content=#{content}
-        WHERE msg_id=#{msgId}
+        SET title=#{title},
+            content=#{content}
+        WHERE msg_id=#{id}
     </update>
 
     <delete id="deleteMessageTemplate">

@@ -15,16 +15,16 @@ import java.util.Map;
 public class GMDService {
     private final GMDMapper gmdMapper;
     // 문자메세지 템플릿
-    public List<Map<String, String>> getMessageTemplate(){
+    public List<Map<String, Object>> getMessageTemplate(){
         return gmdMapper.getMessageTemplate();
     }
 
-    public void insertMessageTemplate(String content){
-        gmdMapper.insertMessageTemplate(content);
+    public void insertMessageTemplate(GMDVO vo){
+        gmdMapper.insertMessageTemplate(vo);
     }
 
-    public int updateMessageTemplate(int msgId, String content){
-        return gmdMapper.updateMessageTemplate(msgId, content);
+    public int updateMessageTemplate(GMDVO vo){
+        return gmdMapper.updateMessageTemplate(vo);
     }
 
     public int deleteMessageTemplate(int msgId){

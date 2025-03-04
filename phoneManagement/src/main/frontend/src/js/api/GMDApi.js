@@ -29,7 +29,16 @@ function GMDApi(accessToken){
         },
         getMessageTemplate: async ()=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd/msg/template`, accessToken);
-        }
+        },
+        insertMessageTemplate: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/msg/template/add`, body, accessToken);
+        },
+        updateMessageTemplate: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/gmd/msg/template/update`, body, accessToken);
+        },
+        deleteMessageTemplate: async (msgId)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/gmd/msg/template/del?msgId=${msgId}`, accessToken);
+        },
     }
 }
 

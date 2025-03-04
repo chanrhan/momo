@@ -10,9 +10,9 @@ import java.util.Map;
 @Mapper
 public interface GMDMapper {
     // 문자메세지 템플릿
-    public List<Map<String, String>> getMessageTemplate();
-    public void insertMessageTemplate(String content);
-    public int updateMessageTemplate(int msgId, String content);
+    public List<Map<String, Object>> getMessageTemplate();
+    public void insertMessageTemplate(GMDVO vo);
+    public int updateMessageTemplate(GMDVO vo);
     public int deleteMessageTemplate(int msgId);
 
 

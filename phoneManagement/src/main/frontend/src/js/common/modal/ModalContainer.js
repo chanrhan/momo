@@ -46,6 +46,7 @@ import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
 import {DeviceRecommendModal} from "../../service/bulk_upload/DeviceRecommendModal";
 import {SelectSheetModal} from "../../service/bulk_upload/SelectSheetModal";
+import {MessageTemplateModal} from "../../admin/modal/MessageTemplateModal";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -55,10 +56,13 @@ const M_TYPE = {
 }
 
 const MODAL_COMPONENTS = {
+    // admin
+    AdminBulkUpload: AdminBulkUploadModal,
+    AdminMessageTemplate: MessageTemplateModal,
+
     // common
     DynamicSelect: DynamicSelectModal,
     MoreOption: MoreOptionModal,
-    BulkUpload: AdminBulkUploadModal,
     Invite: InviteModal,
     ChargePoint: ChargePointModal,
     Alert: AlertModal,
