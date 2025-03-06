@@ -4,9 +4,8 @@ import {ModalType} from "../ModalType";
 import Popup from "../../../../css/popup.module.css";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {TransformWrapper, TransformComponent, useTransformContext} from "react-zoom-pan-pinch";
-import {ReactZoomPanPinchRef} from "react-zoom-pan-pinch";
 
-const TOP_OFFSET = 0;
+// const TOP_OFFSET = 0;
 
 const MAX_WIDTH = 1000
 const MAX_HEIGHT = 600
@@ -20,7 +19,6 @@ export function ImagePreviewModal(props){
     })
 
     const zoomScaleRef = useRef(null)
-
 
     useMemo(() => {
         const w = props.width;
@@ -89,7 +87,7 @@ export function ImagePreviewModal(props){
         >
             <div className={Popup.popup_title}>사진 미리보기</div>
             <div className={Popup.preview_description}>마우스 휠과 드래그로 <span className={Popup.blue_text}>이미지 확대/축소 및 이동</span>이 가능합니다.</div>
-            <div className={Popup.preview_cont}>
+            <div className={Popup.img_preview_cont}>
                 <div className={Popup.preview_img_box} style={{
                     width: `${size.width}px`,
                     height: `${size.height}px`,
