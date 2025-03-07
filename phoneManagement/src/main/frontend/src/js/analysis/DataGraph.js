@@ -47,7 +47,7 @@ export function DataGraph({userId}){
         // console.table(body)
         await saleApi.getGraphSummary(body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 setSummary(data)
             }
         })
@@ -88,7 +88,7 @@ export function DataGraph({userId}){
                     <ul className={Graph.graph_list}>
                         {
                             summary && summary.map((v, i) => {
-                                return <GraphSummaryCard index={i} title={ITEM_NAMES[i]}
+                                return <GraphSummaryCard key={i} index={i} title={ITEM_NAMES[i]}
                                                          value={v.value ?? 0}
                                                          price={i >= 5 && i <= 6}
                                                          per={v.per}

@@ -154,7 +154,15 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
             },
             zoom: {
                 zoom: {
-                    enabled: true,
+                    // wheel: {
+                    //     enabled: true
+                    // },
+                    // grab: {
+                    //     enabled: true
+                    // },
+                    pinch: {
+                        enabled: true
+                    },
                     mode: 'x', // x축 줌만 활성화
                 },
                 pan: {

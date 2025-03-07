@@ -410,7 +410,7 @@ public class SaleService  {
 	}
 
 	// 통계 페이지
-	public Map<String,Object> getPersonalStatistics(CommonVO vo){
+	public List<Map<String,Object>> getPersonalStatistics(CommonVO vo){
 		return saleMapper.getPersonalStatistics(vo);
 	}
 

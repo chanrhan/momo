@@ -2499,37 +2499,86 @@
                       left outer join tb_avg_margin am on am.sale_id = sl.sale_id and am.shop_id = #{currShopId}
                       left outer join tb_both b on b.sale_id = sl.sale_id and b.shop_id = #{currShopId}
              group by id
-         )
+         ), total as (
+             select *
+             from stat
+             union all
+             select null as id,
+                    '평균' as name,
+                    null as nickname,
+                    avg(ct_cms)          as ct_cms,
+                    avg(wt_cms)           as wt_cms,
+                    avg(sum_add)      as sum_add,
+                    avg(sum_ud_cms)       as sum_ud_cms,
+                    avg(sum_sup)       as sum_sup,
+                    avg(total_cms)        as total_cms,
+                    avg(ct_cnt)      as ct_cnt,
+                    avg(internet_cnt)  as internet_cnt,
+                    avg(tv_cnt)        as tv_cnt,
+                    avg(total_cms) as avg_margin,
+                    avg(dongsi)       as dongsi,
+                    avg(dongsi_per)                            as dongsi_per,
+                    avg(ud_cnt)         as ud_cnt,
+                    avg(sd_cnt)          as sd_cnt,
+                    avg(sd_per)                   as sd_per,
+                    avg(exsvc_cnt)       as exsvc_cnt,
+                    avg(exsvc_per)                           as exsvc_per
+             from stat
+             union all
+             select null as id,
+                    '합계' as name,
+                    null as nickname,
+                    sum(ct_cms)          as ct_cms,
+                    sum(wt_cms)           as wt_cms,
+                    sum(sum_add)      as sum_add,
+                    sum(sum_ud_cms)       as sum_ud_cms,
+                    sum(sum_sup)       as sum_sup,
+                    sum(total_cms)        as total_cms,
+                    sum(ct_cnt)      as ct_cnt,
+                    sum(internet_cnt)  as internet_cnt,
+                    sum(tv_cnt)        as tv_cnt,
+                    sum(total_cms) as avg_margin,
+                    sum(dongsi)       as dongsi,
+                    sum(dongsi_per)                            as dongsi_per,
+                    sum(ud_cnt)         as ud_cnt,
+                    sum(sd_cnt)          as sd_cnt,
+                    sum(sd_per)                   as sd_per,
+                    sum(exsvc_cnt)       as exsvc_cnt,
+                    sum(exsvc_per)                           as exsvc_per
+             from stat
+        )
 
+        select *
+        from total
 
-        select json_arrayagg(json_object(
-                'name', name,
-                'nickname', nickname
-                             )) as profile,
-               json_arrayagg(ct_cms) as ct_cms,
-               json_arrayagg(wt_cms) as wt_cms ,
-               json_arrayagg(sum_add) as sum_add,
-               json_arrayagg(sum_ud_cms) as ud_cms,
-               json_arrayagg(sum_sup) as sum_sup,
-               json_arrayagg(total_cms) as total_cms,
-               json_arrayagg(ct_cnt) as ct_cnt,
-               json_arrayagg(internet_cnt) as internet_cnt,
-               json_arrayagg(tv_cnt) as tv_cnt,
-               json_arrayagg(avg_margin) as avg_margin,
-               json_arrayagg(json_object(
-                       'cnt', dongsi,
-                       'per', dongsi_per
-                             )) as dongsi_stat,
-               json_arrayagg(ud_cnt) as ud_cnt,
-               json_arrayagg(json_object(
-                       'cnt', sd_cnt,
-                       'per', sd_per
-                             )) as sd_stat,
-               json_arrayagg(json_object(
-                       'cnt', exsvc_cnt,
-                       'per', exsvc_per
-                             )) as exsvc_stat
-        from stat
+--         select json_arrayagg(json_object(
+--                 'name', name,
+--                 'nickname', nickname
+--                              )) as profile,
+--                json_arrayagg(ct_cms) as ct_cms,
+--                json_arrayagg(wt_cms) as wt_cms ,
+--                json_arrayagg(sum_add) as sum_add,
+--                json_arrayagg(sum_ud_cms) as ud_cms,
+--                json_arrayagg(sum_sup) as sum_sup,
+--                json_arrayagg(total_cms) as total_cms,
+--                json_arrayagg(ct_cnt) as ct_cnt,
+--                json_arrayagg(internet_cnt) as internet_cnt,
+--                json_arrayagg(tv_cnt) as tv_cnt,
+--                json_arrayagg(avg_margin) as avg_margin,
+--                json_arrayagg(json_object(
+--                        'cnt', dongsi,
+--                        'per', dongsi_per
+--                              )) as dongsi_stat,
+--                json_arrayagg(ud_cnt) as ud_cnt,
+--                json_arrayagg(json_object(
+--                        'cnt', sd_cnt,
+--                        'per', sd_per
+--                              )) as sd_stat,
+--                json_arrayagg(json_object(
+--                        'cnt', exsvc_cnt,
+--                        'per', exsvc_per
+--                              )) as exsvc_stat
+--         from total
         ]]>
     </select>
 

@@ -504,7 +504,7 @@ public class SaleController {
 
 	// 통계 페이지
 	@PostMapping("/stat")
-	public ResponseEntity<Map<String,Object>> getPersonalStatistics(HttpSession session,
+	public ResponseEntity<List<Map<String,Object>>> getPersonalStatistics(HttpSession session,
 												  @RequestBody CommonVO vo){
 		int currShopId = commonService.getCurrentShopId(session);
 		vo.setCurrShopId(currShopId);
