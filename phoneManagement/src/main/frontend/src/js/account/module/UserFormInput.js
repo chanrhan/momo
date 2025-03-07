@@ -3,7 +3,7 @@ import {cm} from "../../utils/cm";
 import {ObjectUtils} from "../../utils/objectUtil";
 
 export function UserFormInput({value, type = 'text', subject, name, inputField, disabled, className, style, placeholder,
-                                  search, maxLength = 20, onSearch, onKeyDown, onClick, bg, readOnly, onChange, errorText, children, autoComplete}){
+                                  search, isSearching, maxLength = 20, onSearch, onKeyDown, onClick, bg, readOnly, onChange, errorText, children, autoComplete}){
 
     const handleChange = e=>{
         if(inputField !== null && inputField !== undefined){
@@ -16,7 +16,7 @@ export function UserFormInput({value, type = 'text', subject, name, inputField, 
             {
                 subject && <label htmlFor={name} className={User.form_label}>{subject}</label>
             }
-            <div className={`${User.form_inp} ${User.div} ${className} ${search && User.form_search}`}>
+            <div className={`${User.form_inp} ${User.div} ${className} ${search && User.form_search} ${isSearching && User.search_loading}`}>
                 <input type={type} disabled={disabled} name={name} value={value ?? inputField.get(name)} className={`inp ${User.inp} ${bg && `${User.bg} bg`}`}
                        placeholder={placeholder} readOnly={(readOnly)} maxLength={maxLength} style={style}
                        onClick={onClick} onKeyDown={onKeyDown}  onChange={onChange ? onChange : handleChange} autoComplete={autoComplete}/>

@@ -54,6 +54,7 @@ public class ShopService {
 
 	@Transactional
 	public boolean joinShop(String userId, int shopId){
+
 		shopMapper.joinShop(userId, shopId);
 		Map<String,String> map = userMapper.getNotificationData(userId, shopId);
 		String senderName = map.get("name").toString();

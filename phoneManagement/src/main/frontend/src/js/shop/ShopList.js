@@ -18,6 +18,8 @@ export function ShopList(){
 
     const [keyword, setKeyword] = useState('')
 
+    const [isWaiting, setIsWaiting] = useState(false)
+
     useEffect(() => {
         getShop();
     }, [keyword]);
@@ -34,10 +36,28 @@ export function ShopList(){
     const getShop = async ()=>{
         await shopApi.getShop(keyword).then(({status,data})=>{
             if(status === 200){
-                // console.table(data)
+                for(const item of data){
+                    if(item.approval_st === 0){
+                        setIsWaiting(true)
+                    }
+                }
                 setShopItems(data)
             }
         })
+    }
+
+
+    const getApprovalStateText = (state)=>{
+        switch (state){
+            case 0:
+                return "승인대기중"
+            case 1:
+                return "승인됨"
+            case 2:
+                return "승인 거절됨"
+            default:
+                return "승인 요청"
+        }
     }
 
     return (
@@ -74,10 +94,11 @@ export function ShopList(){
 
                                             </span>
                                             <button type="button"
-                                                    disabled={v.approval_denied}
-                                                    className={`btn btn_medium btn_line ${User.company_btn}`} onClick={()=>{
+                                                    disabled={v.approval_st >= 0}
+                                                    className={`btn btn_medium btn_line ${User.company_btn} ${v.approval_st === 0 && User.waiting} ${(isWaiting && v.approval_st !== 0) && User.blocked}`}
+                                                    onClick={()=>{
                                                         select(v.shop_id);
-                                            }}>{v.approval_denied ? "승인 거절됨" : "승인 요청"}
+                                            }}>{getApprovalStateText(v.approval_st)}
                                             </button>
                                         </li>
                                     })

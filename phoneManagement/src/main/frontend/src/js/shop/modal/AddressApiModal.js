@@ -17,12 +17,16 @@ export function AddressApiModal(props){
     const {shopApi} = useApi()
     const [items, setItems] = useState([])
     const [keyword, setKeyword] = useState('')
+
+    const [isSearching, setIsSearching] = useState(false)
+
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Address)
     }
 
-    const search = ()=>{
-        shopApi.getAddress(keyword).then(({status,data})=>{
+    const search = async ()=>{
+        setIsSearching(true)
+        await shopApi.getAddress(keyword).then(({status,data})=>{
             if(status === 200 && data){
                 console.table(data)
                 if(data.results.common.errorMessage !== "정상"){
@@ -31,6 +35,7 @@ export function AddressApiModal(props){
                     setItems(data.results.juso)
                 }
             }
+            setIsSearching(false)
         })
     }
 
@@ -41,9 +46,7 @@ export function AddressApiModal(props){
         close();
     }
 
-    const submit = async ()=>{
 
-    }
     return (
         <LayerModal {...props} top={0} maxWidth={650} maxHeight={800}>
             <div className={cm(Popup.user_form, User.user_form)}>
@@ -57,7 +60,9 @@ export function AddressApiModal(props){
                                            onChange={e=>{
                                                setKeyword(e.target.value)
                                            }}
+                                           maxLength={60}
                                            onSearch={search}
+                                           isSearching={isSearching}
                                            onKeyDown={e=>{
                                                if(e.keyCode === 13){
                                                    search()
