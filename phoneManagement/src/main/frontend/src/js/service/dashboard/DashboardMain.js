@@ -103,6 +103,18 @@ export function DashboardMain(){
         setDate(newDate)
     }
 
+    const setNextMonth = ()=>{
+        const newDate = new Date(date);
+        DateUtils.addMonth(newDate, 1);
+        setDate(newDate)
+    }
+
+    const setPrevMonth = ()=>{
+        const newDate = new Date(date);
+        DateUtils.subMonth(newDate, 1);
+        setDate(newDate)
+    }
+
     // 승인 대기중일 때 아래 페이지 표출
     // if(true){
     //     return <WaitingApproval/>
@@ -119,11 +131,14 @@ export function DashboardMain(){
                         <div className={Dashboard.panel_date_box}>
                         <span className={cm(Dashboard.panel_standard)}>
                             <span className={cm(Dashboard.span)}>
+                                <span className={Dashboard.btn_left_arrow} onClick={setPrevMonth}></span>
                                 <MonthSelectModal onSelect={selectDate}>
                                     <div className={Dashboard.date_inp}>
-                                        <span className={Dashboard.text_blue}>{date.getFullYear()}</span>년 <span className={Dashboard.text_blue}>{(date.getMonth()+1).toString().padStart(2, 0)}</span>월
+                                        <span className={Dashboard.text_blue}>{date.getFullYear()}</span>년 <span
+                                        className={Dashboard.text_blue}>{(date.getMonth() + 1).toString().padStart(2, 0)}</span>월
                                     </div>
                                 </MonthSelectModal>
+                                <span className={Dashboard.btn_right_arrow} onClick={setNextMonth}></span>
                                 {/*{today.getFullYear()}년*/}
                                 {/*{today.getMonth() + 1}월*/}
                             </span> 매장 기준

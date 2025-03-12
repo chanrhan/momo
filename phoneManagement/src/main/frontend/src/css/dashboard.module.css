@@ -19,6 +19,25 @@
     color:#4781ff;
 }
 
+.dashboard .panel_body .panel_date_box .panel_standard .span .btn_left_arrow{
+    position: relative;
+    width: 22px;
+    height: 20px;
+    top: 4px;
+    background: url("../images/triangle_arrow.png") no-repeat center / 100%;
+    cursor: pointer;
+}
+
+.dashboard .panel_body .panel_date_box .panel_standard .span .btn_right_arrow{
+    position: relative;
+    width: 22px;
+    height: 20px;
+    top: 4px;
+    background: url("../images/triangle_arrow.png") no-repeat center / 100%;
+    rotate: 180deg;
+    cursor: pointer;
+}
+
 .dashboard .panel_body .panel_date_box .panel_standard .span {
     top: -1px;
 }
