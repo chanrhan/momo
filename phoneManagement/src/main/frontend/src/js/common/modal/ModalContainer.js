@@ -154,8 +154,8 @@ function ModalContainer(){
         // console.log(`Before capture: ${topComponentRef.current?.className}`)
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
-            // console.log(`${topComponentRef.current} and ${e.target}`)
             // console.log('before capture')
+            // console.log(topComponentRef.current.innerText)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
                 // console.log('capture')
                 modal.closeAndLockModal(modalName)
@@ -224,6 +224,8 @@ function ModalContainer(){
     })
 
     const lastIndex = modalList.list.length - 1;
+    // console.table(modalList.list)
+    // console.log(`topIndex: ${topIndex}`)
     const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
         if(!modalName){
             return null;

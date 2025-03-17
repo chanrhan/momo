@@ -14,7 +14,8 @@ export function MessageTemplateModal(props){
     const modal = useModal()
 
     const [templates, setTemplates] = useState(null)
-    const [selected, setSelected] = useState(0)
+    const [selected, setSelected] = useState(-1)
+    const [editMode, setEditMode] = useState(false)
 
     const [currTitle, setCurrTitle] = useState("")
     const [currContent, setCurrContent] = useState("")
@@ -26,7 +27,8 @@ export function MessageTemplateModal(props){
     }, []);
 
     useEffect(() => {
-        if(selected !== -1 && templates){
+        if(!editMode && templates){
+
             const temp = templates[selected]
             if(temp){
                 setCurrTitle(temp.title)
@@ -36,21 +38,27 @@ export function MessageTemplateModal(props){
     }, [selected, templates]);
 
 
-    const getTemplates = ()=>{
-        gmdApi.getMessageTemplate().then(({status,data})=>{
+    const getTemplates = async ()=>{
+        await gmdApi.getMessageTemplate().then(({status,data})=>{
             if(status === 200 && !ObjectUtils.isEmpty(data)){
                 // console.table(data)
                 setTemplates(data);
+                if(selected >= data.length){
+                    setSelected(data.length-1);
+                }
             }
         })
     }
 
     const addTemplate = ()=>{
-        if(selected === -1){
+        if(editMode){
             return;
         }
-        if(!checkModification(selected)){
-            changeTemplate(-1)
+        if(selected === -1 || !checkModification(selected)){
+            setCurrTitle(INIT_TITLE_NAME)
+            setCurrContent("")
+            setEditMode(true)
+            setSelected(-1)
         }
     }
 
@@ -58,13 +66,15 @@ export function MessageTemplateModal(props){
         if(i === selected){
             return;
         }
-        if(!checkModification(i)){
+        if((!editMode && selected === -1) || !checkModification(i)){
             changeTemplate(i)
         }
     }
 
     const checkModification = (i)=>{
-        if(selected === -1 || isChanged()){
+        if(editMode || isChanged()){
+            const added = editMode;
+            console.log(i)
             modal.openModal(ModalType.MENU.Confirm, {
                 msg: "변경사항을 저장하지 않았습니다. 저장하시겠습니까?",
                 top: 250,
@@ -76,8 +86,13 @@ export function MessageTemplateModal(props){
                     if(isTitleOrContentEmpty()){
                         return;
                     }
-                    submit();
-                    changeTemplate(i + (selected === -1 ? 1 : 0))
+                    updateTemplate().then(()=>{
+                        if(!added){
+                            console.log('change: '+ i)
+                            setSelected(i)
+                        }
+                    })
+                    // changeTemplate(i + (selected === -1 ? 1 : 0))
                 }
             })
             return true;
@@ -87,10 +102,7 @@ export function MessageTemplateModal(props){
 
     const changeTemplate = (i)=>{
         setSelected(i)
-        if(i === -1) {
-            setCurrTitle(INIT_TITLE_NAME)
-            setCurrContent("")
-        }
+        setEditMode(false)
         // else if(templates){
         //     setCurrTitle(templates[i].title)
         //     setCurrContent(templates[i].content)
@@ -106,6 +118,9 @@ export function MessageTemplateModal(props){
     }
 
     const isChanged = ()=>{
+        if(!templates){
+            return false;
+        }
         const temp = templates[selected];
         return (currTitle !== temp.title) || (currContent !== temp.content)
     }
@@ -120,42 +135,53 @@ export function MessageTemplateModal(props){
         return false;
     }
 
+    const insertTemplate =async ()=>{
+        await gmdApi.insertMessageTemplate({
+            title: currTitle,
+            content: currContent
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                modal.openModal(ModalType.SNACKBAR.Info, {
+                    msg: "추가되었습니다."
+                })
+                setSelected(0)
+                setEditMode(false)
+                getTemplates()
+            }
+        })
+    }
+
+    const updateTemplate = async ()=>{
+        // console.table({
+        //     ...templates[selected],
+        //     title: currTitle,
+        //     content: currContent
+        // })
+        await gmdApi.updateMessageTemplate({
+            id: templates[selected].msg_id,
+            title: currTitle,
+            content: currContent
+        }).then(({status,data})=>{
+            if(status === 200 && data){
+                modal.openModal(ModalType.SNACKBAR.Info, {
+                    msg: "수정되었습니다."
+                })
+                getTemplates()
+            }
+        })
+    }
+
+
     const submit = async ()=>{
         if(isTitleOrContentEmpty()){
             return;
         }
 
-        if(selected === -1){
-            await gmdApi.insertMessageTemplate({
-                title: currTitle,
-                content: currContent
-            }).then(({status,data})=>{
-                if(status === 200 && data){
-                    modal.openModal(ModalType.SNACKBAR.Info, {
-                        msg: "추가되었습니다."
-                    })
-                    // setSelected(0)
-                }
-            })
+        if(editMode){
+            insertTemplate()
         }else{
-            console.table({
-                ...templates[selected],
-                title: currTitle,
-                content: currContent
-            })
-            await gmdApi.updateMessageTemplate({
-                id: templates[selected].msg_id,
-                title: currTitle,
-                content: currContent
-            }).then(({status,data})=>{
-                if(status === 200 && data){
-                    modal.openModal(ModalType.SNACKBAR.Info, {
-                        msg: "수정되었습니다."
-                    })
-                }
-            })
+            updateTemplate()
         }
-        getTemplates()
     }
 
     const deleteTemplate = ()=>{
@@ -171,7 +197,7 @@ export function MessageTemplateModal(props){
                         modal.openModal(ModalType.SNACKBAR.Info, {
                             msg: "삭제되었습니다."
                         })
-                        getTemplates();
+                        getTemplates()
                     }
                 })
             }
@@ -196,9 +222,9 @@ export function MessageTemplateModal(props){
 
                         <ul className={Popup.title_list}>
                             {
-                                selected === -1 && (
+                                editMode && (
                                     <li key={0} className={cm(Popup.title_box, Popup.selected)} onClick={() => {
-                                        selectTemplate(-1)
+                                        // selectTemplate(-1)
                                     }}>
                                         <p className={Popup.title}>
                                             {currTitle}
@@ -228,7 +254,7 @@ export function MessageTemplateModal(props){
                             <input type="text" className={Popup.title_inp}
                                    placeholder="문자 템플릿 제목을 입력해주세요."
                                    value={currTitle}
-                                   onChange={handleInputTitle} disabled={templates === null && selected !== -1}/>
+                                   onChange={handleInputTitle} disabled={!editMode && (templates === null || selected === -1)}/>
                         </div>
                         <div className={Popup.option_header}>
 
@@ -240,13 +266,13 @@ export function MessageTemplateModal(props){
                             <textarea className={Popup.content_text}
                                       re
                                       value={currContent}
-                                      onChange={handleInputContent} disabled={templates === null}>
+                                      onChange={handleInputContent} disabled={!editMode && (templates === null || selected === -1)}>
 
                             </textarea>
                         </div>
                         <div className={Popup.option_box}>
                             {
-                                selected !== -1 &&
+                                selected >= 0 &&
                                 <button type='button' className={Popup.btn} onClick={deleteTemplate}>삭제</button>
                             }
                             <button type='button' className={Popup.btn}
