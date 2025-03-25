@@ -18,7 +18,7 @@ export const PasswordInput = forwardRef(({id, name, placeholder,
                    onChange={onChange}
                    value={value} autoComplete={autoComplete}/>
             {
-                value && <button type='button' className={`visible ${visible && 'active'}`} onClick={() => {
+                value && <button tabIndex='-1' type='button' className={`visible ${visible && 'active'}`} onClick={() => {
                     setVisible(!visible)
                 }}>비밀번호 표시</button>
             }

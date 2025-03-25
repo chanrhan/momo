@@ -374,7 +374,7 @@ function Step3({inputField, setStep}){
                 const refreshexpiretime = headers.get('refreshexpiretime');
                 dispatch(authActions.setAccessToken(accessToken));
                 setRefreshToken(refreshtoken, refreshexpiretime);
-                navigate('/service');
+                navigate('/shop/list');
             }
         })
 

@@ -154,10 +154,10 @@ function ModalContainer(){
         // console.log(`Before capture: ${topComponentRef.current?.className}`)
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
-            // console.log('before capture')
-            // console.log(topComponentRef.current.innerText)
+            console.log('before capture')
+            console.log(topComponentRef.current.innerText)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                // console.log('capture')
+                console.log('capture')
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -173,7 +173,7 @@ function ModalContainer(){
             //     modal.unlockModal()
             //     window.removeEventListener('click', onClickBubbleEvent, false)
             // }
-            // console.log('bubble')
+            console.log('bubble')
             modal.unlockModal()
             window.removeEventListener('click', onClickBubbleEvent, false)
         }
