@@ -48,7 +48,8 @@
     </select>
 
     <select id="getTodoDetail">
-        SELECT todo_id,
+        SELECT /* TodoMapper.xml : getTodoDetail */
+                todo_id,
                 color,
                 checked,
                content

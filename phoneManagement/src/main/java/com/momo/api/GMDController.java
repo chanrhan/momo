@@ -168,6 +168,25 @@ public class GMDController {
         return ResponseEntity.ok(result > 0);
     }
 
+    @GetMapping("/msg/template")
+    public ResponseEntity<List<Map<String,Object>>> getMessageTemplate(){
+        return ResponseEntity.ok(gmdService.getMessageTemplate());
+    }
 
+    @PostMapping("/msg/template/add")
+    public ResponseEntity<Boolean> insertMessageTemplate(@RequestBody GMDVO vo){
+        gmdService.insertMessageTemplate(vo);
+        return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/msg/template/update")
+    public ResponseEntity<Boolean> updateMessageTemplate(@RequestBody GMDVO vo){
+        return ResponseEntity.ok(gmdService.updateMessageTemplate(vo) > 0);
+    }
+
+    @GetMapping("/msg/template/del")
+    public ResponseEntity<Boolean> deleteMessageTemplate(@RequestParam int msgId){
+        return ResponseEntity.ok(gmdService.deleteMessageTemplate(msgId) > 0);
+    }
 
 }

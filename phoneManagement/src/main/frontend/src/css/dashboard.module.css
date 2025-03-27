@@ -19,6 +19,25 @@
     color:#4781ff;
 }
 
+.dashboard .panel_body .panel_date_box .panel_standard .span .btn_left_arrow{
+    position: relative;
+    width: 22px;
+    height: 20px;
+    top: 4px;
+    background: url("../images/triangle_arrow.png") no-repeat center / 100%;
+    cursor: pointer;
+}
+
+.dashboard .panel_body .panel_date_box .panel_standard .span .btn_right_arrow{
+    position: relative;
+    width: 22px;
+    height: 20px;
+    top: 4px;
+    background: url("../images/triangle_arrow.png") no-repeat center / 100%;
+    rotate: 180deg;
+    cursor: pointer;
+}
+
 .dashboard .panel_body .panel_date_box .panel_standard .span {
     top: -1px;
 }
@@ -130,7 +149,7 @@
 .dashboard .panel_body .panel.n2 .panel_item .panel_per .span{font-size:20px; vertical-align:top;}
 
 .dashboard .panel_body .panel.n3{width:calc(100% - 308px); height:372px; border-radius:8px; background-color:#fff;}
-.dashboard .panel_body .panel.n3 .panel_chart{height:100%;}
+.dashboard .panel_body .panel.n3 .panel_chart{height:100%;  }
 .dashboard .panel_body .panel.n3 .chart_text{position:absolute; top:39px; left:49px; padding-left:60px; color:#141218; font-size:16px; font-weight:600; line-height:24px; letter-spacing:-0.04em;}
 .dashboard .panel_body .panel.n3 .chart_text:before{display:block; position:absolute; top:0; left:0; width:48px; height:48px; background:url(../images/emoji_icon.png) no-repeat center / 100%;}
 .dashboard .panel_body .panel.n3 .chart_tab{position:absolute; top:32px; right:25px;}
@@ -146,7 +165,7 @@
 .dashboard .panel_body .panel.n3 .chart_panel .chart_map{
     font-size:14px; text-align:center; line-height:16px;
     height: 210px;
-    cursor: pointer;
+    cursor: ew-resize;
 }
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab{position:absolute; left:0; right:0; bottom:16px; text-align:center;}
 .dashboard .panel_body .panel.n3 .chart_panel .chart_panel_tab .tab_item{display:inline-block; vertical-align:top;}

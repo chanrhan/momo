@@ -16,36 +16,35 @@ export function ConfirmModal(props){
     const [fadeout, setFadeOut] = useState(null)
 
 
-    // useEffect(() => {
-    //     return ()=>{
-    //         console.log('unmount')
-    //         setFadeOut(Modal.fade_out)
-    //     }
-    // }, []);
-
     useEffect(() => {
-        let intervalId;
-        if(gage > 0){
-            intervalId = setInterval(()=>{
-                setGage(gage - (130 / ((timeout*0.78)/10)));
-                if(gage <= 0){
-                    clearInterval(intervalId);
-                }
-            }, 10)
-        }
         return ()=>{
-            clearInterval(intervalId)
-        }
-    }, [gage]);
-
-    useEffect(() => {
-        const timer = setTimeout(()=>{
-            close();
-        }, timeout)
-        return ()=>{
-            clearTimeout(timer)
+            setFadeOut(Modal.fade_out)
         }
     }, []);
+
+    // useEffect(() => {
+    //     let intervalId;
+    //     if(gage > 0){
+    //         intervalId = setInterval(()=>{
+    //             setGage(gage - (130 / ((timeout*0.78)/10)));
+    //             if(gage <= 0){
+    //                 clearInterval(intervalId);
+    //             }
+    //         }, 10)
+    //     }
+    //     return ()=>{
+    //         clearInterval(intervalId)
+    //     }
+    // }, [gage]);
+    //
+    // useEffect(() => {
+    //     const timer = setTimeout(()=>{
+    //         close();
+    //     }, timeout)
+    //     return ()=>{
+    //         clearTimeout(timer)
+    //     }
+    // }, []);
 
     const close = ()=>{
         setFadeOut(Modal.fade_out)
@@ -75,9 +74,13 @@ export function ConfirmModal(props){
                     }
                 </div>
 
-                <span className={Modal.confirm_msg}>
-                    {props.msg}
-                </span>
+                <div className={Modal.confirm_msg_box}>
+                    <span className={Modal.warning_icon}> </span>
+                    <span className={Modal.confirm_msg}>
+                        {props.msg}
+                    </span>
+                </div>
+
                 <div className={Modal.btn_box}>
                     <button type='button' className={Modal.btn} style={{
                         backgroundColor: props.btn_color,

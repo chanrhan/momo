@@ -1,16 +1,16 @@
-import {MainHeader} from "./MainHeader";
-import {Sidebar} from "./Sidebar";
-import Layout from "../../css/layout.module.css";
+import {MainHeader} from "../MainHeader";
+import {Sidebar} from "../Sidebar";
+import Layout from "../../../css/layout.module.css";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import logo from "../../images/logo.png";
-import {HeaderSearchLayer} from "./module/HeaderSearchLayer";
-import {cm} from "../utils/cm";
-import {SelectItem, SelectLayer} from "../common/module/SelectLayer";
+import logo from "../../../images/logo.png";
+import {HeaderSearchLayer} from "../module/HeaderSearchLayer";
+import {cm} from "../../utils/cm";
+import {SelectItem, SelectLayer} from "../../common/module/SelectLayer";
 import {AdminSidebar} from "./AdminSidebar";
-import {useAuthentication} from "../hook/useAuthentication";
-import {useRenderlessModal} from "../hook/useRenderlessModal";
-import useUserInfo from "../hook/useUserInfo";
+import {useAuthentication} from "../../hook/useAuthentication";
+import {useRenderlessModal} from "../../hook/useRenderlessModal";
+import useUserInfo from "../../hook/useUserInfo";
 import {useSelector} from "react-redux";
 
 export function AdminLayout(){

@@ -10,25 +10,11 @@ import {InternetPlanTable} from "./module/InternetPlanTable";
 import {ExsvcTable} from "./module/ExsvcTable";
 import useApi from "../hook/useApi";
 import {TvPlanTable} from "./module/TvPlanTable";
-import {cmc} from "../utils/cm";
-import useModal from "../hook/useModal";
-import {ModalType} from "../common/modal/ModalType";
-import {useNavigate} from "react-router-dom";
-import {LMD} from "../common/LMD";
 import {NumberUtils} from "../utils/NumberUtils";
 import {ProfileTableColumn} from "../service/sale/module/ProfileTableColumn";
 import profileImg1 from "../../images/profile_img1.jpg";
 import {ImageProxy} from "../hook/imageProxy";
 
-const PROVIDER = [
-    true,true,true,true,true,true,false,false,false
-]
-const NAME = [
-    '기기명','기기명','요금제명','요금제명','요금제','요금제명','부가서비스명','지원명','추가명','결합명'
-]
-const CODE = [
-    true,true,false,false,false,false,false,false,false
-]
 
 export function MasterShop(){
     const fileLoader = ImageProxy()
@@ -55,7 +41,7 @@ export function MasterShop(){
         }
         await shopApi.getShopAdmin(body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 if(data.total_cnt){
                     setTotalCount(data.total_cnt)
                 }
@@ -178,20 +164,4 @@ export function MasterShop(){
             </div>
         </div>
     )
-}
-
-function BoardTableSelector({tab, items}){
-    switch (tab){
-        case 0:
-            return <DeviceTable data={items}/>
-        case 1:
-            return <CtPlanTable data={items}/>
-        case 2:
-            return <InternetPlanTable data={items}/>
-        case 3:
-            return <TvPlanTable data={items}/>
-        case 4:
-            return <ExsvcTable data={items}/>
-    }
-    return null
 }

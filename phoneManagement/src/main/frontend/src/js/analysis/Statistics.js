@@ -6,6 +6,89 @@ import {NumberUtils} from "../utils/NumberUtils";
 import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 import {DateUtils} from "../utils/DateUtils";
 
+
+const FIRST_COLUMN_NAMES = [
+    {
+        name:  "무선 수수료",
+        var: 'ct_cms',
+        inc: 'up',
+        unit: '원'
+    },
+    {
+        name: "유선 수수료",
+        var: 'wt_cms',
+        inc: 'up',
+        unit: '원'
+    },
+    {
+        name: "추가",
+        var: 'sum_add',
+        inc: 'up',
+        unit: '원'
+    },
+    {
+        name: "중고폰 판매 금액",
+        var: 'sum_ud_cms',
+        inc: 'up',
+        unit: '원'
+    },
+    {
+        name: "지원",
+        var: 'sum_sup',
+        inc: 'down',
+        unit: '원'
+    },
+    {
+        name: "총 이익",
+        var: 'total_cms',
+        inc: 'none',
+        unit: '원'
+    },
+    {
+        name: "무선 개수",
+        var: 'ct_cnt',
+        unit: '개'
+    },
+    {
+        name: "인터넷 개수",
+        var: 'internet_cnt',
+        unit: '개'
+    },
+    {
+        name: "TV 개수",
+        var: 'tv_cnt',
+        unit: '개'
+    },
+    {
+        name:  "평균 마진",
+        var: 'avg_margin',
+        unit: '원'
+    },
+    {
+        name: "동판 개수",
+        var: 'dongsi',
+        per: 'dongsi_per',
+        unit: '개'
+    },
+    {
+        name: "중고 개통",
+        var: 'ud_cnt',
+        unit: '개'
+    },
+    {
+        name: "세컨",
+        var: "sd_cnt",
+        per: 'sd_per',
+        unit: '개'
+    },
+    {
+        name: "부가서비스",
+        var: 'exsvc_cnt',
+        per: 'exsvc_per',
+        unit: '개'
+    }
+]
+
 export function Statistics(){
     const {saleApi} = useApi()
 
@@ -13,7 +96,9 @@ export function Statistics(){
 
     const [date, setDate] = useState(DateUtils.formatYYMM(today.getFullYear(),today.getMonth()+1))
 
-    const [items, setItems] = useState(null)
+    const [header, setHeader] = useState([])
+    const [bodyData, setBodyData] = useState(null)
+    const [perData, setPerData] = useState(null)
 
     useEffect(() => {
         getPersonalStatistics()
@@ -24,11 +109,39 @@ export function Statistics(){
             date: date
         }).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
-                setItems(data)
+                const newHeaders = new Array(data.length)
+                for(let i=0;i<newHeaders.length;++i){
+                    newHeaders[i] = {
+                        id: data[i].id,
+                        name: data[i].name,
+                        nickname: data[i].nickname
+                    }
+                }
+
+                const arr = new Array(FIRST_COLUMN_NAMES.length).fill(null)
+                const percents = new Array(3).fill(null)
+                let pi = 0;
+                for(let i=0;i<FIRST_COLUMN_NAMES.length;++i){
+                    arr[i] = new Array(data.length);
+                    for(let j=0;j<data.length;++j){
+                        arr[i][j] = data[j][FIRST_COLUMN_NAMES[i].var];
+                    }
+                    if(FIRST_COLUMN_NAMES[i].per){
+                        percents[pi] = new Array(data.length)
+                        for(let j=0;j<data.length;++j){
+                            percents[pi][j] = data[j][FIRST_COLUMN_NAMES[i].per];
+                        }
+                        ++pi;
+                    }
+                }
+                setHeader(newHeaders)
+                setBodyData(arr);
+                // console.table(percents)
+                setPerData(percents)
             }
         })
     }
+
 
     const selectDate = (year,month)=>{
         setDate(DateUtils.formatYYMM(year,month))
@@ -54,134 +167,170 @@ export function Statistics(){
                 </colgroup>
                 <thead className={Graph.thead}>
                 <tr>
-                    <Sth/>
+                    <Sth key={0} index={0}/>
                     {
-                        items && items.profile && JSON.parse(items.profile).map((v,i)=>{
-                            return <Sth profile={v}/>
+                        header && header.map((v,i)=>{
+                            return <th key={i+1} className={cm(Graph.th, `${i > header.length -3 && Graph.group}`)} scope="col">
+                                        {v.name}
+                                        <span className={Graph.span}>
+                                            {v.nickname}
+                                        </span>
+                                    </th>
                         })
+                        // bodyData && bodyData.profile && JSON.parse(bodyData.profile).map((v,i)=>{
+                        //     return <Sth profile={v}/>
+                        // })
                     }
                 </tr>
                 </thead>
                 <tbody className={Graph.tbody}>
-                <Str subject='무선 수수료' inclination='up'>
-                    {
-                        items && items.ct_cms && JSON.parse(items.ct_cms).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='유선 수수료' inclination='up'>
-                    {
-                        items && items.wt_cms && JSON.parse(items.wt_cms).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='추가' inclination='up'>
-                    {
-                        items && items.sum_add && JSON.parse(items.sum_add).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='중고폰 판매 금액' inclination='up'>
-                    {
-                        items && items.ud_cms && JSON.parse(items.ud_cms).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='지원' inclination='down'>
-                    {
-                        items && items.sum_sup && JSON.parse(items.sum_sup).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str bb subject='총 이익' inclination='none'>
-                    {
-                        items && items.total_cms && JSON.parse(items.total_cms).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='무선 개수'>
-                    {
-                        items && items.ct_cnt && JSON.parse(items.ct_cnt).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v}</span>개</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='인터넷 개수'>
-                    {
-                        items && items.internet_cnt && JSON.parse(items.internet_cnt).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v}</span>개</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='TV 개수'>
-                    {
-                        items && items.tv_cnt && JSON.parse(items.tv_cnt).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v}</span>개</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='평균 마진'>
-                    {
-                        items && items.avg_margin && JSON.parse(items.avg_margin).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='동판 개수'>
-                    {
-                        items && items.dongsi_stat && JSON.parse(items.dongsi_stat).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
-                        })
-                    }
-                </Str>
-                <Str subject='중고 개통'>
-                    {
-                        items && items.ud_cnt && JSON.parse(items.ud_cnt).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v}</span>개</Std>
-                        })
-                    }
-                </Str>
-                <Str subject='세컨'>
-                    {
-                        items && items.sd_stat && JSON.parse(items.sd_stat).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
-                        })
-                    }
-                </Str>
-                <Str subject='부가서비스'>
-                    {
-                        items && items.exsvc_stat && JSON.parse(items.exsvc_stat).map((v,i)=>{
-                            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>
-                        })
-                    }
-                </Str>
+                {
+                    bodyData && bodyData.map((row: Array, rowIdx)=>{
+                        return <Str key={rowIdx}
+                                    bb={FIRST_COLUMN_NAMES[rowIdx].inc === 'none'}
+                                    subject={FIRST_COLUMN_NAMES[rowIdx].name}
+                                    inclination={FIRST_COLUMN_NAMES[rowIdx].inc}>
+                            {
+                                row.map((col, colIdx)=>{
+                                    const getPerIndex = ()=>{
+                                        if(rowIdx === 11){
+                                            return 0;
+                                        }else if(rowIdx === 13){
+                                            return 1
+                                        }
+                                        return 2
+                                    }
+
+                                    return (
+                                        <td className={cm(Graph.td, `${colIdx > row.length-3 && Graph.group}`)}>
+                                            {col}{ FIRST_COLUMN_NAMES[rowIdx].unit}{' '}
+                                                {
+                                                FIRST_COLUMN_NAMES[rowIdx].per && (
+                                                    <span>{` (${perData[getPerIndex()][colIdx]}%)`}</span>
+                                                )
+                                            }
+                                        </td>
+                                    )
+                                })
+                            }
+                        </Str>
+                    })
+                }
+                {/*<Str subject='무선 수수료' inclination='up'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.ct_cms && JSON.parse(bodyData.ct_cms).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='유선 수수료' inclination='up'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.wt_cms && JSON.parse(bodyData.wt_cms).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='추가' inclination='up'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.sum_add && JSON.parse(bodyData.sum_add).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='중고폰 판매 금액' inclination='up'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.ud_cms && JSON.parse(bodyData.ud_cms).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='지원' inclination='down'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.sum_sup && JSON.parse(bodyData.sum_sup).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str bb subject='총 이익' inclination='none'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.total_cms && JSON.parse(bodyData.total_cms).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='무선 개수'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.ct_cnt && JSON.parse(bodyData.ct_cnt).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v}</span>개</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='인터넷 개수'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.internet_cnt && JSON.parse(bodyData.internet_cnt).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v}</span>개</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='TV 개수'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.tv_cnt && JSON.parse(bodyData.tv_cnt).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v}</span>개</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='평균 마진'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.avg_margin && JSON.parse(bodyData.avg_margin).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{NumberUtils.toPrice(v)}</span>원</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='동판 개수'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.dongsi_stat && JSON.parse(bodyData.dongsi_stat).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='중고 개통'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.ud_cnt && JSON.parse(bodyData.ud_cnt).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v}</span>개</Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='세컨'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.sd_stat && JSON.parse(bodyData.sd_stat).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
+                {/*<Str subject='부가서비스'>*/}
+                {/*    {*/}
+                {/*        bodyData && bodyData.exsvc_stat && JSON.parse(bodyData.exsvc_stat).map((v,i)=>{*/}
+                {/*            return <Std><span className={Graph.span}>{v.cnt}</span>개 <span className={Graph.span}>({v.per}%)</span></Std>*/}
+                {/*        })*/}
+                {/*    }*/}
+                {/*</Str>*/}
                 </tbody>
             </table>
 
-            <div className="view_more">
-                <button type="button" className="view_more_btn">더 보기</button>
-            </div>
+            {/*<div className="view_more">*/}
+            {/*    <button type="button" className="view_more_btn">더 보기</button>*/}
+            {/*</div>*/}
         </div>
     )
 }
 
-function Sth({profile}){
+function Sth({index, id, name, nickname}){
     return (
-        <th className={Graph.th} scope="col">
-            {
-                profile && <>
-                    {profile.name}
-                    <span className={Graph.span}>
-                        {profile.nickname}
-                    </span>
-                </>
-            }
+        <th key={index} className={Graph.th} scope="col">
+            {name}
+            <span className={Graph.span}>
+                {nickname}
+            </span>
         </th>
     )
 }
@@ -215,10 +364,7 @@ function Str({subject, inclination, bb, children}){
     )
 }
 
-function Std({children}){
-    return (
-        <td className={Graph.td}>
-            {children}
-        </td>
-    )
+function Std({row, value, per}){
+
+
 }

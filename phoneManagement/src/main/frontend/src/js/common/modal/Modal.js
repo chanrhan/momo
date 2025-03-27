@@ -1,4 +1,6 @@
 import {useEffect, useRef} from "react";
+import ModalComponent from "react-modal"
+import Popup from "../../../css/popup.module.css"
 
 export function Modal({scrollable, children}){
     const modalRef = useRef(null)
@@ -8,8 +10,8 @@ export function Modal({scrollable, children}){
     }, []);
 
     return (
-        <div ref={modalRef}>
-            {children}
-        </div>
+        <ModalComponent className={Popup.popup}>
+
+        </ModalComponent>
     )
 }

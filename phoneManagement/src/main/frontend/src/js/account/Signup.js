@@ -4,7 +4,7 @@ import {UserFormItem} from "./module/UserFormItem";
 import {UserTermList} from "./module/UserTermList";
 import {UserFormInput} from "./module/UserFormInput";
 import useValidateInputField from "../hook/useValidateInputField";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import useApi from "../hook/useApi";
 import {setRefreshToken} from "../utils/Cookies";
 import {authActions} from "../store/slices/authSlice";
@@ -16,6 +16,8 @@ import {PasswordInput} from "../common/inputbox/PasswordInput";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
 import {AxiosApi} from "../api/ApiCommon";
+import {UserFormBox} from "./module/UserFormBox";
+import {UserFormList} from "./module/UserFormList";
 
 const MINUTES_IN_MS = 5 * 60 * 1000;
 const INTERVAL = 1000;
@@ -50,6 +52,7 @@ const SIGNUP_INPUTFIELD = [
     }
 ]
 
+
 export function Signup(){
     const [step, setStep] = useState(0)
     const inputField = useValidateInputField(SIGNUP_INPUTFIELD);
@@ -60,10 +63,12 @@ export function Signup(){
                 <form className={`${User.user_box} ${User.user_form}`}>
                     <h2 className={User.user_title}>회원가입</h2>
 
-                    {
-                        step === 0 ? <Step1 inputField={inputField} setStep={setStep}/> :
-                            <Step2 inputField={inputField} setStep={setStep}/>
-                    }
+                    <StepSelector step={step} inputField={inputField} setStep={setStep}/>
+
+                    {/*{*/}
+                    {/*    step === 0 ? <Step1 inputField={inputField} setStep={setStep}/> :*/}
+                    {/*        <Step2 inputField={inputField} setStep={setStep}/>*/}
+                    {/*}*/}
 
                     <div className={`${User.user_link} ${User.link_login}`}>이미 회원이신가요?
                         <Link to='/account/login' className={User.a}>로그인</Link>
@@ -72,6 +77,18 @@ export function Signup(){
             </div>
         </main>
     )
+}
+
+function StepSelector({step, inputField, setStep}){
+    switch (step){
+        case 0:
+            return <Step1 inputField={inputField} setStep={setStep}/>
+        case 1:
+            return <Step2 inputField={inputField} setStep={setStep}/>
+        case 2:
+            return <Step3 inputField={inputField} setStep={setStep}/>
+    }
+    return null;
 }
 
 function Step1({inputField, setStep}){
@@ -142,10 +159,7 @@ function Step1({inputField, setStep}){
 
 function Step2({inputField, setStep}) {
     const modal = useModal();
-    const {publicApi} = useApi();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [authNumber, setAuthNumber] = useState(null)
+    const [authNumber, setAuthNumber] = useState("")
 
     const [timeLeft, setTimeLeft] = useState(0)
 
@@ -153,6 +167,11 @@ function Step2({inputField, setStep}) {
     const [isSent, setIsSent] = useState(false)
 
     const [authenticated, setAuthenticated] = useState(false)
+
+    useEffect(() => {
+        inputField.clearOf("auth_code")
+        setAuthNumber("")
+    }, []);
 
     useEffect(() => {
         let timer = null;
@@ -232,6 +251,12 @@ function Step2({inputField, setStep}) {
     }
 
     const submit = async ()=>{
+        if(!authenticated){
+            modal.openModal(ModalType.SNACKBAR.Warn, {
+                msg: '휴대폰번호를 인증해야 합니다.'
+            })
+            return;
+        }
         if(inputField.validateAll()){
             if(!termList[0] || !termList[1]){
                 modal.openModal(ModalType.SNACKBAR.Warn, {
@@ -239,20 +264,9 @@ function Step2({inputField, setStep}) {
                 })
                 return;
             }
-            console.table(inputField.input)
-            await publicApi.signup({
-                ...inputField.input,
-                terms: ObjectUtils.convertBooleanArrayToString(termList)
-            }).then(({status, data, headers})=>{
-                if(status === 200 && data){
-                    const accessToken = headers.get('authorization')
-                    const refreshtoken = headers.get('refreshtoken');
-                    const refreshexpiretime = headers.get('refreshexpiretime');
-                    dispatch(authActions.setAccessToken(accessToken));
-                    setRefreshToken(refreshtoken, refreshexpiretime);
-                    navigate('/shop/list');
-                }
-            })
+            inputField.put('terms', ObjectUtils.convertBooleanArrayToString(termList))
+            setStep(2);
+            // console.table(inputField.input)
         }
     }
 
@@ -286,9 +300,14 @@ function Step2({inputField, setStep}) {
                     {/*<UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>*/}
 
                     {/*</UserFormInput>*/}
-                    <UserFormInput name='auth_code' inputField={inputField} placeholder='인증번호를 입력해주세요'
-                                   readOnly={authenticated}>
-                        <button type="button" className={User.form_btn} onClick={matchAuthNumber}>인증하기</button>
+                    <UserFormInput name='auth_code' inputField={inputField}
+                                   readOnly={authenticated}
+                                   placeholder='인증번호를 입력해주세요'>
+                        <button type="button" className={User.form_btn}
+                                disabled={authenticated}
+                                onClick={matchAuthNumber}>
+                            {authenticated ? '인증완료':'인증하기'}
+                        </button>
                     </UserFormInput>
                     {
                         isSent && <div className={User.form_timer}>
@@ -322,10 +341,105 @@ function Step2({inputField, setStep}) {
                     setStep(0)
                 }}>이전
                 </button>
-                <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>가입완료</button>
+                <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
             </div>
             {/*<div className={User.form_btn_box}>*/}
             {/*    <button type="button" className={`btn btn_blue ${User.btn}`} onClick={submit}>가입완료</button>*/}
+            {/*</div>*/}
+        </>
+    )
+}
+
+function Step3({inputField, setStep}){
+    const {publicApi, userApi} = useApi();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const modal = useModal()
+
+    const [bnChecked, setBnChecked] = useState(false)
+
+
+    const submit = async ()=>{
+        if(!bnChecked){
+            modal.openModal(ModalType.SNACKBAR.Warn, {
+                msg: "사업자번호를 인증해야 합니다."
+            })
+            return;
+        }
+
+        await publicApi.signup(inputField.input).then(({status, data, headers})=>{
+            if(status === 200 && data){
+                const accessToken = headers.get('authorization')
+                const refreshtoken = headers.get('refreshtoken');
+                const refreshexpiretime = headers.get('refreshexpiretime');
+                dispatch(authActions.setAccessToken(accessToken));
+                setRefreshToken(refreshtoken, refreshexpiretime);
+                navigate('/shop/list');
+            }
+        })
+
+    }
+
+    const checkBrNoStatus = ()=>{
+        const bn = inputField.get('br_no');
+        if(ObjectUtils.isEmpty(bn)){
+            modal.openModal(ModalType.SNACKBAR.Warn, {
+                msg: "사업자번호를 입력해 주십시오"
+            })
+            return;
+        }
+        if(inputField.validateOne('br_no')){
+            userApi.checkBrNoStatus(bn).then(({status,data})=>{
+                if(status === 200){
+                    if(data === true){
+                        modal.openModal(ModalType.SNACKBAR.Info, {
+                            msg: '사업자번호 인증에 성공하였습니다.'
+                        })
+                        setBnChecked(true)
+                    }
+                        // else if(!ObjectUtils.isEmpty(data.id)){
+                        //     msg = '동일한 사업자번호로 가입된 계정이 존재합니다.'
+                    // }
+                    else{
+                        modal.openModal(ModalType.SNACKBAR.Alert, {
+                            msg: '존재하지 않는 사업자번호입니다.'
+                        })
+                    }
+
+                }
+            })
+        }
+    }
+
+    return (
+        <>
+            <UserFormList>
+                {/*<UserFormItem errorText={inputField.error.corp_nm}>*/}
+                {/*    <UserFormInput name='corp_nm' inputField={inputField} subject='사업자 등록'*/}
+                {/*                   placeholder='회사명을 입력하세요.'/>*/}
+                {/*</UserFormItem>*/}
+                <UserFormItem style={{marginTop: 10}} errorText={inputField.error.br_no}>
+                    <UserFormInput subject="사업자 등록" readOnly={bnChecked} name='br_no' inputField={inputField}
+                                   placeholder='-을 제외한 사업자등록번호 10자리를 입력하세요.'>
+                        <button type="button" className={User.form_btn}
+                                disabled={bnChecked}
+                                onClick={checkBrNoStatus}>
+                            {bnChecked ? "인증완료" : "인증하기"}
+                        </button>
+                    </UserFormInput>
+                </UserFormItem>
+            </UserFormList>
+
+            <div className={User.form_btn_box}>
+                <button type="button" className={`btn_grey ${cmc(User.btn)} ${User.w50}`} onClick={() => {
+                    setStep(1)
+                }}>이전
+                </button>
+                <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>
+            </div>
+            {/*<div className={User.form_btn_box}>*/}
+            {/*    /!*<Link className={`btn_grey ${User.w30} ${cmc(User.btn)}`} to='/shop/list'>이전</Link>*!/*/}
+            {/*    <button type="button" className={`btn_blue ${cmc(User.btn)}`} onClick={submit}>다음</button>*/}
             {/*</div>*/}
         </>
     )

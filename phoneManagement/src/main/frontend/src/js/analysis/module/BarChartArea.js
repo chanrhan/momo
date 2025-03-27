@@ -34,7 +34,7 @@ export function BarChartArea({fromDate, toDate, userId}){
             to_ymd: DateUtils.dateToStringYYMMdd(toDate)
         }
 
-        console.table(body)
+        // console.table(body)
 
         await saleApi.getCtCountBySelectType(tab, body).then(({status,data})=>{
             if(status === 200 && data){

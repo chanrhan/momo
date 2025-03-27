@@ -46,7 +46,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import {AsyncTest} from "./js/test/AsyncTest";
 import {Allowance} from "./js/layout/Allowance";
 import useUserInfo from "./js/hook/useUserInfo";
-import {AdminLayout} from "./js/layout/AdminLayout";
+import {AdminLayout} from "./js/layout/admin/AdminLayout";
 import {VOTest} from "./js/test/VOTest";
 import {AutoLogout} from "./js/layout/AutoLogout";
 import {MasterShop} from "./js/admin/MasterShop";
@@ -57,6 +57,8 @@ import {StudyMain} from "./js/study_private/StudyMain";
 import {StudyLayout} from "./js/study_private/StudyLayout";
 import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
 import {StringTest} from "./js/test/StringTest";
+import {AdminMessage} from "./js/admin/AdminMessage";
+import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
 
 function App() {
     const userInfo = useUserInfo();
@@ -142,6 +144,8 @@ function App() {
                           <Route path='' element={<Administrator/>}/>
                           <Route path='gmd' element={<MasterData/>}/>
                           <Route path='shop' element={<MasterShop/>}/>
+                          <Route path='msg' element={<AdminMessage/>}/>
+                          <Route path='user_stat' element={<AdminUserStatistics/>}/>
                       </Route>
                   </Route>
 

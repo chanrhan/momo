@@ -8,12 +8,14 @@ function useUserInfo(){
     const userInfo = useSelector(state=>state.userReducer);
 
     const updateUser = async ()=>{
-        await userApi.getUser().then(({status,data})=>{
-            if(status === 200 && data){
-                dispatch(userActions.setUserInfo(data))
-                // console.table(data)
-            }
-        })
+        if(userInfo){
+            await userApi.getUser().then(({status,data})=>{
+                if(status === 200 && data){
+                    dispatch(userActions.setUserInfo(data))
+                    // console.table(data)
+                }
+            })
+        }
     }
 
     const clearUser = ()=>{

@@ -12,7 +12,6 @@ import useUserInfo from "../../../hook/useUserInfo";
 import {ImageProxy} from "../../../hook/imageProxy";
 
 export function DashboardInfo(){
-    const {fileApi} = useApi();
     const modal = useModal();
     const nav = useNavigate()
 

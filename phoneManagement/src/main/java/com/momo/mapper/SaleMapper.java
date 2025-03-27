@@ -118,5 +118,5 @@ public interface SaleMapper{
 
 	// 통계 페이지
 	// 개인 통계
-	public Map<String,Object> getPersonalStatistics(CommonVO vo);
+	public List<Map<String,Object>> getPersonalStatistics(CommonVO vo);
 }

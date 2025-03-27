@@ -30,7 +30,7 @@ export function UserCompanyItem({inputField, close}){
                         <div className={User.form_inp}>
                             <div className={`select_box ${User.select_box}`}>
                                 <input type="hidden" id="shop_tp"/>
-                                <SelectIndexLayer name='provider' inputField={inputField} cssModule={User} values={['SKT','KT','LG','판매점']}/>
+                                <SelectIndexLayer name='provider' inputField={inputField} cssModule={User} values={['SKT','KT','LG','판매점','기타']}/>
                                 {/*<SelectModal name='provider' values={['SKT','KT','LG','판매점']} inputField={inputField}/>*/}
                             </div>
                         </div>

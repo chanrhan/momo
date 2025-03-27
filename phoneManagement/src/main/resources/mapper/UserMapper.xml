@@ -331,7 +331,8 @@
     </update>
 
     <select id="isApproved" resultType="java.lang.Boolean">
-        SELECT (
+        SELECT /* UserMapper.xml : isApproved ( NO_LOG )*/
+            (
             select IFNULL(sf.approval_st, false)
             from tb_staff sf
             where sf.staff_id = id and
@@ -493,8 +494,8 @@
 
     <insert id="insertUser" parameterType="com.momo.common.vo.UserVO">
         INSERT INTO tb_account
-            (id, pwd, name, email, tel, terms)
-        VALUES (#{id}, #{pwd}, #{name}, #{email}, #{tel}, #{terms})
+            (id, pwd, name, email, tel, br_no, terms)
+        VALUES (#{id}, #{pwd}, #{name}, #{email}, #{tel}, #{brNo}, #{terms})
     </insert>
 
     <update id="updateUser" parameterType="com.momo.common.vo.UserVO">

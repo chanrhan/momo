@@ -37,11 +37,11 @@ export function RegisterShop(){
 
     const nav = useNavigate()
 
-    useEffect(()=>{
-        if(!userInfo.br_no){
-            nav('/shop/brno')
-        }
-    },[userInfo])
+    // useEffect(()=>{
+    //     if(!userInfo.br_no){
+    //         nav('/shop/brno')
+    //     }
+    // },[userInfo])
 
     const submit = async () => {
         if (inputField.validateAll()) {
@@ -70,8 +70,8 @@ export function RegisterShop(){
                     </div>
 
                     <div className={User.form_btn_box}>
-                        <Link className={`btn btn_grey ${User.btn} ${User.w30}`} to='/service'>이전</Link>
-                        <button type="button" className={`btn btn_blue ${User.btn}`} onClick={submit}>등록완료</button>
+                        <Link className={`btn btn_grey ${User.btn} ${User.w50}`} to='/service'>홈으로</Link>
+                        <button type="button" className={`btn btn_blue ${User.btn}`} onClick={submit}>등록하기</button>
                     </div>
                 </UserFormBox>
             </div>

@@ -1,8 +1,11 @@
 import {LayerModal} from "../../../common/modal/LayerModal";
 import Popup from "../../../../css/popup.module.css"
+import useApi from "../../../hook/useApi";
+import {useState} from "react";
 
 
 export function MessagePreviewModal(props){
+
     return (
         <LayerModal {...props} top={120} maxWidth={500}>
             <div className={Popup.message_preview_cont}>
@@ -19,7 +22,7 @@ export function MessagePreviewModal(props){
 
                     </span>
                         <div className={Popup.chat_message}>
-                            {props.msg}
+                            {props.content}
                         </div>
                     </div>
                 </div>

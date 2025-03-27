@@ -1,4 +1,6 @@
 import imageCompression from "browser-image-compression";
+import * as XLSX from "xlsx";
+import {ModalType} from "../common/modal/ModalType";
 
 
 export const FileUtils = {
@@ -34,5 +36,13 @@ export const FileUtils = {
             console.log(e);
             throw new Error("[Error] Image Compressing");
         }
+    },
+    readXLSX: (data)=> {
+        const readData = new Uint8Array(data);
+        return XLSX.read(readData, {
+            type: 'array',
+            bookVBA: true,
+            // raw: true
+        })
     }
 }

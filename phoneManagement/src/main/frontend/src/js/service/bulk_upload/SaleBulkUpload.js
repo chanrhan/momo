@@ -14,6 +14,7 @@ import {useRenderlessModal} from "../../hook/useRenderlessModal";
 import {useHintBox} from "../../hook/useHintBox";
 import {ModalType} from "../../common/modal/ModalType";
 import saleApi from "../../api/SaleApi";
+import {FileUtils} from "../../utils/FileUtils";
 
 const INIT_ROW_LENGTH = 15;
 
@@ -67,6 +68,10 @@ export function SaleBulkUpload(){
         null
     ]
 
+    const [columns, setColumns] = useState(COLUMN_NAMES.map((v,i)=>{
+        return i;
+    }))
+
     const [data, setData] = useState(Array(INIT_ROW_LENGTH).fill(Array(COLUMN_NAMES.length).fill('')))
     const [error, setError] = useState(Array(INIT_ROW_LENGTH).fill(Array(COLUMN_NAMES.length).fill(false)))
 
@@ -92,7 +97,7 @@ export function SaleBulkUpload(){
     const [errorMode, setErrorMode] = useState(false)
 
     const [draggingIndex, setDraggingIndex] = useState(null);
-    const [gripIndex, setGripIndex] = useState(null)
+    // const [gripIndex, setGripIndex] = useState(null)
 
     const dragListRef = useRef([])
 
@@ -100,15 +105,11 @@ export function SaleBulkUpload(){
 
 
     const handleDragStart = (e: DragEvent, index) => {
-        setGripIndex(index)
+        // setGripIndex(index)
         setDraggingIndex(index);
 
-
-
         if (dragListRef && dragListRef.current[index]) {
-            // const img = dragListRef.current[index];
-            // img.style.opacity = 0.5
-            // e.dataTransfer.setDragImage(img, 0, 0);
+            e.dataTransfer.setDragImage(dragListRef.current[index], 0, 0);
         }
         e.dataTransfer.effectAllowed = "move";
     };
@@ -117,10 +118,10 @@ export function SaleBulkUpload(){
         e.preventDefault(); // Allow drop
 
         if (index !== draggingIndex) {
-            // const updatedItems = [...inputField.input];
-            // const draggedItem = updatedItems.splice(draggingIndex, 1)[0];
-            // updatedItems.splice(index, 0, draggedItem);
-            // inputField.setInput(updatedItems);
+            const updatedItems = [...columns];
+            const draggedItem = updatedItems.splice(draggingIndex, 1)[0];
+            updatedItems.splice(index, 0, draggedItem);
+            setColumns(updatedItems)
             setDraggingIndex(index);
             return true;
         }
@@ -129,6 +130,14 @@ export function SaleBulkUpload(){
     };
 
     const handleDrag = (e: DragEvent, index)=>{
+
+    }
+
+    const handleDragEnd = (e: DragEvent, index)=>{
+        const img = new Image()
+        img.src = "";
+        e.dataTransfer.setDragImage(img, 0, 0);
+        setDraggingIndex(null)
     }
 
     useEffect(() => {
@@ -270,7 +279,9 @@ export function SaleBulkUpload(){
     const setCellError = (r, c, value)=>{
         setError(prev=>{
             const copy = [...prev];
-            copy[r][c] = value;
+            const col = [...copy[r]]
+            col[c] = value;
+            copy[r] = col;
             return copy;
         })
     }
@@ -293,7 +304,11 @@ export function SaleBulkUpload(){
         // console.log(`r:${startRow}, c:${startCol}`)
         // console.table(table)
 
-        setDataRange(startRow, startCol, table);
+        // setDataRange(startRow, startCol, table);
+
+        setTimeout(()=>{
+            validateCellRange(startRow, startCol, table)
+        }, 50)
     }
 
     const setDataRange = (startRow, startCol, table)=>{
@@ -331,6 +346,8 @@ export function SaleBulkUpload(){
 
             return newData;
         });
+
+
     }
 
     const setErrorRange = (startRow, startCol, table)=>{
@@ -378,11 +395,17 @@ export function SaleBulkUpload(){
     }
 
     // 테이블의 단일 셀의 값을 변경하는 함수
-    const handleInputData = (e,i,j)=>{
+    const handleInputData = (e,r,c)=>{
         const copy = [...data];
-        copy[i] = [...data[i]];
-        copy[i][j] = e.target.value;
+        copy[r] = [...data[r]];
+        copy[r][c] = e.target.value;
         setData(copy)
+    }
+
+    const handleBlur = (e, r, c)=>{
+        if(data[r][c]){
+            validateCell(r, c)
+        }
     }
 
     // 시트 파일을 jsonData(=table)로 변환하는 함수
@@ -394,27 +417,10 @@ export function SaleBulkUpload(){
 
             const reader = new FileReader();
             reader.onload = async (e) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, {
-                    type: 'array',
-                    bookVBA: true,
-                    // raw: true
-                })
-
-                if(workbook.SheetNames.length > 1){
-                    modal.openModal(ModalType.LAYER.Select_Sheet, {
-                        sheets: workbook.SheetNames,
-                        onSubmit: (index)=>{
-                            const sheetName = workbook.SheetNames[index];
-                            const sheet = workbook.Sheets[sheetName];
-                            loadSheetData(sheet);
-                        }
-                    })
-                }else{
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    loadSheetData(sheet);
-                }
+                const workbook = FileUtils.readXLSX(e.target.result);
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                loadSheetData(sheet);
             }
 
             reader.readAsArrayBuffer(file);
@@ -448,14 +454,13 @@ export function SaleBulkUpload(){
 
 
     // endRow/Col is inclusive index of element
-    const validateCellRange = (startRow, startCol, endRow, endCol)=>{
-        const range = data.slice(startRow, endRow+1).map((cols: Array)=> cols.slice(startCol, endCol+1))
+    const validateCellRange = (startRow, startCol, range)=>{
         const transposed = ObjectUtils.transposeArray(range); // 행 열 변환
         let result = [];
         let err = [];
         let isError = false;
-        for(let col=0;col<COLUMN_NAMES.length;++col){
-            const {data, errors} = validate(col, transposed[col]);
+        for(let c=0;c<transposed.length;++c){
+            const {data, errors} = validateColumn(startRow, startCol + c, transposed[c]);
             result.push(data);
             if(!isError && errors.filter(v=>v).length > 0){
                 isError = true;
@@ -470,31 +475,102 @@ export function SaleBulkUpload(){
     }
 
 
-
-    const validate = (type, arr: Array<string>)=>{
+    const validateColumn = (startRow: Number, index, arr: Array<string>)=>{
         let err = new Array(arr.length).fill(false);
         let copyDeviceCells = null;
         let copySellerCells = null;
+        const type = getColumn(index)
         if(type === COLUMN_INDEX.DEVICE){
             copyDeviceCells = [...deviceCells]
         }else if(type === COLUMN_INDEX.SELLER){
             copySellerCells = [...sellerCells]
         }
 
-        for(const i in arr){
+        for(const i: Number in arr){
             const item = arr[i];
+            const realIdx = startRow + Number(i);
             if(ObjectUtils.isEmpty(item)){
                 if(type === COLUMN_INDEX.DEVICE){
-                    copyDeviceCells[i] = {
+                    copyDeviceCells[realIdx] = {
                         id: null,
                         recommends: null
                     };
                 }else if(type === COLUMN_INDEX.SELLER){
-                    copySellerCells[i] = undefined;
+                    copySellerCells[realIdx] = undefined;
                 }
-                err[i] = true;
+                err[i] = false;
                 continue;
             }
+            let dataset = null;
+            if(type === COLUMN_INDEX.DEVICE){
+                dataset = deviceDataset
+            }else if(type === COLUMN_INDEX.SELLER){
+                dataset = sellerDataset
+            }
+            if(!Validate_Actions[type].test(item, dataset)){
+                const replaced = Validate_Actions[type].replace(item);
+                if(!Validate_Actions[type].test(replaced, dataset)){
+                    // 디바이스 컬럼인 경우
+                    if(type === COLUMN_INDEX.DEVICE){
+                        const {id, name, recommends} = Validate_Actions[COLUMN_INDEX.DEVICE].mapping(item, deviceDataset);
+                        if(id === null){
+                            err[i] = true;
+                        }else{
+                            arr[i] = name;
+                        }
+                        copyDeviceCells[realIdx] = {
+                            id: id,
+                            recommends: recommends
+                        };
+                    }
+                    // 판매자 컬럼인 경우
+                    else if(type === COLUMN_INDEX.SELLER){
+                        const {id, name} = Validate_Actions[COLUMN_INDEX.SELLER].mapping(item, sellerDataset);
+                        copySellerCells[realIdx] = id;
+                        arr[i] = name;
+                    }else{
+                        err[i] = true;
+                    }
+                }else{
+                    arr[i] = replaced;
+                }
+            }
+        }
+        if(type=== COLUMN_INDEX.DEVICE){
+            setDeviceCells(copyDeviceCells)
+        }else if(type === COLUMN_INDEX.SELLER){
+            setSellerCells(copySellerCells)
+        }
+        return {
+            data: arr,
+            errors: err
+        }
+    }
+
+    const validateCell = (r, c)=>{
+        const item = data[r][c];
+        let value = null;
+        let err = null;
+        const type = getColumn(c)
+        if(ObjectUtils.isEmpty(item)){
+            if(type === COLUMN_INDEX.DEVICE){
+                setDeviceCells(prev=>{
+                    const copy = [...prev];
+                    copy[r] = {
+                        id: null,
+                        recommends: null
+                    }
+                    return copy;
+                })
+            }else if(type === COLUMN_INDEX.SELLER){
+                setSellerCells(prev=>{
+                    const copy = [...prev];
+                    copy[r] = undefined;
+                    return copy;
+                })
+            }
+            err = false;
+        }else{
             let dataset = null;
             if(type === COLUMN_INDEX.DEVICE){
                 dataset = deviceDataset
@@ -507,43 +583,48 @@ export function SaleBulkUpload(){
                     if(type === COLUMN_INDEX.DEVICE){
                         const {id, name, recommends} = Validate_Actions[COLUMN_INDEX.DEVICE].mapping(item, deviceDataset);
                         if(id === null){
-                            err[i] = true;
+                            err = true;
                         }else{
-                            arr[i] = name;
+                            value = name;
                         }
-                        copyDeviceCells[i] = {
-                            id: id,
-                            recommends: recommends
-                        };
+                        setDeviceCells(prev=>{
+                            const copy = [...prev];
+                            copy[r] = {
+                                id: id,
+                                recommends: recommends
+                            };
+                            return copy;
+                        })
                     }else if(type === COLUMN_INDEX.SELLER){
                         const {id, name} = Validate_Actions[COLUMN_INDEX.SELLER].mapping(item, sellerDataset);
-                        copySellerCells[i] = id;
-                        arr[i] = name;
+                        setSellerCells(prev=>{
+                            const copy = [...prev];
+                            copy[r] = id;
+                            return copy;
+                        })
+                        value = name;
                     }else{
-                        err[i] = true;
+                        err = true;
                     }
                 }else{
-                    arr[i] = replaced;
+                    value = replaced;
                 }
             }
         }
-        if(type === COLUMN_INDEX.DEVICE){
-            setDeviceCells(copyDeviceCells)
-        }else if(type === COLUMN_INDEX.SELLER){
-            setSellerCells(copySellerCells)
-        }
-        return {
-            data: arr,
-            errors: err
-        }
+        setCellData(r,c, value)
+        setCellError(r,c, err);
+    }
+
+    const getColumn = (type: Number)=>{
+        return columns[type]
     }
 
 
     const validateAll = ()=>{
-        const isError = validateCellRange(0,0, data.length-1, data[0].length-1)
-        if(!isError){
-            setSubmitting(true)
-        }
+        // const isError = validateCellRange(0,0, data.length-1, data[0].length-1)
+        // if(!isError){
+        //     setSubmitting(true)
+        // }
     }
 
     useEffect(() => {
@@ -587,62 +668,7 @@ export function SaleBulkUpload(){
         setCellError(rowIdx, COLUMN_INDEX.DEVICE, false)
     }
 
-    const handleDragEnd = (e: DragEvent, index)=>{
-        setData(prev=>{
-            let copy = [...prev]
-            const tempGripCol = copy.map((r, rowIdx)=>{
-                return r[gripIndex]
-            })
-            if(gripIndex < draggingIndex){
-                copy = copy.map((r:Array, rowIdx)=>{
-                    for(let i=0;i<r.length;++i){
-                        if(i >= gripIndex && i < draggingIndex){
-                            r[i] = r[i+1]
-                        }
-                    }
-                    r[draggingIndex] = tempGripCol[rowIdx]
-                    return r;
-                })
-            }else if(gripIndex > draggingIndex){
-                copy = copy.map((r:Array, rowIdx)=>{
-                    for(let i=r.length-1;i>0;--i){
-                        if(i <= gripIndex && i > draggingIndex){
-                            r[i] = r[i-1]
-                        }
-                    }
-                    r[draggingIndex] = tempGripCol[rowIdx]
-                    return r;
-                })
-            }
-            return copy;
-        })
-        setError(prev=>{
-            let copy = [...prev]
-            if(gripIndex < draggingIndex){
-                copy = copy.map((r: Array,rowIdx)=>{
-                    for(let i=0;i<r.length;++i){
-                        if(i >= gripIndex && i <= draggingIndex){
-                            r[i] = false;
-                        }
-                    }
-                    return r;
-                })
-            }else if(gripIndex > draggingIndex){
-                copy = copy.map((r: Array,rowIdx)=>{
-                    for(let i=0;i<r.length;++i){
-                        if(i <= gripIndex && i >= draggingIndex){
-                            r[i] = false;
-                        }
-                    }
-                    return r;
-                })
-            }
-            return copy;
-        })
 
-        setGripIndex(null)
-        setDraggingIndex(null)
-    }
 
 
     const submit = async () => {
@@ -693,16 +719,16 @@ export function SaleBulkUpload(){
                         </div>
                     </div>
                     <div className={cm(Board.board_head_group)}>
-                        <label className={Board.btn_upload}>
-                            파일 업로드
-                            <input type="file" accept=".xlsx,.xls,.csv" onChange={handleUploadSheet} style={{
-                                display: "none"
-                            }}/>
-                        </label>
+                        {/*<label className={Board.btn_upload}>*/}
+                        {/*    파일 업로드*/}
+                        {/*    <input type="file" accept=".xlsx,.xls,.csv" onChange={handleUploadSheet} style={{*/}
+                        {/*        display: "none"*/}
+                        {/*    }}/>*/}
+                        {/*</label>*/}
                         <button onClick={clearData} className={Board.btn_clear}>전체 초기화</button>
-                        <button onClick={toggleMode} className={Board.btn_error_mode}>
-                            {errorMode ? "전체 보기" : "오류만 보기"}
-                        </button>
+                        {/*<button onClick={toggleMode} className={Board.btn_error_mode}>*/}
+                        {/*    {errorMode ? "전체 보기" : "오류만 보기"}*/}
+                        {/*</button>*/}
                         <button onClick={validateAll}
                                 className={`btn_blue ${cmc(Board.btn, Board.btn_medium)}`}>저장
                         </button>
@@ -718,37 +744,34 @@ export function SaleBulkUpload(){
                     <Bthead>
                         <Bth index={0} className={Board.th_option}/>
                         {
-                            COLUMN_NAMES.map((v, i) => {
-                                // const sort =
+                            columns.map((v, i) => {
                                 return (
                                     <>
-                                        <Bth index={i + 1} name={v}>
-                                        {v}
-                                            {
-                                                COLUMN_HINT[i] && (
-                                                    <>
-                                                        <span className={Board.column_hint_icon} onMouseOver={e => {
-                                                            COLUMN_HINT[i].open(e);
-                                                        }}></span>
-                                                        {COLUMN_HINT[i].component}
-                                                    </>
-                                                )
-                                            }
-                                            <div key={i} className={cm(Board.th_drag, `${i === draggingIndex && Board.active}`)}
-                                                draggable
-                                                ref={el => {
-                                                    dragListRef.current[i] = el;
-                                                }} onDrag={e=>{
-                                                handleDrag(e, i)
-                                            }} onDragOver={e => {
-                                                handleDragOver(e, i)
-                                            }} onDragStart={(e) => {
-                                                    handleDragStart(e, i)
-                                            }} onDragEnd={(e)=>{
-                                                handleDragEnd(e, i)
-                                            }}>
-                                                <span className={Board.drag_handle}></span>
-                                            </div>
+                                        <Bth draggable index={i + 1} name={v}
+                                            className={`${i === draggingIndex && Board.dragging}`}
+                                             ref={el => {
+                                            dragListRef.current[i] = el;
+                                        }} onDrag={e=>{
+                                            handleDrag(e,i)
+                                        }} onDragOver={e=>{
+                                            handleDragOver(e, i)
+                                        }} onDragStart={e=>{
+                                            handleDragStart(e, i)
+                                        }} onDragEnd={e=>{
+                                            handleDragEnd(e, i)
+                                        }}>
+                                        {COLUMN_NAMES[v]}
+                                        {
+                                            COLUMN_HINT[v] && (
+                                                <>
+                                                    <span  className={Board.column_hint_icon}
+                                                          onMouseOver={e => {
+                                                        COLUMN_HINT[v].open(e);
+                                                    }}></span>
+                                                    {COLUMN_HINT[v].component}
+                                                </>
+                                            )
+                                        }
                                         </Bth>
                                     </>
                                 )
@@ -771,36 +794,26 @@ export function SaleBulkUpload(){
                                 {
                                    r && r.map((c, colIdx) => {
                                         // const colIdx = ci
-                                        let currIdx = colIdx;
-                                        if(gripIndex !== null){
-                                            if(currIdx === draggingIndex){
-                                                currIdx = gripIndex
-                                            }else if(gripIndex < draggingIndex && currIdx >= gripIndex && currIdx <= draggingIndex){
-                                                currIdx = colIdx+1
-                                            }else if(gripIndex > draggingIndex && currIdx <= gripIndex && currIdx >= draggingIndex){
-                                                currIdx = colIdx-1
-                                            }
-                                        }
-
-                                        // console.log(colIdx)
                                         return <td key={colIdx}
-                                                   className={cm(Board.td, `${error[rowIdx] && error[rowIdx][currIdx] && Board.error}`, `${currIdx === gripIndex && Board.dragging}`)}
+                                                   className={cm(Board.td, `${error[rowIdx] && error[rowIdx][colIdx] && Board.error}`)}
                                                    onClick={e => {
                                             if (colIdx === COLUMN_INDEX.DEVICE) {
                                                 // e.stopPropagation()
                                                 showDeviceRecommendModal(e, rowIdx)
                                             }
                                         }} onFocus={(e) => {
-                                            if (colIdx !== COLUMN_INDEX.DEVICE || !error[rowIdx][currIdx]) {
-                                                handleCellClick(rowIdx, currIdx)
+                                            if (colIdx !== COLUMN_INDEX.DEVICE || !error[rowIdx][colIdx]) {
+                                                handleCellClick(rowIdx, colIdx)
                                             }
                                         }} onPaste={handlePaste}>
-                                            <input value={data[rowIdx][currIdx]}
+                                            <input value={data[rowIdx][colIdx]}
                                                    className={cm(Board.inp)}
                                                    maxLength={30}
                                                    onChange={(e) => {
                                                        handleInputData(e, rowIdx, colIdx)
-                                                   }} ref={v => {
+                                                   }} onBlur={e=>{
+                                                       handleBlur(e, rowIdx, colIdx)
+                                            }} ref={v => {
                                                 if (!cellRefs.current[rowIdx]) {
                                                     cellRefs.current[rowIdx] = [];
                                                 }

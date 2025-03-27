@@ -9,7 +9,7 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        openModal: (state,action)=>{
+        openModal: (state, action)=>{
             const {modalName, type, onopen, onclose, props} = action.payload;
             // console.log('open')
             if(state.list.some(value=>(modalName === value.modalName))){

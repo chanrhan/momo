@@ -109,9 +109,9 @@ export const DateUtils = {
         if(month > (12 - orgMonth)){
             const diff = month - (12 - orgMonth);
             date.setFullYear(date.getFullYear()+1);
-            date.setMonth(diff);
+            date.setMonth(diff-1);
         }else{
-            date.setMonth(month-1);
+            date.setMonth(date.getMonth()+1);
         }
     },
     addWeek: (date: Date, week)=>{
@@ -147,9 +147,9 @@ export const DateUtils = {
         if(month >= orgMonth){
             const diff =  12 - (month - orgMonth);
             date.setFullYear(date.getFullYear()-1);
-            date.setMonth(diff);
+            date.setMonth(diff-1);
         }else{
-            date.setMonth(month-1);
+            date.setMonth(date.getMonth()-1);
         }
     },
     subWeek: (date: Date, week)=>{
