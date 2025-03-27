@@ -3,50 +3,7 @@ import {createPortal} from "react-dom";
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {ObjectUtils} from "../../utils/objectUtil";
 import useModal from "../../hook/useModal";
-import ChangeNicknameModal from "../../account/modal/ChangeNicknameModal";
-import AddShopModal from "../../shop/modal/AddShopModal";
-import AlertModal from "./snackbar/AlertModal";
-import MenuModalTest from "../../test/MenuModalTest";
-import SaleDetailModal from "../../service/sale/detail/SaleDetailModal";
-import SecondDeviceSearchModal from "../../service/sale/modal/SecondDeviceSearchModal";
-import SaleCardModal from "../../service/sale/modal/SaleCardModal";
-import SaleCombModal from "../../service/sale/modal/SaleCombModal";
-import SaleExsvcModal from "../../service/sale/modal/SaleExsvcModal";
-import TableHeaderSelectModal from "../../test/TableHeaderSelectModal";
-import SaleDataValidationModal from "../../service/sale/modal/SaleDataValidationModal";
-import {WarningModal} from "./snackbar/WarningModal";
-import {InfoModal} from "./snackbar/InfoModal";
-import {MonthSelectModal} from "./menu/MonthSelectModal";
-import {DateSelectModule} from "./menu/DateSelectModule";
-import {SelectModal} from "./menu/SelectModal";
-import {SaleWtPlanModal} from "../../service/sale/modal/SaleWtPlanModal";
-import {SaleFilterModal} from "../../service/sale/modal/SaleFilterModal";
-import {ReserveMessageModal} from "../../service/sale/modal/ReserveMessageModal";
-import {ReserveDateModal} from "../../service/sale/modal/ReserveDateModal";
-import {DeviceSearchModal} from "../../service/sale/modal/DeviceSearchModal";
-import {PlanSearchModal} from "../../service/sale/modal/PlanSearchModal";
-import SaleUsedDeviceModal from "../../service/sale/modal/SaleUsedDeviceModal";
-import {TodoAddModal} from "../../service/dashboard/module/TodoAddModal";
-import {AdminBulkUploadModal} from "../../admin/modal/AdminBulkUploadModal";
-import {InviteModal} from "../../service/dashboard/module/InviteModal";
-import {ChargePointModal} from "../../profile/modal/ChargePointModal";
-import {PaymentCardModal} from "../../profile/modal/PaymentCardModal";
-import {UpdatePasswordModal} from "../../profile/modal/UpdatePasswordModal";
-import {NameCardModal} from "../../profile/modal/NameCardModal";
-import {DynamicSelectModal} from "./DynamicSelectModal";
-import {MoreOptionModal} from "./menu/MoreOptionModal";
-import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModal";
-import {ImagePreviewModal} from "./layer/ImagePreviewModal";
-import {HintModal} from "./tooptip/HintModal";
-import {ChangeShopModal} from "../../shop/modal/ChangeShopModal";
-import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
-import {AddressApiModal} from "../../shop/modal/AddressApiModal";
-import {useLocation} from "react-router-dom";
-import {ConfirmModal} from "./snackbar/ConfirmModal";
-import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
-import {DeviceRecommendModal} from "../../service/bulk_upload/DeviceRecommendModal";
-import {SelectSheetModal} from "../../service/bulk_upload/SelectSheetModal";
-import {MessageTemplateModal} from "../../admin/modal/MessageTemplateModal";
+import {ModalSet} from "./ModalSet";
 
 const M_TYPE = {
     MENU: 'MENU',
@@ -55,81 +12,7 @@ const M_TYPE = {
     TOOLTIP: 'TOOLTIP'
 }
 
-const MODAL_COMPONENTS = {
-    // admin
-    AdminBulkUpload: AdminBulkUploadModal,
-    AdminMessageTemplate: MessageTemplateModal,
-
-    // common
-    DynamicSelect: DynamicSelectModal,
-    MoreOption: MoreOptionModal,
-    Invite: InviteModal,
-    ChargePoint: ChargePointModal,
-    Alert: AlertModal,
-    ImagePreview: ImagePreviewModal,
-    SelectSheet: SelectSheetModal,
-
-    // shop
-    Address: AddressApiModal,
-
-    // tooltip
-    Hint: HintModal,
-
-    // todo
-    Payment_Card: PaymentCardModal,
-
-    // Profile
-    TodoAdd: TodoAddModal,
-    UpdatePassword: UpdatePasswordModal,
-    NameCard: NameCardModal,
-
-    // Shop
-    ChangeNickname: ChangeNicknameModal,
-    // ChangeShop: ChangeShopModal,
-    AddShop: AddShopModal,
-
-    // Test
-    MenuModalTest: MenuModalTest,
-    // sale
-    SaleDetail: SaleDetailModal,
-    SaleSecond: SecondDeviceSearchModal,
-    SaleCard: SaleCardModal,
-    SaleComb: SaleCombModal,
-    SaleExsvc: SaleExsvcModal,
-    SaleWtPlan: SaleWtPlanModal,
-    SaleUsedPhone: SaleUsedDeviceModal,
-
-    DeviceRecommend: DeviceRecommendModal,
-
-    // sale common
-    DeviceSearch: DeviceSearchModal,
-    PlanSearch: PlanSearchModal,
-
-
-    SelectTableHeader: TableHeaderSelectModal,
-    SaleDataValidation: SaleDataValidationModal,
-    // Select: SelectModal,
-    // SelectMonth: MonthSelectLayer,
-    SelectDate: DateSelectModule,
-    SaleFilter: SaleFilterModal,
-    ReserveMessage: ReserveMessageModal,
-    ReserveDate: ReserveDateModal,
-    MessagePreview: MessagePreviewModal,
-
-    // Task
-    UsedDeviceCms: UsedDeviceCmsModal,
-
-    // error
-    Warning: WarningModal,
-    Info: InfoModal,
-
-    Confirm: ConfirmModal,
-    // study private
-    AddStudyNode: AddStudyNodeModal
-}
-
 function ModalContainer(){
-    const location = useLocation()
     const modal = useModal();
     const modalList : Object<string,Array> = useSelector(state=>state.modalReducer);
     const topComponentRef = useRef(null);
@@ -141,10 +24,6 @@ function ModalContainer(){
         }
     };
 
-    useEffect(() => {
-
-    }, [location]);
-
     useEffect(()=>{
         if(ObjectUtils.isEmpty(modalList.list)){
             return;
@@ -154,10 +33,10 @@ function ModalContainer(){
         // console.log(`Before capture: ${topComponentRef.current?.className}`)
         const onClickCaptureEvent = (e: MouseEvent)=>{
             // console.log(`before capture: ${modalName}`)
-            console.log('before capture')
-            console.log(topComponentRef.current.innerText)
+            // console.log('before capture')
+            // console.log(topComponentRef.current.innerText)
             if(topComponentRef.current && !topComponentRef.current.contains(e.target)){
-                console.log('capture')
+                // console.log('capture')
                 modal.closeAndLockModal(modalName)
                 window.removeEventListener('mousedown', onClickCaptureEvent, true)
                 window.removeEventListener('keydown', onKeydownCaptureEvent, true)
@@ -173,7 +52,7 @@ function ModalContainer(){
             //     modal.unlockModal()
             //     window.removeEventListener('click', onClickBubbleEvent, false)
             // }
-            console.log('bubble')
+            // console.log('bubble')
             modal.unlockModal()
             window.removeEventListener('click', onClickBubbleEvent, false)
         }
@@ -199,7 +78,6 @@ function ModalContainer(){
             if(type === M_TYPE.MENU || type === M_TYPE.LAYER || type === M_TYPE.RENDERLESS){
                 window.addEventListener('keydown', onKeydownCaptureEvent, true)
             }
-
         }, 10)
 
         return ()=>{
@@ -226,10 +104,19 @@ function ModalContainer(){
     const lastIndex = modalList.list.length - 1;
     // console.table(modalList.list)
     // console.log(`topIndex: ${topIndex}`)
-    const renderModal = modalList.list.map(({modalName, type, onopen, onclose, props}, index)=>{
-        if(!modalName){
-            return null;
+    const renderModal = modalList.list.filter(({modalName, type, props})=>{
+        if(ObjectUtils.isEmpty(modalName) || ObjectUtils.isEmpty(type)){
+            return false;
         }
+        if(type === M_TYPE.RENDERLESS){
+            if(props.ref){
+                topComponentRef.current = props.ref;
+            }
+            return false;
+        }
+        return true;
+    }).map(({modalName, type, onopen, onclose, props}, index)=>{
+
 
         // if(index === modalList.length-1){
         //     if(type === 'MENU' || type === 'LAYER'){
@@ -240,30 +127,30 @@ function ModalContainer(){
         if(type === M_TYPE.LAYER && index === lastIndex){
             windowBlocked = true;
         }
-        if(index === topIndex){
-            if(type === M_TYPE.RENDERLESS){
-                if(props.ref){
-                    // console.log('props ref')
-                    // console.table(topComponentRef.current?.className)
-                    topComponentRef.current = props.ref;
-                    // console.log('after')
-                    // console.table(topComponentRef.current?.className)
-                    // modal.addTopElement(props.ref)
-                }
 
-                return null;
-            }
-            const ModalComponent = MODAL_COMPONENTS[modalName];
+        if(index === topIndex){
+            // if(type === M_TYPE.RENDERLESS){
+            //     if(props.ref){
+            //         // console.log('props ref')
+            //         // console.table(topComponentRef.current?.className)
+            //         topComponentRef.current = props.ref;
+            //         // console.log('after')
+            //         // console.table(topComponentRef.current?.className)
+            //         // modal.addTopElement(props.ref)
+            //     }
+            //
+            //     return null;
+            // }
+            const ModalComponent = ModalSet[modalName];
             return <ModalComponent scrollable={true} modalRef={handleRef} windowBlocked={windowBlocked} key={modalName} {...props}/>
         }
 
-        const ModalComponent = MODAL_COMPONENTS[modalName];
+        const ModalComponent = ModalSet[modalName];
 
         let scrollable = false;
         if((type === M_TYPE.LAYER || type === M_TYPE.MENU) && index === topScrollIndex){
             scrollable = true;
         }
-
 
         return <ModalComponent scrollable={scrollable} windowBlocked={windowBlocked} key={modalName} {...props}/>
     });
