@@ -59,7 +59,6 @@ import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
 import {StringTest} from "./js/test/StringTest";
 import {AdminMessage} from "./js/admin/AdminMessage";
 import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
-import {ReactModalTest} from "./js/test/ReactModalTest";
 
 function App() {
     const userInfo = useUserInfo();
