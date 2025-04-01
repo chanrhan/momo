@@ -5,30 +5,48 @@ import {authActions} from "../store/slices/authSlice";
 import {ModalType} from "../common/modal/ModalType";
 import {useEffect} from "react";
 import {userActions} from "../store/slices/userSlice";
+import {HttpStatusCode} from "axios";
 
 export const useAuthentication = ()=>{
     const {publicApi} = useApi();
     const dispatch = useDispatch();
 
     const login = async (data)=>{
-        let rst = null;
-        await publicApi.login(data).then((res)=>{
-            // console.table(res)
-            rst = (res.status === 200)
-            if(res.status === 200){
-                if(res.data){
+        let rst = false;
 
-                }
-                const accessToken = res.headers.get('authorization')
-                const refreshtoken = res.headers.get('refreshtoken');
-                const refreshexpiretime = res.headers.get('refreshexpiretime');
-                // console.log(`r e t : ${refreshexpiretime / 1000 / 60}`)
-                dispatch(authActions.setAccessToken(accessToken));
-                setRefreshToken(refreshtoken, refreshexpiretime);
-            }
+        const encodedPassword = encodePassword((data.password));
+
+        await publicApi.login({
+            ...data,
+            // password: encodedPassword
+        }).then((res)=>{
+            rst = (res.status === HttpStatusCode.Ok)
+            // return;
+            // if(res.status === 200){
+            //     if(res.data){
+            //
+            //     }
+            //     const accessToken = res.headers.get('authorization')
+            //     const refreshtoken = res.headers.get('refreshtoken');
+            //     const refreshexpiretime = res.headers.get('refreshexpiretime');
+            //     // console.log(`r e t : ${refreshexpiretime / 1000 / 60}`)
+            //     dispatch(authActions.setAccessToken(accessToken));
+            //     setRefreshToken(refreshtoken, refreshexpiretime);
+            // }
+            const accessToken = res.headers.get('authorization')
+            const refreshtoken = res.headers.get('refreshtoken');
+            const refreshexpiretime = res.headers.get('refreshexpiretime');
+            dispatch(authActions.setAccessToken(accessToken));
+            setRefreshToken(refreshtoken, refreshexpiretime);
+        }).catch(e=>{
+            rst = false;
         })
         // console.log(`rst: ${rst}`)
         return rst;
+    }
+
+    const encodePassword = async (pwd: string)=>{
+        return pwd;
     }
 
     const logout = ()=>{

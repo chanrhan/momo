@@ -33,18 +33,22 @@ export const AxiosApi = ()=> {
         if(!error){
             return error.response;
         }
-        let msg = "문제가 발생했습니다. 다시 한번 시도해 주세요.";
-        if(error.code === 'ERR_NETWORK'){
-            msg =  '서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.'
-        }else if(error.response && error.response.data){
-            msg = error.response.data.message;
+        const status = error.response.status;
+        if(status >= 300){
+            let msg = "문제가 발생했습니다. 다시 한번 시도해 주세요.";
+            if(error.code === 'ERR_NETWORK'){
+                msg =  '서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.'
+            }else if(error.response && error.response.data){
+                msg = error.response.data.message;
+            }
+            modal.openModal(ModalType.SNACKBAR.Warn, {
+                msg: msg ?? "문제가 발생했습니다. 다시 한번 시도해 주세요."
+            })
         }
-        modal.openModal(ModalType.SNACKBAR.Warn, {
-            msg: msg ?? "문제가 발생했습니다. 다시 한번 시도해 주세요."
-        })
+
         // throw msg;
         return  {
-            status: error.response.status,
+            status: status,
             data: error.response.data
         }
     })

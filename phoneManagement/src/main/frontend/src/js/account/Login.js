@@ -9,14 +9,10 @@ import {UserFormBox} from "./module/UserFormBox";
 import {UserFormBtnBox} from "./module/UserFormBtnBox";
 import useValidateInputField from "../hook/useValidateInputField";
 import {cmc} from "../utils/cm";
-import useModal from "../hook/useModal";
-import {ModalType} from "../common/modal/ModalType";
 import {useAuthentication} from "../hook/useAuthentication";
 import {PasswordInput} from "../common/inputbox/PasswordInput";
 
 function Login(){
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const authentication = useAuthentication();
     const usernameBoxRef = useRef(null)
     const passwordBoxRef = useRef(null)
@@ -31,6 +27,7 @@ function Login(){
         },
         {
             key: 'password',
+            value: "",
             required: true,
             validateError: false
         }
@@ -57,13 +54,16 @@ function Login(){
             ...inputField.input,
             remember_me: rememberMe
         })){
-            console.log(`rememberMe: ${rememberMe}`)
+            // console.log(`rememberMe: ${rememberMe}`)
             if(rememberMe){
                 setAutoLogin()
             }else{
                 removeAutoLogin()
             }
-            navigate('/service');
+
+            // 전체 페이지 로드를 위해 navigate 사용 안함
+            // 개발자 도구(F12)의 네트워크 탭을 자동 초기화하기 위함
+            window.location.href = "/service";
         }else{
             inputField.handleError('username','아이디를 다시 입력해주세요')
             inputField.handleError('password','비밀번호를 다시 입력해주세요')
@@ -102,6 +102,7 @@ function Login(){
                     <label htmlFor="password" className={User.form_label}>비밀번호</label>
                     <div className={User.form_inp}>
                         <PasswordInput name="password" className={`inp ` + User.inp}
+                                       autoComplete='password'
                                        // value={inputField.get('password')}
                                         ref={passwordBoxRef}
                                        onKeyDown={(e: KeyboardEvent)=>{
@@ -110,7 +111,7 @@ function Login(){
                                            }
                                        }}
                                        onChange={inputField.handleInput}
-                                       placeholder='비밀번호를 입력해주세요' autoComplete='password'/>
+                                       placeholder='비밀번호를 입력해주세요' />
                         {/*<input type="password" name="password" className={`inp ` + User.inp} onChange={inputField.handleInput}/>*/}
                     </div>
                     <p className={User.error_text}>{inputField.error.password}</p>
