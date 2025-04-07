@@ -82,8 +82,7 @@ public class ShopController {
 	@GetMapping("/shop")
 	public ResponseEntity<List<Map<String,Object>>> getShop(@RequestParam(required = false)String keyword){
 		String username = SecurityContextUtil.getUsername();
-		ShopVO vo = ShopVO.builder().keyword(keyword).build();
-		vo.setUserId(username);
+		ShopVO vo = ShopVO.builder().keyword(keyword).userId(username).build();
 		return ResponseEntity.ok(shopService.getShop(vo));
 	}
 

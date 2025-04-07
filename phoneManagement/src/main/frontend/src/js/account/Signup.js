@@ -15,8 +15,6 @@ import {TelePhoneInput} from "../common/inputbox/TelePhoneInput";
 import {PasswordInput} from "../common/inputbox/PasswordInput";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
-import {AxiosApi} from "../api/ApiCommon";
-import {UserFormBox} from "./module/UserFormBox";
 import {UserFormList} from "./module/UserFormList";
 
 const MINUTES_IN_MS = 5 * 60 * 1000;

@@ -50,6 +50,7 @@ public class JwtService {
 			log.info("expired");
 			throw new UsernameNotFoundException("refresh token has been expired");
 		}
+
 		if(userRefreshToken.get("revoked").equals(true)){
 			log.info("revoked");
 			throw new UsernameNotFoundException("refresh token has been revoked");

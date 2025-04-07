@@ -142,7 +142,7 @@
     </delete>
 
     <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
-        SELECT sh.shop_id,
+        SELECT sh.shop_id, -- getShopTest
                sh.shop_nm,
                sh.shop_addr,
                sh.provider,
@@ -167,6 +167,20 @@
         <if test="keyword != null and !keyword.equals('')">
             shop_nm like '%${keyword}%' and
         </if>
+            (
+                select br_no
+                from tb_account
+                where id=(
+                            select staff_id
+                            from tb_staff sf
+                            where sf.role=1 and
+                            sf.shop_id=sh.shop_id
+                        )
+        )=(
+            select br_no
+            from tb_account
+            where id=#{userId}
+        ) and
         1=1
         limit 20
     </select>
