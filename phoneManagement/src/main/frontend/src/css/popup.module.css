@@ -687,6 +687,11 @@
 .popup .transfer .popup_check_list .li .transfer_box .inp.entered:disabled{
     color: #B3B3BEFF
 }
+.popup .transfer .popup_check_list .li .transfer_box .inp.error{
+    background-color: #ffdcdc;
+    border-color: red;
+    color: #ff2424;
+}
 .popup .transfer .popup_check_list .li .transfer_box .inp:not(:disabled),
 .popup .transfer .popup_check_list .li .transfer_box .inp.entered {
     cursor: pointer;

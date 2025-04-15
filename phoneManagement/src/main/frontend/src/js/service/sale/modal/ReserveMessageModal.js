@@ -12,10 +12,11 @@ import {writeFileAsync} from "xlsx";
 
 export function ReserveMessageModal(props){
     const {rsvMsgApi, gmdApi} = useApi()
-    const arrayInputField = useObjectArrayInputField();
+    const templateField = useObjectArrayInputField();
     // console.table(arrayInputField.input)
     const modal = useModal()
 
+    const [errors, setErrors] = useState([])
     const [reservedMessages, setReservedMessages] = useState([])
 
     useEffect(() => {
@@ -60,7 +61,8 @@ export function ReserveMessageModal(props){
 
         }
         setReservedMessages(orgData)
-        arrayInputField.setInput(newData)
+        templateField.setInput(newData)
+        setErrors(new Array(newData.length).fill(false))
     }
 
     const getReservedMessage = async ()=>{
@@ -83,21 +85,30 @@ export function ReserveMessageModal(props){
 
 
     const openReserveDateModal =(index)=>{
-        console.log(props.actv_dt)
+        // console.log(props.actv_dt)
         modal.openModal(ModalType.LAYER.Reserve_Date, {
-            subject: arrayInputField.get(index, 'subject'),
+            subject: templateField.get(index, 'subject'),
             actv_dt: props.actv_dt,
             onSubmit: ({dday, rsv_tp, rsv_dt})=>{
-                console.log(`dday: ${dday} rsv_tp: ${rsv_tp} rsv_dt: ${rsv_dt}`)
-                arrayInputField.put(index, 'dday', dday)
-                arrayInputField.put(index, 'rsv_tp', rsv_tp)
-                arrayInputField.put(index, 'rsv_dt', rsv_dt)
+                // console.log(`dday: ${dday} rsv_tp: ${rsv_tp} rsv_dt: ${rsv_dt}`)
+                templateField.put(index, 'dday', dday)
+                templateField.put(index, 'rsv_tp', rsv_tp)
+                templateField.put(index, 'rsv_dt', rsv_dt)
+                const copy = [...errors]
+                copy[index] = false;
+                setErrors(copy)
             }
         })
     }
 
     const submit = ()=>{
-        let body = arrayInputField.input.filter(v=>{
+        const errorList = [...errors]; // 에러
+        let isError = false;
+        let body = templateField.input.filter((v,i)=>{
+            if(v.checked && ObjectUtils.isEmpty(v.rsv_dt)){
+                errorList[i] = true;
+                isError = true;
+            }
             return v.checked && v.rsv_dt
         }).map(v=>{
             return {
@@ -107,47 +118,42 @@ export function ReserveMessageModal(props){
                 rsv_dt: v.rsv_dt
             }
         })
-        // console.table(body)
+
+
+
+        if(isError){
+            console.table(errorList)
+            setErrors(errorList)
+            return;
+        }
+
         if(props.sale_id){
             const msgTypeList = reservedMessages?.map(v=>v.msg_tp) ?? []
-            const deleteList = [];
-            body = arrayInputField.input.filter(v=>{
+
+            body = templateField.input.filter(((v,i)=>{
                 if(msgTypeList.includes(v.msg_tp) || !v.checked || !v.rsv_dt){
-                    if(!v.checked && msgTypeList.includes(v.msg_tp)){
-                        deleteList.push(v);
-                    }
                     return false;
                 }
-
                 return true;
-            })
+            }))
 
             // console.table(deleteList)
             // console.table(body)
             // return;
 
-            deleteMsgList(deleteList).then((cond)=>{
-                if(cond){
-                    if(!ObjectUtils.isEmptyArray(body)){
-                        rsvMsgApi.insertReserveMsg({
-                            sale_id: props.sale_id,
-                            rsv_msg_list: body
-                        }).then(({status,data})=>{
-                            if(status === 200 && data){
-                                modal.openModal(ModalType.SNACKBAR.Info, {
-                                    msg: "수정되었습니다."
-                                })
-                            }
-                        })
-                    }else{
+            if(!ObjectUtils.isEmptyArray(body)){
+                rsvMsgApi.insertReserveMsg({
+                    sale_id: props.sale_id,
+                    rsv_msg_list: body
+                }).then(({status,data})=>{
+                    if(status === 200 && data){
                         modal.openModal(ModalType.SNACKBAR.Info, {
                             msg: "수정되었습니다."
                         })
                     }
-                }
-                close();
-            })
 
+                })
+            }
 
         }else{
             if(props.onSubmit){
@@ -155,24 +161,24 @@ export function ReserveMessageModal(props){
             }
             close();
         }
-
+        close();
     }
 
-    const deleteMsgList = async (list)=>{
-        let result = true;
-        if(!ObjectUtils.isEmptyArray(list)){
-            await rsvMsgApi.deleteReserveMsg({
-                sale_id: props.sale_id,
-                rsv_msg_list: list
-            }).then(({status,data})=>{
-                if(status !== 200 || !data){
-
-                    result = false;
-                }
-            })
-        }
-        return result;
-    }
+    // const deleteMsgList = async (list)=>{
+    //     let result = true;
+    //     if(!ObjectUtils.isEmptyArray(list)){
+    //         await rsvMsgApi.deleteReserveMsg({
+    //             sale_id: props.sale_id,
+    //             rsv_msg_list: list
+    //         }).then(({status,data})=>{
+    //             if(status !== 200 || !data){
+    //
+    //                 result = false;
+    //             }
+    //         })
+    //     }
+    //     return result;
+    // }
 
 
     return (
@@ -192,11 +198,11 @@ export function ReserveMessageModal(props){
 
                         <ul className={Popup.popup_check_list}>
                             {
-                                arrayInputField.length() > 0 && arrayInputField.input.map((v,i)=>{
+                                templateField.length() > 0 && templateField.input.map((v,i)=>{
                                     if(ObjectUtils.isEmpty(v)){
                                         return null
                                     }
-                                    return <ReserveItem index={i} inputField={arrayInputField} onDateClick={()=>{
+                                    return <ReserveItem index={i} error={errors[i]} inputField={templateField} onDateClick={()=>{
                                         openReserveDateModal(i)
                                     }}/>
                                 })
@@ -219,8 +225,10 @@ export function ReserveMessageModal(props){
     )
 }
 
-function ReserveItem({index, inputField, onDateClick}){
+function ReserveItem({index, error, inputField, onDateClick}){
     const modal = useModal();
+
+    const msgSendState = inputField.get(index, 'msg_st');
 
     const openMessagePreviewModal = ()=>{
         modal.openModal(ModalType.LAYER.Message_Preview, {
@@ -229,6 +237,9 @@ function ReserveItem({index, inputField, onDateClick}){
     }
 
     const toggleCheck = ()=>{
+        if(msgSendState === 1){
+            return;
+        }
         inputField.put(index, 'checked', !inputField.input[index].checked ?? false)
     }
 
@@ -242,7 +253,6 @@ function ReserveItem({index, inputField, onDateClick}){
     }
 
     const getMessageStateBox = ()=>{
-        const msgSendState = inputField.get(index, 'msg_st');
         switch (msgSendState){
             case 1:
                 return (
@@ -271,7 +281,7 @@ function ReserveItem({index, inputField, onDateClick}){
                     미리보기
                 </button>
                 <input type="text"
-                       className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`)} transfer_inp`}
+                       className={`inp ${cm(Popup.inp, `${!ObjectUtils.isEmpty(value) && Popup.entered} ${isDisabled()}`, `${error && Popup.error}`)} transfer_inp`}
                        value={value} placeholder='날짜 설정' readOnly
                        disabled={!isChecked}
                        onClick={onDateClick}/>

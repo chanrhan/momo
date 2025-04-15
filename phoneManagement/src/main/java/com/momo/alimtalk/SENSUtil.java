@@ -1,10 +1,9 @@
 package com.momo.alimtalk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import com.momo.common.vo.ReserveMessageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,8 +29,13 @@ public class SENSUtil {
     private static final String SECRET_KEY = "ZcujEnHC6lzLPmPaKPeKJAY5ikkZyM1g8UxrCkla";
     private static final String SERVICE_KEY = "ncp:kkobizmsg:kr:3344532:linetaksong";
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final String PlusFriendId = "@탁송라인";
 
+    private static final String[] TemplateCodes = new String[]{
+            "T010"
+    };
+
+    private static final RestTemplate restTemplate = new RestTemplate();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     // 서비스 URL 생성
@@ -39,17 +43,29 @@ public class SENSUtil {
         return "https://sens.apigw.ntruss.com/alimtalk/v2/services/" + SERVICE_KEY + "/messages";
     }
 
-    public static ResponseEntity<ImageAlimTalk> sendWithRestTemplate(Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
+    private static String getAlimTalkResultApiUrl(){
+        return "https://sens.apigw.ntruss.com/alimtalk/v2/services/"+ SERVICE_KEY + "/messages/{messageId}" + SERVICE_KEY + "/messages";
+    }
+
+    public static ResponseEntity<SensResponse> sendWithRestTemplate(Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException{
+        String custTel = map.get("cust_tel");
+        String custNm = map.get("cust_nm");
+
+        ReserveMessageVO vo = ReserveMessageVO.builder().custTel(custTel).custNm(custNm).build();
+        return sendWithRestTemplate(vo);
+    }
+
+    public static ResponseEntity<SensResponse> sendWithRestTemplate(ReserveMessageVO vo) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         ImageAlimTalk alimTalk = ImageAlimTalk.builder()
-                .plusFriendId("@탁송라인")
-                .templateCode("T010")
+                .plusFriendId(PlusFriendId)
+                .templateCode("T001")
                 .messages(Collections.singletonList(AlimTalkMessage.builder()
-                        .to("010-3844-3140")
-                        .content(make_T010(map))
+                        .to(vo.getCustTel())
+                        .content(makeTemplate_MomoTest(vo))
                         .buttons(Collections.singletonList(AlimTalkButton.builder()
                                 .type("WL")
-                                .name("차량 상태 사진 등록")
-                                .linkMobile("http://1.243.204.46:10010/login2")
+                                .name("모모 테스트")
+                                .linkMobile("https://momomanager.com:11040/login2")
                                 .linkPc("http://1.243.204.46:10010/login2")
                                 .build()))
                         .build()))
@@ -63,91 +79,93 @@ public class SENSUtil {
 
         HttpEntity<ImageAlimTalk> entity = new HttpEntity<>(alimTalk, headers);
 
-        return restTemplate.exchange(getAlimTalkApiUrl(), HttpMethod.POST, entity, ImageAlimTalk.class);
+        return restTemplate.exchange(getAlimTalkApiUrl(), HttpMethod.POST, entity, SensResponse.class);
     }
 
-    /**
-     * 카카오톡 알림톡 전송
-     * @param map 알림톡 본문에 들어갈 아래 변수들을 매핑. <br>
-     *            { <br>
-     *            to: <i>수신인 전화번호</i> <br>
-     *            corp_name: <i>회사명</i> <br>
-     *            name: <i>배송기사 이름</i> <br>
-     *            car_type: <i>출발지 차종</i> <br>
-     *            car_no: <i>출발지 차량번호</i> <br>
-     *            d_tel: <i>출발지 연락처</i> <br>
-     *            a_tel: <i>도착지 연락처</i> <br>
-     *            d_addr: <i>출발지 주소</i> <br>
-     *            a_addr: <i>도착지 주소</i> <br>
-     *            driver_req: <i>기사 요청사항</i> <br>
-     *            }
-     *
-     * @return
-     */
-    public static Map<String, Object> send(Map<String,String> map){
-        try{
-            URL url = new URL(getAlimTalkApiUrl());  // 서비스 URL
-//            log.info("timestamp: {}",Long.toString(new Date().getTime()));
-//            log.info("url: {}", getAlimTalkApiUrl());
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // url 커넥션 생성
-
-            conn.setDoOutput(true); // 해당 세팅을 해줘야 응답이 옴 (아마...?);
-
-            // 요청 헤더 설정
-            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            conn.setRequestProperty("x-ncp-apigw-timestamp", Long.toString(new Date().getTime()));
-            conn.setRequestProperty("x-ncp-iam-access-key", ACCESS_KEY);
-            conn.setRequestProperty("x-ncp-apigw-signature-v2", makeSignature());
-
-            // 요청 Body 생성
-            // 빌더 패턴을 활용하여 Java에서도 편하게 json 형태의 객체를 만들 수 있도록 하였다
-            ImageAlimTalk alimTalk = ImageAlimTalk.builder()
-                    .plusFriendId("@탁송라인")
-                    .templateCode("T010")
-                    .messages(Collections.singletonList(AlimTalkMessage.builder()
-                                    .to(map.get("to"))
-                                    .content(make_T010(map))
-                                    .buttons(Collections.singletonList(AlimTalkButton.builder()
-                                            .type("WL")
-                                            .name("차량 상태 사진 등록")
-                                            .linkMobile("http://1.243.204.46:10010/login2")
-                                            .linkPc("http://1.243.204.46:10010/login2")
-                                            .build()))
-                                    .build()))
-                    .build();
-
-            String json = objectMapper.writeValueAsString(alimTalk); // 객체를 json으로 변환
-//            log.info("json: {}",json);
-
-            // 생성한 Body를 요청의 output stream에 추가
-            try(DataOutputStream dos = new DataOutputStream(conn.getOutputStream())){
-                dos.write(json.getBytes("UTF-8"));
-            }
-
-            // 응답 받아오기
-            BufferedReader br;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            } else {
-                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            br.close();
-            conn.disconnect();
 
 
-            Map<String,Object> result = objectMapper.readValue(sb.toString(), Map.class);
-//            log.info("result: {}",result);
-            return result;
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    /**
+//     * 카카오톡 알림톡 전송
+//     * @param map 알림톡 본문에 들어갈 아래 변수들을 매핑. <br>
+//     *            { <br>
+//     *            to: <i>수신인 전화번호</i> <br>
+//     *            corp_name: <i>회사명</i> <br>
+//     *            name: <i>배송기사 이름</i> <br>
+//     *            car_type: <i>출발지 차종</i> <br>
+//     *            car_no: <i>출발지 차량번호</i> <br>
+//     *            d_tel: <i>출발지 연락처</i> <br>
+//     *            a_tel: <i>도착지 연락처</i> <br>
+//     *            d_addr: <i>출발지 주소</i> <br>
+//     *            a_addr: <i>도착지 주소</i> <br>
+//     *            driver_req: <i>기사 요청사항</i> <br>
+//     *            }
+//     *
+//     * @return
+//     */
+//    public static Map<String, Object> send(Map<String,String> map){
+//        try{
+//            URL url = new URL(getAlimTalkApiUrl());  // 서비스 URL
+////            log.info("timestamp: {}",Long.toString(new Date().getTime()));
+////            log.info("url: {}", getAlimTalkApiUrl());
+//
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // url 커넥션 생성
+//
+//            conn.setDoOutput(true); // 해당 세팅을 해줘야 응답이 옴 (아마...?);
+//
+//            // 요청 헤더 설정
+//            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+//            conn.setRequestProperty("x-ncp-apigw-timestamp", Long.toString(new Date().getTime()));
+//            conn.setRequestProperty("x-ncp-iam-access-key", ACCESS_KEY);
+//            conn.setRequestProperty("x-ncp-apigw-signature-v2", makeSignature());
+//
+//            // 요청 Body 생성
+//            // 빌더 패턴을 활용하여 Java에서도 편하게 json 형태의 객체를 만들 수 있도록 하였다
+//            ImageAlimTalk alimTalk = ImageAlimTalk.builder()
+//                    .plusFriendId("@탁송라인")
+//                    .templateCode("T010")
+//                    .messages(Collections.singletonList(AlimTalkMessage.builder()
+//                                    .to(map.get("to"))
+//                                    .content(make_T010(vo))
+//                                    .buttons(Collections.singletonList(AlimTalkButton.builder()
+//                                            .type("WL")
+//                                            .name("차량 상태 사진 등록")
+//                                            .linkMobile("http://1.243.204.46:10010/login2")
+//                                            .linkPc("http://1.243.204.46:10010/login2")
+//                                            .build()))
+//                                    .build()))
+//                    .build();
+//
+//            String json = objectMapper.writeValueAsString(alimTalk); // 객체를 json으로 변환
+////            log.info("json: {}",json);
+//
+//            // 생성한 Body를 요청의 output stream에 추가
+//            try(DataOutputStream dos = new DataOutputStream(conn.getOutputStream())){
+//                dos.write(json.getBytes("UTF-8"));
+//            }
+//
+//            // 응답 받아오기
+//            BufferedReader br;
+//            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+//                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//            } else {
+//                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+//            }
+//            StringBuilder sb = new StringBuilder();
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                sb.append(line);
+//            }
+//            br.close();
+//            conn.disconnect();
+//
+//
+//            Map<String,Object> result = objectMapper.readValue(sb.toString(), Map.class);
+////            log.info("result: {}",result);
+//            return result;
+//        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     // Signatrue key 생성
     // https://api.ncloud-docs.com/docs/common-ncpapi#%EC%9D%B8%EC%A6%9D%ED%82%A4%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0
@@ -177,25 +195,41 @@ public class SENSUtil {
         return encodeBase64String;
     }
 
-    // T010 템플릿을 동적으로 만들어주는 함수
-    private static String make_T010(Map<String,String> map){
+    private static String makeTemplate_MomoTest(ReserveMessageVO vo){
+        String msg = vo.getShopNm() + "\n (신규가입시 1개월 무료서비스이용가능)";
 
-        return "["+map.get("corp_name")+" 차량 배정 안내]\n" +
+        return "[ WOWBIZZ ]\n" +
                 "\n" +
-                "    "+map.get("name")+" 기사님 안녕하세요\n" +
+                "* 아래 서비스 요청이 접수되었습니다.\n" +
+                "\n" +
+                "* 신청내용 : " + msg + "\n" +
+                "\n" +
+                "◼\uFE0F 이름: "+vo.getCustNm()+"\n" +
+                "◼\uFE0F 핸드폰번호: "+vo.getCustTel()+"\n" +
+                "◼\uFE0F 회사명: "+vo.getShopNm()+"\n" +
+                "◼\uFE0F 이메일: "+vo.getRsvDt()
+                ;
+    }
+
+    // T010 템플릿을 동적으로 만들어주는 함수
+    private static String make_T010(ReserveMessageVO vo){
+
+        return "["+vo.getCustNm()+" 차량 배정 안내]\n" +
+                "\n" +
+                "    "+vo.getCustNm()+" 기사님 안녕하세요\n" +
                 "    탁송이 배정되었습니다. 출발 장소로 이동 후 차량 사진의 등록을 부탁드립니다.\n" +
                 "\n" +
-                "    ◼\uFE0F 출발지 차종: "+map.get("car_type")+"\n" +
-                "    ◼\uFE0F 출발지 차량번호: "+map.get("car_no")+"\n" +
-                "    ◼\uFE0F 출발지 연락처: "+map.get("d_tel")+"\n" +
+                "    ◼\uFE0F 출발지 차종: "+vo.getCustNm()+"\n" +
+                "    ◼\uFE0F 출발지 차량번호: "+vo.getCustNm()+"\n" +
+                "    ◼\uFE0F 출발지 연락처: "+vo.getCustTel()+"\n" +
                 "\n" +
-                "    ◼\uFE0F 도착지 연락처: "+map.get("a_tel")+"\n" +
+                "    ◼\uFE0F 도착지 연락처: "+vo.getCustNm()+"\n" +
                 "\n" +
-                "    ▶ 출발지 주소 : "+map.get("d_addr")+"\n" +
-                "    ▶\uFE0F 도착지 주소:  "+map.get("a_addr")+"\n" +
+                "    ▶ 출발지 주소 : "+vo.getSaleId()+"\n" +
+                "    ▶\uFE0F 도착지 주소:  "+vo.getShopId()+"\n" +
                 "    \n" +
                 "    ▶\uFE0F기사 요청사항:\n" +
-                "     "+map.get("driver_req")+"\n" +
+                "     "+vo.getContent()+"\n" +
                 "\n" +
                 "    ※ 차량 사진을 등록하지 않았을 시 불이익에 대해서 책임지지 않습니다.";
 //

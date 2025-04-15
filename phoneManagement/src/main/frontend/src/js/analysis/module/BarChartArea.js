@@ -5,7 +5,8 @@ import {BarChartInstance} from "./BarChartInstance";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
-import {NumberUtils} from "../../utils/NumberUtils";
+import {ObjectUtils} from "../../utils/objectUtil";
+import DataNotFound from "../../../images/empty_folder_shine.png";
 
 export function BarChartArea({fromDate, toDate, userId}){
     const {saleApi} = useApi();
@@ -38,10 +39,22 @@ export function BarChartArea({fromDate, toDate, userId}){
 
         await saleApi.getCtCountBySelectType(tab, body).then(({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
+                console.table(data)
                 setData(data)
             }
         })
+    }
+
+    const isEmptyData = ()=>{
+        if(!data){
+            return true;
+        }
+        for(const v of data){
+            if(v !== 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     return (
@@ -55,15 +68,22 @@ export function BarChartArea({fromDate, toDate, userId}){
             </div>
 
             <div className={Graph.graph_box}>
+                {
+                    isEmptyData() && <>
+                        <img className={Graph.img} src={DataNotFound} alt=""/>
+                    </>
+                }
                 <BarChartInstance labels={labels} color={`#4781ff`}
                                   hoverColor={`#88adff`} data={data}
                                   yAxisCallback={v=>{
-                                        if (!Number.isInteger(v)) {
-                                            return;
-                                        }
+                                      if (!Number.isInteger(v)) {
+                                          return;
+                                      }
                                       return `${Math.round(v)}개`
 
-                }} />
+                                  }} />
+
+
             </div>
         </div>
     )

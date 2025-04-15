@@ -4,6 +4,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
 
+@Deprecated
 public class QuartzJobListener implements JobListener {
 	@Override
 	public String getName() {

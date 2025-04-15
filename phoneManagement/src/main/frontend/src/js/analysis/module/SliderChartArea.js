@@ -4,7 +4,7 @@ import {TabList} from "../../common/module/TabList";
 import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
-import DataNotFound from "../../../images/no_data_icon.png"
+import DataNotFound from "../../../images/empty_folder_shine.png"
 import {ObjectUtils} from "../../utils/objectUtil";
 
 export function SliderChartArea({fromDate, toDate, userId}){

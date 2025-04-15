@@ -12,6 +12,9 @@ function SaleApi(accessToken){
         getReserveMsgDetail: async (date)=>{
             return axiosApiWithAccessToken.get(`/api/v1/msg/detail?date=${date}`, accessToken);
         },
+        getReserveMsgAll: async (body)=>{
+            return axiosApiWithAccessToken.post(`/api/v1/msg/all`, body,  accessToken);
+        },
         getReserveMsgBySale: async (saleId)=>{
             return axiosApiWithAccessToken.get(`/api/v1/msg/sale?saleId=${saleId}`, accessToken);
         },

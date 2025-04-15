@@ -19,6 +19,8 @@ public interface SaleMapper{
 
 	public Map<String,Object> getSaleOne(int currShopId, int saleId);
 
+	public Map<String,String> getCustomerInfoBySaleId(int currShopId, int saleId);
+
 	public List<String> getFilePath(SaleVO vo);
 	public List<FileVO> getFiles(SaleVO vo);
 

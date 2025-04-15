@@ -139,6 +139,15 @@
 <!--        </if>-->
     </select>
 
+    <select id="getCustomerInfoBySaleId">
+        SELECT cust_nm,
+               cust_tel,
+               cust_cd,
+               cust_gd
+        FROM tb_sale
+        where shop_id=#{currShopId} and
+              sale_id=#{saleId}
+    </select>
 
 <!--    get sale-->
     <select id="getSaleOne" resultType="java.util.Map">

@@ -1,6 +1,6 @@
 package com.momo.api;
 
-import com.momo.common.util.SecurityContextUtil;
+import com.momo.common.vo.ReserveMessageVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.service.CommonService;
 import com.momo.service.ReserveMsgService;
@@ -39,15 +39,14 @@ public class ReserveMsgController {
     public ResponseEntity<Boolean> insertReserveMsgBySale(HttpSession session,
                                                                   @RequestBody SaleVO vo){
         int currShopId = commonService.getCurrentShopId(session);
-        reserveMsgService.insertMsgList(currShopId, vo.getSaleId(), vo.getRsvMsgList());
+        vo.setCurrShopId(currShopId);
+        reserveMsgService.insertMsgList(vo);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/del")
-    public ResponseEntity<Boolean> deleteReserveMsgBySale(HttpSession session,
-                                                          @RequestBody SaleVO vo){
-        int currShopId = commonService.getCurrentShopId(session);
-        return ResponseEntity.ok(reserveMsgService.deleteMsgList(currShopId, vo.getSaleId(), vo.getRsvMsgList()));
+    public ResponseEntity<Boolean> deleteReserveMsg(@RequestBody List<ReserveMessageVO> list){
+        return ResponseEntity.ok(reserveMsgService.deleteMsgList(list));
     }
 
     @GetMapping("/detail")
@@ -55,5 +54,10 @@ public class ReserveMsgController {
                                                                         @RequestParam String date){
         int currShopId = commonService.getCurrentShopId(session);
         return ResponseEntity.ok(reserveMsgService.getReserveMsgDetail(currShopId, date));
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<Map<String,Object>> getReserveMsgAll(@RequestBody(required = false) ReserveMessageVO vo){
+        return ResponseEntity.ok(reserveMsgService.getReserveMsgAll(vo));
     }
 }

@@ -1,9 +1,7 @@
 package com.momo.mapper;
 
-import com.momo.common.vo.MsgCommonVO;
 import com.momo.common.vo.ReserveMessageVO;
 import com.momo.common.vo.SaleVO;
-import com.momo.common.vo.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,11 +11,14 @@ import java.util.Map;
 public interface ReserveMsgMapper {
 	// Message Reserve
 	public int insertMsg(ReserveMessageVO vo);
-	public int deleteMsg(ReserveMessageVO vo);
+	public int deleteMessageList(List<ReserveMessageVO> list);
 
 	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo);
 
 	public List<String> getReserveMsgForCalendar(int currShopId, String date);
 
 	public List<Map<String,Object>> getReserveMsgDetail(int currShopId, String date);
+	public Map<String,Object> getReserveMsgAll(ReserveMessageVO vo);
+	public List<Map<String,String>> getTodayReservedMsg();
+	public int updateMessageSendState(ReserveMessageVO vo);
 }

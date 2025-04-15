@@ -224,7 +224,7 @@ public class SaleController {
 		vo.setFiles(insertList);
 
 		int maxSaleId = saleService.insertSale(vo);
-		reserveMsgService.insertMsgList(currShopId, maxSaleId, vo.getRsvMsgList());
+		reserveMsgService.insertMsgList(vo);
 		return ResponseEntity.ok(true);
 	}
 

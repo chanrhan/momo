@@ -69,7 +69,7 @@
     height: 100%;
 }
 .graph .graph4 .graph_bar .bar_list .img{
-    position: relative;
+    position: absolute;
 }
 .graph .graph4 .graph_bar .bar_item{margin-top:24px;}
 .graph .graph4 .graph_bar .bar_item .bar_text{color:#141218; font-size:14px; line-height:16px;}

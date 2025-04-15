@@ -13,12 +13,14 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ReserveMessageVO extends BaseVO {
-    private String userId;
+//    private String userId;
+    private Integer shopId;
     private Integer saleId;
     private Integer msgId;
     private String rsvDt;
+    private Integer msgSt;
 
-    private Integer currShopId;
+//    private Integer currShopId;
 
     private String content;
 
@@ -27,4 +29,11 @@ public class ReserveMessageVO extends BaseVO {
     private Integer msgTp;
     private Integer rsvTp;
     private String regiDt;
+
+    private String custTel;
+    private String custNm;
+    private String shopNm;
+
+    private String reqId;
+    private String reqDt;
 }

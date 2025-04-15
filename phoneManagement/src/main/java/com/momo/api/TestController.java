@@ -104,16 +104,16 @@ public class TestController {
 
 
 
-	@PostMapping("/alimtalk")
-	public ResponseEntity<ImageAlimTalk> sendAlimTalk(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
-
-		ResponseEntity<ImageAlimTalk> result = SENSUtil.sendWithRestTemplate(map);
-		log.info("status: {}",result.getStatusCode());
-		log.info("headers: {}",result.getHeaders());
-		log.info("b0dy: {}",result.getBody());
-		return result;
-//		return ResponseEntity.ok(SENSUtil.send(map));
-	}
+//	@PostMapping("/alimtalk")
+//	public ResponseEntity<ImageAlimTalk> sendAlimTalk(@RequestBody Map<String,String> map) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
+//
+//		ResponseEntity<ImageAlimTalk> result = SENSUtil.sendWithRestTemplate(map);
+//		log.info("status: {}",result.getStatusCode());
+//		log.info("headers: {}",result.getHeaders());
+//		log.info("b0dy: {}",result.getBody());
+//		return result;
+////		return ResponseEntity.ok(SENSUtil.send(map));
+//	}
 
 	@PostMapping("/vo")
 	public ResponseEntity<?> voTest(@RequestBody TestChildVO vo){
