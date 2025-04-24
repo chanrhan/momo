@@ -114,6 +114,8 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
         })
     }
 
+    console.log(item.pm_st)
+
     return (
         <li className={Board.promise_item}>
             <div className={Board.promise_box} onClick={onClick}>
@@ -181,25 +183,40 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                             }
                         </ul>
                     </div>
+
                     <div className={Board.option_add}>
-                        <EditableAddButton inpClassName={Board.add_inp}
-                                           btnClassName={Board.add_btn}
-                                           value='약속 추가하기' onUpdate={v => {
-                            add(v);
-                        }}/>
+                        {
+                            item.pm_st === 0 && (
+                                <EditableAddButton inpClassName={Board.add_inp}
+                                                   btnClassName={Board.add_btn}
+                                                   value='약속 추가하기' onUpdate={v => {
+                                    add(v);
+                                }}/>
+                            )
+                        }
                     </div>
                 </div>
 
             </div>
-            <button type="button" onClick={() => {
+            {
+                item.pm_st === 0 ? (
+                    <button type="button" onClick={() => {
                         onUpdate({
                             sale_id: item.sale_id,
                             pm_st: 1
                         })
                     }}
-                    className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>
-                완료
-            </button>
+                            className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise)}`}>
+                        완료하기
+                    </button>
+                ) : <button type="button" onClick={() => {
+                    // console.log(item.pm_st)
+                }}
+                            className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise, Board.grey)}`}>
+                    이미 완료된 약속입니다
+                </button>
+            }
+
         </li>
     )
 }

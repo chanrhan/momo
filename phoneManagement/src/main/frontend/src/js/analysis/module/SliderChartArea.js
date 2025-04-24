@@ -42,22 +42,28 @@ export function SliderChartArea({fromDate, toDate, userId}){
             </div>
 
             <div className={Graph.graph_bar}>
-                <ul className={Graph.bar_list}>
                     {
-                        items && items.map((v,i)=> {
-                            return <li key={i} className={Graph.bar_item} >
-                                <div className={Graph.bar_text}>{v.name}<span className={Graph.bar_per}>{v.per}%</span></div>
-                                <div className={Graph.bar}><span className={Graph.span} style={{width: `${v.per}%`}}></span>
-                                </div>
-                            </li>
-                        })
+                        !ObjectUtils.isEmpty(items) ?
+                            (
+                                <ul className={Graph.bar_list}>
+                                    {
+                                        items.map((v, i) => {
+                                            return <li key={i} className={Graph.bar_item}>
+                                                <div className={Graph.bar_text}>{v.name}<span
+                                                    className={Graph.bar_per}>{v.per}%</span>
+                                                </div>
+                                                <div className={Graph.bar}><span className={Graph.span}
+                                                                                 style={{width: `${v.per}%`}}></span>
+                                                </div>
+                                            </li>
+                                        })
+                                    }
+                                </ul>
+                            )
+                            : <div className={Graph.img_not_found}>
+                            </div>
                     }
-                    {
-                        ObjectUtils.isEmpty(items) && <>
-                            <img className={Graph.img} src={DataNotFound} alt=""/>
-                        </>
-                    }
-                </ul>
+
             </div>
         </div>
     )

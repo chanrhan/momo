@@ -59,6 +59,8 @@ import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
 import {StringTest} from "./js/test/StringTest";
 import {AdminMessage} from "./js/admin/AdminMessage";
 import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
+import {ObjectUtils} from "./js/utils/objectUtil";
+import {AdminVisitMap} from "./js/admin/AdminVisitMap";
 
 function App() {
     const userInfo = useUserInfo();
@@ -134,7 +136,7 @@ function App() {
                   <Route element={
                       <Authorization redirectTo='/account/login'>
                           <Allowance condition={()=>{
-                              return !userInfo || userInfo.curr_shop_id === -1
+                              return !userInfo || userInfo.curr_shop_id === -1 || ObjectUtils.isEmpty(userInfo.curr_shop_id)
                           }} redirectTo='/service'>
                               <AdminLayout/>
                           </Allowance>
@@ -146,6 +148,7 @@ function App() {
                           <Route path='shop' element={<MasterShop/>}/>
                           <Route path='msg' element={<AdminMessage/>}/>
                           <Route path='user_stat' element={<AdminUserStatistics/>}/>
+                          <Route path='visit_map' element={<AdminVisitMap/>}/>
                       </Route>
                   </Route>
 

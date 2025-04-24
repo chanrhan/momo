@@ -61,7 +61,7 @@ export function ConfirmModal(props){
     }
 
     return (
-        <MenuModal className={cm(Modal.menu_confirm, fadeout)} width={280} {...props}>
+        <div className={cm(Modal.menu_confirm, fadeout)} {...props}>
             <div className={Modal.confirm}>
                 <div className={Modal.progress_cont}>
                     {
@@ -88,6 +88,6 @@ export function ConfirmModal(props){
                     <button type='button' className={cm(Modal.btn_grey, Modal.btn)} onClick={close}>취소</button>
                 </div>
             </div>
-        </MenuModal>
+        </div>
     )
 }

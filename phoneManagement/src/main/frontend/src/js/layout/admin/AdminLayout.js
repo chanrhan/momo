@@ -1,7 +1,7 @@
 import {MainHeader} from "../MainHeader";
 import {Sidebar} from "../Sidebar";
 import Layout from "../../../css/layout.module.css";
-import {Link, Outlet, useNavigate} from "react-router-dom";
+import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import logo from "../../../images/logo.png";
 import {HeaderSearchLayer} from "../module/HeaderSearchLayer";

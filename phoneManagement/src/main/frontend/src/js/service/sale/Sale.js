@@ -65,14 +65,14 @@ export function Sale(){
 
     const tableRef = useRef()
 
-    const [prevScrollY, setPrevScrollY] = useState(null)
-
-    useEffect(() => {
-       setPrevScrollY( ScrollUtils.preventScroll(document.body))
-        return ()=>{
-            ScrollUtils.allowScroll(document.body, prevScrollY)
-        }
-    }, []);
+    // const [prevScrollY, setPrevScrollY] = useState(null)
+    //
+    // useEffect(() => {
+    //    setPrevScrollY( ScrollUtils.preventScroll(document.body))
+    //     return ()=>{
+    //         ScrollUtils.allowScroll(document.body, prevScrollY)
+    //     }
+    // }, []);
 
     const getSale = async (limit)=>{
         // console.table(inputField.input)
@@ -348,7 +348,7 @@ export function Sale(){
                                         })
                                     }
                                     <Btd className="ta_c" stopPropagation>
-                                        <button type="button" className={`btn_grey btn_small btn_line ${cmc(Board.btn)}`}
+                                        <button type="button" className={Board.message_icon}
                                                 onClick={()=>{
                                                     openReservationModal(v1.sale_id, v1.actv_dt)
                                                 }}>예약 확인</button>

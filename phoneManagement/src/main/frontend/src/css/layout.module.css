@@ -58,7 +58,7 @@
 /* main */
 
 /* lnb */
-.lnb{position:fixed; top:64px; left:0; bottom:0; z-index:10; padding:29px 8px 0 8px; border-right:1px solid #dde1e8; background-color:#fff; text-align:center;}
+.lnb{position:fixed; top:64px; left:0; bottom:0; z-index:11; padding:29px 8px 0 8px; border-right:1px solid #dde1e8; background-color:#fff; text-align:center;}
 .menu .menu_list + .menu_list{position:absolute; left:0; right:0; bottom:21px;}
 .menu .menu_item + .menu_item{margin-top:16px;}
 .menu .menu_item .a{display:block; overflow:hidden; position:relative; width:63px; height:57px; margin:0 auto; padding-top:36px; color:#91939f; font-size:15px; line-height:17px;}
@@ -67,11 +67,23 @@
 .menu .menu_list + .menu_list .menu_item .a{height:48px; padding-top:0; font-size:0;}
 .menu .menu_list + .menu_list .menu_item .a:before{top:0;}
 .menu .menu_item .a:before{display:block; position:absolute; top:-8px; left:0; right:0; width:48px; height:48px; margin:0 auto; background-repeat:no-repeat; background-size:100%;}
+.menu .menu_item.menu_home .a:before{
+    width: 22px;
+    height: 22px;
+    top: 6px;
+    background:url(../images/menu_home_icon.png) no-repeat center / 100%;
+}
+.menu .menu_item.menu_home.active .a:before{background-image:url(../images/menu_home_on_icon.png);}
 .menu .menu_item.menu_customer .a:before{background-image:url(../images/menu_customer_icon.png);}
 .menu .menu_item.menu_customer.active .a:before{background-image:url(../images/menu_customer_icon_on.png);}
 .menu .menu_item.menu_work .a:before{background-image:url(../images/menu_work_icon.png);}
 .menu .menu_item.menu_work.active .a:before{background-image:url(../images/menu_work_icon_on.png);}
-.menu .menu_item.menu_communication .a:before{background-image:url(../images/menu_communication_icon.png);}
+.menu .menu_item.menu_communication .a:before{
+    width: 22px;
+    height: 22px;
+    top: 6px;
+    background:url(../images/menu_communication_icon.png) no-repeat center / 100%;
+}
 .menu .menu_item.menu_communication.active .a:before{background-image:url(../images/menu_communication_icon_on.png);}
 .menu .menu_item.menu_data .a:before{background-image:url(../images/menu_data_icon.png);}
 .menu .menu_item.menu_data.active .a:before{background-image:url(../images/menu_data_icon_on.png);}
@@ -83,7 +95,8 @@
 .menu .menu_item.menu_exit.active .a:before{background-image:url(../images/menu_exit_icon_on.png);}
 
 /* contents */
-.contents{position:relative; min-height:calc(100vh - 64px); margin:64px 0 0 79px;}
+.contents{position:relative; min-height:calc(100vh - 64px);
+    margin:64px 0 0 79px;}
 .contents .sub{max-width:1328px; margin:0 auto; padding:40px 40px 75px 40px;}
 .contents .sub .sub_head{position:relative;}
 /*.contents .sub .sub_head{position:relative;}*/
@@ -112,6 +125,63 @@
     /*!*top: 20px;*!*/
     /*!*margin-top: 5px;*!*/
     /*width: 150px;*/
+}
+
+/*Footer*/
+footer{
+    /*margin-top: 200px;*/
+    position: relative;
+    width: 100%;
+    height: 240px;
+    padding: 100px 200px 0 200px;
+    /*background-color: #ff9d9d;*/
+    z-index: 10;
+}
+
+footer .corp_info_box{
+    border-top: 0.06rem solid #d9d9d9;
+    padding-top: 18px;
+}
+
+footer .corp_info_box .corp_info_item{
+    display: block;
+    color: #595959;
+    font-weight: 200;
+}
+
+footer .corp_info_box .corp_info_item.a1{
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 350;
+}
+footer .corp_info_box .corp_info_item.a1:before{
+    display: inline-block;
+    position: relative;
+    top: 0.1em;
+    width: 14px;
+    height: 14px;
+    background: url(../images/copyright_icon.png) no-repeat center / 14px;
+    line-height: 14px;
+    margin-right: 5px;
+}
+
+footer .corp_info_box .corp_info_item.a2{
+    margin-top: 18px;
+    color: #989898;
+    font-size: 14px;
+    line-height: 14px;
+    letter-spacing: 0.05rem;
+}
+footer .corp_info_box .corp_info_item.a2 span{
+    margin-left: 3px;
+}
+
+footer .corp_info_box .corp_info_item.a3{
+    letter-spacing: 0.05rem;
+    margin-top: 7px;
+    color: #989898;
+    font-size: 14px;
+    line-height: 14px;
 }
 
 /*반응형*/

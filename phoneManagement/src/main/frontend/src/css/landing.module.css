@@ -2,7 +2,7 @@
 
 /* landing */
 .landing{font-size:0; line-height:0;}
-.landing .wrap{position:relative; max-width:1080px; margin:0 auto;}
+.landing .wrap{position:relative; max-width:1280px; margin:0 auto;}
 .landing .section_btn{margin-top:39px; padding:0 24px; border-radius:8px; background-color:#4781ff; color:#fff; font-size:18px; font-weight:600; line-height:49px; transition:background-color .25s ease-in-out;}
 .landing .section_btn:hover{background-color:#4275e8;}
 
@@ -52,8 +52,25 @@
 
 .landing .section3{padding:120px 0; background-color:#f0f5ff; text-align:center;}
 .landing .section3 .review{margin-top:40px;}
-.landing .section3 .review .review_list{margin:0 -12px; white-space:nowrap;}
-.landing .section3 .review .review_item{display:inline-block; overflow:hidden; position:relative; width:calc(33.33% - 24px); margin:0 12px; padding:32px; border-radius:16px; background-color:#fff; box-shadow:0 4px 16px 0 rgba(207, 215, 227, 0.5); text-align:left; vertical-align:top; white-space:normal;}
+.landing .section3 .review .review_list{
+    display: inline-flex;
+    margin:0 -12px; white-space:nowrap;
+    animation: scrollLoop 30s linear infinite;
+}
+
+@keyframes scrollLoop {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.landing .section3 .review .review_item{display:inline-block;
+    overflow:hidden; position:relative;
+    width: 380px; margin:0 12px; padding:32px;
+    border-radius:16px; background-color:#fff; box-shadow:0 4px 16px 0 rgba(207, 215, 227, 0.5); text-align:left; vertical-align:top; white-space:normal;}
 .landing .section3 .review .review_item .a{display:block;}
 .landing .section3 .review .review_item .review_profile{position:relative; min-height:70px; padding:14px 0 14px 86px;}
 .landing .section3 .review .review_item .review_profile .profile_img{overflow:hidden; position:absolute; top:0; left:0; width:70px; height:70px; border-radius:50%;}
@@ -80,11 +97,51 @@
 .landing .section7{padding:266px 0 263px 0; background:url(../images/landing/section_bg7.png) no-repeat center / cover; text-align:center;}
 .landing .section7 .section_title{color:#fff;}
 
-.landing .footer{padding:64px 0;}
-.landing .footer .footer_logo{height:32px;}
+.landing .footer{padding:64px 0; text-align: center}
 .landing .footer .footer_info{display:inline-block; vertical-align:top;}
-.landing .footer .footer_info .li{display:inline-block; margin-left:28px; color:#91939f; font-size:17px; line-height:32px; vertical-align:top;}
-.landing .footer .footer_info .li .a{color:#91939f;}
+.landing .footer .footer_info .footer_box.top{
+    display: block;
+    margin-bottom: 10px;
+}
+.landing .footer .footer_info .footer_box{
+    display: block;
+    /*margin-bottom: 1px;*/
+
+
+}
+.landing .footer .footer_info .footer_box .footer_logo{
+    display: inline-block;
+    margin-right: 20px;
+    height:32px;
+}
+
+.landing .footer .footer_info .li{
+    display:inline-block; margin-right:32px; color:#91939f;
+    font-size:17px; line-height:32px; vertical-align:top;
+}
+
+.landing .footer .footer_info .footer_box .li.a1:before{
+    display: inline-block;
+    position: relative;
+    top: 0.1em;
+    width: 14px;
+    height: 14px;
+    background: url(../images/copyright_icon.png) no-repeat center / 14px;
+    line-height: 14px;
+    margin-right: 5px;
+}
+
+
+
+
+/*.landing .footer .footer_info .footer_mid .li{*/
+/*    display:inline-block; margin-right:28px; color:#91939f;*/
+/*    font-size:17px; line-height:32px; vertical-align:top;*/
+/*}*/
+.landing .footer .footer_info .footer_box .li .a{color:#91939f;}
+
+/*20250424 */
+
 
 /*반응형*/
 .landing .section.section7 .section_title.add_icon{padding-top:0;}

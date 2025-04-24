@@ -39,7 +39,7 @@ export function BarChartArea({fromDate, toDate, userId}){
 
         await saleApi.getCtCountBySelectType(tab, body).then(({status,data})=>{
             if(status === 200 && data){
-                console.table(data)
+                // console.table(data)
                 setData(data)
             }
         })
@@ -69,19 +69,20 @@ export function BarChartArea({fromDate, toDate, userId}){
 
             <div className={Graph.graph_box}>
                 {
-                    isEmptyData() && <>
-                        <img className={Graph.img} src={DataNotFound} alt=""/>
-                    </>
-                }
-                <BarChartInstance labels={labels} color={`#4781ff`}
-                                  hoverColor={`#88adff`} data={data}
-                                  yAxisCallback={v=>{
-                                      if (!Number.isInteger(v)) {
-                                          return;
-                                      }
-                                      return `${Math.round(v)}개`
+                    isEmptyData() ? <>
+                        <div className={Graph.img_not_found}>
+                         </div>
+                    </> : <BarChartInstance labels={labels} color={`#4781ff`}
+                                            hoverColor={`#88adff`} data={data}
+                                            yAxisCallback={v=>{
+                                                if (!Number.isInteger(v)) {
+                                                    return;
+                                                }
+                                                return `${Math.round(v)}개`
 
-                                  }} />
+                                            }} />
+                }
+
 
 
             </div>

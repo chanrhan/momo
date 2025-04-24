@@ -184,8 +184,8 @@ export function ReserveMessageModal(props){
     return (
         <LayerModal {...props} top={50} maxWidth={548}>
                 {/*활성화시 active 추가 -->*/}
-                <div className={Popup.popup_title}>연락 전송 등록</div>
-                <div className={Popup.popup_text}>전송하고 싶은 문자를 선택해주세요.</div>
+                <div className={Popup.popup_title}>예약 메세지 등록</div>
+                <div className={Popup.popup_text}>전송할 메세지와 예약 날짜를 선택해주세요.</div>
 
                 <form className={Popup.transfer}>
                     <div className={Popup.popup_cont}>

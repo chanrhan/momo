@@ -271,9 +271,9 @@ export function Task(){
                                       items={items}
                                       notDone={inputField.get('not_done')}
                                       onChangeState={onChangeState}/>
-                    <div className="view_more">
-                        <button type="button" className="view_more_btn">더 보기</button>
-                    </div>
+                    {/*<div className="view_more">*/}
+                    {/*    <button type="button" className="view_more_btn">더 보기</button>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>

@@ -6,6 +6,7 @@ import {PieChartInstance} from "./PieChartInstance";
 import useApi from "../../hook/useApi";
 import {DateUtils} from "../../utils/DateUtils";
 import {LMD} from "../../common/LMD";
+import {ObjectUtils} from "../../utils/objectUtil";
 
 export function PieChartArea({fromDate, toDate, userId}){
     const {saleApi} = useApi()
@@ -60,6 +61,18 @@ export function PieChartArea({fromDate, toDate, userId}){
         })
     }
 
+    const isDataEmpty = ()=>{
+        if(ObjectUtils.isEmpty(data)){
+            return true;
+        }
+        for(const d of data){
+            if(d != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
     return (
         <div className={cm(Graph.graph4, Graph.div)}>
             <div className={Graph.graph_top}>
@@ -69,8 +82,13 @@ export function PieChartArea({fromDate, toDate, userId}){
             </div>
 
             <div className={Graph.graph_box}>
-                <PieChartInstance labels={labels}
-                                  data={data} x_axis_disabled y_axis_disabled/>
+                {
+                    !isDataEmpty() ? <PieChartInstance labels={labels}
+                                                                   data={data} x_axis_disabled y_axis_disabled/>
+                        : <div className={Graph.img_not_found}>
+                        </div>
+                }
+
             </div>
         </div>
     )

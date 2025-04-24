@@ -1,10 +1,5 @@
 import Landing from "../../css/landing.module.css"
 import logo from "../../images/landing/logo.png"
-import sectionBg7 from "../../images/landing/section_bg7.png"
-import sectionIcon1 from "../../images/landing/section_icon1.png"
-import sectionIcon2 from "../../images/landing/section_icon2.png"
-import sectionIcon3 from "../../images/landing/section_icon3.png"
-import sectionIcon4 from "../../images/landing/section_icon4.png"
 import sectionImg1 from "../../images/landing/section_img1.png"
 import sectionImg2 from "../../images/landing/section_Img2.png"
 import sectionImg4 from "../../images/landing/section_img4.png"
@@ -139,12 +134,13 @@ export function LandingPage(){
 
                             <div className={Landing.review}>
                                 <ul className={Landing.review_list}>
-                                    <LandingReviewCard active/>
-                                    <LandingReviewCard/>
-                                    <LandingReviewCard/>
-                                    <LandingReviewCard/>
-                                    <LandingReviewCard/>
-                                    <LandingReviewCard/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
                                 </ul>
                             </div>
                         </LandingSectionWrap>
@@ -178,15 +174,29 @@ export function LandingPage(){
 
                 <footer className={Landing.footer}>
                     <div className={Landing.wrap}>
-                    <img src={footerLogo} alt="momo" className={Landing.footer_logo}/>
-                            <ul className={Landing.footer_info}>
+                        <ul className={Landing.footer_info}>
+                            <div className={cm(Landing.footer_box, Landing.top)}>
+                                <img src={footerLogo} alt="momo" className={Landing.footer_logo}/>
+                                <li className={cm(Landing.li, Landing.a1)}>
+                                    2025 Ultari Corp.
+                                </li>
+                            </div>
+                            <div className={Landing.footer_box}>
+                                <li className={Landing.li}>주식회사 울타리</li>
+                                <li className={Landing.li}>사업자등록번호 521-87-02490</li>
+                                <li className={Landing.li}>경기도 안양시 동안구 시민대로 311 1층 모모</li>
+                                <li className={Landing.li}>문의사항 010-3903-1234</li>
                                 <li className={Landing.li}><Link className={Landing.a} to=''>개인정보처리방침</Link></li>
                                 <li className={Landing.li}><Link className={Landing.a} to=''>이용약관</Link></li>
-                                <li className={Landing.li}>경기도 안양시 동안구 시민대로 311 1층 모모</li>
-                                <li className={Landing.li}>사업자등록번호 000-00-00000</li>
-                                <li className={Landing.li}>문의사항 0000-0000</li>
-                            </ul>
+                            </div>
+                            {/*<div className={Landing.footer_box}>*/}
+                            {/*    <li className={Landing.li}><Link className={Landing.a} to=''>개인정보처리방침</Link></li>*/}
+                            {/*    <li className={Landing.li}><Link className={Landing.a} to=''>이용약관</Link></li>*/}
+                            {/*</div>*/}
+
+                        </ul>
                     </div>
+
                 </footer>
 
             </div>

@@ -46,6 +46,9 @@ function SaleCombModal(props){
                                                              onChange={v=>{
                                             inputField.put('comb_tp', v.id);
                                             inputField.put('comb_name', v.name)
+                                        }} onClear={()=>{
+                                            inputField.put('comb_tp', '');
+                                            inputField.put('comb_name', '');
                                         }}/>
                                         {/*<SelectIndexLayer values={[1,2,3]} name='comb_tp' inputField={inputField} cssModules={toCssModules(Popup, User)}/>*/}
                                     </div>

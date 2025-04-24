@@ -53,10 +53,12 @@ export function DataGraph({userId}){
         })
     }
 
-
-
     const selectDate = (year,month)=>{
         setDate(DateUtils.formatYYMM(year,month))
+    }
+
+    const clear = ()=>{
+        setDate(DateUtils.dateToStringYYMM(today));
     }
 
 
@@ -72,17 +74,19 @@ export function DataGraph({userId}){
                 marginBottom: '-24px',
                 textAlign: "right",
             }}>
+                <button type="button" className="btn_all" style={{
+                    marginRight: '15px'
+                }} onClick={clear}> 날짜 초기화
+                </button>
                 <MonthSelectModal onSelect={selectDate}>
                     <input type="text" className="inp date" value={date}
                            placeholder="날짜 선택" readOnly/>
                 </MonthSelectModal>
-                <button type="button" className="btn_all" style={{
-                    marginLeft: 0
-                }}>전체 보기</button>
+
             </div>
 
-            <div className={Graph.graph1} >
-                <div className={Graph.graph_scroll}  style={{
+            <div className={Graph.graph1}>
+                <div className={Graph.graph_scroll} style={{
                     marginTop: '44px'
                 }}>
                     <ul className={Graph.graph_list}>

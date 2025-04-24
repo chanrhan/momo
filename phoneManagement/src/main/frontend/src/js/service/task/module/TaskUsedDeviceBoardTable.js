@@ -62,7 +62,7 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
                 <Bth className="ta_c">판매 금액</Bth>
                 <Bth className="ta_c">총 이익</Bth>
                 <Bth className="ta_c" >담당자</Bth>
-                <Bth className="ta_c" >전송</Bth>
+                {/*<Bth className="ta_c" >전송</Bth>*/}
             </Bthead>
             <Btbody br>
                 {
@@ -92,9 +92,9 @@ export function TaskUsedDeviceBoardTable({checkAll, allChecked, checkedSale, onC
                             <Btd className="ta_r">{NumberUtils.toPrice(v.ud_cms)}원</Btd>
                             <Btd className="ta_r">{NumberUtils.toPrice(v.total_cms)}원</Btd>
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
-                            <Btd className="ta_c">
-                                <button type="button" className="btn_kakao">전송</button>
-                            </Btd>
+                            {/*<Btd className="ta_c">*/}
+                            {/*    <button type="button" className="btn_kakao">전송</button>*/}
+                            {/*</Btd>*/}
                         </tr>
                     })
                 }

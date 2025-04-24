@@ -57,8 +57,25 @@
 
 .menu_confirm{
     display: inline-block;
+    opacity: 1;
+    /*visibility: hidden;*/
     position: fixed;
-    left: 400px;
+    top: 150px;
+    left: 50%;
+    z-index: 99;
+    padding: 18px 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 16px 24px rgba(40, 39, 44, 0.14);
+    color: #50505c;
+    font-size: 18px;
+    text-align: center;
+    line-height: 24px;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    /*display: inline-block;*/
+    /*position: fixed;*/
+    /*left: 400px;*/
     /*transition: opacity 0.5s ease, visibility 0.5s ease;*/
     animation: fade-In 0.3s
 }
@@ -68,12 +85,11 @@
 }
 
 .menu_confirm .confirm{
-    position: relative;
     /*min-width: 150px;*/
     min-height: 100px;
     padding: 0px 16px 0 16px;
-    overflow: hidden;
-    box-shadow: 0 16px 24px rgba(40, 39, 44, 0.14);
+    /*overflow: hidden;*/
+    /*box-shadow: 0 16px 24px rgba(40, 39, 44, 0.14);*/
     border-radius: 20px;
 }
 

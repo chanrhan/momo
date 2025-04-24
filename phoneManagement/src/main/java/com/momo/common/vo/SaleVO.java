@@ -33,7 +33,8 @@ public class SaleVO extends BaseVO {
 	private Integer provider; // 통신사
 	private String  actvDt; // 개통일자 (Activate)
 	private Integer deviceId; // 핸드폰 모델명 (Model)
-	private Integer deviceStor; // 핸드폰 용량 (Storage)
+//	private Integer deviceStor; // 핸드폰 용량 (Storage)
+	private Integer deviceColor; // 기기 색상
 	private Integer ctIstm; // 무선 할부 (Installment)
 	private Integer ctActvDiv; // 무선 개통 구분 (Division)
 	private Integer ctActvTp; // 무선 개통 유형 (Type)

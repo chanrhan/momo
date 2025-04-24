@@ -77,6 +77,9 @@ export function SaleWtPlanModal(props){
                                                              onChange={({id,name})=>{
                                                                 inputField.put('internet_plan',id)
                                                                 inputField.put('internet_plan_nm',name)
+                                        }} onClear={()=>{
+                                            inputField.put('internet_plan', '')
+                                            inputField.put('internet_plan_nm', '')
                                         }}/>
                                     </div>
                                 </div>
@@ -92,6 +95,9 @@ export function SaleWtPlanModal(props){
                                                              onChange={({id,name})=>{
                                             inputField.put('tv_plan',id)
                                             inputField.put('tv_plan_nm',name)
+                                        }}  onClear={()=>{
+                                            inputField.put('tv_plan', '')
+                                            inputField.put('tv_plan_nm', '')
                                         }}/>
                                     </div>
                                 </div>

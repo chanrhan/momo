@@ -27,6 +27,8 @@ export function EditableAddButton({inpClassName, btnClassName, onUpdate, value})
                                submit(e.target.value)
                                e.stopPropagation();
                            }}
+                           placeholder="옵션명을 입력하세요"
+                           maxLength={20}
                            onKeyDown={e=>{
                                e.stopPropagation();
                             if(e.key === 'Enter') {

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* board */
-.board{padding:32px 0 0 0;}
+.board{padding:32px 0 0 0; height: 800px}
 .board .board_head{position:relative; margin-bottom:14px;}
 .board .board_head .board_head_group{display:inline-block;
     min-height:36px; font-size:0; line-height:0; vertical-align:top;
@@ -43,7 +43,7 @@
 .board .board_head .board_btn_box .board_btn.board_filter{background-image:url(../images/filter_icon2.png);}
 
 /*20240830 추가*/
-.sticky{overflow-x:hidden; overflow-y:scroll ; height:600px;}
+.sticky{overflow-x:hidden; overflow-y:auto ; height:600px;}
 .sticky table thead{position:sticky; top:0; left:0; right:0; z-index:1;}
 
 .board .board_head .board_btn_box .board_btn.board_more{background-image:url(../images/more_icon.png);/* margin-right:13px;*/}
@@ -108,6 +108,13 @@
     line-height:16px;
 
 }
+.board .td_board .tbody .td .message_icon{
+    font-size: 0;
+    width: 24px;
+    height: 24px;
+    background: url(../images/kakaotalk_icon.png) no-repeat center / 100%;
+}
+
 .board .td_board .tbody .td:last-child{border-right:0;}
 .board .td_board .tbody.br_none .td{border-right:0;}
 .board .td_board .tbody .td_type{
@@ -154,6 +161,9 @@
 }
 .board .promise .promise_box{
     cursor: pointer;
+}
+.board .promise .promise_profile{
+    margin: 5px 0 0 8px;
 }
 .board .promise .promise_profile > .div{display:inline-block; vertical-align:top;}
 .board .promise .promise_profile .profile_img{overflow:hidden; width:58px; height:58px; margin-right:20px; border-radius:50%;}
@@ -236,12 +246,14 @@
     background:url(../images/popup/popup_close.png) no-repeat center / 20px;
 }
 
-.board .promise .promise_option .option_add{margin-top:12px; font-size:0; line-height:0;}
+.board .promise .promise_option .option_add{margin: 6px 0 6px 0; font-size:0; line-height:0; height: 30px;}
 
 .board .promise .promise_option .option_add .add_btn:hover{
     background-color: rgba(236, 243, 255, 0.81);
 }
 .board .promise .promise_option .option_add .add_btn{
+    text-align: left;
+    width: 100%;
     cursor: pointer;
     margin:0 0;
     padding: 0 40px 0 40px;
@@ -251,6 +263,7 @@
     font-size:15px; line-height:36px;
 }
 .board .promise .promise_option .option_add .add_inp{
+    width: 100%;
     cursor: text;
     margin:0 0; padding-left:40px;
     color:#91939f;
@@ -275,9 +288,16 @@
     margin-top:12px;
     border-radius:8px;
 }
+
 .board .promise .promise_item .btn_promise:hover{
     background-color: rgba(71, 129, 255, 0.87);
 
+}
+.board .promise .promise_item .btn_promise.grey{
+    background-color: #a1a1a1;
+}
+.board .promise .promise_item .btn_promise.grey:hover{
+    background-color: #818181;
 }
 
 /*20241226*/

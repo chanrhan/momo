@@ -83,6 +83,12 @@ export function useObjectArrayInputField(init, arr){
         setInput(null)
     }
 
+    const clearOf = (index)=>{
+        const copy = [...input];
+        copy[index] = init;
+        setInput(copy)
+    }
+
     const isEmpty = (index, key)=>{
         if(!input[index]){
             return false
@@ -105,6 +111,7 @@ export function useObjectArrayInputField(init, arr){
         firstItem,
         lastItem,
         clear,
+        clearOf,
         isEmpty,
     }
 }

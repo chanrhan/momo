@@ -12,6 +12,7 @@ import {WaitingApproval} from "./WaitingApproval";
 import useUserInfo from "../hook/useUserInfo";
 import {cm} from "../utils/cm";
 import User from "../../css/user.module.css";
+import {MainFooter} from "./MainFooter";
 
 function MainLayout(){
     const userInfo = useUserInfo();
@@ -43,7 +44,9 @@ function MainLayout(){
                     {/*    (userInfo && userInfo.approval_st && userInfo.approval_st !== 'NONE') ?*/}
                     {/*        <Outlet/> : <WaitingApproval/>*/}
                     {/*}*/}
+                    <MainFooter/>
                 </div>
+
             </main>
 
         </div>

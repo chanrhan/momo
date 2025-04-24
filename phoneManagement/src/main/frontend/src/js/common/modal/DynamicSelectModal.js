@@ -261,60 +261,72 @@ export function DynamicSelectModal(props){
     }
 
     return (
-        <MenuModal modalRef={props.modalRef} top={props.top} left={props.left}>
+        <MenuModal modalRef={props.modalRef} top={props.top + 40} left={props.left}>
             <div className={cm(Popup.select_box2, Popup.active)}
                   onClick={e=>{
                 setInpFocus(null)
+            }} style={{
+                width: `${props.width ?? 160}px`,
             }}>
-                <input type="text" className={cm(Popup.select_inp)} style={{
-                    width: `${props.width ?? 160}px`,
-                    lineHeight: `${props.height ?? 40}px`
-                }}
-                       value={keyword}
-                       onChange={e => {
-                           setKeyword(e.target.value)
-                       }}
-                       placeholder="옵션 검색"/>
+                {/*<input type="text" className={cm(Popup.select_inp)} style={{*/}
+                {/*    width: `${props.width ?? 160}px`,*/}
+                {/*    lineHeight: `${props.height ?? 40}px`*/}
+                {/*}}*/}
+                {/*       value={keyword}*/}
+                {/*       onChange={e => {*/}
+                {/*           setKeyword(e.target.value)*/}
+                {/*       }}*/}
+                {/*       placeholder="옵션 검색"/>*/}
                 <div className={cm(Popup.select_layer, Popup.active)} style={{
                     width: `${boxWidth}px`,
-                }} >
+                }}>
+                    <li draggable={false} key={0} className={cm(Popup.layer_header)}>
+                        <input type="text" className={cm(Popup.inp_search)} style={{
+                            width: `${props.width ?? 160}px`,
+                            lineHeight: `${props.height ?? 40}px`
+                        }}
+                               value={keyword}
+                               onChange={e => {
+                                   setKeyword(e.target.value)
+                               }}
+                               placeholder="옵션명을 검색하세요"/>
+                        {/*<button className={Popup.btn_del} onClick={clearSelectedOption}>선택된 옵션 초기화</button>*/}
+                    </li>
                     {/*<button type='button' className={Popup.layer_title} onClick={addItem}>옵션 추가하기</button>*/}
                     <ul className="layer_list" ref={scrollRef} style={{
                         overflowY: "scroll",
                         height: `${boxHeight}px`,
-                        maxHeight: '300px'
+                        maxHeight: '200px'
                     }}>
-                        <li draggable={false} key={0} className={cm(Popup.layer_header)}>
-                            <button className={Popup.btn_del} onClick={clearSelectedOption}>선택된 옵션 제거하기</button>
-                        </li>
+
                         {
-                            inputField.input && inputField.input.map((v, i) => {
-                                return <li  key={i+1}
-                                            ref={(el) => (dragListRefs.current[i] = el)}
-                                            onDragOver={e=>{
-                                    inputField.handleDragOver(e, i);
-                                }}
-                                            className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
+                        inputField.input && inputField.input.map((v, i) => {
+                                return <li key={i + 1}
+                                           ref={(el) => (dragListRefs.current[i] = el)}
+                                           onDragOver={e => {
+                                               inputField.handleDragOver(e, i);
+                                           }}
+                                           className={cm(Popup.layer_item, `${selected === i && Popup.active} ${inpFocus === i && Popup.focus_input}`)}>
                                     <span draggable={true} className={Popup.drag_handle}
-                                          onDragStart={(e)=>{
-                                        inputField.handleDragStart(e, i)
-                                    }} onDragEnd={changeOrder}></span>
+                                          onDragStart={(e) => {
+                                              inputField.handleDragStart(e, i)
+                                          }} onDragEnd={changeOrder}></span>
                                     <input type="text" className={Popup.layer_btn}
                                            value={v.name}
                                            maxLength={20}
                                            placeholder='입력해주세요'
-                                           ref={v=>{
+                                           ref={v => {
                                                focusRef.current[i] = v
                                            }}
-                                           // autoFocus={i === inputFocus}
+                                        // autoFocus={i === inputFocus}
                                            onClick={e => {
                                                console.log(`click ${i} ${inpFocus}`)
                                                if (i === inpFocus) {
                                                    e.stopPropagation()
-                                               } else if(inpFocus !== null){
+                                               } else if (inpFocus !== null) {
                                                    setInpFocus(null)
 
-                                               }else {
+                                               } else {
                                                    e.stopPropagation()
                                                    selectItem(i, v.id)
                                                }

@@ -1,0 +1,1934 @@
+2025-04-22 12:55:36.759 INFO  [background-preinit] [o.h.validator.internal.util.Version] - HV000001: Hibernate Validator 8.0.1.Final
+2025-04-22 12:55:36.803 INFO  [restartedMain] [com.momo.PhoneManagementApplication] - Starting PhoneManagementApplication using Java 17.0.12 with PID 50558 (/Users/chan/momo/phoneManagement/target/classes started by chan in /Users/chan/momo/phoneManagement)
+2025-04-22 12:55:36.804 INFO  [restartedMain] [com.momo.PhoneManagementApplication] - The following 1 profile is active: "dev"
+2025-04-22 12:55:37.082 INFO  [restartedMain] [o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-22 12:55:37.082 INFO  [restartedMain] [o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-22 12:55:38.723 INFO  [restartedMain] [o.s.b.w.embedded.tomcat.TomcatWebServer] - Tomcat initialized with port 11040 (http)
+2025-04-22 12:55:38.737 INFO  [restartedMain] [o.apache.coyote.http11.Http11NioProtocol] - Initializing ProtocolHandler ["http-nio-11040"]
+2025-04-22 12:55:38.739 INFO  [restartedMain] [o.apache.catalina.core.StandardService] - Starting service [Tomcat]
+2025-04-22 12:55:38.739 INFO  [restartedMain] [org.apache.catalina.core.StandardEngine] - Starting Servlet engine: [Apache Tomcat/10.1.17]
+2025-04-22 12:55:38.791 INFO  [restartedMain] [o.a.c.c.C.[Tomcat].[localhost].[/]] - Initializing Spring embedded WebApplicationContext
+2025-04-22 12:55:38.791 INFO  [restartedMain] [o.s.b.w.s.c.ServletWebServerApplicationContext] - Root WebApplicationContext: initialization completed in 1708 ms
+2025-04-22 12:55:39.869 INFO  [restartedMain] [org.quartz.impl.StdSchedulerFactory] - Using default implementation for ThreadExecutor
+2025-04-22 12:55:39.876 INFO  [restartedMain] [org.quartz.core.SchedulerSignalerImpl] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2025-04-22 12:55:39.876 INFO  [restartedMain] [org.quartz.core.QuartzScheduler] - Quartz Scheduler v.2.3.2 created.
+2025-04-22 12:55:39.877 INFO  [restartedMain] [org.quartz.simpl.RAMJobStore] - RAMJobStore initialized.
+2025-04-22 12:55:39.877 INFO  [restartedMain] [org.quartz.core.QuartzScheduler] - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2025-04-22 12:55:39.877 INFO  [restartedMain] [org.quartz.impl.StdSchedulerFactory] - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+2025-04-22 12:55:39.877 INFO  [restartedMain] [org.quartz.impl.StdSchedulerFactory] - Quartz scheduler version: 2.3.2
+2025-04-22 12:55:39.877 INFO  [restartedMain] [org.quartz.core.QuartzScheduler] - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@68eb81b9
+2025-04-22 12:55:39.910 INFO  [restartedMain] [o.s.b.f.a.AutowiredAnnotationBeanPostProcessor] - Autowired annotation is not supported on static fields: public static int com.momo.job.DormantUserJob.DORMANT_CYCLE_DATE
+2025-04-22 12:55:40.051 INFO  [restartedMain] [o.s.b.a.w.s.WelcomePageHandlerMapping] - Adding welcome page: class path resource [public/index.html]
+2025-04-22 12:55:40.380 INFO  [restartedMain] [o.s.s.web.DefaultSecurityFilterChain] - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@388ee3ee, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7aa824b4, org.springframework.security.web.context.SecurityContextHolderFilter@7c43c5ac, org.springframework.security.web.header.HeaderWriterFilter@2a09cdd, org.springframework.web.filter.CorsFilter@68805393, org.springframework.security.web.authentication.logout.LogoutFilter@47909a0e, com.momo.filter.JwtAuthorizationFilter@12a3fa9b, org.springframework.security.web.session.ConcurrentSessionFilter@79acc528, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@281548ba, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@73b05db0, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@1ae3f171, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d7deab2, org.springframework.security.web.session.SessionManagementFilter@6771bd19, org.springframework.security.web.access.ExceptionTranslationFilter@3c9607d7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5b0a7235]
+2025-04-22 12:55:40.567 WARN  [restartedMain] [o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration] - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-04-22 12:55:40.693 INFO  [restartedMain] [o.s.b.d.a.OptionalLiveReloadServer] - LiveReload server is running on port 35729
+2025-04-22 12:55:40.721 INFO  [restartedMain] [o.apache.coyote.http11.Http11NioProtocol] - Starting ProtocolHandler ["http-nio-11040"]
+2025-04-22 12:55:40.731 INFO  [restartedMain] [o.s.b.w.embedded.tomcat.TomcatWebServer] - Tomcat started on port 11040 (http) with context path ''
+2025-04-22 12:55:40.733 INFO  [restartedMain] [o.s.m.s.b.SimpleBrokerMessageHandler] - Starting...
+2025-04-22 12:55:40.733 INFO  [restartedMain] [o.s.m.s.b.SimpleBrokerMessageHandler] - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@258c461b]]
+2025-04-22 12:55:40.733 INFO  [restartedMain] [o.s.m.s.b.SimpleBrokerMessageHandler] - Started.
+2025-04-22 12:55:40.733 INFO  [restartedMain] [o.s.s.quartz.SchedulerFactoryBean] - Starting Quartz Scheduler now
+2025-04-22 12:55:40.733 INFO  [restartedMain] [org.quartz.core.QuartzScheduler] - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+2025-04-22 12:55:40.740 INFO  [restartedMain] [com.momo.PhoneManagementApplication] - Started PhoneManagementApplication in 5.32 seconds (process running for 6.209)
+2025-04-22 12:56:40.724 INFO  [MessageBroker-1] [o.s.w.s.c.WebSocketMessageBrokerStats] - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-04-22 12:57:03.423 INFO  [http-nio-11040-exec-1] [o.a.c.c.C.[Tomcat].[localhost].[/]] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-22 12:57:03.423 INFO  [http-nio-11040-exec-1] [o.s.web.servlet.DispatcherServlet] - Initializing Servlet 'dispatcherServlet'
+2025-04-22 12:57:03.424 INFO  [http-nio-11040-exec-1] [o.s.web.servlet.DispatcherServlet] - Completed initialization in 1 ms
+2025-04-22 12:57:03.436 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:03.436 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:03.436 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:03.436 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:03.450 INFO  [http-nio-11040-exec-1] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:03.612 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 15 msec}
+2025-04-22 12:57:03.621 INFO  [http-nio-11040-exec-1] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:11.770 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:11.771 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:11.771 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:11.771 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:11.772 INFO  [http-nio-11040-exec-2] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:11.776 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 2 msec}
+2025-04-22 12:57:11.777 INFO  [http-nio-11040-exec-2] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:13.119 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:13.119 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:13.119 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:13.119 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:13.181 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:13.324 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=0
+        WHERE id = 'admin'
+ {executed in 10 msec}
+2025-04-22 12:57:13.350 INFO  [http-nio-11040-exec-3] [com.momo.service.JwtService] - save refresh token: JwtVO(grantType=Bearer, username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzMywiZXhwIjoxNzQ1Mjk0ODMzLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HMNzcp1raU7uU5E-wy-b5mxUF_gv-ftlQm1GQEcV4mU, refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzN9.D64qfqkPoRowERsLCaRkQ-rYgTZVW3pSQFxKGuWB8pU, expireTime=3600000, revoked=false, expired=false)
+2025-04-22 12:57:13.354 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   user_id='admin'
+ {executed in 3 msec}
+2025-04-22 12:57:13.356 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE  tb_refresh_token
+        SET     refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzN9.D64qfqkPoRowERsLCaRkQ-rYgTZVW3pSQFxKGuWB8pU'
+        WHERE   user_id='admin'
+ {executed in 0 msec}
+2025-04-22 12:57:13.358 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:13.384 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:13.384 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzMywiZXhwIjoxNzQ1Mjk0ODMzLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HMNzcp1raU7uU5E-wy-b5mxUF_gv-ftlQm1GQEcV4mU
+2025-04-22 12:57:13.384 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:13.408 INFO  [http-nio-11040-exec-4] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:13.411 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:13.412 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:13.415 INFO  [http-nio-11040-exec-4] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:13.420 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 3 msec}
+2025-04-22 12:57:13.421 INFO  [http-nio-11040-exec-4] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:13.475 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:13.475 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:13.476 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:13.476 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:13.479 INFO  [http-nio-11040-exec-5] [com.momo.api.AuthController] - refresh
+2025-04-22 12:57:13.484 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzN9.D64qfqkPoRowERsLCaRkQ-rYgTZVW3pSQFxKGuWB8pU'
+ {executed in 2 msec}
+2025-04-22 12:57:13.486 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:13.488 INFO  [http-nio-11040-exec-5] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzMywiZXhwIjoxNzQ1Mjk0ODMzLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HMNzcp1raU7uU5E-wy-b5mxUF_gv-ftlQm1GQEcV4mU, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 12:57:13.488 INFO  [http-nio-11040-exec-5] [com.momo.service.CommonService] - Session('curr_shop_id') is not found. Try to find on Database...
+2025-04-22 12:57:13.488 INFO  [http-nio-11040-exec-5] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:13.489 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id=''
+ {executed in 1 msec}
+2025-04-22 12:57:13.491 ERROR [http-nio-11040-exec-5] [com.momo.handler.GlobalExceptionHandler] - BusinessException: com.momo.common.response.ErrorResponse@1f3732f5
+2025-04-22 12:57:13.493 WARN  [http-nio-11040-exec-5] [o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver] - Resolved [com.momo.exception.BusinessException]
+2025-04-22 12:57:13.510 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:13.510 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:13.510 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:13.510 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:13.511 INFO  [http-nio-11040-exec-6] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:13.513 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 2 msec}
+2025-04-22 12:57:13.513 INFO  [http-nio-11040-exec-6] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:14.546 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:14.546 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:14.547 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:14.547 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:14.554 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 3 msec}
+2025-04-22 12:57:14.689 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=0
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:14.691 INFO  [http-nio-11040-exec-7] [com.momo.service.JwtService] - save refresh token: JwtVO(grantType=Bearer, username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzNCwiZXhwIjoxNzQ1Mjk0ODM0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.TKUr_7UVW7dZe83oBAEbRQOw1JECSFpBbWC1FB5a8kM, refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzR9.qff0Ep_gPNEeD2hFpH1VO_eg4Sq-lnNa5d03fej4iaU, expireTime=3600000, revoked=false, expired=false)
+2025-04-22 12:57:14.693 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:14.695 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE  tb_refresh_token
+        SET     refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzR9.qff0Ep_gPNEeD2hFpH1VO_eg4Sq-lnNa5d03fej4iaU'
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:14.698 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:14.717 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:14.717 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzNCwiZXhwIjoxNzQ1Mjk0ODM0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.TKUr_7UVW7dZe83oBAEbRQOw1JECSFpBbWC1FB5a8kM
+2025-04-22 12:57:14.717 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:14.719 INFO  [http-nio-11040-exec-8] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:14.722 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:14.723 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:14.726 INFO  [http-nio-11040-exec-8] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:14.730 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 3 msec}
+2025-04-22 12:57:14.731 INFO  [http-nio-11040-exec-8] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:14.810 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:14.810 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:14.810 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:14.810 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:14.812 INFO  [http-nio-11040-exec-9] [com.momo.api.AuthController] - refresh
+2025-04-22 12:57:14.820 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4MzR9.qff0Ep_gPNEeD2hFpH1VO_eg4Sq-lnNa5d03fej4iaU'
+ {executed in 3 msec}
+2025-04-22 12:57:14.823 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:14.824 INFO  [http-nio-11040-exec-9] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDIzNCwiZXhwIjoxNzQ1Mjk0ODM0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.TKUr_7UVW7dZe83oBAEbRQOw1JECSFpBbWC1FB5a8kM, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 12:57:14.825 INFO  [http-nio-11040-exec-9] [com.momo.service.CommonService] - Session('curr_shop_id') is not found. Try to find on Database...
+2025-04-22 12:57:14.825 INFO  [http-nio-11040-exec-9] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:14.826 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id=''
+ {executed in 1 msec}
+2025-04-22 12:57:14.827 ERROR [http-nio-11040-exec-9] [com.momo.handler.GlobalExceptionHandler] - BusinessException: com.momo.common.response.ErrorResponse@466f80d
+2025-04-22 12:57:14.827 WARN  [http-nio-11040-exec-9] [o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver] - Resolved [com.momo.exception.BusinessException]
+2025-04-22 12:57:14.843 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:14.843 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:14.843 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:14.843 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:14.844 INFO  [http-nio-11040-exec-10] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:14.846 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 1 msec}
+2025-04-22 12:57:14.846 INFO  [http-nio-11040-exec-10] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:31.950 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:31.950 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:31.950 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:31.950 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:31.951 INFO  [http-nio-11040-exec-1] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:31.954 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 2 msec}
+2025-04-22 12:57:31.955 INFO  [http-nio-11040-exec-1] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:32.453 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:32.453 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:32.454 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:32.454 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:32.460 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 3 msec}
+2025-04-22 12:57:32.594 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=0
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.595 INFO  [http-nio-11040-exec-2] [com.momo.service.JwtService] - save refresh token: JwtVO(grantType=Bearer, username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1MiwiZXhwIjoxNzQ1Mjk0ODUyLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.vPtIqIltOmzWuw7BxB0Gmk02g6YU0DZJRbSiW-trGIk, refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTJ9.BmPiQA6etVInRwQ_PppQZ4sG8XqII_ZIvp2IMs_oMt0, expireTime=3600000, revoked=false, expired=false)
+2025-04-22 12:57:32.597 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.599 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE  tb_refresh_token
+        SET     refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTJ9.BmPiQA6etVInRwQ_PppQZ4sG8XqII_ZIvp2IMs_oMt0'
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.602 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.618 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:32.618 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1MiwiZXhwIjoxNzQ1Mjk0ODUyLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.vPtIqIltOmzWuw7BxB0Gmk02g6YU0DZJRbSiW-trGIk
+2025-04-22 12:57:32.618 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:32.620 INFO  [http-nio-11040-exec-3] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:32.622 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.623 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:32.625 INFO  [http-nio-11040-exec-3] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:32.627 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:32.628 INFO  [http-nio-11040-exec-3] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:32.711 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:32.712 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:32.712 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:32.712 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:32.714 INFO  [http-nio-11040-exec-4] [com.momo.api.AuthController] - refresh
+2025-04-22 12:57:32.721 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTJ9.BmPiQA6etVInRwQ_PppQZ4sG8XqII_ZIvp2IMs_oMt0'
+ {executed in 1 msec}
+2025-04-22 12:57:32.723 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:32.725 INFO  [http-nio-11040-exec-4] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1MiwiZXhwIjoxNzQ1Mjk0ODUyLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.vPtIqIltOmzWuw7BxB0Gmk02g6YU0DZJRbSiW-trGIk, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 12:57:32.725 INFO  [http-nio-11040-exec-4] [com.momo.service.CommonService] - Session('curr_shop_id') is not found. Try to find on Database...
+2025-04-22 12:57:32.725 INFO  [http-nio-11040-exec-4] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:32.727 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id=''
+ {executed in 1 msec}
+2025-04-22 12:57:32.727 ERROR [http-nio-11040-exec-4] [com.momo.handler.GlobalExceptionHandler] - BusinessException: com.momo.common.response.ErrorResponse@2a4ed597
+2025-04-22 12:57:32.728 WARN  [http-nio-11040-exec-4] [o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver] - Resolved [com.momo.exception.BusinessException]
+2025-04-22 12:57:32.742 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:32.743 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:32.743 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:32.743 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:32.743 INFO  [http-nio-11040-exec-5] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 12:57:32.745 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 1 msec}
+2025-04-22 12:57:32.745 INFO  [http-nio-11040-exec-5] [com.momo.api.UserController] - User: null
+2025-04-22 12:57:39.553 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:39.554 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:39.554 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/public/login
+2025-04-22 12:57:39.554 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:39.557 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.683 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=0
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.685 INFO  [http-nio-11040-exec-6] [com.momo.service.JwtService] - save refresh token: JwtVO(grantType=Bearer, username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA, refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTl9.awmqLsYBjH09SQa9LdGMRtTxwepXcVTEALz6ehGmT24, expireTime=3600000, revoked=false, expired=false)
+2025-04-22 12:57:39.687 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   user_id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:39.688 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. UPDATE  tb_refresh_token
+        SET     refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTl9.awmqLsYBjH09SQa9LdGMRtTxwepXcVTEALz6ehGmT24'
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.690 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.705 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.705 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.705 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.706 INFO  [http-nio-11040-exec-7] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.708 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:39.708 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.710 INFO  [http-nio-11040-exec-7] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.712 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.713 INFO  [http-nio-11040-exec-7] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:39.799 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:39.800 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 12:57:39.801 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 12:57:39.801 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 12:57:39.803 INFO  [http-nio-11040-exec-8] [com.momo.api.AuthController] - refresh
+2025-04-22 12:57:39.810 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUyOTc4NTl9.awmqLsYBjH09SQa9LdGMRtTxwepXcVTEALz6ehGmT24'
+ {executed in 3 msec}
+2025-04-22 12:57:39.813 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:39.817 INFO  [http-nio-11040-exec-8] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 12:57:39.856 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/all
+2025-04-22 12:57:39.857 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.856 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/read/all
+2025-04-22 12:57:39.857 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/all
+2025-04-22 12:57:39.868 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.868 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/read/all
+2025-04-22 12:57:39.869 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 12:57:39.869 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.869 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 12:57:39.870 INFO  [http-nio-11040-exec-9] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.871 INFO  [http-nio-11040-exec-10] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.873 INFO  [http-nio-11040-exec-2] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.880 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.880 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.880 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.880 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 9 msec}
+2025-04-22 12:57:39.880 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+3. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.880 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 3 msec}
+2025-04-22 12:57:39.880 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.881 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.881 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.891 INFO  [http-nio-11040-exec-9] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.891 INFO  [http-nio-11040-exec-2] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.891 INFO  [http-nio-11040-exec-10] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.892 INFO  [http-nio-11040-exec-1] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.895 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. UPDATE tb_notification
+        SET read_st = TRUE
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 2 msec}
+2025-04-22 12:57:39.896 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+4. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.896 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.897 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT content,
+               notif_id,
+               read_st,
+               notif_tp as type,
+               IF(date(send_dt) = current_date,true,false) as today,
+            (
+               TIMESTAMPDIFF(MINUTE, send_dt, current_timestamp)
+            ) as ago
+        FROM tb_notification
+        WHERE receiver_id='admin'
+        ORDER BY send_dt DESC
+ {executed in 4 msec}
+2025-04-22 12:57:39.897 INFO  [http-nio-11040-exec-1] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.902 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+3. SELECT count(*)
+        FROM tb_notification
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 9 msec}
+2025-04-22 12:57:39.903 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+4. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 4 msec}
+2025-04-22 12:57:39.903 INFO  [http-nio-11040-exec-1] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:39.910 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 12:57:39.911 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.911 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 12:57:39.914 INFO  [http-nio-11040-exec-3] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.917 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:39.918 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.919 INFO  [http-nio-11040-exec-3] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.923 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT count(*)
+        FROM tb_notification
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 1 msec}
+2025-04-22 12:57:39.930 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/all
+2025-04-22 12:57:39.930 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.930 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/all
+2025-04-22 12:57:39.932 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.932 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:39.932 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 12:57:39.933 INFO  [http-nio-11040-exec-4] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.934 INFO  [http-nio-11040-exec-5] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:39.935 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:39.936 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.936 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.937 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:39.937 INFO  [http-nio-11040-exec-5] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 12:57:39.940 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 12:57:39.941 INFO  [http-nio-11040-exec-5] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 12:57:39.941 INFO  [http-nio-11040-exec-4] [com.momo.api.UserController] - user all: UserVO(id=null, shopId=null, pwd=null, updatePwd=null, name=null, email=null, tel=null, terms=null, userSt=0, role=null, approval=null, pfp=null, startDt=null, brNo=null, corpNm=null, regiDt=null)
+2025-04-22 12:57:40.036 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. with users as (
+            select ac.*,
+                   sf.role,
+                   IF(sf.role = 1, ac.br_no, '') as _br_no,
+                    sf.approval_st,
+                    sf.shop_id,
+                    sh.shop_nm
+            from tb_staff sf
+            left outer join tb_shop sh on sh.shop_id=sf.shop_id
+            left outer join tb_account ac on ac.id=sf.staff_id
+            where user_st=0
+        ), search as (
+            select *
+            from users
+            where
+
+                1=1
+
+        ), result as (
+            select json_arrayagg(json_object(
+                'id', id,
+                'shop_id',shop_id,
+                'name',name,
+                'pfp',pfp,
+                'email',email,
+                'tel',tel,
+                'br_no',_br_no,
+                'regi_dt',date_format(regi_dt, '%Y-%m-%d'),
+                'last_login_dt',last_login_dt,
+                'role',role,
+                'approval_st',approval_st,
+                'shop_nm',shop_nm
+                ))
+            from search
+        )
+
+        select (
+                   select count(*)
+                   from users
+               ) as total_cnt,
+               (
+                   select *
+                   from result
+               ) as list
+ {executed in 34 msec}
+2025-04-22 12:57:40.121 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.121 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:40.121 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.127 INFO  [http-nio-11040-exec-6] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:40.133 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 4 msec}
+2025-04-22 12:57:40.133 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:40.152 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.152 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:40.152 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.156 INFO  [http-nio-11040-exec-7] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:40.162 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 5 msec}
+2025-04-22 12:57:40.167 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:40.178 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.179 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:40.179 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 12:57:40.182 INFO  [http-nio-11040-exec-8] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:40.187 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 12:57:40.188 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:42.389 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/msg/all
+2025-04-22 12:57:42.390 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5NDI1OSwiZXhwIjoxNzQ1Mjk0ODU5LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.8P_2VOjbGTvM3q26GkV5gjcouEztudZfPbSz56I0eMA
+2025-04-22 12:57:42.390 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/msg/all
+2025-04-22 12:57:42.392 INFO  [http-nio-11040-exec-10] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 12:57:42.394 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 12:57:42.395 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 12:57:42.406 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+2. with base as (
+        SELECT rm.sens_req_dt as req_dt,
+            rm.sens_req_id as req_id,
+            sl.cust_tel,
+            sl.cust_nm,
+            (
+            SELECT shop_nm
+            FROM tb_shop sh
+            WHERE sh.shop_id = rm.shop_id
+            ) as shop_nm,
+            (
+            SELECT title
+            FROM tb_msg_template mt
+            where mt.msg_id = rm.msg_tp
+            ) as template_title,
+            rm.msg_st,
+            rm.shop_id,
+            rm.sale_id,
+            rm.rsv_dt,
+            rm.msg_id
+        FROM tb_rsv_msg rm
+        LEFT OUTER JOIN tb_sale sl on sl.shop_id = rm.shop_id and sl.sale_id = rm.sale_id
+        ), search as (
+            SELECT *
+            FROM base
+            WHERE
+
+            1=1
+        ), result as (
+            SELECT json_arrayagg(json_object(
+            'msg_st',msg_St,
+            'shop_nm',shop_nm,
+            'cust_tel', cust_tel,
+            'template_title',template_title,
+            'cust_nm',cust_nm,
+            'req_dt',req_dt,
+            'req_id',req_id,
+            'shop_id',shop_id,
+            'sale_id',sale_id,
+            'rsv_dt',rsv_dt,
+            'msg_id',msg_id
+            ))
+            from search
+        )
+
+        SELECT (
+            SELECT count(*)
+            FROM base
+        ) as total_cnt,
+            (
+                SELECT *
+                FROM result
+        ) as list
+ {executed in 6 msec}
+2025-04-22 14:03:49.359 INFO  [MessageBroker-1] [o.s.w.s.c.WebSocketMessageBrokerStats] - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 2, active threads = 1, queued tasks = 0, completed tasks = 1]
+2025-04-22 14:05:20.595 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:05:20.596 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 14:05:20.596 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:05:20.596 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:05:20.599 INFO  [http-nio-11040-exec-9] [c.momo.common.util.SecurityContextUtil] - principal: anonymousUser
+2025-04-22 14:05:20.604 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = ''
+ {executed in 3 msec}
+2025-04-22 14:05:20.604 INFO  [http-nio-11040-exec-9] [com.momo.api.UserController] - User: null
+2025-04-22 14:07:03.418 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/public/login
+2025-04-22 14:07:03.420 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 14:07:03.420 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/public/login
+2025-04-22 14:07:03.420 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:07:03.432 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:07:03.566 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. UPDATE
+            tb_account
+        SET last_login_dt=NOW(),
+            user_st=0
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 14:07:03.570 INFO  [http-nio-11040-exec-1] [com.momo.service.JwtService] - save refresh token: JwtVO(grantType=Bearer, username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyMywiZXhwIjoxNzQ1Mjk5MDIzLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.nU7vtl1Ng0AdQ9UZoML8TDHZUJzJCfEtsnYMccDhrG8, refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUzMDIwMjN9.OsIPmRZ2N_xqMK_TpXZNlgik16GqgWh0LMYVI4u4ZsU, expireTime=3600000, revoked=false, expired=false)
+2025-04-22 14:07:03.572 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:03.573 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. UPDATE  tb_refresh_token
+        SET     refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUzMDIwMjN9.OsIPmRZ2N_xqMK_TpXZNlgik16GqgWh0LMYVI4u4ZsU'
+        WHERE   user_id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:03.576 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT curr_shop_id
+        FROM tb_account
+        WHERE id='admin'
+ {executed in 0 msec}
+2025-04-22 14:07:03.599 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:03.599 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyMywiZXhwIjoxNzQ1Mjk5MDIzLCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.nU7vtl1Ng0AdQ9UZoML8TDHZUJzJCfEtsnYMccDhrG8
+2025-04-22 14:07:03.599 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:03.602 INFO  [http-nio-11040-exec-2] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:03.605 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:07:03.605 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:03.607 INFO  [http-nio-11040-exec-2] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:03.610 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 2 msec}
+2025-04-22 14:07:03.611 INFO  [http-nio-11040-exec-2] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 14:07:04.289 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:07:04.289 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 14:07:04.289 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:07:04.289 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:07:04.292 INFO  [http-nio-11040-exec-3] [com.momo.api.AuthController] - refresh
+2025-04-22 14:07:04.296 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUzMDIwMjN9.OsIPmRZ2N_xqMK_TpXZNlgik16GqgWh0LMYVI4u4ZsU'
+ {executed in 2 msec}
+2025-04-22 14:07:04.298 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.299 INFO  [http-nio-11040-exec-3] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/read/all
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/all
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/read/all
+2025-04-22 14:07:04.325 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/all
+2025-04-22 14:07:04.327 INFO  [http-nio-11040-exec-4] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.327 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 14:07:04.328 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.328 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 14:07:04.328 INFO  [http-nio-11040-exec-5] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.330 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:07:04.331 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+12. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 3 msec}
+2025-04-22 14:07:04.331 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.332 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.332 INFO  [http-nio-11040-exec-4] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.332 INFO  [http-nio-11040-exec-5] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.333 INFO  [http-nio-11040-exec-6] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.333 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:04.333 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.333 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:04.334 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. UPDATE tb_notification
+        SET read_st = TRUE
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 1 msec}
+2025-04-22 14:07:04.334 INFO  [http-nio-11040-exec-7] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.334 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+13. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.335 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+12. SELECT content,
+               notif_id,
+               read_st,
+               notif_tp as type,
+               IF(date(send_dt) = current_date,true,false) as today,
+            (
+               TIMESTAMPDIFF(MINUTE, send_dt, current_timestamp)
+            ) as ago
+        FROM tb_notification
+        WHERE receiver_id='admin'
+        ORDER BY send_dt DESC
+ {executed in 2 msec}
+2025-04-22 14:07:04.335 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.335 INFO  [http-nio-11040-exec-6] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.337 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+14. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:07:04.340 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.342 INFO  [http-nio-11040-exec-7] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.346 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+13. SELECT count(*)
+        FROM tb_notification
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 10 msec}
+2025-04-22 14:07:04.349 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+14. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 6 msec}
+2025-04-22 14:07:04.350 INFO  [http-nio-11040-exec-7] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 14:07:04.357 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 14:07:04.357 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.357 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/notif/count/unread
+2025-04-22 14:07:04.360 INFO  [http-nio-11040-exec-8] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.365 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 3 msec}
+2025-04-22 14:07:04.366 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.367 INFO  [http-nio-11040-exec-8] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.370 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT count(*)
+        FROM tb_notification
+        WHERE receiver_id = 'admin'
+          AND read_st = FALSE
+ {executed in 1 msec}
+2025-04-22 14:07:04.379 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/all
+2025-04-22 14:07:04.379 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.379 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/all
+2025-04-22 14:07:04.382 INFO  [http-nio-11040-exec-10] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.383 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:04.383 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.383 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:07:04.383 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.384 INFO  [http-nio-11040-exec-9] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.384 INFO  [http-nio-11040-exec-10] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.385 INFO  [http-nio-11040-exec-10] [com.momo.api.UserController] - user all: UserVO(id=null, shopId=null, pwd=null, updatePwd=null, name=null, email=null, tel=null, terms=null, userSt=0, role=null, approval=null, pfp=null, startDt=null, brNo=null, corpNm=null, regiDt=null)
+2025-04-22 14:07:04.386 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.386 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.387 INFO  [http-nio-11040-exec-9] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:07:04.389 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.389 INFO  [http-nio-11040-exec-9] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 14:07:04.389 DEBUG [http-nio-11040-exec-10] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+12. with users as (
+            select ac.*,
+                   sf.role,
+                   IF(sf.role = 1, ac.br_no, '') as _br_no,
+                    sf.approval_st,
+                    sf.shop_id,
+                    sh.shop_nm
+            from tb_staff sf
+            left outer join tb_shop sh on sh.shop_id=sf.shop_id
+            left outer join tb_account ac on ac.id=sf.staff_id
+            where user_st=0
+        ), search as (
+            select *
+            from users
+            where
+
+                1=1
+
+        ), result as (
+            select json_arrayagg(json_object(
+                'id', id,
+                'shop_id',shop_id,
+                'name',name,
+                'pfp',pfp,
+                'email',email,
+                'tel',tel,
+                'br_no',_br_no,
+                'regi_dt',date_format(regi_dt, '%Y-%m-%d'),
+                'last_login_dt',last_login_dt,
+                'role',role,
+                'approval_st',approval_st,
+                'shop_nm',shop_nm
+                ))
+            from search
+        )
+
+        select (
+                   select count(*)
+                   from users
+               ) as total_cnt,
+               (
+                   select *
+                   from result
+               ) as list
+ {executed in 2 msec}
+2025-04-22 14:07:04.406 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.406 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.407 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.421 INFO  [http-nio-11040-exec-1] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.427 DEBUG [http-nio-11040-exec-1] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 5 msec}
+2025-04-22 14:07:04.428 INFO  [http-nio-11040-exec-1] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.439 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.439 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.439 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.441 INFO  [http-nio-11040-exec-2] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.443 DEBUG [http-nio-11040-exec-2] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.443 INFO  [http-nio-11040-exec-2] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:07:04.451 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.451 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:07:04.451 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/img/download/pfp
+2025-04-22 14:07:04.453 INFO  [http-nio-11040-exec-3] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:07:04.454 DEBUG [http-nio-11040-exec-3] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:07:04.454 INFO  [http-nio-11040-exec-3] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:31:05.261 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/msg/all
+2025-04-22 14:31:05.262 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5ODQyNCwiZXhwIjoxNzQ1Mjk5MDI0LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.HXZe5fCXMDHaaj5AXhOK-PR1tVWPzXTzSpYqU_StlE8
+2025-04-22 14:31:05.262 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/msg/all
+2025-04-22 14:31:05.266 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:31:05.267 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 14:31:05.267 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:31:05.267 INFO  [http-nio-11040-exec-5] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:31:05.271 INFO  [http-nio-11040-exec-5] [com.momo.api.AuthController] - refresh
+2025-04-22 14:31:05.271 INFO  [http-nio-11040-exec-4] [com.momo.provider.JwtProvider] - Expired JWT Token
+io.jsonwebtoken.ExpiredJwtException: JWT expired at 2025-04-22T05:17:04Z. Current time: 2025-04-22T05:31:05Z, a difference of 841267 milliseconds.  Allowed clock skew: 0 milliseconds.
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:427)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:529)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:589)
+	at io.jsonwebtoken.impl.ImmutableJwtParser.parseClaimsJws(ImmutableJwtParser.java:173)
+	at com.momo.provider.JwtProvider.validateToken(JwtProvider.java:145)
+	at com.momo.filter.JwtAuthorizationFilter.doFilterInternal(JwtAuthorizationFilter.java:38)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:225)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-04-22 14:31:05.275 INFO  [http-nio-11040-exec-4] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:31:05.278 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+12. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUzMDIwMjN9.OsIPmRZ2N_xqMK_TpXZNlgik16GqgWh0LMYVI4u4ZsU'
+ {executed in 4 msec}
+2025-04-22 14:31:05.281 DEBUG [http-nio-11040-exec-5] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+12. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:31:05.282 DEBUG [http-nio-11040-exec-4] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+11. with base as (
+        SELECT rm.sens_req_dt as req_dt,
+            rm.sens_req_id as req_id,
+            sl.cust_tel,
+            sl.cust_nm,
+            (
+            SELECT shop_nm
+            FROM tb_shop sh
+            WHERE sh.shop_id = rm.shop_id
+            ) as shop_nm,
+            (
+            SELECT title
+            FROM tb_msg_template mt
+            where mt.msg_id = rm.msg_tp
+            ) as template_title,
+            rm.msg_st,
+            rm.shop_id,
+            rm.sale_id,
+            rm.rsv_dt,
+            rm.msg_id
+        FROM tb_rsv_msg rm
+        LEFT OUTER JOIN tb_sale sl on sl.shop_id = rm.shop_id and sl.sale_id = rm.sale_id
+        ), search as (
+            SELECT *
+            FROM base
+            WHERE
+
+            1=1
+        ), result as (
+            SELECT json_arrayagg(json_object(
+            'msg_st',msg_St,
+            'shop_nm',shop_nm,
+            'cust_tel', cust_tel,
+            'template_title',template_title,
+            'cust_nm',cust_nm,
+            'req_dt',req_dt,
+            'req_id',req_id,
+            'shop_id',shop_id,
+            'sale_id',sale_id,
+            'rsv_dt',rsv_dt,
+            'msg_id',msg_id
+            ))
+            from search
+        )
+
+        SELECT (
+            SELECT count(*)
+            FROM base
+        ) as total_cnt,
+            (
+                SELECT *
+                FROM result
+        ) as list
+ {executed in 2 msec}
+2025-04-22 14:31:05.284 INFO  [http-nio-11040-exec-5] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5OTg2NSwiZXhwIjoxNzQ1MzAwNDY1LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.qshX3PEtUufHzslIdd8UDGonwZkIUcDO97OrF4gYWQc, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 14:31:05.297 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:31:05.297 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5OTg2NSwiZXhwIjoxNzQ1MzAwNDY1LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.qshX3PEtUufHzslIdd8UDGonwZkIUcDO97OrF4gYWQc
+2025-04-22 14:31:05.297 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:31:05.298 INFO  [http-nio-11040-exec-6] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:31:05.300 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+13. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 1 msec}
+2025-04-22 14:31:05.300 INFO  [http-nio-11040-exec-6] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:31:05.301 INFO  [http-nio-11040-exec-6] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:31:05.302 DEBUG [http-nio-11040-exec-6] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+13. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 1 msec}
+2025-04-22 14:31:05.303 INFO  [http-nio-11040-exec-6] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 14:31:06.829 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/msg/all
+2025-04-22 14:31:06.829 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTI5OTg2NSwiZXhwIjoxNzQ1MzAwNDY1LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.qshX3PEtUufHzslIdd8UDGonwZkIUcDO97OrF4gYWQc
+2025-04-22 14:31:06.829 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/msg/all
+2025-04-22 14:31:06.831 INFO  [http-nio-11040-exec-7] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:31:06.834 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+14. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:31:06.835 INFO  [http-nio-11040-exec-7] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:31:06.840 DEBUG [http-nio-11040-exec-7] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+14. with base as (
+        SELECT rm.sens_req_dt as req_dt,
+            rm.sens_req_id as req_id,
+            sl.cust_tel,
+            sl.cust_nm,
+            (
+            SELECT shop_nm
+            FROM tb_shop sh
+            WHERE sh.shop_id = rm.shop_id
+            ) as shop_nm,
+            (
+            SELECT title
+            FROM tb_msg_template mt
+            where mt.msg_id = rm.msg_tp
+            ) as template_title,
+            rm.msg_st,
+            rm.shop_id,
+            rm.sale_id,
+            rm.rsv_dt,
+            rm.msg_id
+        FROM tb_rsv_msg rm
+        LEFT OUTER JOIN tb_sale sl on sl.shop_id = rm.shop_id and sl.sale_id = rm.sale_id
+        ), search as (
+            SELECT *
+            FROM base
+            WHERE
+
+            1=1
+        ), result as (
+            SELECT json_arrayagg(json_object(
+            'msg_st',msg_St,
+            'shop_nm',shop_nm,
+            'cust_tel', cust_tel,
+            'template_title',template_title,
+            'cust_nm',cust_nm,
+            'req_dt',req_dt,
+            'req_id',req_id,
+            'shop_id',shop_id,
+            'sale_id',sale_id,
+            'rsv_dt',rsv_dt,
+            'msg_id',msg_id
+            ))
+            from search
+        )
+
+        SELECT (
+            SELECT count(*)
+            FROM base
+        ) as total_cnt,
+            (
+                SELECT *
+                FROM result
+        ) as list
+ {executed in 2 msec}
+2025-04-22 14:33:49.367 INFO  [MessageBroker-2] [o.s.w.s.c.WebSocketMessageBrokerStats] - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 3, active threads = 1, queued tasks = 0, completed tasks = 2]
+2025-04-22 14:37:27.795 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:37:27.796 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - access token: null
+2025-04-22 14:37:27.796 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/auth/refresh
+2025-04-22 14:37:27.796 INFO  [http-nio-11040-exec-8] [com.momo.filter.JwtAuthorizationFilter] - 유효한 JWT 토큰이 없습니다
+2025-04-22 14:37:27.805 INFO  [http-nio-11040-exec-8] [com.momo.api.AuthController] - refresh
+2025-04-22 14:37:27.826 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+21. SELECT  *
+        FROM    tb_refresh_token
+        WHERE   refresh_token='eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDUzMDIwMjN9.OsIPmRZ2N_xqMK_TpXZNlgik16GqgWh0LMYVI4u4ZsU'
+ {executed in 4 msec}
+2025-04-22 14:37:27.838 DEBUG [http-nio-11040-exec-8] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+21. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 2 msec}
+2025-04-22 14:37:27.844 INFO  [http-nio-11040-exec-8] [com.momo.api.AuthController] - jwt: JwtVO(grantType=Bearer , username=admin, accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTMwMDI0NywiZXhwIjoxNzQ1MzAwODQ3LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.-fX6WaRuj9p8CmTYZTxOSrF2G-mkUSEMaKsO8G618DQ, refreshToken=null, expireTime=null, revoked=false, expired=false)
+2025-04-22 14:37:27.892 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - security filter: http://localhost:11040/api/v1/user/info
+2025-04-22 14:37:27.892 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - access token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NTMwMDI0NywiZXhwIjoxNzQ1MzAwODQ3LCJhdXRob3JpdGllcyI6IlJPTEVfTk9ORSJ9.-fX6WaRuj9p8CmTYZTxOSrF2G-mkUSEMaKsO8G618DQ
+2025-04-22 14:37:27.892 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - from url: http://localhost:11040/api/v1/user/info
+2025-04-22 14:37:27.895 INFO  [http-nio-11040-exec-9] [com.momo.provider.JwtProvider] - get authentication username : admin
+2025-04-22 14:37:27.903 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+21. SELECT ac.id,
+               ac.pwd,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where ac.curr_shop_id = sf.shop_id and
+                         ac.id = sf.staff_id
+                   ) as role
+        from tb_account ac
+        where id='admin'
+ {executed in 6 msec}
+2025-04-22 14:37:27.904 INFO  [http-nio-11040-exec-9] [com.momo.filter.JwtAuthorizationFilter] - Security Context에 'admin' 인증 정보를 저장했습니다
+2025-04-22 14:37:27.905 INFO  [http-nio-11040-exec-9] [c.momo.common.util.SecurityContextUtil] - principal: UserDetailsImpl(username=admin, password=$2a$10$ShKoYoto0un02FeMgyao9ubb.9d0Y3BhGjLtmnmvV6OfsqBqGOmU2, authorities=[ROLE_NONE])
+2025-04-22 14:37:27.917 DEBUG [http-nio-11040-exec-9] [jdbc.sqltiming] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+21. SELECT ac.id,
+               ac.name,
+               ac.tel,
+               ac.nickname,
+               ac.pfp,
+               ac.curr_shop_id,
+               (
+                   select IFNULL(sf.role, -1)
+                   from tb_staff sf
+                   where sf.shop_id = ac.curr_shop_id and
+                         sf.staff_id = ac.id
+                   ) as role,
+               sh.shop_nm,
+               sh.shop_addr,
+               sh.provider,
+               (
+                   IFNULL((
+                       select sf2.approval_st
+                       from tb_staff sf2
+                       where sf2.shop_id=ac.curr_shop_id and
+                           sf2.staff_id=ac.id
+                       ), -1)
+                ) as approval_st,
+                ac.corp_nm,
+                ac.br_no
+        FROM tb_account ac
+        LEFT OUTER JOIN tb_shop sh on sh.shop_id=ac.curr_shop_id
+        WHERE id = 'admin'
+ {executed in 9 msec}
+2025-04-22 14:37:27.917 INFO  [http-nio-11040-exec-9] [com.momo.api.UserController] - User: {role=null, approval_st=-1, shop_addr=null, br_no=null, provider=null, name=박희찬관리자용, nickname=null, corp_nm=null, tel=010-4524-0636, id=admin, pfp=null, curr_shop_id=-1, shop_nm=null}
+2025-04-22 15:42:14.427 INFO  [SpringApplicationShutdownHook] [o.s.m.s.b.SimpleBrokerMessageHandler] - Stopping...
+2025-04-22 15:42:14.428 INFO  [SpringApplicationShutdownHook] [o.s.m.s.b.SimpleBrokerMessageHandler] - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@258c461b]]
+2025-04-22 15:42:14.428 INFO  [SpringApplicationShutdownHook] [o.s.m.s.b.SimpleBrokerMessageHandler] - Stopped.
+2025-04-22 15:42:14.428 INFO  [SpringApplicationShutdownHook] [org.quartz.core.QuartzScheduler] - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2025-04-22 15:42:14.438 INFO  [SpringApplicationShutdownHook] [o.s.s.quartz.SchedulerFactoryBean] - Shutting down Quartz Scheduler
+2025-04-22 15:42:14.438 INFO  [SpringApplicationShutdownHook] [org.quartz.core.QuartzScheduler] - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+2025-04-22 15:42:14.438 INFO  [SpringApplicationShutdownHook] [org.quartz.core.QuartzScheduler] - Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+2025-04-22 15:42:14.438 INFO  [SpringApplicationShutdownHook] [org.quartz.core.QuartzScheduler] - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.

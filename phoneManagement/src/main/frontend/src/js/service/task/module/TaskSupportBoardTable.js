@@ -24,7 +24,7 @@ export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onChec
                 <Bth className="ta_c">지원 구분</Bth>
                 <Bth className="ta_c">지원 금액</Bth>
                 <Bth className="ta_c">담당자</Bth>
-                <Bth className="ta_c">전송</Bth>
+                {/*<Bth className="ta_c">전송</Bth>*/}
             </Bthead>
             <Btbody br>
                 {
@@ -58,9 +58,9 @@ export function TaskSupportBoardTable({allChecked, checkAll, checkedSale, onChec
                             <Btd className="ta_r">{v.sup_div}</Btd>
                             <Btd className="ta_r">{v.sup_amount}</Btd>
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
-                            <Btd className="ta_c">
-                                <button type="button" className="btn_kakao">전송</button>
-                            </Btd>
+                            {/*<Btd className="ta_c">*/}
+                            {/*    <button type="button" className="btn_kakao">전송</button>*/}
+                            {/*</Btd>*/}
                         </tr>
                     })
                 }

@@ -74,6 +74,7 @@ export function SaleDetailPromiseBox({promiseInputField}){
                                    ref={e=>{
                                        focusRef.current[i] = e;
                                    }}
+                                   maxLength={20}
                                    placeholder='내용을 입력해주세요'/>
                             <button type="button" className={Popup.check_del}
                                     onClick={() => {

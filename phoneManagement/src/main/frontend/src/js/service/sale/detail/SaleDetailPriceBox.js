@@ -51,6 +51,8 @@ export function SaleDetailPriceBox({type = 0, inputField, provider}) {
                                                          value={v.name} onChange={v => {
                                         inputField.put(i, 'div', v.id)
                                         inputField.put(i, 'name', v.name)
+                                    }} onClear={()=>{
+                                        inputField.clearOf(i);
                                     }}/>
                                     {/*<button type="button" className={Popup.dynamic_btn}*/}
                                     {/*        onClick={(e) => {*/}

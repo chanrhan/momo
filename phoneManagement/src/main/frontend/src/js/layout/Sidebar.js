@@ -38,7 +38,7 @@ export function Sidebar() {
         <div className={Layout.lnb}>
             <nav className={Layout.menu}>
                 <ul className={Layout.menu_list}>
-                    <li className={`${Layout.menu_item} ${tab === -1 && Layout.active}`}>
+                    <li className={`${Layout.menu_item} ${Layout.menu_home} ${tab === -1 && Layout.active}`}>
                         <Link className={Layout.a} to='/service' onClick={() => {
                             setTab(-1)
                         }}>홈</Link>
@@ -65,10 +65,10 @@ export function Sidebar() {
                     {/*    setTab(4)*/}
                     {/*}}>팀 채팅</Link></li>*/}
                 </ul>
-                <ul className={Layout.menu_list}>
-                    <li className={`${Layout.menu_item} ${Layout.menu_set}`}><Link className={Layout.a}
-                                                                                   to='/setting'>설정</Link></li>
-                </ul>
+                {/*<ul className={Layout.menu_list}>*/}
+                {/*    <li className={`${Layout.menu_item} ${Layout.menu_set}`}><Link className={Layout.a}*/}
+                {/*                                                                   to='/setting'>설정</Link></li>*/}
+                {/*</ul>*/}
             </nav>
         </div>
     )

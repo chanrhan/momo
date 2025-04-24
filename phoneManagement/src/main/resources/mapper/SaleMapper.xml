@@ -618,7 +618,8 @@
                     'cust_tel',cust_tel,
                     'cust_cd',cust_cd,
                     'actv_dt',actv_dt,
-                    'pm_list',pm_list
+                    'pm_list',pm_list,
+                    'pm_st', pm_st
                                  ))
             from search
         )
@@ -702,7 +703,7 @@
             ct_actv_plan = #{ctActvPlan},
             ct_dec_plan = #{ctDecPlan},
             ct_actv_tp = #{ctActvTp},
-            device_stor = #{deviceStor},
+            device_color = #{deviceColor},
             ct_istm = #{ctIstm},
             ct_cms = #{ctCms},
             wt_actv_tp = #{wtActvTp},
@@ -793,12 +794,12 @@
 
         INSERT INTO tb_sale
         (shop_id, sale_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt,
-         device_id, device_stor, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
+         device_id, device_color, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
          ct_cms, sd_id, comb_tp, comb_memo,
          wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
          friend, seller_id, sale_memo, total_cms)
         VALUES (#{currShopId},@next_sale_id, #{custNm},#{custTel},#{custCd},#{custGd},
-                #{provider},#{actvDt},#{deviceId},#{deviceStor},#{ctIstm},#{ctActvDiv},
+                #{provider},#{actvDt},#{deviceId},#{deviceColor},#{ctIstm},#{ctActvDiv},
                 #{ctActvTp},#{ctActvPlan},
                 #{ctDecPlan},#{ctCms},#{sdId},#{combTp},
                 #{combMemo},#{wtActvTp},#{wtCms},#{internetPlan},#{tvPlan},
@@ -813,14 +814,14 @@
 
         INSERT INTO tb_sale
         (shop_id, sale_id, cust_nm, cust_tel, cust_cd, cust_gd, provider, actv_dt,
-         device_id, device_stor, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
+         device_id, device_color, ct_istm, ct_actv_div, ct_actv_tp, ct_actv_plan, ct_dec_plan,
          ct_cms, sd_id, comb_tp, comb_memo,
          wt_actv_tp, wt_cms, internet_plan, tv_plan, exsvc_id, family,
          friend, seller_id, sale_memo, total_cms)
         VALUES
         <foreach collection="list" index="index" item="item" open="(" close=")" separator="), (">
             #{currShopId},@next_sale_id+#{index}, #{item.custNm},#{item.custTel},#{item.custCd},#{item.custGd},
-            #{item.provider},#{item.actvDt},#{item.deviceId},#{item.deviceStor},#{item.ctIstm},#{item.ctActvDiv},
+            #{item.provider},#{item.actvDt},#{item.deviceId},#{item.deviceColor},#{item.ctIstm},#{item.ctActvDiv},
             #{item.ctActvTp},#{item.ctActvPlan},
             #{item.ctDecPlan},#{item.ctCms},#{item.sdId},#{item.combTp},
             #{item.combMemo},#{item.wtActvTp},#{item.wtCms},#{item.internetPlan},#{item.tvPlan},
@@ -2447,15 +2448,15 @@
         <![CDATA[
         with staff as (
             select ac.id,
-                   ac.name,
-                   ac.nickname,
-                   approval_st
+            ac.name,
+            ac.nickname,
+            approval_st
             from tb_staff
-                     left outer join tb_account ac on ac.id=staff_id
+            left outer join tb_account ac on ac.id=staff_id
             where approval_st = 1 and
-                shop_id=#{currShopId}
+            shop_id=#{currShopId}
             order by role
-        ), sale as (
+            ), sale as (
                 select *
                 from tb_sale
                 where shop_id = #{currShopId}
@@ -2494,11 +2495,13 @@
                     IFNULL(count(sud.ud_id), 0)         as ud_cnt,
                     IFNULL(count(sl.sd_id), 0)          as sd_cnt,
                     TRUNCATE(
-                            IF((count(*) > 0 and count(sl.sd_id) > 0), (count(sl.sd_id) / count(*)) * 100, 0)
+                            IF(
+                                    (count(*) > 0 and count(sl.sd_id) > 0), (count(sl.sd_id) / count(*)) * 100, 0)
                         , 1)                            as sd_per,
                     IFNULL(count(sl.exsvc_id), 0)       as exsvc_cnt,
                     TRUNCATE(
-                            IF((count(*) > 0 and count(sl.exsvc_id) > 0), (count(sl.exsvc_id) / count(*)) * 100, 0)
+                            IF(
+                                    (count(*) > 0 and count(sl.exsvc_id) > 0), (count(sl.exsvc_id) / count(*)) * 100, 0)
                         , 1)                            as exsvc_per
              from staff
                       left outer join sale sl on sl.seller_id=id

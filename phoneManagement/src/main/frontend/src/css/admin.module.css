@@ -1,0 +1,120 @@
+.admin_base_panel{
+    position: relative;
+    width: 100%;
+    height: 1000px;
+    background-color: tan;
+}
+
+.admin_base_panel .header_group{
+    margin-top: 40px;
+    width: 100%;
+    height: 5%;
+    background-color: green;
+}
+
+.admin_base_panel .header_group .title{
+    width: 100%;
+    height: 100%;
+    margin: 44px 0 0 185px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.admin_base_panel .body_group{
+    background-color: peru;
+    height: 95%;
+}
+
+.admin_base_panel .body_group .map_panel{
+    background-color: #4a5bcf;
+    display: inline-block;
+    width: 40%;
+    height: 100%;
+    padding: 15px;
+}
+
+.admin_base_panel .body_group .map_panel .map_cont{
+    background-color: white;
+    width: 100%;
+    height: 60%;
+}
+
+.admin_base_panel .body_group .map_panel .shop_list_panel{
+    background-color: #8b55ff;
+    width: 100%;
+    height: 40%;
+}
+
+.admin_base_panel .body_group .detail_panel{
+    background-color: #ff9d9d;
+    display: inline-block;
+    padding: 15px;
+    width: 60%;
+    height: 100%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_header{
+    background-color: #4a5bcf;
+    padding: 15px;
+    width: 100%;
+    height: 14%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_header .shop_nm_box{
+    /*display: inline-block;*/
+    background-color: #ae77e1;
+    width: 150px;
+    height: 50px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_header .shop_label_list{
+
+}
+
+.admin_base_panel .body_group .detail_panel .detail_header .shop_label_list .shop_label_item{
+
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body{
+    background-color: #b4e58b;
+    padding: 15px;
+    width: 100%;
+    height: 86%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_box{
+    background-color: #e1b284;
+    width: 50%;
+    height: 30%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_box .detail_inp{
+
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont{
+    background-color: #e8d46b;
+    width: 50%;
+    height: 30%;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont .content{
+
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .visit_log_list{
+    background-color: #6be8c7;
+    margin-top: 15px;
+    width: 100%;
+    height: calc(70% - 15px);
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .visit_log_list .visit_log_item{
+
+}

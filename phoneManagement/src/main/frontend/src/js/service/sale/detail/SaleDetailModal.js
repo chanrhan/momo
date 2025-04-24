@@ -23,7 +23,6 @@ import {useObjectInputField} from "../../../hook/useObjectInputField";
 import {useBitArray} from "../../../hook/useBitArray";
 import {SelectMapLayer} from "../../../common/module/SelectMapLayer";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
-import {DynamicSelectButton} from "../../../common/module/DynamicSelectButton";
 import {TelePhoneInput} from "../../../common/inputbox/TelePhoneInput";
 import {telRegex} from "../../../utils/regex";
 import {PriceInput} from "../../../common/inputbox/PriceInput";

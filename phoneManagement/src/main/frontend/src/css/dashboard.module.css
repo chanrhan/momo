@@ -2,6 +2,12 @@
 
 /* dashboard */
 .dashboard{min-height:100vh; background-color:#f4f5f9; font-size:0; line-height:0;}
+
+.dashboard + footer{
+    background-color:#f4f5f9;
+    /*padding-left: 125px;*/
+}
+
 .dashboard  > .div{display:inline-block; min-height:calc(100vh - 64px); vertical-align:top;}
 .dashboard .dashboard_panel{width:calc(100% - 412px); padding:40px 90px 20px 90px;}
 .dashboard .panel_head{overflow:hidden;}

@@ -4,7 +4,7 @@
 
 .graph .graph_head .tab.type2{margin-top:32px; border-bottom:1px solid #f8f8f9;}
 .graph .graph_head .graph_head_group,
-.graph .graph_table .graph_head_group{margin-top:23px; text-align:right;}
+.graph .graph_table .graph_head_group{margin: 23px 0 23px 0; text-align:right;}
 .graph .graph_head .graph_head_group .tab.type3{display:inline-block; float:left; vertical-align:top;}
 
 .graph .graph_panel{margin-top:24px;}
@@ -63,14 +63,61 @@
 .graph .graph4{width:calc(33.33% - 24px); margin:0 12px;}
 .graph .graph4 .graph_top .graph_title{display:inline-block; font-size:18px; font-weight:500; line-height:30px; vertical-align:top;}
 .graph .graph4 .graph_bar{
-    height: 100%;
+    /*height: 100%;*/
+    position: relative;
 }
 .graph .graph4 .graph_bar .bar_list{
     height: 100%;
+
 }
-.graph .graph4 .graph_bar .bar_list .img{
+/*slider*/
+.graph .graph4 .graph_bar .img_not_found{
+    position: relative;
+    margin: 0 auto;
+    margin-top: 22px;
+    width: 250px;
+    height: 250px;
+    background: url("../images/empty_folder_shine.png") no-repeat center / 100%;
+    text-align: center;
+}
+.graph .graph4 .graph_bar .img_not_found:before{
+    display: inline-block;
     position: absolute;
+    bottom: -20px;
+    left: 51%;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    color: #9d9d9d;
+    line-height: 18px;
+    content: "해당하는 데이터가 없습니다.";
+    transform: translate(-50%, -100%);
 }
+
+/*bar*/
+.graph .graph4 .graph_box .img_not_found{
+    position: relative;
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+    background: url("../images/empty_folder_shine.png") no-repeat center / 100%;
+    text-align: center;
+}
+
+.graph .graph4 .graph_box .img_not_found:before{
+    display: inline-block;
+    position: absolute;
+    bottom: -20px;
+    left: 51%;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    color: #9d9d9d;
+    line-height: 18px;
+    content: "해당하는 데이터가 없습니다.";
+    transform: translate(-50%, -100%);
+}
+
 .graph .graph4 .graph_bar .bar_item{margin-top:24px;}
 .graph .graph4 .graph_bar .bar_item .bar_text{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph4 .graph_bar .bar_item .bar_text .bar_per{float:right; color:#91939f;}

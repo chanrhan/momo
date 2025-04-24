@@ -3,16 +3,19 @@ import Layout from "../../../css/layout.module.css";
 import {Link} from "react-router-dom";
 
 const selectTab = (pathname)=>{
-    // console.log(pathname)
     switch (pathname){
         case '/admin':
             return 0;
         case '/admin/gmd':
             return 1;
-        case '/admin/stat':
+        case '/admin/shop':
             return 2;
-        case '/admin/dev':
+        case '/admin/msg':
             return 3;
+        case '/admin/user_stat':
+            return 4;
+        case '/admin/visit_map':
+            return 5;
         default:
             return 0;
     }
@@ -46,7 +49,11 @@ export function AdminSidebar(){
                     <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 4 && Layout.active}`}>
                         <Link className={Layout.a} to='/admin/user_stat' onClick={() => {
                             setTab(4)
-                        }}>사용자 통계</Link></li>
+                        }}>통계</Link></li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 5 && Layout.active}`}>
+                        <Link className={Layout.a} to='/admin/visit_map' onClick={() => {
+                            setTab(5)
+                        }}>방문 지도</Link></li>
                 </ul>
                 <ul className={Layout.menu_list}>
                     <li className={`${Layout.menu_item} ${Layout.menu_set}`}><Link className={Layout.a}

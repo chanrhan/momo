@@ -5,87 +5,92 @@ import useApi from "../hook/useApi";
 import {NumberUtils} from "../utils/NumberUtils";
 import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 import {DateUtils} from "../utils/DateUtils";
+import {StringUtils} from "../utils/StringUtils";
 
+const SALE_UNIT = [
+    "원",
+    "개"
+]
 
 const FIRST_COLUMN_NAMES = [
     {
         name:  "무선 수수료",
         var: 'ct_cms',
         inc: 'up',
-        unit: '원'
+        unit: 0
     },
     {
         name: "유선 수수료",
         var: 'wt_cms',
         inc: 'up',
-        unit: '원'
+        unit: 0
     },
     {
         name: "추가",
         var: 'sum_add',
         inc: 'up',
-        unit: '원'
+        unit: 0
     },
     {
         name: "중고폰 판매 금액",
         var: 'sum_ud_cms',
         inc: 'up',
-        unit: '원'
+        unit: 0
     },
     {
         name: "지원",
         var: 'sum_sup',
         inc: 'down',
-        unit: '원'
+        unit: 0
     },
     {
         name: "총 이익",
         var: 'total_cms',
         inc: 'none',
-        unit: '원'
+        unit: 0
     },
     {
         name: "무선 개수",
         var: 'ct_cnt',
-        unit: '개'
+        unit: 1
     },
     {
         name: "인터넷 개수",
         var: 'internet_cnt',
-        unit: '개'
+        unit: 1
     },
     {
         name: "TV 개수",
         var: 'tv_cnt',
-        unit: '개'
+        unit: 1
     },
     {
         name:  "평균 마진",
         var: 'avg_margin',
-        unit: '원'
+        unit: 0
     },
     {
         name: "동판 개수",
         var: 'dongsi',
         per: 'dongsi_per',
-        unit: '개'
+        unit: 1
     },
     {
         name: "중고 개통",
         var: 'ud_cnt',
-        unit: '개'
+        unit: 1
     },
     {
         name: "세컨",
         var: "sd_cnt",
         per: 'sd_per',
-        unit: '개'
+        unit: 1
     },
     {
         name: "부가서비스",
         var: 'exsvc_cnt',
         per: 'exsvc_per',
-        unit: '개'
+        unit: 1
     }
 ]
 
@@ -136,7 +141,7 @@ export function Statistics(){
                 }
                 setHeader(newHeaders)
                 setBodyData(arr);
-                // console.table(percents)
+                console.table(percents)
                 setPerData(percents)
             }
         })
@@ -149,14 +154,13 @@ export function Statistics(){
 
     return (
         <div className={Graph.graph_table}>
-            <div className={Graph.graph_head_group} style={{
+            <div className={Graph.graph_head_group} style={{}}>
+                {/*<button type="button" className="btn_all">전체 보기</button>*/}
 
-            }}>
                 <MonthSelectModal onSelect={selectDate}>
                     <input type="text" className="inp date" value={date}
                            placeholder="날짜 선택" readOnly/>
                 </MonthSelectModal>
-                <button type="button" className="btn_all">전체 보기</button>
             </div>
 
             <table className={Graph.tb_calender}>
@@ -193,17 +197,24 @@ export function Statistics(){
                             {
                                 row.map((col, colIdx)=>{
                                     const getPerIndex = ()=>{
-                                        if(rowIdx === 11){
+                                        if(rowIdx === 10){
                                             return 0;
-                                        }else if(rowIdx === 13){
-                                            return 1
+                                        }else if(rowIdx === 12){
+                                            return 1;
                                         }
                                         return 2
                                     }
 
+                                    const unit_idx = FIRST_COLUMN_NAMES[rowIdx].unit;
+
+                                    let value = col;
+                                    if(unit_idx === 0){
+                                        value = NumberUtils.toPrice(col);
+                                    }
+
                                     return (
                                         <td className={cm(Graph.td, `${colIdx > row.length-3 && Graph.group}`)}>
-                                            {col}{ FIRST_COLUMN_NAMES[rowIdx].unit}{' '}
+                                            {value}{SALE_UNIT[unit_idx]}{' '}
                                                 {
                                                 FIRST_COLUMN_NAMES[rowIdx].per && (
                                                     <span>{` (${perData[getPerIndex()][colIdx]}%)`}</span>

@@ -23,7 +23,7 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                 <Bth className="ta_c">카드명</Bth>
                 <Bth className="ta_c">구분</Bth>
                 <Bth className="ta_c">담당자</Bth>
-                <Bth className="ta_c">전송</Bth>
+                {/*<Bth className="ta_c">전송</Bth>*/}
             </Bthead>
             <Btbody br>
                 {
@@ -56,9 +56,9 @@ export function TaskCardBoardTable({allChecked, checkAll, checkedSale, onCheck, 
                             <Btd className="ta_r">{LMD.card_nm[v.card_nm]}</Btd>
                             <Btd className="ta_r">{LMD.card_tp[v.card_tp]}</Btd>
                             <ProfileTableColumn name={v.seller_nm} src={profileImages ? profileImages[i] : profileImg1}/>
-                            <Btd className="ta_c">
-                                <button type="button" className="btn_kakao">전송</button>
-                            </Btd>
+                            {/*<Btd className="ta_c">*/}
+                            {/*    <button type="button" className="btn_kakao">전송</button>*/}
+                            {/*</Btd>*/}
                         </tr>
                     })
                 }
