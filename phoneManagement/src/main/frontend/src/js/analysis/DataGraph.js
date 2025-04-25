@@ -11,7 +11,7 @@ import {PieChartArea} from "./module/PieChartArea";
 import {MonthSelectModal} from "../common/modal/menu/MonthSelectModal";
 
 const ITEM_NAMES = [
-    '무선','인터넷','TV','카드','부가서비스','총 이익','개인 평균 마진','중고 개통','세컨'
+    '무선','인터넷','TV','카드','부가서비스','총 이익','평균 마진','중고 개통','세컨'
 ]
 
 export function DataGraph({userId}){
@@ -35,19 +35,19 @@ export function DataGraph({userId}){
     const getGraphSummary = async (range)=>{
         let toDt = new Date(date);
         let fromDate = new Date(toDt);
-        DateUtils.subMonth(fromDate, range);
+        DateUtils.subMonth(fromDate, 1);
         // fromDate.setMonth(toDt.getMonth()+1-range)
-        fromDate.setDate(1)
+    fromDate.setDate(1)
 
         const body = {
             user_id: userId,
-            from_ymd: DateUtils.dateToStringYYMMdd(fromDate),
-            to_ymd: DateUtils.dateToStringYYMMdd(toDt),
+            prev_date: DateUtils.dateToStringYYMM(fromDate),
+            curr_date: DateUtils.dateToStringYYMM(toDt),
         }
         // console.table(body)
         await saleApi.getGraphSummary(body).then(({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
+                console.table(data)
                 setSummary(data)
             }
         })
@@ -95,7 +95,7 @@ export function DataGraph({userId}){
                                 return <GraphSummaryCard key={i} index={i} title={ITEM_NAMES[i]}
                                                          value={v.value ?? 0}
                                                          price={i >= 5 && i <= 6}
-                                                         per={v.per}
+                                                         per={v.pct}
                                                          // data={v.list && JSON.parse(v.list)}
                                 />
                             })

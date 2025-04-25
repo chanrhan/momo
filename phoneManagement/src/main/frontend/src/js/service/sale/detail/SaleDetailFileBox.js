@@ -70,7 +70,7 @@ export function SaleDetailFileBox({fileInputField, dragListRefs}){
     }
 
     const removeFile = (i)=>{
-        const currFiles = [...fileInputField.input].filter(v=>v.file)
+        const currFiles = [...fileInputField.input].filter(v=>v.file || v.preview)
 
         currFiles.splice(i, 1);
         if(currFiles.length < 5){

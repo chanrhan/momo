@@ -176,7 +176,9 @@ export function MultiLineChartInstance({labelName, labels, pointRadius=1, toolti
     }
 
     return (
-        <Line data={chartData} options={options}/>
+        <Line data={chartData} options={options} style={{
+            overflow: "visible"
+        }}/>
     )
 }
 

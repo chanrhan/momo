@@ -574,6 +574,12 @@
                             sl.cust_nm,
                             sl.cust_tel,
                             sl.cust_cd,
+                            sl.seller_id,
+                            (
+                                select name
+                                from tb_account
+                                where id=sl.seller_id
+                            ) as seller_nm,
                             sl.actv_dt,
                             (
                                 select JSON_ARRAYAGG(json_object(
@@ -589,6 +595,7 @@
             from tb_promise pm
              left outer join tb_sale sl on pm.sale_id=sl.sale_id
             WHERE pm.shop_id=#{currShopId}
+            order by pm_st, sl.actv_dt
         ), search as (
             SELECT *
             from sale
@@ -615,6 +622,8 @@
             SELECT json_arrayagg(json_object(
                     'sale_id',sale_id,
                     'cust_nm',cust_nm,
+                    'seller_id', seller_id,
+                    'seller_nm', seller_nm,
                     'cust_tel',cust_tel,
                     'cust_cd',cust_cd,
                     'actv_dt',actv_dt,
@@ -1226,7 +1235,7 @@
             (
                 CASE
                     WHEN @total_sale_count = 0 THEN 0
-                    WHEN @total_sale_count != 0 THEN TRUNCATE(((curr/@total_sale_count))*100, 1)
+                    WHEN @total_sale_count != 0 THEN TRUNCATE(((curr/@total_sale_count))*100, 0)
                     END
                 ) as per
         FROM tb
@@ -1246,61 +1255,55 @@
             FROM tb_sale_card sc
             LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
             WHERE sc.shop_id=#{currShopId}
---               and
---                 actv_dt like '${date}%'
         ), table_comb as (
             SELECT comb_st
             FROM tb_sale
-            WHERE shop_id=#{currShopId}
---               and
---                 actv_dt like '%${date}%'
+            WHERE shop_id=#{currShopId} and
+                  comb_tp is not null
         ), table_sup as (
             SELECT sup_st
             FROM tb_sale_support sc LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
-            WHERE sc.shop_id=#{currShopId}
---               and
---                 actv_dt like '%${date}%'
+            WHERE sc.shop_id=#{currShopId} and
+                  sup_div is not null
         ), table_pm as (
             SELECT checked
             FROM tb_promise sc
-                LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id
+                LEFT OUTER JOIN tb_sale sl on sl.sale_id=sc.sale_id and sl.pm_st=0
             WHERE sc.shop_id=#{currShopId}
---               and
---                 actv_dt like '%${date}%'
         ), rst as (
             SELECT
                 (
                     SELECT count(*)
                     FROM table_ud
-                    WHERE ud_st!=2
+                    WHERE ud_st=0
                 )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_card
-                    WHERE card_st!=2
+                    WHERE card_st=0
                 )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_comb
-                    WHERE comb_st!=1
+                    WHERE comb_st=0
                 )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_sup
-                    WHERE sup_st!=1
+                    WHERE sup_st=0
                 )
             UNION ALL
             SELECT
                 (
                     SELECT count(*)
                     FROM table_pm
-                    WHERE checked!=1
+                    WHERE checked=0
                 )
         )
 
@@ -1434,315 +1437,500 @@
 
 <!--    그래프 페이지-->
 <!--    그래프 요약-->
-    <select id="getGraphSummary" resultType="java.util.Map">
-        <![CDATA[
-#         월별 날짜 구하기
-        with recursive month_range as (
-            select #{fromYmd} as d
-            union all
-            select date_add(d, interval 1 month) as d
-            from month_range
-            where date_add(d, interval 1 month) < #{toYmd}
-        ), months as(
-            select month(d) as m
-            from month_range
-        ), filtered_sale as ( # 판매일보 초벌
-            select month(actv_dt) as actv_month,
-                   device_id,
-                   internet_plan,
-                   tv_plan,
-                    exsvc_id,
-                   total_cms,
-                   wt_cms,
-                   sale_id,
-                   sd_id,
-                    shop_id
-            from tb_sale
-            where shop_id=#{currShopId} and
-                ]]>
-                <if test="userId != null and !userId.equals('')">
-                    seller_id=#{userId} and
-                </if>
-                <![CDATA[
-                actv_dt between #{fromYmd} and date_add(#{toYmd}, interval 1 month)
-        ), ct_graph as ( # 무선 그래프 데이터
-            SELECT m,
-                   count(device_id) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m and
-                                                      device_id is not null
-            group by m
-        ), internet_graph as ( # 인터넷 그래프 데이터
-            SELECT m,
-                   count(internet_plan) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
-                                                      internet_plan is not null
-            group by m
-        ), tv_graph as ( # TV 그래프 데이터
-            SELECT m,
-                   count(tv_plan) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
-                                                      tv_plan is not null
-            group by m
-        ), card as ( # 카드 데이터
-            SELECT m,
-                   (
-                    select count(*)
-                    from tb_sale_card sc
-                    left outer join filtered_sale fs on fs.shop_id = sc.shop_id and
-                                                        fs.sale_id = sc.sale_id
-                   )  as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m
-            group by m
-        ), exsvc as ( # 부가서비스 데이터
-            SELECT m,
-                   count(exsvc_id) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m  and
-                                                      exsvc_id is not null
-            group by m
-        ), tc_graph as ( # 총 이익 그래프 데이터
-            SELECT m,
-                   IFNULL(sum(total_cms), 0) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m
-            group by m
-        ), avg_margin_graph as ( # 개인 평균 마진 그래프 데이터
-            SELECT m,
-                   IFNULL(avg(total_cms), 0) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m and
-                                                      device_id is not null
-            group by m
-        ), ud_graph as ( # 중고 개통 그래프 데이터
-            SELECT m,
-                   count(ud_id) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m
-                     LEFT OUTER JOIN tb_sale_used_device sud on sud.sale_id=filtered_sale.sale_id
-            group by m
-        ), sec_graph as ( # 세컨 그래프 데이터
-            SELECT m,
-                   count(sd_id) as cnt
-            FROM months
-                     LEFT OUTER JOIN filtered_sale on actv_month = m and
-                                                      sd_id != 0
-            group by m
-        ), diff_ct as (
-            select
-                (
-                    select cnt
-                    from ct_graph
-                    limit 4, 1
-                ) as prv,
-                (
-                    select cnt
-                    from ct_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_internet as (
-            select
-                (
-                    select cnt
-                    from internet_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from internet_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_tv as (
-            select
-                (
-                    select cnt
-                    from tv_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from tv_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_card as (
-            select
-                (
-                    select cnt
-                    from card
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from card
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_exsvc as (
-            select
-                (
-                    select cnt
-                    from exsvc
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from exsvc
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_tc as (
-            select
-                (
-                    select cnt
-                    from tc_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from tc_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ) , diff_margin as (
-            select
-                (
-                    select cnt
-                    from avg_margin_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from avg_margin_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ), diff_ud as (
-            select
-                (
-                    select cnt
-                    from ud_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from ud_graph
-                    limit 5,1
-                ) as curr
-            from dual
-        ) , diff_sec as (
-            select
-                (
-                    select cnt
-                    from sec_graph
-                    limit 4,1
-                ) as prv,
-                (
-                    select cnt
-                    from sec_graph
-                    limit 5,1
-                ) as curr
-            from dual
+    <select id="getGraphSummary" >
+        with prevMonth as (
+        SELECT *
+        FROM tb_sale
+        WHERE shop_id=#{currShopId} and
+              <if test="userId != null and userId.equals('')">
+                  seller_id=#{userId} and
+              </if>
+        actv_dt like '${prevDate}%'
+        ), currMonth as (
+        SELECT *
+        FROM tb_sale
+        WHERE shop_id=#{currShopId} and
+            <if test="userId != null and userId.equals('')">
+                seller_id=#{userId} and
+            </if>
+        actv_dt like '${currDate}%'
+        ), wt as (
+        select (
+        select count(device_id)
+        from prevMonth
+        ) as prev,
+        (
+        select count(device_id)
+        from currMonth
+        ) as curr
+        ), inet as (
+        select (
+        select count(internet_plan)
+        from prevMonth
+        ) as prev,
+        (
+        select count(internet_plan)
+        from currMonth
+        ) as curr
+        ), tv as (
+        select (
+        select count(tv_plan)
+        from prevMonth
+        ) as prev,
+        (
+        select count(tv_plan)
+        from currMonth
+        ) as curr
+        ), card as (
+        select (
+        select count(card_id)
+        from prevMonth p
+        left outer join tb_sale_card sc on p.shop_id=sc.shop_id and p.sale_id=sc.shop_id
+        ) as prev,
+        (
+        select count(card_id)
+        from currMonth c
+        left outer join tb_sale_card sc on c.shop_id=sc.shop_id and c.sale_id=sc.shop_id
+        ) as curr
+        ), exsvc as (
+        select (
+        select count(exsvc_id)
+        from prevMonth
+        ) as prev,
+        (
+        select count(exsvc_id)
+        from currMonth
+        ) as curr
+        ), total_cms as (
+        select (
+        select sum(total_cms)
+        from prevMonth
+        ) as prev,
+        (
+        select sum(total_cms)
+        from currMonth
+        ) as curr
+        ), avg_cms as (
+        select (
+        select avg(total_cms)
+        from prevMonth
+        ) as prev,
+        (
+        select avg(total_cms)
+        from currMonth
+        ) as curr
+        ), ud as (
+        select (
+        select count(ud_id)
+        from prevMonth p
+        left outer join tb_sale_used_device ud on p.shop_id=ud.shop_id and p.sale_id=ud.shop_id
+        ) as prev,
+        (
+        select count(ud_id)
+        from currMonth c
+        left outer join tb_sale_used_device ud on c.shop_id=ud.shop_id and c.sale_id=ud.shop_id
+        ) as curr
+        ), sd as (select (select count(sd_id)
+        from prevMonth) as prev,
+        (select count(sd_id)
+        from currMonth) as curr
         ), final as (
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from ct_graph
-                ) as list
-            from diff_ct
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from internet_graph
-                ) as list
-            from diff_internet
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from tv_graph
-                ) as list
-            from diff_tv
-             union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from card
-                ) as list
-            from diff_card
-             union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from exsvc
-                ) as list
-            from diff_exsvc
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from tc_graph
-                ) as list
-            from diff_tc
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from avg_margin_graph
-                ) as list
-            from diff_margin
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from ud_graph
-                ) as list
-            from diff_ud
-            union all
-            select
-                curr,
-                prv,
-                (
-                    select json_arrayagg(cnt)
-                    from sec_graph
-                ) as list
-            from diff_sec
+        <![CDATA[
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM wt
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM inet
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM tv
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM card
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM exsvc
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM total_cms
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM avg_cms
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM ud
+        UNION ALL
+        SELECT curr as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS pct
+        FROM sd
+            ]]>
         )
 
-        select FLOOR(curr) as value,
-               (
-                   CASE
-                       WHEN curr = 0 and prv = 0 THEN 0
-                       WHEN prv != 0 and curr = 0 THEN -100
-                       WHEN prv = 0 and curr != 0 THEN 100
-                       WHEN curr != 0 and prv != 0 THEN TRUNCATE(((curr/prv)-1)*100, 1)
-                       END
-                   ) as per,
-               list
+        select TRUNCATE(value, 0) as value,
+        pct
         from final
-        ]]>
+
+<!--        <![CDATA[-->
+<!--        with recursive month_range as (-->
+<!--            select #{fromYmd} as d-->
+<!--            union all-->
+<!--            select date_add(d, interval 1 month) as d-->
+<!--            from month_range-->
+<!--            where date_add(d, interval 1 month) < #{toYmd}-->
+<!--            ]]>-->
+<!--        ), months as (-->
+<!--            select MONTH(d) as m-->
+<!--            from month_range-->
+<!--        ), filtered_sale as (-->
+<!--            select month(actv_dt) as actv_month,-->
+<!--                   device_id,-->
+<!--                   internet_plan,-->
+<!--                   tv_plan,-->
+<!--                    exsvc_id,-->
+<!--                   total_cms,-->
+<!--                   wt_cms,-->
+<!--                   sale_id,-->
+<!--                   sd_id,-->
+<!--                    shop_id-->
+<!--            from tb_sale-->
+<!--            where shop_id=#{currShopId} and-->
+<!--                <if test="userId != null and !userId.equals('')">-->
+<!--                    seller_id=#{userId} and-->
+<!--                </if>-->
+<!--            <![CDATA[-->
+<!--                actv_dt >= #{fromYmd} and-->
+<!--                actv_dt < #{toYmd}-->
+<!--            ]]>-->
+<!--        ), ct_graph as (-->
+<!--            SELECT m,-->
+<!--                   count(device_id) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m and-->
+<!--                                                      device_id is not null-->
+<!--            group by m-->
+<!--        ), internet_graph as ( &#45;&#45; 인터넷 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   count(internet_plan) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m  and-->
+<!--                                                      internet_plan is not null-->
+<!--            group by m-->
+<!--        ), tv_graph as ( &#45;&#45; TV 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   count(tv_plan) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m  and-->
+<!--                                                      tv_plan is not null-->
+<!--            group by m-->
+<!--        ), card as ( &#45;&#45; 카드 데이터-->
+<!--            SELECT m,-->
+<!--                   (-->
+<!--                    select count(*)-->
+<!--                    from tb_sale_card sc-->
+<!--                    left outer join filtered_sale fs on fs.shop_id = sc.shop_id and-->
+<!--                                                        fs.sale_id = sc.sale_id-->
+<!--                   )  as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m-->
+<!--            group by m-->
+<!--        ), exsvc as ( &#45;&#45; 부가서비스 데이터-->
+<!--            SELECT m,-->
+<!--                   count(exsvc_id) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m  and-->
+<!--                                                      exsvc_id is not null-->
+<!--            group by m-->
+<!--        ), tc_graph as ( &#45;&#45; 총 이익 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   IFNULL(sum(total_cms), 0) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m-->
+<!--            group by m-->
+<!--        ), avg_margin_graph as ( &#45;&#45; 개인 평균 마진 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   IFNULL(avg(total_cms), 0) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m and-->
+<!--                                                      device_id is not null-->
+<!--            group by m-->
+<!--        ), ud_graph as ( &#45;&#45; 중고 개통 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   count(ud_id) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m-->
+<!--                     LEFT OUTER JOIN tb_sale_used_device sud on sud.sale_id=filtered_sale.sale_id-->
+<!--            group by m-->
+<!--        ), sec_graph as ( &#45;&#45; 세컨 그래프 데이터-->
+<!--            SELECT m,-->
+<!--                   count(sd_id) as cnt-->
+<!--            FROM months-->
+<!--                     LEFT OUTER JOIN filtered_sale on actv_month = m and-->
+<!--                                                      sd_id != 0-->
+<!--            group by m-->
+<!--        ), diff_ct as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from ct_graph-->
+<!--                    limit 4, 1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from ct_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_internet as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from internet_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from internet_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_tv as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from tv_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from tv_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_card as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from card-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from card-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_exsvc as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from exsvc-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from exsvc-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_tc as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from tc_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from tc_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ) , diff_margin as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from avg_margin_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from avg_margin_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), diff_ud as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from ud_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from ud_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ) , diff_sec as (-->
+<!--            select-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from sec_graph-->
+<!--                    limit 4,1-->
+<!--                ) as prv,-->
+<!--                (-->
+<!--                    select cnt-->
+<!--                    from sec_graph-->
+<!--                    limit 5,1-->
+<!--                ) as curr-->
+<!--            from dual-->
+<!--        ), final as (-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from ct_graph-->
+<!--                ) as list-->
+<!--            from diff_ct-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from internet_graph-->
+<!--                ) as list-->
+<!--            from diff_internet-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from tv_graph-->
+<!--                ) as list-->
+<!--            from diff_tv-->
+<!--             union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from card-->
+<!--                ) as list-->
+<!--            from diff_card-->
+<!--             union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from exsvc-->
+<!--                ) as list-->
+<!--            from diff_exsvc-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from tc_graph-->
+<!--                ) as list-->
+<!--            from diff_tc-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from avg_margin_graph-->
+<!--                ) as list-->
+<!--            from diff_margin-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from ud_graph-->
+<!--                ) as list-->
+<!--            from diff_ud-->
+<!--            union all-->
+<!--            select-->
+<!--                curr,-->
+<!--                prv,-->
+<!--                (-->
+<!--                    select json_arrayagg(cnt)-->
+<!--                    from sec_graph-->
+<!--                ) as list-->
+<!--            from diff_sec-->
+<!--        )-->
+
+<!--        select FLOOR(curr) as value,-->
+<!--               (-->
+<!--                   CASE-->
+<!--                       WHEN curr = 0 and prv = 0 THEN 0-->
+<!--                       WHEN prv != 0 and curr = 0 THEN -100-->
+<!--                       WHEN prv = 0 and curr != 0 THEN 100-->
+<!--                       WHEN curr != 0 and prv != 0 THEN TRUNCATE(((curr/prv)-1)*100, 1)-->
+<!--                       END-->
+<!--                   ) as per,-->
+<!--               list-->
+<!--        from final-->
     </select>
 
     <select id="getCtGraphByDateType" resultType="java.util.Map">

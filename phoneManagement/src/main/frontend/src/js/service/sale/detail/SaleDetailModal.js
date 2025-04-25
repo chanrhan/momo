@@ -328,7 +328,7 @@ function SaleDetailModal(props){
         modal.openModal(ModalType.LAYER.Sale_Wt_Plan, {
             data: {
               wt_actv_div: checkListInputField.input.wt_actv_div,
-              wt_cms: checkListInputField.input.wt_cms,
+              wt_cms: inputField.input.wt_cms,
               internet_plan: checkListInputField.input.internet_plan,
               internet_plan_nm: checkListInputField.input.internet_plan_nm,
               tv_plan: checkListInputField.input.tv_plan,
@@ -522,9 +522,9 @@ function SaleDetailModal(props){
 
 
     const onSubmit = ()=>{
-        console.log('on submit')
+        // console.log('on submit')
         if(inputField.validateAll()){
-            console.log('validated')
+            // console.log('validated')
             if(props.sale_id){
                 submit()
                 return;
@@ -538,7 +538,6 @@ function SaleDetailModal(props){
 
 
     const submit = async (rsvMsgList)=>{
-        console.log('submit')
         const formData = new FormData();
         // return ;
 

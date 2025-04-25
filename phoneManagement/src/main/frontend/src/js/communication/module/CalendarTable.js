@@ -36,7 +36,7 @@ export function CalendarTable({inputField}){
 
     useEffect(() => {
         setShowDetail(detail ? detail.filter(v=>v.msg_st === tab) : null)
-    }, [tab]);
+    }, [detail, tab]);
 
     useEffect(() => {
         getReserveMsgForCalendar();
@@ -45,7 +45,7 @@ export function CalendarTable({inputField}){
     const getReserveMsgDetail = async ()=>{
         await  rsvMsgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day)).then(({status,data})=>{
             if(status === 200 && data){
-                // console.table(data)
+                console.table(data)
                 setDetail(data)
                 const stateList = data.map(v=>v.msg_st);
                 let _tab = 0;

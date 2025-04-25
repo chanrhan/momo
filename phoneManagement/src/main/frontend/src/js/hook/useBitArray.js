@@ -8,12 +8,12 @@ export function useBitArray(init){
     }
 
     const on = index=>{
-        console.log(`on, ${index} before: ${bit} | after: ${bit | (1 << index)}`)
+        // console.log(`on, ${index} before: ${bit} | after: ${bit | (1 << index)}`)
         setBit(bit | (1 << index))
     }
 
     const off = index=>{
-        console.log(`off, ${index} before: ${bit} | after: ${bit & ~(1 << index)}`)
+        // console.log(`off, ${index} before: ${bit} | after: ${bit & ~(1 << index)}`)
         setBit(bit & ~(1 << index))
     }
 

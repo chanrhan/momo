@@ -43,6 +43,9 @@ public class CommonVO extends BaseVO {
     private String fromYm;
     private String toYm;
 
+    private Integer fromMonth;
+    private Integer toMonth;
+
     private String prevDate;
     private String currDate;
 

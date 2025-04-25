@@ -129,12 +129,13 @@ public class SaleService  {
 	public int updateSalePromise(SaleVO vo){
 		List<SalePromiseVO> apmList = vo.getPmList();
 
-		if(apmList == null || apmList.isEmpty()){
-			return 0;
-		}
-
 		int currShopId = vo.getCurrShopId();
 		int saleId = vo.getSaleId();
+
+		if(apmList == null || apmList.isEmpty()){
+			return saleMapper.deleteAllSalePromise(currShopId, saleId);
+		}
+
 
 		int rst = saleMapper.deleteAllSalePromise(currShopId, saleId);
 		saleMapper.insertSalePromise(currShopId, saleId, apmList);
@@ -145,12 +146,12 @@ public class SaleService  {
 	public int updateSaleSupport(SaleVO vo){
 		List<SaleSupportVO> supList = vo.getSupList();
 
-		if(supList == null || supList.isEmpty()){
-			return 0;
-		}
-
 		int currShopId = vo.getCurrShopId();
 		int saleId = vo.getSaleId();
+
+		if(supList == null || supList.isEmpty()){
+			return saleMapper.deleteAllSaleSupport(currShopId,saleId);
+		}
 
 		int rst =saleMapper.deleteAllSaleSupport(currShopId,saleId);
 		saleMapper.insertSaleSupport(currShopId, saleId,supList);
@@ -160,12 +161,12 @@ public class SaleService  {
 	public int updateSaleAdd(SaleVO vo){
 		List<SaleAddVO> addList = vo.getAddList();
 
-		if(addList == null || addList.isEmpty()){
-			return 0;
-		}
-
 		int currShopId = vo.getCurrShopId();
 		int saleId = vo.getSaleId();
+
+		if(addList == null || addList.isEmpty()){
+			return  saleMapper.deleteAllSaleAdd(currShopId,saleId);
+		}
 
 		int rst = saleMapper.deleteAllSaleAdd(currShopId,saleId);
 		saleMapper.insertSaleAdd(currShopId, saleId,addList);
@@ -175,12 +176,12 @@ public class SaleService  {
 	public int updateSaleCard(SaleVO vo){
 		List<SaleCardVO> cardList = vo.getCardList();
 
-		if(cardList == null || cardList.isEmpty()){
-			return 0;
-		}
-
 		int currShopId = vo.getCurrShopId();
 		int saleId = vo.getSaleId();
+
+		if(cardList == null || cardList.isEmpty()){
+			return saleMapper.deleteAllSaleCard(currShopId, saleId);
+		}
 
 		int rst = saleMapper.deleteAllSaleCard(currShopId, saleId);
 		saleMapper.insertSaleCard(currShopId, saleId,cardList);
@@ -190,12 +191,12 @@ public class SaleService  {
 	public int updateSaleUsedDevice(SaleVO vo){
 		List<SaleUsedDeviceVO> usedDeviceList = vo.getUdList();
 
-		if(usedDeviceList == null || usedDeviceList.isEmpty()){
-			return 0;
-		}
-
 		int currShopId = vo.getCurrShopId();
 		int saleId = vo.getSaleId();
+
+		if(usedDeviceList == null || usedDeviceList.isEmpty()){
+			return saleMapper.deleteAllSaleUsedDevice(currShopId, saleId);
+		}
 
 		int rst = saleMapper.deleteAllSaleUsedDevice(currShopId, saleId);
 		saleMapper.insertSaleUsedDevice(currShopId, saleId,usedDeviceList);
@@ -206,7 +207,7 @@ public class SaleService  {
 		List<String> files = vo.getFiles();
 
 		if(files == null || files.isEmpty()){
-			return 0;
+			return saleMapper.deleteAllSaleFiles(vo);
 		}
 
 		int currShopId = vo.getCurrShopId();

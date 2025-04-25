@@ -188,7 +188,7 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
         }
         return (
             <div className={Graph.tooltip_box} style={{
-                minWidth: `${minWidth}px`
+                // minWidth: `${minWidth}px`
             }}>
                 <div className={Graph.tooltip_title}>
                     {titleLines.map((title, i) => {

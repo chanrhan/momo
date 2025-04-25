@@ -148,7 +148,7 @@
 .dashboard .panel_body .panel.n2 .panel_item > .span{line-height:22px; vertical-align:top;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_title{width:calc(100% - 140px); color:#141218; font-size:15px;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_num{width:50px; color:#b2b4c0; font-size:16px; font-weight:600; text-align:center;}
-.dashboard .panel_body .panel.n2 .panel_item .panel_per{width:50px; margin-left:40px; font-size:14px; text-align:center;}
+.dashboard .panel_body .panel.n2 .panel_item .panel_per{width:60px; margin-left:30px; font-size:12px; text-align:center;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per.up{color:#f34432;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per.down{color:#4781ff;}
 .dashboard .panel_body .panel.n2 .panel_item .panel_per.none{color: #b2b2b2;}

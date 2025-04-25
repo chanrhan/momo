@@ -102,6 +102,10 @@ export function ReserveMessageModal(props){
     }
 
     const submit = ()=>{
+        modal.openModal(ModalType.SNACKBAR.Alert, {
+            msg: "준비 중인 기능입니다"
+        })
+        return;
         const errorList = [...errors]; // 에러
         let isError = false;
         let body = templateField.input.filter((v,i)=>{

@@ -22,8 +22,12 @@
 .graph .graph1 .graph_item .graph_count{margin-top:10px; font-size:18px; font-weight:500; line-height:20px;}
 .graph .graph1 .graph_item .graph_count .span{font-weight:600;}
 .graph .graph1 .graph_item .graph_per{margin-top:10px; font-size:14px; line-height:16px;}
-.graph .graph1 .graph_item .graph_per .span{margin-right:2px; font-size:12px; vertical-align:middle;}
-.graph .graph1 .graph_item .graph_box{position:absolute; top:16px; right:24px; width:62px; height:72px;}
+.graph .graph1 .graph_item .graph_per .span{margin-right:2px; font-size:10px; vertical-align:middle;}
+.graph .graph1 .graph_item .graph_per .description{
+    margin-left:3px; font-size:12px; vertical-align:middle;
+    /*color: #b2b2b2;*/
+}
+.graph .graph1 .graph_item .graph_box{position:absolute; top:16px; right:24px; width:62px; height:72px; overflow: visible; display: block}
 .graph .graph1 .graph_item.up{background-color:#fef0ef;}
 .graph .graph1 .graph_item.up .graph_per{color:#f34432;}
 .graph .graph1 .graph_item.down{background-color:#f0f5ff;}
@@ -158,37 +162,53 @@
 
 /*20241229 툴팁 관련*/
 .tooltip{
-    background-color: rgba(255, 255, 255, 0.89);
-    border-radius: 6px;
-    color: black;
-    border: 0.12em solid #4781ff;
+    display: inline-flex;
+    justify-content: space-between;
+    width: auto;
+    background-color: rgba(33, 33, 33, 0.86);
+    border-radius: 10px;
+    color: white;
     opacity: 1;
     pointer-events: none;
     position: absolute;
-    transform: translate(-50%, 0);
-    transition: all .25s ease;
-    /*min-width: 120px;*/
-    z-index: 1000;
-    max-width: none;
-    max-height: none;
+    transform: translate(-50%, -100%);
+    transition: all .4s ease;
+    z-index: 100;
+    white-space: nowrap;
+    max-width: 1500px;
+    overflow: visible;
+}
+.tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;              /* 툴팁 바로 아래 */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;         /* 삼각형 크기 */
+    border-style: solid;
+    border-color: transparent transparent rgba(33,33,33,0.86) transparent;
+    /* 필요하면 z-index: 1001; 로 올리기 */
 }
 
 .tooltip .tooltip_box{
-    /*background-color: #5a8ff7;*/
     font-size: 14px;
-    padding: 1px 4px 1px 4px;
+    padding: 4px 8px 4px 8px;
 }
 
 .tooltip .tooltip_box .tooltip_title{
     font-size: 12px;
 }
 
+
+
 .tooltip .tooltip_box .tooltip_body{
-    margin-top: 4px;
+    margin-top: 8px;
     text-align: left;
+
 }
 
 .tooltip .tooltip_box .tooltip_body .value_text{
+    white-space: nowrap;
     margin-top: 2px;
 }
 .tooltip .tooltip_box .tooltip_body .value_text .color_box{
@@ -196,7 +216,8 @@
     width: 10px;
     height: 10px;
     background-color: red;
-    margin-right: 4px;
+    border-radius: 3px;
+    margin-right: 8px;
 }
 .tooltip .tooltip_box .tooltip_body .value_text .num{
     margin-left: 8px;

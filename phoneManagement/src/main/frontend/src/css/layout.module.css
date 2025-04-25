@@ -58,7 +58,7 @@
 /* main */
 
 /* lnb */
-.lnb{position:fixed; top:64px; left:0; bottom:0; z-index:11; padding:29px 8px 0 8px; border-right:1px solid #dde1e8; background-color:#fff; text-align:center;}
+.lnb{position:fixed; top:64px; left:0; bottom:0; z-index:11; padding:40px 8px 0 8px; border-right:1px solid #dde1e8; background-color:#fff; text-align:center;}
 .menu .menu_list + .menu_list{position:absolute; left:0; right:0; bottom:21px;}
 .menu .menu_item + .menu_item{margin-top:16px;}
 .menu .menu_item .a{display:block; overflow:hidden; position:relative; width:63px; height:57px; margin:0 auto; padding-top:36px; color:#91939f; font-size:15px; line-height:17px;}

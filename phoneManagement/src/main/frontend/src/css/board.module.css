@@ -156,7 +156,11 @@
     margin:8px; padding:24px 20px 20px 20px; border-radius:8px;
     background-color:#fff; box-shadow:0 8px 24px rgba(221, 225, 232, 0.8);
     vertical-align:top;}
-.board .promise .promise_item:hover{
+.board .promise .promise_item.completed{
+    background-color: rgba(204, 204, 204, 0.18);
+
+}
+.board .promise .promise_item:hover:not(.completed){
     /*background-color: rgba(127, 152, 210, 0.18);*/
 }
 .board .promise .promise_box{
@@ -180,15 +184,15 @@
 .board .promise .promise_option .option_scroll::-webkit-scrollbar{width:6px;}
 .board .promise .promise_option .option_scroll::-webkit-scrollbar-thumb{border-radius:3px; background:#dde1e8;}
 .board .promise .promise_option .option_scroll::-webkit-scrollbar-track{background:transparent;}
-.board .promise .promise_option .option_item + .option_item{margin-top:16px;}
+.board .promise .promise_option .option_item + .option_item{margin-top:14px;}
 /*.board .promise .promise_option .option_item .radio_box .form_label{color:#28272c;}*/
-
 
 .board .promise .promise_option .option_item .radio_box{
     display: block;
     position: relative;
     max-width: 350px;
     padding: 3px;
+    line-height: 6px;
     /*border-radius: 8px;*/
 }
 .board .promise .promise_option .option_item .radio_box .check_inp{
@@ -200,7 +204,8 @@
     display:block; position:absolute; top:0; left:0;
     width:24px;
     height:24px;
-    background:#fff url(../images/check_icon.png) no-repeat center / 24px;
+    background: rgba(255, 255, 255, 0) url(../images/check_icon.png) no-repeat center / 24px;
+
 }
 
 .board .promise .promise_option .option_item .radio_box .check_label{
@@ -212,14 +217,16 @@
     padding: 10px;
     display:inline-block;
     /*max-width:calc(80% - 32px);*/
-    height:24px; border:0; color:#28272c;
+    height:24px;
+    border:0; color:#28272c;
     font-size:14px; font-weight:500; vertical-align:top;
     cursor: text;
     border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0);
 }
-.board .promise .promise_option .option_item .radio_box:hover,
-.board .promise .promise_option .option_item .radio_box:hover .check_text,
-.board .promise .promise_option .option_item .radio_box:hover .check_label:before{
+.board .promise .promise_item:not(.completed) .promise_option .option_item .radio_box:hover,
+.board .promise .promise_item:not(.completed) .promise_option .option_item .radio_box:hover .check_text,
+.board .promise .promise_item:not(.completed) .promise_option .option_item .radio_box:hover .check_label:before{
     background-color: #eaf2ff;
     border-radius: 8px;
 }
@@ -231,13 +238,13 @@
     text-decoration:line-through;
 }
 
-.board .promise .promise_option .option_item .radio_box .check_inp:checked + .check_label:before{
+.board .promise  .promise_option .option_item .radio_box .check_inp:checked + .check_label:before{
     background-image:url(../images/radio_icon_disabled.png);
 }
 .board .promise .promise_option .option_item .radio_box .btn_del{
     display: none;
 }
-.board .promise .promise_option .option_item .radio_box:hover .btn_del{
+.board .promise .promise_item:not(.completed) .promise_option .option_item .radio_box:hover .btn_del{
     position: absolute;
     display: block;
     top:3px;left: calc(100% - 36px);

@@ -114,21 +114,22 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
         })
     }
 
-    console.log(item.pm_st)
+    const isCompleted = item.pm_st === 1;
 
     return (
-        <li className={Board.promise_item}>
+        <li className={cm(Board.promise_item, `${isCompleted && Board.completed}`)} >
             <div className={Board.promise_box} onClick={onClick}>
                 <div className={Board.promise_profile}>
-                    <div className={cm(Board.profile_img, Board.div)}>
-                        {/*<img className={Board.img} src={img} alt="프로필 이미지"/>*/}
-                    </div>
+                    {/*<div className={cm(Board.profile_img, Board.div)}>*/}
+                    {/*    /!*<img className={Board.img} src={img} alt="프로필 이미지"/>*!/*/}
+                    {/*</div>*/}
                     <div className={cm(Board.profile_text, Board.div)}>
                         <div className={Board.profile_name}>{item.cust_nm}<span
                             className={Board.span}>{item.cust_cd}</span></div>
                         <ul className={Board.profile_info}>
                             <li className={Board.li}><span className={Board.span}>개통일</span>{item.actv_dt}</li>
                             <li className={Board.li}><span className={Board.span}>연락처</span>{item.cust_tel}</li>
+                            <li className={Board.li}><span className={Board.span}>판매자</span>{item.seller_nm}</li>
                         </ul>
                     </div>
                 </div>
@@ -139,18 +140,20 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                         <ul className="option_list">
                             {
                                 item.pm_list && item.pm_list.map((v, i) => {
-                                    return <li key={i} className={Board.option_item} draggable={true}>
+                                    return <li key={i} className={Board.option_item}>
                                         <div className={cm(Board.radio_box)}>
                                             <input type="checkbox" className={Board.check_inp} name="radio"
                                                    id={`pr_${i}`}
                                                    checked={v.checked} readOnly/>
                                             <label htmlFor={`pr_${i}`} className={Board.check_label}
                                                    onClick={() => {
-                                                       onUpdate({
-                                                           sale_id: item.sale_id,
-                                                           state: (v.checked) ? 0 : 1,
-                                                           pm_id: v.pm_id
-                                                       })
+                                                       if(!isCompleted) {
+                                                           onUpdate({
+                                                               sale_id: item.sale_id,
+                                                               state: (v.checked) ? 0 : 1,
+                                                               pm_id: v.pm_id
+                                                           })
+                                                       }
                                                    }}></label>
                                             <input type="text" className={Board.check_text}
                                                    value={focusIndex === i ? editContent : v.content}
@@ -158,7 +161,9 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                                                        setEditContent(e.target.value);
                                                    }}
                                                    onClick={() => {
-                                                       setFocusIndex(i);
+                                                       if(!isCompleted) {
+                                                           setFocusIndex(i);
+                                                       }
                                                    }}
                                                    ref={e => {
                                                        focusRef.current[i] = e;
@@ -186,7 +191,7 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
 
                     <div className={Board.option_add}>
                         {
-                            item.pm_st === 0 && (
+                            !isCompleted && (
                                 <EditableAddButton inpClassName={Board.add_inp}
                                                    btnClassName={Board.add_btn}
                                                    value='약속 추가하기' onUpdate={v => {
@@ -199,7 +204,7 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
 
             </div>
             {
-                item.pm_st === 0 ? (
+                !isCompleted ? (
                     <button type="button" onClick={() => {
                         onUpdate({
                             sale_id: item.sale_id,
@@ -210,10 +215,13 @@ function PromiseItem({onLoad, item, onUpdate, onClick}){
                         완료하기
                     </button>
                 ) : <button type="button" onClick={() => {
-                    // console.log(item.pm_st)
+                    onUpdate({
+                        sale_id: item.sale_id,
+                        pm_st: 0
+                    })
                 }}
                             className={`btn_blue ${cm(Board.btn, Board.btn_medium, Board.btn_promise, Board.grey)}`}>
-                    이미 완료된 약속입니다
+                    완료 취소하기
                 </button>
             }
 

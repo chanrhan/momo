@@ -76,7 +76,7 @@
     height: 100%;
 }
 .popup > .popup_text{margin-top:18px; color:#50505c; font-size:14px; line-height:20px;}
-.popup .popup_cont{margin-top:36px;}
+.popup .popup_cont{margin-top:36px; }
 .popup .popup_cont .popup_text{color:#141218; font-size:18px; text-align:center; line-height:32px;}
 .popup .popup_cont .sub_title{color:#4781ff; font-size:14px; margin-left: 4px; line-height:32px;}
 
@@ -152,10 +152,10 @@
 .popup .user_form .popup_text + .form_list{margin-top:32px;}
 .popup .user_form .form_list + .form_list{margin-top:28px;}
 .popup .user_form .form_list + .form_text{margin-top:10px; color:#91939f; font-size:12px; line-height:14px;}
-.popup .user_form .ta_r + .form_list.btn_half{margin-top:17px;}
-.popup .user_form .form_list.btn_half .form_item{
+.popup .user_form .ta_r + .form_list.half{margin-top:17px;}
+.popup .user_form .form_list.half .form_item{
     display:inline-block; width:calc(48% - 6px); vertical-align:top;}
-.popup .user_form .form_list.btn_half .form_item + .form_item{margin-top:0; margin-left:12px;}
+.popup .user_form .form_list.half .form_item + .form_item{margin-top:0; margin-left:12px;}
 
 .popup .user_form .form_list.third .form_item{
     display:inline-block; width:calc(32% - 6px); vertical-align:top;}
@@ -1602,8 +1602,8 @@
     .popup .service .service_scroll .service_item .button{padding:0 12px; line-height:42px;}
     .popup .user_form .popup_text + .form_list{margin-top:20px;}
     .popup .user_form .form_list + .form_list{margin-top:20px;}
-    .popup .user_form .form_list.btn_half .form_item{display:block; width:100%;}
-    .popup .user_form .form_list.btn_half .form_item + .form_item{margin:20px 0 0 0;}
+    .popup .user_form .form_list.half .form_item{display:block; width:100%;}
+    .popup .user_form .form_list.half .form_item + .form_item{margin:20px 0 0 0;}
     .select_box2 .select_inp{padding:0 12px; border-radius:5px; line-height:42px;}
     .popup > .popup_text{margin-top:12px; font-size:12px; line-height:18px; word-break:keep-all;}
     .popup .form.card .card_info .card_title{font-size:13px;}
