@@ -244,7 +244,7 @@ export function Sale(){
                                        placeholder="날짜 선택"
                                        readOnly/>
                             </MonthSelectModal>
-                            <button type="button" className="btn_all" onClick={refresh}>전체 보기</button>
+                            <button type="button" className="btn_all" onClick={refresh}>검색조건 초기화</button>
                         </div>
                         <div className={cm(Board.board_head_group)}>
                             <div className={cm(Board.board_count)}>
@@ -286,7 +286,7 @@ export function Sale(){
                         </div>
                         {
                             filterInputField.input && filterInputField.length() > 0 && <div className={Board.board_head_filter}>
-                                <button type="button" className={Board.board_filter_refresh}>필터 초기화</button>
+                                {/*<button type="button" className={Board.board_filter_refresh}>필터 초기화</button>*/}
                                 <ul className={Board.board_filter_list}>
                                     {
                                         filterInputField.input && filterInputField.input.map((v, i) => {
@@ -401,7 +401,7 @@ function TdChoice({column_index, data, image}){
             return <Btd>{data.actv_dt}</Btd>
         case 2:
             return <Btd className='ta_l'>
-                <span className={cm(Board.td_num)} onMouseOver={showHintModal}>1</span>{data.cust_nm}
+                <span className={cm(Board.td_num)} onMouseOver={showHintModal}>{data.actv_cnt}</span>{data.cust_nm}
                 {hintBox.component}
             </Btd>
         case 3:

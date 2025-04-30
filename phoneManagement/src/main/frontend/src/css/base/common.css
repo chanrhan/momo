@@ -219,7 +219,7 @@ footer{position:relative; z-index:20; width:100%; background-color:#fff;}
     background-color: #fdd4d4 !important;
 
 }
-.btn.btn_line.btn_green{border-color: #5ef16a; color: #5ef16a; font-weight:500;}
+.btn.btn_line.btn_grey{border-color: #f3b83a; color: #f3b83a; font-weight:500;}
 .btn.btn_line.btn_small{padding:1px 9px;}
 .btn.btn_line:hover{background-color:#f4f5f9;}
 .btn.btn_medium.btn_line{padding:7px 11px}

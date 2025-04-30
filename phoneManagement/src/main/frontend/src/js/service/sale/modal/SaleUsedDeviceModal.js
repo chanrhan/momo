@@ -132,6 +132,7 @@ function UsedDeviceItem({index, inputField, errorField}){
                         <div className={User.form_inp}>
                             <PriceInput name='ud_cms' className={`inp ${cm(Popup.inp, User.inp)}`}
                                    value={inputField.get(index, 'ud_cms')}
+                                        maxLength={9}
                                    onChange={e => {
                                        inputField.put(index, 'ud_cms', e.target.value)
                                    }}/>

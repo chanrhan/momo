@@ -105,4 +105,24 @@ public class SaleVO extends BaseVO {
 
 	private Integer category;
 	private Integer state;
+
+	public LogVO ToLogVO(){
+		return LogVO.builder()
+				.shopId(currShopId)
+				.provider(provider)
+				.actvDt(actvDt)
+				.sellerId(sellerId)
+				.custNm(custNm)
+				.custCd(custCd)
+				.custGd(custGd)
+				.deviceId(deviceId)
+				.ctActvTp(ctActvTp)
+				.ctIstm(ctIstm)
+				.totalCms(totalCms)
+				.wtActvTp(wtActvTp)
+				.wtCms(wtCms)
+				.sdId(sdId)
+				.udId(udId)
+				.build();
+	}
 }

@@ -5,13 +5,20 @@ import sectionImg2 from "../../images/landing/section_Img2.png"
 import sectionImg4 from "../../images/landing/section_img4.png"
 import sectionImg5 from "../../images/landing/section_img5.png"
 import sectionImg6 from "../../images/landing/section_img6.png"
-import profileImg1 from "../../images/profile_img1.jpg"
 import footerLogo from "../../images/landing/footer_logo.png"
 import {Link, useNavigate} from "react-router-dom";
 import {cm} from "../utils/cm";
 import {LandingReviewCard} from "./module/LandingReviewCard";
 import {LandingSectionWrap} from "./module/LandingSectionWrap";
 import {LandingVocItem} from "./module/LandingVocItem";
+import Review from "./review.json"
+import ProfileImg1 from "../../images/profile_img1.jpg"
+import ProfileImg2 from "../../images/profile_img2.jpg"
+import ProfileImg3 from "../../images/profile_img3.jpg"
+
+const PROFILE_IMAGES = [
+    ProfileImg1, ProfileImg2, ProfileImg3
+]
 
 const vocItems = [
     {
@@ -50,11 +57,13 @@ const vocItems = [
         text: '중고폰',
         per: 12
     }
-
 ]
 
 export function LandingPage(){
     const nav = useNavigate()
+
+    // const reviewList = JSON.parse(Review);
+
     const smoothScrollTop = e=>{
         window.scrollTo({
             top: 0,
@@ -101,9 +110,8 @@ export function LandingPage(){
                         <LandingSectionWrap num={2}>
                             <div className={cm(Landing.section_box, Landing.n1)}>
                                 <div className={Landing.section_text_box}>
-                                    <h2 className={cm(Landing.section_title, Landing.add_icon)}>컴플레인 때문에 <br/>지치시죠?</h2>
-                                    <p className={Landing.section_text}>모모가 제공하는 관리 매니저 서비를 통해 <br/>RVOC 발생률 감소를 직접
-                                        경험해보세요.</p>
+                                    <h2 className={cm(Landing.section_title, Landing.add_icon)}>예고 없이 찾아오는 고객 불만<br/>이제 지긋지긋하시죠?</h2>
+                                    <p className={Landing.section_text}>모모 매니저가 그 스트레스를 줄여드립니다.</p>
                                 </div>
 
                                 <div className={Landing.voc}>
@@ -134,13 +142,21 @@ export function LandingPage(){
 
                             <div className={Landing.review}>
                                 <ul className={Landing.review_list}>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
-                                    <LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>
+                                    {
+                                        Review && Review.map((v,i)=>{
+                                            return (
+                                                <LandingReviewCard name={v.name}
+                                                                    imgSrc={PROFILE_IMAGES[i % PROFILE_IMAGES.length]}
+                                                                   shopName={v.shopName} role={v.role} text={v.text} id={v.id}/>
+                                            )
+                                        })
+                                    }
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
+                                    {/*<LandingReviewCard name="김모모" shopName="울타리" role="대표" text="감사합니다" id="km1104rs"/>*/}
                                 </ul>
                             </div>
                         </LandingSectionWrap>
@@ -149,7 +165,7 @@ export function LandingPage(){
                             <h2 className={cm(Landing.section_title, Landing.add_icon)}>한눈에 보이는 <br/>매장 현황 그래프</h2>
                             {/*<p className={cm(Landing.section_text)}>판매일보 작성시 자동으로 그래프가 생성되어 <br/>매장 현황 파악이 가능합니다.*/}
                             {/*    간편하게 관리하세요.</p>*/}
-                            <img src={sectionImg4} alt="" className={Landing.section_img}/>
+                            <img src={sectionImg4} alt="" className={Landing.section_img} width='70%'/>
                         </LandingSectionWrap>
 
                         <LandingSectionWrap num={5}>

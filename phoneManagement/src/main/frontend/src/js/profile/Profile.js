@@ -132,7 +132,8 @@ export function Profile(){
                 {/*<label htmlFor='pfp' className={cm(User.profile_upload)}>*/}
                 {/*    프로필 업로드*/}
                 {/*</label>*/}
-                <FileInput onChange={handleFileInput} enableDrop={false} className={User.profile_upload}
+                <FileInput onChange={handleFileInput} enableDrop={false}
+                           className={User.profile_upload}
                            previewClassName={User.profile_img}
                            src={imgPreview}>
                     {/*<button className={User.btn_del}></button>*/}

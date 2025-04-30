@@ -19,7 +19,7 @@ export function DynamicSelectButton({provider, type, onChange, value, onClear}){
                     onClick={(e) => {
                         const {top, left} = MouseEventUtils.getAbsolutePos(e);
                         modal.openModal(ModalType.MENU.Dynamic_Select, {
-                            top: top,
+                            top: top + e.currentTarget.offsetHeight,
                             left: left,
                             width: e.currentTarget.offsetWidth,
                             height: e.currentTarget.offsetHeight,

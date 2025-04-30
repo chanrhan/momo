@@ -126,7 +126,7 @@
 .graph .graph4 .graph_bar .bar_item .bar_text{color:#141218; font-size:14px; line-height:16px;}
 .graph .graph4 .graph_bar .bar_item .bar_text .bar_per{float:right; color:#91939f;}
 .graph .graph4 .graph_bar .bar_item .bar{position:relative; height:16px; margin-top:8px; border-radius:8px; background-color:#dde1e8;}
-.graph .graph4 .graph_bar .bar_item .bar .span{position:absolute; top:0; left:0; bottom:0; border-radius:8px;}
+.graph .graph4 .graph_bar .bar_item .bar .span{position:absolute; top:0; left:0; bottom:0; border-radius:8px; transition: width 0.25s ease-in-out}
 .graph .graph4 .graph_bar .bar_item:nth-child(1) .bar .span,
 .graph .graph4 .graph_bar .bar_item:nth-child(5) .bar .span{background-color:#4781ff;}
 .graph .graph4 .graph_bar .bar_item:nth-child(2) .bar .span,

@@ -46,11 +46,17 @@
     </select>
 
     <select id="getSaleAll" parameterType="com.momo.common.vo.SaleSearchVO" resultType="java.util.Map">
-        with sale as (
+        with sale as ( -- getSaleAll
             select s.*,
                    IF(device_id is not null, true, false) as ct,
                    IF(wt_cms > 0 and (internet_plan is not null or tv_plan is not null), true, false) as wt,
                    IF(s.sd_id is not null, true, false) as sd,
+                   (
+                    select count(s2.cust_nm)
+                    from tb_sale s2
+                    where s2.shop_id=s.shop_id and
+                          s2.cust_nm = s.cust_nm
+                ) as actv_cnt,
                 (
                     select device_nm
                     from tb_device
@@ -113,6 +119,7 @@
                 'cust_cd',cust_cd,
                 'cust_gd',cust_gd,
                 'actv_dt',actv_dt,
+                'actv_cnt',actv_cnt,
                 'total_cms',total_cms,
                 'ct', ct,
                 'wt',wt,
@@ -1110,93 +1117,87 @@
 
 <!--    메인 페이지 (Dashboard)-->
 <!--    각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )-->
-    <select id="getSummary" resultType="java.util.Map">
+    <select id="getSummary" >
         with prevMonth as (
-            SELECT *
-            FROM tb_sale
-            WHERE shop_id=#{currShopId} and
-                actv_dt like '${prevDate}%'
+        SELECT *
+        FROM tb_sale
+        WHERE shop_id=#{currShopId} and
+        actv_dt like '${prevDate}%'
         ), currMonth as (
-            SELECT *
-            FROM tb_sale
-            WHERE shop_id=#{currShopId} and
-                actv_dt like '${currDate}%'
-        ) , tb as (
-            SELECT
-                (
-                    SELECT IFNULL(count(*), 0)
-                    FROM prevMonth
-                    WHERE device_id is not null
-                    ) as prev,
-                (
-                    SELECT IFNULL(count(*), 0)
-                    FROM currMonth
-                    WHERE device_id is not null
-                ) as curr
-            from dual
-            UNION ALL
-            SELECT
-                (
-                    SELECT IFNULL(count(*), 0)
-                    FROM prevMonth
-                    WHERE internet_plan is not null
+        SELECT *
+        FROM tb_sale
+        WHERE shop_id=#{currShopId} and
+        actv_dt like '${currDate}%'
+        ), wt as (
+        select (
+        select count(device_id)
+        from prevMonth
+        ) as prev,
+        (
+        select count(device_id)
+        from currMonth
+        ) as curr
+        ), inet as (
+        select (
+        select count(internet_plan)
+        from prevMonth
+        ) as prev,
+        (
+        select count(internet_plan)
+        from currMonth
+        ) as curr
+        ), tv as (
+        select (
+        select count(tv_plan)
+        from prevMonth
+        ) as prev,
+        (
+        select count(tv_plan)
+        from currMonth
+        ) as curr
+        ), total_cms as (
+        select (
+        select sum(total_cms)
+        from prevMonth
+        ) as prev,
+        (
+        select sum(total_cms)
+        from currMonth
+        ) as curr
+        ), avg_cms as (
+        select (
+                select avg(total_cms)
+                from prevMonth
                 ) as prev,
                 (
-                    SELECT IFNULL(count(*), 0)
-                    FROM currMonth
-                    WHERE internet_plan is not null
+                select avg(total_cms)
+                from currMonth
                 ) as curr
-            from dual
-            UNION ALL
-            SELECT
-                (
-                    SELECT IFNULL(count(*), 0)
-                    FROM prevMonth
-                    WHERE tv_plan is not null
-                ) as prev,
-                (
-                    SELECT IFNULL(count(*), 0)
-                    FROM currMonth
-                    WHERE tv_plan is not null
-                ) as curr
-            from dual
-            UNION ALL
-            SELECT
-                (
-                    SELECT IFNULL(SUM(total_cms),0)
-                    FROM prevMonth
-                    where device_id is not null
-                ) as prev,
-                (
-                    SELECT IFNULL(SUM(total_cms),0)
-                    FROM currMonth
-                    where device_id is not null
-                ) as curr
-            from dual
-            UNION ALL
-            SELECT
-                (
-                    SELECT IFNULL(AVG(total_cms),0)
-                    FROM prevMonth
-                    where device_id is not null
-                ) as prev,
-                (
-                    SELECT IFNULL(AVG(total_cms),0)
-                    FROM currMonth
-                    where device_id is not null
-                ) as curr
-            from dual
+        ), final as (
+        SELECT *
+        FROM wt
+        UNION ALL
+        SELECT *
+        FROM inet
+        UNION ALL
+        SELECT *
+        FROM tv
+        UNION ALL
+        SELECT *
+        FROM total_cms
+        UNION ALL
+        SELECT *
+        FROM avg_cms
         )
 
-        SELECT FLOOR(curr) as value,
-               (
-                   CASE
-                       WHEN curr = 0 THEN 0
-                       WHEN prev = 0 THEN 100
-                       WHEN prev != 0 THEN TRUNCATE(((curr/prev)-1)*100, 1)
-                   END
-                   ) as per
-        FROM tb
+        select TRUNCATE(curr, 0) as value,
+        CASE
+        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+        ELSE ROUND((curr-prev)/prev*100, 0)
+        END AS per
+        from final
     </select>
 
 <!--    // 판매일보 대비 항목(카드/세컨/부가서비스) 비율 (항목 개수)-->
@@ -1344,8 +1345,8 @@
                     FROM tb_sale
                     WHERE shop_id=#{currShopId} and
                         (
-                            internet_plan != 0 or
-                            tv_plan != 0
+                            internet_plan is not null or
+                            tv_plan is not null
                             ) and
                         actv_dt BETWEEN #{prevFromYmd} AND #{prevToYmd}
                 ) as prev,
@@ -1354,8 +1355,8 @@
                     FROM tb_sale
                     WHERE shop_id=#{currShopId} and
                         (
-                            internet_plan != 0 or
-                            tv_plan != 0
+                            internet_plan is not null or
+                            tv_plan is not null
                         ) and
                         actv_dt BETWEEN #{currFromYmd} AND #{currToYmd}
                 ) as curr
@@ -1535,92 +1536,41 @@
         (select count(sd_id)
         from currMonth) as curr
         ), final as (
-        <![CDATA[
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM wt
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM inet
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM tv
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM card
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM exsvc
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM total_cms
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM avg_cms
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM ud
         UNION ALL
-        SELECT curr as value,
-        CASE
-        WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
-        WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
-        WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
-        ELSE ROUND((curr-prev)/prev*100, 0)
-        END AS pct
+        SELECT *
         FROM sd
-            ]]>
         )
 
-        select TRUNCATE(value, 0) as value,
-        pct
+        select TRUNCATE(curr, 0) as value,
+            CASE
+                WHEN (prev = 0 OR prev is null) AND (curr = 0 OR curr is null) THEN 0
+                WHEN (prev = 0 OR prev is null) AND curr > 0 THEN 100
+                WHEN prev > 0 AND (curr = 0 OR curr is null) THEN -100
+                ELSE ROUND((curr-prev)/prev*100, 0)
+            END AS pct
         from final
 
 <!--        <![CDATA[-->

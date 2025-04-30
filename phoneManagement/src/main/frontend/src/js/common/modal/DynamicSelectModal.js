@@ -261,7 +261,7 @@ export function DynamicSelectModal(props){
     }
 
     return (
-        <MenuModal modalRef={props.modalRef} top={props.top + 40} left={props.left}>
+        <MenuModal modalRef={props.modalRef} top={props.top} left={props.left}>
             <div className={cm(Popup.select_box2, Popup.active)}
                   onClick={e=>{
                 setInpFocus(null)

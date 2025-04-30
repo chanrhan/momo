@@ -22,6 +22,7 @@
             left outer join tb_shop sh on sh.shop_id=sf.shop_id
             left outer join tb_account ac on ac.id=sf.staff_id
             where user_st=#{userSt}
+            order by regi_dt desc, approval_st
         ), search as (
             select *
             from users

@@ -127,7 +127,9 @@
 .board .td_board .tbody .td_type.pink{background-color:#fee5f8; color:#f959cd;}
 .board .td_board .tbody .td_type.purple{background-color:#eee5ff; color:#8b55ff;}
 .board .td_board .tbody .td_num{
-    display:inline-block; width:24px; height:24px;
+    display:inline-block;
+    min-width: 24px;
+    width:fit-content; height:24px;
     margin-right:8px;
     /*background:url(../images/num_icon.png) no-repeat center / 24px; */
     font-weight:600; text-align:center;
@@ -137,8 +139,24 @@
     background-color:#e3ecff; color:#4275e8;
     line-height:14px; vertical-align:middle;
 }
-.board .td_board .tbody .board_profile .profile_name{line-height:27px;}
-.board .td_board .tbody .board_profile .profile_name .profile_img{display:inline-block; overflow:hidden; width:27px; height:27px; margin-right:8px; border-radius:50%; vertical-align:top;}
+.board .td_board .tbody .board_profile{
+    height: 27px;
+}
+.board .td_board .tbody .board_profile .profile_name{
+    vertical-align: center;
+}
+.board .td_board .tbody .board_profile .profile_name .name_text{
+    display:inline-block;
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+.board .td_board .tbody .board_profile .profile_name .profile_img{
+    display:inline-block;
+    position: relative;
+    overflow:hidden;
+    width:27px; height:27px;
+    margin-right:8px; border-radius:50%;}
 .board .td_board .tbody .td .select_btn{
     text-align: center;
     min-width: 80%;

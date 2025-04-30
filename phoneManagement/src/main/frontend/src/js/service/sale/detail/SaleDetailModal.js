@@ -529,10 +529,13 @@ function SaleDetailModal(props){
                 submit()
                 return;
             }
-            modal.openModal(ModalType.LAYER.Reserve_Message, {
-                actv_dt: inputField.get('actv_dt'),
-                onSubmit: submit
-            })
+            submit([]);
+
+            // 준비 중인 기능
+            // modal.openModal(ModalType.LAYER.Reserve_Message, {
+            //     actv_dt: inputField.get('actv_dt'),
+            //     onSubmit: submit
+            // })
         }
     }
 
@@ -569,9 +572,12 @@ function SaleDetailModal(props){
             ...checkListInputField.input,
             sup_list: supportInputField.input.filter(v=>v.div && v.div !== 0),
             add_list: addInputField.input.filter(v=>v.div && v.div !== 0),
-            total_cms: Number(inputField.get('ct_cms')) +
+            total_cms: (
+                sumCms() +
+                sumUsedDeviceCms() +
                 sumAdd() -
-                sumSup(),
+                sumSup()
+            ),
             pm_list: pm_list,
             rsv_msg_list: rsvMsgList,
             file_orders: fileOrders,

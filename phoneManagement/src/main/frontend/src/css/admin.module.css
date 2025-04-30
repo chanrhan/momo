@@ -1,15 +1,61 @@
+.manage_box{
+    padding: 0 8px 0 8px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.manage_box .btn{
+    /*display: inline-block;*/
+    width: 100%;
+    font-size: 12px;
+    line-height: 12px;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 4px 6px 4px 6px;
+}
+
+.manage_box .btn.btn_red{
+    border-color: red;
+    color: red;
+}
+
+.manage_box .btn.btn_blue{
+    border-color: #4781ff;
+    color: #4781ff;
+}
+
+.manage_box .btn.btn_grey{
+    border-color: #b6b6b6;
+    color: #b6b6b6;
+}
+
+.manage_box .btn.w50{
+    width: 48%;
+}
+.manage_box .btn.w50.btn_red:hover{
+    background-color: #ffdede;
+}
+.manage_box .btn.w50.btn_blue:hover{
+    background-color: #e2ecff;
+}
+.manage_box .btn.w50 + .btn.w50{
+    margin-left: 4%;
+}
+
+/*매장 방문 내역 페이지 */
 .admin_base_panel{
     position: relative;
     width: 100%;
     height: 1000px;
-    background-color: tan;
+    /*background-color: tan;*/
 }
 
 .admin_base_panel .header_group{
     margin-top: 40px;
     width: 100%;
     height: 5%;
-    background-color: green;
+    /*background-color: green;*/
 }
 
 .admin_base_panel .header_group .title{
@@ -18,103 +64,191 @@
     margin: 44px 0 0 185px;
     font-size: 24px;
     font-weight: 700;
+    align-content: center;
 }
 
 .admin_base_panel .body_group{
-    background-color: peru;
+    display: flex;
     height: 95%;
 }
 
 .admin_base_panel .body_group .map_panel{
-    background-color: #4a5bcf;
-    display: inline-block;
+    background-color: #e7e7e7;
+    /*display: inline-block;*/
     width: 40%;
     height: 100%;
     padding: 15px;
 }
 
 .admin_base_panel .body_group .map_panel .map_cont{
-    background-color: white;
+    background-color: #3bd500;
     width: 100%;
     height: 60%;
 }
 
 .admin_base_panel .body_group .map_panel .shop_list_panel{
-    background-color: #8b55ff;
+    background-color: #7e7e7e;
     width: 100%;
     height: 40%;
 }
 
 .admin_base_panel .body_group .detail_panel{
-    background-color: #ff9d9d;
-    display: inline-block;
+    background-color: #e7e7e7;
+    /*display: inline-block;*/
     padding: 15px;
     width: 60%;
     height: 100%;
 }
 
 .admin_base_panel .body_group .detail_panel .detail_header{
-    background-color: #4a5bcf;
-    padding: 15px;
+    display: flex;
+    background-color: #d7d7d7;
+    padding: 10px 15px 10px 15px;
     width: 100%;
-    height: 14%;
+    height: 8%;
+    align-items: center;
 }
 
 .admin_base_panel .body_group .detail_panel .detail_header .shop_nm_box{
     /*display: inline-block;*/
-    background-color: #ae77e1;
+    background-color: #ffffff;
+    border-radius: 8px;
     width: 150px;
     height: 50px;
+    text-align: center;
+    align-content: center;
+    font-size: 26px;
+    line-height: 26px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header .shop_label_list{
+.admin_base_panel .body_group .detail_panel .detail_header .description_box{
+    margin-left: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_header .description_box .address_text{
 
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header .shop_label_list .shop_label_item{
+.admin_base_panel .body_group .detail_panel .detail_header .description_box .shop_label_list{
+    margin-top: 4px;
+}
 
+.admin_base_panel .body_group .detail_panel .detail_header .description_box .shop_label_list .shop_label_item{
+    width: 22px;
+    height: 22px;
+    background-color: #ff7575;
+    border-radius: 40%;
 }
 
 .admin_base_panel .body_group .detail_panel .detail_body{
-    background-color: #b4e58b;
+    background-color: #d7d7d7;
     padding: 15px;
     width: 100%;
-    height: 86%;
+    height: 92%;
 }
 
 .admin_base_panel .body_group .detail_panel .detail_body .info_panel{
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 45%;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_box{
-    background-color: #e1b284;
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont{
+    background-color: #cddcff;
     width: 50%;
-    height: 30%;
+    padding: 14px;
+}
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .title{
+    font-size: 24px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_box .detail_inp{
-
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items{
+    margin-top: 20px;
+    display: grid;
+    height: 200px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 }
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item{
+    /*width: 50%;*/
+    /*height: 100%;*/
+    padding: 2px 4px 2px 4px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item .subject_text{
+    display: block;
+    font-size: 16px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item .inp{
+    border: 1px solid black;
+    padding: 0 6px 0 6px;
+    margin-top: 4px;
+    width: 90%;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 6px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box{
+    height: 100px;
+    padding: 2px 4px 2px 4px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .subject_text{
+    display: block;
+    font-size: 16px;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .file_box{
+    display: none;
+}
+
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .file_label{
+    display: block;
+    background-color: white;
+    margin-top: 6px;
+    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+}
+
 
 .admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont{
     background-color: #e8d46b;
     width: 50%;
-    height: 30%;
+    padding: 14px;
+}
+.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont .title{
+    font-size: 24px;
 }
 
 .admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont .content{
-
+    margin-top: 45px;
+    padding: 10px;
+    width: 100%;
+    height: calc(100% - 76px);
+    border-radius: 6px;
+    font-size: 18px;
+    resize: none;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .visit_log_list{
-    background-color: #6be8c7;
+.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel{
+    background-color: #ffffff;
     margin-top: 15px;
     width: 100%;
-    height: calc(70% - 15px);
+    height: calc(55% - 15px);
+    padding: 16px 22px 16px 22px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .visit_log_list .visit_log_item{
+.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel .title{
+    font-size: 24px;
+}
 
+.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel .visit_log_table{
+    margin-top: 18px;
+    overflow-y: auto;
 }

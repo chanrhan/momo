@@ -1,5 +1,6 @@
 import Board from "../../css/board.module.css"
 import Layout from "../../css/layout.module.css"
+import Admin from "../../css/admin.module.css"
 import {TabList} from "../common/module/TabList";
 import {BoardTable, Btbody, Btd, Bth, Bthead} from "../service/board/BoardTable";
 import useValidateInputField from "../hook/useValidateInputField";
@@ -143,7 +144,7 @@ export function Administrator(){
                         <Bth className="ta_c">가입일</Bth>
                         <Bth className="ta_c">최근 로그인</Bth>
                         <Bth className="ta_c">승인 여부</Bth>
-                        <Bth className="ta_c">관리</Bth>
+                        {/*<Bth className="ta_c">관리</Bth>*/}
                     </Bthead>
                     <Btbody br>
                         {
@@ -165,34 +166,35 @@ export function Administrator(){
                                     <Btd className="ta_c">{v.regi_dt}</Btd>
                                     <Btd className="ta_c">{v.last_login_dt}</Btd>
                                     <Btd>
-                                        {
-                                            state === 0 ?
-                                                (
-                                                    v.role === 1 ? (
-                                                        <>
-                                                            <button type="button" className="btn btn_grey btn_small btn_line" onClick={()=>{
-                                                                changeState(v.id, v.shop_id, 1);
-                                                            }}>승인</button>
-                                                            <button type="button" className="btn btn_red btn_small btn_line" onClick={()=>{
-                                                                changeState(v.id, v.shop_id, 2);
-                                                            }}>거절</button>
-                                                        </>
-                                                    ) : (
-                                                        <button type="button" className={`btn btn_green btn_small btn_line`}>
-                                                            승인대기중
-                                                        </button>
-                                                    )
-                                                ) :
-                                                <button type="button"
-                                                        className={`btn ${state === 1 ? 'btn_blue' : 'btn_cancel'} btn_small btn_line`}>
-                                                    {state === 1 ? '승인완료': (state === 2 ? '승인거절':'관리자')}
-                                                </button>
-                                        }
-
+                                        <div className={Admin.manage_box}>
+                                            {
+                                                state === 0 ?
+                                                    (
+                                                        v.role === 1 ? (
+                                                            <>
+                                                                <button type="button" className={cm(Admin.btn, Admin.w50, Admin.btn_blue)} onClick={()=>{
+                                                                    changeState(v.id, v.shop_id, 1);
+                                                                }}>승인</button>
+                                                                <button type="button" className={cm(Admin.btn, Admin.w50, Admin.btn_red)} onClick={()=>{
+                                                                    changeState(v.id, v.shop_id, 2);
+                                                                }}>거절</button>
+                                                            </>
+                                                        ) : (
+                                                            <button type="button" className={cm(Admin.btn, Admin.btn_grey)}>
+                                                                승인 대기중
+                                                            </button>
+                                                        )
+                                                    ) :
+                                                    <button type="button"
+                                                            className={cm(Admin.btn, `${state === 1 ? Admin.btn_blue: (state === 2 ? Admin.btn_red :Admin.btn_red )}`)}>
+                                                        {state === 1 ? '승인됨': (state === 2 ? '승인 거부됨':'관리자')}
+                                                    </button>
+                                            }
+                                        </div>
                                     </Btd>
-                                    <Btd className="ta_c">
-                                        <a href="#" className="btn btn_grey btn_small btn_line">관리</a>
-                                    </Btd>
+                                    {/*<Btd className="ta_c">*/}
+                                    {/*    <a href="#" className="btn btn_grey btn_small btn_line">관리</a>*/}
+                                    {/*</Btd>*/}
                                 </tr>
                             })
                         }

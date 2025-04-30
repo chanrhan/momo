@@ -39,6 +39,7 @@ export function UsedDeviceCmsModal(props){
                             <div className={User.form_inp}>
                                 <PriceInput name='ud_cms' className={cmc(User.inp)}
                                             value={amount}
+                                            maxLength={9}
                                             onChange={(e)=>{
                                                 setAmount(e.target.value)
                                             }}

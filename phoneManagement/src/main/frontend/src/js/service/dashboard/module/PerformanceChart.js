@@ -90,6 +90,8 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
             from_ymd: DateUtils.dateToStringYYMMdd(fromDate),
             to_ymd: DateUtils.dateToStringYYMMdd(toDate)
         }
+        // console.table(body)
+        // return;
         let rst = null;
 
         switch (categoryTab){
@@ -117,6 +119,7 @@ export function PerformanceChart({userId, categoryTab, chartClassName, pannelCla
             if(status === 200 && data){
                 if(data.value){
                     const parsed = JSON.parse(data.value)
+                    // console.table(parsed)
                     setGraphData([parsed])
 
                     max = Math.max(...parsed)

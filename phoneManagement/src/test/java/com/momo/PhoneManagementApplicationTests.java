@@ -1,29 +1,32 @@
 package com.momo;
 
+import com.momo.common.vo.LogVO;
 import com.momo.common.vo.SaleVO;
-import com.momo.service.SaleService;
-import lombok.RequiredArgsConstructor;
+import com.momo.mapper.SaleMapper;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-//@SpringBootTest
-class PhoneManagementApplicationTests {
-	private static final Logger log = LoggerFactory.getLogger(PhoneManagementApplicationTests.class);
-//	@Autowired
-	private SaleService saleService;
+@SpringBootTest
+@TestPropertySource(locations = "classpath:/application-dev.properties")
+//@Transactional
+public class PhoneManagementApplicationTests {
+	@Autowired
+	private SaleMapper saleMapper;
 
 	@Test
-	void contextLoads() throws IllegalAccessException {
+	void contextLoads() {
 //		insertData();
-//		insertRandomData();
+		insertRandomData(10);
 	}
 
 
@@ -40,22 +43,23 @@ class PhoneManagementApplicationTests {
 			vo.setCustGd(i % 3);
 			vo.setCustTel(getRandomTel());
 			vo.setCustCd(getRandomCustCd());
-			saleService.insertSale(vo);
+			saleMapper.insertSale(vo);
 		}
 	}
 
-	public void insertRandomData(){
-		String custNm = "terran_";
+	public void insertRandomData(int insertCount){
+		Integer shopId = 2;
+		String custNm = "guest_";
 		Random random = new Random();
 
-		LocalDate startDate = LocalDate.of(2024,6,1);
-		LocalDate endDate = LocalDate.of(2024,7,31);
+		LocalDate startDate = LocalDate.of(2025,1,1);
+		LocalDate endDate = LocalDate.of(2025,12,31);
 
+		List<LogVO> loggedSale = new ArrayList<>();
 
-
-		for(int i=0;i<100; ++i){
+		for(int i=0;i<insertCount; ++i){
 			LocalDate actvDt = generateRandomDate(startDate, endDate);
-			int deviceId = random.nextInt(4); // 0 ~ 3
+			int deviceId = random.nextInt(435); // 0 ~ 3
 			int udId = random.nextInt(3); // 0 ~ 2
 			int ctActvTp = random.nextInt(3); // 0 ~ 2
 			int istm = random.nextInt(7); // 0 ~ 6
@@ -64,7 +68,7 @@ class PhoneManagementApplicationTests {
 			int provider = random.nextInt(3); // 0 ~ 2
 
 			SaleVO vo = SaleVO.builder()
-					.userId("km1104rs")
+					.currShopId(2)
 					.provider(provider)
 					.actvDt(actvDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
 					.sellerId("km1104rs")
@@ -72,17 +76,21 @@ class PhoneManagementApplicationTests {
 					.custGd(100 % 3)
 					.custTel(getRandomTel())
 					.custCd(getRandomCustCd())
-					.deviceId((i % 3 == 0) ? null : deviceId)
+					.deviceId(deviceId)
 					.ctActvTp(ctActvTp)
 					.ctIstm(istm)
 					.totalCms(totalCms * 1000)
 					.wtActvTp((i % 2 == 0) ? 0 : 1)
 					.wtCms(wtCms * 1000)
-					.sdId((i % 3 == 0) ? null : udId)
+					.sdId(1)
+					.udId(udId)
 					.build();
-			log.info("vo: {}", vo);
-			saleService.insertSale(vo);
+			LogVO log = vo.ToLogVO();
+			System.out.println(log);
+			loggedSale.add(log);
+			saleMapper.insertSale(vo);
 		}
+		LogUtils.addLogAll(loggedSale);
 	}
 
 	public LocalDate generateRandomDate(LocalDate startDate, LocalDate endDate) {

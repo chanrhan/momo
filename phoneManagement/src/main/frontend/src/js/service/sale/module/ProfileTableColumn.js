@@ -18,7 +18,10 @@ export function ProfileTableColumn({src, name, active}){
                 }}>
                     <span className={cm(Board.profile_img)}>
                         <img src={src} alt="프로필 이미지"/>
-                    </span>{name}
+                    </span>
+                    <span className={Board.name_text}>
+                        {name}
+                    </span>
                     {
                         src === UNKNOWN_USER_IMG && (
                             <>

@@ -3,6 +3,7 @@ package com.momo.service;
 import com.momo.common.vo.*;
 import com.momo.mapper.SaleMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SaleService  {
 	private final SaleMapper saleMapper;
 
@@ -330,6 +332,7 @@ public class SaleService  {
 	// 메인 페이지 (Dashboard)
 	//  각 항목별 요약 (판매 금액/개수, 전월대비 증가/감소량 퍼센트 )
 	public List<Map<String,Object>> getSummary(int currShopId, String prevMonth, String currMonth){
+		log.info("getSummary: {}, {}, {}", currShopId, prevMonth, currMonth);
 		return saleMapper.getSummary(currShopId, prevMonth, currMonth);
 	}
 
