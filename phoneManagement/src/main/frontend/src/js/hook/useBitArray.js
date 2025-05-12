@@ -7,6 +7,10 @@ export function useBitArray(init){
         setBit(bit)
     }
 
+    const clear = ()=>{
+        setBit(0);
+    }
+
     const on = index=>{
         // console.log(`on, ${index} before: ${bit} | after: ${bit | (1 << index)}`)
         setBit(bit | (1 << index))
@@ -58,6 +62,7 @@ export function useBitArray(init){
     return {
         bit,
         get,
+        clear,
         set,
         on,
         off,

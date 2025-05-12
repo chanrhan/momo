@@ -44,21 +44,21 @@
 }
 
 /*매장 방문 내역 페이지 */
-.admin_base_panel{
+.visit_map{
     position: relative;
     width: 100%;
     height: 1000px;
     /*background-color: tan;*/
 }
 
-.admin_base_panel .header_group{
+.visit_map .header_group{
     margin-top: 40px;
     width: 100%;
     height: 5%;
     /*background-color: green;*/
 }
 
-.admin_base_panel .header_group .title{
+.visit_map .header_group .title{
     width: 100%;
     height: 100%;
     margin: 44px 0 0 185px;
@@ -67,12 +67,12 @@
     align-content: center;
 }
 
-.admin_base_panel .body_group{
+.visit_map .body_group{
     display: flex;
     height: 95%;
 }
 
-.admin_base_panel .body_group .map_panel{
+.visit_map .body_group .map_panel{
     background-color: #e7e7e7;
     /*display: inline-block;*/
     width: 40%;
@@ -80,175 +80,392 @@
     padding: 15px;
 }
 
-.admin_base_panel .body_group .map_panel .map_cont{
+.visit_map .body_group .map_panel .map_cont{
     background-color: #3bd500;
     width: 100%;
-    height: 60%;
+    height: 100%;
 }
 
-.admin_base_panel .body_group .map_panel .shop_list_panel{
-    background-color: #7e7e7e;
-    width: 100%;
-    height: 40%;
-}
 
-.admin_base_panel .body_group .detail_panel{
-    background-color: #e7e7e7;
+.visit_map .body_group .detail_panel{
+    background-color: #ffdddd;
     /*display: inline-block;*/
     padding: 15px;
     width: 60%;
     height: 100%;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header{
-    display: flex;
-    background-color: #d7d7d7;
-    padding: 10px 15px 10px 15px;
+.visit_map .body_group .detail_panel .list_header{
     width: 100%;
-    height: 8%;
+    height: 70px;
+    padding: 0 20px 0 20px;
+    background-color: #d2d2d2;
+    display: flex;
     align-items: center;
+
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header .shop_nm_box{
-    /*display: inline-block;*/
-    background-color: #ffffff;
+.visit_map .body_group .detail_panel .list_header .inp_search{
+    width: 60%;
+    height: 45px;
+    padding: 2px 8px 2px 8px;
+    font-size: 18px;
     border-radius: 8px;
-    width: 150px;
-    height: 50px;
-    text-align: center;
-    align-content: center;
-    font-size: 26px;
-    line-height: 26px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header .description_box{
+.visit_map .body_group .detail_panel .list_header .btn{
+    height: 45px;
+
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_sort{
     margin-left: 20px;
-    height: 100%;
+    width: 32px;
+    background: url(../images/sort_icon2.png) no-repeat center / 100%;
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_filter{
+    margin-left: 12px;
+    width: 36px;
+    background: url(../images/filter_icon2.png) no-repeat center / 100%;
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_search{
+    margin-left: 14px;
+    width: 46px;
+    background: url(../images/search_icon.png) no-repeat center / 100%;
+}
+
+
+.visit_map .body_group .detail_panel .shop_list_panel{
+    padding: 14px 20px 14px 20px;
+    width: 100%;
+    height: calc(100% - 70px);
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item{
+
+}
+
+
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box{
+    display: flex;
+    border-radius: 6px;
+    background-color: #dcdcdc;
+    width: 100%;
+    height: 75px;
+    padding: 4px 14px 4px 14px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_preview_box{
+    border-radius: 6px 6px 0 0;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box:hover{
+    background-color: #c0c0c0;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item + .shop_item{
+    margin-top: 14px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info{
+    width: 92%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_top{
+    font-weight: 500;
+    /*background-color: #4a5bcf;*/
+    display: flex;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_top .shop_name{
+    font-size: 22px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_top .marker_item{
+    margin-left: 10px;
+    font-size: 15px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 0 8px 0 8px;
+    cursor: pointer;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_top .marker_item + .marker_item{
+    margin-left: 6px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_bottom{
+    font-size: 15px;
+    margin-top: 3px;
+    /*background-color: #6be8c7;*/
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_bottom .shop_addr{
+    display: inline-block;
+
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .shop_info .align_bottom .last_visit_date{
+    display: inline-block;
+    float: right;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .option_section{
+    display: block;
+    /*background-color: yellowgreen;*/
+    width: 8%;
+    align-content: center;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_preview_box .option_section .btn_more{
+    float: right;
+    margin-right: 12px;
+    width: 32px;
+    height: 32px;
+    background: url(../images/view_more_arrow.png) no-repeat center / 100%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_preview_box .option_section .btn_more{
+    rotate: 180deg;
+}
+
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item .shop_detail{
+    margin-bottom: 16px;
+    background-color: #d3deff;
+    border-radius: 0 0 8px 8px;
+    width: 100%;
+    height: 0;
+    transition: all 0.2s ease-in-out;
+    padding: 0 14px 0 14px;
     overflow: hidden;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_header .description_box .address_text{
-
-}
-
-.admin_base_panel .body_group .detail_panel .detail_header .description_box .shop_label_list{
-    margin-top: 4px;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_header .description_box .shop_label_list .shop_label_item{
-    width: 22px;
-    height: 22px;
-    background-color: #ff7575;
-    border-radius: 40%;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body{
-    background-color: #d7d7d7;
-    padding: 15px;
-    width: 100%;
-    height: 92%;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel{
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail{
     display: flex;
-    width: 100%;
-    height: 45%;
+    height: 110px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont{
-    background-color: #cddcff;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel{
+    /*display: flex;*/
     width: 50%;
-    padding: 14px;
-}
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .title{
-    font-size: 24px;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items{
-    margin-top: 20px;
-    display: grid;
-    height: 200px;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item{
-    /*width: 50%;*/
     /*height: 100%;*/
-    padding: 2px 4px 2px 4px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item .subject_text{
-    display: block;
-    font-size: 16px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_top{
+    display: flex;
+    height: 20%;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .grid_items .info_item .inp{
-    border: 1px solid black;
-    padding: 0 6px 0 6px;
-    margin-top: 4px;
-    width: 90%;
-    height: 40px;
-    font-size: 18px;
-    border-radius: 6px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_top .subject_name{
+    font-weight: 500;
+}
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom{
+    display: flex;
+    height: 80%;
+    padding: 10px 0 6px 0;
+    float: left;
+    /*align-content: center;*/
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box{
-    height: 100px;
-    padding: 2px 4px 2px 4px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .subject_text{
-    display: block;
-    font-size: 16px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .label{
+    /*height: 100%;*/
+    padding-left: 1px;
+    font-size: 14px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .file_box{
-    display: none;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .detail_inp_cont .name_card_box .file_label{
-    display: block;
-    background-color: white;
-    margin-top: 6px;
-    border-radius: 12px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .inp{
+    margin-top: 3px;
     width: 60px;
-    height: 60px;
-}
-
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont{
-    background-color: #e8d46b;
-    width: 50%;
-    padding: 14px;
-}
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont .title{
-    font-size: 24px;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .info_panel .memo_cont .content{
-    margin-top: 45px;
-    padding: 10px;
-    width: 100%;
-    height: calc(100% - 76px);
+    height: 100%;
     border-radius: 6px;
-    font-size: 18px;
+    padding: 2px 4px 2px 6px;
+    font-size: 16px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .inp.w120{
+    width: 120px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .inp.w140{
+    width: 140px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box + .inp_box{
+    margin-left: 14px;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .gender_icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+    width: 36px;
+    height: 100%;
+    background-color: #4781ff;
+    color: white;
+    border-radius: 30%;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .manager_panel .section_bottom .inp_box .gender_icon:active{
+    transform: scale(0.85);
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .memo_panel{
+    width: 35%;
+    height: 100%;
+    padding: 0 0 6px 0;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .memo_panel .memo_header{
+    height: 20%;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .memo_panel .memo_header .subject_name{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .memo_panel .memo_content{
+    margin-top: 12px;
+    display: flex;
+    height: 80%;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .memo_panel .memo_content .memo_textarea{
+    /*margin-top: 12px;*/
     resize: none;
-}
-
-.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel{
-    background-color: #ffffff;
-    margin-top: 15px;
     width: 100%;
-    height: calc(55% - 15px);
-    padding: 16px 22px 16px 22px;
+    height: calc(100% - 12px);
+    border-radius: 8px;
+    padding: 4px;
+    font-size: 14px;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel .title{
-    font-size: 24px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .option_panel{
+    width: 15%;
+    height: 100%;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    align-items: center;
 }
 
-.admin_base_panel .body_group .detail_panel .detail_body .visit_log_panel .visit_log_table{
-    margin-top: 18px;
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .option_panel .btn_more{
+    margin-left: 52px;
+    padding: 2px 4px 2px 4px;
+    width: 100px;
+    height: calc(100% - 12px);
+    background-color: white;
+    font-size: 14px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in-out ;
+}
+
+.visit_map .body_group .detail_panel .shop_list_panel .shop_item.open .shop_detail .option_panel .btn_more:hover{
+    background-color: #eeeeee;
+}
+
+/*Visit Log Modal*/
+.visit_log{
+    /*background-color: #d0d0d0;*/
+    height: 700px;
+    padding: 12px 16px 12px 16px;
+}
+
+
+.visit_log .header_group{
+    height: 60px;
+    padding: 16px 12px 8px 12px;
+}
+
+.visit_log .header_group .visit_log_title{
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.visit_log  .visit_log_body{
+    margin-top: 12px;
+    height: calc(100% - 60px);
+}
+
+.visit_log  .visit_log_body .body_header_group{
+    background-color: #797979;
+    border-radius: 12px 12px 0 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 4px 12px 4px 12px;
+}
+
+.visit_log  .visit_log_body .body_header_group .inp_search{
+    width: 70%;
+    height: 32px;
+    padding: 2px 8px 2px 8px;
+    font-size: 18px;
+    line-height: 18px;
+    border-radius: 8px;
+}
+
+.visit_log  .visit_log_body .body_header_group .btn_search{
+    width: calc(30% - 32px);
+    height: 32px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2px 4px 2px 4px;
+    margin-left: 14px;
+}
+
+.visit_log  .visit_log_body .log_list{
+    background-color: #afafaf;
+
+    height: calc(100% - 80px);
     overflow-y: auto;
+    padding: 12px 16px 12px 16px;
+    border-radius: 0 0 12px 12px;
 }
+
+.visit_log  .visit_log_body .log_list .visit_log_item{
+    display: flex;
+    border-radius: 12px;
+    height: 50px;
+    background-color: white;
+    padding: 4px 14px 4px 14px;
+    align-items: center;
+}
+
+.visit_log  .visit_log_body .log_list .visit_log_item + .visit_log_item{
+    margin-top: 12px;
+}
+
+.visit_log  .visit_log_body .log_list .visit_log_item .visit_count{
+
+}
+
+.visit_log  .visit_log_body .log_list .visit_log_item .visit_date{
+    margin-left: 24px;
+}
+
+
+

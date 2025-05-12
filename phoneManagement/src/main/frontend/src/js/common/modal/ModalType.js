@@ -3,6 +3,7 @@ export const ModalType = {
         // admin
         Admin_Bulk_Upload: 'AdminBulkUpload',
         Admin_Message_Template: 'AdminMessageTemplate',
+        Visit_Log: 'VisitLog',
 
         // common
         Invite: 'Invite',

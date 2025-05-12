@@ -13,19 +13,24 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "../src/js/store/store"
 import {HelmetProvider} from "react-helmet-async";
+import {NavermapsProvider} from "react-naver-maps";
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <BrowserRouter>
             <HelmetProvider>
-                <App />
+                {/*<NavermapsProvider>*/}
+                {/*</NavermapsProvider>*/}
+                <App/>
             </HelmetProvider>
         </BrowserRouter>
     </Provider>
-  // <React.StrictMode>
-  //
-  // </React.StrictMode>
+    // <React.StrictMode>
+    //
+    // </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

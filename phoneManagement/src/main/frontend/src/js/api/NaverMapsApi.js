@@ -1,7 +1,6 @@
 import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
 
-
-function AuthApi(accessToken){
+function NaverMapsApi(accessToken){
 
     return {
         getResetToken : async (data)=>{
@@ -10,4 +9,4 @@ function AuthApi(accessToken){
     }
 }
 
-export default AuthApi;
+export default NaverMapsApi;

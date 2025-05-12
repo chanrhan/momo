@@ -38,11 +38,13 @@ import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
+import {VisitLogModal} from "../../admin/modal/VisitLogModal";
 
 export const ModalSet = {
     // admin
     AdminBulkUpload: AdminBulkUploadModal,
     AdminMessageTemplate: MessageTemplateModal,
+    VisitLog: VisitLogModal,
 
     // common
     DynamicSelect: DynamicSelectModal,
