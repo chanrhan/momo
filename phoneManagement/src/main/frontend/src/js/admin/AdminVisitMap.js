@@ -93,103 +93,37 @@ export function AdminVisitMap(){
                         <button type='button' className={cm(Admin.btn, Admin.btn_filter)}></button>
                         <button type='button' className={cm(Admin.btn, Admin.btn_search)} onClick={onSearch}></button>
                     </div>
-                    <div className={Admin.shop_list_panel}>
-                        {
-                            items && items.map((v, i)=>{
-                                return <ShopItem open={i === open} onFold={()=>{
-                                    onClickShop(i)
-                                }} onOpenVisitLogModal={()=>{
-                                    openVisitLogModal(i)
-                                }}/>
-                            })
-                        }
-                    </div>
+                    <table className={Admin.table_shop}>
+                        <thead className={Admin.thead}>
+                            <tr className={Admin.tr}>
+                                <th className={Admin.th}>매장명</th>
+                                <th className={Admin.th}>주소</th>
+                                <th className={Admin.th}>방문현황</th>
+                                <th className={Admin.th}>주차가능여부</th>
+                            </tr>
+                        </thead>
+                        <tbody className={Admin.tbody}>
+                            <ShopItem/>
+                            <ShopItem/>
+                            <ShopItem/>
+                            <ShopItem/>
+                            <ShopItem/>
+                            <ShopItem/>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     )
 }
 
-function ShopItem({open, onFold, onOpenVisitLogModal}){
+function ShopItem({}){
     return (
-        <div className={cm(Admin.shop_item, `${open && Admin.open}`)}  >
-            <div className={Admin.shop_preview_box} onClick={onFold}>
-                <div className={Admin.shop_info}>
-                    <div className={Admin.align_top}>
-                        <div className={Admin.shop_name}>
-                            수원 울타리점
-                        </div>
-                        <div className={Admin.marker_item}>
-                            2회 방문
-                        </div>
-                        <div className={Admin.marker_item}>
-                            주차 가능
-                        </div>
-                        <div className={Admin.marker_item}>
-                            많이 파는 곳
-                        </div>
-                    </div>
-                    <div className={Admin.align_bottom}>
-                        <div className={Admin.shop_addr}>
-                            경기도 수원시 안양시청 1번출구
-                        </div>
-                        <div className={Admin.last_visit_date}>
-                            마지막 방문일: 2025-04-16
-                        </div>
-                    </div>
-                </div>
-                <div className={Admin.option_section}>
-                    <button type='button' className={Admin.btn_more}></button>
-                </div>
-            </div>
-            <div className={Admin.shop_detail}>
-                <div className={Admin.manager_panel}>
-                    <div className={Admin.section_top}>
-                        <div className={Admin.subject_name}>
-                            담당자 정보
-                        </div>
-                    </div>
-                    <div className={Admin.section_bottom}>
-                        <div className={Admin.inp_box}>
-                            <div className={Admin.label}>이름</div>
-                            <input type="text" className={cm(Admin.inp, Admin.w120)}/>
-                        </div>
-                        <div className={Admin.inp_box}>
-                            <div className={Admin.label}>전화번호</div>
-                            <input type="text" className={cm(Admin.inp, Admin.w140)}/>
-                        </div>
-                        <div className={Admin.inp_box}>
-                            <div className={Admin.label}>직급</div>
-                            <input type="text" className={cm(Admin.inp)}/>
-                        </div>
-                        <div className={Admin.inp_box}>
-                            <div className={Admin.label} style={{
-                                marginLeft: '3px'
-                            }}>성별
-                            </div>
-                            <div className={Admin.gender_icon}>
-                                남
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={Admin.memo_panel}>
-                    <div className={Admin.memo_header}>
-                        <div className={Admin.subject_name}>
-                            메모
-                        </div>
-                    </div>
-                    <div className={Admin.memo_content}>
-                        <textarea className={Admin.memo_textarea}>
-
-                        </textarea>
-                        <div className={Admin.option_panel}>
-                            <button type='button' className={Admin.btn_more} onClick={onOpenVisitLogModal}>방문 내역 보기</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        <tr className={Admin.tr}>
+            <td className={Admin.td}>수원점</td>
+            <td className={Admin.td}>수원점</td>
+            <td className={Admin.td}>수원점</td>
+            <td className={Admin.td}>수원점</td>
+        </tr>
     )
 }

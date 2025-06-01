@@ -25,7 +25,6 @@ public class SaleController {
 	private final CommonService commonService;
 	private final ReserveMsgService reserveMsgService;
 
-
 	private final ImageService imageService;
 
 	@PostMapping("/simple")

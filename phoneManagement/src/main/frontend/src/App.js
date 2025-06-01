@@ -5,7 +5,6 @@ import {Route, Routes} from "react-router-dom";
 import {AccountLayout} from "./js/layout/AccountLayout";
 import Login from "./js/account/Login";
 import {Signup} from "./js/account/Signup";
-import {Role} from "./js/account/Role";
 import {ShopList} from "./js/shop/ShopList";
 import MainLayout from "./js/layout/MainLayout";
 import Authorization from "./common/Authorization";
@@ -16,10 +15,8 @@ import {ManageStaff} from "./js/staff/ManageStaff";
 import {Profile} from "./js/profile/Profile";
 import {Sale} from "./js/service/sale/Sale";
 import {Task} from "./js/service/task/Task";
-import {PromiseBoardTable} from "./js/service/task/PromiseBoardTable";
 import {Communication} from "./js/communication/Communication";
 import {Analysis} from "./js/analysis/Analysis";
-import {Statistics} from "./js/analysis/Statistics";
 import {Administrator} from "./js/admin/Administrator";
 import {Support} from "./js/account/Support";
 import {DashboardMain} from "./js/service/dashboard/DashboardMain";
@@ -28,7 +25,6 @@ import NotifTest from "./js/test/NotifTest";
 import ModalTest from "./js/test/ModalTest";
 import RefTest from "./js/test/RefTest";
 import MultipartTest from "./js/test/MultipartTest";
-import ChartJsTest from "./js/test/ChartJsTest";
 import ExcelTest from "./js/test/ExcelTest";
 import BulkUploadTest from "./js/test/BulkUploadTest";
 import {RegexTest} from "./js/test/RegexTest";
@@ -42,7 +38,6 @@ import {LandingPage} from "./js/landing/LandingPage";
 import {ChatBotButton} from "./js/common/module/ChatBotButton";
 import {GraphTest} from "./js/test/GraphTest";
 import {MasterData} from "./js/admin/MasterData";
-import {ErrorBoundary} from "react-error-boundary";
 import {AsyncTest} from "./js/test/AsyncTest";
 import {Allowance} from "./js/layout/Allowance";
 import useUserInfo from "./js/hook/useUserInfo";
@@ -61,6 +56,7 @@ import {AdminMessage} from "./js/admin/AdminMessage";
 import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
 import {ObjectUtils} from "./js/utils/objectUtil";
 import {AdminVisitMap} from "./js/admin/AdminVisitMap";
+import TimelineTest from "./js/test/TimelineTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -96,8 +92,8 @@ function App() {
                   <Route path='vo' element={<VOTest/>}/>
                   <Route path='component' element={<ComponentTest/>}/>
                   <Route path='string' element={<StringTest/>}/>
+                  <Route path='timeline' element={<TimelineTest/>}/>
               </Route>
-
 
               <Route path='/' element={<LandingPage/>}/>
 
