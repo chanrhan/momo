@@ -12,6 +12,7 @@ import TodoApi from "../api/TodoApi";
 import FileApi from "../api/FileApi";
 import PostImageApi from "../api/PostImageApi";
 import {StudyApi} from "../api/StudyApi";
+import SolvedAcApi from "../api/SolvedAcApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -29,7 +30,8 @@ function useApi(){
         gmdApi: GMDApi(accessToken),
         fileApi: FileApi(accessToken),
         pimgApi: PostImageApi(accessToken),
-        studyApi: StudyApi()
+        studyApi: StudyApi(),
+        solvedAcApi: SolvedAcApi()
     }
 }
 

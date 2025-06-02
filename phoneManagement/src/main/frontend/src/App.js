@@ -57,6 +57,7 @@ import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
 import {ObjectUtils} from "./js/utils/objectUtil";
 import {AdminVisitMap} from "./js/admin/AdminVisitMap";
 import TimelineTest from "./js/test/TimelineTest";
+import {CodingStudyMain} from "./js/coding_study/CodingStudyMain";
 
 function App() {
     const userInfo = useUserInfo();
@@ -69,7 +70,7 @@ function App() {
           <ModalContainer/>
           <Routes>
               <Route path='/study' element={<StudyLayout/>}>
-                  <Route path='' element={<StudyMain/>}/>
+                  <Route path='' element={<CodingStudyMain/>}/>
               </Route>
 
               <Route path='/test' element={<TestHeader/>}>
