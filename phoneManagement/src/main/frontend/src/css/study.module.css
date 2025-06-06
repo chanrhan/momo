@@ -1,0 +1,299 @@
+.study_main{
+    /*padding: 48px 120px 48px 120px;*/
+    height: 1000px;
+    text-align: center;
+    /*overflow: hidden;*/
+}
+
+.study_main .study_header{
+    background-color: #ececec;
+    height: 10%;
+}
+
+.study_main .study_header .title{
+    height: 100px;
+    line-height: 48px;
+    font-size: 48px;
+    align-content: center;
+}
+
+.study_main .study_body{
+    display: flex;
+    /*padding: 12px;*/
+    /*background-color: #fcf7d3;*/
+    height: 90%;
+}
+
+
+.study_main .study_body .study_sidebar{
+    background-color: #e5e5e5;
+    width: 15%;
+}
+
+.study_main .study_body .service_cont{
+    width: 85%;
+}
+
+.study_main .study_body .service_cont .option_header{
+    height: 10%;
+}
+
+.study_main .study_body .service_cont .option_header .date_panel{
+    display: flex;
+    padding-top: 14px;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.study_main .study_body .option_header .date_panel .btn_prev_date{
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    background: url(../images/arrow_icon2.png) no-repeat center / 100%;
+    transform: rotate(90deg);
+}
+
+.study_main .study_body .option_header .date_panel .btn_next_date{
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    background: url(../images/arrow_icon2.png) no-repeat center / 100%;
+    transform: rotate(-90deg);
+}
+
+.study_main .study_body .option_header .date_panel .selected_date_text{
+    width: 30%;
+    display: inline-block;
+    align-content: center;
+    font-size: 22px;
+    margin-left: 8px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.study_main .study_body .option_header .date_panel .selected_date_text .btn_box{
+    width: 100%;
+    margin-top: 4px;
+}
+
+.study_main .study_body .option_header .date_panel .selected_date_text .btn_today{
+    display: inline-block;
+    width: 48%;
+    background-color: #d2d2d2;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-right: 2%;
+}
+.study_main .study_body .option_header .date_panel .selected_date_text .btn_today:hover{
+    background-color: #a9a9a9;
+
+}
+
+.study_main .study_body .option_header .date_panel .selected_date_text .btn_week_date{
+    /*margin-top: 6px;*/
+    display: inline-block;
+    /*margin-top: 2px;*/
+    width: 48%;
+    background-color: #b4caff;
+    font-size:   16px;
+    border-radius: 8px;
+}
+.study_main .study_body .option_header .date_panel .selected_date_text .btn_week_date:hover{
+    background-color: #6f9dff;
+
+
+}
+
+.study_main .study_body .option_header .loading_panel{
+    height: 20%;
+    /*line-height: 20px;*/
+    font-size: 18px;
+    align-content: center;
+}
+
+.study_main .study_body .study_cont{
+    /*display: flex;*/
+    background-color: #ffa2a2;
+    width: 100%;
+    height: 90%;
+    /*width: 60%;*/
+}
+
+.study_main .study_body .study_cont .detail_list{
+    padding: 24px;
+    background-color: #b7bef3;
+    height: 100%;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item{
+    display: flex;
+    background-color: #b9f3b7;
+    height: 100px;
+    font-size: 18px;
+    /*align-content: center;*/
+    align-items: center; /* 수직 중앙 정렬 */
+    /*padding: 8px 12px;*/
+    justify-items: center;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item + .detail_item{
+    margin-top: 12px;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box{
+    width: 20%;
+    height: 100%;
+    background-color: #ffbdbd;
+    padding: 6px;
+    align-content: center; /* 수직 중앙 정렬 */
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box{
+
+}
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box .username_text{
+    font-size: 22px;
+    font-weight: 600;
+
+}
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box{
+    margin-top: 4px;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box .span{
+    font-size: 16px;
+    margin-right: 6px;
+}
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box .span.tier_icon{
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box .span.tier{
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box{
+    width: 80%;
+    height: 100%;
+    background-color: #ccccff;
+    /*padding: 2px 0;*/
+    display: flex;
+    align-items: center;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box{
+    width: 50%;
+    padding-left: 10px;
+    /*background-color: #f3aad9;*/
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box .bg_bar{
+    width: 90%;
+    position:relative; height:24px; margin-top:8px; border-radius:24px; background-color: #ffffff;
+}
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box .bg_bar .span{
+    position:absolute; top:0; left:0; bottom:0;
+    /*background-color: #63acf5;*/
+    border-radius:24px;
+    transition: all 0.25s ease-in-out
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_text{
+    margin-top: 4px;
+    font-size: 16px;
+    float: right;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_text.per{
+    margin-right: 10%;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_text.num{
+    margin-right: 15px;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .problem_detail_box{
+    width: 50%;
+    height: 100%;
+    background-color: #a7b3fd;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .problem_detail_box .description{
+    /*position: absolute;*/
+    /*width: 100%;*/
+    height: 5%;
+    font-size: 14px;
+    /*height: 10%;*/
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .problem_detail_box .problem_list{
+    /*background-color: #deff9a;*/
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    /*grid-auto-rows: 20px;*/
+
+    column-gap: 8px;
+    row-gap: 8px;
+    padding: 6px 20px 6px 20px;
+    overflow: auto;
+}
+
+.study_main .problem_item{
+    display: flex;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    background-color: #9ccfff;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.study_main .problem_item + .problem_item{
+    /*margin-right: 12px;*/
+}
+
+.study_main .problem_item .result_icon{
+
+}
+
+.study_main .problem_item .level_icon{
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.study_main .problem_item .problem_num{
+    font-size: 12px;
+}
+
+.tooltip{
+    position: absolute;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.tooltip .co_solvers{
+    font-size: 11px;
+}
+
+
+
+

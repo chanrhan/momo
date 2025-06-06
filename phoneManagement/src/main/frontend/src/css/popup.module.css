@@ -236,6 +236,24 @@
 .date_popup .date_head .date_btn2.btn_next2:before{transform:rotate(-90deg);}
 .date_popup .date_body{padding:12px 16px 16px 16px;}
 .date_popup .tb_date .thead .th{padding:12px 5px; color:#91939f; font-size:14px; font-weight:400; text-align:center; line-height:16px;}
+
+.date_popup .tb_date .tbody.week_calendar .tr .td.week_line{
+    background-color: rgb(156, 187, 255);
+}
+
+.date_popup .tb_date .tbody.week_calendar .tr .td.week_line.week_start {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    /*background-color: rgb(156, 187, 255);*/
+
+}
+.date_popup .tb_date .tbody.week_calendar .tr .td.week_line.week_end {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    /*background-color: rgb(156, 187, 255);*/
+
+}
+
 .date_popup .tb_date .tbody .td{padding:0 1px 0 0; text-align:center;}
 .date_popup .tb_date .tbody .td .button{width:40px; height:40px; color:#62626e; font-size:14px;}
 .date_popup .tb_date .tbody .td.active .button{border-radius:4px; background-color:#4781ff; color:#fff;}
@@ -248,6 +266,7 @@
     /*background-color:#4781ff;*/
     /*color:#fff;*/
 }
+
 .date_popup .tb_date .tbody .td.blocked{
     background-color: rgba(210, 210, 210, 0.78);
 }
@@ -265,8 +284,12 @@
 }
 
 /*.date_popup .tb_date .tbody .td:not(.blocked) .button:hover,*/
-.date_popup .tb_date .tbody .td:not(.disable):not(.blocked) .button:hover{
+.date_popup .tb_date .tbody:not(.week_calendar) .td:not(.disable):not(.blocked) .button:hover{
     border-radius:10px; background-color: #5b8dfd; color:#fff;
+}
+
+.date_popup .tb_date .tbody.week_calendar .tr:hover{
+    border-radius:10px; background-color: #d8e4ff; color:#fff;
 }
 
 

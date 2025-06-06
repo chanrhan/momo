@@ -3,6 +3,157 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.SolvedAcMapper">
+    <select id="getAllUsers">
+        select id, name
+        from tb_solved_user
+    </select>
 
+    <select id="getAllUsersLastRead">
+        select id,
+               last_read
+        from tb_solved_user
+    </select>
+
+    <update id="updateLastRead">
+        update tb_solved_user
+        set last_read=#{lastRead},
+            last_read_time=now()
+        where id=#{id}
+    </update>
+
+    <select id="getContinuousCompleteCount">
+        select id,
+               week_dt
+        from tb_baekjoon_complete
+        where complete_st=1
+    </select>
+
+    <insert id="insertMarkedProblems">
+        INSERT INTO tb_mark_problem
+        (user_id, problem_id, submit_id, result_id, err_txt, try_dt)
+        VALUES
+        (
+            <foreach collection="list" item="item" separator="),(">
+                #{item.username},#{item.problemId},#{item.submitId},#{item.resultId},#{item.errorText},#{item.date}
+            </foreach>
+        )
+    </insert>
+
+    <select id="getBaekjoonProblems">
+        WITH base AS (
+            SELECT
+                us.id,
+                mp.problem_id,
+                bp.title,
+                bp.level,
+                mp.result_id,
+                mp.err_txt,
+                mp.try_dt,
+                mp.submit_id
+            FROM tb_solved_user us
+                     LEFT OUTER JOIN tb_mark_problem mp ON us.id = mp.user_id
+                     LEFT OUTER JOIN tb_baekjoon_problem bp ON mp.problem_id = bp.problem_id
+            WHERE mp.try_dt BETWEEN #{fromDate} AND #{toDate}
+        ),
+             numbered AS (
+                 SELECT
+                     bs.*,
+                     (@rownum := IF(@group = CONCAT(id, problem_id), @rownum + 1, 1)) AS rownum,
+            (@group := CONCAT(id, problem_id)) AS dummy
+        FROM base bs, (SELECT @rownum := 0, @group := '') AS vars
+        ORDER BY id, problem_id, result_id, try_dt
+            ), final as (
+        SELECT *,
+               (
+                   select json_arrayagg(name)
+                   from (
+                            select distinct name
+                            from tb_mark_problem mp
+                                     left outer join tb_solved_user su on mp.user_id=su.id
+                            where n.problem_id = mp.problem_id and mp.user_id != n.id and n.result_id=4
+                        ) tmp
+               ) as co_solvers
+        FROM numbered n
+        where rownum=1
+        ORDER BY result_id, level desc
+            )
+
+       <![CDATA[
+        select id,
+               IFNULL(
+                       (
+                           select
+                               sum(
+                                       case
+                                           when f2.level <=5 then 20
+                                           when f2.level > 5 and level <=10 then 30
+                                           when f2.level > 10 and f2.level <=15 then 60
+                                           when f2.level > 15 then 90
+                                           else 0
+                                           end
+                               )
+                           from final as f2
+                           where f2.id=final.id and f2.result_id=4
+                       ), 0
+               ) as score,
+               json_arrayagg(json_object(
+                           'problem_id', problem_id,
+                            'title', title,
+                            'level', level,
+                            'result_id', result_id,
+                             'err_txt', err_txt,
+                             'try_dt', try_dt,
+                             'co_solvers', co_solvers
+                             )) as problems
+        from final
+        group by id
+        ]]>
+
+    </select>
+
+    <select id="existBaekjoonProblem">
+        SELECT count(*) > 0
+        from tb_baekjoon_problem
+        where problem_id=#{problemId}
+    </select>
+
+    <insert id="insertBaekjoonProblem">
+        INSERT INTO tb_baekjoon_problem
+        (problem_id, title, level)
+        values (#{problemId},#{title},#{level})
+    </insert>
+
+    <insert id="insertWeeklyScore">
+        <![CDATA[
+
+        set @to_date := (SELECT CURDATE());
+        set @from_date := (SELECT SUBDATE(@to_date, interval 6 day));
+
+        INSERT INTO tb_baekjoon_complete
+        (id, score, week_dt, complete_st, fine)
+        select id,
+        score,
+        week_dt,
+        IF(score >= #{target}, 1, 0) as complete_st,
+        IF(score >= #{targer}, #{fine}, 0) as fine
+        from (
+        select u.id as id,
+        (
+        case
+        when level <=5 then 20
+        when level > 5 and level <=10 then 30
+        when level > 10 and level <=15 then 60
+        when level > 15 then 90
+        else 0
+        end
+        ) as score,
+        DATE_FORMAT(@from_date, '%Y-%m-%d') as week_dt
+        from tb_solved_user u
+        left outer join tb_mark_problem mp on u.id=mp.user_id and try_dt between @from_date and @to_date and result_id=4
+        left outer join tb_baekjoon_problem bp on mp.problem_id=mp.problem_id
+        ) base
+        ]]>
+
+    </insert>
 
 </mapper>

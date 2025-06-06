@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.Inet4Address;
 import java.util.List;
+import java.util.Map;
 
 // 이하 GMDS (Global Master Data Set)
 @RestController
@@ -19,14 +21,19 @@ public class SolvedAcController {
     private final SolvedAcService solvedAcService;
 
     @GetMapping("/user")
-    public ResponseEntity<Boolean> getLoginedUserInfo(){
-        return ResponseEntity.ok(solvedAcService.getLoginedUserInfo());
+    public ResponseEntity<List<Map<String,Object>>> getAllUsers(){
+        return ResponseEntity.ok(solvedAcService.getAllUsers());
     }
 
     @PostMapping("/problem")
-    public ResponseEntity<List<List<SolvedAcResponseVO>>> getPage(@RequestBody SolvedAcRequestVO vo){
+    public ResponseEntity<List<Map<String,Object>>> getProblems(@RequestBody SolvedAcRequestVO vo){
         System.out.println(vo);
-        return ResponseEntity.ok(solvedAcService.getPage(vo));
+        return ResponseEntity.ok(solvedAcService.getProblems(vo));
+    }
+
+    @GetMapping("/reload")
+    public ResponseEntity<Boolean> loadBaekjoonProblems(){
+        return ResponseEntity.ok(solvedAcService.loadBaekjoonProblemStatus() > 0);
     }
 
 

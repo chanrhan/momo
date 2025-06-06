@@ -14,8 +14,9 @@ import java.time.LocalDate;
 public class SolvedAcResponseVO {
     private String username;
     private Integer resultId;
+    private String errorText;
     private int problemId;
-    private LocalDate date;
+    private String date;
     private int submitId;
 
 

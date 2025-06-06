@@ -1,10 +1,10 @@
 package com.momo.common.enums;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.security.core.parameters.P;
 
 @Getter
 public enum SolvedAcResultType {
@@ -24,6 +24,33 @@ public enum SolvedAcResultType {
     SolvedAcResultType(int status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public static SolvedAcResultType of(String resultText){
+        for(SolvedAcResultType type : SolvedAcResultType.values()){
+            if(type.getMessage().equals(resultText)){
+                return type;
+            }
+        }
+        return null;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ErrorType{
+        private SolvedAcResultType type;
+        private String errorText;
+    }
+
+    public static ErrorType getErrorType(String resultText){
+//        System.out.println("get error : " + resultText);
+        try{
+            return new ErrorType(SolvedAcResultType.of(resultText), null);
+        }catch (IllegalArgumentException e){
+            String[] splits = resultText.split("\\(");
+            return new ErrorType(SolvedAcResultType.of(splits[0]), splits[1]);
+        }
+
     }
 
 //    public static SolvedAcResultType of(String resultMessage){

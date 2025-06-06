@@ -1,5 +1,6 @@
 package com.momo.config;
 
+import com.momo.job.CodingStudyWeeklyJob;
 import com.momo.job.DormantUserJob;
 import com.momo.job.SendKakaoBizTalkJob;
 import jakarta.annotation.PostConstruct;
@@ -19,10 +20,12 @@ public class JobConfig {
 	public void run(){
 		JobDetail dormantUserJob = getJobDetail(DormantUserJob.class, new HashMap());
 		JobDetail sendTalkJob = getJobDetail(SendKakaoBizTalkJob.class, new HashMap());
+		JobDetail codingStudyWeeklyJob = getJobDetail(CodingStudyWeeklyJob.class, new HashMap());
 
 		try{
-			scheduler.scheduleJob(dormantUserJob, getCronTrigger("0 0 9 1 * ?")); // Cron 표현식
-			scheduler.scheduleJob(sendTalkJob, getCronTrigger("0 0 9 * * ?")); // Cron 표현식
+			scheduler.scheduleJob(dormantUserJob, getCronTrigger("0 0 9 1 * ?")); // 매월 1일 09시 정각
+			scheduler.scheduleJob(sendTalkJob, getCronTrigger("0 0 9 * * ?")); // 매일 09시 정각
+			scheduler.scheduleJob(codingStudyWeeklyJob, getCronTrigger("0 59 23 ? * SUN")); // 매주 일요일 23:59
 		} catch (SchedulerException e) {
 			throw new RuntimeException(e);
 		}

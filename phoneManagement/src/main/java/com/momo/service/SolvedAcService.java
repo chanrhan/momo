@@ -1,7 +1,9 @@
 package com.momo.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.momo.common.SolvedAcRequestVO;
 import com.momo.common.SolvedAcResponseVO;
+import com.momo.common.enums.SolvedAcResultType;
 import com.momo.mapper.SolvedAcMapper;
 import com.momo.utils.ExternalApiUtils;
 import com.momo.utils.TimeUtils;
@@ -19,59 +21,128 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class SolvedAcService {
 	private final SolvedAcMapper solvedAcMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-	public boolean getLoginedUserInfo(){
-//		String uri = "https://solved.ac/api/v3/account/verify_credentials";
-		String uri = "https://solved.ac/api/v3/search/user?query=km1104rs";
-        try {
-            ExternalApiUtils.solvedacAPIRequest(uri);
-        } catch (IOException e) {
-            return false;
-        } catch (InterruptedException e) {
-            return false;
-        }
-		return true;
-    }
+    private static final String Baekjoon_Problem_Status_Page_URL = "https://www.acmicpc.net/status";
+    private static final String Solved_ac_user_show_URL = "https://solved.ac/api/v3/search/user?query=";
 
-    public List<List<SolvedAcResponseVO>> getPage(SolvedAcRequestVO vo){
-        try {
-            List<List<SolvedAcResponseVO>> list = new ArrayList<>();
-            LocalDate fromDt = LocalDate.parse(vo.getFromDate(), formatter);
-            LocalDate toDt = LocalDate.parse(vo.getToDate(), formatter);
-            for(String username : vo.getUsernames()){
-                List<SolvedAcResponseVO> problemList = new ArrayList<>();
-                int top = -1;
-                do{
-                    List<SolvedAcResponseVO> res = getPageResponse(username, fromDt, toDt, vo.getProblemId(), top, vo.getResultId());
-                    if(res == null || res.isEmpty()){
-                        break;
-                    }
-                    problemList.addAll(res);
-                    int bottom = res.get(res.size()-1).getSubmitId();
-                    if(top == bottom){
-                        break;
-                    }
-                    top = bottom;
-                }while (top > 0);
-                list.add(problemList);
+    public List<Map<String,Object>> getAllUsers(){
+        List<Map<String,Object>> users = solvedAcMapper.getAllUsers();
+        for (Map<String,Object> user : users){
+            String uri = Solved_ac_user_show_URL + user.get("id").toString();
+            try {
+                Map<String,Object> res = ExternalApiUtils.solvedacAPIRequest(uri);
+//                System.out.println(res);
+                Map<String,Object> item = ((List<Map<String, Object>>)res.get("items")).get(0);
+                if(item != null && !item.isEmpty()){
+                    user.put("solved_count", item.get("solvedCount"));
+                    user.put("tier", item.get("tier"));
+                }else{
+                    user.put("solved_count", 0);
+                    user.put("tier", 0);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-           return list;
+        }
+        System.out.println("before sort : " + users);
+        users.sort((m1, m2)->{
+            try{
+                int tier1 = m1.containsKey("tier") ? Integer.parseInt(m1.get("tier").toString()) : - 100;
+                int tier2 = m2.containsKey("tier") ? Integer.parseInt(m2.get("tier").toString()) : -100;
+                System.out.println("tier1 : " + tier1 + ", tier2 : " + tier2);
+                return Integer.compare(tier2, tier1);
+            }catch (NumberFormatException | NullPointerException e){
+                e.printStackTrace();
+                return 0;
+            }
+        });
+        System.out.println("after sort : " + users);
+
+
+        return users;
+    }
+//
+//	public Map<String,Object> getLoginedUserInfo(String username){
+////		String uri = "https://solved.ac/api/v3/account/verify_credentials";
+//        String uri = "https://solved.ac/api/v3/search/user?query="+username;
+//
+//    }
+
+    public Map<String, Object> getProblemInfo(int problemId){
+        String uri = "https://solved.ac/api/v3/problem/show?problemId="+problemId;
+        try {
+            return ExternalApiUtils.solvedacAPIRequest(uri);
         } catch (IOException e) {
+            return null;
+        } catch (InterruptedException e) {
             return null;
         }
     }
 
-    private List<SolvedAcResponseVO> getPageResponse(String username, LocalDate fromDate, LocalDate toDate, int problemId, int top, Integer resultId) throws IOException {
-        System.out.println("username: "+username+", result_id:" + resultId);
-        Connection connection = Jsoup.connect("https://www.acmicpc.net/status?user_id="+username+"&problem_id="+problemId + "&top=" + top + "&result_id="+resultId);
+    public List<Map<String,Object>> getProblems(SolvedAcRequestVO vo){
+        return solvedAcMapper.getBaekjoonProblems(vo);
+    }
+
+    public int loadBaekjoonProblemStatus(){
+        int count = 0;
+        try {
+            List<SolvedAcResponseVO> list = new ArrayList<>();
+
+            List<Map<String,Object>> lastReads = solvedAcMapper.getAllUsersLastRead();
+            System.out.println(lastReads);
+            for(Map<String,Object> map :lastReads){
+                String username = map.get("id").toString();
+                int lastRead = Integer.parseInt(map.get("last_read").toString());
+//                System.out.println("id: "+username+",lr: "+lastRead);
+                List<SolvedAcResponseVO> scrappedProblems = new ArrayList<>();
+                int top = -1;
+                do{
+                    List<SolvedAcResponseVO> res = scrapBaekjoon(username, top, lastRead);
+//                    System.out.println(res);
+                    if(res == null || res.isEmpty()){
+                        break;
+                    }
+                    scrappedProblems.addAll(res);
+                    int bottom = res.get(res.size()-1).getSubmitId();
+//                    if(bottom <= lastRead){
+//                        break;
+//                    }
+                    top = bottom;
+                }while (true);
+                count += scrappedProblems.size();
+                list.addAll(scrappedProblems);
+                if(!scrappedProblems.isEmpty()){
+                    int updatedLastRead = scrappedProblems.get(0).getSubmitId();
+                    solvedAcMapper.updateLastRead(username, updatedLastRead);
+                }
+            }
+            if(!list.isEmpty()){
+                solvedAcMapper.insertMarkedProblems(list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return count;
+    }
+
+    private List<SolvedAcResponseVO> scrapBaekjoon(String username, int top, int lastReadIndex) throws IOException {
+        if(username == null || username.isEmpty()){
+            return null;
+        }
+        System.out.println("username: "+username+", top:" + top);
+        Connection connection = Jsoup.connect(Baekjoon_Problem_Status_Page_URL + "?user_id="+username+"&top="+top);
         Document document = connection.get(); // GET 으로 요청하고, 요청 결과를 Document 객체로 반환
         Elements elements = document.getElementsByAttributeValue("id","status-table");
         Element element = elements.get(0);
@@ -82,31 +153,62 @@ public class SolvedAcService {
             int maxLength = tbody.children().size();
             for(int i=0;i<maxLength;++i){
                 Element row = tbody.child(i);
+//                System.out.println(row);
                 Elements selects = row.select("td a.real-time-update.show-date");
 
                 if(selects != null){
                     Element a = selects.get(0);
                     long timestamp = Long.parseLong(a.attr("data-timestamp"));
                     LocalDate dateTime = TimeUtils.parseTimestamp(timestamp).toLocalDate();
-                    if(dateTime.isAfter(fromDate) && dateTime.isBefore(toDate)){
-//                        Element result = row.select("td.result").get(0);
-                        String submitId = row.select("td").get(0).text();
-                        System.out.println("submit id: " + submitId);
+                    Elements tds = row.select("td");
+                    int submitId = Integer.parseInt(tds.get(0).text());
 
-//                        SolvedAcResultType resultType = SolvedAcResultType.valueOf(result.text());
-
-//                        System.out.println("result: " +resultType.name());
-                        list.add(SolvedAcResponseVO.builder()
-                                .username(username)
-                                .problemId(problemId)
-                                        .resultId(resultId)
-                                .submitId(Integer.parseInt(submitId))
-                                .date(dateTime)
-                                .build());
+                    if(submitId == top){
+                        continue;
                     }
+
+                    if(submitId <= lastReadIndex){
+                        break;
+                    }
+                    int problemId = Integer.parseInt(tds.get(2).text());
+                    if(!solvedAcMapper.existBaekjoonProblem(problemId)){
+                        Map<String,Object> problemInfo = getProblemInfo(problemId);
+                        String problemTitle = problemInfo.get("titleKo").toString();
+                        int problemLevel = Integer.parseInt(problemInfo.get("level").toString());
+                        solvedAcMapper.insertBaekjoonProblem(problemId, problemTitle, problemLevel);
+                    }
+
+                    String resultText = tds.get(3).text();
+                    SolvedAcResultType resultType = null;
+                    String errorText = null;
+                    try{
+                        resultType = SolvedAcResultType.of(resultText);
+                    }catch (IllegalArgumentException e){
+                        // 일치하는 Enum 이 없을 경우
+                        SolvedAcResultType.ErrorType errorType = SolvedAcResultType.getErrorType(resultText);
+                        resultType = errorType.getType();
+                        errorText = errorType.getErrorText();
+                    }
+
+                    if(resultType == null){
+                        continue;
+                    }
+
+                    SolvedAcResponseVO vo = SolvedAcResponseVO.builder()
+                            .username(username)
+                            .problemId(problemId)
+                            .resultId(resultType.getStatus())
+                            .errorText(errorText)
+                            .submitId(submitId)
+                            .date(dateTime.format(formatter))
+                            .build();
+//                    System.out.println(vo);
+
+                    list.add(vo);
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
 

@@ -16,6 +16,9 @@ export const DateUtils = {
     equalYM: (date1: Date, date2: Date)=>{
         return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
     },
+    equalYMd: (date1: Date, date2: Date)=>{
+        return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+    },
     getMonthInfo: (year, month)=>{
         const date = new Date(year, month);
 
@@ -40,7 +43,7 @@ export const DateUtils = {
         if(year < today.getFullYear()){
             return true;
         }
-        if(month === 12 && year === today.getFullYear()){
+        if(month === 1 && year === today.getFullYear()){
             return false;
         }
         return month <= today.getMonth();
@@ -67,6 +70,12 @@ export const DateUtils = {
         // }
 
         return Math.floor(tmp / (60 * 60 * 24));
+    },
+    isBeforeDate: (curr_date, std_date)=>{
+        return DateUtils.dateDiff(curr_date, std_date) >= 0;
+    },
+    isAfterDate: (curr_date, std_date)=>{
+        return DateUtils.dateDiff(curr_date, std_date) <= 0;
     },
     dateFromDiffYmdFromToday: (year, month, day)=>{
       const date = new Date(DateUtils.formatYYMMdd(year, month, day));
@@ -175,5 +184,20 @@ export const DateUtils = {
         }else{
             date.setDate(orgDate - (days));
         }
+    },
+    getFirstDateOfWeek: (date: Date) => {
+        const day = date.getDay(); // 0(일) ~ 6(토)
+        const subOffset = day === 0 ? 6 : day - 1; // 월요일 기준 보정
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() - subOffset);
+        return newDate;
+    },
+
+    getLastDateOfWeek: (date: Date) => {
+        const day = date.getDay(); // 0(일) ~ 6(토)
+        const addOffset = day === 0 ? 0 : 7 - day; // 일요일 기준 보정
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + addOffset);
+        return newDate;
     }
 }
