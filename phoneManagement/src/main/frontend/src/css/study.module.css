@@ -36,9 +36,81 @@
 
 .study_main .study_body .service_cont .option_header{
     height: 10%;
+    display: flex;
 }
 
+.study_main .study_body .service_cont .option_header .shared_problem_box{
+    width: 70%;
+    display: flex;
+    background-color: #464646;
+    justify-content: center;
+    align-items: center;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .btn_modify{
+    margin-left: 25px;
+    width: 75px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 4px 6px;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .btn_modify.edit{
+    background-color: #4781ff;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item{
+    width: 150px;
+    height: 80px;
+    background-color: #82ff82;
+    align-content: center;
+    cursor: pointer;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .edit_box{
+
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .inp_problem_id{
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.66);
+    text-align: center;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item + .shared_problem_item{
+    margin-left: 15px;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .problem_info_box{
+    display: flex;
+    justify-content: center;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .problem_info_box .shared_problem_item .problem_id_text{
+
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .problem_info_box .level{
+    margin-left: 5px;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .title_box{
+
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .title{
+    font-weight: 600;
+
+}
+
+
+
+
+
 .study_main .study_body .service_cont .option_header .date_panel{
+    width: 100%;
     display: flex;
     padding-top: 14px;
     justify-content: center;
@@ -63,7 +135,7 @@
 }
 
 .study_main .study_body .option_header .date_panel .selected_date_text{
-    width: 30%;
+    width: 40%;
     display: inline-block;
     align-content: center;
     font-size: 22px;
@@ -151,7 +223,25 @@
     align-content: center; /* 수직 중앙 정렬 */
 }
 
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text{
+    font-size: 14px;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text .span.blue{
+    color: #4781ff;
+    font-weight: 600;
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text .span{
+    color: grey;
+    font-weight: 600;
+}
+
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box{
+
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box .fire_icon{
 
 }
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box .username_text{

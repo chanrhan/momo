@@ -13,6 +13,12 @@ function SolvedAcApi(accessToken){
         loadBaekjoon: async ()=>{
             return axiosApi.get(`/api/v1/solved-ac/reload`, null);
         },
+        getSharedProblem: async ()=>{
+            return axiosApi.get(`/api/v1/solved-ac/shared-problem`, null);
+        },
+        updateSharedProblem: async (body)=>{
+            return axiosApi.post(`/api/v1/solved-ac/shared-problem`, body, null);
+        },
     }
 }
 

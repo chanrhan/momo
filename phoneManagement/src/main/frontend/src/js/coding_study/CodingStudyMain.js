@@ -7,6 +7,8 @@ import useModal from "../hook/useModal";
 import styles from "../../css/timeline.module.css";
 import {MouseEventUtils} from "../utils/MouseEventUtils";
 import {WeekSelectModal} from "../common/modal/menu/WeekSelectModal";
+import {ModalType} from "../common/modal/ModalType";
+import {ObjectUtils} from "../utils/objectUtil";
 
 const RESULT_COLOR = [
     0,0,0,0,
@@ -38,8 +40,13 @@ export function CodingStudyMain(){
 
     const [isLoading, setIsLoading] = useState(false)
 
+    const [sharedProblems, setSharedProblems] = useState([]);
+    const [editMode, setEditMode] = useState(false)
+
+    const [sharedProblemInputs, setSharedProblemInputs] = useState([-1, -1])
 
     useEffect(() => {
+        getSharedProblems();
         getAllUsers()
         initLoad();
     }, []);
@@ -55,10 +62,24 @@ export function CodingStudyMain(){
         })
     }
 
+    const getSharedProblems = ()=>{
+        solvedAcApi.getSharedProblem().then(({status,data})=>{
+            if(data){
+                const copy = [...sharedProblemInputs];
+                for(const i in data){
+                    copy[i] = data[i].problem_id
+                }
+                setSharedProblemInputs(copy);
+                setSharedProblems(data);
+            }
+        })
+    }
+
+
     const getAllUsers = ()=>{
         solvedAcApi.getAllUsers().then(({data})=>{
             if(data){
-                // console.table(data)
+                console.table(data)
                 setUsers(data);
             }
         })
@@ -210,6 +231,33 @@ export function CodingStudyMain(){
         setWeekDates(dt);
     }
 
+    const handleEditMode = ()=>{
+        const curr_state = editMode;
+        setEditMode(!editMode)
+        if(curr_state){
+            const body = []
+            if(sharedProblemInputs[0] != -1){
+                body.push(sharedProblemInputs[0])
+            }
+            if(sharedProblemInputs[1] != -1){
+                body.push(sharedProblemInputs[1])
+            }
+            console.table(body)
+            if(ObjectUtils.isEmptyArray(body)){
+                return;
+            }
+            solvedAcApi.updateSharedProblem(body).then(({data})=>{
+                if(data){
+                    modal.openModal(ModalType.SNACKBAR.Info, {
+                        msg: "공통문제가 변경되었습니다."
+                    })
+                }
+                getSharedProblems()
+            })
+
+        }
+    }
+
     return (
         <div className={Study.study_main}>
             <div className={Study.study_header}>
@@ -224,6 +272,50 @@ export function CodingStudyMain(){
                 </div>
                 <div className={Study.service_cont}>
                     <div className={Study.option_header}>
+                        <div className={Study.shared_problem_box}>
+                                {
+                                    new Array(2).fill(0).map((_,i)=>{
+                                        const v = sharedProblems[i];
+                                        return (
+                                            <div className={Study.shared_problem_item} style={{
+                                                backgroundColor: `${getLevelColor(v?.level)}`
+                                            }} onClick={()=>{
+                                                if(v && !editMode) {
+                                                    window.open(`https://www.acmicpc.net/problem/${v.problem_id}`, "_blank")
+                                                }
+                                            }}>
+                                                {
+                                                    !editMode ? (
+                                                        <>
+                                                            <div className={Study.problem_info_box}>
+                                                                <span
+                                                                    className={Study.problem_id_text}>{v?.problem_id ?? ''}</span>
+                                                                <span className={Study.level}>{v?.level ? getTier(v.level) : ''}</span>
+                                                            </div>
+                                                            <div className={Study.title_box}>
+                                                                <span className={Study.title}>{v?.title ?? "없음"}</span>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <div className={Study.edit_box}>
+                                                            <input type="text" placeholder='hi' className={Study.inp_problem_id} value={sharedProblemInputs[i]}
+                                                                   onChange={e=>{
+                                                                const copy = [...sharedProblemInputs];
+                                                                copy[i] = e.target.value;
+                                                                setSharedProblemInputs(copy);
+                                                            }}/>
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <button type='button' className={cm(Study.btn_modify, `${editMode && Study.edit}`)}
+                                        onClick={handleEditMode}>
+                                    수정
+                                </button>
+                        </div>
                         <div className={Study.date_panel}>
                             <button className={Study.btn_prev_date} onClick={handlePrevWeek}></button>
                             <div className={Study.selected_date_text}>
@@ -262,7 +354,11 @@ export function CodingStudyMain(){
                                         <div className={Study.detail_item}>
                                             <div className={Study.user_info_box}>
                                                 <div className={Study.username_box}>
+                                                    <span className={Study.fire_icon}></span>
                                                     <span className={Study.username_text}>{user.name}</span>
+                                                </div>
+                                                <div className={Study.shared_solved_text}>
+                                                    공통문제: <span className={cm(Study.span, `${user.shared_solved && Study.blue}`)}> {user.shared_solved ? '완료' : '미완료'}</span>
                                                 </div>
                                                 <div className={Study.info_detail_box}>
                                                     <span className={cm(Study.span, Study.tier_icon)} style={{

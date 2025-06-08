@@ -9,17 +9,28 @@ import java.util.Map;
 
 @Mapper
 public interface SolvedAcMapper {
-    public List<Map<String,Object>> getAllUsers();
-    public List<Map<String,String>> getContinuousCompleteCount();
+    public List<Map<String, Object>> getAllUsers();
 
-    public List<Map<String,Object>> getAllUsersLastRead();
+    public List<Map<String, String>> getContinuousCompleteCount();
+
+    public List<Map<String, Object>> getAllUsersLastRead();
+
     public void updateLastRead(String id, Integer lastRead);
 
     public void insertMarkedProblems(List<SolvedAcResponseVO> list);
-    public List<Map<String,Object>> getBaekjoonProblems(SolvedAcRequestVO vo);
+
+    public List<Map<String, Object>> getBaekjoonProblems(SolvedAcRequestVO vo);
 
     public boolean existBaekjoonProblem(int problemId);
+
     public void insertBaekjoonProblem(int problemId, String title, int level);
 
+    // weekly
     public void insertWeeklyScore(int target, int fine);
+
+    public void insertSharedProblem(List<Integer> list);
+    public int deleteSharedProblemAll();
+
+    public List<Map<String,Object>> getSharedProblem();
+
 }

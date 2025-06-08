@@ -15,6 +15,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,37 @@ public class SolvedAcService {
 
     private static final String Baekjoon_Problem_Status_Page_URL = "https://www.acmicpc.net/status";
     private static final String Solved_ac_user_show_URL = "https://solved.ac/api/v3/search/user?query=";
+
+    @Transactional
+    public void updateSharedProblem(List<Integer> list){
+        solvedAcMapper.deleteSharedProblemAll();
+        solvedAcMapper.insertSharedProblem(list);
+    }
+
+    @Transactional
+    public List<Map<String,Object>> getSharedProblem(){
+        List<Map<String,Object>> sp_list = solvedAcMapper.getSharedProblem();
+        for(Map<String,Object> item : sp_list){
+            System.out.println("shared: "+item);
+            if(Objects.isNull(item.get("title")) || !StringUtils.hasText(item.get("title").toString())){
+                System.out.println("is null");
+                try{
+                    int problemId = Integer.parseInt(item.get("problem_id").toString());
+                    System.out.println("shared: " + problemId);
+                    Map<String,Object> problemInfo = getProblemInfo(problemId);
+                    System.out.println("pr:"+problemInfo);
+                    String title = problemInfo.get("titleKo").toString();
+                    int level = Integer.parseInt(problemInfo.get("level").toString());
+                    item.put("title", title);
+                    item.put("level", level);
+                    solvedAcMapper.insertBaekjoonProblem(problemId, title, level);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sp_list;
+    }
 
     public List<Map<String,Object>> getAllUsers(){
         List<Map<String,Object>> users = solvedAcMapper.getAllUsers();
@@ -55,19 +89,19 @@ public class SolvedAcService {
                 e.printStackTrace();
             }
         }
-        System.out.println("before sort : " + users);
+//        System.out.println("before sort : " + users);
         users.sort((m1, m2)->{
             try{
                 int tier1 = m1.containsKey("tier") ? Integer.parseInt(m1.get("tier").toString()) : - 100;
                 int tier2 = m2.containsKey("tier") ? Integer.parseInt(m2.get("tier").toString()) : -100;
-                System.out.println("tier1 : " + tier1 + ", tier2 : " + tier2);
+//                System.out.println("tier1 : " + tier1 + ", tier2 : " + tier2);
                 return Integer.compare(tier2, tier1);
             }catch (NumberFormatException | NullPointerException e){
                 e.printStackTrace();
                 return 0;
             }
         });
-        System.out.println("after sort : " + users);
+//        System.out.println("after sort : " + users);
 
 
         return users;
@@ -83,9 +117,8 @@ public class SolvedAcService {
         String uri = "https://solved.ac/api/v3/problem/show?problemId="+problemId;
         try {
             return ExternalApiUtils.solvedacAPIRequest(uri);
-        } catch (IOException e) {
-            return null;
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
