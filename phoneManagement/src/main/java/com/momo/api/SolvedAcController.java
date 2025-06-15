@@ -27,7 +27,7 @@ public class SolvedAcController {
 
     @PostMapping("/problem")
     public ResponseEntity<List<Map<String,Object>>> getProblems(@RequestBody SolvedAcRequestVO vo){
-        System.out.println(vo);
+//        System.out.println(vo);
         return ResponseEntity.ok(solvedAcService.getProblems(vo));
     }
 
@@ -37,14 +37,14 @@ public class SolvedAcController {
     }
 
     @PostMapping("/shared-problem")
-    public ResponseEntity<Boolean> updateSharedProblem(@RequestBody List<Integer> list){
-        solvedAcService.updateSharedProblem(list);
+    public ResponseEntity<Boolean> updateSharedProblem(@RequestParam String date, @RequestBody List<Integer> list){
+        solvedAcService.updateSharedProblem(date, list);
         return ResponseEntity.ok(true);
     }
 
     @GetMapping("/shared-problem")
-    public ResponseEntity<List<Map<String,Object>>> getSharedProblem(){
-        return ResponseEntity.ok(solvedAcService.getSharedProblem());
+    public ResponseEntity<List<Map<String,Object>>> getSharedProblem(@RequestParam String date){
+        return ResponseEntity.ok(solvedAcService.getSharedProblem(date));
     }
 
 

@@ -19,8 +19,11 @@ public class ExternalApiUtils {
                 .header("Accept", "application/json")
                 .GET()
                 .build();
+        System.out.println("aaa http request : " + request.toString());
 
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("aaa header: " + response.headers().toString());
+        System.out.println("aaa body: " + response.body());
         Map<String, Object> map = objectMapper.readValue(response.body(), Map.class);
         System.out.println(map);
         return map;

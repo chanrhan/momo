@@ -13,9 +13,15 @@
 .study_main .study_header .title{
     height: 100px;
     line-height: 48px;
-    font-size: 48px;
+    font-size: 40px;
     align-content: center;
 }
+
+.study_main .study_header .title .description{
+    font-size: 18px;
+    margin-left: 15px;
+}
+
 
 .study_main .study_body{
     display: flex;
@@ -39,12 +45,29 @@
     display: flex;
 }
 
+.study_main .study_body .service_cont .option_header .shared_header{
+}
+
 .study_main .study_body .service_cont .option_header .shared_problem_box{
-    width: 70%;
+    position: relative;
+    width: 60%;
     display: flex;
-    background-color: #464646;
+    padding-left: 124px;
+    background-color: #ffd6e7;
     justify-content: center;
     align-items: center;
+}
+
+.study_main .study_body .service_cont .option_header .shared_problem_box .shared_image_icon{
+    position: absolute;
+    left: 32px;
+    background-color: #EA649E;
+    border-radius: 18px;
+    padding: 4px 10px;
+    color: white;
+    font-size: 18px;
+    height: 48px;
+    align-content: center;
 }
 
 .study_main .study_body .service_cont .option_header .shared_problem_box .btn_modify{
@@ -61,10 +84,11 @@
 
 .study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item{
     width: 150px;
-    height: 80px;
-    background-color: #82ff82;
+    height: 65px;
+    background-color: #ffffff;
     align-content: center;
     cursor: pointer;
+    border-radius: 12px;
 }
 
 .study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .edit_box{
@@ -86,7 +110,13 @@
 .study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item .problem_info_box{
     display: flex;
     justify-content: center;
+    align-items: center;
 }
+
+.study_main .problem_info_box .level_icon{
+    margin-right: 5px;
+}
+
 
 .study_main .study_body .service_cont .option_header .shared_problem_box .problem_info_box .shared_problem_item .problem_id_text{
 
@@ -105,17 +135,13 @@
 
 }
 
-
-
-
-
 .study_main .study_body .service_cont .option_header .date_panel{
-    width: 100%;
+    width: 40%;
     display: flex;
-    padding-top: 14px;
+    /*padding-top: 14px;*/
     justify-content: center;
     align-items: center;
-    height: 80%;
+    /*height: 80%;*/
 }
 
 .study_main .study_body .option_header .date_panel .btn_prev_date{
@@ -135,7 +161,7 @@
 }
 
 .study_main .study_body .option_header .date_panel .selected_date_text{
-    width: 40%;
+    width: 60%;
     display: inline-block;
     align-content: center;
     font-size: 22px;
@@ -178,10 +204,11 @@
 }
 
 .study_main .study_body .option_header .loading_panel{
-    height: 20%;
-    /*line-height: 20px;*/
+    position: absolute;
+    left: 50%;
+    width: 200px;
+    height: 100px;
     font-size: 18px;
-    align-content: center;
 }
 
 .study_main .study_body .study_cont{
@@ -194,8 +221,9 @@
 
 .study_main .study_body .study_cont .detail_list{
     padding: 24px;
-    background-color: #b7bef3;
+    background-color: #cecece;
     height: 100%;
+    overflow-y: auto;
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item{
@@ -218,13 +246,15 @@
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box{
     width: 20%;
     height: 100%;
-    background-color: #ffbdbd;
-    padding: 6px;
-    align-content: center; /* 수직 중앙 정렬 */
+    /*background-color: #ffbdbd;*/
+    /*padding: 6px;*/
+    /*align-content: center; !* 수직 중앙 정렬 *!*/
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text{
     font-size: 14px;
+    color: #737373;
+    margin-top: 1px;
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text .span.blue{
@@ -238,7 +268,7 @@
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box{
-
+    margin-top: 8px;
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box .fire_icon{
@@ -247,10 +277,39 @@
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .username_box .username_text{
     font-size: 22px;
     font-weight: 600;
-
 }
+
+
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box{
-    margin-top: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 35%;
+    background-color: rgba(255, 255, 255, 0.66);
+}
+
+.study_main .study_body .study_cont .detail_list .detail_item .user_info_box .shared_solved_text .total_count_icon{
+    /*border: 2px solid #110083;*/
+    border-radius: 6px;
+    /*padding: 0 1px;*/
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+.study_main .info_detail_box .level_icon{
+    width: 20px;
+    height: 24px;
+}
+.study_main .study_body .shared_status{
+    width: 24px;
+    height: 26px;
+    background: url(../images/solved/check_pink.png) no-repeat center / 100%;
+    font-size: 16px;
+    padding: 1px 4px;
+    color: white;
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box .span{
@@ -261,7 +320,7 @@
     width: 12px;
     height: 12px;
     background-color: white;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     margin-right: 8px;
 }
 .study_main .study_body .study_cont .detail_list .detail_item .user_info_box .info_detail_box .span.tier{
@@ -356,13 +415,129 @@
 
 }
 
-.study_main .problem_item .level_icon{
+
+.study_main .level_icon{
     width: 12px;
-    height: 12px;
-    background-color: white;
-    border-radius: 50%;
+    height: 18px;
+    /*border-radius: 50%;*/
     margin-right: 8px;
 }
+
+/*tier*/
+.unrated {
+    background: url(../images/solved/tier_unrated.png) no-repeat center / 100%;
+}
+.sprout_3 {
+    background: url(../images/solved/tier_sprout_3.png) no-repeat center / 100%;
+}
+.sprout_4 {
+    background: url(../images/solved/tier_sprout_4.png) no-repeat center / 100%;
+}
+.sprout_5 {
+    background: url(../images/solved/tier_sprout_5.png) no-repeat center / 100%;
+}
+/* Bronze */
+.bronze_1 {
+    background: url(../images/solved/tier_bronze_1.png) no-repeat center / 100%;
+}
+.bronze_2 {
+    background: url(../images/solved/tier_bronze_2.png) no-repeat center / 100%;
+}
+.bronze_3 {
+    background: url(../images/solved/tier_bronze_3.png) no-repeat center / 100%;
+}
+.bronze_4 {
+    background: url(../images/solved/tier_bronze_4.png) no-repeat center / 100%;
+}
+.bronze_5 {
+    background: url(../images/solved/tier_bronze_5.png) no-repeat center / 100%;
+}
+
+/* Silver */
+.silver_1 {
+    background: url(../images/solved/tier_silver_1.png) no-repeat center / 100%;
+}
+.silver_2 {
+    background: url(../images/solved/tier_silver_2.png) no-repeat center / 100%;
+}
+.silver_3 {
+    background: url(../images/solved/tier_silver_3.png) no-repeat center / 100%;
+}
+.silver_4 {
+    background: url(../images/solved/tier_silver_4.png) no-repeat center / 100%;
+}
+.silver_5 {
+    background: url(../images/solved/tier_silver_5.png) no-repeat center / 100%;
+}
+
+/* Gold */
+.gold_1 {
+    background: url(../images/solved/tier_gold_1.png) no-repeat center / 100%;
+}
+.gold_2 {
+    background: url(../images/solved/tier_gold_2.png) no-repeat center / 100%;
+}
+.gold_3 {
+    background: url(../images/solved/tier_gold_3.png) no-repeat center / 100%;
+}
+.gold_4 {
+    background: url(../images/solved/tier_gold_4.png) no-repeat center / 100%;
+}
+.gold_5 {
+    background: url(../images/solved/tier_gold_5.png) no-repeat center / 100%;
+}
+
+/* Platinum */
+.platinum_1 {
+    background: url(../images/solved/tier_platinum_1.png) no-repeat center / 100%;
+}
+.platinum_2 {
+    background: url(../images/solved/tier_platinum_2.png) no-repeat center / 100%;
+}
+.platinum_3 {
+    background: url(../images/solved/tier_platinum_3.png) no-repeat center / 100%;
+}
+.platinum_4 {
+    background: url(../images/solved/tier_platinum_4.png) no-repeat center / 100%;
+}
+.platinum_5 {
+    background: url(../images/solved/tier_platinum_5.png) no-repeat center / 100%;
+}
+
+/* Diamond */
+.diamond_1 {
+    background: url(../images/solved/tier_diamond_1.png) no-repeat center / 100%;
+}
+.diamond_2 {
+    background: url(../images/solved/tier_diamond_2.png) no-repeat center / 100%;
+}
+.diamond_3 {
+    background: url(../images/solved/tier_diamond_3.png) no-repeat center / 100%;
+}
+.diamond_4 {
+    background: url(../images/solved/tier_diamond_4.png) no-repeat center / 100%;
+}
+.diamond_5 {
+    background: url(../images/solved/tier_diamond_5.png) no-repeat center / 100%;
+}
+
+/* Ruby */
+.ruby_1 {
+    background: url(../images/solved/tier_ruby_1.png) no-repeat center / 100%;
+}
+.ruby_2 {
+    background: url(../images/solved/tier_ruby_2.png) no-repeat center / 100%;
+}
+.ruby_3 {
+    background: url(../images/solved/tier_ruby_3.png) no-repeat center / 100%;
+}
+.ruby_4 {
+    background: url(../images/solved/tier_ruby_4.png) no-repeat center / 100%;
+}
+.ruby_5 {
+    background: url(../images/solved/tier_ruby_5.png) no-repeat center / 100%;
+}
+
 
 .study_main .problem_item .problem_num{
     font-size: 12px;
@@ -384,6 +559,109 @@
     font-size: 11px;
 }
 
+/* study.module.css - Responsive enhancement section */
 
+@media screen and (max-width: 768px) {
+    .study_main {
+        height: auto;
+        padding: 12px;
+    }
+
+    .study_main .study_header {
+        height: auto;
+    }
+
+    .study_main .study_header .title {
+        font-size: 28px;
+        height: auto;
+        line-height: normal;
+    }
+
+    .study_main .study_body {
+        flex-direction: column;
+    }
+
+    .study_main .study_body .study_sidebar {
+        display: none;
+    }
+
+    .study_main .study_body .service_cont {
+        width: 100%;
+    }
+
+    .study_main .study_body .service_cont .option_header {
+        margin-top: 5px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .study_main .study_body .service_cont .option_header .shared_problem_box {
+        /*flex-direction: column;*/
+        width: 100%;
+        padding: 7px;
+    }
+
+    .study_main .study_body .service_cont .option_header .shared_problem_box .shared_problem_item + .shared_problem_item {
+        margin-left: 15px;
+        /*margin-top: 10px;*/
+    }
+
+    .study_main .study_body .service_cont .option_header .date_panel {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .study_main .study_body .option_header .date_panel .btn_prev_date{
+        transform: rotate(180deg);
+        width: 48px;
+        height: 48px;
+    }
+    .study_main .study_body .option_header .date_panel .btn_next_date {
+        transform: none;
+        width: 48px;
+        height: 48px;
+    }
+
+    .study_main .study_body .option_header .date_panel .selected_date_text {
+        width: 100%;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .study_main .study_body .option_header .date_panel .selected_date_text .btn_today,
+    .study_main .study_body .option_header .date_panel .selected_date_text .btn_week_date {
+        width: 48%;
+        font-size: 14px;
+    }
+
+    .study_main .study_body .study_cont .detail_list .detail_item {
+        flex-direction: column;
+        height: auto;
+        padding: 12px;
+    }
+
+    .study_main .study_body .study_cont .detail_list .detail_item .user_info_box,
+    .study_main .study_body .study_cont .detail_list .detail_item .week_progress_box {
+        width: 100%;
+        height: auto;
+        padding: 12px 0;
+    }
+
+    .study_main .study_body .study_cont .detail_list .detail_item .week_progress_box {
+        flex-direction: column;
+        padding: 5px 5px 5px 12px;
+    }
+
+    .study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box,
+    .study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .problem_detail_box {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .problem_detail_box .problem_list {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 6px 10px;
+    }
+}
 
 

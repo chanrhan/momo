@@ -39,23 +39,21 @@ public class SolvedAcService {
     private static final String Solved_ac_user_show_URL = "https://solved.ac/api/v3/search/user?query=";
 
     @Transactional
-    public void updateSharedProblem(List<Integer> list){
+    public void updateSharedProblem(String date, List<Integer> list){
         solvedAcMapper.deleteSharedProblemAll();
-        solvedAcMapper.insertSharedProblem(list);
+        solvedAcMapper.insertSharedProblem(date, list);
     }
 
     @Transactional
-    public List<Map<String,Object>> getSharedProblem(){
-        List<Map<String,Object>> sp_list = solvedAcMapper.getSharedProblem();
+    public List<Map<String,Object>> getSharedProblem(String date){
+        List<Map<String,Object>> sp_list = solvedAcMapper.getSharedProblem(date);
         for(Map<String,Object> item : sp_list){
-            System.out.println("shared: "+item);
+//            System.out.println("shared: "+item);
             if(Objects.isNull(item.get("title")) || !StringUtils.hasText(item.get("title").toString())){
-                System.out.println("is null");
                 try{
                     int problemId = Integer.parseInt(item.get("problem_id").toString());
-                    System.out.println("shared: " + problemId);
                     Map<String,Object> problemInfo = getProblemInfo(problemId);
-                    System.out.println("pr:"+problemInfo);
+//                    System.out.println("pr:"+problemInfo);
                     String title = problemInfo.get("titleKo").toString();
                     int level = Integer.parseInt(problemInfo.get("level").toString());
                     item.put("title", title);
@@ -74,6 +72,7 @@ public class SolvedAcService {
         for (Map<String,Object> user : users){
             String uri = Solved_ac_user_show_URL + user.get("id").toString();
             try {
+//                System.out.println("aaa request : " + uri);
                 Map<String,Object> res = ExternalApiUtils.solvedacAPIRequest(uri);
 //                System.out.println(res);
                 Map<String,Object> item = ((List<Map<String, Object>>)res.get("items")).get(0);
@@ -116,7 +115,14 @@ public class SolvedAcService {
     public Map<String, Object> getProblemInfo(int problemId){
         String uri = "https://solved.ac/api/v3/problem/show?problemId="+problemId;
         try {
-            return ExternalApiUtils.solvedacAPIRequest(uri);
+            Map<String,Object> info = ExternalApiUtils.solvedacAPIRequest(uri);
+            System.out.println("ppp sprout: " + info.get("sprout"));
+            if(info != null && info.get("sprout").equals(true)){
+
+                info.put("level", "-"+info.get("level").toString());
+            }
+            System.out.println("ppp: "+info);
+            return info;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -133,7 +139,6 @@ public class SolvedAcService {
             List<SolvedAcResponseVO> list = new ArrayList<>();
 
             List<Map<String,Object>> lastReads = solvedAcMapper.getAllUsersLastRead();
-            System.out.println(lastReads);
             for(Map<String,Object> map :lastReads){
                 String username = map.get("id").toString();
                 int lastRead = Integer.parseInt(map.get("last_read").toString());
@@ -174,7 +179,7 @@ public class SolvedAcService {
         if(username == null || username.isEmpty()){
             return null;
         }
-        System.out.println("username: "+username+", top:" + top);
+//        System.out.println("username: "+username+", top:" + top);
         Connection connection = Jsoup.connect(Baekjoon_Problem_Status_Page_URL + "?user_id="+username+"&top="+top);
         Document document = connection.get(); // GET 으로 요청하고, 요청 결과를 Document 객체로 반환
         Elements elements = document.getElementsByAttributeValue("id","status-table");

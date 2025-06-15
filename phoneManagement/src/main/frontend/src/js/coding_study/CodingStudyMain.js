@@ -43,7 +43,8 @@ export function CodingStudyMain(){
     const [sharedProblems, setSharedProblems] = useState([]);
     const [editMode, setEditMode] = useState(false)
 
-    const [sharedProblemInputs, setSharedProblemInputs] = useState([-1, -1])
+    const [sharedProblemInputs, setSharedProblemInputs] = useState([-1, -1, -1])
+    const [orgSp, setOrgSp] = useState([-1,-1]);
 
     useEffect(() => {
         getSharedProblems();
@@ -53,6 +54,8 @@ export function CodingStudyMain(){
 
     useEffect(() => {
         getProblem();
+        getSharedProblems()
+        setEditMode(false)
     }, [fromDate, toDate]);
 
     const initLoad = ()=>{
@@ -63,7 +66,7 @@ export function CodingStudyMain(){
     }
 
     const getSharedProblems = ()=>{
-        solvedAcApi.getSharedProblem().then(({status,data})=>{
+        solvedAcApi.getSharedProblem(fromDate).then(({status,data})=>{
             if(data){
                 const copy = [...sharedProblemInputs];
                 for(const i in data){
@@ -71,6 +74,7 @@ export function CodingStudyMain(){
                 }
                 setSharedProblemInputs(copy);
                 setSharedProblems(data);
+                setOrgSp(copy);
             }
         })
     }
@@ -79,16 +83,16 @@ export function CodingStudyMain(){
     const getAllUsers = ()=>{
         solvedAcApi.getAllUsers().then(({data})=>{
             if(data){
-                console.table(data)
+                // console.table(data)
                 setUsers(data);
             }
         })
     }
 
     const setWeekDates = (date: Date)=>{
-        if(!DateUtils.isBeforeDate(date, today)){
-            return;
-        }
+        // if(!DateUtils.isBeforeDate(date, today)){
+        //     return;
+        // }
         const fd = DateUtils.getFirstDateOfWeek(date);
         const td = DateUtils.getLastDateOfWeek(date);
         setFromDate(DateUtils.dateToStringYYMMdd(fd))
@@ -136,23 +140,23 @@ export function CodingStudyMain(){
         setWeekDates(newDate);
     }
 
-    const getLevelColor = (lv)=>{
-        if(lv <= 5){ // bronze
-            return '#674848';
+    const getTierColor = (lv)=>{
+        if(lv <= 0){ // unrated
+            return '#c1ea84';
+        }else if(lv <= 5){ // bronze
+            return '#b6897f';
         }else if(lv > 5 && lv <= 10){ // silver
-            return '#eeeeee';
+            return '#e5e5e5';
         }else if(lv > 10 && lv <= 15){ // gold
-            return '#fff200';
+            return '#ffd634';
         }else if(lv > 15 && lv <= 20){ // platinum
-            return '#3bf5b0';
+            return '#89ffd2';
         }else if(lv > 20 && lv <= 25){ // diamond
             return '#548dff';
         }else if(lv > 25 && lv <= 30){ // ruby
             return '#ff5f5f';
-        }else if(lv === 0){ // unrated
-            return '#000000';
         }else{
-            return '#1c1c1c';
+            return 'white'
         }
     }
 
@@ -180,34 +184,64 @@ export function CodingStudyMain(){
         }
     }
 
-    const getTier = (lv)=>{
+    const getLevelIconClass = (lv)=>{
         let tier;
         let num;
-        if(lv <= 5){ // bronze
-            tier = '브론즈'
+        if(lv <= 0){ // unrated
+            tier = 'sprout'
+            num = 5 - (-lv);
+        }else if(lv <= 5){ // bronze
+            tier = 'bronze'
             num = 6 - lv;
         }else if(lv > 5 && lv <= 10){ // silver
-            tier = '실버'
+            tier = 'silver'
             num = 11 - lv;
         }else if(lv > 10 && lv <= 15){ // gold
-            tier = '골드'
+            tier = 'gold'
             num = 16 - lv;
         }else if(lv > 15 && lv <= 20){ // platinum
-            tier = '플레티넘'
+            tier = 'platinum'
             num = 21 - lv;
         }else if(lv > 20 && lv <= 25){ // diamond
-            tier = '다이아'
+            tier = 'diamond'
             num = 26 - lv;
         }else if(lv > 25 && lv <= 30){ // ruby
-            tier = '루비'
+            tier = 'ruby'
             num = 31 - lv;
-        }else if(lv === 0){ // unrated
-            tier = 'Unrated'
-        }else{
-            return "Unrated"
         }
-        return `${tier} ${num}`
+        const classname = `${tier}_${num}`;
+        return Study[classname];
     }
+
+    const getTierIconClass = (lv)=>{
+        let tier;
+        let num;
+        if(lv <= 0){ // unrated
+            return Study.unrated
+        }else if(lv <= 5){ // bronze
+            tier = 'bronze'
+            num = 6 - lv;
+        }else if(lv > 5 && lv <= 10){ // silver
+            tier = 'silver'
+            num = 11 - lv;
+        }else if(lv > 10 && lv <= 15){ // gold
+            tier = 'gold'
+            num = 16 - lv;
+        }else if(lv > 15 && lv <= 20){ // platinum
+            tier = 'platinum'
+            num = 21 - lv;
+        }else if(lv > 20 && lv <= 25){ // diamond
+            tier = 'diamond'
+            num = 26 - lv;
+        }else if(lv > 25 && lv <= 30){ // ruby
+            tier = 'ruby'
+            num = 31 - lv;
+        }
+        const classname = `${tier}_${num}`;
+        return Study[classname];
+    }
+
+
 
     const onBarMouseMove = (e, title, co_solvers) => {
         const pos = MouseEventUtils.getAbsolutePos(e);
@@ -231,28 +265,45 @@ export function CodingStudyMain(){
         setWeekDates(dt);
     }
 
+    const showEditButton = ()=>{
+        const p = DateUtils.dateDiff(DateUtils.getFirstDateOfWeek(today), new Date(fromDate));
+        console.log(p)
+        if(p < -7){
+            // setEditMode(false)
+            return false;
+        }
+        return true;
+    }
+
     const handleEditMode = ()=>{
+        if(!showEditButton()){
+            return;
+        }
         const curr_state = editMode;
         setEditMode(!editMode)
         if(curr_state){
             const body = []
-            if(sharedProblemInputs[0] != -1){
+            if(sharedProblemInputs[0] != -1 && sharedProblemInputs[0] != orgSp[0]){
                 body.push(sharedProblemInputs[0])
             }
-            if(sharedProblemInputs[1] != -1){
+            if(sharedProblemInputs[1] != -1 && sharedProblemInputs[1] != orgSp[1]){
                 body.push(sharedProblemInputs[1])
+            }
+            if(sharedProblemInputs[2] != -1 && sharedProblemInputs[2] != orgSp[2]){
+                body.push(sharedProblemInputs[2])
             }
             console.table(body)
             if(ObjectUtils.isEmptyArray(body)){
                 return;
             }
-            solvedAcApi.updateSharedProblem(body).then(({data})=>{
+            solvedAcApi.updateSharedProblem(fromDate, sharedProblemInputs).then(({data})=>{
                 if(data){
                     modal.openModal(ModalType.SNACKBAR.Info, {
                         msg: "공통문제가 변경되었습니다."
                     })
                 }
                 getSharedProblems()
+                getAllUsers()
             })
 
         }
@@ -262,7 +313,8 @@ export function CodingStudyMain(){
         <div className={Study.study_main}>
             <div className={Study.study_header}>
                 <div className={Study.title}>
-                    Coding Study (06/09~)
+                    코테스터디(이름추천받아요) (06/09~)
+                    <span className={Study.description}>새싹: 10점 / 브론즈: 20점 / 실버: 30점 / 골드: 50점 / 플레 이상: 80점</span>
                 </div>
             </div>
 
@@ -272,50 +324,6 @@ export function CodingStudyMain(){
                 </div>
                 <div className={Study.service_cont}>
                     <div className={Study.option_header}>
-                        <div className={Study.shared_problem_box}>
-                                {
-                                    new Array(2).fill(0).map((_,i)=>{
-                                        const v = sharedProblems[i];
-                                        return (
-                                            <div className={Study.shared_problem_item} style={{
-                                                backgroundColor: `${getLevelColor(v?.level)}`
-                                            }} onClick={()=>{
-                                                if(v && !editMode) {
-                                                    window.open(`https://www.acmicpc.net/problem/${v.problem_id}`, "_blank")
-                                                }
-                                            }}>
-                                                {
-                                                    !editMode ? (
-                                                        <>
-                                                            <div className={Study.problem_info_box}>
-                                                                <span
-                                                                    className={Study.problem_id_text}>{v?.problem_id ?? ''}</span>
-                                                                <span className={Study.level}>{v?.level ? getTier(v.level) : ''}</span>
-                                                            </div>
-                                                            <div className={Study.title_box}>
-                                                                <span className={Study.title}>{v?.title ?? "없음"}</span>
-                                                            </div>
-                                                        </>
-                                                    ) : (
-                                                        <div className={Study.edit_box}>
-                                                            <input type="text" placeholder='hi' className={Study.inp_problem_id} value={sharedProblemInputs[i]}
-                                                                   onChange={e=>{
-                                                                const copy = [...sharedProblemInputs];
-                                                                copy[i] = e.target.value;
-                                                                setSharedProblemInputs(copy);
-                                                            }}/>
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
-                                        )
-                                    })
-                                }
-                                <button type='button' className={cm(Study.btn_modify, `${editMode && Study.edit}`)}
-                                        onClick={handleEditMode}>
-                                    수정
-                                </button>
-                        </div>
                         <div className={Study.date_panel}>
                             <button className={Study.btn_prev_date} onClick={handlePrevWeek}></button>
                             <div className={Study.selected_date_text}>
@@ -338,11 +346,61 @@ export function CodingStudyMain(){
                         <div className={Study.loading_panel}>
                             {isLoading && "데이터를 가져오는 중입니다.."}
                         </div>
+                        <div className={Study.shared_problem_box}>
+                            <div className={cm(Study.shared_image_icon)}>
+                                Shared Problem
+                            </div>
+                            {
+                                new Array(3).fill(0).map((_, i) => {
+                                    const v = sharedProblems[i];
+                                    return (
+                                        <div className={Study.shared_problem_item} style={{
+                                            backgroundColor: `${getTierColor(v?.level)}`
+                                        }} onClick={() => {
+                                            if (v && !editMode) {
+                                                window.open(`https://www.acmicpc.net/problem/${v.problem_id}`, "_blank")
+                                            }
+                                        }}>
+                                            {
+                                                !editMode ? (
+                                                    <>
+                                                        <div className={Study.problem_info_box}>
+                                                        <span
+                                                            className={cm(Study.level_icon, getLevelIconClass(v?.level))}></span>
+                                                            <span
+                                                                className={Study.problem_id_text}>{v?.problem_id ?? ''}</span>
+                                                        </div>
+                                                        <div className={Study.title_box}>
+                                                            <span className={Study.title}>{v?.title ?? "없음"}</span>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <div className={Study.edit_box}>
+                                                        <input type="text" placeholder='problem id'
+                                                               className={Study.inp_problem_id}
+                                                               value={sharedProblemInputs[i]}
+                                                               onChange={e => {
+                                                                   const copy = [...sharedProblemInputs];
+                                                                   copy[i] = e.target.value;
+                                                                   setSharedProblemInputs(copy);
+                                                               }}/>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    )
+                                })
+                            }
+                            <button type='button' className={cm(Study.btn_modify, `${editMode && Study.edit}`)}
+                                    onClick={handleEditMode}>
+                                {showEditButton() ? editMode ? '적용' : '수정' : '-'}
+                            </button>
+                        </div>
                     </div>
                     <div className={Study.study_cont}>
                         <div className={Study.detail_list}>
                             {
-                                users && users.map((user,i)=>{
+                                users && users.map((user, i) => {
                                     const id = user.id;
                                     // console.log(id)
                                     const pr = problems[id];
@@ -352,25 +410,28 @@ export function CodingStudyMain(){
 
                                     return (
                                         <div className={Study.detail_item}>
-                                            <div className={Study.user_info_box}>
-                                                <div className={Study.username_box}>
+                                            <div className={Study.user_info_box} style={{
+                                                backgroundColor: `${getTierColor(user.tier)}`
+                                            }}>
+                                                <div className={Study.info_detail_box}>
                                                     <span className={Study.fire_icon}></span>
+                                                    <span
+                                                        className={cm(Study.level_icon, getTierIconClass(user.tier))}></span>
+                                                    {
+                                                        user.shared_solved ? <span className={cm(Study.shared_status)}></span> : null
+                                                    }
+                                                </div>
+                                                <div className={Study.username_box}>
                                                     <span className={Study.username_text}>{user.name}</span>
                                                 </div>
                                                 <div className={Study.shared_solved_text}>
-                                                    공통문제: <span className={cm(Study.span, `${user.shared_solved && Study.blue}`)}> {user.shared_solved ? '완료' : '미완료'}</span>
-                                                </div>
-                                                <div className={Study.info_detail_box}>
-                                                    <span className={cm(Study.span, Study.tier_icon)} style={{
-                                                        backgroundColor: `${getLevelColor(user.tier)}`
-                                                    }}></span>
-                                                    <span className={cm(Study.span, Study.tier)}>{getTier(user.tier)}</span>
-                                                    <span className={Study.span}>| Total Count : {user.solved_count}</span>
+                                                    <span className={Study.total_count_icon}>{user.solved_count}</span> 문제 해결
+
                                                 </div>
                                             </div>
                                             <div className={Study.week_progress_box}>
                                                 <div className={Study.progress_bar_box}>
-                                                    <div className={Study.bg_bar} >
+                                                <div className={Study.bg_bar}>
                                                         {
                                                             user && (
                                                                 <>
@@ -378,7 +439,7 @@ export function CodingStudyMain(){
                                                                           style={{
                                                                               width: `${per}%`,
                                                                               backgroundColor: `${getBarColor(per)}`
-                                                                    }}></span>
+                                                                          }}></span>
                                                                 </>
                                                             )
                                                         }
@@ -390,18 +451,20 @@ export function CodingStudyMain(){
                                                     {/*<span className={Study.description}>채점 현황</span>*/}
                                                     <div className={Study.problem_list}>
                                                         {
-                                                            pr && pr.problems && pr.problems.map((p, pi)=>{
+                                                            pr && pr.problems && pr.problems.map((p, pi) => {
                                                                 return (
                                                                     <div className={Study.problem_item} style={{
                                                                         backgroundColor: `${getResultColor(p.result_id)}`
-                                                                    }} onMouseMove={e => onBarMouseMove(e, p.title, p.co_solvers)}
-                                                                         onMouseLeave={onBarMouseLeave} onClick={()=>{
-                                                                             window.open(`https://www.acmicpc.net/problem/${p.problem_id}`, "_blank")
+                                                                    }}
+                                                                         onMouseMove={e => onBarMouseMove(e, p.title, p.co_solvers)}
+                                                                         onMouseLeave={onBarMouseLeave} onClick={() => {
+                                                                        // console.log(p.level)
+                                                                        window.open(`https://www.acmicpc.net/problem/${p.problem_id}`, "_blank")
                                                                     }}>
-                                                                        <span className={Study.level_icon} style={{
-                                                                            backgroundColor: `${getLevelColor(p.level)}`
-                                                                        }}></span>
-                                                                        <span className={Study.problem_num}>{p.problem_id}</span>
+                                                                        <span
+                                                                            className={cm(Study.level_icon, getLevelIconClass(p.level))}></span>
+                                                                        <span
+                                                                            className={Study.problem_num}>{p.problem_id}</span>
                                                                     </div>
                                                                 )
                                                             })
@@ -425,16 +488,16 @@ export function CodingStudyMain(){
     )
 }
 
-function Tooltip({ visible, x, y, content, co_solvers}) {
+function Tooltip({visible, x, y, content, co_solvers}) {
     if (!visible) return null;
     return (
-        <div className={Study.tooltip} style={{ left: x, top: y }}>
+        <div className={Study.tooltip} style={{left: x, top: y}}>
             {content}
             {
                 co_solvers && co_solvers.length > 0 && (
                     <div className={Study.co_solvers}>solved: {
-                        co_solvers.map((v,i)=>{
-                            if(i < co_solvers.length-1){
+                        co_solvers.map((v, i) => {
+                            if (i < co_solvers.length - 1) {
                                 return `${v}, `
                             }
                             return `${v}`

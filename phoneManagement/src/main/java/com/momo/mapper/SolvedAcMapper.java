@@ -28,9 +28,9 @@ public interface SolvedAcMapper {
     // weekly
     public void insertWeeklyScore(int target, int fine);
 
-    public void insertSharedProblem(List<Integer> list);
+    public void insertSharedProblem(String date, List<Integer> list);
     public int deleteSharedProblemAll();
 
-    public List<Map<String,Object>> getSharedProblem();
+    public List<Map<String,Object>> getSharedProblem(String date);
 
 }
