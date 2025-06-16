@@ -141,7 +141,7 @@
 
         INSERT INTO tb_weekly_solved
         (week_id, id, score, week_dt, complete_st, fine)
-        select week_id,
+        select distinct week_id,
                id,
         score,
         week_dt,

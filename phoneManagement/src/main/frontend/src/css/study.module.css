@@ -223,7 +223,7 @@
     padding: 24px;
     background-color: #cecece;
     height: 100%;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 
 .study_main .study_body .study_cont .detail_list .detail_item{
