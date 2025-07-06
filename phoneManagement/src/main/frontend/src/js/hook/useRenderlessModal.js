@@ -1,7 +1,6 @@
 import useModal from "./useModal";
 import {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
-import {useLoggingRef} from "./useLoggingRef";
 import {MutableRefObject} from "react";
 
 export function useRenderlessModal(modalName){

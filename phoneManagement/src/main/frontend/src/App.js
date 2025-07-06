@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Helmet} from "react-helmet-async";
 import ModalContainer from "./js/common/modal/ModalContainer";
 import {Route, Routes} from "react-router-dom";
@@ -48,8 +48,6 @@ import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
 import {RegisterBrNo} from "./js/shop/RegisterBrNo";
 import {ComponentTest} from "./js/test/ComponentTest";
-import {StudyMain} from "./js/study_private/StudyMain";
-import {StudyLayout} from "./js/study_private/StudyLayout";
 import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
 import {StringTest} from "./js/test/StringTest";
 import {AdminMessage} from "./js/admin/AdminMessage";
@@ -57,7 +55,6 @@ import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
 import {ObjectUtils} from "./js/utils/objectUtil";
 import {AdminVisitMap} from "./js/admin/AdminVisitMap";
 import TimelineTest from "./js/test/TimelineTest";
-import {CodingStudyMain} from "./js/coding_study/CodingStudyMain";
 
 function App() {
     const userInfo = useUserInfo();
@@ -69,10 +66,6 @@ function App() {
           </Helmet>
           <ModalContainer/>
           <Routes>
-              <Route path='/study' element={<StudyLayout/>}>
-                  <Route path='' element={<CodingStudyMain/>}/>
-              </Route>
-
               <Route path='/test' element={<TestHeader/>}>
                   <Route path='notify' element={<NotifTest/>}/>
                   <Route path='modal' element={<ModalTest/>}/>

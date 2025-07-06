@@ -15,8 +15,6 @@ import store from "../src/js/store/store"
 import {HelmetProvider} from "react-helmet-async";
 import {NavermapsProvider} from "react-naver-maps";
 
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>

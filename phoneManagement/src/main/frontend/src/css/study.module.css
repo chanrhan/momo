@@ -34,6 +34,107 @@
 .study_main .study_body .study_sidebar{
     background-color: #e5e5e5;
     width: 15%;
+    padding: 12px 12px;
+}
+
+.study_main .study_body .study_sidebar .total_fine_panel{
+    background-color: #ffffea;
+    height: 500px;
+    margin-bottom: 15px;
+}
+
+.study_main .study_body .study_sidebar .total_fine_panel .title{
+    font-size: 18px;
+}
+
+.study_main .study_body .study_sidebar .total_fine_panel .total_fine_text{
+    font-weight: 600;
+}
+
+.study_main .study_body .study_sidebar .total_fine_panel .total_fine_list{
+    padding: 8px;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item{
+    display: flex;
+    height: 48px;
+    padding: 1px 12px;
+    background-color: #d1e1ff;
+    border-radius: 8px;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item + .total_fine_item{
+    margin-top: 8px;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .ranking_num{
+    width: 20%;
+    font-size: 14px;
+    align-content: center;
+}
+
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .info_box{
+    width: 80%;
+    padding: 2px 6px;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .top_panel{
+    display: flex;
+    height: 24px;
+    align-items: center;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .username_text{
+    font-size: 16px;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .fine_num{
+    margin-left: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .bottom_panel{
+    height: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .bg_bar2{
+    width: 100%;
+    margin-top: 1px;
+    height: 12px;
+    position:relative;
+    border-radius:24px; background-color: #ffffff;
+}
+
+.study_main .study_sidebar .total_fine_panel .total_fine_list .total_fine_item .bg_bar2 .span{
+    position:absolute; top:0; left:0; bottom:0;
+    background-color: #2c7575;
+    border-radius:24px;
+    transition: all 0.25s ease-in-out
+}
+
+.study_main .study_body .study_sidebar .side_menu_item{
+    display: block;
+    background-color: #ffffff;
+    font-size: 24px;
+    height: 60px;
+    align-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.study_main .study_body .study_sidebar .side_menu_item.active{
+    /*background-color: #68ccff;*/
+}
+
+.study_main .study_body .study_sidebar .side_menu_item:hover{
+    background-color: #e8e8e8;
+}
+
+.study_main .study_body .study_sidebar .side_menu_item + .side_menu_item{
+    margin-top: 12px;
 }
 
 .study_main .study_body .service_cont{
@@ -343,11 +444,11 @@
     /*background-color: #f3aad9;*/
 }
 
-.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box .bg_bar{
+.bg_bar{
     width: 90%;
     position:relative; height:24px; margin-top:8px; border-radius:24px; background-color: #ffffff;
 }
-.study_main .study_body .study_cont .detail_list .detail_item .week_progress_box .progress_bar_box .bg_bar .span{
+.bg_bar .span{
     position:absolute; top:0; left:0; bottom:0;
     /*background-color: #63acf5;*/
     border-radius:24px;
@@ -559,10 +660,90 @@
     font-size: 11px;
 }
 
+
+/*벌금 현황*/
+.study_fine{
+    width: 85%;
+    padding: 24px;
+}
+
+.study_fine .title{
+    font-size: 32px;
+    height: 32px;
+}
+
+.study_fine .fine_rank_list{
+    margin-top: 24px;
+    width: 100%;
+    height: 90%;
+    background-color: #cddeff;
+    padding: 24px 12px;
+}
+
+.study_fine .fine_rank_list .rank_item{
+    background-color: #ffa5a5;
+    height: 68px;
+    border-radius: 18px;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    display: flex;
+    padding: 4px 24px;
+}
+
+.study_fine .fine_rank_list .rank_item + .rank_item{
+    margin-top: 12px;
+}
+
+.study_fine .fine_bar{
+    position: relative;
+    margin-left: 12px;
+    width: 100%;
+    height: 24px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.study_fine .fine_bar .span{
+    position: absolute;
+    top: 0;left: 0;bottom: 0;
+    height: 24px;
+    background-color: #4069cb;
+    border-radius: 12px;
+
+    transition: all 0.25s ease-in-out
+}
+
+
+.rank_item .span + .span{
+    margin-left: 2px;
+}
+
+.rank_item .ranking_num{
+    font-size: 20px;
+    width: 5%;
+}
+
+.rank_item .fine_name_text{
+    font-size: 24px;
+    width: 10%;
+}
+
+.rank_item .fine_amount_num{
+    font-size: 20px;
+    width: 10%;
+}
+
+.fine_bar_panel{
+    width: 75%;
+}
+
 /* study.module.css - Responsive enhancement section */
 
 @media screen and (max-width: 768px) {
     .study_main {
+        width: 100%;
         height: auto;
         padding: 12px;
     }
@@ -577,13 +758,21 @@
         line-height: normal;
     }
 
+    .study_main .study_body .study_sidebar {
+        width: 100%;
+        height: 100%;
+        /*background-color: red;*/
+    }
+
+    .study_main .study_body .study_sidebar .side_menu_item {
+        height: 25px;
+        font-size: 16px;
+    }
+
     .study_main .study_body {
         flex-direction: column;
     }
 
-    .study_main .study_body .study_sidebar {
-        display: none;
-    }
 
     .study_main .study_body .service_cont {
         width: 100%;
@@ -611,11 +800,12 @@
         height: auto;
     }
 
-    .study_main .study_body .option_header .date_panel .btn_prev_date{
+    .study_main .study_body .option_header .date_panel .btn_prev_date {
         transform: rotate(180deg);
         width: 48px;
         height: 48px;
     }
+
     .study_main .study_body .option_header .date_panel .btn_next_date {
         transform: none;
         width: 48px;
@@ -662,6 +852,65 @@
         grid-template-columns: repeat(3, 1fr);
         padding: 6px 10px;
     }
+
+    .study_fine .fine_rank_list .rank_item {
+        background-color: #ffa5a5;
+        height: 68px;
+        border-radius: 18px;
+        align-items: center;
+        justify-content: center;
+        /*font-size: 26px;*/
+        display: flex;
+        padding: 2px 2px;
+    }
+
+    .study_fine .fine_rank_list .rank_item + .rank_item {
+        margin-top: 12px;
+    }
+
+    .fine_bar_panel{
+        width: 40%;
+    }
+
+    .study_fine .fine_bar {
+        position: relative;
+        margin-left: 2px;
+        width: 100%;
+        height: 24px;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .study_fine .fine_bar .span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 24px;
+        background-color: #4069cb;
+        border-radius: 12px;
+
+        transition: all 0.25s ease-in-out
+    }
+
+    .rank_item .span + .span {
+        margin-left: 1px;
+    }
+
+    .rank_item .ranking_num {
+        font-size: 12px;
+        width: 5%;
+    }
+
+    .rank_item .fine_name_text {
+        font-size: 16px;
+        width: 15%;
+    }
+
+    .rank_item .fine_amount_num {
+        font-size: 12px;
+        width: 25%;
+
+    }
 }
-
-

@@ -1,27 +1,11 @@
-// import axiosInstance from "../utils/axiosInstance";
-import axios from "axios";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
-import {errorMonitor} from "form-data";
 import axiosInstance from "../utils/axiosInstance";
-import {authActions} from "../store/slices/authSlice";
 import {useSelector} from "react-redux";
 
 export const AxiosApi = ()=> {
     const modal = useModal();
     const {authenticated, accessToken, expireTime} = useSelector(s=>s.authReducer);
-
-    // const axiosInstance = axios.create({
-    //     baseURL: "http://localhost:8080",
-    //     timeout: 10000,
-    //     headers: {
-    //         "Content-Type": `application/json`,
-    //         "Accept": "application/json",
-    //         "Access-Control-Allow-Origin": `http://localhost:3000`,
-    //         'Access-Control-Allow-Credentials':"true",
-    //     },
-    //     withCredentials: true,
-    // });
 
     axiosInstance.interceptors.response.use((response)=>{
         return {
