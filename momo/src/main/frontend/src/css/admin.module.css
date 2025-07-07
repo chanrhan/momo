@@ -1,0 +1,178 @@
+.manage_box{
+    padding: 0 8px 0 8px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.manage_box .btn{
+    /*display: inline-block;*/
+    width: 100%;
+    font-size: 12px;
+    line-height: 12px;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 4px 6px 4px 6px;
+}
+
+.manage_box .btn.btn_red{
+    border-color: red;
+    color: red;
+}
+
+.manage_box .btn.btn_blue{
+    border-color: #4781ff;
+    color: #4781ff;
+}
+
+.manage_box .btn.btn_grey{
+    border-color: #b6b6b6;
+    color: #b6b6b6;
+}
+
+.manage_box .btn.w50{
+    width: 48%;
+}
+.manage_box .btn.w50.btn_red:hover{
+    background-color: #ffdede;
+}
+.manage_box .btn.w50.btn_blue:hover{
+    background-color: #e2ecff;
+}
+.manage_box .btn.w50 + .btn.w50{
+    margin-left: 4%;
+}
+
+/*매장 방문 내역 페이지 */
+.visit_map{
+    position: relative;
+    width: 100%;
+    height: 900px;
+    /*background-color: tan;*/
+}
+
+.visit_map .header_group{
+    margin-top: 40px;
+    width: 100%;
+    height: 5%;
+    /*background-color: green;*/
+}
+
+.visit_map .header_group .title{
+    width: 100%;
+    height: 100%;
+    margin: 44px 0 0 185px;
+    font-size: 24px;
+    font-weight: 700;
+    align-content: center;
+}
+
+.visit_map .body_group{
+    display: flex;
+    height: 95%;
+}
+
+.visit_map .body_group .map_panel{
+    background-color: #e7e7e7;
+    /*display: inline-block;*/
+    width: 40%;
+    height: 100%;
+    padding: 15px;
+}
+
+.visit_map .body_group .map_panel .map_cont{
+    background-color: #3bd500;
+    width: 100%;
+    height: 100%;
+}
+
+
+.visit_map .body_group .detail_panel{
+    background-color: #ffdddd;
+    /*display: inline-block;*/
+    padding: 15px;
+    width: 60%;
+    height: 100%;
+}
+
+.visit_map .body_group .detail_panel .list_header{
+    width: 100%;
+    height: 70px;
+    padding: 0 20px 0 20px;
+    background-color: #d2d2d2;
+    display: flex;
+    align-items: center;
+
+}
+
+.visit_map .body_group .detail_panel .list_header .inp_search{
+    width: 60%;
+    height: 45px;
+    padding: 2px 8px 2px 8px;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+.visit_map .body_group .detail_panel .list_header .btn{
+    height: 45px;
+
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_sort{
+    margin-left: 20px;
+    width: 32px;
+    background: url(../images/sort_icon2.png) no-repeat center / 100%;
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_filter{
+    margin-left: 12px;
+    width: 36px;
+    background: url(../images/filter_icon2.png) no-repeat center / 100%;
+}
+
+.visit_map .body_group .detail_panel .list_header .btn.btn_search{
+    margin-left: 14px;
+    width: 46px;
+    background: url(../images/search_icon.png) no-repeat center / 100%;
+}
+
+.visit_map .body_group .detail_panel .table_shop{
+    padding: 14px 20px 14px 20px;
+    width: 100%;
+    height: fit-content;
+    background-color: #ffffff;
+    overflow-y: auto;
+    /*table-layout: fixed;*/
+}
+
+.visit_map .body_group .detail_panel .table_shop .tr{
+    border-bottom: 1px solid black;
+    height: 10px;
+}
+
+.visit_map .body_group .detail_panel .table_shop .th{
+    position: relative;
+    padding:10px; background-color:#f8f8f9; color:#62626e;
+    font-size:14px; font-weight:400; text-align:center;
+    line-height:16px;
+    user-select: none;
+    left: 0;
+}
+
+.visit_map .body_group .detail_panel .table_shop .tbody .tr {
+    background-color: #ffc9c9;
+    height: 1px;
+}
+
+.visit_map .body_group .detail_panel .table_shop .tbody .tr .td{
+    position: relative;
+    padding:2px;
+    border-right:2px solid #f4f4f5;
+    border-bottom:1px solid rgba(227, 227, 227, 0.9);
+    color:#28272c; font-size:14px; text-align:center;
+    /*height: 32px;*/
+    line-height:32px;
+}
+
+
+

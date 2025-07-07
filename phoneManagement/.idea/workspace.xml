@@ -1,0 +1,1454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="802c31ea-52fa-4ec6-8f4e-7de4d3d9eb48" name="변경" comment="변경">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/Convert/momomanager.com_20250316DD017.jks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/Convert/momomanager.com_20250316DD017.p7b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/Convert/momomanager.com_20250316DD017.pfx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/AAACertificateServicesRoot.crt.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/GoGetSSL AAA 루트,체인 적용 안내 - RSA_DV.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/GoGetSSLRSADVCAChain2.crt.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/SHA2_Root.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/USERTrustRSACertificationAuthorityChain1.crt.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/chain-bundle.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/root-chain-bundle.p7b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/RootChain/root-chain-bundle.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/momomanager.com_20250316DD017.all.crt.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/momomanager.com_20250316DD017.crt.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/momomanager.com_20250316DD017.jks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/momomanager.com_20250316DD017.key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert/발급내역서(필독)_20250316DD017.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-03/pjy_bdms_000.2025-03-16.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-03/pjy_bdms_000.2025-03-17.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-03/pjy_bdms_000.2025-03-25.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-03/pjy_bdms_000.2025-03-27.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-01.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-07.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-09.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-12.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-14.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-15.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-17.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-18.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-22.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-23.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-24.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-25.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/2025-04/pjy_bdms_000.2025-04-26.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.bin/loose-envify" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/AwaitValue.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/OverloadYield.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecoratedDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs2203.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs2203R.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs2301.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs2305.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/applyDecs2311.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/arrayLikeToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/arrayWithHoles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/assertClassBrand.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/assertThisInitialized.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/asyncGeneratorDelegate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/asyncIterator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/asyncToGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/awaitAsyncGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/callSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/checkInRHS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/checkPrivateRedeclaration.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classApplyDescriptorDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classApplyDescriptorGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classApplyDescriptorSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classCallCheck.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classCheckPrivateStaticAccess.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classCheckPrivateStaticFieldDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classExtractFieldDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classNameTDZError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldGet2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldInitSpec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldLooseBase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldLooseKey.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateFieldSet2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateGetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateMethodGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateMethodInitSpec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateMethodSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classPrivateSetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classStaticPrivateFieldDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classStaticPrivateFieldSpecGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classStaticPrivateFieldSpecSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classStaticPrivateMethodGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/classStaticPrivateMethodSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/construct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/createClass.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/createForOfIteratorHelper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/createForOfIteratorHelperLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/createSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/decorate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/defaults.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/defineAccessor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/defineEnumerableProperties.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/defineProperty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/dispose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/AwaitValue.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/OverloadYield.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecoratedDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs2203.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs2203R.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs2301.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs2305.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/applyDecs2311.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/assertClassBrand.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/asyncGeneratorDelegate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/asyncIterator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/awaitAsyncGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/callSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/checkInRHS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/checkPrivateRedeclaration.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classApplyDescriptorDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classApplyDescriptorGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classApplyDescriptorSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classCallCheck.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classCheckPrivateStaticAccess.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classCheckPrivateStaticFieldDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classExtractFieldDescriptor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classNameTDZError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldGet2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldInitSpec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldLooseBase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldLooseKey.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateFieldSet2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateGetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateMethodGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateMethodInitSpec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateMethodSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classPrivateSetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classStaticPrivateFieldDestructureSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classStaticPrivateFieldSpecGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classStaticPrivateFieldSpecSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classStaticPrivateMethodGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/classStaticPrivateMethodSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/construct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/createClass.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelperLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/createSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/decorate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/defaults.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/defineAccessor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/defineEnumerableProperties.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/defineProperty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/dispose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/extends.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/get.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/identity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/importDeferProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/inherits.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/inheritsLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/initializerDefineProperty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/initializerWarningHelper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/instanceof.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/interopRequireDefault.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/interopRequireWildcard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/isNativeFunction.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/isNativeReflectConstruct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/iterableToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/jsx.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/maybeArrayLike.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/newArrowCheck.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/nonIterableRest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/nullishReceiverError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/objectDestructuringEmpty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/objectSpread.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/objectSpread2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/readOnlyError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/set.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/setFunctionName.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/skipFirstGeneratorNext.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/slicedToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/superPropBase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/superPropGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/superPropSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteral.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/taggedTemplateLiteralLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/tdz.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/temporalRef.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/temporalUndefined.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/toArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/toConsumableArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/toPrimitive.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/toPropertyKey.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/toSetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/typeof.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/using.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/usingCtx.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/wrapAsyncGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/wrapNativeSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/wrapRegExp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/esm/writeOnlyError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/extends.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/get.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/getPrototypeOf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/identity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/importDeferProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/inherits.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/inheritsLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/initializerDefineProperty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/initializerWarningHelper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/instanceof.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/interopRequireDefault.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/interopRequireWildcard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/isNativeFunction.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/iterableToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/jsx.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/maybeArrayLike.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/newArrowCheck.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/nonIterableRest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/nonIterableSpread.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/nullishReceiverError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/objectDestructuringEmpty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/objectSpread.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/objectSpread2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/objectWithoutProperties.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/readOnlyError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/regeneratorRuntime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/set.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/setFunctionName.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/setPrototypeOf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/skipFirstGeneratorNext.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/slicedToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/superPropBase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/superPropGet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/superPropSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/taggedTemplateLiteral.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/taggedTemplateLiteralLoose.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/tdz.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/temporalRef.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/temporalUndefined.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/toArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/toConsumableArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/toPrimitive.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/toPropertyKey.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/toSetter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/typeof.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/using.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/usingCtx.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/wrapAsyncGenerator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/wrapNativeSuper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/wrapRegExp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/helpers/writeOnlyError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@babel/runtime/regenerator/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/cli.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/custom.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/loose-envify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/replace.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/ErrorBoundary.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/ErrorBoundaryContext.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/types.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/useErrorBoundary.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/declarations/src/withErrorBoundary.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.d.mts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.d.mts.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.d.ts.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.cjs.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.development.cjs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.development.cjs.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.development.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/dist/react-error-boundary.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react-error-boundary/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.shared-subset.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.shared-subset.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/jsx-dev-runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/jsx-runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/react.shared-subset.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/regenerator-runtime/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/regenerator-runtime/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/regenerator-runtime/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/regenerator-runtime/path.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/regenerator-runtime/runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sale_log.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Black.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Black.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-ExtraBold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-ExtraBold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-ExtraLight.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-ExtraLight.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Light.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Light.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Medium.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Medium.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-SemiBold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-SemiBold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/font/Pretendard-Thin.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/bm_lg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/default_pfp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/manager_lg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/momo_lg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/reps_lg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/img/tmp/sidebar_lg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/js/sub.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/common/Authorization.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/admin.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/base/common.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/base/font.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/base/reset.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/board.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/calendar.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/chat.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/dashboard.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/graph.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/landing.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/layout.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/modal.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/popup.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/timeline.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/css/user.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/add_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/alarm_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/alarm_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/alert_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/all_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/appending_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/approval_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/arrow_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/arrow_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/back_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/btn_add_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/btn_add_icon_white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/calender_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/chatbot_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_agree_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_agree_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_icon2_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/check_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/company_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/complete_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/copyright_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/date_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/date_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/del_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/del_icon_no_bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/del_rect_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/double_right_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/drag_handle_horizontal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/emoji_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/emoji_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/empty_folder_shine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/erase_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/filter_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/filter_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/filter_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/graph_img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/graph_img2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/graph_img3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/hint_grey_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/hint_icon1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/hint_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/info_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/kakao_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/kakaotalk_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/footer_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_Img2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_bg7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_icon1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_icon3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_icon4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_img4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_img5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/landing/section_img6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/loading.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/member_add_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_chat_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_chat_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_communication_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_communication_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_customer_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_customer_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_data_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_data_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_exit_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_exit_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_home_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_home_on_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_set_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_set_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_work_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/menu_work_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/modify_black_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/modify_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/modify_white_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/more_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/more_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/my_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/no_data_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/num_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/password_conceal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/password_reveal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/plus_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/check_add_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/customer_icon1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/customer_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/customer_icon3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/customer_icon4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/date_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/filter_del.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/popup_close.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/popup/upload_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/profile_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/profile_img1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/profile_img2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/profile_img3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/profile_upload_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/radio_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/radio_icon_disabled.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/radio_icon_on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/search_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/search_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/search_icon3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select2_more.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select2_type.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select_add_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select_add_icon_blue.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select_add_icon_red.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/select_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/sort_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/sort_icon2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/tag_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/triangle_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/unknown_fill_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/upload_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/user/crown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/user/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/view_more_arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/images/warning_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/Router/AutoRouter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/FindPassword.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/FindUsername.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/Login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/Role.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/Signup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/SignupCompleted.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/Support.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/modal/ChangeNicknameModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/FindAccountBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserAuthInputList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormBtnBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormFindBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserFormList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/account/module/UserTermList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/AdminMessage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/AdminUserStatistics.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/AdminVisitMap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/Administrator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/MasterData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/MasterShop.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/modal/AdminBulkUploadModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/modal/MessageTemplateModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/modal/VisitLogModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/CtPlanTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/DeviceTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/ExsvcTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/InternetPlanTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/ShopMarkerOverlay.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/TvPlanTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/admin/module/useNaverMapsWrapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/Analysis.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/DataGraph.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/Statistics.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/BarChartArea.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/BarChartInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/GraphBarItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/GraphSummaryCard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/LineChartArea.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/LineChartInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/MultiLineChartInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/PieChartArea.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/PieChartInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/analysis/module/SliderChartArea.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/AdminApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/ApiCommon.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/Auth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/AuthApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/ChatApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/FileApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/GMDApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/NaverMapsApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/NotificationApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/PostImageApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/PublicApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/RsvMsgApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/SaleApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/ShopApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/TestApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/TodoApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/api/UserApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/ImageItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/LMD.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/CustomerCodeInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/InputBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/NumberInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/PasswordInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/PriceInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/SearchBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/inputbox/TelePhoneInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/DynamicSelectModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/LayerModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/MenuModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/Modal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/ModalContainer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/ModalSet.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/ModalType.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/SnackbarModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/ToastModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/TooltipModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/layer/ImagePreviewModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/menu/DateSelectModule.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/menu/MonthSelectModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/menu/MoreOptionModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/menu/SelectModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/snackbar/AlertModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/snackbar/ConfirmModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/snackbar/InfoModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/snackbar/WarningModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/tooptip/HintModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/ChangeNicknameLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/ChatBotButton.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/CommonTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/DynamicSelectButton.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/EditableAddButton.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/FileInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/ImageListProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/Loading.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/MoreOptionLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/NotFound.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/Scrollable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/SelectIndexLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/SelectLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/SelectMapLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/common/module/TabList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/communication/Communication.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/communication/module/CalendarDetail.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/communication/module/CalendarDetailPannel.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/communication/module/CalendarTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/css_module/CM.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/error/ValidationError.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/imageProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useArrayInputField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useAuthentication.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useBitArray.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useDragAndDrop.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useDraggableInputField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useEmitter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useHintBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useLoggingRef.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useObjectArrayInputField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useObjectInputField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useRenderlessModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useUserInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/hook/useValidateInputField.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/landing/LandingPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/landing/module/LandingReviewCard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/landing/module/LandingSectionWrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/landing/module/LandingVocItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/landing/review.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/AccountLayout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/Allowance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/AutoLogout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/MainFooter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/MainHeader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/MainLayout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/Sidebar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/SseHeader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/WaitingApproval.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/admin/AdminLayout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/admin/AdminSidebar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/module/HeaderSearchLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/layout/module/LayoutTabItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/profile/Profile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/profile/modal/ChargePointModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/profile/modal/NameCardModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/profile/modal/PaymentCardModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/profile/modal/UpdatePasswordModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/board/BoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/board/SelectBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload/DeviceRecommendModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload/SAMPLE_DEVICE_DATASET.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload/SaleBulkUpload.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload/SelectSheetModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload/Validate_Actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/DashboardMain.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardChart.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardChartTabItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardPanelItem1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardPanelItem2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardPannelItem4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardPostImage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardSchedule.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/DashboardTodoItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/InviteModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/PerformanceChart.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/TodoAddBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/dashboard/module/TodoAddModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/SALE_INITIAL_STATE.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/Sale.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/detail/SaleDetailFileBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/detail/SaleDetailModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/detail/SaleDetailPriceBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/DeviceSearchModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/MessagePreviewModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/PlanSearchModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/ReserveDateModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/ReserveMessageModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleCardModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleCombModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleDataValidationModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleExsvcModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleFilterModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleUsedDeviceModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SaleWtPlanModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/modal/SecondDeviceSearchModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleCheckItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleNumberInput.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleSelectOptionLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/AddSaleTabItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/ColumnSelectLayer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/ProfileTableColumn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/SaleColumnItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/SaleDetailPromiseBox.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/SaleTableData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/module/StaffTableData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/sale/test/getSaleSample.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/PromiseBoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/Task.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/modal/TaskUsedDeviceCmsModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/PromiseOptionItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/TaskCardBoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/TaskCombBoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/TaskSupportBoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/TaskTableData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/service/task/module/TaskUsedDeviceBoardTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/RegisterBrNo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/RegisterShop.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/ShopList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/modal/AddShopModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/modal/AddressApiModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/modal/ChangeShopModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/shop/module/UserCompanyItem.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/staff/ManageStaff.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/static/StaticData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/authSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/gmdSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/localStorageSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/modalSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/rootReducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/shopItemSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/sseSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/slices/userSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/store/store.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/study_private/StudyLayout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/study_private/StudyMain.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/study_private/modal/AddStudyNodeModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/AlimTalkTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ApiTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/AsyncTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/BulkUploadTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/CalendarTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ChartJsTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ComponentTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/CssTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/CustomTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/DEFAULT_HEADERS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/EventTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ExcelTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ExceptionTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/FileUploadTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/GraphTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/KIPRISApiTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/MenuModalTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/ModalTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/MultipartTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/NotifTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/RefTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/RegexTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/SAMPLE_DATA.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/StringTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/TableHeaderSelectModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/TestHeader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/TimelineTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/VOTest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/calendar.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/react_sample.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/test/test.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/AligoUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/AuthUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/ComponentStepper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/Cookies.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/DateUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/EncodingUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/FileUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/KoreanUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/MouseEventUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/NavermapsUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/NumberUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/ScrollUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/StompUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/StringUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/axiosInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/cm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/cssUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/fuzzyMatcher.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/objectUtil.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/regex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/js/utils/useMapper.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/service-worker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/serviceWorkerRegistration.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/setupProxy.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/PhoneManagementApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/alimtalk/AlimTalkButton.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/alimtalk/AlimTalkMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/alimtalk/ImageAlimTalk.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/alimtalk/SENSUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/alimtalk/SensResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/AccountController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/AdminController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/AligoApi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/ChatController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/CsrfController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/GMDController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/ImageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/MailSendController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/NotificationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/PostImageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/PublicController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/ReactTestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/ReserveMsgController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/SaleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/ShopController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/SseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/TestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/TodoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/api/WebController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/auth/Approval.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/auth/RoleAuth.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/JwtConstant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/Paging.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/TestEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/UserDetailsImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/ChatMessageType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/ChatResponseHeader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/Gender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/MailType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/codes/AccountErrorCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/codes/CommonErrorCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/codes/ErrorCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/codes/SuccessCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/enums/codes/UserErrorCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/response/ApiResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/response/ChatResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/response/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/response/JwtVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/response/MailCreateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/AddressApiUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/AddressAreaApiResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/AddressAreaApiUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/AligoApiUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/BusinessmanApiUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/ExternalApiUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/FileServiceUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/HttpSessionUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/IntegerUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/JsonBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/KakoMapApiUil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/MailSenderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/MessageAPIUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/PropertiesUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/PublicDataOpenApiUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/ResponseEntityUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/SecurityContextUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/util/TransactionTemplateUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/ApiVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/BaseVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/ChatVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/CommonVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/FileVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/GMDVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/ItemCommonVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/LogVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/LoginVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/MsgCommonVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/NotifVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/PostImageVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/RegionVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/ReserveMessageVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleAddVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleCardVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SalePromiseVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleSearchVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleSupportVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleUsedDeviceVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SaleVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SearchVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/ShopVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/SupportVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/TermVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/TestChildVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/TestParentVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/TodoVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/UserVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/common/vo/VisitedShopVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/FilterConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/JobConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/WebSecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/WebSocketConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/config/WebSocketStompConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/emitter/NotificationEmitter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/exception/BusinessException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/exception/CommonException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/filter/CustomCharacterEncodingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/filter/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/filter/JwtAuthorizationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/filter/SqlFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/filter/TestFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/generator/CommonMailSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/generator/MessageGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/handler/ChatPreHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/handler/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/handler/LoginFailureHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/handler/LoginSuccessHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/handler/LogoutSuccessHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/ApprovalInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/CommonInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/CustomHandshakeInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/HomeInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/PlusSymbolInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/interceptor/RoleAuthInterceptor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/job/DormantUserJob.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/job/SendKakaoBizTalkJob.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/listener/QuartzJobListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/ChatMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/GMDMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/ItemCommonMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/NotificationMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/PostImageMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/RefreshTokenMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/RegionMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/ReserveMsgMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/SaleMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/ShopMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/TermMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/TodoMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/UserMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/mapper/VisitedShopMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/provider/JwtProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/AdminService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/ChatService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/CommonService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/GMDService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/ImageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/KakaoBizService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/NotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/PostImageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/RegionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/ReserveMsgService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/SaleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/ShopService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/TermService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/TodoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/utils/CronUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/momo/wrapper/RereadableRequestWrapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/WEB-INF/servlet-context.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pfp/1921fc01-e573-4243-9365-6b905389f4fc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pfp/30a6a089-c3a2-42c3-bc4d-be9b33f7b5ec.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/0713239f-1b2f-4a26-9b00-91f06b6a6f7c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/0aa04efe-62d8-434c-b924-0f8c6ddf8320.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/0bae9200-946a-4484-8fa5-5ca7faa421f3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/0c122e8f-dd4a-475c-b1fe-9e8d3cd3e030.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/0f15552a-2e3a-4d31-b74c-0e07d79acf3c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/1b3eb476-0d53-4c22-bdd1-6bae19356615.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/1ca038bd-45a0-47ca-8403-0d80bddd0777.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/1fb8da18-b883-4964-aa3e-f09763bc49be.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/20364e55-7d1a-4553-8f59-269dc7cbb18c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/20691999-5593-42fe-bf89-4cc24f03552f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/214ed80f-e081-438b-a8a2-6043631619bb.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/25a443ee-54e1-4226-a03d-db1940100318.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/27666db1-418b-4b0b-a271-af8d732ca2a6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/2f286a7f-7d31-41b7-b985-f132ea562bcb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/315f4e95-0425-47d6-b324-d495e9132784.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/3379e563-f885-43d9-823b-a0796b4f0f11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/4ac0a1b4-cdef-4dfd-92b9-f108f433e38e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/5542506f-9f1c-440a-b842-13485e947bc5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/554ed555-3271-46d9-97a4-df28ebfc698e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/56eb8550-544d-4daa-8d39-b54bc7b41997.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/59e5b115-2151-49bf-83a4-c7c99d1e5e67.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/61ddd56d-eb13-497d-8bbf-235337a2f783.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/6a8a845c-e6d3-45c6-8b8c-726886969374.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/6cf0d0bc-0093-4146-88dc-525dd5b1df82.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/7109bf64-0a80-429e-854d-01c91eb707a3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/739ff8f7-d31e-454b-af0c-257938bb271c.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/73c48698-f527-48f1-97a9-3e84cbe1b070.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/7eabe729-dbf8-47ad-b2d2-07b4725cee83.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/80a3d9f8-4acc-4b22-b237-196a74765a02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/828c0a36-7b78-4591-9355-aca1317938e5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/83cba34f-d7ab-46fe-91c4-03e82ac360f2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/8a9440c3-6932-4b73-84e7-ceee931dce49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/93d69fe6-4ebd-4aa0-8dd7-d5ae246e0b06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/94e3e935-8f79-4aad-bea5-5cc30ab8c376.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/95d5516c-3fd2-4d53-843b-eee84718b5bd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/99879db7-cca0-4709-9c46-cc33aae5c837.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/9abd389e-23ca-49c9-9d7c-39b820e675af.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/a78a5adc-cc72-4c0b-8cc4-0de2b7dc646c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/ac0935ab-f1b0-4a69-9bd0-94619517edfa.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/ae59b145-aff8-48b8-b478-cd92cc0ece71.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/af0b0880-0e0b-4861-ab1c-b8d75ef73c57.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/b54bda9c-1028-4487-b305-9474e7efa011.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/bee8c32f-86f9-406c-b487-a6f725a41fe0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/bf039a5c-3d4b-4f2b-ade3-d982c126b458.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/c1a63a60-942f-4e23-b07f-90193ccb3ed8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/c2a09f3f-4a8c-4d74-9345-74d6d8a14fcf.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/c2d6df5c-1b48-4af5-9807-4fad1210da04.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/c5551603-96f7-4493-8179-01ae2545b555.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/c871c0de-b77a-471b-8f4e-51d6f0dcbb1e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/cc7b14fb-dc9c-46b7-b371-869a68860b47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/d0a8e5ef-1be0-420f-bbd4-4613701ae597.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/da4e2036-6f6b-4b3d-90cb-643403c14f0d.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/de743455-8918-40c4-af49-bc6ad741c85f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/e1af89d8-48a9-46bc-8a1b-bac474fee8aa.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/e9237da8-6606-4a30-be2d-85ebe6f8c52c.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/e9851574-70b4-44ca-9a78-09556bd7af7d.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/f495a280-0abb-4c57-8bb6-479801425fb9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/f4d0614b-5a96-4374-8ce6-fb0cb4b17763.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/pimg/ffd2b08a-cdc8-483a-8fc3-009ab554a899.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/0c5d7225-b20d-45a6-b6c1-edf5112151ab.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/2389d0b4-2b87-4934-9d24-c0603b6d00e8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/53d8c663-d54a-4aa0-8872-db6c4da868ef.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/5425a5d1-e265-4741-ba9c-4343329398f3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/56b327d5-0448-445f-9116-3c48a126cddc.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/72796a7e-fb51-4367-aab2-603d86aefe1f.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/8757b78a-57a7-4e6a-b482-62a13d045840.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/a326efa9-834a-4c0b-8950-7afc8531e1a0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/a5866960-63f9-404c-a17e-15b898695dcd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/adffb69f-0389-4738-9b1f-f93c1ac5527a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/dfc58438-b76d-4d16-8537-4cd15e70ca72.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/docs/927a0596-e85e-4e89-b58d-1e3ea816ea0f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/e13010b7-33e2-47ce-9a64-2eda29521247.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/e40e875a-7d03-4c70-9839-be1f655faf65.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/f1e6ad34-1479-4240-870a-b3839494e75f.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/f23b6f9b-5240-449c-b7b3-f35a55fc4106.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/spec/fdcfa2a7-2583-4671-8910-6a8e84523821.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/sale/spec/fe3eb729-3f99-4cb7-b785-b1206a7db1b2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/188af0e1-84b4-4ce0-af01-7536250823f7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/54acd2ef-074a-4518-9673-0b91689ff9e0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/584c6411-9f21-4311-979a-a7909fe3e0e9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/71271814-873c-4e21-a1c8-e11a6f10ae06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/7baf0857-5b41-4f3c-810c-53cc45a056ba.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/90a8c2d0-a889-4015-b162-caffe061db4b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/96aa2dd7-7d3b-4474-acf3-f268d816db9e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/a0bfb905-bc43-49f6-9dc0-d52560b7479f.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/c85051e1-cf05-42e5-9018-f9e26de8eb50.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/d425e0ec-58ad-4377-84a6-4da4e2a2efda.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/decd530f-a7ac-44af-bec2-b989665fc435.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/e0247b43-2ba2-4540-8b30-dc70b2462e9f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/f51f8669-3ea4-4ed0-be87-2e2b771ccb91.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/local_storage/img/test/fcae8a80-9f0b-4e12-813c-d00540c9c255.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/log4jdbc.log4j2.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback-spring.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ChatMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/GMDMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ItemCommonMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/NotificationMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/PostImageMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/RefreshTokenMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/RegionMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ReserveMsgMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/SaleMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/ShopMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/TermMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/TodoMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/VisitedShopMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/momo/LogUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/momo/PhoneManagementApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;chanrhan&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/chanrhan/momo.git&quot;,
+    &quot;accountId&quot;: &quot;6b93ca17-48ed-4f6b-a247-23b76d74af95&quot;
+  }
+}</component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupGrunt">
+      <scroll-view-position x="0" y="0" />
+    </layout>
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2m8T6C8hPqhpBaTLXovv2cRgQkp" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;JUnit.PhoneManagementApplicationTests.contextLoads.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PhoneManagementApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.PhoneManagementApplication.executor&quot;: &quot;Run&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;features/visit__map&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chan/momo/phoneManagement/src/main/frontend/src/js/api&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;mysql-explain.enableMySQLExplain&quot;: &quot;true&quot;,
+    &quot;mysql-explain.existMysqlJar&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.16015625&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;SQL Dialects&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/api" />
+      <recent name="$PROJECT_DIR$/src/main/resources/mapper" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/menu" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/admin" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/common/modal" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/images/solved" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/images" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/layout/admin" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/service/bulk_upload" />
+      <recent name="$PROJECT_DIR$/src/main/frontend/src/js/common/modal/snackbar" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.momo.api" />
+      <recent name="com.momo.service" />
+      <recent name="com.momo.common.vo" />
+      <recent name="com.momo.mapper" />
+      <recent name="com.momo.job" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.PhoneManagementApplication">
+    <configuration name="PhoneManagementApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Momo" />
+      <option name="PACKAGE_NAME" value="com.momo" />
+      <option name="MAIN_CLASS_NAME" value="com.momo.PhoneManagementApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PhoneManagementApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Momo" />
+      <option name="PACKAGE_NAME" value="com.momo" />
+      <option name="MAIN_CLASS_NAME" value="com.momo.PhoneManagementApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PhoneManagementApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="Momo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.momo.PhoneManagementApplication" />
+      <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PhoneManagementApplicationTests" />
+        <item itemvalue="JUnit.PhoneManagementApplicationTests.contextLoads" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19072.14" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19072.14" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="802c31ea-52fa-4ec6-8f4e-7de4d3d9eb48" name="변경" comment="" />
+      <created>1726457025491</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726457025491</updated>
+      <workItem from="1726457026583" duration="44000" />
+      <workItem from="1726457075281" duration="1164000" />
+      <workItem from="1726459018186" duration="2055000" />
+      <workItem from="1726466957220" duration="14380000" />
+      <workItem from="1726491380954" duration="54000" />
+      <workItem from="1726491439852" duration="4102000" />
+      <workItem from="1726538863047" duration="3428000" />
+      <workItem from="1726546926651" duration="7596000" />
+      <workItem from="1726696376524" duration="613000" />
+      <workItem from="1726697628602" duration="59000" />
+      <workItem from="1727073582262" duration="12570000" />
+      <workItem from="1727224991386" duration="6480000" />
+      <workItem from="1727262017728" duration="7593000" />
+      <workItem from="1727321604003" duration="13660000" />
+      <workItem from="1727395749838" duration="3904000" />
+      <workItem from="1727495363830" duration="612000" />
+      <workItem from="1727497929594" duration="11000" />
+      <workItem from="1727516890824" duration="6471000" />
+      <workItem from="1727569933135" duration="16511000" />
+      <workItem from="1727678569024" duration="21000" />
+      <workItem from="1727696272595" duration="4000" />
+      <workItem from="1727783686724" duration="2289000" />
+      <workItem from="1727853739769" duration="5478000" />
+      <workItem from="1727924591729" duration="4610000" />
+      <workItem from="1727934079817" duration="10909000" />
+      <workItem from="1727951989923" duration="57000" />
+      <workItem from="1727952053806" duration="2870000" />
+      <workItem from="1728039196375" duration="10359000" />
+      <workItem from="1728050663776" duration="255000" />
+      <workItem from="1728094636241" duration="1026000" />
+      <workItem from="1728379127125" duration="6451000" />
+      <workItem from="1728531850044" duration="10405000" />
+      <workItem from="1728559425175" duration="5186000" />
+      <workItem from="1728606552266" duration="11921000" />
+      <workItem from="1728694849478" duration="2831000" />
+      <workItem from="1728741483657" duration="2673000" />
+      <workItem from="1728887277495" duration="2541000" />
+      <workItem from="1728894495209" duration="252000" />
+      <workItem from="1728955837587" duration="1328000" />
+      <workItem from="1728963053316" duration="592000" />
+      <workItem from="1728964888149" duration="23000" />
+      <workItem from="1728964914630" duration="5487000" />
+      <workItem from="1728995206720" duration="929000" />
+      <workItem from="1729163873846" duration="720000" />
+      <workItem from="1729296573508" duration="2000" />
+      <workItem from="1729331363444" duration="151000" />
+      <workItem from="1729406253845" duration="1224000" />
+      <workItem from="1729481475908" duration="745000" />
+      <workItem from="1729605830759" duration="9000" />
+      <workItem from="1729605845728" duration="10000" />
+      <workItem from="1729674365334" duration="2843000" />
+      <workItem from="1729747207527" duration="6067000" />
+      <workItem from="1729819260080" duration="4156000" />
+      <workItem from="1729917845519" duration="2988000" />
+      <workItem from="1730424531186" duration="71000" />
+      <workItem from="1730435234721" duration="650000" />
+      <workItem from="1730614635879" duration="5894000" />
+      <workItem from="1730621823487" duration="7178000" />
+      <workItem from="1730678290774" duration="20043000" />
+      <workItem from="1730722863144" duration="132000" />
+      <workItem from="1730759999809" duration="626000" />
+      <workItem from="1730819502884" duration="132000" />
+      <workItem from="1730859623513" duration="598000" />
+      <workItem from="1730897405985" duration="2000" />
+      <workItem from="1730966670448" duration="3497000" />
+      <workItem from="1730975098536" duration="13000" />
+      <workItem from="1730991685318" duration="5251000" />
+      <workItem from="1731023176195" duration="5320000" />
+      <workItem from="1731039021000" duration="2990000" />
+      <workItem from="1731113404400" duration="11581000" />
+      <workItem from="1731221554107" duration="4240000" />
+      <workItem from="1731313224814" duration="610000" />
+      <workItem from="1731336397871" duration="88000" />
+      <workItem from="1731715696242" duration="43000" />
+      <workItem from="1732686486271" duration="1425000" />
+      <workItem from="1732792700456" duration="3008000" />
+      <workItem from="1732795926924" duration="28000" />
+      <workItem from="1732839022165" duration="889000" />
+      <workItem from="1732864305929" duration="3853000" />
+      <workItem from="1733045398007" duration="174000" />
+      <workItem from="1733328820424" duration="612000" />
+      <workItem from="1733544409635" duration="598000" />
+      <workItem from="1733660841865" duration="598000" />
+      <workItem from="1733704045323" duration="1590000" />
+      <workItem from="1733879623071" duration="645000" />
+      <workItem from="1734139810375" duration="2107000" />
+      <workItem from="1734154973116" duration="35000" />
+      <workItem from="1734575437412" duration="8930000" />
+      <workItem from="1734751259904" duration="13277000" />
+      <workItem from="1735042860239" duration="4185000" />
+      <workItem from="1735124903355" duration="6335000" />
+      <workItem from="1735185775491" duration="12126000" />
+      <workItem from="1735262469686" duration="24989000" />
+      <workItem from="1735432941584" duration="25812000" />
+      <workItem from="1735521272181" duration="7154000" />
+      <workItem from="1735565895435" duration="1120000" />
+      <workItem from="1735567454054" duration="146000" />
+      <workItem from="1735628107172" duration="3537000" />
+      <workItem from="1736131319492" duration="5634000" />
+      <workItem from="1736162114560" duration="7182000" />
+      <workItem from="1736236810224" duration="10833000" />
+      <workItem from="1736326375002" duration="21573000" />
+      <workItem from="1736350542596" duration="2787000" />
+      <workItem from="1736383357407" duration="16106000" />
+      <workItem from="1736478138882" duration="28504000" />
+      <workItem from="1736569663922" duration="18945000" />
+      <workItem from="1736737344213" duration="12907000" />
+      <workItem from="1737257910766" duration="8446000" />
+      <workItem from="1737322378308" duration="55214000" />
+      <workItem from="1737542692580" duration="37923000" />
+      <workItem from="1737698237530" duration="43809000" />
+      <workItem from="1737850824506" duration="47888000" />
+      <workItem from="1737995481357" duration="10327000" />
+      <workItem from="1738112812909" duration="25836000" />
+      <workItem from="1738200095575" duration="23104000" />
+      <workItem from="1738237605193" duration="3538000" />
+      <workItem from="1738284568139" duration="1937000" />
+      <workItem from="1738372396449" duration="11176000" />
+      <workItem from="1738557982324" duration="7195000" />
+      <workItem from="1740102850526" duration="48923000" />
+      <workItem from="1740534819551" duration="24520000" />
+      <workItem from="1740876242522" duration="35040000" />
+      <workItem from="1741138555413" duration="37765000" />
+      <workItem from="1741478218507" duration="470000" />
+      <workItem from="1741788476412" duration="2109000" />
+      <workItem from="1742038095314" duration="7705000" />
+      <workItem from="1742111226371" duration="5280000" />
+      <workItem from="1742169499020" duration="5538000" />
+      <workItem from="1742208443424" duration="2434000" />
+      <workItem from="1742865179438" duration="820000" />
+      <workItem from="1742911112406" duration="1421000" />
+      <workItem from="1743037744483" duration="7502000" />
+      <workItem from="1743474595777" duration="4945000" />
+      <workItem from="1743993516391" duration="3872000" />
+      <workItem from="1744124918694" duration="5282000" />
+      <workItem from="1744467524443" duration="33131000" />
+      <workItem from="1744698403194" duration="741000" />
+      <workItem from="1744893564928" duration="2791000" />
+      <workItem from="1744953266581" duration="3635000" />
+      <workItem from="1745294124864" duration="11948000" />
+      <workItem from="1745393802182" duration="7309000" />
+      <workItem from="1745413698207" duration="62690000" />
+      <workItem from="1745626196384" duration="13379000" />
+      <workItem from="1745719771738" duration="11109000" />
+      <workItem from="1745850038860" duration="756000" />
+      <workItem from="1746363734726" duration="33419000" />
+      <workItem from="1746902047698" duration="10855000" />
+      <workItem from="1747460302339" duration="1023000" />
+      <workItem from="1747568016240" duration="5248000" />
+      <workItem from="1748324313396" duration="10186000" />
+      <workItem from="1748487961665" duration="8502000" />
+      <workItem from="1748679646295" duration="393000" />
+      <workItem from="1748681332706" duration="7116000" />
+      <workItem from="1748773182360" duration="2321000" />
+      <workItem from="1748787434150" duration="28652000" />
+      <workItem from="1748991857306" duration="33007000" />
+      <workItem from="1749046882609" duration="2822000" />
+      <workItem from="1749079607115" duration="5306000" />
+      <workItem from="1749084949944" duration="903000" />
+      <workItem from="1749090990311" duration="7486000" />
+      <workItem from="1749103653718" duration="8371000" />
+      <workItem from="1749271515101" duration="10227000" />
+      <workItem from="1749374808308" duration="398000" />
+      <workItem from="1749433178781" duration="4692000" />
+      <workItem from="1749696125155" duration="797000" />
+      <workItem from="1749796827216" duration="1929000" />
+      <workItem from="1749913304192" duration="1672000" />
+      <workItem from="1749954040925" duration="15030000" />
+      <workItem from="1749999625025" duration="6144000" />
+      <workItem from="1750258075525" duration="4010000" />
+      <workItem from="1751089779989" duration="30683000" />
+      <workItem from="1751700988581" duration="13462000" />
+      <workItem from="1751789786676" duration="8634000" />
+      <workItem from="1751887880007" duration="11000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
