@@ -68,9 +68,9 @@ function App() {
           </Helmet>
           <ModalContainer/>
           <Routes>
-              <Route path='/study' element={<StudyLayout/>}>
-                  <Route path='' element={<StudyMain/>}/>
-              </Route>
+              {/*<Route path='/study' element={<StudyLayout/>}>*/}
+              {/*    <Route path='' element={<StudyMain/>}/>*/}
+              {/*</Route>*/}
 
               <Route path='/test' element={<TestHeader/>}>
                   <Route path='notify' element={<NotifTest/>}/>

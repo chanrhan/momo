@@ -6,10 +6,12 @@ import {useBitArray} from "../hook/useBitArray";
 import {ModalType} from "../common/modal/ModalType";
 import {ShopMarkerOverlay} from "./module/ShopMarkerOverlay";
 import {NaverMap, useNavermaps, Container as MapDiv, Marker} from 'react-naver-maps'
+import useApi from "../hook/useApi";
 
 export function AdminVisitMap(){
     const modal = useModal()
     const shopMarkerOverlay = ShopMarkerOverlay();
+    const {adminApi} = useApi()
 
     const [searchKeyword, setSearchKeyword] = useState('')
 
@@ -18,6 +20,12 @@ export function AdminVisitMap(){
 
     const navermaps = useNavermaps();
     const [markers, setMarkers] = useState([])
+
+    const infoWindow = navermaps.InfoWindow;
+
+    useEffect(() => {
+        console.table(navermaps)
+    }, []);
 
 
     const onClickShop = (i)=>{
@@ -47,16 +55,16 @@ export function AdminVisitMap(){
     }
 
     const search = (addr)=>{
-        console.table(window.naver.maps)
-        return;
-        navermaps.Geometry(
-            {
-                query: addr
-            }, (status, response)=>{
-                console.log(status)
-                console.table(response)
-            }
-        )
+    }
+
+
+
+    const searchAddressToCoordinate = (addr)=>{
+        navermaps.Service.geocode({
+            query: addr
+        }, function(status, response){
+
+        })
     }
 
     const onSearch = ()=>{
@@ -94,7 +102,7 @@ export function AdminVisitMap(){
                         <button type='button' className={cm(Admin.btn, Admin.btn_search)} onClick={onSearch}></button>
                     </div>
                     <table className={Admin.table_shop}>
-                        <thead className={Admin.thead}>
+                        <thead>
                             <tr className={Admin.tr}>
                                 <th className={Admin.th}>매장명</th>
                                 <th className={Admin.th}>주소</th>
@@ -121,9 +129,9 @@ function ShopItem({}){
     return (
         <tr className={Admin.tr}>
             <td className={Admin.td}>수원점</td>
-            <td className={Admin.td}>수원점</td>
-            <td className={Admin.td}>수원점</td>
-            <td className={Admin.td}>수원점</td>
+            <td className={Admin.td}>1</td>
+            <td className={Admin.td}>2</td>
+            <td className={Admin.td}>3</td>
         </tr>
     )
 }

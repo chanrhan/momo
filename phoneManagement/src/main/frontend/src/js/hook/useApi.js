@@ -11,7 +11,7 @@ import RsvMsgApi from "../api/RsvMsgApi";
 import TodoApi from "../api/TodoApi";
 import FileApi from "../api/FileApi";
 import PostImageApi from "../api/PostImageApi";
-import {StudyApi} from "../api/StudyApi";
+import {AdminApi} from "../api/AdminApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -29,7 +29,7 @@ function useApi(){
         gmdApi: GMDApi(accessToken),
         fileApi: FileApi(accessToken),
         pimgApi: PostImageApi(accessToken),
-        studyApi: StudyApi()
+        adminApi: AdminApi(accessToken)
     }
 }
 
