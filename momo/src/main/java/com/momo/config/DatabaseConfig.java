@@ -15,7 +15,7 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
 @Configuration
-public class AppConfig {
+public class DatabaseConfig {
 	@Value("${spring.datasource.driver-class-name}")
 	public String driverClassName;
 

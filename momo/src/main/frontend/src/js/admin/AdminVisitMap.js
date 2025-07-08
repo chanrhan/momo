@@ -21,10 +21,9 @@ export function AdminVisitMap(){
     const navermaps = useNavermaps();
     const [markers, setMarkers] = useState([])
 
-    const infoWindow = navermaps.InfoWindow;
 
     useEffect(() => {
-        console.table(navermaps)
+        // console.table(navermaps)
     }, []);
 
 
@@ -59,13 +58,7 @@ export function AdminVisitMap(){
 
 
 
-    const searchAddressToCoordinate = (addr)=>{
-        navermaps.Service.geocode({
-            query: addr
-        }, function(status, response){
 
-        })
-    }
 
     const onSearch = ()=>{
         search(searchKeyword)
@@ -74,6 +67,12 @@ export function AdminVisitMap(){
     const getMapPosition = (lat, lng)=>{
         return new navermaps.LatLng(lat, lng);
     }
+
+    const openAddVisitedShopModal = ()=>{
+        modal.openModal(ModalType.LAYER.Add_Visit_Shop)
+    }
+
+
 
     return (
         <div className={Admin.visit_map}>
@@ -100,9 +99,10 @@ export function AdminVisitMap(){
                         <button type='button' className={cm(Admin.btn, Admin.btn_sort)}></button>
                         <button type='button' className={cm(Admin.btn, Admin.btn_filter)}></button>
                         <button type='button' className={cm(Admin.btn, Admin.btn_search)} onClick={onSearch}></button>
+                        <button type='button' className={cm(Admin.btn, Admin.btn_add)} onClick={openAddVisitedShopModal}>추가</button>
                     </div>
                     <table className={Admin.table_shop}>
-                        <thead>
+                        <thead className={Admin.thead}>
                             <tr className={Admin.tr}>
                                 <th className={Admin.th}>매장명</th>
                                 <th className={Admin.th}>주소</th>

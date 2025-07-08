@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.response.JwtVO;
 import com.momo.common.vo.LoginVO;
@@ -6,19 +6,15 @@ import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.CommonService;
 import com.momo.service.JwtService;
-import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.Map;
 
 @RestController
 @Slf4j

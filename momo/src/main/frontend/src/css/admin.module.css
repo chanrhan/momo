@@ -75,9 +75,9 @@
 .visit_map .body_group .map_panel{
     background-color: #e7e7e7;
     /*display: inline-block;*/
-    width: 40%;
+    width: 50%;
     height: 100%;
-    padding: 15px;
+    padding: 25px;
 }
 
 .visit_map .body_group .map_panel .map_cont{
@@ -91,7 +91,7 @@
     background-color: #ffdddd;
     /*display: inline-block;*/
     padding: 15px;
-    width: 60%;
+    width: 50%;
     height: 100%;
 }
 
@@ -136,6 +136,17 @@
     background: url(../images/search_icon.png) no-repeat center / 100%;
 }
 
+.visit_map .body_group .detail_panel .list_header .btn_add{
+    width: 100px;
+    height: 32px;
+    background-color: #4781ff;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    border-radius: 12px;
+    margin-left: 16px;
+}
+
 .visit_map .body_group .detail_panel .table_shop{
     padding: 14px 20px 14px 20px;
     width: 100%;
@@ -145,7 +156,7 @@
     /*table-layout: fixed;*/
 }
 
-.visit_map .body_group .detail_panel .table_shop .tr{
+.visit_map .body_group .detail_panel .table_shop .thead .tr{
     border-bottom: 1px solid black;
     height: 10px;
 }
@@ -160,19 +171,166 @@
 }
 
 .visit_map .body_group .detail_panel .table_shop .tbody .tr {
-    background-color: #ffc9c9;
+    background-color: #f3f3f3;
     height: 1px;
 }
 
 .visit_map .body_group .detail_panel .table_shop .tbody .tr .td{
     position: relative;
     padding:2px;
-    border-right:2px solid #f4f4f5;
-    border-bottom:1px solid rgba(227, 227, 227, 0.9);
+    /*border-right:2px solid #f4f4f5;*/
+    /*border-bottom:1px solid rgba(227, 227, 227, 0.9);*/
     color:#28272c; font-size:14px; text-align:center;
     /*height: 32px;*/
     line-height:32px;
 }
 
+/*방문 매장 추가 모달창*/
+.add_visit_map_cont{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.add_visit_map_cont .map_panel{
+    width: 50%;
+    height: 100%;
+    padding: 15px;
+}
+
+.add_visit_map_cont .input_panel{
+    width: 50%;
+    height: 100%;
+    padding: 15px;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group{
+    background-color: #cfe0ff;
+    height: 76px;
+    display: flex;
+    padding: 2px 16px;
+    align-items: center;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group + .row_inp_group{
+    margin-top: 4px;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .col_inp_box{
+    width: 100%;
+    height: 100%;
+    align-content: center;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .col_inp_box + .col_inp_box{
+    margin-left: 12px;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .col_inp_box.w50{
+    width: 48%;
+}
+.add_visit_map_cont .input_panel .row_inp_group .col_inp_box.w30{
+    width: 30%;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .subject_text{
+    margin-left: 2px;
+    font-size: 13px;
+    margin-bottom: 1px;
+}
+.add_visit_map_cont .input_panel .row_inp_group .inp{
+    padding: 1px 6px;
+    border-radius: 6px;
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .flex_box{
+    display: flex;
+}
+
+.add_visit_map_cont .input_panel .row_inp_group .textarea{
+    width: 100%;
+    height: 72%;
+    border-radius: 6px;
+    resize: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+.add_visit_map_cont .input_panel .row_inp_group .btn{
+    width: 25%;
+    background-color: #4781ff;
+    margin-left: 8px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.add_visit_map_cont .input_panel .visit_log_section{
+    padding: 8px;
+    /*font-weight: 200;*/
+    background-color: #e0e0e0;
+    height: 200px;
+}
+
+.add_visit_map_cont .input_panel .visit_log_table{
+    border-radius: 12px;
+}
+.add_visit_map_cont .input_panel .visit_log_table .thead{
+    background-color: #f1f1f1;
+}
+
+.add_visit_map_cont .input_panel .visit_log_table .tbody{
+    overflow-y: auto;
+}
+
+.add_visit_map_cont .input_panel .visit_log_table .tbody .tr{
+    background-color: white;
+}
+
+.add_visit_map_cont .input_panel .visit_log_table .tbody .td{
+    text-align: center;
+    font-size: 14px;
+    line-height: 28px;
+}
+
+.add_visit_map_cont .input_panel .option_bottom_group{
+    display: flex;
+    align-items: center;
+    padding: 16px 8px;
+    float: right;
+}
+
+.add_visit_map_cont .input_panel .option_bottom_group .btn{
+    background-color: white;
+    color: #4781ff;
+    border: 0.13rem solid #4781ff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    width: 120px;
+    font-weight: 550;
+}
+.add_visit_map_cont .input_panel .option_bottom_group .btn:not(.btn_red):hover{
+    background-color: #4781ff;
+    color: white;
+    border-color: #4781ff;
+    transition: all ease-in-out 0.15s;
+}
+.add_visit_map_cont .input_panel .option_bottom_group .btn.btn_red{
+    background-color: #ff6767;
+    color: white;
+    border-color: #ff6767;
+}
+.add_visit_map_cont .input_panel .option_bottom_group .btn.btn_red:hover{
+    background-color: #ff9898;
+    border-color: #ff9898;
+
+}
+
+.add_visit_map_cont .input_panel .option_bottom_group .btn + .btn{
+    margin-left: 12px;
+}
 
 

@@ -1,28 +1,16 @@
 package com.momo.job;
 
-import com.momo.alimtalk.ImageAlimTalk;
-import com.momo.alimtalk.SENSUtil;
-import com.momo.alimtalk.SensResponse;
 import com.momo.common.vo.ReserveMessageVO;
-import com.momo.handler.GlobalExceptionHandler;
 import com.momo.service.ReserveMsgService;
-import com.momo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 // 휴면 회원 관리
 @RequiredArgsConstructor

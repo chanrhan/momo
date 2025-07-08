@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.enums.ChatResponseHeader;
 import com.momo.common.response.ChatResponse;

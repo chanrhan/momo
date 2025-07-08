@@ -1530,6 +1530,12 @@
     margin-left: 16px;
 }
 
+/*방문 매장 추가 모달창*/
+.popup .visited_shop_cont{
+    width: 100%;
+    height: 100%;
+}
+
 
 /*반응형*/
 .popup .customer .customer_head .head_box .select_box .select_btn:before{right:8px;}

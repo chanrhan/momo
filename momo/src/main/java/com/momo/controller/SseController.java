@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.emitter.NotificationEmitter;
 import jakarta.servlet.http.HttpServletResponse;

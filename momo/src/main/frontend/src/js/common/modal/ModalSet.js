@@ -39,12 +39,14 @@ import {InfoModal} from "./snackbar/InfoModal";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 import {VisitLogModal} from "../../admin/modal/VisitLogModal";
+import {AddVisitShopModal} from "../../admin/modal/AddVisitShopModal";
 
 export const ModalSet = {
     // admin
     AdminBulkUpload: AdminBulkUploadModal,
     AdminMessageTemplate: MessageTemplateModal,
     VisitLog: VisitLogModal,
+    AddVisitShop: AddVisitShopModal,
 
     // common
     DynamicSelect: DynamicSelectModal,

@@ -1,6 +1,10 @@
-package com.momo.alimtalk;
+package com.momo.external_api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.momo.alimtalk.AlimTalkButton;
+import com.momo.alimtalk.AlimTalkMessage;
+import com.momo.alimtalk.ImageAlimTalk;
+import com.momo.alimtalk.SensResponse;
 import com.momo.common.vo.ReserveMessageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -14,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;

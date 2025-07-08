@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.response.JwtVO;
 import com.momo.common.util.SecurityContextUtil;
@@ -6,7 +6,6 @@ import com.momo.common.vo.LoginVO;
 import com.momo.common.vo.UserVO;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
-import com.momo.service.ShopService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

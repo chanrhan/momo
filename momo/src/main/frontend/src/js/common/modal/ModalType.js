@@ -5,6 +5,8 @@ export const ModalType = {
         Admin_Message_Template: 'AdminMessageTemplate',
         Visit_Log: 'VisitLog',
 
+        Add_Visit_Shop: 'AddVisitShop',
+
         // common
         Invite: 'Invite',
         Payment_Card: 'Payment_Card',

@@ -1,0 +1,12 @@
+package com.momo.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class NaverMapsService {
+    public void getGeocode(){
+
+    }
+}

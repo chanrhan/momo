@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.enums.MailType;
 import com.momo.common.response.MailCreateResponse;

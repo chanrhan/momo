@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.vo.ReserveMessageVO;
 import com.momo.common.vo.SaleVO;

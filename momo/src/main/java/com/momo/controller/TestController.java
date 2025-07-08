@@ -1,10 +1,7 @@
-package com.momo.api;
+package com.momo.controller;
 
-import com.momo.alimtalk.ImageAlimTalk;
-import com.momo.alimtalk.SENSUtil;
 import com.momo.common.enums.codes.CommonErrorCode;
 import com.momo.common.util.FileServiceUtil;
-import com.momo.common.vo.SaleSearchVO;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.TestChildVO;
 import com.momo.exception.BusinessException;
@@ -23,13 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 

@@ -1,4 +1,4 @@
-package com.momo.api;
+package com.momo.controller;
 
 import com.momo.common.util.ResponseEntityUtil;
 import com.momo.common.vo.*;
