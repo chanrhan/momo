@@ -3,6 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.momo.mapper.VisitedShopMapper">
+    <insert id="insertVisitedShop">
+        SET @next_id := (
+            select IFNULL(max(vs_id), 0)+1
+            from tb_visited_shop
+            );
+
+        insert into tb_visited_shop
+        (vs_id, lat, lng, shop_nm, shop_addr, can_parking, mgr_nm, mgr_tel, mgr_role, memo, seller_id)
+        VALUE
+        (@next_id, #{lat},#{lng},#{shopNm},#{shopAddr}, #{canParking},#{mgrNm},#{mgrTel},#{mgrRole},#{memo},#{sellerId})
+
+    </insert>
+
     <select id="getVisitedShopList">
         SELECT *
         FROM tb_visited_shop

@@ -1,5 +1,7 @@
-package com.momo.common.util;
+package com.momo.extern_api;
 
+import com.momo.common.util.AddressAreaApiResponse;
+import com.momo.common.util.PublicDataOpenApiUtil;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -17,7 +19,7 @@ import java.util.Map;
 // 과학기술정보통신부 우정사업본부_우편번호 정보조회
 // https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15056971
 
-public class AddressAreaApiUtil extends PublicDataOpenApiUtil{
+public class AddressAreaApiUtil extends PublicDataOpenApiUtil {
 	// 서비스 url
 	private static final String serviceUrl = "http://openapi.epost.go.kr/postal/retrieveNewAdressAreaCdSearchAllService/retrieveNewAdressAreaCdSearchAllService/getNewAddressListAreaCdSearchAll";
 

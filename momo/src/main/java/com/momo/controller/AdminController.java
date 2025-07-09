@@ -27,4 +27,9 @@ public class AdminController {
     public ResponseEntity<List<Map<String,Object>>> getVisitedShopList(@RequestBody VisitedShopVO vo){
         return ResponseEntity.ok(adminService.getVisitedShopList(vo));
     }
+
+    @GetMapping("/visited-shop/gecode")
+    public ResponseEntity<Map<String,Object>> getGeocode(@RequestParam String keyword){
+        return ResponseEntity.ok(adminService.getGeocode(keyword));
+    }
 }

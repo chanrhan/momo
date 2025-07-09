@@ -1,4 +1,4 @@
-package com.momo.common.util;
+package com.momo.extern_api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

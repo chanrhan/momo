@@ -38,23 +38,25 @@ public class AligoApiUtil {
 
         HttpClient client = HttpClient.newHttpClient();
         StringBuilder boundary = new StringBuilder().append(new BigInteger(256, new Random()));
-        try{
-//            ExternalApiUtils.multipartToByte(body, boundary.toString());
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(new URI(BASE_URL+"/send/").toString()))
-                    .setHeader("Content-Type", "multipart/form-data; boundary="+boundary)
-//                    .setHeader("Content-Type", "multipart/form-data;")
-                    .POST(ExternalApiUtils.multipartToByte(body, boundary.toString()))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Map<String,Object> result = objectMapper.readValue(JSONValue.parse(response.body()).toString(), Map.class);
-            log.info("res: {}", result);
-            return result;
-        } catch (IOException | URISyntaxException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        return null;
+//        try{
+////            ExternalApiUtils.multipartToByte(body, boundary.toString());
+//
+////            HttpRequest request = HttpRequest.newBuilder()
+////                    .uri(URI.create(new URI(BASE_URL+"/send/").toString()))
+////                    .setHeader("Content-Type", "multipart/form-data; boundary="+boundary)
+//////                    .setHeader("Content-Type", "multipart/form-data;")
+////                    .POST(ExternalApiUtils.multipartToByte(body, boundary.toString()))
+////                    .build();
+////
+////            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+////            Map<String,Object> result = objectMapper.readValue(JSONValue.parse(response.body()).toString(), Map.class);
+////            log.info("res: {}", result);
+//            Map<String,Object> res = ExternalApiUtils.post(BASE_URL, "/send", body);
+//            return res;
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 //        StringBuilder urlBuilder = new StringBuilder(BASE_URL+"/send/");
 ////        urlBuilder.append("?").append(URLEncoder.encode("key", StandardCharsets.UTF_8)).append("=").append(ACCESS_KEY)

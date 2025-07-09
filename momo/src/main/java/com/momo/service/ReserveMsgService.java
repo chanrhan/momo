@@ -1,6 +1,6 @@
 package com.momo.service;
 
-import com.momo.external_api.SENSUtil;
+import com.momo.extern_api.SENSUtil;
 import com.momo.alimtalk.SensResponse;
 import com.momo.common.vo.ReserveMessageVO;
 import com.momo.common.vo.SaleVO;

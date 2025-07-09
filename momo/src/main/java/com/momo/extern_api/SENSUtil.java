@@ -1,4 +1,4 @@
-package com.momo.external_api;
+package com.momo.extern_api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.momo.alimtalk.AlimTalkButton;

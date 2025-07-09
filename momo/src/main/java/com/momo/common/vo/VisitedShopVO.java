@@ -13,6 +13,22 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class VisitedShopVO extends BaseVO {
+    private Integer vsId;
 
+    private Double lat;
+    private Double lng;
+    private String shopAddr;
+    private String shopNm;
+    private Boolean canParking;
+    private Integer visitedCnt;
+
+    private String mgrNm;
+    private String mgrTel;
+    private String mgrRole;
+
+    private String sellerId;
+    private String sellerNm;
+
+    private String memo;
 
 }

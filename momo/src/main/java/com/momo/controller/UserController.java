@@ -1,6 +1,6 @@
 package com.momo.controller;
 
-import com.momo.common.util.BusinessmanApiUtil;
+import com.momo.extern_api.BusinessmanApiUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.service.CommonService;

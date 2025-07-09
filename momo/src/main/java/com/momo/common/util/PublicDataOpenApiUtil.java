@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 public abstract class PublicDataOpenApiUtil {
 	protected static final   ObjectMapper objectMapper = new ObjectMapper();
-	protected static final String SERVICE_KEY = "8bXfsl4hHudyYTdKPi4dl%2F4%2FgRXAfzpqd3YDNOy1ID8y9jeCAfIVEeem%2FtVsExHAIiMZBvuD71wapunlRTagGw%3D%3D";
+	protected static final String SERVICE_KEY = "8bXfsl4hHudyYTdKPi4dl/4/gRXAfzpqd3YDNOy1ID8y9jeCAfIVEeem/tVsExHAIiMZBvuD71wapunlRTagGw==";
 
 	protected static final Charset UTF_8 = StandardCharsets.UTF_8;
 }

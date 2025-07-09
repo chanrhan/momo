@@ -47,11 +47,11 @@ public class UserService  implements UserDetailsService{
 				.msgType("SMS")
 				.receiver(tel)
 				.build();
-		Map<String,Object> res = AligoApiUtil.sendMessage(vo);
-		log.info("send auth: {}", res);
-		if(!res.get("result_code").toString().equals("1")){
-			return null;
-		}
+//		Map<String,Object> res = AligoApiUtil.sendMessage(vo);
+//		log.info("send auth: {}", res);
+//		if(!res.get("result_code").toString().equals("1")){
+//			return null;
+//		}
 		return authNumber;
 	}
 

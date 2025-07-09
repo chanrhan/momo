@@ -6,10 +6,13 @@ export function AdminApi(accessToken){
 
     return {
         insertVisitedShop: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/admin//visited-shop', body, accessToken);
+            return await axiosApiWithAccessToken.post('/api/v1/admin/visited-shop', body, accessToken);
         },
         getVisitedShopList: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/admin//visited-shop/list', body, accessToken);
+            return await axiosApiWithAccessToken.post('/api/v1/admin/visited-shop/list', body, accessToken);
+        },
+        getGecode: async (keyword)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/admin/visited-shop/gecode?keyword=${keyword}`, accessToken);
         }
 
     }

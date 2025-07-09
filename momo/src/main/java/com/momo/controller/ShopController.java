@@ -1,7 +1,7 @@
 package com.momo.controller;
 
 import com.momo.common.util.SecurityContextUtil;
-import com.momo.common.util.AddressApiUtil;
+import com.momo.extern_api.AddressApiUtil;
 import com.momo.common.vo.ShopVO;
 import com.momo.service.ShopService;
 import lombok.RequiredArgsConstructor;

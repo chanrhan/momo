@@ -5,7 +5,7 @@ import {cm} from "../utils/cm";
 import {useBitArray} from "../hook/useBitArray";
 import {ModalType} from "../common/modal/ModalType";
 import {ShopMarkerOverlay} from "./module/ShopMarkerOverlay";
-import {NaverMap, useNavermaps, Container as MapDiv, Marker} from 'react-naver-maps'
+import {NaverMap, useNavermaps, Container as MapDiv, Marker, Overlay} from 'react-naver-maps'
 import useApi from "../hook/useApi";
 
 export function AdminVisitMap(){
@@ -15,16 +15,35 @@ export function AdminVisitMap(){
 
     const [searchKeyword, setSearchKeyword] = useState('')
 
-    const [items, setItems] = useState(new Array(10).fill("d"))
+    const [items, setItems] = useState([])
     const [open, setOpen] = useState(-1);
 
     const navermaps = useNavermaps();
-    const [markers, setMarkers] = useState([])
+    const [markerPosList, setMarkerPosList] = useState([])
+    const [mapRef, setMapRef] = useState(null)
 
+    console.table(navermaps)
 
     useEffect(() => {
-        // console.table(navermaps)
+        getVisitedShopList();
     }, []);
+
+    const getVisitedShopList = ()=>{
+        adminApi.getVisitedShopList({}).then(({data})=>{
+            // console.table(data)
+            if(data){
+                setItems(data)
+                const arr = []
+                for(const i of data){
+                    arr.push({
+                        lat: i.lat,
+                        lng: i.lng
+                    })
+                }
+                setMarkerPosList(arr)
+            }
+        })
+    }
 
 
     const onClickShop = (i)=>{
@@ -68,11 +87,23 @@ export function AdminVisitMap(){
         return new navermaps.LatLng(lat, lng);
     }
 
-    const openAddVisitedShopModal = ()=>{
-        modal.openModal(ModalType.LAYER.Add_Visit_Shop)
+    const openAddVisitedShopModal = (idx, id)=>{
+        modal.openModal(ModalType.LAYER.Add_Visit_Shop, {
+            id: id,
+            data: items[idx],
+            onSubmit: ()=>{
+                getVisitedShopList()
+            }
+        })
     }
 
+    const panToBounds = (lat, lng)=>{
+        if(mapRef){
+            mapRef.panTo(new navermaps.LatLng(lat, lng))
+        }
+    }
 
+    const o = new navermaps.OverlayView()
 
     return (
         <div className={Admin.visit_map}>
@@ -84,8 +115,24 @@ export function AdminVisitMap(){
 
             <div className={Admin.body_group}>
                 <MapDiv className={Admin.map_panel}>
-                    <NaverMap>
-                        <Marker position={getMapPosition(37, 127)}/>
+                    <NaverMap ref={setMapRef} defaultZoom={7}>
+                        {
+                            markerPosList && markerPosList.map((v,i)=>{
+                                return <Marker key={i} position={new navermaps.LatLng(v.lat, v.lng)} />
+                            })
+                        }
+                        <Marker position={new navermaps.LatLng(37, 128)} css={{
+                            width: '50px',
+                            backgroundColor: 'red'
+                        }} >
+                        </Marker>
+                        <Overlay element={new navermaps.Marker({
+                            position: {lat: 37, lng: 127}
+                        })}>
+                            <div>
+                                HI
+                            </div>
+                        </Overlay>
                     </NaverMap>
                 </MapDiv>
                 <div className={Admin.detail_panel}>
@@ -99,7 +146,9 @@ export function AdminVisitMap(){
                         <button type='button' className={cm(Admin.btn, Admin.btn_sort)}></button>
                         <button type='button' className={cm(Admin.btn, Admin.btn_filter)}></button>
                         <button type='button' className={cm(Admin.btn, Admin.btn_search)} onClick={onSearch}></button>
-                        <button type='button' className={cm(Admin.btn, Admin.btn_add)} onClick={openAddVisitedShopModal}>추가</button>
+                        <button type='button' className={cm(Admin.btn, Admin.btn_add)} onClick={()=>{
+                            openAddVisitedShopModal(0, -1)
+                        }}>추가</button>
                     </div>
                     <table className={Admin.table_shop}>
                         <thead className={Admin.thead}>
@@ -108,15 +157,29 @@ export function AdminVisitMap(){
                                 <th className={Admin.th}>주소</th>
                                 <th className={Admin.th}>방문현황</th>
                                 <th className={Admin.th}>주차가능여부</th>
+                                <th className={Admin.th}></th>
                             </tr>
                         </thead>
                         <tbody className={Admin.tbody}>
-                            <ShopItem/>
-                            <ShopItem/>
-                            <ShopItem/>
-                            <ShopItem/>
-                            <ShopItem/>
-                            <ShopItem/>
+                        {
+                            items && items.map((v,i)=>{
+                                return (
+                                    <tr key={i} className={Admin.tr} onClick={()=>{
+                                        panToBounds(v.lat, v.lng)
+                                    }}>
+                                        <td className={Admin.td}>{v.shop_nm}</td>
+                                        <td className={Admin.td}>{v.shop_addr}</td>
+                                        <td className={Admin.td}>0</td>
+                                        <td className={Admin.td}>{v.can_parking ? '주차 가능' : '주차 불가'}</td>
+                                        <td className={Admin.td}>
+                                            <button type='button' className={Admin.btn_detail} onClick={()=>{
+                                                openAddVisitedShopModal(i, v.vs_id)
+                                            }}>자세히</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -125,13 +188,6 @@ export function AdminVisitMap(){
     )
 }
 
-function ShopItem({}){
-    return (
-        <tr className={Admin.tr}>
-            <td className={Admin.td}>수원점</td>
-            <td className={Admin.td}>1</td>
-            <td className={Admin.td}>2</td>
-            <td className={Admin.td}>3</td>
-        </tr>
-    )
+function CustomMarker(){
+
 }
