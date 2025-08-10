@@ -2,11 +2,12 @@ import Admin from "../../css/admin.module.css";
 import useModal from "../hook/useModal";
 import React, {useEffect, useRef, useState} from "react";
 import {cm} from "../utils/cm";
-import {useBitArray} from "../hook/useBitArray";
 import {ModalType} from "../common/modal/ModalType";
 import {ShopMarkerOverlay} from "./module/ShopMarkerOverlay";
 import {NaverMap, useNavermaps, Container as MapDiv, Marker, Overlay} from 'react-naver-maps'
 import useApi from "../hook/useApi";
+import {ClusteredOverlayLayer} from "../navermaps/ClusteredOverlayLayer";
+import {CustomOverlay} from "../navermaps/CustomOverlay";
 
 export function AdminVisitMap(){
     const modal = useModal()
@@ -22,42 +23,29 @@ export function AdminVisitMap(){
     const [markerPosList, setMarkerPosList] = useState([])
     const [mapRef, setMapRef] = useState(null)
 
-    console.table(navermaps)
-
     useEffect(() => {
         getVisitedShopList();
     }, []);
 
     const getVisitedShopList = ()=>{
         adminApi.getVisitedShopList({}).then(({data})=>{
-            // console.table(data)
+            console.table(data)
             if(data){
                 setItems(data)
                 const arr = []
-                for(const i of data){
+                for(const i in data){
                     arr.push({
-                        lat: i.lat,
-                        lng: i.lng
+                        id: i,
+                        position: new navermaps.LatLng(data[i].lat, data[i].lng),
+                        color: 'red',
+                        state: data[i].vs_st,
+                        label: `No.${i}`
                     })
                 }
                 setMarkerPosList(arr)
             }
         })
     }
-
-
-    const onClickShop = (i)=>{
-        if(i >= items.length){
-            return;
-        }
-        moveMapPositionToShop(i);
-        fold(i);
-    }
-
-    const moveMapPositionToShop = (i)=>{
-
-    }
-
     const fold = (i)=>{
         if(open === i){
             setOpen(-1)
@@ -65,27 +53,14 @@ export function AdminVisitMap(){
             setOpen(i)
         }
     }
-
-    const openVisitLogModal = (i)=>{
-        modal.openModal(ModalType.LAYER.Visit_Log, {
-
-        })
-    }
-
     const search = (addr)=>{
     }
-
-
-
 
 
     const onSearch = ()=>{
         search(searchKeyword)
     }
 
-    const getMapPosition = (lat, lng)=>{
-        return new navermaps.LatLng(lat, lng);
-    }
 
     const openAddVisitedShopModal = (idx, id)=>{
         modal.openModal(ModalType.LAYER.Add_Visit_Shop, {
@@ -118,21 +93,21 @@ export function AdminVisitMap(){
                     <NaverMap ref={setMapRef} defaultZoom={7}>
                         {
                             markerPosList && markerPosList.map((v,i)=>{
-                                return <Marker key={i} position={new navermaps.LatLng(v.lat, v.lng)} />
+                                console.table(v)
+                                return <CustomOverlay navermaps={navermaps} map={mapRef} position={v.position}>
+                                    <div className={cm(Admin.navermaps_custom_overlay, `${v.state === 1 && Admin.blue}`)}>
+
+                                    </div>
+                                </CustomOverlay>
                             })
                         }
-                        <Marker position={new navermaps.LatLng(37, 128)} css={{
-                            width: '50px',
-                            backgroundColor: 'red'
-                        }} >
-                        </Marker>
-                        <Overlay element={new navermaps.Marker({
-                            position: {lat: 37, lng: 127}
-                        })}>
-                            <div>
-                                HI
-                            </div>
-                        </Overlay>
+
+                        {/*<Marker position={new navermaps.LatLng(37, 128)} css={{*/}
+                        {/*    width: '50px',*/}
+                        {/*    backgroundColor: 'red'*/}
+                        {/*}} >*/}
+                        {/*</Marker>*/}
+                        {/*<ClusteredOverlayLayer navermaps={navermaps} map={mapRef} items={markerPosList}/>*/}
                     </NaverMap>
                 </MapDiv>
                 <div className={Admin.detail_panel}>

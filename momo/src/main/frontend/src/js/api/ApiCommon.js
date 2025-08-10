@@ -1,10 +1,7 @@
-// import axiosInstance from "../utils/axiosInstance";
 import axios from "axios";
 import useModal from "../hook/useModal";
 import {ModalType} from "../common/modal/ModalType";
-import {errorMonitor} from "form-data";
 import axiosInstance from "../utils/axiosInstance";
-import {authActions} from "../store/slices/authSlice";
 import {useSelector} from "react-redux";
 
 export const AxiosApi = ()=> {

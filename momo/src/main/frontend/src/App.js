@@ -57,6 +57,7 @@ import {AdminUserStatistics} from "./js/admin/AdminUserStatistics";
 import {ObjectUtils} from "./js/utils/objectUtil";
 import {AdminVisitMap} from "./js/admin/AdminVisitMap";
 import TimelineTest from "./js/test/TimelineTest";
+import {AligoTest} from "./js/test/AligoTest";
 
 function App() {
     const userInfo = useUserInfo();
@@ -93,6 +94,7 @@ function App() {
                   <Route path='component' element={<ComponentTest/>}/>
                   <Route path='string' element={<StringTest/>}/>
                   <Route path='timeline' element={<TimelineTest/>}/>
+                  <Route path='aligo' element={<AligoTest/>}/>
               </Route>
 
               <Route path='/' element={<LandingPage/>}/>

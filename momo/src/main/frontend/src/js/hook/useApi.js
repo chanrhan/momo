@@ -12,6 +12,7 @@ import TodoApi from "../api/TodoApi";
 import FileApi from "../api/FileApi";
 import PostImageApi from "../api/PostImageApi";
 import {AdminApi} from "../api/AdminApi";
+import {AligoApi} from "../api/AligoApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -29,7 +30,8 @@ function useApi(){
         gmdApi: GMDApi(accessToken),
         fileApi: FileApi(accessToken),
         pimgApi: PostImageApi(accessToken),
-        adminApi: AdminApi(accessToken)
+        adminApi: AdminApi(accessToken),
+        aligoApi: AligoApi(accessToken)
     }
 }
 

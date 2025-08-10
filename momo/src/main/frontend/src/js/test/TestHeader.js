@@ -72,8 +72,11 @@ function TestHeader(){
                 {/*<Link to='string'>*/}
                 {/*    <button className='btn btn-outline-success ms-1'>String 테스트</button>*/}
                 {/*</Link>*/}
-                <Link to='timeline'>
-                    <button className='btn btn-outline-success ms-1'>졸업설계 테스트</button>
+                {/*<Link to='timeline'>*/}
+                {/*    <button className='btn btn-outline-success ms-1'>졸업설계 테스트</button>*/}
+                {/*</Link>*/}
+                <Link to='aligo'>
+                    <button className='btn btn-outline-success ms-1'>알리고 문자 테스트</button>
                 </Link>
             </div>
             <Outlet/>

@@ -2,7 +2,6 @@ package com.momo.service;
 
 import com.momo.common.UserDetailsImpl;
 import com.momo.common.enums.codes.CommonErrorCode;
-import com.momo.common.util.AligoApiUtil;
 import com.momo.common.vo.ApiVO;
 import com.momo.common.vo.SearchVO;
 import com.momo.common.vo.UserVO;

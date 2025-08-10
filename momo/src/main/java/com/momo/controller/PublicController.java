@@ -2,8 +2,8 @@ package com.momo.controller;
 
 import com.momo.common.response.JwtVO;
 import com.momo.common.util.SecurityContextUtil;
-import com.momo.common.vo.LoginVO;
-import com.momo.common.vo.UserVO;
+import com.momo.common.vo.*;
+import com.momo.service.AligoService;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
 import com.momo.service.UserService;
@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

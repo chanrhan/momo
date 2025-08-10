@@ -60,4 +60,5 @@ public class ReserveMsgController {
     public ResponseEntity<Map<String,Object>> getReserveMsgAll(@RequestBody(required = false) ReserveMessageVO vo){
         return ResponseEntity.ok(reserveMsgService.getReserveMsgAll(vo));
     }
+
 }

@@ -343,4 +343,16 @@
     margin-left: 12px;
 }
 
+/*Navermaps Custom Overlay*/
+.navermaps_custom_overlay{
+    width: 38px;
+    height: 38px;
+    background: url(../images/marker/grey_marker_icon.png) no-repeat center / 100%;
+}
 
+.navermaps_custom_overlay.red{
+    background: url(../images/marker/red_marker_icon.png) no-repeat center / 100%;
+}
+.navermaps_custom_overlay.blue{
+    background: url(../images/marker/blue_marker_icon.png) no-repeat center / 100%;
+}

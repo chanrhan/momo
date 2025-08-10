@@ -317,6 +317,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+<!--        WebClient 내부적으로 Netty 사용 , macOS의 경우 의존성을 하나 더 설치해줘야 함 -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <version>4.1.110.Final</version>
+<!--            <classifier>osx-aarch_64</classifier> Apple Silicon M1/M2/M3 전용-->
+        </dependency>
     </dependencies>
 
     <build>
