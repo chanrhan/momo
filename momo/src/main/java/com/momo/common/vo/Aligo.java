@@ -11,10 +11,7 @@ import lombok.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Aligo {
@@ -92,7 +89,7 @@ public class Aligo {
         private Integer successCnt; // 요청 성공 건수
         private Integer errorCnt; // 요청 실패 건수
         private String msgType; // 메세지 타입 (1. SMS, 2. LMS, 3. MMS)
-        private Integer authNumber;
+        private String authNumber;
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -109,13 +106,13 @@ public class Aligo {
     @Data
     @NoArgsConstructor
     public static class SMSListResponse extends DefaultResponse{
-        private SMSListItem[] list;
+        private List<SMSListItem> list = new ArrayList<>();
         private String nextYn;
     }
 
     @Data
-    @AllArgsConstructor
     @NoArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class SMSListItem{
         private Integer mid;
         private String type;

@@ -157,6 +157,7 @@ function Step1({inputField, setStep}){
 
 function Step2({inputField, setStep}) {
     const modal = useModal();
+    const {aligoApi} = useApi();
     const [authNumber, setAuthNumber] = useState("")
 
     const [timeLeft, setTimeLeft] = useState(0)
@@ -165,6 +166,7 @@ function Step2({inputField, setStep}) {
     const [isSent, setIsSent] = useState(false)
 
     const [authenticated, setAuthenticated] = useState(false)
+    const [sendLock, setSendLock] = useState(false)
 
     useEffect(() => {
         inputField.clearOf("auth_code")
@@ -178,6 +180,7 @@ function Step2({inputField, setStep}) {
                 setTimeLeft(prev => prev - INTERVAL);
             }, INTERVAL)
             if (timeLeft <= 0) {
+                setIsSent(false)
                 clearInterval(timer)
             }
         }
@@ -194,36 +197,30 @@ function Step2({inputField, setStep}) {
     }
 
     const sendAuthNumber = async () => {
-        if (inputField.validateOne('tel')) {
+        if (!authenticated && !sendLock && inputField.validateOne('tel')) {
             setAuthenticated(false)
             setIsSent(true)
             // 휴대폰번호로 인증번호 보내는 로직
             let tel: string = inputField.get('tel');
             tel = tel.replaceAll("-", '');
-            // await publicApi.sendAuthNumber(tel).then(({status,data})=>{
-            //     let msg = null;
-            //     console.log(data)
-            //     if(status === 200 && data && !Number.isNaN(data)){
-            //         msg = '인증번호를 전송했습니다.'
-            //         setAuthNumber(Number(data))
-            //         setTimeLeft(MINUTES_IN_MS)
-            //         setIsSent(true)
-            //     }else{
-            //         msg = '전송에 실패하였습니다.'
-            //         setAuthNumber(null)
-            //         setTimeLeft(null)
-            //         setIsSent(false)
-            //     }
-            //     modal.openModal(ModalType.SNACKBAR.Info, {
-            //         msg: msg
-            //     })
-            // })
-            modal.openModal(ModalType.SNACKBAR.Info, {
-                msg: '인증번호는 123 입니다 [임시]'
+            const body = {
+                receiver: tel,
+            }
+            setSendLock(true)
+            aligoApi.sendAuthNumber(body).then(({data})=>{
+                if(data){
+                    // console.table(data)
+                    // modal.openModal(ModalType.SNACKBAR.Info, {
+                    //     msg: '입력하신 휴대폰 번호로 인증번호가 전송되었습니다.'
+                    // })
+                    setAuthNumber(data.auth_number)
+                    setTimeLeft(MINUTES_IN_MS)
+                    setIsSent(true)
+                }
+                // setIsSent(false)
             })
-            setAuthNumber(123)
-            setTimeLeft(MINUTES_IN_MS)
-            setIsSent(true)
+            setSendLock(false)
+
         }
     }
 
@@ -293,7 +290,8 @@ function Step2({inputField, setStep}) {
                                         }}/>
                         <button type="button"
                                 className={cm(User.form_btn, User.auth, `${isSent && User.resend}`)}
-                                onClick={sendAuthNumber}>{isSent ? '재발송' : '인증번호 받기'}</button>
+                                disabled={authenticated}
+                                onClick={sendAuthNumber}>{authenticated ? '인증완료' : (isSent ? '재발송' : '인증번호 받기')}</button>
                     </div>
                     {/*<UserFormInput subject='휴대폰 번호' name='tel' inputField={inputField}>*/}
 

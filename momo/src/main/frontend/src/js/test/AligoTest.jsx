@@ -9,9 +9,7 @@ export function AligoTest(){
             destination: '01045240636|박희찬',
             msg: 'Hello, Chan',
             title: 'API TEST ALIGO',
-            rdate: "20250810",
-            rtime: "1554",
-            testmode_yn: "Y"
+            testmode_yn: "N"
         }
         aligoApi.sendAuthNumber(body).then(({data})=>{
             console.table(data)

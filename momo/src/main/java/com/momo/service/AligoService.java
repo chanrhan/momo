@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.Random;
 
 @Service
@@ -28,26 +29,24 @@ public class AligoService {
                 .build();
     }
 
-    private Integer generateAuthNumber(){
-        Random random = null;
-        int number = 0;
+    private String generateAuthNumber(){
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
         for(int i=0;i<4;++i){
-            random = new Random();
-            number += random.nextInt(10) * (int)Math.pow(10, i);
+            sb.append(random.nextInt(10));
         }
-        return number;
+        return sb.toString();
     }
 
     public Aligo.SendSMSResponse sendOneMessage(Aligo.SendSMS vo){
-        vo.setKey(API_KEY);
-        vo.setUserId(USER_ID);
+//        vo.setKey(API_KEY);
+//        vo.setUserId(USER_ID);
         vo.setSender(SENDER_TEL);
-        int authNumber = generateAuthNumber();
-        vo.setMsg("[모모] 회원가입 인증번호입니다 : " + authNumber);
+        String authNumber = generateAuthNumber();
+        vo.setMsg("[모모] 인증번호 [" + authNumber + "]를 입력해주세요.");
 
         Aligo.SendSMSResponse res = requestAligoApi("/send/", vo.toFormValues(), Aligo.SendSMSResponse.class);
         res.setAuthNumber(authNumber);
-
 
         return res;
     }
@@ -57,9 +56,11 @@ public class AligoService {
     }
 
     private <T extends Aligo.DefaultResponse> T requestAligoApi(String path, MultiValueMap<String,String> formData, Class<T> tClass){
+        formData.add("key", API_KEY);
+        formData.add("user_id", USER_ID);
         String body = getWebClient().post()
                 .uri(ub->
-                        ub.path("/send/").build())
+                        ub.path(path).build())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN)
                 .body(BodyInserters.fromFormData(formData))
@@ -70,10 +71,11 @@ public class AligoService {
 //                )
                 .bodyToMono(String.class)
                 .block();
+        System.out.println(body);
         try {
             return objectMapper.readValue(body, tClass);
         }catch (Exception e){
-            System.out.println(body);
+//            System.out.println(body);
             throw new RuntimeException("[Aligo] 응답 파싱 실패", e);
         }
     }
