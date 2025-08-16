@@ -20,6 +20,7 @@ public class UserVO extends BaseVO {
 	private String email;
 	private String tel;
 	private String terms;
+	private Integer provider;
 
 	private Integer userSt; // 유저 상태 (0: 탈퇴, 1: 정상, 2: 유령)
 

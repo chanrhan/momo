@@ -198,6 +198,7 @@ function Step2({inputField, setStep}) {
 
     const sendAuthNumber = async () => {
         if (!authenticated && !sendLock && inputField.validateOne('tel')) {
+            setAuthNumber(null)
             setAuthenticated(false)
             setIsSent(true)
             // 휴대폰번호로 인증번호 보내는 로직
@@ -237,6 +238,9 @@ function Step2({inputField, setStep}) {
     }
 
     const getTimerMS = ()=>{
+        if(!authNumber){
+            return '05:00'
+        }
         if(timeLeft <= 0){
             return '유효시간이 만료되었습니다. 인증번호를 다시 발송해주세요.'
         }
@@ -311,7 +315,7 @@ function Step2({inputField, setStep}) {
                                 authenticated ? <span className={User.timer_text}>인증되었습니다!</span>
                                     : <>
                                             <span className={User.timer_text}>{timeLeft <= 0 ? '' : '유효시간 '}<span
-                                                className={cm(User.timer_num, `${timeLeft <= 0 && User.red}`)}>{getTimerMS()}</span></span>
+                                                className={cm(User.timer_num, `${timeLeft <= 0 && User.red}`)}>{authNumber && getTimerMS()}</span></span>
                                         <button type="button" className={User.timer_btn}
                                                 onClick={sendAuthNumber}>재발송
                                         </button>

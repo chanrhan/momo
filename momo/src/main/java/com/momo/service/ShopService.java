@@ -28,6 +28,7 @@ public class ShopService {
 	// Common
 	// Shop
 	public void insertShop(ShopVO vo) {
+		System.out.println(vo);
 		shopMapper.insertShop(vo);
 	}
 
