@@ -3,8 +3,6 @@ import Popup from "../../../css/popup.module.css"
 import useModal from "../../hook/useModal";
 import {ModalType} from "../modal/ModalType";
 import {MouseEventUtils} from "../../utils/MouseEventUtils";
-import {DYNAMIC_TYPE} from "../modal/DynamicSelectModal";
-import {useRenderlessModal} from "../../hook/useRenderlessModal";
 import {ObjectUtils} from "../../utils/objectUtil";
 import {cm} from "../../utils/cm";
 
@@ -36,6 +34,5 @@ export function DynamicSelectButton({provider, type, onChange, value, onClear}){
                 </button>
             }
         </>
-
     )
 }
