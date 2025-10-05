@@ -1,17 +1,12 @@
 package com.momo.extern_api;
 
-import com.momo.common.util.ExternalApiUtils;
 import com.momo.common.util.PublicDataOpenApiUtil;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 // 국세청_사업자등록정보 진위확인 및 상태조회 서비스

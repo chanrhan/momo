@@ -5,7 +5,7 @@ import com.momo.alimtalk.AlimTalkButton;
 import com.momo.alimtalk.AlimTalkMessage;
 import com.momo.alimtalk.ImageAlimTalk;
 import com.momo.alimtalk.SensResponse;
-import com.momo.common.vo.ReserveMessageVO;
+import com.momo.common.vo.MessageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
@@ -53,11 +53,11 @@ public class SENSUtil {
         String custTel = map.get("cust_tel");
         String custNm = map.get("cust_nm");
 
-        ReserveMessageVO vo = ReserveMessageVO.builder().custTel(custTel).custNm(custNm).build();
+        MessageVO vo = MessageVO.builder().custTel(custTel).custNm(custNm).build();
         return sendWithRestTemplate(vo);
     }
 
-    public static ResponseEntity<SensResponse> sendWithRestTemplate(ReserveMessageVO vo) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
+    public static ResponseEntity<SensResponse> sendWithRestTemplate(MessageVO vo) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         ImageAlimTalk alimTalk = ImageAlimTalk.builder()
                 .plusFriendId(PlusFriendId)
                 .templateCode("T001")
@@ -197,7 +197,7 @@ public class SENSUtil {
         return encodeBase64String;
     }
 
-    private static String makeTemplate_MomoTest(ReserveMessageVO vo){
+    private static String makeTemplate_MomoTest(MessageVO vo){
         String msg = vo.getShopNm() + "\n (신규가입시 1개월 무료서비스이용가능)";
 
         return "[ WOWBIZZ ]\n" +
@@ -214,7 +214,7 @@ public class SENSUtil {
     }
 
     // T010 템플릿을 동적으로 만들어주는 함수
-    private static String make_T010(ReserveMessageVO vo){
+    private static String make_T010(MessageVO vo){
 
         return "["+vo.getCustNm()+" 차량 배정 안내]\n" +
                 "\n" +

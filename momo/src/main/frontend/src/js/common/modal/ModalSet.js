@@ -30,7 +30,7 @@ import TableHeaderSelectModal from "../../test/TableHeaderSelectModal";
 import SaleDataValidationModal from "../../service/sale/modal/SaleDataValidationModal";
 import {DateSelectModule} from "./menu/DateSelectModule";
 import {SaleFilterModal} from "../../service/sale/modal/SaleFilterModal";
-import {ReserveMessageModal} from "../../service/sale/modal/ReserveMessageModal";
+import {MessageSendModal} from "../../service/sale/modal/MessageSendModal";
 import {ReserveDateModal} from "../../service/sale/modal/ReserveDateModal";
 import {MessagePreviewModal} from "../../service/sale/modal/MessagePreviewModal";
 import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModal";
@@ -100,7 +100,7 @@ export const ModalSet = {
     // SelectMonth: MonthSelectLayer,
     SelectDate: DateSelectModule,
     SaleFilter: SaleFilterModal,
-    ReserveMessage: ReserveMessageModal,
+    ReserveMessage: MessageSendModal,
     ReserveDate: ReserveDateModal,
     MessagePreview: MessagePreviewModal,
 

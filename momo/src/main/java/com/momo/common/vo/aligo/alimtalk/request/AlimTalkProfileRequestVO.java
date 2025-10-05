@@ -3,7 +3,6 @@ package com.momo.common.vo.aligo.alimtalk.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.momo.common.vo.aligo.FormEncodable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,7 @@ public class AlimTalkProfileRequestVO extends AlimTalkRequestVO {
 
     // profile/auth
     // API 토큰 생성
-    private String plusId; // 카카오채널 아이디(@포함)
+    private String plusid; // 카카오채널 아이디(@포함)
     private String phonenumber; // 카카오채널 알림받는 관리자 핸드폰 번호
 
     // profile/add

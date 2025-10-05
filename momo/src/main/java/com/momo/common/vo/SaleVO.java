@@ -94,7 +94,7 @@ public class SaleVO extends BaseVO {
 	private Integer pmSt;
 
 	// 예약 문자
-	private List<ReserveMessageVO> rsvMsgList;
+	private List<MessageVO> rsvMsgList;
 
 	private Integer udId;
 	private Integer amount;

@@ -4,14 +4,12 @@ import {cm, cmc} from "../../../utils/cm";
 import {useObjectArrayInputField} from "../../../hook/useObjectArrayInputField";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
-import {LMD} from "../../../common/LMD";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
-import {writeFileAsync} from "xlsx";
 
-export function ReserveMessageModal(props){
-    const {rsvMsgApi, gmdApi} = useApi()
+export function MessageSendModal(props){
+    const {msgApi, gmdApi} = useApi()
     const templateField = useObjectArrayInputField();
     // console.table(arrayInputField.input)
     const modal = useModal()
@@ -24,73 +22,26 @@ export function ReserveMessageModal(props){
     }, []);
 
     const getMessageTemplate = async ()=>{
-        const templates = await gmdApi.getMessageTemplate().then(({status,data})=>{
-            if(status === 200 && data){
-                return data;
-            }
-            return null;
+        const body = {
+            shop_id: props.shop_id,
+            sale_id: props.sale_id,
+        }
+        msgApi.getMessageTemplateList(body).then(({data})=>{
+            console.table(data)
+            templateField.putAll(data)
         })
-        const orgData =  await getReservedMessage()
-        const newData = [];
-        for(const i: Number in templates){
-            newData[i] = {
-                title: templates[i].title,
-                content: templates[i].content,
-                checked: false,
-                msg_tp: templates[i].msg_id,
-                msg_st: 0,
-                rsv_tp: 0,
-                rsv_dt: ''
-            }
-        }
-        for(const i: Number in orgData){
-            const idx: Number = newData.map((v,i)=>{
-                return {
-                    msg_tp: v.msg_tp,
-                    index: i
-                }
-            }).filter(v=>v.msg_tp === orgData[i].msg_tp)?.[0]?.index
-            console.table(idx)
-            // continue;
-            if(idx !== undefined){
-                newData[idx][`checked`] = true
-                newData[idx][`msg_st`] = orgData[i].msg_st
-                newData[idx][`rsv_tp`] = orgData[i].rsv_tp
-                newData[idx][`rsv_dt`] = orgData[i].rsv_dt
-            }
-
-        }
-        setReservedMessages(orgData)
-        templateField.setInput(newData)
-        setErrors(new Array(newData.length).fill(false))
-    }
-
-    const getReservedMessage = async ()=>{
-        let result = null;
-        if(props.sale_id){
-            await rsvMsgApi.getReserveMsgBySale(props.sale_id).then(({status,data})=>{
-                if(status === 200 && !ObjectUtils.isEmpty(data)){
-                    result = data;
-                }
-            })
-        }
-
-        return result;
     }
 
     const close = ()=>{
         modal.closeModal(ModalType.LAYER.Reserve_Message)
     }
 
-
-
+    // 예약 일자 모달창
     const openReserveDateModal =(index)=>{
-        // console.log(props.actv_dt)
         modal.openModal(ModalType.LAYER.Reserve_Date, {
             subject: templateField.get(index, 'subject'),
             actv_dt: props.actv_dt,
             onSubmit: ({dday, rsv_tp, rsv_dt})=>{
-                // console.log(`dday: ${dday} rsv_tp: ${rsv_tp} rsv_dt: ${rsv_dt}`)
                 templateField.put(index, 'dday', dday)
                 templateField.put(index, 'rsv_tp', rsv_tp)
                 templateField.put(index, 'rsv_dt', rsv_dt)
@@ -102,10 +53,10 @@ export function ReserveMessageModal(props){
     }
 
     const submit = ()=>{
-        modal.openModal(ModalType.SNACKBAR.Alert, {
-            msg: "준비 중인 기능입니다"
-        })
-        return;
+        // modal.openModal(ModalType.SNACKBAR.Alert, {
+        //     msg: "준비 중인 기능입니다"
+        // })
+        // return;
         const errorList = [...errors]; // 에러
         let isError = false;
         let body = templateField.input.filter((v,i)=>{
@@ -116,14 +67,12 @@ export function ReserveMessageModal(props){
             return v.checked && v.rsv_dt
         }).map(v=>{
             return {
-                msg_tp: v.msg_tp,
+                tpl_id: v.tpl_id,
                 dday: v.dday,
                 rsv_tp: v.rsv_tp,
                 rsv_dt: v.rsv_dt
             }
         })
-
-
 
         if(isError){
             console.table(errorList)
@@ -132,21 +81,8 @@ export function ReserveMessageModal(props){
         }
 
         if(props.sale_id){
-            const msgTypeList = reservedMessages?.map(v=>v.msg_tp) ?? []
-
-            body = templateField.input.filter(((v,i)=>{
-                if(msgTypeList.includes(v.msg_tp) || !v.checked || !v.rsv_dt){
-                    return false;
-                }
-                return true;
-            }))
-
-            // console.table(deleteList)
-            // console.table(body)
-            // return;
-
             if(!ObjectUtils.isEmptyArray(body)){
-                rsvMsgApi.insertReserveMsg({
+                msgApi.sendAlimtalk({
                     sale_id: props.sale_id,
                     rsv_msg_list: body
                 }).then(({status,data})=>{

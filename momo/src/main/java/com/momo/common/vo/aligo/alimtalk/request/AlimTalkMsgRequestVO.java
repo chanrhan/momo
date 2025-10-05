@@ -3,16 +3,20 @@ package com.momo.common.vo.aligo.alimtalk.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@SuperBuilder
 public class AlimTalkMsgRequestVO extends AlimTalkRequestVO{
     // alimtalk/send
     private String sender;
     private String senddate;
+    private String tplCode;
     private String receiver1;
     private String recvname1;
     private String subject1;

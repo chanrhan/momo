@@ -10,7 +10,7 @@ import {LMD} from "../../common/LMD";
 import {ObjectUtils} from "../../utils/objectUtil";
 
 export function CalendarTable({inputField}){
-    const {rsvMsgApi} = useApi();
+    const {msgApi} = useApi();
     const {year: cYear, month: cMonth} = inputField.input;
     const {startDay, totalDays} = DateUtils.getMonthInfo(cYear, cMonth);
 
@@ -43,7 +43,7 @@ export function CalendarTable({inputField}){
     }, [inputField]);
 
     const getReserveMsgDetail = async ()=>{
-        await  rsvMsgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day)).then(({status,data})=>{
+        await  msgApi.getReserveMsgDetail(DateUtils.formatYYMMdd(year, month, day)).then(({status,data})=>{
             if(status === 200 && data){
                 console.table(data)
                 setDetail(data)
@@ -62,7 +62,7 @@ export function CalendarTable({inputField}){
 
     const getReserveMsgForCalendar = async ()=>{
         // console.log(DateUtils.formatYYMM(cYear, cMonth))
-        await rsvMsgApi.getReserveMsgForCalendar(DateUtils.formatYYMM(cYear, cMonth)).then(({status,data})=>{
+        await msgApi.getReserveMsgForCalendar(DateUtils.formatYYMM(cYear, cMonth)).then(({status,data})=>{
             if(status === 200 && data){
                 // console.table(data)
                 setItems(data)

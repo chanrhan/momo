@@ -38,9 +38,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 		if(StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)){
 			Authentication authentication = jwtProvider.getAuthentication(accessToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			log.info("Security Context에 '{}' 인증 정보를 저장했습니다", authentication.getName());
+//			log.info("Security Context에 '{}' 인증 정보를 저장했습니다", authentication.getName());
 		}else{
-			log.info("유효한 JWT 토큰이 없습니다");
+			log.warn("유효한 JWT 토큰이 없습니다");
 //			response.sendError(401,"Token has been expired");
 		}
 

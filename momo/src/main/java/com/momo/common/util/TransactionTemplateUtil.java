@@ -7,6 +7,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @Component
 @RequiredArgsConstructor
+@Deprecated
 public class TransactionTemplateUtil {
 	private final TransactionTemplate transactionTemplate;
 	private final static int MAX_REPEAT = 10;

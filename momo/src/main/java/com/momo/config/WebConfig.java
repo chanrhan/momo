@@ -12,8 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-	@Autowired
-	private PlusSymbolInterceptor plusSymbolInterceptor;
+//	@Autowired
+//	private PlusSymbolInterceptor plusSymbolInterceptor;
 
 //	private final RoleAuthInterceptor roleAuthInterceptor;
 //	private final HomeInterceptor homeInterceptor;

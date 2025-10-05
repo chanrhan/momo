@@ -2,9 +2,9 @@ package com.momo.service;
 
 import com.momo.extern_api.SENSUtil;
 import com.momo.alimtalk.SensResponse;
-import com.momo.common.vo.ReserveMessageVO;
+import com.momo.common.vo.MessageVO;
 import com.momo.common.vo.SaleVO;
-import com.momo.mapper.ReserveMsgMapper;
+import com.momo.mapper.MessageMapper;
 import com.momo.mapper.SaleMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -19,23 +19,23 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class ReserveMsgService {
-	private static final Logger log = LoggerFactory.getLogger(ReserveMsgService.class);
-	private final ReserveMsgMapper reserveMsgMapper;
+public class MessageService {
+	private static final Logger log = LoggerFactory.getLogger(MessageService.class);
+	private final MessageMapper messageMapper;
 	private final SaleMapper saleMapper;
 
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static final DateTimeFormatter requestTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//	private static final DateTimeFormatter requestTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	@Transactional
     public void insertMsgList(SaleVO vo){
-		List<Integer> todaySendList = new ArrayList<>();
+//		List<Integer> todaySendList = new ArrayList<>();
 		LocalDate today = LocalDate.now();
 		String todayDateFormatted = today.format(dateTimeFormatter);
 
 		log.info("[SENS] formatted Today : {}", todayDateFormatted);
 
-		List<ReserveMessageVO> list = vo.getRsvMsgList();
+		List<MessageVO> list = vo.getRsvMsgList();
 		int saleId = vo.getSaleId();
 		int currShopId = vo.getCurrShopId();
 		String custNm = vo.getCustNm();
@@ -56,53 +56,53 @@ public class ReserveMsgService {
 
 
 		for(int i=0;i<list.size();++i){
-			ReserveMessageVO rsvVo = list.get(i);
+			MessageVO rsvVo = list.get(i);
 			rsvVo.setSaleId(saleId);
 			rsvVo.setCurrShopId(currShopId);
 			rsvVo.setShopId(currShopId);
 			rsvVo.setCustNm(custNm);
 			rsvVo.setCustTel(custTel);
-			int msgId = reserveMsgMapper.insertMsg(rsvVo);
+			int msgId = messageMapper.insertMessageHistory(rsvVo);
 			rsvVo.setMsgId(msgId);
 			sendMessage(rsvVo);
 		}
 	}
 
-	public boolean deleteMsgList(List<ReserveMessageVO> list){
+	public boolean deleteMsgList(List<MessageVO> list){
 //		for(ReserveMessageVO vo : list){
 ////			vo.setSaleId(saleId);
 ////			vo.setCurrShopId(currShopId);
 //			result += reserveMsgMapper.deleteMsg(list);
 //		}
-		int result = reserveMsgMapper.deleteMessageList(list);
+		int result = messageMapper.deleteMessageList(list);
 		return result == list.size();
 	}
 
 	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo){
-		return reserveMsgMapper.getReserveMsgBySale(vo);
+		return messageMapper.getReserveMsgBySale(vo);
 	}
 
 	public List<String> getReserveMsgForCalendar(int currShopId, String date){
-		return reserveMsgMapper.getReserveMsgForCalendar(currShopId,date);
+		return messageMapper.getReserveMsgForCalendar(currShopId,date);
 	}
 
 	public List<Map<String ,Object>> getReserveMsgDetail(int currShopId, String date){
-		return reserveMsgMapper.getReserveMsgDetail(currShopId, date);
+		return messageMapper.getReserveMsgDetail(currShopId, date);
 	}
-	public Map<String ,Object> getReserveMsgAll(ReserveMessageVO vo){
-		return reserveMsgMapper.getReserveMsgAll(vo);
+	public Map<String ,Object> getReserveMsgAll(MessageVO vo){
+		return messageMapper.getReserveMsgAll(vo);
 	}
 
 	public List<Map<String,String>> getTodayReservedMsg(){
-		return reserveMsgMapper.getTodayReservedMsg();
+		return messageMapper.getTodayReservedMsg();
 	}
 
-	public int updateMessageSendState(ReserveMessageVO vo){
-		return reserveMsgMapper.updateMessageSendState(vo);
+	public int updateMessageSendState(MessageVO vo){
+		return messageMapper.updateMessageSendState(vo);
 	}
 
 
-	public void sendMessage(ReserveMessageVO vo) {
+	public void sendMessage(MessageVO vo) {
 		String reservedDate = vo.getRsvDt();
 		vo.setRsvDt(reservedDate);
 
@@ -128,5 +128,21 @@ public class ReserveMsgService {
 		vo.setMsgSt(msgSt);
 
 		updateMessageSendState(vo);
+	}
+
+	public void insertAlimtalkTemplate(MessageVO vo){
+		messageMapper.insertAlimtalkTemplate(vo);
+	}
+
+	public int updateAlimtalkTemplate(MessageVO vo){
+		return messageMapper.updateAlimtalkTemplate(vo);
+	}
+
+	public int deleteAlimtalkTemplate(MessageVO vo){
+		return messageMapper.deleteAlimtalkTemplate(vo);
+	}
+
+	public List<Map<String,Object>> getMessageTemplateList(MessageVO vo){
+		return messageMapper.getAlimtalkTemplateList(vo);
 	}
 }

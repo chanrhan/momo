@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Slf4j
+@Deprecated
 public class ChatPreHandler implements ChannelInterceptor {
 	private final JwtProvider jwtProvider;
 	private static final String BEARER_PREFIX = "Bearer ";

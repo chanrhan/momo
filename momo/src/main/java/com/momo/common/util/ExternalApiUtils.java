@@ -1,6 +1,7 @@
 package com.momo.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@Data
+@Deprecated
 public class ExternalApiUtils {
     private static final String LINEFEED = "\r\n";
     private static final String DOUBLE_HYPHEN = "--";

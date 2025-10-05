@@ -1,7 +1,7 @@
 package com.momo.job;
 
-import com.momo.common.vo.ReserveMessageVO;
-import com.momo.service.ReserveMsgService;
+import com.momo.common.vo.MessageVO;
+import com.momo.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
@@ -12,19 +12,21 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-// 휴면 회원 관리
+// 주기적으로 알림톡 보내는 Job 클래스
+// 근데 알림톡 API는 예약 문자도 지원하기 때문에 필요 없어졌다.
 @RequiredArgsConstructor
 @Slf4j
 @Component
+@Deprecated
 public class SendKakaoBizTalkJob implements Job {
 
-	private final ReserveMsgService reserveMsgService;
+	private final MessageService messageService;
 
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		log.info("Send Kakao Biz Talk Job is processing!");
 
-		List<Map<String,String>> todayReserved = reserveMsgService.getTodayReservedMsg();
+		List<Map<String,String>> todayReserved = messageService.getTodayReservedMsg();
 
 		if(!todayReserved.isEmpty()){
 			for(Map<String,String> map : todayReserved){
@@ -37,7 +39,7 @@ public class SendKakaoBizTalkJob implements Job {
 					Integer saleId = Integer.parseInt(map.get("sale_id"));
 					Integer msgId = Integer.parseInt(map.get("msg_id"));
 
-					ReserveMessageVO vo = ReserveMessageVO.builder()
+					MessageVO vo = MessageVO.builder()
 							.shopId(shopId)
 							.shopNm(shopNm)
 							.saleId(saleId)
@@ -48,7 +50,7 @@ public class SendKakaoBizTalkJob implements Job {
 							.shopNm(shopNm)
 							.build();
 
-					reserveMsgService.sendMessage(vo);
+					messageService.sendMessage(vo);
 				}catch (NullPointerException e){
 					e.printStackTrace();
 				}

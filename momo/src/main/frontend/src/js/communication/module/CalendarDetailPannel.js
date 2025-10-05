@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import useApi from "../../hook/useApi";
 
 export function CalendarDetailPannel({date}){
-    const {rsvMsgApi} = useApi();
+    const {msgApi} = useApi();
 
 
     return (

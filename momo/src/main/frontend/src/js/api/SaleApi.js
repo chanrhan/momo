@@ -1,5 +1,4 @@
 import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
-import {ObjectUtils} from "../utils/objectUtil";
 
 function SaleApi(accessToken){
     const axiosApiWithAccessToken = AxiosApiWithAccessToken();

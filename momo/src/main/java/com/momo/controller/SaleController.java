@@ -23,7 +23,7 @@ import java.util.Objects;
 public class SaleController {
 	private final SaleService       saleService;
 	private final CommonService commonService;
-	private final ReserveMsgService reserveMsgService;
+	private final MessageService messageService;
 
 	private final ImageService imageService;
 
@@ -223,7 +223,7 @@ public class SaleController {
 		vo.setFiles(insertList);
 
 		int maxSaleId = saleService.insertSale(vo);
-		reserveMsgService.insertMsgList(vo);
+		messageService.insertMsgList(vo);
 		return ResponseEntity.ok(true);
 	}
 

@@ -2,25 +2,42 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.momo.mapper.ReserveMsgMapper">
-    <select id="insertMsg" parameterType="com.momo.common.vo.ReserveMessageVO">
+<mapper namespace="com.momo.mapper.MessageMapper">
+    <select id="insertMessageHistory" parameterType="com.momo.common.vo.MessageVO" resultType="java.lang.Integer">
         SET @next_msg_id := (
             select IFNULL(max(msg_id),0)+1
-            from tb_rsv_msg
+            from tb_alimtalk_history
             where shop_id=#{currShopId} and
                   sale_id=#{saleId} and
                   rsv_dt=#{rsvDt}
             );
 
-        INSERT INTO tb_rsv_msg
-        (shop_id, sale_id, msg_id, msg_tp, content, rsv_dt, rsv_tp, dday)
-        VALUES (#{currShopId}, #{saleId}, @next_msg_id, #{msgTp},#{content},#{rsvDt}, #{rsvTp}, #{dday});
+        INSERT INTO tb_alimtalk_history
+        (shop_id, sale_id, msg_id, tpl_id, content, rsv_dt, rsv_tp, dday)
+        VALUES (#{currShopId}, #{saleId}, @next_msg_id, #{tplId},#{content},#{rsvDt}, #{rsvTp}, #{dday});
 
         SELECT @next_msg_id
     </select>
 
+    <insert id="insertMessageHistoryMany">
+        SET @next_msg_id := (
+            select IFNULL(max(msg_id),0)+1
+            from tb_alimtalk_history
+            where shop_id=#{currShopId} and
+                sale_id=#{saleId} and
+                rsv_dt=#{rsvDt}
+        );
+
+        INSERT INTO tb_alimtalk_history
+            (shop_id, sale_id, msg_id, tpl_id, content, rsv_dt, rsv_tp, dday)
+        VALUES
+            <foreach collection="list" item="item" separator="," index="index">
+                (#{item.currShopId}, #{item.saleId}, @next_msg_id + #{index}, #{item.tplId},#{item.content},#{item.rsvDt}, #{item.rsvTp}, #{item.dday})
+            </foreach>
+    </insert>
+
     <delete id="deleteMessageList">
-        delete from tb_rsv_msg
+        delete from tb_alimtalk_history
         where
         (
         <foreach collection="list" index="index" item="item" open="" close="" separator="or">
@@ -40,7 +57,7 @@
                rsv_tp,
                msg_tp,
                msg_st
-        from tb_rsv_msg
+        from tb_alimtalk_history
         where shop_id=#{currShopId} and
               sale_id=#{saleId}
         order by msg_tp
@@ -66,7 +83,7 @@
                            'msg_st',msg_st,
                            'cnt', IFNULL(count(msg_st),0)
                    ) as value
-            from tb_rsv_msg
+            from tb_alimtalk_history
             where shop_id=#{currShopId}
             group by rsv_dt, msg_st
         )
@@ -85,7 +102,7 @@
                msg_tp,
                IF(rm.rsv_tp != 2, 'D', 'M') as dday_tp,
                dday
-        FROM tb_rsv_msg rm
+        FROM tb_alimtalk_history rm
         LEFT OUTER JOIN tb_sale sl on sl.sale_id= rm.sale_id
         WHERE rm.shop_id= #{currShopId} and
             rsv_dt=#{date}
@@ -100,7 +117,7 @@
                     from tb_shop sh
                     where sh.shop_id = rm.shop_id
                    ) as shop_nm
-        from tb_rsv_msg rm
+        from tb_alimtalk_history rm
         left outer join tb_sale sl on sl.shop_id = rm.shop_id and sl.sale_id = rm.sale_id
         where rsv_dt = DATE_FORMAT(current_date, '%Y-%d-%m')
     </select>
@@ -126,7 +143,7 @@
             rm.sale_id,
             rm.rsv_dt,
             rm.msg_id
-        FROM tb_rsv_msg rm
+        FROM tb_alimtalk_history rm
         LEFT OUTER JOIN tb_sale sl on sl.shop_id = rm.shop_id and sl.sale_id = rm.sale_id
         ), search as (
             SELECT *
@@ -170,13 +187,49 @@
     </select>
     
     <update id="updateMessageSendState">
-        update tb_rsv_msg
-        set msg_st=#{msgSt},
-            sens_req_dt=#{reqDt},
-            sens_req_id=#{reqId}
+        update tb_alimtalk_history
+        set msg_st=#{msgSt}
         where shop_id=#{shopId} and
               sale_id=#{saleId} and
               rsv_dt=#{rsvDt} and
               msg_id=#{msgId}
     </update>
+
+    <insert id="insertAlimtalkTemplate">
+        SET @next_id := (
+            select IFNULL(max(tpl_id),0)+1
+            from tb_alimtalk_template
+        );
+
+        insert into tb_alimtalk_template
+        (tpl_id, title, content, tpl_code, grp_code)
+        values (@next_id, #{title}, #{content}, #{tplCode}, #{grpCode})
+    </insert>
+
+    <update id="updateAlimtalkTemplate">
+        update tb_alimtalk_template
+        set tpl_code=#{tplCode},
+            title=#{title},
+            content=#{content}
+        where tpl_id=#{tplId}
+    </update>
+
+    <delete id="deleteAlimtalkTemplate">
+        delete from tb_alimtalk_template
+        where tpl_id=#{tplId}
+    </delete>
+
+    <select id="getAlimtalkTemplateList">
+        select *,
+               IF(tah.tpl_id is null, true, false) as reserved
+        from tb_alimtalk_template tat
+        left outer join tb_alimtalk_history tah on tah.tpl_id=tat.tpl_id
+        and tah.shop_id=#{shopId} and tah.sale_id=#{saleId}
+    </select>
+
+    <select id="getAlimtalkTemplateCode">
+        select tpl_code
+        from tb_alimtalk_template
+        where tpl_id=#{tplId}
+    </select>
 </mapper>

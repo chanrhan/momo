@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Deprecated
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private final UserService userService;
 

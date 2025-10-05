@@ -45,7 +45,7 @@ export function AdminSidebar(){
                     <li className={`${Layout.menu_item} ${Layout.menu_data} ${tab === 3 && Layout.active}`}><Link
                         className={Layout.a} to='/admin/msg' onClick={() => {
                         setTab(3)
-                    }}>문자</Link></li>
+                    }}>문자/알림톡</Link></li>
                     <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 4 && Layout.active}`}>
                         <Link className={Layout.a} to='/admin/user_stat' onClick={() => {
                             setTab(4)

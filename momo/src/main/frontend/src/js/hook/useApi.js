@@ -7,12 +7,11 @@ import ShopApi from "../api/ShopApi";
 import NotificationApi from "../api/NotificationApi";
 import TestApi from "../api/TestApi";
 import GMDApi from "../api/GMDApi";
-import RsvMsgApi from "../api/RsvMsgApi";
+import {MessageApi} from "../api/MessageApi";
 import TodoApi from "../api/TodoApi";
 import FileApi from "../api/FileApi";
 import PostImageApi from "../api/PostImageApi";
 import {AdminApi} from "../api/AdminApi";
-import {AligoApi} from "../api/AligoApi";
 
 function useApi(){
     const {accessToken} = useSelector(state=>state.authReducer);
@@ -22,7 +21,7 @@ function useApi(){
         userApi: UserApi(accessToken),
         chatApi: ChatApi(accessToken),
         saleApi: SaleApi(accessToken),
-        rsvMsgApi: RsvMsgApi(accessToken),
+        msgApi: MessageApi(accessToken),
         shopApi: ShopApi(accessToken),
         notifApi: NotificationApi(accessToken),
         todoApi: TodoApi(accessToken),
@@ -30,8 +29,7 @@ function useApi(){
         gmdApi: GMDApi(accessToken),
         fileApi: FileApi(accessToken),
         pimgApi: PostImageApi(accessToken),
-        adminApi: AdminApi(accessToken),
-        aligoApi: AligoApi(accessToken)
+        adminApi: AdminApi(accessToken)
     }
 }
 

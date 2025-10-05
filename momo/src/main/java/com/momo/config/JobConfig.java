@@ -18,11 +18,11 @@ public class JobConfig {
 	@PostConstruct // '의존성 주입이 완료 된 후 실행되는 메소드'를 지정하는 어노테이션
 	public void run(){
 		JobDetail dormantUserJob = getJobDetail(DormantUserJob.class, new HashMap());
-		JobDetail sendTalkJob = getJobDetail(SendKakaoBizTalkJob.class, new HashMap());
+//		JobDetail sendTalkJob = getJobDetail(SendKakaoBizTalkJob.class, new HashMap());
 
 		try{
 			scheduler.scheduleJob(dormantUserJob, getCronTrigger("0 0 9 1 * ?")); // Cron 표현식
-			scheduler.scheduleJob(sendTalkJob, getCronTrigger("0 0 9 * * ?")); // Cron 표현식
+//			scheduler.scheduleJob(sendTalkJob, getCronTrigger("0 0 9 * * ?")); // Cron 표현식
 		} catch (SchedulerException e) {
 			throw new RuntimeException(e);
 		}

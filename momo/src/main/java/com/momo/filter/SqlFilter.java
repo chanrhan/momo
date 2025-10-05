@@ -16,9 +16,9 @@ public class SqlFilter extends Filter<ILoggingEvent> {
     public void setKeywords(String keywords) {
         this.keywords = Arrays.asList(keywords.split(","));
     }
-    public void setClassToIgnore(String classToIgnore) {
-        this.classToIgnore = classToIgnore;
-    }
+//    public void setClassToIgnore(String classToIgnore) {
+//        this.classToIgnore = classToIgnore;
+//    }
 
 	@Override
 	public FilterReply decide(ILoggingEvent event) {
