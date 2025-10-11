@@ -40,9 +40,9 @@ function SaleApi(accessToken){
         // getPromise: async (body)=>{
         //     return await axiosApiWithAccessToken.post(`/api/v1/sale/promise`, body, accessToken);
         // },
-        updatePromise: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/promise`, body, accessToken);
-        },
+        // updatePromise: async (body)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/sale/promise`, body, accessToken);
+        // },
         updateSale: async (body)=>{
             const option = {
                 headers:{
@@ -58,9 +58,9 @@ function SaleApi(accessToken){
         changeSaleState: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/state', body, accessToken);
         },
-        updateUsedDeviceCms: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/sale/ud/cms', body, accessToken);
-        },
+        // updateUsedDeviceCms: async (body)=>{
+        //     return await axiosApiWithAccessToken.post('/api/v1/sale/ud/cms', body, accessToken);
+        // },
         addPromiseContent: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/sale/promise/content/add', body, accessToken);
         },
@@ -85,9 +85,9 @@ function SaleApi(accessToken){
         getWtChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/wt`, body, accessToken);
         },
-        getTvChangeAmount: async (body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/change/tv`, body, accessToken);
-        },
+        // getTvChangeAmount: async (body)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/sale/change/tv`, body, accessToken);
+        // },
         getTotalCmsChangeAmount: async (body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/change/total-cms`, body, accessToken);
         },
@@ -112,7 +112,7 @@ function SaleApi(accessToken){
             return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/margin/${dateType}`, body, accessToken);
         },
         getAvgMarginGraphByDateType: async (dateType, body)=>{
-            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/date/${dateType}`, body, accessToken);
+            return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/avg-margin/${dateType}`, body, accessToken);
         },
         getCtCountBySelectType: async (selectType, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/sale/graph/ct/select/${selectType}`, body, accessToken);

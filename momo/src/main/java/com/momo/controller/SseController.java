@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class SseController {
 	private final NotificationEmitter notificationEmitter;
+
 	@GetMapping(value = "/connect",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<SseEmitter> connect(@RequestHeader(value = "Last-Event-ID",required = false,defaultValue = "") String lastEventId, HttpServletResponse response, HttpSession session){

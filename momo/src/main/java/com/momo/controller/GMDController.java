@@ -47,11 +47,11 @@ public class GMDController {
     }
 
 
-    // 세컨 디바이스 by ID
-    @GetMapping("/sec-device/{id}")
-    public ResponseEntity<Map<String,Object>> getSecondDeviceById(@PathVariable int id){
-        return ResponseEntity.ok(gmdService.getSecondDeviceById(id));
-    }
+//    // 세컨 디바이스 by ID
+//    @GetMapping("/sec-device/{id}")
+//    public ResponseEntity<Map<String,Object>> getSecondDeviceById(@PathVariable int id){
+//        return ResponseEntity.ok(gmdService.getSecondDeviceById(id));
+//    }
 
     // insert
     @PostMapping("")

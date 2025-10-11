@@ -5,7 +5,7 @@ import com.momo.common.util.FileServiceUtil;
 import com.momo.common.vo.SaleVO;
 import com.momo.common.vo.TestChildVO;
 import com.momo.exception.BusinessException;
-import com.momo.service.ImageService;
+import com.momo.service.FileService;
 import com.momo.service.NotificationService;
 import com.momo.service.RegionService;
 import com.momo.service.SaleService;
@@ -33,9 +33,7 @@ import java.util.Map;
 @Slf4j
 public class TestController {
 	private final NotificationService notificationService;
-	private final SaleService saleService;
-	private final ImageService imageService;
-	private final RegionService regionService;
+	private final FileService fileService;
 
 	@PostMapping("/send")
 	public ResponseEntity<?> sendTest(@RequestBody Map<String,Object> map){
@@ -78,7 +76,7 @@ public class TestController {
 
 	@PostMapping("/img")
 	public ResponseEntity<String> upload(@RequestPart(value = "file") MultipartFile file) {
-		return ResponseEntity.ok(imageService.upload("test", file));
+		return ResponseEntity.ok(fileService.upload("test", file));
 	}
 
 	@GetMapping("/img")

@@ -52,7 +52,6 @@ export const useAuthentication = ()=>{
     const logout = ()=>{
         const refreshToken = localStorage.getItem('refresh_token')
 
-        console.log('logout')
         localStorage.removeItem('authorization') // 웹페이지 Accesstoekn 쿠키 제거
         if(refreshToken){
             publicApi.logout(refreshToken).then(({status,data})=>{

@@ -18,12 +18,11 @@ function SseHeader(){
     const onNote = (e)=>{
         const { data: receivedConnectData } = e;
         alert(`메세지가 도착했습니다 ${receivedConnectData}`);
-
     }
 
     const addEventListeners =()=>{
         emitter.addEventListener('connect', onConnect);
-        // emitter.addEventListener('note', onNote);
+        emitter.addEventListener('note', onNote);
     }
 }
 

@@ -9,9 +9,9 @@ function GMDApi(accessToken){
         getData: async (type, keyword = '', provider = '')=>{
             return await axiosApiWithAccessToken.get(`/api/v1/gmd?type=${type}&keyword=${keyword}&provider=${provider}`, accessToken);
         },
-        getSecondDeviceById: async (id)=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
-        },
+        // getSecondDeviceById: async (id)=>{
+        //     return await axiosApiWithAccessToken.get(`/api/v1/gmd/sec-device/${id}`, accessToken);
+        // },
         insert: async (type, body)=>{
             return await axiosApiWithAccessToken.post(`/api/v1/gmd?type=${type}`, body, accessToken);
         },

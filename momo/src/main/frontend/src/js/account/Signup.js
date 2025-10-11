@@ -157,7 +157,7 @@ function Step1({inputField, setStep}){
 
 function Step2({inputField, setStep}) {
     const modal = useModal();
-    const {aligoApi} = useApi();
+    const {msgApi} = useApi();
     const [authNumber, setAuthNumber] = useState("")
 
     const [timeLeft, setTimeLeft] = useState(0)
@@ -197,6 +197,10 @@ function Step2({inputField, setStep}) {
     }
 
     const sendAuthNumber = async () => {
+        setAuthNumber(123)
+        setTimeLeft(MINUTES_IN_MS)
+        setIsSent(true)
+        return;
         if (!authenticated && !sendLock && inputField.validateOne('tel')) {
             setAuthNumber(null)
             setAuthenticated(false)
@@ -208,7 +212,7 @@ function Step2({inputField, setStep}) {
                 receiver: tel,
             }
             setSendLock(true)
-            aligoApi.sendAuthNumber(body).then(({data})=>{
+            msgApi.sendAuthNumber(body).then(({data})=>{
                 if(data){
                     // console.table(data)
                     // modal.openModal(ModalType.SNACKBAR.Info, {

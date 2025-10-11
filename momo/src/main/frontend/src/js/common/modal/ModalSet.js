@@ -37,7 +37,6 @@ import {UsedDeviceCmsModal} from "../../service/task/modal/TaskUsedDeviceCmsModa
 import {WarningModal} from "./snackbar/WarningModal";
 import {InfoModal} from "./snackbar/InfoModal";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
-import {AddStudyNodeModal} from "../../study_private/modal/AddStudyNodeModal";
 import {VisitLogModal} from "../../admin/modal/VisitLogModal";
 import {AddVisitShopModal} from "../../admin/modal/AddVisitShopModal";
 
@@ -112,6 +111,4 @@ export const ModalSet = {
     Info: InfoModal,
 
     Confirm: ConfirmModal,
-    // study private
-    AddStudyNode: AddStudyNodeModal
 }

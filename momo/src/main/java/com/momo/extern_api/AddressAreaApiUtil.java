@@ -18,7 +18,7 @@ import java.util.Map;
 
 // 과학기술정보통신부 우정사업본부_우편번호 정보조회
 // https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15056971
-
+@Deprecated
 public class AddressAreaApiUtil extends PublicDataOpenApiUtil {
 	// 서비스 url
 	private static final String serviceUrl = "http://openapi.epost.go.kr/postal/retrieveNewAdressAreaCdSearchAllService/retrieveNewAdressAreaCdSearchAllService/getNewAddressListAreaCdSearchAll";

@@ -25,14 +25,13 @@ public class AuthController {
 	private final JwtProvider jwtProvider;
 	private final CommonService commonService;
 
-
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refresh(HttpSession session,
 									 HttpServletResponse response,
 									 @RequestHeader(value = "X-REFRESH-TOKEN", required = true)String bearerRefreshToken, @RequestBody LoginVO vo) throws AccessDeniedException {
-		log.info("refresh");
+//		log.info("refresh");
 		JwtVO jwtVO = jwtService.refresh(bearerRefreshToken, vo.isRememberMe());
-		log.info("jwt: {}", jwtVO);
+//		log.info("jwt: {}", jwtVO);
 		commonService.setCurrentShopId(session);
 
 		jwtProvider.setHeaderAccessToken(response, jwtVO.getAccessToken());

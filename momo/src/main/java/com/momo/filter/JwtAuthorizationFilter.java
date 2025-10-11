@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 		String bearerAccessToken = request.getHeader("X-ACCESS-TOKEN");
 		String accessToken = jwtProvider.getBearerTokenToString(bearerAccessToken);
-		log.info("access token: {}",accessToken);
+//		log.info("access token: {}",accessToken);
 		log.info("from url: {}",request.getRequestURL());
 
 		if(StringUtils.hasText(accessToken) && jwtProvider.validateToken(accessToken)){

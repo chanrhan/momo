@@ -11,19 +11,19 @@ function TodoApi(accessToken){
             return await axiosApiWithAccessToken.get(`/api/v1/todo/detail?date=${date}`,accessToken)
         },
         updateTodoContent: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/content', body, accessToken)
+            return await axiosApiWithAccessToken.post('/api/v1/todo/content', body, accessToken)
         },
-        updateTodoColor: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/color', body, accessToken)
-        },
+        // updateTodoColor: async (body)=>{
+        //     return await axiosApiWithAccessToken.post('/api/v1/todo/detail/color', body, accessToken)
+        // },
         updateTodoChecked: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/checked', body, accessToken)
+            return await axiosApiWithAccessToken.post('/api/v1/todo/check', body, accessToken)
         },
         addTodo: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/add', body, accessToken)
+            return await axiosApiWithAccessToken.post('/api/v1/todo/add', body, accessToken)
         },
         deleteTodo: async (body)=>{
-            return await axiosApiWithAccessToken.post('/api/v1/todo/detail/del', body, accessToken)
+            return await axiosApiWithAccessToken.post('/api/v1/todo/del', body, accessToken)
         }
     }
 }

@@ -48,8 +48,6 @@ import {MasterShop} from "./js/admin/MasterShop";
 import {EventTest} from "./js/test/EventTest";
 import {RegisterBrNo} from "./js/shop/RegisterBrNo";
 import {ComponentTest} from "./js/test/ComponentTest";
-import {StudyMain} from "./js/study_private/StudyMain";
-import {StudyLayout} from "./js/study_private/StudyLayout";
 import {SaleBulkUpload} from "./js/service/bulk_upload/SaleBulkUpload";
 import {StringTest} from "./js/test/StringTest";
 import {AdminMessage} from "./js/admin/AdminMessage";
@@ -69,10 +67,6 @@ function App() {
           </Helmet>
           <ModalContainer/>
           <Routes>
-              {/*<Route path='/study' element={<StudyLayout/>}>*/}
-              {/*    <Route path='' element={<StudyMain/>}/>*/}
-              {/*</Route>*/}
-
               <Route path='/test' element={<TestHeader/>}>
                   <Route path='notify' element={<NotifTest/>}/>
                   <Route path='modal' element={<ModalTest/>}/>

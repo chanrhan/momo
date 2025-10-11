@@ -1,7 +1,7 @@
-import {AxiosApi, AxiosApiWithAccessToken} from "./ApiCommon";
+import {AxiosApi} from "./ApiCommon";
 
 function FileApi(accessToken){
-    const axiosApiWithAccessToken = AxiosApiWithAccessToken();
+    // const axiosApiWithAccessToken = AxiosApiWithAccessToken();
     const axiosApi = AxiosApi();
 
     return {
@@ -13,7 +13,7 @@ function FileApi(accessToken){
                 responseType: 'blob'
             }
 
-            return await axiosApi.get(`api/v1/img/download/${dir}?filename=${fileName}`, option);
+            return await axiosApi.get(`api/v1/file/download/${dir}?filename=${fileName}`, option);
         }
     }
 }

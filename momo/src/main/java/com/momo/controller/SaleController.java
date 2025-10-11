@@ -25,7 +25,7 @@ public class SaleController {
 	private final CommonService commonService;
 	private final MessageService messageService;
 
-	private final ImageService imageService;
+	private final FileService fileService;
 
 	@PostMapping("/simple")
 	public ResponseEntity<List<Map<String,Object>>> getSaleSimple(HttpSession session,
@@ -128,13 +128,13 @@ public class SaleController {
 	}
 
 
-	@GetMapping("/delete/{id}")
-	@ResponseBody
-	public ResponseEntity<Boolean> deleteSale(HttpSession session,
-											  @PathVariable int id) {
-		int currShopId = commonService.getCurrentShopId(session);
-		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(currShopId, id));
-	}
+//	@GetMapping("/delete/{id}")
+//	@ResponseBody
+//	public ResponseEntity<Boolean> deleteSale(HttpSession session,
+//											  @PathVariable int id) {
+//		int currShopId = commonService.getCurrentShopId(session);
+//		return ResponseEntityUtil.okOrNotModified(saleService.deleteSale(currShopId, id));
+//	}
 
 	@Transactional
 	@PostMapping("/update")
@@ -155,7 +155,7 @@ public class SaleController {
 			// 기존 파일이 없다면, 그냥 추가하는 것과 다름이 없음
 			if(files != null){
 				for(MultipartFile mf : files){
-					insertList.add(imageService.upload("sale", mf));
+					insertList.add(fileService.upload("sale", mf));
 				}
 			}
 		}else{
@@ -175,7 +175,7 @@ public class SaleController {
 					Integer key = fileOrders.get(i);
 					if(files != null && files.get(i) != null && files.get(i).getSize() > 0){
 						// new file or updated file
-						insertList.add(imageService.upload("sale", files.get(i)));
+						insertList.add(fileService.upload("sale", files.get(i)));
 					}else if(key != null){
 						// existed
 						String path = orgFileList.get(key-1).getPath();
@@ -184,12 +184,12 @@ public class SaleController {
 					}
 				}
 			}else{
-				imageService.deleteAll("sale", orgFileList.stream().map(FileVO::getPath).toList());
+				fileService.deleteAll("sale", orgFileList.stream().map(FileVO::getPath).toList());
 				return ResponseEntity.ok(saleService.deleteSaleFileAll(vo) > 0);
 			}
 
 			if(!orgFileList.isEmpty()){
-				imageService.deleteAll("sale", orgFileList.stream().filter(Objects::nonNull).map(FileVO::getPath).toList());
+				fileService.deleteAll("sale", orgFileList.stream().filter(Objects::nonNull).map(FileVO::getPath).toList());
 			}
 
 		}
@@ -216,7 +216,7 @@ public class SaleController {
 		List<String> insertList = new ArrayList<>();
 		if(files != null && !files.isEmpty()){
 			for(MultipartFile mf : files){
-				insertList.add(imageService.upload("sale", mf));
+				insertList.add(fileService.upload("sale", mf));
 			}
 		}
 
@@ -242,21 +242,14 @@ public class SaleController {
 		return ResponseEntity.ok(true);
 	}
 
-
-
-
-	// 매장 관리
-
-	@PostMapping("/dup/tel")
-	@ResponseBody
-	public ResponseEntity<Boolean> checkDupTelOnDate(@RequestBody SaleVO vo){
-//		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
-//			return null;
-//		}
-		return ResponseEntity.ok(saleService.isDuplicatedTel(vo));
-	}
-
-	// 진행현황 관리
+//	@PostMapping("/dup/tel")
+//	@ResponseBody
+//	public ResponseEntity<Boolean> checkDupTelOnDate(@RequestBody SaleVO vo){
+////		if(vo.getShopId() == null || vo.getCustTel() == null || vo.getActvDt() ==null){
+////			return null;
+////		}
+//		return ResponseEntity.ok(saleService.isDuplicatedTel(vo));
+//	}
 
 	@PostMapping("/state")
 	@ResponseBody
@@ -289,12 +282,12 @@ public class SaleController {
 		return ResponseEntity.badRequest().build();
 	}
 
-	@PostMapping("/ud/cms")
-	public ResponseEntity<Boolean> updateUsedDeviceCms(HttpSession session,
-													   @RequestBody SaleVO vo){
-		vo.setCurrShopId(commonService.getCurrentShopId(session));
-		return ResponseEntity.ok(saleService.updateUsedDeviceCms(vo) > 0);
-	}
+//	@PostMapping("/ud/cms")
+//	public ResponseEntity<Boolean> updateUsedDeviceCms(HttpSession session,
+//													   @RequestBody SaleVO vo){
+//		vo.setCurrShopId(commonService.getCurrentShopId(session));
+//		return ResponseEntity.ok(saleService.updateUsedDeviceCms(vo) > 0);
+//	}
 
 	@PostMapping("/promise/content/add")
 	public ResponseEntity<Boolean> insertPromiseContent(HttpSession session,
@@ -356,13 +349,13 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.getWtChangeAmount(vo));
 	}
 
-	@PostMapping("/change/tv")
-	public ResponseEntity<Integer> getTvChangeAmount(HttpSession session,
-													 @RequestBody CommonVO vo){
-		int currShopId = commonService.getCurrentShopId(session);
-		vo.setCurrShopId(currShopId);
-		return ResponseEntity.ok(saleService.getTvChangeAmount(vo));
-	}
+//	@PostMapping("/change/tv")
+//	public ResponseEntity<Integer> getTvChangeAmount(HttpSession session,
+//													 @RequestBody CommonVO vo){
+//		int currShopId = commonService.getCurrentShopId(session);
+//		vo.setCurrShopId(currShopId);
+//		return ResponseEntity.ok(saleService.getTvChangeAmount(vo));
+//	}
 
 	@PostMapping("/change/total-cms")
 	public ResponseEntity<Float> getTotalCmsChangeAmount(HttpSession session,
@@ -432,7 +425,7 @@ public class SaleController {
 		return ResponseEntity.ok(saleService.getMarginGraphByDateType(vo));
 	}
 
-	@PostMapping("/graph/avg-margin/date/{dateType}")
+	@PostMapping("/graph/avg-margin/{dateType}")
 	public ResponseEntity<Map<String,String> > getAvgMarginGraphByDateType(HttpSession session,
 																		   @PathVariable Character dateType,
 																		   @RequestBody CommonVO vo){

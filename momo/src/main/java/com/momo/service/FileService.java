@@ -1,7 +1,6 @@
 package com.momo.service;
 
 import com.momo.common.util.FileServiceUtil;
-import com.momo.common.vo.FileVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -14,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,7 +22,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ImageService {
+public class FileService {
 	public byte[] download(String dir,String path) throws IOException {
 		UrlResource resource = FileServiceUtil.getUrlResource(dir, path);
 		if(!resource.exists()){

@@ -19,7 +19,7 @@ const MSG_STATE = [
 
 export function SMSHistory(){
     const modal = useModal()
-    const {aligoApi} = useApi()
+    const {msgApi} = useApi()
     const today = new Date()
 
     const [tab, setTab] = useState(0)
@@ -41,7 +41,7 @@ export function SMSHistory(){
         //     startDate: DateUtils.dateToStringYYMMdd(today),
         //     limitDay: 1
         // }
-        // aligoApi.getSMSList(body).then(({data})=>{
+        // msgApi.getSMSList(body).then(({data})=>{
         //     if(data){
         //         // console.table(data)
         //         if(data.list)

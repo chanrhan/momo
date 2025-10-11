@@ -12,7 +12,7 @@ import {DateUtils} from "../utils/DateUtils";
 export function AdminUserStatistics(){
     const modal = useModal()
     const today = new Date();
-    const {aligoApi} = useApi()
+    const {msgApi} = useApi()
 
     const [keyword, setKeyword] = useState("")
     const [items, setItems] = useState([])
@@ -37,7 +37,7 @@ export function AdminUserStatistics(){
             startDate: DateUtils.dateToStringYYMMdd(today),
             limitDay: 1
         }
-        aligoApi.getSMSList(body).then(({data})=>{
+        msgApi.getSMSList(body).then(({data})=>{
             if(data){
                 console.table(data)
                 if(data.list)

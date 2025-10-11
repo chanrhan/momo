@@ -11,8 +11,6 @@ export function ImageProxy(){
         if(!fileName){
             return url;
         }
-
-
         if(fileName == 0){
             return UnknownUserImage;
         }

@@ -35,12 +35,12 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getReserveMsgForCalendar(currShopId, date));
     }
 
-    @GetMapping("/sale")
-    public ResponseEntity<List<Map<String,Object>>> getReserveMsgBySale(HttpSession session,
-                                                                  @RequestParam int saleId){
-        SaleVO vo = SaleVO.builder().saleId(saleId).currShopId(commonService.getCurrentShopId(session)).build();
-       return ResponseEntity.ok(messageService.getReserveMsgBySale(vo));
-    }
+//    @GetMapping("/sale")
+//    public ResponseEntity<List<Map<String,Object>>> getReserveMsgBySale(HttpSession session,
+//                                                                  @RequestParam int saleId){
+//        SaleVO vo = SaleVO.builder().saleId(saleId).currShopId(commonService.getCurrentShopId(session)).build();
+//       return ResponseEntity.ok(messageService.getReserveMsgBySale(vo));
+//    }
 
     @PostMapping("/send")
     public ResponseEntity<Boolean> insertReserveMsgBySale(HttpSession session,
@@ -52,10 +52,10 @@ public class MessageController {
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/del")
-    public ResponseEntity<Boolean> deleteReserveMsg(@RequestBody List<MessageVO> list){
-        return ResponseEntity.ok(messageService.deleteMsgList(list));
-    }
+//    @PostMapping("/del")
+//    public ResponseEntity<Boolean> deleteReserveMsg(@RequestBody List<MessageVO> list){
+//        return ResponseEntity.ok(messageService.deleteMsgList(list));
+//    }
 
     @GetMapping("/detail")
     public ResponseEntity<List<Map<String,Object>>> getReserveMsgDetail(HttpSession session,

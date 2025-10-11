@@ -1,30 +1,29 @@
 package com.momo.controller;
 
-import com.momo.service.ImageService;
+import com.momo.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/img")
-public class ImageController {
-	private final ImageService imageService;
+@RequestMapping("/api/v1/file")
+public class FileController {
+	private final FileService fileService;
 
-	@PostMapping("/upload")
-	public ResponseEntity<String> upload(@RequestPart MultipartFile file) {
-		return ResponseEntity.ok(imageService.upload("spec", file));
-	}
+//	@PostMapping("/upload")
+//	public ResponseEntity<String> upload(@RequestPart MultipartFile file) {
+//		return ResponseEntity.ok(imageService.upload("spec", file));
+//	}
 
 	@GetMapping("/download/{dir}")
 	public ResponseEntity<?> downloadPfp(@PathVariable String dir,
 										 @RequestParam String filename) throws IOException {
-		return imageService.downloadResource(dir,filename);
+		return fileService.downloadResource(dir,filename);
 	}
 
 

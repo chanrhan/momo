@@ -8,15 +8,15 @@ function PostImageApi(accessToken){
         getPostImageAll: async ()=>{
             return await axiosApiWithAccessToken.get('/api/v1/pimg', accessToken);
         },
-        addPostImage: async (body)=>{
-            const option = {
-                headers:{
-                    'X-ACCESS-TOKEN': accessToken,
-                    'Content-Type': "multipart/form-data"
-                }
-            }
-            return await axiosApi.post('/api/v1/pimg/add', body, option)
-        },
+        // addPostImage: async (body)=>{
+        //     const option = {
+        //         headers:{
+        //             'X-ACCESS-TOKEN': accessToken,
+        //             'Content-Type': "multipart/form-data"
+        //         }
+        //     }
+        //     return await axiosApi.post('/api/v1/pimg/add', body, option)
+        // },
         addEmptyPostImage: async ()=>{
             return await axiosApi.get('/api/v1/pimg/add/empty', null)
         },

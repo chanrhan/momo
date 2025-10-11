@@ -9,7 +9,7 @@ function useEmitter(){
 
     const connect = ()=>{
         // console.log(`sse connent: ${accessToken}`)
-        const evtSrc = new EventSourcePolyfill("http://localhost:8080/sse/connect",{
+        const evtSrc = new EventSourcePolyfill("http://localhost:3000/sse/connect",{
             headers:{
                 'X-ACCESS-TOKEN': accessToken
             }

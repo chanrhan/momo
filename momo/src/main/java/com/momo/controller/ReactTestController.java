@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
+@Deprecated
 public class ReactTestController {
 	@PostMapping("/post")
 	public String postTest(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> map) throws IOException {

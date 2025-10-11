@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Deprecated
 public class RegionService {
 	private final RegionMapper regionMapper;
 

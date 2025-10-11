@@ -6,6 +6,7 @@ import java.util.List;
 
 // 대한민국의 시/군/구
 @Mapper
+@Deprecated
 public interface RegionMapper {
 	public List<String> selectAllState();
 	public String selectCityByState(String state);

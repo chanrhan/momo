@@ -1,10 +1,8 @@
 package com.momo.handler;
 
-import com.momo.common.enums.codes.CommonErrorCode;
 import com.momo.common.response.ErrorResponse;
 import com.momo.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,26 +23,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		log.error("NullPointerException: {}", e);
 		return ResponseEntity.notFound().build();
 	}
-
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-//		log.error("handleMethodArgumentNotValidException", ex);
-//		BindingResult bindingResult = ex.getBindingResult();
-//		StringBuilder stringBuilder = new StringBuilder();
-//		for (FieldError fieldError : bindingResult.getFieldErrors()) {
-//			stringBuilder.append(fieldError.getField()).append(":");
-//			stringBuilder.append(fieldError.getDefaultMessage());
-//			stringBuilder.append(", ");
-//		}
-//		final ErrorResponse response = ErrorResponse.of(CommonErrorCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
-//
-//	@ExceptionHandler(HttpMessageNotReadableException.class)
-//	public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
-//			HttpMessageNotReadableException e) {
-//		log.error("HttpMessageNotReadableException", e);
-//		final ErrorResponse response = ErrorResponse.of(CommonErrorCode.REQUEST_BODY_MISSING_ERROR, e.getMessage());
-//		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//	}
 }

@@ -28,7 +28,7 @@ function MainLayout(){
 
     return (
         <div className='container'>
-            {/*<SseHeader/>*/}
+            <SseHeader/>
             <MainHeader/>
             <main>
                 <Sidebar/>

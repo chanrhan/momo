@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/mail")
+@Deprecated
 public class MailSendController {
 	private final MailSenderService mailSenderService;
 

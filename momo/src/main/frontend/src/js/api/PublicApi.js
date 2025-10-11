@@ -37,11 +37,11 @@ function PublicApi(){
             return await axiosApi.post('/api/v1/auth/token/reset-pwd', data, {});
         },
         getProtectedTelAndEmail : async(id)=>{
-            return await axiosApi.get(`/api/v1/public/user/tel-email/protected?id=${id}`,{});
+            return await axiosApi.get(`/api/v1/public/user/tel-email/blind?id=${id}`,{});
         },
-        sendAuthNumber: async (tel)=>{
-            return await axiosApi.get(`/api/v1/public/auth/send?tel=${tel}`,{});
-        }
+        // sendAuthNumber: async (tel)=>{
+        //     return await axiosApi.get(`/api/v1/public/auth/send?tel=${tel}`,{});
+        // }
     }
 }
 

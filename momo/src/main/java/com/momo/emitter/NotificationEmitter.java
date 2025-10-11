@@ -20,6 +20,7 @@ public class NotificationEmitter {
 
 	private static final Long DEFAULT_TIMEOUT = 60 * 60 * 1000L; // 1시간마다 타임아웃
 
+	// SSE 연결을 시도하는 함수
 	public SseEmitter connect(String lastEventId, HttpSession session){
 //		Object _userId = session.getAttribute("user_id");
 //		String userId = (_userId != null) ? _userId.toString() : "unknown";

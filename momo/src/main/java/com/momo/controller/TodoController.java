@@ -32,7 +32,7 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getTodoDetail(TodoVO.builder().date(date).currShopId(currShopId).build()));
     }
 
-    @PostMapping("/detail/content")
+    @PostMapping("/content")
     public ResponseEntity<Boolean> updateTodoContent(HttpSession session,
                                                      @RequestBody TodoVO vo){
         int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
@@ -44,20 +44,20 @@ public class TodoController {
         return ResponseEntity.ok(todoService.updateTodoContent(vo) > 0);
     }
 
-    @PostMapping("/detail/color")
-    @Deprecated
-    public ResponseEntity<Boolean> updateTodoColor(HttpSession session,
-                                                   @RequestBody TodoVO vo){
-        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
-        vo.setCurrShopId(currShopId);
-//        int id = Integer.parseInt(map.get("index").toString());
-//        int color = Integer.parseInt(map.get("color").toString());
-//        String date = map.get("date").toString();
+//    @PostMapping("/detail/color")
+//    @Deprecated
+//    public ResponseEntity<Boolean> updateTodoColor(HttpSession session,
+//                                                   @RequestBody TodoVO vo){
+//        int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
+//        vo.setCurrShopId(currShopId);
+////        int id = Integer.parseInt(map.get("index").toString());
+////        int color = Integer.parseInt(map.get("color").toString());
+////        String date = map.get("date").toString();
+//
+//        return ResponseEntity.ok(todoService.updateTodoColor(vo) > 0);
+//    }
 
-        return ResponseEntity.ok(todoService.updateTodoColor(vo) > 0);
-    }
-
-    @PostMapping("/detail/checked")
+    @PostMapping("/check")
     public ResponseEntity<Boolean> updateTodoChecked(HttpSession session,
                                                    @RequestBody TodoVO vo){
         int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
@@ -69,7 +69,7 @@ public class TodoController {
         return ResponseEntity.ok(todoService.updateTodoChecked(vo) > 0);
     }
 
-    @PostMapping("/detail/add")
+    @PostMapping("/add")
     public ResponseEntity<Boolean> addTodo(HttpSession session,
                                            @RequestBody TodoVO vo){
         int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());
@@ -82,7 +82,7 @@ public class TodoController {
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/detail/del")
+    @PostMapping("/del")
     public ResponseEntity<Boolean> deleteTodo(HttpSession session,
                                               @RequestBody TodoVO vo){
         int currShopId = Integer.parseInt(session.getAttribute("curr_shop_id").toString());

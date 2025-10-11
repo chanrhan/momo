@@ -14,15 +14,15 @@ export function MessageApi(accessToken){
         getReserveMsgAll: async (body)=>{
             return axiosApiWithAccessToken.post(`/api/v1/msg/all`, body,  accessToken);
         },
-        getReserveMsgBySale: async (saleId)=>{
-            return axiosApiWithAccessToken.get(`/api/v1/msg/sale?saleId=${saleId}`, accessToken);
-        },
+        // getReserveMsgBySale: async (saleId)=>{
+        //     return axiosApiWithAccessToken.get(`/api/v1/msg/sale?saleId=${saleId}`, accessToken);
+        // },
         sendAlimtalk: async (data)=>{
             return axiosApiWithAccessToken.post(`/api/v1/msg/send`,  data,accessToken);
         },
-        deleteReserveMsg: async (data)=>{
-            return axiosApiWithAccessToken.post(`/api/v1/msg/del`,  data,accessToken);
-        },
+        // deleteReserveMsg: async (data)=>{
+        //     return axiosApiWithAccessToken.post(`/api/v1/msg/del`,  data,accessToken);
+        // },
         sendAuthNumber: async (body)=>{
             return await axiosApi.post('/api/v1/msg/sms/send/auth', body, null);
         },

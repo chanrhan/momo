@@ -5,9 +5,9 @@ function ShopApi(accessToken){
 
     return {
         // 안씀 이거
-        getCorp : async ({keyword})=>{
-            return await axiosApiWithAccessToken.get(`/api/v1/corp/search/role-detail?keyword=${keyword}`, accessToken);
-        },
+        // getCorp : async ({keyword})=>{
+        //     return await axiosApiWithAccessToken.get(`/api/v1/corp/search/role-detail?keyword=${keyword}`, accessToken);
+        // },
         addShop : async (data)=>{
             return await axiosApiWithAccessToken.post('/api/v1/shop',data,accessToken);
         },

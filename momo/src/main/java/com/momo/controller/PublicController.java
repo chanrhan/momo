@@ -3,7 +3,6 @@ package com.momo.controller;
 import com.momo.common.response.JwtVO;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.*;
-import com.momo.service.AligoService;
 import com.momo.provider.JwtProvider;
 import com.momo.service.JwtService;
 import com.momo.service.UserService;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -93,16 +91,16 @@ public class PublicController {
 	}
 
 
-	/**
-	 * 휴대폰 인증번호 전송
-	 * @param tel string
-	 * @return authNumber
-	 */
-	@GetMapping("/auth/send")
-	public ResponseEntity<Integer> sendAuthNumber(@RequestParam String tel){
-		// 휴대폰 인증번호 보내는 api
-		return ResponseEntity.ok(userService.sendAuthNumber(tel));
-	}
+//	/**
+//	 * 휴대폰 인증번호 전송
+//	 * @param tel string
+//	 * @return authNumber
+//	 */
+//	@GetMapping("/auth/send")
+//	public ResponseEntity<Integer> sendAuthNumber(@RequestParam String tel){
+//		// 휴대폰 인증번호 보내는 api
+//		return ResponseEntity.ok(userService.sendAuthNumber(tel));
+//	}
 
 	/**
 	 * 아이디 존재 여부 검사
@@ -129,7 +127,7 @@ public class PublicController {
 	 * @param id string
 	 * @return protected tel, email
 	 */
-	@GetMapping("/user/tel-email/protected")
+	@GetMapping("/user/tel-email/blind")
 	public ResponseEntity<Map<String,Object>> getProtectedTelAndEmail(@RequestParam String id){
 		return ResponseEntity.ok(userService.getProtectedTelAndEmail(id));
 	}

@@ -1,7 +1,7 @@
 import useApi from "../hook/useApi";
 
 export function AligoTest(){
-    const {aligoApi} = useApi();
+    const {msgApi} = useApi();
 
     const send = ()=>{
         const body = {
@@ -11,7 +11,7 @@ export function AligoTest(){
             title: 'API TEST ALIGO',
             testmode_yn: "N"
         }
-        aligoApi.sendAuthNumber(body).then(({data})=>{
+        msgApi.sendAuthNumber(body).then(({data})=>{
             console.table(data)
         })
     }

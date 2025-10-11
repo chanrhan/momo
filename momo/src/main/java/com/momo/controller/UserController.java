@@ -4,7 +4,7 @@ import com.momo.extern_api.BusinessmanApiUtil;
 import com.momo.common.util.SecurityContextUtil;
 import com.momo.common.vo.UserVO;
 import com.momo.service.CommonService;
-import com.momo.service.ImageService;
+import com.momo.service.FileService;
 import com.momo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
-	private final ImageService imageService;
+	private final FileService fileService;
 	private final CommonService commonService;
 
 	/**
@@ -41,7 +41,7 @@ public class UserController {
 	public ResponseEntity<Map<String,Object>> getUserInfo() throws IOException {
 		String username = SecurityContextUtil.getUsername();
 		Map<String,Object> map = userService.getUserInfo(username);
-		log.info("User: {}", map);
+//		log.info("User: {}", map);
 		return ResponseEntity.ok(map);
 	}
 
@@ -60,7 +60,7 @@ public class UserController {
 	@PostMapping("/pfp")
 	public ResponseEntity<Boolean> updateProfileImg(@RequestPart MultipartFile file){
 		String username = SecurityContextUtil.getUsername();
-		String path = imageService.upload("pfp", file);
+		String path = fileService.upload("pfp", file);
 		log.info("path: {}",path);
 		return ResponseEntity.ok(userService.updatePfp(username, path) > 0);
 	}
@@ -97,17 +97,6 @@ public class UserController {
 	 */
 	@GetMapping("/brno/status")
 	public ResponseEntity<?> checkBpNoStatus(@RequestParam String brNo) {
-//		log.info("validate bno: {}", bpNo);
-//		Map<String,Object> res = new HashMap<>();
-//
-//		String userId = userService.getUserByBpNo(bpNo);
-//		if(StringUtils.hasText(userId)){
-//			res.put("matched", false);
-//			res.put("id", userId);
-//		}else{
-//			res.put("matched", );
-//		}
-
 		if(!BusinessmanApiUtil.status(brNo)){
 			return ResponseEntity.ok(false);
 		}
@@ -117,11 +106,11 @@ public class UserController {
 		return ResponseEntity.ok(true);
 	}
 
-	@GetMapping("/brno")
-	public ResponseEntity<String> getBrno(){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getBrno(username));
-	}
+//	@GetMapping("/brno")
+//	public ResponseEntity<String> getBrno(){
+//		String username = SecurityContextUtil.getUsername();
+//		return ResponseEntity.ok(userService.getBrno(username));
+//	}
 
 	@PostMapping("/business-info")
 	public ResponseEntity<Boolean> updateBusinessInfo(@RequestBody UserVO vo){
@@ -152,25 +141,24 @@ public class UserController {
 		return ResponseEntity.ok(userService.updatePassword(vo) != 0);
 	}
 
-	/**
-	 * (대표 권한)직원 검색
-	 * @return {
-	 *     이름
-	 *     소속 매장
-	 *     역할
-	 *     승인 여부
-	 * }
-	 */
-	@Deprecated
-	@GetMapping("/staff")
-	public ResponseEntity<List<Map<String,Object>>> getStaffList(){
-		String username = SecurityContextUtil.getUsername();
-		return ResponseEntity.ok(userService.getStaffByShopId(username));
-	}
+//	/**
+//	 * (대표 권한)직원 검색
+//	 * @return {
+//	 *     이름
+//	 *     소속 매장
+//	 *     역할
+//	 *     승인 여부
+//	 * }
+//	 */
+//	@Deprecated
+//	@GetMapping("/staff")
+//	public ResponseEntity<List<Map<String,Object>>> getStaffList(){
+//		String username = SecurityContextUtil.getUsername();
+//		return ResponseEntity.ok(userService.getStaffByShopId(username));
+//	}
 
 	/**
 	 * (관리자 권한) 모든 유저 불러오기
-	 * @param keyword string
 	 * @return {
 	 *     가입채널
 	 *     이름
@@ -189,43 +177,26 @@ public class UserController {
 	}
 
 	/**
-	 * 매장 가입 요청
-	 * @param shopId integer
-	 * @return Boolean
-	 */
-	@PostMapping("/shop/request")
-	public ResponseEntity<Boolean> reqeustShop(@RequestParam Integer shopId){
-
-		return null;
-	}
-
-	/**
 	 * 사용자 매장 가입 요청 승인
 	 * @return Boolean
 	 */
 	@PostMapping("/staff/approval")
 	@Transactional
-	public ResponseEntity<Boolean> updateApprovalState(HttpSession session,
-													   @RequestBody UserVO vo){
-//		int currShopId = commonService.getCurrentShopId(session);
-//		if(state == 1){
-//			userService.updateCurrentShop(staffId, currShopId);
-//		}
-//		vo.setCurrShopId(currShopId);
+	public ResponseEntity<Boolean> updateApprovalState(@RequestBody UserVO vo){
 		return ResponseEntity.ok(userService.updateApprovalState(vo)> 0);
 	}
 
-	/**
-	 * 사용자 역할 변경
-	 * @param userId string
-	 * @param role string
-	 * @return Boolean
-	 */
-	@PutMapping("/{userId}/role")
-	public ResponseEntity<Boolean> updateRole(@PathVariable String userId,
-											  @RequestParam String role){
-		return null;
-	}
+//	/**
+//	 * 사용자 역할 변경
+//	 * @param userId string
+//	 * @param role string
+//	 * @return Boolean
+//	 */
+//	@PutMapping("/{userId}/role")
+//	public ResponseEntity<Boolean> updateRole(@PathVariable String userId,
+//											  @RequestParam String role){
+//		return null;
+//	}
 
 	@GetMapping("/staff/inner")
 	public ResponseEntity<String> getInnerStaff(HttpSession session){
@@ -250,18 +221,18 @@ public class UserController {
 		return ResponseEntity.ok(userService.getInnerStaffAll(vo));
 	}
 
-	@GetMapping("/staff/inner/count")
-	public ResponseEntity<Integer> getInnerStaffTotalCount(HttpSession session){
-		int currShopId = commonService.getCurrentShopId(session);
-		return ResponseEntity.ok(userService.getInnerStaffTotalCount(currShopId));
-	}
+//	@GetMapping("/staff/inner/count")
+//	public ResponseEntity<Integer> getInnerStaffTotalCount(HttpSession session){
+//		int currShopId = commonService.getCurrentShopId(session);
+//		return ResponseEntity.ok(userService.getInnerStaffTotalCount(currShopId));
+//	}
 
 
-	@GetMapping("/staff/name/inner")
-	public ResponseEntity<List<String>> getInnerStaffName(HttpSession session){
-		int currShopId = commonService.getCurrentShopId(session);
-		return ResponseEntity.ok(userService.getInnerStaffName(currShopId));
-	}
+//	@GetMapping("/staff/name/inner")
+//	public ResponseEntity<List<String>> getInnerStaffName(HttpSession session){
+//		int currShopId = commonService.getCurrentShopId(session);
+//		return ResponseEntity.ok(userService.getInnerStaffName(currShopId));
+//	}
 
 	@PostMapping("/staff/start-date")
 	public ResponseEntity<Boolean> updateStaffStartDate(HttpSession session, @RequestBody UserVO vo){
