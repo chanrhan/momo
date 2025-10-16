@@ -25,6 +25,7 @@ public class MessageService {
 	private final SaleMapper saleMapper;
 
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private final AligoService aligoService;
 //	private static final DateTimeFormatter requestTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	@Transactional
@@ -33,8 +34,6 @@ public class MessageService {
 		LocalDate today = LocalDate.now();
 		String todayDateFormatted = today.format(dateTimeFormatter);
 
-		log.info("[SENS] formatted Today : {}", todayDateFormatted);
-
 		List<MessageVO> list = vo.getRsvMsgList();
 		int saleId = vo.getSaleId();
 		int currShopId = vo.getCurrShopId();
@@ -42,13 +41,14 @@ public class MessageService {
 		String custTel = vo.getCustTel();
 
 		if(Objects.isNull(custNm) || Objects.isNull(custTel)){
-			Map<String,String> map = saleMapper.getCustomerInfoBySaleId(currShopId, saleId);
+			Map<String,Object> map = saleMapper.getCustomerInfoBySaleId(currShopId, saleId);
 
-			custNm = map.get("cust_nm");
-			custTel = map.get("cust_tel");
-
-			if(Objects.isNull(custNm) || Objects.isNull(custTel)){
+			try{
+				custNm = map.get("cust_nm").toString();
+				custTel = map.get("cust_tel").toString();
+			}catch (NullPointerException e){
 				throw new NullPointerException("Customer Name and Telephone Number is Null!");
+
 			}
 
 			custTel = custTel.replace("-", "");
@@ -131,6 +131,7 @@ public class MessageService {
 	}
 
 	public void insertAlimtalkTemplate(MessageVO vo){
+		vo.setContent("");
 		messageMapper.insertAlimtalkTemplate(vo);
 	}
 
@@ -138,11 +139,19 @@ public class MessageService {
 		return messageMapper.updateAlimtalkTemplate(vo);
 	}
 
+	public int updateTemplateContent(MessageVO vo){
+		return messageMapper.updateAlimtalkTemplate(vo);
+	}
+
 	public int deleteAlimtalkTemplate(MessageVO vo){
 		return messageMapper.deleteAlimtalkTemplate(vo);
 	}
 
-	public List<Map<String,Object>> getMessageTemplateList(MessageVO vo){
+	public List<Map<String,Object>> getAlimtalkTemplateList(MessageVO vo){
 		return messageMapper.getAlimtalkTemplateList(vo);
+	}
+
+	public List<Map<String,Object>> getAlimtalkTemplateListAll(String keyword){
+		return messageMapper.getAlimtalkTemplateListAll(keyword);
 	}
 }

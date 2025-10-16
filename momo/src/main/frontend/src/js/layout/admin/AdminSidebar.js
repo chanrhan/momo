@@ -42,11 +42,11 @@ export function AdminSidebar(){
                         className={Layout.a} to='/admin/shop' onClick={() => {
                         setTab(2)
                     }}>매장</Link></li>
-                    <li className={`${Layout.menu_item} ${Layout.menu_data} ${tab === 3 && Layout.active}`}><Link
+                    <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 3 && Layout.active}`}><Link
                         className={Layout.a} to='/admin/msg' onClick={() => {
                         setTab(3)
-                    }}>문자/알림톡</Link></li>
-                    <li className={`${Layout.menu_item} ${Layout.menu_communication} ${tab === 4 && Layout.active}`}>
+                    }}>메세지</Link></li>
+                    <li className={`${Layout.menu_item} ${Layout.menu_data} ${tab === 4 && Layout.active}`}>
                         <Link className={Layout.a} to='/admin/user_stat' onClick={() => {
                             setTab(4)
                         }}>통계</Link></li>

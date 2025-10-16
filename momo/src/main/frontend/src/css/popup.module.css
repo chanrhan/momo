@@ -42,7 +42,7 @@
     padding: 0;
 }
 /*.popup.active{opacity:1; visibility:inherit;}*/
-.popup .popup_title{color:#141218; font-size:16px; line-height:20px;}
+.popup .popup_title{color:#141218; font-size:16px; line-height:20px; font-weight: 600}
 .popup .preview_description{
     width: 100%;
     position: absolute;
@@ -746,7 +746,16 @@
 /*.popup .reservation .reservation_item.reservation_button .reservation_btn:hover{background-color:#f4f5f9;}*/
 
 /* 예약전송 날짜선택 (20240724) */
-.popup .reservation .popup_cont{margin-bottom:-32px;}
+.popup .reservation .popup_cont{margin-bottom:-32px; margin-top: 12px}
+.popup .reservation .popup_cont .description{
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+.popup .reservation .popup_cont .description span{
+    font-size: 13px;
+    line-height: 18px;
+    color: #6c6c6c;
+}
 .popup .reservation .reservation_item{position:relative; margin-left:36px; border-bottom:1px solid #dde1e8;}
 .popup .reservation .reservation_item:first-child,
 .popup .reservation .reservation_item:last-child{border-bottom:0;}

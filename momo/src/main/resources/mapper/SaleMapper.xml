@@ -286,6 +286,22 @@
             sale_id=#{saleId}
     </select>
 
+    <select id="getSaleById">
+        select *
+        from tb_sale
+        where shop_id=#{shopId} and sale_id=#{saleId}
+    </select>
+
+    <select id="getSellerNameBySaleId">
+        select name
+        from tb_account
+        where id = (
+            select seller_id
+            from tb_sale
+            where shop_id=#{shopId} and sale_id=#{saleId}
+            )
+    </select>
+
 <!--    get sale category-->
     <select id="getSaleAsUsedDevice" resultType="java.util.Map">
 

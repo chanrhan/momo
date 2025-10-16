@@ -1,8 +1,10 @@
 package com.momo.mapper;
 
+import com.momo.common.util.PropertiesUtil;
 import com.momo.common.vo.ShopVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,8 @@ public interface ShopMapper {
 	public int updateShop(ShopVO vo);
 	public int deleteShop(int shopId);
 	public List<Map<String,Object>> getShop(ShopVO vo);
+	public Map<String, Object> getShopById(int shopId);
+	public String getShopName(int shopId);
 	public List<Map<String,Object>> getShopItems(String userId);
 
 	public void joinShop(String userId, int shopId);

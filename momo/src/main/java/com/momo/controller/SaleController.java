@@ -26,6 +26,7 @@ public class SaleController {
 	private final MessageService messageService;
 
 	private final FileService fileService;
+	private final AligoService aligoService;
 
 	@PostMapping("/simple")
 	public ResponseEntity<List<Map<String,Object>>> getSaleSimple(HttpSession session,
@@ -223,7 +224,8 @@ public class SaleController {
 		vo.setFiles(insertList);
 
 		int maxSaleId = saleService.insertSale(vo);
-		messageService.insertMsgList(vo);
+//		messageService.insertMsgList(vo);
+//		aligoService.sendAlimTalk()  // << 이거 쓰자
 		return ResponseEntity.ok(true);
 	}
 

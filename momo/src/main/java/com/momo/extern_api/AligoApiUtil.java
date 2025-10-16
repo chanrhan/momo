@@ -11,6 +11,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Map;
+
 @Slf4j
 @Service
 public class AligoApiUtil {
@@ -43,7 +45,7 @@ public class AligoApiUtil {
     }
 
     private static  <T> T post(String baseUrl, String path, MultiValueMap<String,String> formData, Class<T> tClass){
-        String body = getWebClient(baseUrl).post()
+        String response = getWebClient(baseUrl).post()
                 .uri(ub->
                         ub.path(path).build())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -53,9 +55,12 @@ public class AligoApiUtil {
                 .bodyToMono(String.class)
                 .block();
         try {
-            return objectMapper.readValue(body, tClass);
+            System.out.printf("[aligo1] POST %s%s : ", baseUrl, path);
+            Map<String,Object> tmp = objectMapper.readValue(response, Map.class);
+            System.out.println(tmp);
+            return objectMapper.readValue(response, tClass);
         }catch (Exception e){
-//            System.out.println(body);
+            e.printStackTrace();
             throw new RuntimeException("[Aligo] 응답 파싱 실패", e);
         }
     }
@@ -63,8 +68,7 @@ public class AligoApiUtil {
     public static <T> T requesAlimTalkApi(String path, MultiValueMap<String,String> formData, Class<T> tClass){
         formData.add("apikey", API_KEY);
         formData.add("userid", USER_ID);
-        formData.add("senderkey", SENDER_KEY);
-//        System.out.println(formData);
+        log.info("[aligo1] form data : {}", formData);
         return post(BASE_URL_kakaoapi,path, formData, tClass);
     }
 }

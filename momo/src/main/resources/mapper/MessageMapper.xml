@@ -24,15 +24,14 @@
             select IFNULL(max(msg_id),0)+1
             from tb_alimtalk_history
             where shop_id=#{currShopId} and
-                sale_id=#{saleId} and
-                rsv_dt=#{rsvDt}
+                sale_id=#{saleId}
         );
 
         INSERT INTO tb_alimtalk_history
             (shop_id, sale_id, msg_id, tpl_id, content, rsv_dt, rsv_tp, dday)
         VALUES
             <foreach collection="list" item="item" separator="," index="index">
-                (#{item.currShopId}, #{item.saleId}, @next_msg_id + #{index}, #{item.tplId},#{item.content},#{item.rsvDt}, #{item.rsvTp}, #{item.dday})
+                (#{currShopId}, #{saleId}, @next_msg_id + #{index}, #{item.tplId},#{item.content},#{item.rsvDt}, #{item.rsvTp}, #{item.dday})
             </foreach>
     </insert>
 
@@ -208,9 +207,20 @@
 
     <update id="updateAlimtalkTemplate">
         update tb_alimtalk_template
-        set tpl_code=#{tplCode},
-            title=#{title},
-            content=#{content}
+        set
+            <if test="title != null and !title.equals('')">
+                title=#{title},
+            </if>
+            <if test="tplCode != null and !tplCode.equals('')">
+                tpl_code=#{tplCode},
+            </if>
+            <if test="grpCode != null and !grpCode.equals('')">
+                grp_code=#{grpCode},
+            </if>
+            <if test="description != null and !description.equals('')">
+                description=#{description},
+            </if>
+            tpl_id=tpl_id
         where tpl_id=#{tplId}
     </update>
 
@@ -225,6 +235,17 @@
         from tb_alimtalk_template tat
         left outer join tb_alimtalk_history tah on tah.tpl_id=tat.tpl_id
         and tah.shop_id=#{shopId} and tah.sale_id=#{saleId}
+        where grp_code=#{grpCode}
+    </select>
+
+    <select id="getAlimtalkTemplateListAll">
+        select *
+        from tb_alimtalk_template tat
+        where
+            <if test="keyword != null and !keyword.equals('')">
+                (tat.title like '%${keyword}%' or tat.description like '%${keyword}%') and
+            </if>
+            1=1
     </select>
 
     <select id="getAlimtalkTemplateCode">

@@ -2,7 +2,8 @@ export const ModalType = {
     LAYER: {
         // admin
         Admin_Bulk_Upload: 'AdminBulkUpload',
-        Admin_Message_Template: 'AdminMessageTemplate',
+        SMS_Template: 'SMSTemplate',
+        Alimtalk_Template: 'AlimtalkTemplate',
         Visit_Log: 'VisitLog',
 
         Add_Visit_Shop: 'AddVisitShop',

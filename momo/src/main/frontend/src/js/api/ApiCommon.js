@@ -66,11 +66,16 @@ export const AxiosApi = ()=> {
         return await axiosInstance.put(url, data, option);
     }
 
+    const patch = async (url, data, option)=>{
+        return await axiosInstance.patch(url, data, option);
+    }
+
     return {
         post,
         get,
         del,
-        put
+        put,
+        patch
     }
 }
 
@@ -111,10 +116,19 @@ export const AxiosApiWithAccessToken = ()=> {
         });
     }
 
+    const patch = async (url, data, accessToken) => {
+        return axiosApi.patch(url, data, {
+            headers: {
+                "X-ACCESS-TOKEN": accessToken
+            }
+        });
+    }
+
     return {
         post,
         get,
         del,
         put,
+        patch
     }
 }

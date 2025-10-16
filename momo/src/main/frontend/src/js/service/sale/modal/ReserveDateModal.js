@@ -1,5 +1,4 @@
 import Popup from "../../../../css/popup.module.css"
-import User from "../../../../css/user.module.css"
 import {cm, cmc} from "../../../utils/cm";
 import useModal from "../../../hook/useModal";
 import {ModalType} from "../../../common/modal/ModalType";
@@ -7,11 +6,10 @@ import {LayerModal} from "../../../common/modal/LayerModal";
 import {useState} from "react";
 import {DateSelectModule} from "../../../common/modal/menu/DateSelectModule";
 import {DateUtils} from "../../../utils/DateUtils";
-import {LMD} from "../../../common/LMD";
 import {useObjectInputField} from "../../../hook/useObjectInputField";
-import {TabList} from "../../../common/module/TabList";
 
 export function ReserveDateModal(props){
+    const today = new Date()
     const modal = useModal()
     const inputField = useObjectInputField();
     const [isFromToday, setIsFromToday] = useState(true);
@@ -70,6 +68,12 @@ export function ReserveDateModal(props){
                 }
             }
 
+            const rsvDt = new Date(rsv_dt)
+            // 당일 예약이고, 현재 시간이 22시 이후라면, 예약날짜를 익일 09시로 조정
+            if(DateUtils.equalYMd(today, rsvDt) && today.getHours() >= 22){
+                DateUtils.addDate(rsvDt, 1)
+                rsv_dt = DateUtils.dateToStringYYMMdd(rsvDt)
+            }
 
             props.onSubmit({
                 rsv_tp: rsv_tp,
@@ -94,9 +98,16 @@ export function ReserveDateModal(props){
     return (
         <LayerModal {...props} top={30}>
             <div className={Popup.popup_title}>예약 날짜 설정</div>
-
             <div className={Popup.reservation}>
                 <div className={Popup.popup_cont}>
+                    <div className={Popup.description}>
+                        예약 문자는 예약일 기준 09시에 발송됩니다.
+                        {
+                            selected === 1 &&
+                            <span>당일에 예약할 경우, 30분 후 발송되며 <br/>22시 이후에는 고객 편의를 위해 익일 09시에 발송됩니다.</span>
+                        }
+
+                    </div>
                     <div className={Popup.popup_head_box}>
                             <span className={cm(Popup.today_switch)}>
                                     <input type="checkbox" name='completed' className={`switch_inp ${Popup.input}`}

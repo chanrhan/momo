@@ -15,4 +15,5 @@ import lombok.experimental.SuperBuilder;
 public abstract class AlimTalkRequestVO implements FormEncodable {
     protected String apikey;
     protected String userid;
+    protected String senderKey;
 }

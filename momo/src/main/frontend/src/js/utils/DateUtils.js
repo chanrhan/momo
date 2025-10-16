@@ -16,6 +16,9 @@ export const DateUtils = {
     equalYM: (date1: Date, date2: Date)=>{
         return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth()
     },
+    equalYMd: (date1: Date, date2: Date)=>{
+        return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+    },
     getMonthInfo: (year, month)=>{
         const date = new Date(year, month);
 

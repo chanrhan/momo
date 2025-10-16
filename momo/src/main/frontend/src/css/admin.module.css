@@ -1,3 +1,205 @@
+/*알림톡 템플릿*/
+.alimtalk_tpl{
+    padding: 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.alimtalk_tpl .header_cont{
+    height: 15%;
+}
+
+.alimtalk_tpl .header_cont .title{
+    font-weight: 500;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.alimtalk_tpl .header_cont .description{
+    font-size: 16px;
+    color: #343434;
+}
+
+.alimtalk_tpl .option_header_group{
+    background-color: #e0e0e0;
+    width: 100%;
+    height: 8%;
+    margin-bottom: 8px;
+    /*justify-content: end;*/
+    align-items: center;
+    display: flex;
+    padding: 4px 12px;
+}
+
+.alimtalk_tpl .option_header_group .left{
+    /*padding-left: 12px;*/
+    width: 40%;
+}
+.alimtalk_tpl .option_header_group .left .btn_add{
+    background-color: #4781ff;
+    color: white;
+    border-radius: 4px;
+    padding: 3px 14px;
+    font-size: 14px;
+}
+
+.alimtalk_tpl .option_header_group .left .btn_reload{
+    width: 26px;
+    height: 26px;
+    background: url(../images/refresh_icon.png) no-repeat center / 100%;
+    margin-right: 8px;
+    transition: all ease-in-out 0.1s;
+}
+.alimtalk_tpl .option_header_group .left .btn_reload:active{
+    transform: scale(80%);
+}
+
+.alimtalk_tpl .option_header_group .left .btn_add.submit{
+    background-color: #15ab2d;
+    margin-right: 4px;
+}
+
+.alimtalk_tpl .option_header_group .left .btn_add.cancel{
+    background-color: #ab9f15;
+}
+
+.alimtalk_tpl .option_header_group .left .btn_add:hover{
+    opacity: 0.8
+}
+.alimtalk_tpl .option_header_group .left .btn_add:active{
+    opacity: 0.5;
+}
+
+
+.alimtalk_tpl .option_header_group .right{
+    width: 60%;
+    /*height: 100%;*/
+    /*align-content: center;*/
+    /*justify-items: end;*/
+}
+
+.alimtalk_tpl .option_header_group .right .count_text{
+    font-size: 15px;
+    margin-right: 8px;
+    float: right;
+}
+
+.alimtalk_tpl .option_header_group .count_text span{
+    color: #4781ff;
+    font-weight: 500;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.alimtalk_tpl .option_header_group .right .inp_search{
+    width: 60%;
+    border-radius: 4px;
+    height: 100%;
+    padding: 2px 6px;
+    text-align: end;
+    float: right;
+}
+
+.alimtalk_tpl .body_cont{
+    background-color: #dcdcff;
+    height: calc(77% - 8px - 28px);
+    padding: 10px 8px
+}
+
+.alimtalk_tpl .list_header{
+    padding: 4px 32px;
+    background-color: #e5e5e5;
+    width: 100%;
+    height: 28px;
+    display: flex;
+    /*align-content: center;*/
+    text-align: center;
+    /*margin-bottom: 8px;*/
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.alimtalk_tpl .list_header .grp_code{
+    width: 5%;
+}
+.alimtalk_tpl .list_header .name{
+    width: 40%;
+}
+.alimtalk_tpl .list_header .tpl_code{
+    width: 10%;
+}
+.alimtalk_tpl .list_header .description{
+    width: 40%;
+}
+.alimtalk_tpl .list_header .status{
+    width: 5%;
+}
+
+.alimtalk_tpl .body_cont .list_item{
+    border-radius: 6px;
+    background-color: #d3beff;
+    width: 100%;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 6px 32px;
+    white-space: nowrap;
+    text-align: center;
+}
+.alimtalk_tpl .body_cont .list_item.new_data{
+    background-color: #b9cfff;
+}
+
+.alimtalk_tpl .body_cont .list_item + .list_item{
+    margin-top: 10px;
+}
+.alimtalk_tpl .body_cont .list_item .grp_code{
+    text-align: center;
+    font-size: 14px;
+    width: 5%;
+}
+
+.alimtalk_tpl .body_cont .list_item .name{
+    text-align: center;
+    width: 40%;
+    font-size: 14px;
+    overflow-wrap: break-word;
+}
+
+
+.alimtalk_tpl .body_cont .list_item .tpl_code{
+    text-align: center;
+    width: 10%;
+    font-size: 14px;
+    color: #707070;
+}
+
+.alimtalk_tpl .body_cont .list_item .description{
+    width: 40%;
+    /*text-align: center;*/
+}
+.alimtalk_tpl .body_cont .list_item .status_box{
+    width: 5%;
+}
+.alimtalk_tpl .body_cont .list_item .status_box .status_icon{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: black;
+}
+.alimtalk_tpl .body_cont .list_item .status_icon.red{
+    background-color: #e32a2a;
+}
+.alimtalk_tpl .body_cont .list_item .status_icon.green{
+    background-color: green;
+}
+.alimtalk_tpl .body_cont .list_item .status_icon.yellow{
+    background-color: #dcdc21;
+}
+
+
+
+/*관리*/
 .manage_box{
     padding: 0 8px 0 8px;
     width: 100%;
@@ -356,3 +558,4 @@
 .navermaps_custom_overlay.blue{
     background: url(../images/marker/blue_marker_icon.png) no-repeat center / 100%;
 }
+

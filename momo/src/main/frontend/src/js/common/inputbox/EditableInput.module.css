@@ -1,0 +1,15 @@
+.editable_input{
+    /*align-content: center;*/
+}
+
+.editable_input .btn_edit{
+    margin-left: 2px;
+    opacity: 0;
+    width: 24px;
+    height: 24px;
+    background: url(../../../images/modify_black_icon.png) no-repeat center / 100%;
+}
+
+.editable_input:hover .btn_edit{
+    opacity: 1;
+}

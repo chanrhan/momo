@@ -1,5 +1,5 @@
 import {AdminBulkUploadModal} from "../../admin/modal/AdminBulkUploadModal";
-import {MessageTemplateModal} from "../../admin/modal/MessageTemplateModal";
+import {SMSTemplateModal} from "../../admin/modal/SMSTemplateModal";
 import {DynamicSelectModal} from "./DynamicSelectModal";
 import {MoreOptionModal} from "./menu/MoreOptionModal";
 import {InviteModal} from "../../service/dashboard/module/InviteModal";
@@ -39,11 +39,13 @@ import {InfoModal} from "./snackbar/InfoModal";
 import {ConfirmModal} from "./snackbar/ConfirmModal";
 import {VisitLogModal} from "../../admin/modal/VisitLogModal";
 import {AddVisitShopModal} from "../../admin/modal/AddVisitShopModal";
+import {AlimtalkTemplateModal} from "../../admin/modal/AlimtalkTemplateModal";
 
 export const ModalSet = {
     // admin
     AdminBulkUpload: AdminBulkUploadModal,
-    AdminMessageTemplate: MessageTemplateModal,
+    SMSTemplate: SMSTemplateModal,
+    AlimtalkTemplate: AlimtalkTemplateModal,
     VisitLog: VisitLogModal,
     AddVisitShop: AddVisitShopModal,
 

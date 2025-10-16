@@ -18,8 +18,10 @@ public interface SaleMapper{
 	public List<Map<String,Object>> getSaleSimple(SaleSearchVO vo);
 
 	public Map<String,Object> getSaleOne(int currShopId, int saleId);
+	public Map<String,Object> getSaleById(int shopId, int saleId);
+	public String getSellerNameBySaleId(int shopId, int saleId);
 
-	public Map<String,String> getCustomerInfoBySaleId(int currShopId, int saleId);
+	public Map<String,Object> getCustomerInfoBySaleId(int currShopId, int saleId);
 
 	public List<String> getFilePath(SaleVO vo);
 	public List<FileVO> getFiles(SaleVO vo);

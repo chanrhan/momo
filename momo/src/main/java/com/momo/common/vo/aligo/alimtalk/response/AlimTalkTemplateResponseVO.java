@@ -1,6 +1,7 @@
 package com.momo.common.vo.aligo.alimtalk.response;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.momo.common.vo.aligo.FormEncodable;

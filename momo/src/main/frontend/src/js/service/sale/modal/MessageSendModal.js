@@ -7,12 +7,14 @@ import {ModalType} from "../../../common/modal/ModalType";
 import {ObjectUtils} from "../../../utils/objectUtil";
 import {useEffect, useState} from "react";
 import useApi from "../../../hook/useApi";
+import {DateUtils} from "../../../utils/DateUtils";
 
 export function MessageSendModal(props){
     const {msgApi, gmdApi} = useApi()
     const templateField = useObjectArrayInputField();
     // console.table(arrayInputField.input)
     const modal = useModal()
+    const today = new Date()
 
     const [errors, setErrors] = useState([])
     const [reservedMessages, setReservedMessages] = useState([])
@@ -25,8 +27,9 @@ export function MessageSendModal(props){
         const body = {
             shop_id: props.shop_id,
             sale_id: props.sale_id,
+            grp_code: 1
         }
-        msgApi.getMessageTemplateList(body).then(({data})=>{
+        msgApi.getMessageTemplates(body).then(({data})=>{
             console.table(data)
             templateField.putAll(data)
         })
@@ -66,42 +69,61 @@ export function MessageSendModal(props){
             }
             return v.checked && v.rsv_dt
         }).map(v=>{
+            const rd = new Date(v.rsv_dt)
+
+            let parsedDate = v.rsv_dt.replaceAll("-","") // 알리고 API 의 예약날짜 포맷에 맞게 수정
+            // 예약일이 오늘이라면, 30분 이후 발송하도록 함
+            if(DateUtils.equalYMd(rd, today)){
+                const nd = new Date()
+                nd.setMinutes(today.getMinutes()+30)
+                const h = nd.getHours() + ""
+                const m = nd.getMinutes() + ""
+                parsedDate = `${parsedDate}${h.padStart(2, 0)}${m.padStart(2, 0)}00`
+            }else{
+                parsedDate = parsedDate + "090000" // 예약일 기준 09시에 발송
+            }
+            console.log(parsedDate)
             return {
                 tpl_id: v.tpl_id,
                 dday: v.dday,
                 rsv_tp: v.rsv_tp,
-                rsv_dt: v.rsv_dt
+                rsv_dt: parsedDate
             }
         })
 
         if(isError){
-            console.table(errorList)
+            // console.table(errorList)
             setErrors(errorList)
             return;
         }
 
         if(props.sale_id){
+            // 이미 생성된 판매일보일 경우
             if(!ObjectUtils.isEmptyArray(body)){
+                // 알림톡 전송 (예약)
                 msgApi.sendAlimtalk({
                     sale_id: props.sale_id,
                     rsv_msg_list: body
                 }).then(({status,data})=>{
                     if(status === 200 && data){
                         modal.openModal(ModalType.SNACKBAR.Info, {
-                            msg: "수정되었습니다."
+                            msg: "알림톡이 예약되었습니다."
+                        })
+                    }else{
+                        modal.openModal(ModalType.SNACKBAR.Warn, {
+                            msg: "문제가 발생했습니다. 잠시 후 다시 시도해주세요."
                         })
                     }
-
                 })
             }
-
+            close();
         }else{
+            // 새로 생성된 판매일보일 경우, 판매일보 추가창 (Detail)로 이동하도록 함
             if(props.onSubmit){
                 props.onSubmit(body);
             }
             close();
         }
-        close();
     }
 
     // const deleteMsgList = async (list)=>{
@@ -119,6 +141,13 @@ export function MessageSendModal(props){
     //     }
     //     return result;
     // }
+
+    const openMessagePreviewModal = (tpl_code)=>{
+        modal.openModal(ModalType.LAYER.Message_Preview, {
+            sale_id: props.sale_id,
+            tpl_code: tpl_code
+        })
+    }
 
 
     return (
@@ -142,7 +171,12 @@ export function MessageSendModal(props){
                                     if(ObjectUtils.isEmpty(v)){
                                         return null
                                     }
-                                    return <ReserveItem index={i} error={errors[i]} inputField={templateField} onDateClick={()=>{
+                                    return <ReserveItem index={i} error={errors[i]}
+                                                        inputField={templateField}
+                                                        onPreviewClick={()=>{
+                                                            openMessagePreviewModal(templateField.get(i, "tpl_code"))
+                                                        }}
+                                                        onDateClick={()=>{
                                         openReserveDateModal(i)
                                     }}/>
                                 })
@@ -165,16 +199,10 @@ export function MessageSendModal(props){
     )
 }
 
-function ReserveItem({index, error, inputField, onDateClick}){
+function ReserveItem({index, error, inputField, onDateClick, onPreviewClick}){
     const modal = useModal();
 
     const msgSendState = inputField.get(index, 'msg_st');
-
-    const openMessagePreviewModal = ()=>{
-        modal.openModal(ModalType.LAYER.Message_Preview, {
-            content: inputField.get(index, "content")
-        })
-    }
 
     const toggleCheck = ()=>{
         if(msgSendState === 1){
@@ -217,7 +245,7 @@ function ReserveItem({index, error, inputField, onDateClick}){
             }
             <div className={Popup.transfer_box}>
                 <button type="button" className={`${cmc(Popup.btn, Popup.btn_small)}`} disabled={!isChecked}
-                        onClick={openMessagePreviewModal}>
+                        onClick={onPreviewClick}>
                     미리보기
                 </button>
                 <input type="text"

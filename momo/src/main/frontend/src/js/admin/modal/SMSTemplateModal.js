@@ -9,7 +9,7 @@ import {cm} from "../../utils/cm";
 
 const INIT_TITLE_NAME = "새 문자 템플릿"
 
-export function MessageTemplateModal(props){
+export function SMSTemplateModal(props){
     const {gmdApi} = useApi()
     const modal = useModal()
 
@@ -205,7 +205,7 @@ export function MessageTemplateModal(props){
     }
 
     const close = ()=>{
-        modal.closeModal(ModalType.LAYER.Admin_Message_Template)
+        modal.closeModal(ModalType.LAYER.SMS_Template)
     }
 
     return (

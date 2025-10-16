@@ -52,7 +52,10 @@ export function SMSHistory(){
 
 
     const openMessageTemplateModal = ()=>{
-        modal.openModal(ModalType.LAYER.Admin_Message_Template)
+        modal.openModal(ModalType.SNACKBAR.Alert, {
+            msg: "준비 중인 기능입니다. 나중에 다시 시도해 주세요."
+        })
+        // modal.openModal(ModalType.LAYER.Admin_Message_Template)
     }
 
     const checkMsg = index=>{

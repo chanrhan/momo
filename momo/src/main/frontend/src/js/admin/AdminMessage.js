@@ -1,13 +1,8 @@
 import Layout from "../../css/layout.module.css";
 import Board from "../../css/board.module.css";
-import {BoardTable, Btbody, Btd, Bth, Bthead} from "../service/board/BoardTable";
-import {cm, cmc} from "../utils/cm";
 import useModal from "../hook/useModal";
-import {ModalType} from "../common/modal/ModalType";
 import {useEffect, useState} from "react";
 import useApi from "../hook/useApi";
-import {MoreOptionLayer} from "../common/module/MoreOptionLayer";
-import {SelectItem} from "../common/module/SelectLayer";
 import {TabList} from "../common/module/TabList";
 import {SMSHistory} from "./SmsHistory";
 import {AlimTalkHistory} from "./AlimTalkHistory";
@@ -37,9 +32,9 @@ export function AdminMessage(){
     const routeTab = ()=>{
         switch (tab){
             case 0:
-                return <SMSHistory/>
-            case 1:
                 return <AlimTalkHistory/>
+            case 1:
+                return <SMSHistory/>
         }
         return null;
     }
@@ -54,7 +49,7 @@ export function AdminMessage(){
 
             <div className={Layout.sub_tab}>
                 <TabList name='user_st' value={tab} onChange={setTab} theme={Layout} values={
-                    ['문자','알림톡']
+                    ['알림톡','문자']
                 }/>
             </div>
 

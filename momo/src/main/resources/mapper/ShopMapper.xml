@@ -147,6 +147,12 @@
         WHERE shop_id = #{shopId}
     </delete>
 
+    <select id="getShopName">
+        select shop_nm
+        from tb_shop
+        where shop_id=#{shopId}
+    </select>
+
     <select id="getShop" parameterType="com.momo.common.vo.ShopVO">
         SELECT sh.shop_id, -- getShopTest
                 sh.shop_nm,
@@ -171,6 +177,12 @@
             from tb_account
             where id=#{userId}
         )
+    </select>
+
+    <select id="getShopById">
+        select *
+        from tb_shop
+        where shop_id=#{shopId}
     </select>
 
     <select id="getShopItems">

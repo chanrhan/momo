@@ -39,8 +39,24 @@ export function MessageApi(accessToken){
         getAlimtalkHistoryDetail: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/msg/alimtalk/history/detail', body, accessToken);
         },
-        getMessageTemplateList: async (body)=>{
+        // 메세지(알림톡 매핑) 템플릿 가져오기
+        getMessageTemplates: async (body)=>{
             return await axiosApiWithAccessToken.post('/api/v1/msg/template/list', body, accessToken);
-        }
+        },
+        getAlimtalkTemplateContent: async (saleId, tplCode)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/msg/template/content?saleId=${saleId}&tplCode=${tplCode}`, accessToken);
+        },
+        getMessageTemplateAll: async (keyword)=>{
+            return await axiosApiWithAccessToken.get(`/api/v1/msg/template/list/all?keyword=${keyword}`, accessToken);
+        },
+        addAlimtalkTemplate: async (body)=>{
+            return await axiosApiWithAccessToken.post(`/api/v1/msg/template`, body, accessToken);
+        },
+        updateAlimtalkTemplate: async (body)=>{
+            return await axiosApiWithAccessToken.patch(`/api/v1/msg/template`, body, accessToken);
+        },
+        // updateTemplateContent: async (body)=>{
+        //     return await axiosApiWithAccessToken.post(`/api/v1/msg/template`, body, accessToken);
+        // }
     }
 }

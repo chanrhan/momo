@@ -11,7 +11,7 @@ import java.util.Map;
 public interface MessageMapper {
 	// Message Reserve
 	public int insertMessageHistory(MessageVO vo);
-	public void insertMessageHistoryMany(List<MessageVO> vo);
+	public void insertMessageHistoryMany(int currShopId, int saleId, List<MessageVO> list);
 	public int deleteMessageList(List<MessageVO> list);
 
 	public List<Map<String,Object>> getReserveMsgBySale(SaleVO vo);
@@ -29,4 +29,5 @@ public interface MessageMapper {
 	public int deleteAlimtalkTemplate(MessageVO vo);
 	public String getAlimtalkTemplateCode(int tplId);
 	public List<Map<String,Object>> getAlimtalkTemplateList(MessageVO vo);
+	public List<Map<String,Object>> getAlimtalkTemplateListAll(String keyword);
 }

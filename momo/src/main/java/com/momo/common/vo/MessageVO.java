@@ -22,8 +22,10 @@ public class MessageVO extends BaseVO {
     private Integer msgSt;
 
     private String tplCode; // 알림톡 템플릿 코드 (7자리)
+    private String title;
     private Integer tplId; // Template ID
     private Integer grpCode; // 메세지 그룹 코드
+    private String description;
 
 //    private Integer currShopId;
 
@@ -46,8 +48,8 @@ public class MessageVO extends BaseVO {
         return AlimTalkMsgRequestVO.builder()
                 .tplCode(tplCode)
                 .senddate(rsvDt)
-                .receiver1(custTel)
-                .recvname1(custNm)
+                .receiver_1(custTel)
+                .recvname_1(custNm)
                 .build();
     }
 }

@@ -63,6 +63,7 @@ public interface UserMapper {
 	public Map<String,Object> getUserInfo(String userId);
 	public List<Map<String,Object>> getUser(UserVO vo);
 
+
 	// Staff
 	public int insertStaff(UserVO vo);
 	public int updateStaff(UserVO vo);

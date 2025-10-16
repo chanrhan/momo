@@ -9,6 +9,7 @@ import useApi from "../hook/useApi";
 import {MoreOptionLayer} from "../common/module/MoreOptionLayer";
 import {SelectItem} from "../common/module/SelectLayer";
 import {TabList} from "../common/module/TabList";
+import {DateUtils} from "../utils/DateUtils";
 
 const MSG_STATE = [
     Board.grey,
@@ -34,7 +35,7 @@ export function AlimTalkHistory(){
 
     const getAlimtalkHistoryList = ()=>{
         const body = {
-
+            // startdate: DateUtils.dateToStringYYMMdd(new Date())
         }
         msgApi.getAlimtalkHistoryList(body).then(({data})=>{
             console.table(data)
@@ -53,7 +54,7 @@ export function AlimTalkHistory(){
     }
 
     const openAlimtalkTemplateModal = ()=>{
-
+        modal.openModal(ModalType.LAYER.Alimtalk_Template)
     }
 
     return (

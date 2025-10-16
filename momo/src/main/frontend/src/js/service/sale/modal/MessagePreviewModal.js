@@ -1,10 +1,25 @@
 import {LayerModal} from "../../../common/modal/LayerModal";
 import Popup from "../../../../css/popup.module.css"
 import useApi from "../../../hook/useApi";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 export function MessagePreviewModal(props){
+    const {msgApi} = useApi()
+    const [content, setContent] = useState("")
+
+    useEffect(() => {
+        getAlimtalkTemplateContent()
+    }, []);
+
+    const getAlimtalkTemplateContent = ()=>{
+        if(!props.sale_id || !props.tpl_code){
+            return
+        }
+        msgApi.getAlimtalkTemplateContent(props.sale_id, props.tpl_code).then(({data})=>{
+            setContent(data)
+        })
+    }
 
     return (
         <LayerModal {...props} top={120} maxWidth={500}>
@@ -22,7 +37,7 @@ export function MessagePreviewModal(props){
 
                     </span>
                         <div className={Popup.chat_message}>
-                            {props.content}
+                            {content}
                         </div>
                     </div>
                 </div>

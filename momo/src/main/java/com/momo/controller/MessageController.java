@@ -47,8 +47,8 @@ public class MessageController {
                                                                   @RequestBody SaleVO vo){
         int currShopId = commonService.getCurrentShopId(session);
         vo.setCurrShopId(currShopId);
-        messageService.insertMsgList(vo);
-        aligoService.sendAlimtalkToMany(vo.getRsvMsgList());
+//        messageService.insertMsgList(vo);
+        aligoService.sendAlimtalkToMany(vo);
         return ResponseEntity.ok(true);
     }
 
@@ -103,9 +103,10 @@ public class MessageController {
         return ResponseEntity.ok(aligoService.getAlimtalkHistoryDetail(vo));
     }
 
+    // 실제 알림톡 템플릿 조회 (알리고 API)
     @PostMapping("/alimtalk/template/list")
     public ResponseEntity<AlimTalkMsgResponseVO> getAlimtalkTemplateList(@RequestBody AlimTalkMsgRequestVO vo){
-        return ResponseEntity.ok(aligoService.getAlimtalkTemplateList(vo));
+        return ResponseEntity.ok(null);
     }
 
 //    @PostMapping("/alimtalk/send")
@@ -113,22 +114,43 @@ public class MessageController {
 //        return ResponseEntity.ok(aligoService.sendAlimTalk(vo));
 //    }
 
-    // 알림톡 템플릿 관리
+    // 선택된 판매일보의 알림톡 매핑 템플릿 관리
     @PostMapping("/template/list")
     public ResponseEntity<List<Map<String,Object>>> getMessageTemplateList(@RequestBody MessageVO vo){
-        return ResponseEntity.ok(messageService.getMessageTemplateList(vo));
+        return ResponseEntity.ok(messageService.getAlimtalkTemplateList(vo));
+    }
+    // 전체 알림톡 매핑 템플릿 조회
+    @GetMapping("/template/list/all")
+    public ResponseEntity<List<Map<String,Object>>> getMessageTemplateListAll(@RequestParam String keyword){
+        return ResponseEntity.ok(messageService.getAlimtalkTemplateListAll(keyword));
     }
 
+    // 전체 알림톡 매핑 템플릿 조회
+    @GetMapping("/template/content")
+    public ResponseEntity<String> getAlimtalkTemplateContent(HttpSession session,
+                                                                               @RequestParam int saleId,
+                                                                               @RequestParam String tplCode){
+        int currShopId = commonService.getCurrentShopId(session);
+        return ResponseEntity.ok(aligoService.getAlimtalkTemplateContent(currShopId, saleId, tplCode));
+    }
+
+    // 알림톡 매핑 템플릿 추가
     @PostMapping("/template")
     public ResponseEntity<Boolean> insertMessageTemplate(@RequestBody MessageVO vo){
         messageService.insertAlimtalkTemplate(vo);
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/template/update")
+    @PatchMapping("/template")
     public ResponseEntity<Boolean> updateMessageTemplate(@RequestBody MessageVO vo){
         return ResponseEntity.ok(messageService.updateAlimtalkTemplate(vo) > 0);
     }
+
+//    // 실제 등록된 알림톡의 Content 를 불러와서 tb_alimtalk_template 테이블에 매핑하는 함수
+//    @PostMapping("/template/content")
+//    public ResponseEntity<Boolean> updateTemplateContent(){
+//        return ResponseEntity.ok(aligoService.up > 0);
+//    }
 
     @PostMapping("/template/del")
     public ResponseEntity<Boolean> deleteMessageTemplate(@RequestBody MessageVO vo){

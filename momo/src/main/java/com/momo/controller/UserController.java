@@ -40,9 +40,7 @@ public class UserController {
 	@GetMapping("/info")
 	public ResponseEntity<Map<String,Object>> getUserInfo() throws IOException {
 		String username = SecurityContextUtil.getUsername();
-		Map<String,Object> map = userService.getUserInfo(username);
-//		log.info("User: {}", map);
-		return ResponseEntity.ok(map);
+		return ResponseEntity.ok(userService.getUserInfo(username));
 	}
 
 	/**
